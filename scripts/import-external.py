@@ -5,6 +5,7 @@ import glob
 import os
 import re
 import urllib2
+from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup
 
 outdir = '../'
@@ -21,6 +22,9 @@ def snname(string):
 		newstring = head + tail
 
 	return newstring
+
+def round_sig(x, sig=2):
+	return round(x, sig-int(floor(log10(abs(x))))-1)
 
 # First import the CfA data.
 for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.lower()):
@@ -140,10 +144,14 @@ for record in records:
 		hvel = ''
 		redshift = ''
 		if redvel != '':
+			c = 29979245800.
 			if round(float(redvel)) == float(redvel):
 				hvel = int(redvel)
+				voc = float(hvel)*1.e5/c
+				redshift = round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3)
 			else:
 				redshift = float(redvel)
+				hvel = round(round_sig(c/1.e5*((redshift + 1.)**2. - 1.)/((redshift + 1.)**2. + 1.), sig = 3))
 
 		claimedtype = record[17].strip(':')
 
