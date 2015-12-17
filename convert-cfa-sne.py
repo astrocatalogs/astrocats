@@ -8,6 +8,8 @@ import urllib2
 from BeautifulSoup import BeautifulSoup
 
 eventnames = []
+
+# First import the CfA data.
 for file in sorted(glob.glob("cfa-input/*.dat"), key=lambda s: s.lower()):
 	tsvin = open(file,'rb')
 	tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
@@ -69,12 +71,40 @@ for file in sorted(glob.glob("cfa-input/*.dat"), key=lambda s: s.lower()):
 
 	outfile.close()
 
+# Now import the UCB SNDB
+for file in sorted(glob.glob("SNDB/*.dat"), key=lambda s: s.lower()):
+	tsvin = open(file,'rb')
+	tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
+
+	eventname = os.path.basename(os.path.splitext(file)[0])
+
+	eventparts = eventname.split('.')
+	eventname = eventparts[0].replace(' ', '').upper()
+
+	if (eventname in eventnames):
+		outfile = open(eventname + '.dat', 'a')
+		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
+	else:
+		eventnames.append(eventname)
+		outfile = open(eventname + '.dat', 'wb')
+		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
+
+		csvout.writerow(['name', eventname])
+
+	for r, row in enumerate(tsvin):
+		if len(row) > 0 and row[0] == "#":
+			continue
+		mjd = row[0]
+		abmag = row[1]
+		aberr = row[2]
+		band = row[4]
+		instrument = row[5]
+		csvout.writerow(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+
+# Now import the Asiago catalog
 response = urllib2.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
 html = response.read()
 html = html.replace('\r', '')
-
-#with open('sncat.php', 'r') as myfile:
-#	html = myfile.read().replace('\r', '')
 
 soup = BeautifulSoup(html)
 table = soup.find("table")
@@ -107,7 +137,3 @@ for record in records:
 			csvout.writerow(['host', hostname])
 		if (claimedtype != ''):
 			csvout.writerow(['claimedtype', claimedtype])
-#tsvin = open("cat.txt",'rb')
-#tsvin = csv.reader(tsvin, delimiter='  ', skipinitialspace=True)
-#for row in tsvin:
-#	print row
