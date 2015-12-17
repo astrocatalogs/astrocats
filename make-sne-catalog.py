@@ -59,15 +59,18 @@ header = dict(zip(columnkey,header))
 csvout.writerow([header[x] for x in columnkey])
 
 bandcolors = [
-	"darkblue"
+	"darkblue",
+	"mediumvioletred"
 ]
 
 bandcodes = [
-	"B"
+	"B",
+	"V"
 ]
 
 bandnames = [
-	"B"
+	"B",
+	"V"
 ]
 
 bandcolordict = dict(zip(bandcodes,bandcolors))
@@ -96,7 +99,7 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 	phototu = []
 	phototime = []
 	photoband = []
-        photoinstrument = []
+	photoinstrument = []
 	photoAB = []
 	photoerr = []
 	phototype = []
@@ -109,13 +112,13 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 			plotlink = "<a href='https://sne.space/sne_events/" + eventname + ".html'><img src='https://sne.space/plot_icon.png'></a>";
 			catalog['plot'] = plotlink
 
-                        phototu.append(row[1])
-                        phototime.append(float(row[2]))
-                        photoband.append(row[3])
-                        photoinstrument.append(row[4])
-                        photoAB.append(float(row[5]))
-                        photoerr.append(float(row[6]))
-                        phototype.append(int(row[7]))
+			phototu.append(row[1])
+			phototime.append(float(row[2]))
+			photoband.append(row[3])
+			photoinstrument.append(row[4])
+			photoAB.append(float(row[5]))
+			photoerr.append(float(row[6]))
+			phototype.append(int(row[7]))
 
 		if row[0] in columnkey:
 			table.append(row)
@@ -128,7 +131,7 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 	if plotavail:
 		eventname = os.path.splitext(file)[0]
 
-                x_data = phototime
+		x_data = phototime
 
 		x_buffer = 0.1*(max(x_data) - min(x_data))
 		x_range = [-x_buffer + min(x_data), x_buffer + max(x_data)]
@@ -164,14 +167,14 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 			p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
 				color=bandcolorf(band), legend=upplimlegend, size=8)
 
-                p = p1
+		p = p1
 
 		#save(p)
 		html = file_html(p, CDN, eventname)
 		returnlink = r'    <a href="https://sne.space"><< Return to sne catalog</a>';
 		html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne_events/' + eventname + r'.dat">Download datafile</a><br><br>\n    \1', html)
-		html = re.sub(r'(\<\/body\>)', returnlink+r'\n    \1', html)
+		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne_events/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
+		html = re.sub(r'(\<\/body\>)', returnlink+r'\n	  \1', html)
 		with open(eventname + ".html", "w") as f:
 			f.write(html)
 
