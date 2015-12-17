@@ -7,6 +7,8 @@ import re
 import urllib2
 from BeautifulSoup import BeautifulSoup
 
+outdir = '../'
+
 eventnames = []
 
 def snname(string):
@@ -21,7 +23,7 @@ def snname(string):
 	return newstring
 
 # First import the CfA data.
-for file in sorted(glob.glob("cfa-input/*.dat"), key=lambda s: s.lower()):
+for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.lower()):
 	tsvin = open(file,'rb')
 	tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
 	csv_data = []
@@ -43,11 +45,11 @@ for file in sorted(glob.glob("cfa-input/*.dat"), key=lambda s: s.lower()):
 	eventbands = list(eventparts[1])
 
 	if (eventname in eventnames):
-		outfile = open(eventname + '.dat', 'a')
+		outfile = open(outdir + eventname + '.dat', 'a')
 		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 	else:
 		eventnames.append(eventname)
-		outfile = open(eventname + '.dat', 'wb')
+		outfile = open(outdir + eventname + '.dat', 'wb')
 		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 
 		csvout.writerow(['name', eventname])
@@ -83,7 +85,7 @@ for file in sorted(glob.glob("cfa-input/*.dat"), key=lambda s: s.lower()):
 	outfile.close()
 
 # Now import the UCB SNDB
-for file in sorted(glob.glob("SNDB/*.dat"), key=lambda s: s.lower()):
+for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower()):
 	tsvin = open(file,'rb')
 	tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
 
@@ -93,11 +95,11 @@ for file in sorted(glob.glob("SNDB/*.dat"), key=lambda s: s.lower()):
 	eventname = snname(eventparts[0])
 
 	if (eventname in eventnames):
-		outfile = open(eventname + '.dat', 'a')
+		outfile = open(outdir + eventname + '.dat', 'a')
 		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 	else:
 		eventnames.append(eventname)
-		outfile = open(eventname + '.dat', 'wb')
+		outfile = open(outdir + eventname + '.dat', 'wb')
 		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 
 		csvout.writerow(['name', eventname])
@@ -111,6 +113,8 @@ for file in sorted(glob.glob("SNDB/*.dat"), key=lambda s: s.lower()):
 		band = row[4]
 		instrument = row[5]
 		csvout.writerow(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+	
+	outfile.close()
 
 # Now import the Asiago catalog
 response = urllib2.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
@@ -144,11 +148,11 @@ for record in records:
 		claimedtype = record[17].strip(':')
 
 		if (eventname in eventnames):
-			outfile = open(eventname + '.dat', 'a')
+			outfile = open(outdir + eventname + '.dat', 'a')
 			csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 		else:
 			eventnames.append(eventname)
-			outfile = open(eventname + '.dat', 'wb')
+			outfile = open(outdir + eventname + '.dat', 'wb')
 			csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 
 			csvout.writerow(['name', eventname])
@@ -161,3 +165,5 @@ for record in records:
 			csvout.writerow(['redshift', redshift])
 		if (hvel != ''):
 			csvout.writerow(['hvel', hvel])
+
+		outfile.close()

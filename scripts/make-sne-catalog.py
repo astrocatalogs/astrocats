@@ -10,6 +10,8 @@ from bokeh.plotting import figure, show, save
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
+outdir = "../"
+
 header = [
 	"Name(s)",
 	"Host Name(s)",
@@ -55,7 +57,7 @@ if (len(columnkey) != len(header) or len(columnkey) != len(footer)):
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>";
 
-csvout = open('sne-catalog.csv', 'wb')
+csvout = open(outdir + 'sne-catalog.csv', 'wb')
 csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
 
 header = dict(zip(columnkey,header))
@@ -100,7 +102,7 @@ def bandnamef(code):
 	else:
 		return code
 
-for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
+for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 	tsvin = open(file,'rb')
 	tsvin = csv.reader(tsvin, delimiter='\t')
 
@@ -192,7 +194,7 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 		html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
 		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
 		html = re.sub(r'(\<\/body\>)', returnlink+r'\n	  \1', html)
-		with open(eventname + ".html", "w") as f:
+		with open(outdir + eventname + ".html", "w") as f:
 			f.write(html)
 
 footer = dict(zip(columnkey,footer))
