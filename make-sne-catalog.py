@@ -59,18 +59,27 @@ header = dict(zip(columnkey,header))
 csvout.writerow([header[x] for x in columnkey])
 
 bandcolors = [
+	"indigo",
 	"darkblue",
-	"mediumvioletred"
+	"mediumvioletred",
+	"pink",
+	"#d82930"
 ]
 
 bandcodes = [
+	"U",
 	"B",
-	"V"
+	"V",
+	"R",
+	"I"
 ]
 
 bandnames = [
+	"U",
 	"B",
-	"V"
+	"V",
+	"R",
+	"I"
 ]
 
 bandcolordict = dict(zip(bandcodes,bandcolors))
@@ -109,7 +118,7 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 		if row[0] == 'photometry':
 			plotavail = True;
 			eventname = os.path.splitext(file)[0]
-			plotlink = "<a href='https://sne.space/sne_events/" + eventname + ".html'><img src='https://sne.space/plot_icon.png'></a>";
+			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html'><img src='https://sne.space/plot_icon.png'></a>";
 			catalog['plot'] = plotlink
 
 			phototu.append(row[1])
@@ -171,9 +180,9 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 
 		#save(p)
 		html = file_html(p, CDN, eventname)
-		returnlink = r'    <a href="https://sne.space"><< Return to sne catalog</a>';
+		returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
 		html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne_events/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
+		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
 		html = re.sub(r'(\<\/body\>)', returnlink+r'\n	  \1', html)
 		with open(eventname + ".html", "w") as f:
 			f.write(html)
