@@ -132,6 +132,15 @@ for record in records:
 	if len(record) > 1 and record[1] != '':
 		eventname = snname("SN" + record[1])
 		hostname = record[2]
+		redvel = record[11].strip(':')
+		hvel = ''
+		redshift = ''
+		if redvel != '':
+			if round(float(redvel)) == float(redvel):
+				hvel = int(redvel)
+			else:
+				redshift = float(redvel)
+
 		claimedtype = record[17].strip(':')
 
 		if (eventname in eventnames):
@@ -148,3 +157,7 @@ for record in records:
 			csvout.writerow(['host', hostname])
 		if (claimedtype != ''):
 			csvout.writerow(['claimedtype', claimedtype])
+		if (redshift != ''):
+			csvout.writerow(['redshift', redshift])
+		if (hvel != ''):
+			csvout.writerow(['hvel', hvel])

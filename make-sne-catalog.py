@@ -16,7 +16,8 @@ header = [
 	"Publications",
 	"Instruments",
 	"$z$",
-	"$N_{\\rm h}$",
+	r"$v_{\rm Helio}$",
+#	"$N_{\\rm h}$",
 	"Claimed Type",
 	"Notes",
 	"Plot(s)"
@@ -28,7 +29,8 @@ columnkey = [
 	"citations",
 	"instruments",
 	"redshift",
-	"nh",
+	"hvel",
+#	"nh",
 	"claimedtype",
 	"notes",
 	"plot"
@@ -40,7 +42,8 @@ footer = [
 	"* discovery\n&Dagger; sne type first proposed",
 	"&Dagger; upper limit\n* host only\n** host and flare",
 	"*&nbsp;Uncertain",
-	"Line of sight H column",
+	"",
+#	"Line of sight H column",
 	"Note: Papers claiming a sne without specifying disruptor/disruptee are listed as \"sne.\"",
 	"",
 	""
@@ -124,7 +127,7 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 			phototu.append(row[1])
 			phototime.append(float(row[2]))
 			photoband.append(row[3])
-			photoinstrument.append(row[4])
+			photoinstrument.append(row[4].strip())
 			photoAB.append(float(row[5]))
 			photoerr.append(float(row[6]))
 			phototype.append(int(row[7]))
@@ -133,6 +136,11 @@ for file in sorted(glob.glob("*.dat"), key=lambda s: s.lower()):
 			table.append(row)
 			catalog[row[0]] = row[1]
 	
+	instrulist = sorted(filter(None, list(set(photoinstrument))))
+	instruments = ", ".join(instrulist)
+	if len(instrulist) > 0:
+		catalog['instruments'] = instruments
+
 	csvout.writerow([catalog[x] for x in columnkey])
 
 	tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
