@@ -123,7 +123,7 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 		if row[0] == 'photometry':
 			plotavail = True;
 			eventname = os.path.splitext(file)[0]
-			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html'><img src='https://sne.space/light-curve-icon.png'></a>";
+			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
 			catalog['plot'] = plotlink
 
 			phototu.append(row[1])
