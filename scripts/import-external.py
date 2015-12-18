@@ -19,6 +19,7 @@ docfa = 		True
 dosuspect = 	True
 doucb = 		True
 dosdss = 		True
+dogaia =		True
 doasiago = 		True
 writeevents = 	True
 
@@ -213,7 +214,7 @@ if dosdss:
 				events[name]['snra'] = row[-4]
 				events[name]['sndec'] = row[-2]
 			if r == 1:
-				events[name]['redshift'] = row[1]
+				events[name]['redshift'] = row[2]
 			if r >= 19:
 				mjd = row[1]
 				band = sdssbands[int(row[2])]
@@ -221,6 +222,51 @@ if dosdss:
 				aberr = row[4]
 				instrument = "SDSS"
 				eventphotometry[name].append(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+
+#Import GAIA
+if dogaia:
+	response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
+	html = response.read()
+
+	soup = BeautifulSoup(html)
+	table = soup.findAll("table")[1]
+	for r, row in enumerate(table.findAll('tr')):
+		if r == 0:
+			continue
+
+		col = row.findAll('td')
+		classname = col[7].renderContents()
+
+		if 'SN' not in classname:
+			continue
+
+		links = row.findAll('a')
+		name = links[0].contents[0]
+
+		if name == 'Gaia15aaaa':
+			continue
+
+		if name not in events:
+			newevent(name)
+
+		events[name]['snra'] = col[2].renderContents().strip()
+		events[name]['sndec'] = col[3].renderContents().strip()
+		events[name]['claimedtype'] = classname.replace('SN', '').strip()
+
+		photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
+		photresp = urllib2.urlopen(photlink)
+		photsoup = BeautifulSoup(photresp)
+		photodata = photsoup.renderContents().split('\n')[2:-1]
+		for photo in photodata:
+			mjd = str(float(photo[2]) - 2400000.5)
+			abmag = photo[3]
+			aberr = 0.
+			instrument = 'GAIA'
+			band = 'G'
+			eventphotometry[name].append(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+
+		print events[name]
+		print eventphotometry[name]
 
 
 # Now import the Asiago catalog
