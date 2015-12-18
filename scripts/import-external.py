@@ -5,12 +5,31 @@ import glob
 import os
 import re
 import urllib2
+from pprint import pprint
 from math import log10, floor, sqrt
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, SoupStrainer
 
 outdir = '../'
 
 eventnames = []
+
+columnkey = [
+	"host",
+	"citations",
+	"instruments",
+	"redshift",
+	"hvel",
+	"claimedtype",
+	"notes",
+	]
+
+events = {}
+eventphotometry = {}
+
+def newevent(name):
+	print name
+	events[name] = dict.fromkeys(columnkey, '')
+	eventphotometry[name] = []
 
 def snname(string):
 	newstring = string.replace(' ', '').upper()
@@ -25,6 +44,59 @@ def snname(string):
 
 def round_sig(x, sig=2):
 	return round(x, sig-int(floor(log10(abs(x))))-1)
+
+
+response = urllib2.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
+
+soup = BeautifulSoup(response)
+i = 0
+for a in soup.findAll('a'):
+	if 'phot=yes' in a['href'] and not 'spec=yes' in a['href']:
+		if int(a.contents[0]) > 0:
+			i = i + 1
+			photlink = 'http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/' + a['href']
+			eventresp = urllib2.urlopen(photlink)
+			eventsoup = BeautifulSoup(eventresp)
+			ei = 0
+			for ea in eventsoup.findAll('a'):
+				if ea.contents[0] == 'I':
+					ei = ei + 1
+					bandlink = 'http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/' + ea['href']
+					bandresp = urllib2.urlopen(bandlink)
+					bandsoup = BeautifulSoup(bandresp)
+					bandtable = bandsoup.find('table')
+					if ei == 1:
+						names = bandsoup.body.findAll(text=re.compile("Name"))
+						name = 'SN' + names[0].split(':')[1].strip()
+						if name not in events:
+							newevent(name)
+						events[name]['host'] = names[1].split(':')[1].strip()
+						redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
+						if redshifts:
+							events[name]['redshift'] = redshifts[0].split(':')[1].strip()
+						hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
+						if hvels:
+							events[name]['hvel'] = hvels[0].split(':')[1].strip().split(' ')[0]
+						types = bandsoup.body.findAll(text=re.compile("Type"))
+						events[name]['claimedtype'] = types[0].split(':')[1].strip().split(' ')[0]
+
+					bands = bandsoup.body.findAll(text=re.compile("^Band"))
+					band = bands[0].split(':')[1].strip()
+
+					for r, row in enumerate(bandtable.findAll('tr')):
+						if r == 0:
+							continue
+						col = row.findAll('td')
+						mjd = str(float(col[0].renderContents()) - 2400000.5)
+						mag = col[3].renderContents()
+						if mag.isspace():
+							mag = ''
+						err = col[4].renderContents()
+						if err.isspace():
+							err = ''
+						photometryrow = ['photometry', 'MJD', mjd, band, '', mag, err, 0]
+						eventphotometry[name].append(photometryrow)
+
 
 # First import the CfA data.
 for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.lower()):
@@ -45,18 +117,22 @@ for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.low
 	eventname = os.path.basename(os.path.splitext(file)[0])
 
 	eventparts = eventname.split('_')
-	eventname = snname(eventparts[0])
+
+	name = snname(eventparts[0])
+	if name not in events:
+		newevent(name)
+
 	eventbands = list(eventparts[1])
 
-	if (eventname in eventnames):
-		outfile = open(outdir + eventname + '.dat', 'a')
-		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-	else:
-		eventnames.append(eventname)
-		outfile = open(outdir + eventname + '.dat', 'wb')
-		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
+	#if (eventname in eventnames):
+	#	outfile = open(outdir + eventname + '.dat', 'a')
+	#	csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
+	#else:
+	#	eventnames.append(eventname)
+	#	outfile = open(outdir + eventname + '.dat', 'wb')
+	#	csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
 
-		csvout.writerow(['name', eventname])
+	#	csvout.writerow(['name', eventname])
 
 	tu = 'MJD'
 	jdoffset = 0.
@@ -74,19 +150,17 @@ for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.low
 			for v, val in enumerate(row):
 				if v == 0:
 					if tu == 'JD':
-						mjd = float(val) + jdoffset - 2400000.5
+						mjd = str(float(val) + jdoffset - 2400000.5)
 						tuout = 'MJD'
 					elif tu == 'HJD':
-						mjd = float(val) - 2400000.5
+						mjd = str(float(val) - 2400000.5)
 						tuout = 'MJD'
 					else:
 						mjd = val
 						tuout = tu
 				elif v % 2 != 0:
 					if float(row[v]) < 90.0:
-						csvout.writerow(['photometry', tuout, mjd, eventbands[(v-1)/2], '', row[v], row[v+1], 0])
-
-	outfile.close()
+						eventphotometry[name].append(['photometry', tuout, mjd, eventbands[(v-1)/2], '', row[v], row[v+1], 0])
 
 # Now import the UCB SNDB
 for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower()):
@@ -96,17 +170,10 @@ for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower())
 	eventname = os.path.basename(os.path.splitext(file)[0])
 
 	eventparts = eventname.split('.')
-	eventname = snname(eventparts[0])
 
-	if (eventname in eventnames):
-		outfile = open(outdir + eventname + '.dat', 'a')
-		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-	else:
-		eventnames.append(eventname)
-		outfile = open(outdir + eventname + '.dat', 'wb')
-		csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-
-		csvout.writerow(['name', eventname])
+	name = snname(eventparts[0])
+	if name not in events:
+		newevent(name)
 
 	for r, row in enumerate(tsvin):
 		if len(row) > 0 and row[0] == "#":
@@ -116,10 +183,8 @@ for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower())
 		aberr = row[2]
 		band = row[4]
 		instrument = row[5]
-		csvout.writerow(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+		eventphotometry[name].append(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
 	
-	outfile.close()
-
 # Now import the Asiago catalog
 response = urllib2.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
 html = response.read()
@@ -138,7 +203,9 @@ for r, row in enumerate(table.findAll('tr')):
 
 for record in records:
 	if len(record) > 1 and record[1] != '':
-		eventname = snname("SN" + record[1])
+		name = snname("SN" + record[1])
+		if name not in events:
+			newevent(name)
 		hostname = record[2]
 		redvel = record[11].strip(':')
 		hvel = ''
@@ -152,26 +219,35 @@ for record in records:
 			else:
 				redshift = float(redvel)
 				hvel = round(round_sig(c/1.e5*((redshift + 1.)**2. - 1.)/((redshift + 1.)**2. + 1.), sig = 3))
+			voc = str(voc)
+			redshift = str(redshift)
+			hvel = str(hvel)
 
 		claimedtype = record[17].strip(':')
 
-		if (eventname in eventnames):
-			outfile = open(outdir + eventname + '.dat', 'a')
-			csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-		else:
-			eventnames.append(eventname)
-			outfile = open(outdir + eventname + '.dat', 'wb')
-			csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-
-			csvout.writerow(['name', eventname])
-
 		if (hostname != ''):
-			csvout.writerow(['host', hostname])
+			events[name]['host'] = hostname
 		if (claimedtype != ''):
-			csvout.writerow(['claimedtype', claimedtype])
+			events[name]['claimedtype'] = claimedtype
 		if (redshift != ''):
-			csvout.writerow(['redshift', redshift])
+			events[name]['redshift'] = redshift
 		if (hvel != ''):
-			csvout.writerow(['hvel', hvel])
+			events[name]['hvel'] = hvel
 
-		outfile.close()
+# Write it all out!
+for name in events:
+	print 'writing ' + name
+	outfile = open(outdir + name + '.dat', 'wb')
+	csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
+	
+	csvout.writerow(['name', name])
+
+	for key in events[name]:
+		if not events[name][key].isspace():
+			csvout.writerow([key, events[name][key]])
+	
+	for row in eventphotometry[name]:
+		csvout.writerow(row)
+
+	outfile.close()
+

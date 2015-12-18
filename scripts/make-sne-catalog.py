@@ -103,6 +103,7 @@ def bandnamef(code):
 		return code
 
 for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
+	print file
 	tsvin = open(file,'rb')
 	tsvin = csv.reader(tsvin, delimiter='\t')
 
@@ -122,7 +123,7 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 	for row in tsvin:
 		if row[0] == 'photometry':
 			plotavail = True;
-			eventname = os.path.splitext(file)[0]
+			eventname = os.path.splitext(os.path.basename(file))[0]
 			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
 			catalog['plot'] = plotlink
 
@@ -131,7 +132,10 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 			photoband.append(row[3])
 			photoinstrument.append(row[4].strip())
 			photoAB.append(float(row[5]))
-			photoerr.append(float(row[6]))
+			if not row[6]:
+				photoerr.append(0.)
+			else:
+				photoerr.append(float(row[6]))
 			phototype.append(int(row[7]))
 
 		if row[0] in columnkey:
@@ -148,7 +152,7 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 	tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
 
 	if plotavail:
-		eventname = os.path.splitext(file)[0]
+		eventname = os.path.splitext(os.path.basename(file))[0]
 
 		x_data = phototime
 
@@ -194,6 +198,7 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 		html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
 		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
 		html = re.sub(r'(\<\/body\>)', returnlink+r'\n	  \1', html)
+		print outdir + eventname + ".html"
 		with open(outdir + eventname + ".html", "w") as f:
 			f.write(html)
 
