@@ -21,6 +21,11 @@ columnkey = [
 	"hvel",
 	"claimedtype",
 	"notes",
+	"galra",
+	"galdec",
+	"snra",
+	"sndec",
+	"discoverer"
 	]
 
 events = {}
@@ -207,7 +212,13 @@ for record in records:
 		if name not in events:
 			newevent(name)
 		hostname = record[2]
+		galra = record[3]
+		galdec = record[4]
+		snra = record[5]
+		sndec = record[6]
 		redvel = record[11].strip(':')
+		discoverer = record[19]
+
 		hvel = ''
 		redshift = ''
 		if redvel != '':
@@ -219,7 +230,6 @@ for record in records:
 			else:
 				redshift = float(redvel)
 				hvel = round(round_sig(c/1.e5*((redshift + 1.)**2. - 1.)/((redshift + 1.)**2. + 1.), sig = 3))
-			voc = str(voc)
 			redshift = str(redshift)
 			hvel = str(hvel)
 
@@ -233,6 +243,16 @@ for record in records:
 			events[name]['redshift'] = redshift
 		if (hvel != ''):
 			events[name]['hvel'] = hvel
+		if (galra != ''):
+			events[name]['galra'] = galra
+		if (galdec != ''):
+			events[name]['galdec'] = galdec
+		if (snra != ''):
+			events[name]['snra'] = snra
+		if (sndec != ''):
+			events[name]['sndec'] = sndec
+		if (discoverer != ''):
+			events[name]['discoverer'] = discoverer
 
 # Write it all out!
 for name in events:
