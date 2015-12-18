@@ -15,38 +15,41 @@ outdir = "../"
 header = [
 	"Name(s)",
 	"Host Name(s)",
-	"Publications",
+#	"Publications",
 	"Instruments",
-	"$z$",
-	r"$v_{\rm Helio}$",
+	"z",
+	r"v<sub>Helio</sub>",
 #	"$N_{\\rm h}$",
 	"Claimed Type",
-	"Notes",
-	"Plot(s)"
+#	"Notes",
+	"Plot(s)",
+	"Data"
 	]
 
 columnkey = [
 	"name",
 	"host",
-	"citations",
+#	"citations",
 	"instruments",
 	"redshift",
 	"hvel",
 #	"nh",
 	"claimedtype",
-	"notes",
-	"plot"
+#	"notes",
+	"plot",
+	"data"
 	]
 
 footer = [
-	"Note: Name of transient preferred, if unnamed host galaxy is used",
-	"*&nbsp;Uncertain\nNote: Usually host galaxy name(s)",
-	"* discovery\n&Dagger; sne type first proposed",
-	"&Dagger; upper limit\n* host only\n** host and flare",
+	"Note: IAU name preferred",
 	"*&nbsp;Uncertain",
+#	"* discovery\n&Dagger; sne type first proposed",
+	"",
+	"",
 	"",
 #	"Line of sight H column",
-	"Note: Papers claiming a sne without specifying disruptor/disruptee are listed as \"sne.\"",
+	"",
+#	"",
 	"",
 	""
 	]
@@ -141,6 +144,10 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 		if row[0] in columnkey:
 			table.append(row)
 			catalog[row[0]] = row[1]
+
+	eventname = os.path.splitext(os.path.basename(file))[0]
+
+	catalog['data'] = r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download</a>'
 	
 	instrulist = sorted(filter(None, list(set(photoinstrument))))
 	instruments = ", ".join(instrulist)
@@ -152,8 +159,6 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 	tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
 
 	if plotavail:
-		eventname = os.path.splitext(os.path.basename(file))[0]
-
 		x_data = phototime
 
 		x_buffer = 0.1*(max(x_data) - min(x_data))

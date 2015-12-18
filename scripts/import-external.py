@@ -4,6 +4,7 @@ import csv
 import glob
 import os
 import re
+import urllib
 import urllib2
 from collections import OrderedDict
 from pprint import pprint
@@ -20,6 +21,7 @@ dosuspect = 	True
 doucb = 		True
 dosdss = 		True
 dogaia =		True
+doitep =		False
 doasiago = 		True
 writeevents = 	True
 
@@ -257,9 +259,10 @@ if dogaia:
 		photresp = urllib2.urlopen(photlink)
 		photsoup = BeautifulSoup(photresp)
 		photodata = photsoup.renderContents().split('\n')[2:-1]
-		for photo in photodata:
-			mjd = str(float(photo[2]) - 2400000.5)
-			abmag = photo[3]
+		for ph in photodata:
+			photo = ph.split(',')
+			mjd = str(float(photo[1].strip()) - 2400000.5)
+			abmag = photo[2].strip()
 			aberr = 0.
 			instrument = 'GAIA'
 			band = 'G'
@@ -268,6 +271,14 @@ if dogaia:
 		print events[name]
 		print eventphotometry[name]
 
+if doitep:
+	url = 'http://dau.itep.ru/sn/lctheory/draw'
+	values = {'edit-snnameobs' : '1993J' }
+
+	data = urllib.urlencode(values)
+	req = urllib2.Request(url, data)
+	response = urllib2.urlopen(req)
+	the_page = response.read()
 
 # Now import the Asiago catalog
 if doasiago:
