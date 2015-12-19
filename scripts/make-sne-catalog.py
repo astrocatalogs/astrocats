@@ -13,16 +13,16 @@ from bokeh.embed import file_html
 outdir = "../"
 
 header = [
-	"Name(s)",
-	"Host Name(s)",
+	"Names",
+	"Host Names",
 #	"Publications",
-	"Instruments",
-	"z",
-	r"v<sub>Helio</sub>",
+	"Instruments/Surveys",
+	"<em>z</em>",
+	r"<em>v</em><sub>Helio</sub>",
 #	"$N_{\\rm h}$",
 	"Claimed Type",
 #	"Notes",
-	"Plot(s)",
+	"Plots",
 	"Data"
 	]
 
@@ -68,26 +68,57 @@ csvout.writerow([header[x] for x in columnkey])
 
 bandcolors = [
 	"indigo",
+	"firebrick",
+	"forestgreen",
+	"red",
+	"crimson",
+	"indigo",
 	"darkblue",
 	"mediumvioletred",
 	"pink",
-	"#d82930"
+	"#d82930",
+	"orangered",
+	"mediumvioletred",
+	"mediumspringgreen",
+	"orange",
+	"chocolate",
+	"darkorange",
 ]
 
 bandcodes = [
+	"u",
+	"g",
+	"r",
+	"i",
+	"z",
 	"U",
 	"B",
 	"V",
 	"R",
-	"I"
+	"I",
+	"G",
+	"Y",
+	"J",
+	"H",
+	"K"
 ]
 
 bandnames = [
+	"u",
+	"g",
+	"r",
+	"i",
+	"z",
 	"U",
 	"B",
 	"V",
 	"R",
-	"I"
+	"I",
+	"G",
+	"Y",
+	"J",
+	"H",
+	"K"
 ]
 
 bandcolordict = dict(zip(bandcodes,bandcolors))
@@ -127,19 +158,19 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 		if row[0] == 'photometry':
 			plotavail = True;
 			eventname = os.path.splitext(os.path.basename(file))[0]
-			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
+			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html' target='_blank'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
 			catalog['plot'] = plotlink
 
 			phototu.append(row[1])
 			phototime.append(float(row[2]))
-			photoband.append(row[3])
-			photoinstrument.append(row[4].strip())
-			photoAB.append(float(row[5]))
-			if not row[6]:
+			photoband.append(row[4])
+			photoinstrument.append(row[6].strip())
+			photoAB.append(float(row[8]))
+			if not row[10]:
 				photoerr.append(0.)
 			else:
-				photoerr.append(float(row[6]))
-			phototype.append(int(row[7]))
+				photoerr.append(float(row[10]))
+			phototype.append(int(row[12]))
 
 		if row[0] in columnkey:
 			table.append(row)

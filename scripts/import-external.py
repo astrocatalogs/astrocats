@@ -7,21 +7,24 @@ import re
 import urllib
 import urllib2
 from collections import OrderedDict
-from pprint import pprint
 from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 from operator import itemgetter
 
+clight = 29979245800.
+
 outdir = '../'
 
 eventnames = []
+
+doitep =		False
 
 docfa = 		True
 dosuspect = 	True
 doucb = 		True
 dosdss = 		True
 dogaia =		True
-doitep =		False
+docsp =			True
 doasiago = 		True
 writeevents = 	True
 
@@ -62,6 +65,8 @@ def snname(string):
 	return newstring
 
 def round_sig(x, sig=2):
+	if x == 0.0:
+		return 0.0
 	return round(x, sig-int(floor(log10(abs(x))))-1)
 
 # Suspect catalog
@@ -114,7 +119,7 @@ if dosuspect:
 							err = col[4].renderContents()
 							if err.isspace():
 								err = ''
-							photometryrow = ['photometry', 'MJD', mjd, band, '', mag, err, 0]
+							photometryrow = ['photometry', 'MJD', mjd, 'band', band, 'instrument', '', 'abmag', mag, 'aberr', err, 'upperlimit', 0]
 							eventphotometry[name].append(photometryrow)
 
 
@@ -171,7 +176,7 @@ if docfa:
 							tuout = tu
 					elif v % 2 != 0:
 						if float(row[v]) < 90.0:
-							eventphotometry[name].append(['photometry', tuout, mjd, eventbands[(v-1)/2], '', row[v], row[v+1], 0])
+							eventphotometry[name].append(['photometry', tuout, mjd, 'band', eventbands[(v-1)/2], 'instrument', '', 'abmag', row[v], 'aberr', row[v+1], 'upperlimit', 0])
 
 # Now import the UCB SNDB
 if doucb:
@@ -195,7 +200,7 @@ if doucb:
 			aberr = row[2]
 			band = row[4]
 			instrument = row[5]
-			eventphotometry[name].append(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+			eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
 	
 # Import SDSS
 sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -223,7 +228,7 @@ if dosdss:
 				abmag = row[3]
 				aberr = row[4]
 				instrument = "SDSS"
-				eventphotometry[name].append(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+				eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
 
 #Import GAIA
 if dogaia:
@@ -266,11 +271,9 @@ if dogaia:
 			aberr = 0.
 			instrument = 'GAIA'
 			band = 'G'
-			eventphotometry[name].append(['photometry', 'MJD', mjd, band, instrument, abmag, aberr, 0])
+			eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
 
-		print events[name]
-		print eventphotometry[name]
-
+# Import ITEP, not currently working.
 if doitep:
 	url = 'http://dau.itep.ru/sn/lctheory/draw'
 	values = {'edit-snnameobs' : '1993J' }
@@ -279,6 +282,39 @@ if doitep:
 	req = urllib2.Request(url, data)
 	response = urllib2.urlopen(req)
 	the_page = response.read()
+
+# Import CSP
+cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
+
+if docsp:
+	for file in sorted(glob.glob("../external/CSP/*.dat"), key=lambda s: s.lower()):
+		tsvin = open(file,'rb')
+		tsvin = csv.reader(tsvin, delimiter='\t', skipinitialspace=True)
+
+		eventname = os.path.basename(os.path.splitext(file)[0])
+
+		eventparts = eventname.split('opt+')
+
+		name = snname(eventparts[0])
+		if name not in events:
+			newevent(name)
+
+		for r, row in enumerate(tsvin):
+			if len(row) > 0 and row[0][0] == "#":
+				if r == 2:
+					events[name]['redshift'] = row[0].split(' ')[-1]
+					redshift = float(events[name]['redshift'])
+					events[name]['hvel'] = round(round_sig(clight/1.e5*((redshift + 1.)**2. - 1.)/
+						((redshift + 1.)**2. + 1.), sig = 3))
+					events[name]['snra'] = row[1].split(' ')[-1]
+					events[name]['sndec'] = row[2].split(' ')[-1]
+				continue
+			for v, val in enumerate(row):
+				if v == 0:
+					mjd = val
+				elif v % 2 != 0:
+					if float(row[v]) < 90.0:
+						eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', cspbands[(v-1)/2], 'instrument', 'CSP', 'abmag', row[v], 'aberr', row[v+1], 'upperlimit', 0])
 
 # Now import the Asiago catalog
 if doasiago:
@@ -313,14 +349,13 @@ if doasiago:
 			hvel = ''
 			redshift = ''
 			if redvel != '':
-				c = 29979245800.
 				if round(float(redvel)) == float(redvel):
 					hvel = int(redvel)
-					voc = float(hvel)*1.e5/c
+					voc = float(hvel)*1.e5/clight
 					redshift = round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3)
 				else:
 					redshift = float(redvel)
-					hvel = round(round_sig(c/1.e5*((redshift + 1.)**2. - 1.)/((redshift + 1.)**2. + 1.), sig = 3))
+					hvel = round(round_sig(clight/1.e5*((redshift + 1.)**2. - 1.)/((redshift + 1.)**2. + 1.), sig = 3))
 				redshift = str(redshift)
 				hvel = str(hvel)
 
@@ -355,7 +390,7 @@ if writeevents:
 		csvout.writerow(['name', name])
 
 		for key in events[name]:
-			if not events[name][key].isspace():
+			if events[name][key]:
 				csvout.writerow([key, events[name][key]])
 		
 		sortedphotometry = sorted(eventphotometry[name], key=itemgetter(2))
