@@ -64,7 +64,7 @@ csvout = open(outdir + 'sne-catalog.csv', 'wb')
 csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
 
 header = dict(zip(columnkey,header))
-csvout.writerow([header[x] for x in columnkey])
+headerrow = [header[x] for x in columnkey]
 
 bandcolors = [
 	"indigo",
@@ -136,6 +136,7 @@ def bandnamef(code):
 	else:
 		return code
 
+catalogrows = []
 for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 	print file
 	tsvin = open(file,'rb')
@@ -185,7 +186,7 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 	if len(instrulist) > 0:
 		catalog['instruments'] = instruments
 
-	csvout.writerow([catalog[x] for x in columnkey])
+	catalogrows.append([catalog[x] for x in columnkey])
 
 	tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
 
@@ -238,6 +239,11 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 		with open(outdir + eventname + ".html", "w") as f:
 			f.write(html)
 
+# Write it all out at the end
+csvout.writerow(headerrow)
+
+for row in catalogrows:
+	csvout.writerow(row)
+
 footer = dict(zip(columnkey,footer))
 csvout.writerow([footer[x] for x in columnkey])
-
