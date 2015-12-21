@@ -28,3 +28,5 @@ The data files are always in plain text format, although in the future we will p
 "photometry"	"MJD"	"49076.0"	"band"	"V"	"instrument"	""	"abmag"	"10.7500"	"aberr"	""	"upperlimit"	"0"
 "photometry"	"MJD"	"49087.9"	"band"	"V"	"instrument"	""	"abmag"	"11.3900"	"aberr"	""	"upperlimit"	"0"
 ```
+
+At the moment, the only mandatory field for a given supernova is the name.
