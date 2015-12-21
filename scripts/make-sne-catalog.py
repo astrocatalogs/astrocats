@@ -10,6 +10,7 @@ from bokeh.plotting import figure, show, save
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
+indir = "../data/"
 outdir = "../"
 
 header = [
@@ -59,9 +60,6 @@ if (len(columnkey) != len(header) or len(columnkey) != len(footer)):
 	sys.exit(0)
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>";
-
-csvout = open(outdir + 'sne-catalog.csv', 'wb')
-csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
 
 header = dict(zip(columnkey,header))
 headerrow = [header[x] for x in columnkey]
@@ -137,7 +135,7 @@ def bandnamef(code):
 		return code
 
 catalogrows = []
-for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
+for file in sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower()):
 	print file
 	tsvin = open(file,'rb')
 	tsvin = csv.reader(tsvin, delimiter='\t')
@@ -240,6 +238,9 @@ for file in sorted(glob.glob(outdir + "*.dat"), key=lambda s: s.lower()):
 			f.write(html)
 
 # Write it all out at the end
+csvout = open(outdir + 'sne-catalog.csv', 'wb')
+csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
+
 csvout.writerow(headerrow)
 
 for row in catalogrows:
