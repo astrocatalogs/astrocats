@@ -8,8 +8,7 @@ If you have a historical archive of data that likely won't be updated, feel free
 
 ## Format of Data Files ##
 
-The data files are always in plain text format, although in the future we will preferring large datasets to be added in compressed format (probably bzip2). The data is expected to be in key-value form, where a field name is presented, followed by an associated value. For many fields the value is just a single number/string, but the value can itself be a list of key-value pairs, as is the case for photometry entries. Below is an example datafile for 1993J:
-
+The data files are always inherently plain text format, although it is preferred to have all datafiles compressed in bzip2 format (.bz2) to minimize disk space. The data is expected to be in key-value form, where a field name is presented, followed by an associated value. For many fields the value is just a single number/string, but the value can itself be a list of key-value pairs, as is the case for photometry entries. Both the key and the value should be enclosed in quotes,  Below is an example datafile for 1993J:
 
 ```
 #!text
