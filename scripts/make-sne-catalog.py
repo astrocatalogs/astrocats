@@ -5,6 +5,7 @@ import glob
 import sys
 import os
 import re
+import bz2
 from bokeh.io import hplot, vplot
 from bokeh.plotting import figure, show, save
 from bokeh.resources import CDN
@@ -135,9 +136,15 @@ def bandnamef(code):
 		return code
 
 catalogrows = []
-for file in sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower()):
+for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower())):
 	print file
-	tsvin = open(file,'rb')
+	filehead, ext = os.path.splitext(file)
+	if ext == ".dat":
+		tsvin = open(file,'rb')
+	elif ext == ".bz2":
+		tsvin = bz2.BZ2File(file,'rb')
+	else:
+		print "illegal file extension"
 	tsvin = csv.reader(tsvin, delimiter='\t')
 
 	catalog = dict(zip(columnkey,['' for _ in xrange(len(columnkey))]))
@@ -231,7 +238,7 @@ for file in sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower()):
 		html = file_html(p, CDN, eventname)
 		returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
 		html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
+		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/data/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
 		html = re.sub(r'(\<\/body\>)', returnlink+r'\n	  \1', html)
 		print outdir + eventname + ".html"
 		with open(outdir + eventname + ".html", "w") as f:
