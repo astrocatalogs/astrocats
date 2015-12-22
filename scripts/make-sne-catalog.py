@@ -183,7 +183,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 			table.append(row)
 			catalog[row[0]] = row[1]
 
-	catalog['data'] = r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download</a>'
+	catalog['data'] = r'<a href="https://sne.space/sne/' + eventname + r'.dat.bz2">Download</a>'
 	
 	instrulist = sorted(filter(None, list(set(photoinstrument))))
 	instruments = ", ".join(instrulist)
