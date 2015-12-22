@@ -10,10 +10,11 @@ from collections import OrderedDict
 from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 from operator import itemgetter
+from subprocess import Popen
 
 clight = 29979245800.
 
-outdir = '../'
+outdir = '../data/'
 
 eventnames = []
 
@@ -398,4 +399,7 @@ if writeevents:
 			csvout.writerow(row)
 
 		outfile.close()
+
+		# Compress the output
+		Popen(["bzip2", '-f', outdir + name + '.dat'])
 
