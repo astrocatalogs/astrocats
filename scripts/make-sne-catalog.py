@@ -238,7 +238,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 		html = file_html(p, CDN, eventname)
 		returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
 		html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/data/' + eventname + r'.dat">Download datafile</a><br><br>\n	  \1', html)
+		html = re.sub(r'(\<\/body\>)', r'<a href="https://sne.space/sne/data/' + eventname + r'.dat.bz2">Download datafile</a><br><br>\n	  \1', html)
 		html = re.sub(r'(\<\/body\>)', returnlink+r'\n	  \1', html)
 		print outdir + eventname + ".html"
 		with open(outdir + eventname + ".html", "w") as f:
