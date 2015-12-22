@@ -6,6 +6,8 @@ import sys
 import os
 import re
 import bz2
+import operator
+from datetime import datetime
 from bokeh.io import hplot, vplot
 from bokeh.plotting import figure, show, save
 from bokeh.resources import CDN
@@ -16,45 +18,75 @@ outdir = "../"
 
 header = [
 	"Names",
+	"Year",
+	"Month",
+	"Day",
+	"Date",
 	"Host Names",
-#	"Publications",
+	"Publications",
 	"Instruments/Surveys",
 	"<em>z</em>",
 	r"<em>v</em><sub>Helio</sub>",
-#	"$N_{\\rm h}$",
+	"$N_{\\rm h}$",
 	"Claimed Type",
-#	"Notes",
+	"Notes",
 	"Plots",
 	"Data"
-	]
+]
 
 columnkey = [
 	"name",
+	"year",
+	"discovermonth",
+	"discoverday",
+	"date",
 	"host",
-#	"citations",
+	"citations",
 	"instruments",
 	"redshift",
 	"hvel",
-#	"nh",
+	"nh",
 	"claimedtype",
-#	"notes",
+	"notes",
 	"plot",
 	"data"
-	]
+]
 
 footer = [
 	"Note: IAU name preferred",
+	"",
+	"",
+	"",
+	"",
 	"*&nbsp;Uncertain",
-#	"* discovery\n&Dagger; sne type first proposed",
+	"* discovery\n&Dagger; sne type first proposed",
 	"",
 	"",
 	"",
-#	"Line of sight H column",
+	"Line of sight H column",
 	"",
-#	"",
+	"",
 	"",
 	""
-	]
+]
+
+showcols = [
+	True,
+	False,
+	False,
+	False,
+	False,
+	True,
+	False,
+	True,
+	True,
+	True,
+	False,
+	True,
+	False,
+	True,
+	True,
+]
 
 if (len(columnkey) != len(header) or len(columnkey) != len(footer)):
 	print 'Error: Header and/or footer not same length as key list.'
@@ -63,7 +95,6 @@ if (len(columnkey) != len(header) or len(columnkey) != len(footer)):
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>";
 
 header = dict(zip(columnkey,header))
-headerrow = [header[x] for x in columnkey]
 
 bandcolors = [
 	"indigo",
@@ -122,6 +153,8 @@ bandnames = [
 
 bandcolordict = dict(zip(bandcodes,bandcolors))
 bandnamedict = dict(zip(bandcodes,bandnames))
+
+coldict = dict(zip(range(len(columnkey)),columnkey))
 
 def bandcolorf(color):
 	if (color in bandcolordict):
@@ -190,7 +223,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 	if len(instrulist) > 0:
 		catalog['instruments'] = instruments
 
-	catalogrows.append([catalog[x] for x in columnkey])
+	catalogrows.append(catalog)
 
 	tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
 
@@ -243,14 +276,36 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 		with open(outdir + eventname + ".html", "w") as f:
 			f.write(html)
 
+# Construct the date
+for r, row in enumerate(catalogrows):
+	if not row['year']:
+		year = 1
+	else:
+		year = int(row['year'])
+
+	if not row['discovermonth']:
+		month = 1
+	else:
+		month = int(row['discovermonth'])
+
+	if not row['discoverday']:
+		day = 1
+	else:
+		day = int(row['discoverday'])
+	
+	catalogrows[r]['date'] = datetime(year=year, month=month, day=day)
+
 # Write it all out at the end
 csvout = open(outdir + 'sne-catalog.csv', 'wb')
 csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
 
-csvout.writerow(headerrow)
+prunedheader = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
+csvout.writerow(prunedheader)
 
+catalogrows.sort(key=operator.itemgetter('date'), reverse=True)
 for row in catalogrows:
-	csvout.writerow(row)
+	prunedrow = [row[coldict[i]] for (i, j) in enumerate(showcols) if j]
+	csvout.writerow(prunedrow)
 
-footer = dict(zip(columnkey,footer))
-csvout.writerow([footer[x] for x in columnkey])
+prunedfooter = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
+csvout.writerow(prunedfooter)

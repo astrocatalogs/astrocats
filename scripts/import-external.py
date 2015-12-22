@@ -6,6 +6,7 @@ import os
 import re
 import urllib
 import urllib2
+import calendar
 from collections import OrderedDict
 from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup, SoupStrainer
@@ -27,6 +28,7 @@ dosdss = 		True
 dogaia =		True
 docsp =			True
 doasiago = 		True
+
 writeevents = 	True
 
 columnkey = [
@@ -41,7 +43,12 @@ columnkey = [
 	"galdec",
 	"snra",
 	"sndec",
-	"discoverer"
+	"discoverer",
+	"year",
+	"discovermonth",
+	"discoverday",
+	"maxmonth",
+	"maxday"
 	]
 
 columnkey.sort(key=str.lower)
@@ -96,6 +103,8 @@ if dosuspect:
 							name = 'SN' + names[0].split(':')[1].strip()
 							if name not in events:
 								newevent(name)
+							year = re.findall(r'\d+', name)[0]
+							events[name]['year'] = year
 							events[name]['host'] = names[1].split(':')[1].strip()
 							redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
 							if redshifts:
@@ -149,6 +158,9 @@ if docfa:
 		if name not in events:
 			newevent(name)
 
+		year = re.findall(r'\d+', name)[0]
+		events[name]['year'] = year
+
 		eventbands = list(eventparts[1])
 
 		tu = 'MJD'
@@ -193,6 +205,9 @@ if doucb:
 		if name not in events:
 			newevent(name)
 
+		year = re.findall(r'\d+', name)[0]
+		events[name]['year'] = year
+
 		for r, row in enumerate(tsvin):
 			if len(row) > 0 and row[0] == "#":
 				continue
@@ -219,11 +234,20 @@ if dosdss:
 					name = "SN" + row[5]
 				if name not in events:
 					newevent(name)
+
+				if row[5] != "RA:":
+					year = re.findall(r'\d+', name)[0]
+					events[name]['year'] = year
+
 				events[name]['snra'] = row[-4]
 				events[name]['sndec'] = row[-2]
 			if r == 1:
 				events[name]['redshift'] = row[2]
 			if r >= 19:
+				# Skip bad measurements
+				if int(row[0] > 1024):
+					continue
+
 				mjd = row[1]
 				band = sdssbands[int(row[2])]
 				abmag = row[3]
@@ -256,6 +280,9 @@ if dogaia:
 
 		if name not in events:
 			newevent(name)
+
+		year = '20' + re.findall(r'\d+', name)[0]
+		events[name]['year'] = year
 
 		events[name]['snra'] = col[2].renderContents().strip()
 		events[name]['sndec'] = col[3].renderContents().strip()
@@ -300,6 +327,9 @@ if docsp:
 		if name not in events:
 			newevent(name)
 
+		year = re.findall(r'\d+', name)[0]
+		events[name]['year'] = year
+
 		for r, row in enumerate(tsvin):
 			if len(row) > 0 and row[0][0] == "#":
 				if r == 2:
@@ -339,6 +369,10 @@ if doasiago:
 			name = snname("SN" + record[1])
 			if name not in events:
 				newevent(name)
+
+			year = re.findall(r'\d+', name)[0]
+			events[name]['year'] = year
+
 			hostname = record[2]
 			galra = record[3]
 			galdec = record[4]
@@ -346,6 +380,21 @@ if doasiago:
 			sndec = record[6]
 			redvel = record[11].strip(':')
 			discoverer = record[19]
+
+			datestr = record[18]
+			if "*" in datestr:
+				monthkey = 'discovermonth'
+				daykey = 'discoverday'
+			else:
+				monthkey = 'maxmonth'
+				daykey = 'maxday'
+
+			if datestr.strip() != '':
+				dayarr = re.findall(r'\d+', datestr)
+				if dayarr:
+					events[name][daykey] = dayarr[0]
+				monthstr = ''.join(re.findall("[a-zA-Z]+", datestr))
+				events[name][monthkey] = list(calendar.month_abbr).index(monthstr)
 
 			hvel = ''
 			redshift = ''
