@@ -159,11 +159,12 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 	photoerr = []
 	phototype = []
 
+	eventname = os.path.basename(file).split('.')[0]
+
 	plotavail = False;
 	for row in tsvin:
 		if row[0] == 'photometry':
 			plotavail = True;
-			eventname = os.path.splitext(os.path.basename(file))[0]
 			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html' target='_blank'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
 			catalog['plot'] = plotlink
 
@@ -181,8 +182,6 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 		if row[0] in columnkey:
 			table.append(row)
 			catalog[row[0]] = row[1]
-
-	eventname = os.path.splitext(os.path.basename(file))[0]
 
 	catalog['data'] = r'<a href="https://sne.space/sne/' + eventname + r'.dat">Download</a>'
 	
