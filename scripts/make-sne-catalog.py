@@ -7,6 +7,7 @@ import os
 import re
 import bz2
 import operator
+from collections import OrderedDict
 from datetime import datetime
 from bokeh.io import hplot, vplot
 from bokeh.plotting import figure, show, save
@@ -86,6 +87,17 @@ showcols = [
 	False,
 	True,
 	True,
+]
+
+photokeys = [
+	'timeunit',
+	'time',
+	'band',
+	'instrument',
+	'abmag',
+	'aberr',
+	'upperlimit',
+	'source'
 ]
 
 if (len(columnkey) != len(header) or len(columnkey) != len(footer)):
@@ -184,41 +196,34 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 
 	table = []
 
-	phototu = []
-	phototime = []
-	photoband = []
-	photoinstrument = []
-	photoAB = []
-	photoerr = []
-	phototype = []
+	photometry = []
 
 	eventname = os.path.basename(file).split('.')[0]
 
 	plotavail = False;
 	for row in tsvin:
+		photorow = OrderedDict.fromkeys(photokeys, '')
 		if row[0] == 'photometry':
 			plotavail = True;
 			plotlink = "<a href='https://sne.space/sne/" + eventname + ".html' target='_blank'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
 			catalog['plot'] = plotlink
 
-			phototu.append(row[1])
-			phototime.append(float(row[2]))
-			photoband.append(row[4])
-			photoinstrument.append(row[6].strip())
-			photoAB.append(float(row[8]))
-			if not row[10]:
-				photoerr.append(0.)
-			else:
-				photoerr.append(float(row[10]))
-			phototype.append(int(row[12]))
+			photodict = dict(zip(row[1:], row[2:]))
 
-		if row[0] in columnkey:
+			for key in photorow:
+				if key in photodict:
+					photorow[key] = photodict[key]
+
+			photometry.append(photorow)
+
+		elif row[0] in columnkey:
 			table.append(row)
 			catalog[row[0]] = row[1]
 
 	catalog['data'] = r'<a href="https://sne.space/sne/data/' + eventname + r'.dat.bz2">Download</a>'
 	
-	instrulist = sorted(filter(None, list(set(photoinstrument))))
+	prange = xrange(len(photometry))
+	instrulist = sorted(filter(None, list(set([photometry[x]['instrument'] for x in prange]))))
 	instruments = ", ".join(instrulist)
 	if len(instrulist) > 0:
 		catalog['instruments'] = instruments
@@ -228,22 +233,26 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
 	tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
 
 	if plotavail:
-		x_data = phototime
+		phototime = [float(photometry[x]['time']) for x in prange]
+		photoAB = [float(photometry[x]['abmag']) for x in prange]
+		photoerrs = [float(photometry[x]['aberr'] if photometry[x]['aberr'] else 0.) for x in prange]
 
-		x_buffer = 0.1*(max(x_data) - min(x_data))
-		x_range = [-x_buffer + min(x_data), x_buffer + max(x_data)]
+		x_buffer = 0.1*(max(phototime) - min(phototime))
+		x_range = [-x_buffer + min(phototime), x_buffer + max(phototime)]
 
-		p1 = figure(title='Photometry for ' + eventname, x_axis_label='Time (' + phototu[0] + ')',
+		p1 = figure(title='Photometry for ' + eventname, x_axis_label='Time (' + photometry[0]['timeunit'] + ')',
 			y_axis_label='AB Magnitude', x_range = x_range, tools = tools,
-			y_range = (0.5 + max([x + y for x, y in zip(photoAB, photoerr)]), -0.5 + min([x - y for x, y in zip(photoAB, photoerr)])))
+			y_range = (0.5 + max([x + y for x, y in zip(photoAB, photoerrs)]), -0.5 + min([x - y for x, y in zip(photoAB, photoerrs)])))
 
 		err_xs = []
 		err_ys = []
 
-		for x, y, yerr in zip(phototime, photoAB, photoerr):
+		for x, y, yerr in zip(phototime, photoAB, photoerrs):
 			err_xs.append((x, x))
 			err_ys.append((y - yerr, y + yerr))
 
+		photoband = [photometry[x]['band'] for x in prange]
+		phototype = [int(photometry[x]['upperlimit']) if photometry[x]['upperlimit'] else 0 for x in prange]
 		bandset = set(photoband)
 		bandset = [i for (j, i) in sorted(zip(map(bandnamef, bandset), bandset))]
 

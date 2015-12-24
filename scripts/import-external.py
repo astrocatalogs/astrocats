@@ -55,11 +55,13 @@ columnkey.sort(key=str.lower)
 
 events = {}
 eventphotometry = {}
+eventsources = {}
 
 def newevent(name):
 	print name
 	events[name] = OrderedDict.fromkeys(columnkey, '')
 	eventphotometry[name] = []
+	eventsources[name] = []
 
 def snname(string):
 	newstring = string.replace(' ', '').upper()
@@ -91,6 +93,7 @@ if dosuspect:
 				eventresp = urllib2.urlopen(photlink)
 				eventsoup = BeautifulSoup(eventresp)
 				ei = 0
+				refc = 0
 				for ea in eventsoup.findAll('a'):
 					if ea.contents[0] == 'I':
 						ei = ei + 1
@@ -118,6 +121,24 @@ if dosuspect:
 						bands = bandsoup.body.findAll(text=re.compile("^Band"))
 						band = bands[0].split(':')[1].strip()
 
+						reference = ''
+						for link in bandsoup.body.findAll('a'):
+							if 'adsabs' in link['href']:
+								reference = str(link).replace('"', "'")
+
+						if reference:
+							if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
+								refc = refc + 1
+								eventsources[name].append(['source', 'name', reference, 'alias', refc])
+								alias = refc
+							else:
+								alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
+									[eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+						else:
+							refc = refc + 1
+							eventsources[name].append(['source', 'name', 'SUSPECT', 'alias', refc])
+							alias = refc
+
 						for r, row in enumerate(bandtable.findAll('tr')):
 							if r == 0:
 								continue
@@ -129,7 +150,7 @@ if dosuspect:
 							err = col[4].renderContents()
 							if err.isspace():
 								err = ''
-							photometryrow = ['photometry', 'MJD', mjd, 'band', band, 'instrument', '', 'abmag', mag, 'aberr', err, 'upperlimit', 0]
+							photometryrow = ['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', mag] + (['aberr', err] if err else []) + ['source', alias]
 							eventphotometry[name].append(photometryrow)
 
 
@@ -189,7 +210,7 @@ if docfa:
 							tuout = tu
 					elif v % 2 != 0:
 						if float(row[v]) < 90.0:
-							eventphotometry[name].append(['photometry', tuout, mjd, 'band', eventbands[(v-1)/2], 'instrument', '', 'abmag', row[v], 'aberr', row[v+1], 'upperlimit', 0])
+							eventphotometry[name].append(['photometry', 'timeunit', tuout, 'time', mjd, 'band', eventbands[(v-1)/2], 'abmag', row[v], 'aberr', row[v+1], 'upperlimit', 0])
 
 # Now import the UCB SNDB
 if doucb:
@@ -216,7 +237,7 @@ if doucb:
 			aberr = row[2]
 			band = row[4]
 			instrument = row[5]
-			eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
+			eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
 	
 # Import SDSS
 sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -245,7 +266,7 @@ if dosdss:
 				events[name]['redshift'] = row[2]
 			if r >= 19:
 				# Skip bad measurements
-				if int(row[0] > 1024):
+				if int(row[0]) > 1024:
 					continue
 
 				mjd = row[1]
@@ -253,7 +274,7 @@ if dosdss:
 				abmag = row[3]
 				aberr = row[4]
 				instrument = "SDSS"
-				eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
+				eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
 
 #Import GAIA
 if dogaia:
@@ -299,7 +320,7 @@ if dogaia:
 			aberr = 0.
 			instrument = 'GAIA'
 			band = 'G'
-			eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
+			eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'upperlimit', 0])
 
 # Import ITEP, not currently working.
 if doitep:
@@ -345,7 +366,7 @@ if docsp:
 					mjd = val
 				elif v % 2 != 0:
 					if float(row[v]) < 90.0:
-						eventphotometry[name].append(['photometry', 'MJD', mjd, 'band', cspbands[(v-1)/2], 'instrument', 'CSP', 'abmag', row[v], 'aberr', row[v+1], 'upperlimit', 0])
+						eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', cspbands[(v-1)/2], 'instrument', 'CSP', 'abmag', row[v], 'aberr', row[v+1], 'upperlimit', 0])
 
 # Now import the Asiago catalog
 if doasiago:
@@ -442,6 +463,9 @@ if writeevents:
 		for key in events[name]:
 			if events[name][key]:
 				csvout.writerow([key, events[name][key]])
+
+		for row in eventsources[name]:
+			csvout.writerow(row)
 		
 		sortedphotometry = sorted(eventphotometry[name], key=itemgetter(2))
 		for row in sortedphotometry:
