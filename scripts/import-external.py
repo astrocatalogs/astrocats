@@ -20,12 +20,12 @@ outdir = '../data/'
 
 eventnames = []
 
-doitep =      True
 dosuspect =   True
 docfa =       True
 doucb =       True
 dosdss =      True
 dogaia =      True
+doitep =      True
 docsp =       True
 doasiago =    True
 
@@ -79,6 +79,15 @@ def round_sig(x, sig=2):
         return 0.0
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
+def get_source_alias(reference, secondary = ''):
+    if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
+        alias = str(len(eventsources[name]) + 1)
+        eventsources[name].append(['source', 'name', reference, 'alias', alias] + (['secondary', 1] if secondary else []))
+    else:
+        alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
+            [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+    return alias
+
 # Suspect catalog
 if dosuspect:
     response = urllib2.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
@@ -120,21 +129,14 @@ if dosuspect:
                         bands = bandsoup.body.findAll(text=re.compile("^Band"))
                         band = bands[0].split(':')[1].strip()
 
+                        secondaryreference = "<a href='https://www.nhn.ou.edu/~suspect/'>SUSPECT</a>"
+                        secondaryalias = get_source_alias(secondaryreference, 1)
+
                         reference = ''
                         for link in bandsoup.body.findAll('a'):
                             if 'adsabs' in link['href']:
                                 reference = str(link).replace('"', "'")
-
-                        if reference:
-                            if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-                                alias = len(eventsources[name]) + 1
-                                eventsources[name].append(['source', 'name', reference, 'alias', alias])
-                            else:
-                                alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
-                                    [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
-                        else:
-                            alias = len(eventsources[name]) + 1
-                            eventsources[name].append(['source', 'name', 'SUSPECT', 'alias', alias])
+                        alias = get_source_alias(reference)
 
                         for r, row in enumerate(bandtable.findAll('tr')):
                             if r == 0:
@@ -147,7 +149,7 @@ if dosuspect:
                             err = col[4].renderContents()
                             if err.isspace():
                                 err = ''
-                            photometryrow = ['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', mag] + (['aberr', err] if err else []) + ['source', alias]
+                            photometryrow = ['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', mag] + (['aberr', err] if err else []) + ['source', secondaryalias + ',' + alias]
                             eventphotometry[name].append(photometryrow)
 
 
@@ -194,25 +196,13 @@ if docfa:
                         if col[0] == "(":
                             refstr = ' '.join(row[2+ci:])
                             refstr = refstr.translate(None, '()')
-                            #refenc = urllib.quote_plus(refstr)
-                            #response = urllib2.urlopen('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=ALL&refstr=' + refenc)
-                            #html = response.read()
-
-                            #soup = BeautifulSoup(html)
-                            #bibcode = str(soup.findAll("base")[0]).split('bibcode=')[1].split('" />')[0].strip()
                             bibcode = refstr
                             print bibcode
+                            secondaryreference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
+                            secondaryalias = get_source_alias(secondaryreference, 1)
                             reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>refstr</a>"
-                            if reference:
-                                if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-                                    alias = len(eventsources[name]) + 1
-                                    eventsources[name].append(['source', 'name', reference, 'alias', alias])
-                                else:
-                                    alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
-                                        [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
-                            else:
-                                alias = len(eventsources[name]) + 1
-                                eventsources[name].append(['source', 'name', 'CfA', 'alias', alias])
+                            alias = get_source_alias(reference)
+
                 elif len(row) > 1 and row[1] == "HJD":
                     tu = "HJD"
 
@@ -232,7 +222,7 @@ if docfa:
                             tuout = tu
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
-                            eventphotometry[name].append(['photometry', 'timeunit', tuout, 'time', mjd, 'band', eventbands[(v-1)/2], 'abmag', row[v], 'aberr', row[v+1], 'source', 1])
+                            eventphotometry[name].append(['photometry', 'timeunit', tuout, 'time', mjd, 'band', eventbands[(v-1)/2], 'abmag', row[v], 'aberr', row[v+1], 'source', secondaryalias + ',' + alias])
 
 # Now import the UCB SNDB
 if doucb:
@@ -251,6 +241,9 @@ if doucb:
         year = re.findall(r'\d+', name)[0]
         events[name]['year'] = year
 
+        reference = "<a href='http://heracles.astro.berkeley.edu/sndb/info'>UCB Filippenko Group's Supernova Database (SNDB)</a>"
+        alias = get_source_alias(reference)
+
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
                 continue
@@ -259,7 +252,7 @@ if doucb:
             aberr = row[2]
             band = row[4]
             instrument = row[5]
-            eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr])
+            eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'source', alias])
     
 # Import SDSS
 sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -327,6 +320,9 @@ if dogaia:
         year = '20' + re.findall(r'\d+', name)[0]
         events[name]['year'] = year
 
+        reference = "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>"
+        alias = get_source_alias(reference)
+
         events[name]['snra'] = col[2].renderContents().strip()
         events[name]['sndec'] = col[3].renderContents().strip()
         events[name]['claimedtype'] = classname.replace('SN', '').strip()
@@ -342,7 +338,7 @@ if dogaia:
             aberr = 0.
             instrument = 'GAIA'
             band = 'G'
-            eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr])
+            eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'source', alias])
 
 # Import ITEP
 if doitep:
@@ -366,21 +362,9 @@ if doitep:
             events[name]['year'] = year
 
             secondaryreference = "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>"
-            if len(eventsources[name]) == 0 or secondaryreference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-                secondaryalias = str(len(eventsources[name]) + 1)
-                eventsources[name].append(['source', 'name', secondaryreference, 'alias', secondaryalias, 'secondary', 1])
-            else:
-                secondaryalias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
-                    [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+            secondaryalias = get_source_alias(secondaryreference, 1)
 
-        alias = ''
-        if reference:
-            if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-                alias = str(len(eventsources[name]) + 1)
-                eventsources[name].append(['source', 'name', reference, 'alias', alias])
-            else:
-                alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
-                    [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+        alias = get_source_alias(reference) if reference else ''
 
         eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', abmag] +
             (['aberr', err] if err else []) + ['source', (secondaryalias + ',' + alias) if alias else '1'])
@@ -404,7 +388,8 @@ if docsp:
         year = re.findall(r'\d+', name)[0]
         events[name]['year'] = year
 
-        eventsources[name].append(['source', 'name', "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>", 'alias', 1, 'secondary', 1])
+        reference = "<a href='http://csp.obs.carnegiescience.edu/data'>Carnegie Supernova Project</a>"
+        alias = get_source_alias(reference)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
@@ -421,7 +406,8 @@ if docsp:
                     mjd = val
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
-                        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', cspbands[(v-1)/2], 'instrument', 'CSP', 'abmag', row[v], 'aberr', row[v+1]])
+                        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', cspbands[(v-1)/2],
+                            'instrument', 'CSP', 'abmag', row[v], 'aberr', row[v+1], 'source', alias])
 
 # Now import the Asiago catalog
 if doasiago:
