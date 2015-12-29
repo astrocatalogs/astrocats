@@ -20,16 +20,16 @@ outdir = '../data/'
 
 eventnames = []
 
-doitep =        True
-dosuspect =     True
-docfa =         True
-doucb =         True
-dosdss =         True
-dogaia =        True
-docsp =            True
-doasiago =         True
+doitep =      True
+dosuspect =   True
+docfa =       True
+doucb =       True
+dosdss =      True
+dogaia =      True
+docsp =       True
+doasiago =    True
 
-writeevents =     True
+writeevents = True
 
 columnkey = [
     "host",
@@ -344,9 +344,39 @@ if dogaia:
             band = 'G'
             eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr])
 
-# Import ITEP, not currently working.
+# Import ITEP
 if doitep:
-    tsvin = open(file,'rb')
+    tsvin = open("../external/itep-lc-cat-28dec2015.txt",'rb')
+    tsvin = csv.reader(tsvin, delimiter='|', skipinitialspace=True)
+    curname = ''
+    for r, row in enumerate(tsvin):
+        if r <= 1 or len(row) < 7:
+            continue
+        name = 'SN' + row[0].strip()
+        mjd = str(float(row[1].strip()) - 2400000.5)
+        band = row[2].strip()
+        abmag = row[3].strip()
+        aberr = row[4].strip()
+        reference = row[6].strip()
+        if curname != name:
+            curname = name
+            if name not in events:
+                newevent(name)
+            year = re.findall(r'\d+', name)[0]
+            events[name]['year'] = year
+
+        if reference:
+            if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
+                alias = len(eventsources[name]) + 1
+                eventsources[name].append(['source', 'name', reference, 'alias', alias])
+            else:
+                alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
+                    [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+        else:
+            alias = len(eventsources[name]) + 1
+            eventsources[name].append(['source', 'name', 'ITEP', 'alias', alias])
+
+        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', abmag] + (['aberr', err] if err else []) + ['source', alias])
 
 # Import CSP
 cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
