@@ -365,18 +365,25 @@ if doitep:
             year = re.findall(r'\d+', name)[0]
             events[name]['year'] = year
 
+            secondaryreference = "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>"
+            if len(eventsources[name]) == 0 or secondaryreference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
+                secondaryalias = str(len(eventsources[name]) + 1)
+                eventsources[name].append(['source', 'name', secondaryreference, 'alias', secondaryalias, 'secondary', 1])
+            else:
+                secondaryalias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
+                    [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+
+        alias = ''
         if reference:
             if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-                alias = len(eventsources[name]) + 1
+                alias = str(len(eventsources[name]) + 1)
                 eventsources[name].append(['source', 'name', reference, 'alias', alias])
             else:
                 alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
                     [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
-        else:
-            alias = len(eventsources[name]) + 1
-            eventsources[name].append(['source', 'name', 'ITEP', 'alias', alias])
 
-        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', abmag] + (['aberr', err] if err else []) + ['source', alias])
+        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', abmag] +
+            (['aberr', err] if err else []) + ['source', (secondaryalias + ',' + alias) if alias else '1'])
 
 # Import CSP
 cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
@@ -396,6 +403,8 @@ if docsp:
 
         year = re.findall(r'\d+', name)[0]
         events[name]['year'] = year
+
+        eventsources[name].append(['source', 'name', "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>", 'alias', 1, 'secondary', 1])
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
