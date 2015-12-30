@@ -21,13 +21,13 @@ outdir = '../data/'
 eventnames = []
 
 dosuspect =   True
-docfa =       True
-doucb =       True
-dosdss =      True
-dogaia =      True
-doitep =      True
-docsp =       True
-doasiago =    True
+docfa =       False
+doucb =       False
+dosdss =      False
+dogaia =      False
+doitep =      False
+docsp =       False
+doasiago =    False
 
 writeevents = True
 
@@ -49,7 +49,17 @@ columnkey = [
     "discoverday",
     "maxmonth",
     "maxday"
-    ]
+]
+
+photometrykeys = [
+    'timeunit',
+    'time',
+    'band',
+    'instrument',
+    'abmag',
+    'aberr',
+    'source'
+]
 
 columnkey.sort(key=str.lower)
 
@@ -87,6 +97,31 @@ def get_source_alias(reference, secondary = ''):
         alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
             [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
     return alias
+
+def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = ""):
+    if not time or not band or not abmag:
+        print 'Error: Time, band, or AB mag not specified when adding photometry.\n'
+        print 'Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"'
+        sys.exit()
+
+    # Look for duplicate data and don't add if duplicate
+    for photo in eventphotometry[name]:
+        if (photo['timeunit'] == timeunit and float(photo['time']) == float(time) and
+            photo['band'] == band and float(photo['abmag']) == float(abmag) and
+            ((not photo['aberr'] and not aberr) or (float(photo['aberr']) == float(aberr)))):
+            return
+
+    photoentry = OrderedDict.fromkeys(photometrykeys)
+    photoentry['timeunit'] = timeunit
+    photoentry['time'] = time
+    photoentry['instrument'] = instrument
+    photoentry['band'] = band
+    photoentry['abmag'] = abmag
+    if aberr:
+        photoentry['aberr'] = aberr
+    if source:
+        photoentry['source'] = source
+    eventphotometry[name].append(photoentry)
 
 # Suspect catalog
 if dosuspect:
@@ -146,11 +181,14 @@ if dosuspect:
                             mag = col[3].renderContents()
                             if mag.isspace():
                                 mag = ''
+                            else:
+                                mag = str(float(mag))
                             err = col[4].renderContents()
                             if err.isspace():
                                 err = ''
-                            photometryrow = ['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', mag] + (['aberr', err] if err else []) + ['source', secondaryalias + ',' + alias]
-                            eventphotometry[name].append(photometryrow)
+                            else:
+                                err = str(float(err))
+                            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = err, source = secondaryalias + ',' + alias)
 
 
 # CfA data
@@ -222,7 +260,7 @@ if docfa:
                             tuout = tu
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
-                            eventphotometry[name].append(['photometry', 'timeunit', tuout, 'time', mjd, 'band', eventbands[(v-1)/2], 'abmag', row[v], 'aberr', row[v+1], 'source', secondaryalias + ',' + alias])
+                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = secondaryalias + ',' + alias)
 
 # Now import the UCB SNDB
 if doucb:
@@ -252,7 +290,7 @@ if doucb:
             aberr = row[2]
             band = row[4]
             instrument = row[5]
-            eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'source', alias])
+            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = alias)
     
 # Import SDSS
 sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -277,6 +315,9 @@ if dosdss:
 
                 events[name]['snra'] = row[-4]
                 events[name]['sndec'] = row[-2]
+
+                reference = "<a href='http://classic.sdss.org/supernova/lightcurves.html'>SDSS Supernova Survey</a>"
+                alias = get_source_alias(reference)
             if r == 1:
                 events[name]['redshift'] = row[2]
             if r >= 19:
@@ -289,7 +330,7 @@ if dosdss:
                 abmag = row[3]
                 aberr = row[4]
                 instrument = "SDSS"
-                eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr])
+                add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = alias)
 
 #Import GAIA
 if dogaia:
@@ -338,7 +379,7 @@ if dogaia:
             aberr = 0.
             instrument = 'GAIA'
             band = 'G'
-            eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'instrument', instrument, 'abmag', abmag, 'aberr', aberr, 'source', alias])
+            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = alias)
 
 # Import ITEP
 if doitep:
@@ -366,8 +407,7 @@ if doitep:
 
         alias = get_source_alias(reference) if reference else ''
 
-        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', band, 'abmag', abmag] +
-            (['aberr', err] if err else []) + ['source', (secondaryalias + ',' + alias) if alias else '1'])
+        add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = secondaryalias + ',' + alias)
 
 # Import CSP
 cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
@@ -406,8 +446,7 @@ if docsp:
                     mjd = val
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
-                        eventphotometry[name].append(['photometry', 'timeunit', 'MJD', 'time', mjd, 'band', cspbands[(v-1)/2],
-                            'instrument', 'CSP', 'abmag', row[v], 'aberr', row[v+1], 'source', alias])
+                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = alias)
 
 # Now import the Asiago catalog
 if doasiago:
@@ -508,8 +547,9 @@ if writeevents:
         for row in eventsources[name]:
             csvout.writerow(row)
         
-        sortedphotometry = sorted(eventphotometry[name], key=itemgetter(2))
-        for row in sortedphotometry:
+        sortedphotometry = sorted(eventphotometry[name], key=itemgetter('time'))
+        for entry in sortedphotometry:
+            row = ['photometry'] + list(sum(((k, v) for k, v in entry.items() if v), ()))
             csvout.writerow(row)
 
         outfile.close()
