@@ -25,7 +25,7 @@ docfa =       False
 doucb =       False
 dosdss =      False
 dogaia =      False
-doitep =      False
+doitep =      True
 docsp =       False
 doasiago =    False
 
@@ -108,15 +108,18 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     for photo in eventphotometry[name]:
         if (photo['timeunit'] == timeunit and float(photo['time']) == float(time) and
             photo['band'] == band and float(photo['abmag']) == float(abmag) and
-            ((not photo['aberr'] and not aberr) or (float(photo['aberr']) == float(aberr)))):
+            ((not photo['aberr'] and not aberr) or (photo['aberr'] and aberr and float(photo['aberr']) == float(aberr)) or
+            (photo['aberr'] and not aberr))):
             return
 
     photoentry = OrderedDict.fromkeys(photometrykeys)
     photoentry['timeunit'] = timeunit
     photoentry['time'] = time
-    photoentry['instrument'] = instrument
     photoentry['band'] = band
     photoentry['abmag'] = abmag
+    if instrument:
+        print instrument
+        photoentry['instrument'] = instrument
     if aberr:
         photoentry['aberr'] = aberr
     if source:
@@ -183,12 +186,12 @@ if dosuspect:
                                 mag = ''
                             else:
                                 mag = str(float(mag))
-                            err = col[4].renderContents()
-                            if err.isspace():
-                                err = ''
+                            aberr = col[4].renderContents()
+                            if aberr.isspace():
+                                aberr = ''
                             else:
-                                err = str(float(err))
-                            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = err, source = secondaryalias + ',' + alias)
+                                aberr = str(float(aberr))
+                            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondaryalias + ',' + alias)
 
 
 # CfA data
@@ -407,7 +410,7 @@ if doitep:
 
         alias = get_source_alias(reference) if reference else ''
 
-        add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = secondaryalias + ',' + alias)
+        add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondaryalias + ',' + alias)
 
 # Import CSP
 cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
