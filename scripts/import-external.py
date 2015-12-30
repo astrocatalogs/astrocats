@@ -21,13 +21,13 @@ outdir = '../data/'
 eventnames = []
 
 dosuspect =   True
-docfa =       False
-doucb =       False
-dosdss =      False
-dogaia =      False
+docfa =       True
+doucb =       True
+dosdss =      True
+dogaia =      True
 doitep =      True
-docsp =       False
-doasiago =    False
+docsp =       True
+doasiago =    True
 
 writeevents = True
 
@@ -118,7 +118,6 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     photoentry['band'] = band
     photoentry['abmag'] = abmag
     if instrument:
-        print instrument
         photoentry['instrument'] = instrument
     if aberr:
         photoentry['aberr'] = aberr
