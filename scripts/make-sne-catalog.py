@@ -388,7 +388,6 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
         print outdir + eventname + ".html"
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
-        sys.exit(0)
 
 # Construct the date
 for r, row in enumerate(catalogrows):
