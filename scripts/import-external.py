@@ -610,10 +610,10 @@ if writeevents:
         if events[name]['hvel']:
             events[name]['hvel'] = '%g'%(float(events[name]['hvel']))
         if events[name]['host']:
-            events[name]['host'].replace("NGC", "NGC ")
-            events[name]['host'].replace("UGC", "UGC ")
-            events[name]['host'].replace("IC", "UGC ")
-            ' '.join(events[name]['host'].split())
+            events[name]['host'] = events[name]['host'].replace("NGC", "NGC ")
+            events[name]['host'] = events[name]['host'].replace("UGC", "UGC ")
+            events[name]['host'] = events[name]['host'].replace("IC", "IC ")
+            events[name]['host'] = ' '.join(events[name]['host'].split())
 
     # Write it all out!
     for name in events:

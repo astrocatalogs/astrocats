@@ -21,6 +21,7 @@ indir = "../data/"
 outdir = "../"
 
 columnkey = [
+    "num",
     "name",
     "discoveryear",
     "discovermonth",
@@ -43,6 +44,7 @@ columnkey = [
 ]
 
 header = [
+    "#",
     "Name",
     "Discovery Year",
     "Discovery Month",
@@ -65,6 +67,7 @@ header = [
 ]
 
 footer = [
+    "",
     "Note: IAU name preferred",
     "",
     "",
@@ -87,6 +90,7 @@ footer = [
 ]
 
 showcols = [
+    True,
     True,
     False,
     False,
@@ -460,15 +464,21 @@ f.close()
 
 ctypedict = dict()
 for row in catalogrows:
-    if row['claimedtype'] in ctypedict:
-        ctypedict[row['claimedtype']] += 1
+    cleanedtype = row['claimedtype'].strip('?* ')
+    cleanedtype = cleanedtype.replace('Ibc', 'Ib/c')
+    cleanedtype = cleanedtype.replace('IIP', 'II P')
+    if not cleanedtype:
+        cleanedtype = 'Unknown'
+    if cleanedtype in ctypedict:
+        ctypedict[cleanedtype] += 1
     else:
-        ctypedict[row['claimedtype']] = 1
+        ctypedict[cleanedtype] = 1
+sortedctypes = sorted(ctypedict.items(), key=operator.itemgetter(1), reverse=True)
 f = open(outdir + 'types.csv', 'wb')
 csvout = csv.writer(f)
 csvout.writerow(['Type','Number'])
-for ctype in ctypedict:
-    csvout.writerow([ctype, ctypedict[ctype]])
+for ctype in sortedctypes:
+    csvout.writerow(ctype)
 f.close()
 
 years = [int(x['discoveryear']) for x in catalogrows]
