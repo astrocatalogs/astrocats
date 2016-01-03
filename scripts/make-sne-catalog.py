@@ -240,7 +240,8 @@ def bandwavef(code):
     return 0.
 
 catalogrows = []
-for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower())):
+sourcerows = []
+for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower())):
     print file
     filehead, ext = os.path.splitext(file)
     if ext == ".dat":
@@ -265,7 +266,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
         sourcerow = OrderedDict.fromkeys(sourcekeys, '')
         if row[0] == 'photometry':
             plotavail = True;
-            plotlink = "<a href='https://sne.space/sne/" + eventname + ".html' target='_blank'><img alt='plot' width='32' height='32' src='https://sne.space/light-curve-icon.png'></a>";
+            plotlink = "<a href='sne/" + eventname + ".html' target='_blank'><img alt='plot' width='32' height='32' src='light-curve-icon.png'></a>";
             catalog['plot'] = plotlink
 
             photodict = dict(zip(row[1:], row[2:]))
@@ -289,7 +290,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
             table.append(row)
             catalog[row[0]] = row[1]
 
-    catalog['data'] = r'<a href="https://sne.space/sne/data/' + eventname + r'.dat.bz2">Download</a>'
+    catalog['data'] = r'<a href="sne/data/' + eventname + r'.dat.bz2">Download</a>'
     
     prange = xrange(len(photometry))
     instrulist = sorted(filter(None, list(set([photometry[x]['instrument'] for x in prange]))))
@@ -311,12 +312,14 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
             catalog['instruments'] = ", ".join(bandlist)
 
     catalogrows.append(catalog)
+    sourcerows.append(sources)
 
     tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
     hover = HoverTool(
         tooltips=[
-            ("MJD", "$x"),
-            ("Magnitude", "$y"),
+            ("MJD", "@x{1.11}"),
+            ("Magnitude", "@y{1.11}"),
+            ("Error", "@err{1.11}"),
             ("Instrument", "@instr"),
             ("Band", "@desc")
         ]
@@ -358,6 +361,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
                 data = dict(
                     x = [phototime[i] for i in ind],
                     y = [photoAB[i] for i in ind],
+                    err = [photoerrs[i] for i in ind],
                     desc = [photoband[i] for i in ind],
                     instr = [photoinstru[i] for i in ind]
                 )
@@ -378,7 +382,7 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
         html = file_html(p, CDN, eventname)
         returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
         html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-        html = re.sub(r'(\<\/body\>)', r'    <a href="https://sne.space/sne/data/' + eventname + r'.dat.bz2">Download datafile</a><br><br>\n        \1', html)
+        html = re.sub(r'(\<\/body\>)', r'    <a href="data/' + eventname + r'.dat.bz2">Download datafile</a><br><br>\n        \1', html)
         if len(sources):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br>\n        \1', html)
             for source in sources:
@@ -414,8 +418,8 @@ for r, row in enumerate(catalogrows):
     catalogrows[r]['maxdate'] = maxdatestr
 
 # Write it all out at the end
-csvout = open(outdir + 'sne-catalog.csv', 'wb')
-csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
+f = open(outdir + 'sne-catalog.csv', 'wb')
+csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
 
 prunedheader = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
 csvout.writerow(prunedheader)
@@ -427,3 +431,42 @@ for row in catalogrows:
 
 prunedfooter = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
 csvout.writerow(prunedfooter)
+f.close()
+
+# Make a few small files for generating charts
+f = open(outdir + 'sources.csv', 'wb')
+csvout = csv.writer(f)
+csvout.writerow(['Source','Number'])
+sourcedict = dict()
+for sources in sourcerows:
+    for sourcerow in sources:
+        strippedname = re.sub('<[^<]+?>', '', sourcerow['name'])
+        if strippedname in sourcedict:
+            sourcedict[strippedname] += 1
+        else:
+            sourcedict[strippedname] = 1
+
+sortedsources = sorted(sourcedict.items(), key=operator.itemgetter(1), reverse=True)
+for source in sortedsources:
+    csvout.writerow(source)
+f.close()
+
+f = open(outdir + 'pie.csv', 'wb')
+csvout = csv.writer(f)
+csvout.writerow(['Category','Number'])
+csvout.writerow(['Has photometry', len(catalogrows) - ([x['plot'] for x in catalogrows].count(''))])
+csvout.writerow(['No photometry', [x['plot'] for x in catalogrows].count('')])
+f.close()
+
+f = open(outdir + 'area.csv', 'wb')
+csvout = csv.writer(f)
+years = [int(x['discoveryear']) for x in catalogrows]
+yearrange = range(min(years), max(years))
+csvout.writerow(['Year','Has Photometry','No Photometry'])
+csvout.writerow(['date','number','number'])
+for year in yearrange:
+    yearind = [i for i, x in enumerate(catalogrows) if int(x['discoveryear']) == year]
+    hasphoto = len(yearind) - [x['plot'] for x in [catalogrows[y] for y in yearind]].count('')
+    nophoto = [x['plot'] for x in [catalogrows[y] for y in yearind]].count('')
+    csvout.writerow([year, hasphoto, nophoto])
+f.close()
