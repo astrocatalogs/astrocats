@@ -8,6 +8,7 @@ import urllib
 import urllib2
 import calendar
 import sys
+from astropy.time import Time as astrotime
 from collections import OrderedDict
 from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup, SoupStrainer
@@ -28,8 +29,8 @@ dogaia =      True
 doitep =      True
 docsp =       True
 doasiago =    True
-
 writeevents = True
+printextra =  False
 
 columnkey = [
     "host",
@@ -44,9 +45,10 @@ columnkey = [
     "snra",
     "sndec",
     "discoverer",
-    "year",
+    "discoveryear",
     "discovermonth",
     "discoverday",
+    "maxyear",
     "maxmonth",
     "maxday"
 ]
@@ -89,7 +91,7 @@ def round_sig(x, sig=2):
         return 0.0
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
-def get_source_alias(reference, secondary = ''):
+def get_source_alias(name, reference, secondary = ''):
     if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
         alias = str(len(eventsources[name]) + 1)
         eventsources[name].append(['source', 'name', reference, 'alias', alias] + (['secondary', 1] if secondary else []))
@@ -125,6 +127,37 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         photoentry['source'] = source
     eventphotometry[name].append(photoentry)
 
+def get_max_light(name):
+    if not eventphotometry[name]:
+        return None
+
+    eventphoto = [eventphotometry[name][x]['abmag'] for x in xrange(len(eventphotometry[name]))]
+    mlindex = eventphoto.index(min(eventphoto))
+    mlmjd = float(eventphotometry[name][mlindex]['time'])
+    return astrotime(mlmjd, format='mjd').datetime
+
+def get_first_light(name):
+    if not eventphotometry[name]:
+        return None
+
+    eventtime = [eventphotometry[name][x]['time'] for x in xrange(len(eventphotometry[name]))]
+    flindex = eventtime.index(min(eventtime))
+    flmjd = float(eventphotometry[name][flindex]['time'])
+    return astrotime(flmjd, format='mjd').datetime
+
+def set_first_max_light(name):
+    mldt = get_max_light(name)
+    if mldt:
+        events[name]['maxyear'] = mldt.year
+        events[name]['maxmonth'] = mldt.month
+        events[name]['maxday'] = mldt.day
+
+    fldt = get_first_light(name)
+    if fldt:
+        events[name]['discoveryear'] = fldt.year
+        events[name]['discovermonth'] = fldt.month
+        events[name]['discoverday'] = fldt.day
+
 # Suspect catalog
 if dosuspect:
     response = urllib2.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
@@ -152,7 +185,7 @@ if dosuspect:
                             if name not in events:
                                 newevent(name)
                             year = re.findall(r'\d+', name)[0]
-                            events[name]['year'] = year
+                            events[name]['discoveryear'] = year
                             events[name]['host'] = names[1].split(':')[1].strip()
                             redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
                             if redshifts:
@@ -167,13 +200,13 @@ if dosuspect:
                         band = bands[0].split(':')[1].strip()
 
                         secondaryreference = "<a href='https://www.nhn.ou.edu/~suspect/'>SUSPECT</a>"
-                        secondaryalias = get_source_alias(secondaryreference, 1)
+                        secondaryalias = get_source_alias(name, secondaryreference, 1)
 
                         reference = ''
                         for link in bandsoup.body.findAll('a'):
                             if 'adsabs' in link['href']:
                                 reference = str(link).replace('"', "'")
-                        alias = get_source_alias(reference)
+                        alias = get_source_alias(name, reference)
 
                         for r, row in enumerate(bandtable.findAll('tr')):
                             if r == 0:
@@ -191,7 +224,6 @@ if dosuspect:
                             else:
                                 aberr = str(float(aberr))
                             add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondaryalias + ',' + alias)
-
 
 # CfA data
 if docfa:
@@ -219,7 +251,7 @@ if docfa:
             newevent(name)
 
         year = re.findall(r'\d+', name)[0]
-        events[name]['year'] = year
+        events[name]['discoveryear'] = year
 
         eventbands = list(eventparts[1])
 
@@ -231,6 +263,9 @@ if docfa:
                     tu = 'JD'
                     rowparts = row[0].split('-')
                     jdoffset = float(rowparts[1])
+                elif len(row[0]) > 6 and row[0][:7] == "#Julian":
+                    tu = 'JD'
+                    jdoffset = 0.
                 elif len(row) > 1 and row[1].lower() == "photometry":
                     for ci, col in enumerate(row[2:]):
                         if col[0] == "(":
@@ -239,9 +274,9 @@ if docfa:
                             bibcode = refstr
                             print bibcode
                             secondaryreference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
-                            secondaryalias = get_source_alias(secondaryreference, 1)
+                            secondaryalias = get_source_alias(name, secondaryreference, 1)
                             reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>refstr</a>"
-                            alias = get_source_alias(reference)
+                            alias = get_source_alias(name, reference)
 
                 elif len(row) > 1 and row[1] == "HJD":
                     tu = "HJD"
@@ -264,6 +299,38 @@ if docfa:
                         if float(row[v]) < 90.0:
                             add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = secondaryalias + ',' + alias)
 
+    # Hicken 2012
+    tsvin = open("../external/hicken-2012-standard.dat", 'rb')
+    tsvin = csv.reader(tsvin, delimiter='|', skipinitialspace=True)
+    for r, row in enumerate(tsvin):
+        if r <= 47:
+            continue
+
+        if row[0][:2] != 'sn':
+            name = 'SN' + row[0].strip()
+        else:
+            name = row[0].strip()
+
+        if name not in events:
+            newevent(name)
+
+        reference = "<a href='http://adsabs.harvard.edu/abs/2012ApJS..200...12H'>Hicken et al. 2012</a>"
+        alias = get_source_alias(name, reference)
+        add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
+            abmag = row[6].strip(), aberr = row[7].strip(), source = alias)
+    
+    # Bianco 2014
+    tsvin = open("../external/bianco-2014-standard.dat", 'rb')
+    tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
+    for row in tsvin:
+        name = 'SN' + row[0]
+        if name not in events:
+            newevent(name)
+
+        reference = "<a href='http://adsabs.harvard.edu/abs/2014ApJS..213...19B'>Bianco et al. 2014</a>"
+        alias = get_source_alias(name, reference)
+        add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = alias)
+
 # Now import the UCB SNDB
 if doucb:
     for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower()):
@@ -279,10 +346,10 @@ if doucb:
             newevent(name)
 
         year = re.findall(r'\d+', name)[0]
-        events[name]['year'] = year
+        events[name]['discoveryear'] = year
 
         reference = "<a href='http://heracles.astro.berkeley.edu/sndb/info'>UCB Filippenko Group's Supernova Database (SNDB)</a>"
-        alias = get_source_alias(reference)
+        alias = get_source_alias(name, reference)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
@@ -313,13 +380,13 @@ if dosdss:
 
                 if row[5] != "RA:":
                     year = re.findall(r'\d+', name)[0]
-                    events[name]['year'] = year
+                    events[name]['discoveryear'] = year
 
                 events[name]['snra'] = row[-4]
                 events[name]['sndec'] = row[-2]
 
                 reference = "<a href='http://classic.sdss.org/supernova/lightcurves.html'>SDSS Supernova Survey</a>"
-                alias = get_source_alias(reference)
+                alias = get_source_alias(name, reference)
             if r == 1:
                 events[name]['redshift'] = row[2]
             if r >= 19:
@@ -336,7 +403,8 @@ if dosdss:
 
 #Import GAIA
 if dogaia:
-    response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
+    #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
+    response = urllib2.urlopen('file:///var/www/html/sne/sne/external/selected-gaia-science-alerts')
     html = response.read()
 
     soup = BeautifulSoup(html)
@@ -361,10 +429,10 @@ if dogaia:
             newevent(name)
 
         year = '20' + re.findall(r'\d+', name)[0]
-        events[name]['year'] = year
+        events[name]['discoveryear'] = year
 
         reference = "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>"
-        alias = get_source_alias(reference)
+        alias = get_source_alias(name, reference)
 
         events[name]['snra'] = col[2].renderContents().strip()
         events[name]['sndec'] = col[3].renderContents().strip()
@@ -402,12 +470,12 @@ if doitep:
             if name not in events:
                 newevent(name)
             year = re.findall(r'\d+', name)[0]
-            events[name]['year'] = year
+            events[name]['discoveryear'] = year
 
             secondaryreference = "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>"
-            secondaryalias = get_source_alias(secondaryreference, 1)
+            secondaryalias = get_source_alias(name, secondaryreference, 1)
 
-        alias = get_source_alias(reference) if reference else ''
+        alias = get_source_alias(name, reference) if reference else ''
 
         add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondaryalias + ',' + alias)
 
@@ -428,10 +496,10 @@ if docsp:
             newevent(name)
 
         year = re.findall(r'\d+', name)[0]
-        events[name]['year'] = year
+        events[name]['discoveryear'] = year
 
         reference = "<a href='http://csp.obs.carnegiescience.edu/data'>Carnegie Supernova Project</a>"
-        alias = get_source_alias(reference)
+        alias = get_source_alias(name, reference)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
@@ -474,7 +542,7 @@ if doasiago:
                 newevent(name)
 
             year = re.findall(r'\d+', name)[0]
-            events[name]['year'] = year
+            events[name]['discoveryear'] = year
 
             hostname = record[2]
             galra = record[3]
@@ -533,10 +601,13 @@ if doasiago:
             if (discoverer != ''):
                 events[name]['discoverer'] = discoverer
 
-# Write it all out!
 if writeevents:
+    # Calculate some columns based on imported data
     for name in events:
-        print 'writing ' + name
+        set_first_max_light(name)
+    # Write it all out!
+    for name in events:
+        print 'Writing ' + name
         outfile = open(outdir + name + '.dat', 'wb')
         csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
         
@@ -559,3 +630,9 @@ if writeevents:
         # Compress the output
         Popen(["bzip2", '-f', outdir + name + '.dat'])
 
+# Print some useful facts
+if printextra:
+    print 'Printing events without any photometry:'
+    for name in events:
+        if not eventphotometry[name]:
+            print name
