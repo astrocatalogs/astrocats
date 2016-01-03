@@ -266,7 +266,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
         sourcerow = OrderedDict.fromkeys(sourcekeys, '')
         if row[0] == 'photometry':
             plotavail = True;
-            plotlink = "<a href='sne/" + eventname + ".html' target='_blank'><img alt='plot' width='32' height='32' src='light-curve-icon.png'></a>";
+            plotlink = "<a href='sne/" + eventname + ".html' target='_blank'><img class='lci' src='l.png'></a>";
             catalog['plot'] = plotlink
 
             photodict = dict(zip(row[1:], row[2:]))
@@ -435,8 +435,6 @@ f.close()
 
 # Make a few small files for generating charts
 f = open(outdir + 'sources.csv', 'wb')
-csvout = csv.writer(f)
-csvout.writerow(['Source','Number'])
 sourcedict = dict()
 for sources in sourcerows:
     for sourcerow in sources:
@@ -447,6 +445,8 @@ for sources in sourcerows:
             sourcedict[strippedname] = 1
 
 sortedsources = sorted(sourcedict.items(), key=operator.itemgetter(1), reverse=True)
+csvout = csv.writer(f)
+csvout.writerow(['Source','Number'])
 for source in sortedsources:
     csvout.writerow(source)
 f.close()
@@ -458,10 +458,23 @@ csvout.writerow(['Has photometry', len(catalogrows) - ([x['plot'] for x in catal
 csvout.writerow(['No photometry', [x['plot'] for x in catalogrows].count('')])
 f.close()
 
-f = open(outdir + 'area.csv', 'wb')
+ctypedict = dict()
+for row in catalogrows:
+    if row['claimedtype'] in ctypedict:
+        ctypedict[row['claimedtype']] += 1
+    else:
+        ctypedict[row['claimedtype']] = 1
+f = open(outdir + 'types.csv', 'wb')
 csvout = csv.writer(f)
+csvout.writerow(['Type','Number'])
+for ctype in ctypedict:
+    csvout.writerow([ctype, ctypedict[ctype]])
+f.close()
+
 years = [int(x['discoveryear']) for x in catalogrows]
 yearrange = range(min(years), max(years))
+f = open(outdir + 'area.csv', 'wb')
+csvout = csv.writer(f)
 csvout.writerow(['Year','Has Photometry','No Photometry'])
 csvout.writerow(['date','number','number'])
 for year in yearrange:

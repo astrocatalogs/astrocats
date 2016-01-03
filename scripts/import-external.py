@@ -602,9 +602,19 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if writeevents:
-    # Calculate some columns based on imported data
+    # Calculate some columns based on imported data, sanitize some fields
     for name in events:
         set_first_max_light(name)
+        if events[name]['claimedtype'] == '?':
+            events[name]['claimedtype'] = ''
+        if events[name]['hvel']:
+            events[name]['hvel'] = '%g'%(float(events[name]['hvel']))
+        if events[name]['host']:
+            events[name]['host'].replace("NGC", "NGC ")
+            events[name]['host'].replace("UGC", "UGC ")
+            events[name]['host'].replace("IC", "UGC ")
+            ' '.join(events[name]['host'].split())
+
     # Write it all out!
     for name in events:
         print 'Writing ' + name
