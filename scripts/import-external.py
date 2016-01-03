@@ -275,7 +275,7 @@ if docfa:
                             print bibcode
                             secondaryreference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
                             secondaryalias = get_source_alias(name, secondaryreference, 1)
-                            reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>refstr</a>"
+                            reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>" + refstr + "</a>"
                             alias = get_source_alias(name, reference)
 
                 elif len(row) > 1 and row[1] == "HJD":
@@ -464,7 +464,7 @@ if doitep:
         band = row[2].strip()
         abmag = row[3].strip()
         aberr = row[4].strip()
-        reference = row[6].strip()
+        reference = row[6].strip().strip(',')
         if curname != name:
             curname = name
             if name not in events:
@@ -613,13 +613,13 @@ if writeevents:
         
         csvout.writerow(['name', name])
 
+        for row in eventsources[name]:
+            csvout.writerow(row)
+        
         for key in events[name]:
             if events[name][key]:
                 csvout.writerow([key, events[name][key]])
 
-        for row in eventsources[name]:
-            csvout.writerow(row)
-        
         sortedphotometry = sorted(eventphotometry[name], key=itemgetter('time'))
         for entry in sortedphotometry:
             row = ['photometry'] + list(sum(((k, v) for k, v in entry.items() if v), ()))
