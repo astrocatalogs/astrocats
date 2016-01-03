@@ -7,40 +7,29 @@ import os
 import re
 import bz2
 import operator
+import datetime
+from colorpy.ciexyz import xyz_from_wavelength
+from colorpy.colormodels import irgb_string_from_xyz
+from random import shuffle, seed
 from collections import OrderedDict
-from datetime import datetime
-from bokeh.io import hplot, vplot
-from bokeh.plotting import figure, show, save
+from bokeh.plotting import figure, show, save, ColumnDataSource
+from bokeh.models import HoverTool
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
 indir = "../data/"
 outdir = "../"
 
-header = [
-    "Names",
-    "Year",
-    "Month",
-    "Day",
-    "Date",
-    "Host Names",
-    "Publications",
-    "Instruments/Surveys",
-    "<em>z</em>",
-    r"<em>v</em><sub>Helio</sub>",
-    "$N_{\\rm h}$",
-    "Claimed Type",
-    "Notes",
-    "Plots",
-    "Data"
-]
-
 columnkey = [
     "name",
-    "year",
+    "discoveryear",
     "discovermonth",
     "discoverday",
-    "date",
+    "discoverdate",
+    "maxyear",
+    "maxmonth",
+    "maxday",
+    "maxdate",
     "host",
     "citations",
     "instruments",
@@ -53,14 +42,40 @@ columnkey = [
     "data"
 ]
 
+header = [
+    "Name",
+    "Discovery Year",
+    "Discovery Month",
+    "Discovery Day",
+    "Discovery Date",
+    "Year of Maximum",
+    "Month of Maximum",
+    "Day of Maximum",
+    "Date of Maximum",
+    "Host Name",
+    "Publications",
+    "Instruments/Bands",
+    "<em>z</em>",
+    r"<em>v</em><sub>Helio</sub>",
+    "$N_{\\rm h}$",
+    "Claimed Type",
+    "Notes",
+    "Plots",
+    "Data"
+]
+
 footer = [
     "Note: IAU name preferred",
     "",
     "",
     "",
     "",
+    "",
+    "",
+    "",
+    "",
     "*&nbsp;Uncertain",
-    "* discovery\n&Dagger; sne type first proposed",
+    "",
     "",
     "",
     "",
@@ -72,6 +87,10 @@ footer = [
 ]
 
 showcols = [
+    True,
+    False,
+    False,
+    False,
     True,
     False,
     False,
@@ -114,31 +133,22 @@ dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>";
 
 header = dict(zip(columnkey,header))
 
-bandcolors = [
-    "indigo",
-    "firebrick",
-    "forestgreen",
-    "red",
-    "crimson",
-    "indigo",
-    "darkblue",
-    "mediumvioletred",
-    "pink",
-    "#d82930",
-    "orangered",
-    "mediumvioletred",
-    "mediumspringgreen",
-    "orange",
-    "chocolate",
-    "darkorange",
-]
-
 bandcodes = [
     "u",
     "g",
     "r",
     "i",
     "z",
+    "u'",
+    "g'",
+    "r'",
+    "i'",
+    "z'",
+    "u_SDSS",
+    "g_SDSS",
+    "r_SDSS",
+    "i_SDSS",
+    "z_SDSS",
     "U",
     "B",
     "V",
@@ -148,43 +158,86 @@ bandcodes = [
     "Y",
     "J",
     "H",
-    "K"
+    "K",
+    "C"
 ]
 
-bandnames = [
-    "u",
-    "g",
-    "r",
-    "i",
-    "z",
-    "U",
-    "B",
-    "V",
-    "R",
-    "I",
-    "G",
-    "Y",
-    "J",
-    "H",
-    "K"
-]
+bandaliases = {
+    "u_SDSS" : "u (SDSS)",
+    "g_SDSS" : "g (SDSS)",
+    "r_SDSS" : "r (SDSS)",
+    "i_SDSS" : "i (SDSS)",
+    "z_SDSS" : "z (SDSS)"
+}
+
+bandshortaliases = {
+    "u_SDSS" : "u",
+    "g_SDSS" : "g",
+    "r_SDSS" : "r",
+    "i_SDSS" : "i",
+    "z_SDSS" : "z",
+    "G" : ""
+}
+
+bandwavelengths = {
+    "u" : 354.,
+    "g" : 475.,
+    "r" : 622.,
+    "i" : 763.,
+    "z" : 905.,
+    "u'" : 354.,
+    "g'" : 475.,
+    "r'" : 622.,
+    "i'" : 763.,
+    "z'" : 905.,
+    "u_SDSS" : 354.,
+    "g_SDSS" : 475.,
+    "r_SDSS" : 622.,
+    "i_SDSS" : 763.,
+    "z_SDSS" : 905.,
+    "U" : 365.,
+    "B" : 445.,
+    "V" : 551.,
+    "R" : 658.,
+    "I" : 806.
+}
+
+wavedict = dict(zip(bandcodes,bandwavelengths))
+
+seed(101)
+bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in xrange(len(bandcodes))]
+shuffle(bandcolors)
+
+# Replace bands with real colors, if possible.
+for b, code in enumerate(bandcodes):
+    if (code in bandwavelengths):
+        hexstr = irgb_string_from_xyz(xyz_from_wavelength(bandwavelengths[code]))
+        if (hexstr != "#000000"):
+            bandcolors[b] = hexstr
 
 bandcolordict = dict(zip(bandcodes,bandcolors))
-bandnamedict = dict(zip(bandcodes,bandnames))
 
 coldict = dict(zip(range(len(columnkey)),columnkey))
 
 def bandcolorf(color):
     if (color in bandcolordict):
         return bandcolordict[color]
-    else:
-        return 'black'
+    return 'black'
 
-def bandnamef(code):
-    if (code in bandnamedict):
-        return bandnamedict[code]
-    else:
-        return code
+def bandaliasf(code):
+    if (code in bandaliases):
+        return bandaliases[code]
+    return code
+
+def bandshortaliasf(code):
+    if (code in bandshortaliases):
+        return bandshortaliases[code]
+    return code
+
+def bandwavef(code):
+    if (code in bandwavelengths):
+        return bandwavelengths[code]
+    return 0.
 
 catalogrows = []
 for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower())):
@@ -240,25 +293,47 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
     
     prange = xrange(len(photometry))
     instrulist = sorted(filter(None, list(set([photometry[x]['instrument'] for x in prange]))))
-    instruments = ", ".join(instrulist)
     if len(instrulist) > 0:
+        instruments = ''
+        for i, instru in enumerate(instrulist):
+            instruments += instru
+            bandlist = sorted(filter(None, list(set([bandshortaliasf(photometry[x]['band'])
+                if photometry[x]['instrument'] == instru else "" for x in prange]))), key=lambda y: bandwavef(y))
+            if bandlist:
+                instruments += ' (' + ", ".join(bandlist) + ')'
+            if i < len(instrulist) - 1:
+                instruments += ', '
+
         catalog['instruments'] = instruments
+    else:
+        bandlist = sorted(filter(None, list(set([bandshortaliasf(photometry[x]['band']) for x in prange]))), key=lambda y: bandwavef(y))
+        if len(bandlist) > 0:
+            catalog['instruments'] = ", ".join(bandlist)
 
     catalogrows.append(catalog)
 
-    tools = "pan,wheel_zoom,box_zoom,save,crosshair,hover,reset,resize"
+    tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
+    hover = HoverTool(
+        tooltips=[
+            ("MJD", "$x"),
+            ("Magnitude", "$y"),
+            ("Instrument", "@instr"),
+            ("Band", "@desc")
+        ]
+    )
 
     if plotavail:
         phototime = [float(photometry[x]['time']) for x in prange]
         photoAB = [float(photometry[x]['abmag']) for x in prange]
         photoerrs = [float(photometry[x]['aberr'] if photometry[x]['aberr'] else 0.) for x in prange]
 
-        x_buffer = 0.1*(max(phototime) - min(phototime))
+        x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
         x_range = [-x_buffer + min(phototime), x_buffer + max(phototime)]
 
         p1 = figure(title='Photometry for ' + eventname, x_axis_label='Time (' + photometry[0]['timeunit'] + ')',
             y_axis_label='AB Magnitude', x_range = x_range, tools = tools,
             y_range = (0.5 + max([x + y for x, y in zip(photoAB, photoerrs)]), -0.5 + min([x - y for x, y in zip(photoAB, photoerrs)])))
+        p1.add_tools(hover)
 
         err_xs = []
         err_ys = []
@@ -268,18 +343,26 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
             err_ys.append((y - yerr, y + yerr))
 
         photoband = [photometry[x]['band'] for x in prange]
+        photoinstru = [photometry[x]['instrument'] for x in prange]
         phototype = [int(photometry[x]['upperlimit']) if photometry[x]['upperlimit'] else 0 for x in prange]
         bandset = set(photoband)
-        bandset = [i for (j, i) in sorted(zip(map(bandnamef, bandset), bandset))]
+        bandset = [i for (j, i) in sorted(zip(map(bandaliasf, bandset), bandset))]
 
         for band in bandset:
-            bandname = bandnamef(band)
+            bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
             indt = [i for i, j in enumerate(phototype) if j == 0]
             ind = set(indb).intersection(indt)
 
-            p1.circle([phototime[x] for x in ind], [photoAB[x] for x in ind],
-                color=bandcolorf(band), legend=bandname, size=5)
+            source = ColumnDataSource(
+                data = dict(
+                    x = [phototime[i] for i in ind],
+                    y = [photoAB[i] for i in ind],
+                    desc = [photoband[i] for i in ind],
+                    instr = [photoinstru[i] for i in ind]
+                )
+            )
+            p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=5)
             p1.multi_line([err_xs[x] for x in ind], [err_ys[x] for x in ind], color=bandcolorf(band))
 
             upplimlegend = bandname if len(ind) == 0 else ''
@@ -305,25 +388,31 @@ for file in (sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorte
         print outdir + eventname + ".html"
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
+        sys.exit(0)
 
 # Construct the date
 for r, row in enumerate(catalogrows):
-    if not row['year']:
-        year = 1
-    else:
-        year = int(row['year'])
-
-    if not row['discovermonth']:
-        month = 1
-    else:
-        month = int(row['discovermonth'])
-
-    if not row['discoverday']:
-        day = 1
-    else:
-        day = int(row['discoverday'])
+    year = None
+    month = None
+    day = None
     
-    catalogrows[r]['date'] = datetime(year=year, month=month, day=day)
+    discoverdatestr = ''
+    if catalogrows[r]['discoveryear']:
+        discoverdatestr += catalogrows[r]['discoveryear']
+        if catalogrows[r]['discovermonth']:
+            discoverdatestr += '-' + catalogrows[r]['discovermonth'].zfill(2)
+            if catalogrows[r]['discoverday']:
+                discoverdatestr += '-' + catalogrows[r]['discoverday'].zfill(2)
+    catalogrows[r]['discoverdate'] = discoverdatestr
+
+    maxdatestr = ''
+    if catalogrows[r]['maxyear']:
+        maxdatestr += catalogrows[r]['maxyear']
+        if catalogrows[r]['maxmonth']:
+            maxdatestr += '-' + catalogrows[r]['maxmonth'].zfill(2)
+            if catalogrows[r]['maxday']:
+                maxdatestr += '-' + catalogrows[r]['maxday'].zfill(2)
+    catalogrows[r]['maxdate'] = maxdatestr
 
 # Write it all out at the end
 csvout = open(outdir + 'sne-catalog.csv', 'wb')
@@ -332,7 +421,7 @@ csvout = csv.writer(csvout, quotechar='"', quoting=csv.QUOTE_ALL)
 prunedheader = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
 csvout.writerow(prunedheader)
 
-catalogrows.sort(key=operator.itemgetter('date'), reverse=True)
+catalogrows.sort(key=operator.itemgetter('discoverdate'), reverse=True)
 for row in catalogrows:
     prunedrow = [row[coldict[i]] for (i, j) in enumerate(showcols) if j]
     csvout.writerow(prunedrow)
