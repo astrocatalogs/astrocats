@@ -8,6 +8,7 @@ import re
 import bz2
 import operator
 import datetime
+import json
 from colorpy.ciexyz import xyz_from_wavelength
 from colorpy.colormodels import irgb_string_from_xyz
 from random import shuffle, seed
@@ -36,7 +37,6 @@ columnkey = [
     "instruments",
     "redshift",
     "hvel",
-    "nh",
     "claimedtype",
     "notes",
     "plot",
@@ -44,7 +44,7 @@ columnkey = [
 ]
 
 header = [
-    "#",
+    "",
     "Name",
     "Discovery Year",
     "Discovery Month",
@@ -59,34 +59,10 @@ header = [
     "Instruments/Bands",
     "<em>z</em>",
     r"<em>v</em><sub>Helio</sub>",
-    "$N_{\\rm h}$",
     "Claimed Type",
     "Notes",
     "Plots",
     "Data"
-]
-
-footer = [
-    "",
-    "Note: IAU name preferred",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "*&nbsp;Uncertain",
-    "",
-    "",
-    "",
-    "",
-    "Line of sight H column",
-    "",
-    "",
-    "",
-    ""
 ]
 
 showcols = [
@@ -99,13 +75,12 @@ showcols = [
     False,
     False,
     False,
-    False,
-    True,
-    False,
-    True,
     True,
     True,
     False,
+    True,
+    True,
+    True,
     True,
     False,
     True,
@@ -129,8 +104,8 @@ sourcekeys = [
     'secondary'
 ]
 
-if (len(columnkey) != len(header) or len(columnkey) != len(footer)):
-    print 'Error: Header and/or footer not same length as key list.'
+if len(columnkey) != len(header):
+    print 'Error: Header not same length as key list.'
     sys.exit(0)
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>";
@@ -294,7 +269,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
             table.append(row)
             catalog[row[0]] = row[1]
 
-    catalog['data'] = r'<a href="sne/data/' + eventname + r'.dat.bz2">Download</a>'
+    catalog['data'] = r"<a href='sne/data/' + eventname + r'.dat.bz2'>Download</a>"
     
     prange = xrange(len(photometry))
     instrulist = sorted(filter(None, list(set([photometry[x]['instrument'] for x in prange]))))
@@ -396,6 +371,8 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
         print outdir + eventname + ".html"
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
+    #if fcnt > 10:
+    #    break
 
 # Construct the date
 for r, row in enumerate(catalogrows):
@@ -429,12 +406,40 @@ prunedheader = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
 csvout.writerow(prunedheader)
 
 catalogrows.sort(key=operator.itemgetter('discoverdate'), reverse=True)
-for row in catalogrows:
+prunedrows = []
+for r, row in enumerate(catalogrows):
     prunedrow = [row[coldict[i]] for (i, j) in enumerate(showcols) if j]
     csvout.writerow(prunedrow)
+    prunedrows.append(prunedrow)
 
 prunedfooter = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
 csvout.writerow(prunedfooter)
+f.close()
+
+jsonobj = dict.fromkeys(['data'])
+jsonobj['data'] = prunedrows
+jsonstring = json.dumps(jsonobj, indent=4, separators=(',', ': '))
+f = open(outdir + 'sne-catalog.json', 'wb')
+f.write(jsonstring)
+f.close()
+
+f = open(outdir + 'catalog.html', 'wb')
+f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
+f.write('\t<thead>\n')
+f.write('\t\t<tr>\n')
+for i, j in enumerate(showcols):
+    if j:
+        f.write('\t\t\t<th class="' + coldict[i] + '">' + header[coldict[i]] + '</th>\n')
+f.write('\t\t</tr>\n')
+f.write('\t</thead>\n')
+f.write('\t<tfoot>\n')
+f.write('\t\t<tr>\n')
+for i, j in enumerate(showcols):
+    if j:
+        f.write('\t\t\t<th>' + header[coldict[i]] + '</th>\n')
+f.write('\t\t</tr>\n')
+f.write('\t</thead>\n')
+f.write('</table>\n')
 f.close()
 
 # Make a few small files for generating charts
@@ -455,11 +460,16 @@ for source in sortedsources:
     csvout.writerow(source)
 f.close()
 
+nophoto = [x['plot'] for x in catalogrows].count('')
+hasphoto = len(catalogrows) - nophoto
 f = open(outdir + 'pie.csv', 'wb')
 csvout = csv.writer(f)
 csvout.writerow(['Category','Number'])
-csvout.writerow(['Has photometry', len(catalogrows) - ([x['plot'] for x in catalogrows].count(''))])
-csvout.writerow(['No photometry', [x['plot'] for x in catalogrows].count('')])
+csvout.writerow(['Has photometry', hasphoto])
+csvout.writerow(['No photometry', nophoto])
+f.close()
+f = open(outdir + 'hasphoto.html', 'wb')
+f.write(str(hasphoto))
 f.close()
 
 ctypedict = dict()
