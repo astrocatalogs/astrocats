@@ -7,7 +7,6 @@ import os
 import re
 import bz2
 import operator
-import datetime
 import json
 from colorpy.ciexyz import xyz_from_wavelength
 from colorpy.colormodels import irgb_string_from_xyz
@@ -61,7 +60,7 @@ header = [
     r"<em>v</em><sub>Helio</sub>",
     "Claimed Type",
     "Notes",
-    "Plots",
+    "Plot",
     "Data"
 ]
 
@@ -83,7 +82,7 @@ showcols = [
     True,
     True,
     False,
-    True,
+    False,
     True,
 ]
 
@@ -169,16 +168,20 @@ bandwavelengths = {
     "r'" : 622.,
     "i'" : 763.,
     "z'" : 905.,
-    "u_SDSS" : 354.,
-    "g_SDSS" : 475.,
-    "r_SDSS" : 622.,
-    "i_SDSS" : 763.,
-    "z_SDSS" : 905.,
+    "u_SDSS" : 354.3,
+    "g_SDSS" : 477.0,
+    "r_SDSS" : 623.1,
+    "i_SDSS" : 762.5,
+    "z_SDSS" : 913.4,
     "U" : 365.,
     "B" : 445.,
     "V" : 551.,
     "R" : 658.,
-    "I" : 806.
+    "I" : 806.,
+    "Y" : 1020.,
+    "J" : 1220.,
+    "H" : 1630.,
+    "K" : 2190.
 }
 
 wavedict = dict(zip(bandcodes,bandwavelengths))
@@ -245,7 +248,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
         sourcerow = OrderedDict.fromkeys(sourcekeys, '')
         if row[0] == 'photometry':
             plotavail = True;
-            plotlink = "<a href='sne/" + eventname + ".html' target='_blank'><img class='lci' src='l.png'></a>";
+            plotlink = "<a class='lci' href='sne/" + eventname + ".html' target='_blank'></a>";
             catalog['plot'] = plotlink
 
             photodict = dict(zip(row[1:], row[2:]))
@@ -269,7 +272,11 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
             table.append(row)
             catalog[row[0]] = row[1]
 
-    catalog['data'] = r"<a href='sne/data/' + eventname + r'.dat.bz2'>Download</a>"
+    catalog['data'] = "<span class='ics'>"
+    catalog['data'] += "<a class='dci' href='sne/data/" + eventname + ".dat.bz2' target='_blank'></a>"
+    if plotavail:
+        catalog['data'] += plotlink
+    catalog['data'] += "</span>"
     
     prange = xrange(len(photometry))
     instrulist = sorted(filter(None, list(set([photometry[x]['instrument'] for x in prange]))))
@@ -297,8 +304,8 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
     hover = HoverTool(
         tooltips=[
             ("MJD", "@x{1.11}"),
-            ("Magnitude", "@y{1.11}"),
-            ("Error", "@err{1.11}"),
+            ("Magnitude", "@y{1.111}"),
+            ("Error", "@err{1.111}"),
             ("Instrument", "@instr"),
             ("Band", "@desc")
         ]
