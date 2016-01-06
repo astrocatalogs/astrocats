@@ -223,7 +223,8 @@ def bandwavef(code):
 
 catalogrows = []
 sourcerows = []
-for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower())):
+for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.lower())):
+    #sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.lower()) + 
     print file
     filehead, ext = os.path.splitext(file)
     if ext == ".dat":
@@ -367,7 +368,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.bz2"), key=lambda s: s.l
         #save(p)
         html = file_html(p, CDN, eventname)
         returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
-        html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
+        #html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
         html = re.sub(r'(\<\/body\>)', r'    <a href="data/' + eventname + r'.dat.bz2">Download datafile</a><br><br>\n        \1', html)
         if len(sources):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br>\n        \1', html)
