@@ -31,6 +31,9 @@ dogaia =      True
 docsp =       True
 doitep =      True
 doasiago =    True
+dorochester = False
+dofirstmax =  True
+dolennarz =   True
 writeevents = True
 printextra =  False
 
@@ -85,8 +88,8 @@ def get_source_alias(name, reference, secondary = ''):
     return alias
 
 def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = ""):
-    if not time or not band or not abmag:
-        print 'Error: Time, band, or AB mag not specified when adding photometry.\n'
+    if not time or not abmag:
+        print 'Error: Time or AB mag not specified when adding photometry.\n'
         print 'Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"'
         sys.exit()
 
@@ -147,7 +150,6 @@ def jd_to_mjd(jd):
 
 # Import primary data sources from Vizier
 if dovizier:
-    query = {}
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs("VII/272/snrs")
     table = result[result.keys()[0]]
@@ -651,10 +653,74 @@ if doasiago:
             if (discoverer != ''):
                 events[name]['discoverer'] = discoverer
 
+#if dorochester:
+#    response = urllib2.urlopen('file:///var/www/html/sne/sne/external/sndateall.html')
+#    html = response.read()
+#
+#    soup = BeautifulSoup(html)
+#    pre = ' '.join([re.sub('<[^<]+?>', '', str(row)) for row in soup.findAll("pre")[0].contents])
+#    rows = pre.split('\n\r')
+#    for row in rows:
+#        print row
+
+if dofirstmax:
+    for name in events:
+        set_first_max_light(name)
+
+if dolennarz:
+    Vizier.ROW_LIMIT = -1
+    result = Vizier.get_catalogs("J/A+A/538/A120/usc")
+    table = result[result.keys()[0]]
+
+    reference = "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>"
+    for row in table:
+        name = 'SN' + row['SN']
+        name = add_event(name)
+
+        alias = get_source_alias(name, reference)
+
+        if row['Ddate']:
+            dateparts = row['Ddate'].split('-')
+            if len(dateparts) == 3:
+                astrot = astrotime(row['Ddate'], scale='utc')
+            elif len(dateparts) == 2:
+                astrot = astrotime(row['Ddate'] + '-01', scale='utc')
+            else:
+                astrot = astrotime(row['Ddate'] + '-01-01', scale='utc')
+
+            if not eventphotometry[name]:
+                if row['Dmag']:
+                    mjd = astrot.mjd
+                    add_photometry(name, time = mjd, band = row['Dband'], abmag = row['Dmag'], source = alias)
+            if 'discoveryear' not in events[name] and 'discovermonth' not in events[name] and 'discoverday' not in events[name]:
+                events[name]['discoveryear'] = astrot.datetime.year
+                if len(dateparts) >= 2:
+                    events[name]['discovermonth'] = astrot.datetime.month
+                if len(dateparts) == 3:
+                    events[name]['discoverday'] = astrot.datetime.day
+        if row['Mdate']:
+            dateparts = row['Mdate'].split('-')
+            if len(dateparts) == 3:
+                astrot = astrotime(row['Mdate'], scale='utc')
+            elif len(dateparts) == 2:
+                astrot = astrotime(row['Mdate'] + '-01', scale='utc')
+            else:
+                astrot = astrotime(row['Mdate'] + '-01-01', scale='utc')
+
+            if not eventphotometry[name]:
+                if row['Mmag']:
+                    mjd = astrot.mjd
+                    add_photometry(name, time = mjd, band = row['Mband'], abmag = row['Mmag'], source = alias)
+            if 'maxyear' not in events[name] and 'maxmonth' not in events[name] and 'maxday' not in events[name]:
+                events[name]['maxyear'] = astrot.datetime.year
+                if len(dateparts) >= 2:
+                    events[name]['maxmonth'] = astrot.datetime.month
+                if len(dateparts) == 3:
+                    events[name]['maxday'] = astrot.datetime.day
+
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
-        set_first_max_light(name)
         if 'claimedtype' in events[name] and events[name]['claimedtype'] == '?':
             del events[name]['claimedtype']
         if 'hvel' in events[name]:
