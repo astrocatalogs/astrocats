@@ -38,6 +38,7 @@ columnkey = [
     "hvel",
     "claimedtype",
     "notes",
+    "numphoto",
     "plot",
     "data"
 ]
@@ -60,6 +61,7 @@ header = [
     r"<em>v</em><sub>Helio</sub>",
     "Claimed Type",
     "Notes",
+    "# Photo Pts.",
     "Plot",
     "Data"
 ]
@@ -81,6 +83,7 @@ showcols = [
     True,
     True,
     True,
+    False,
     False,
     False,
     True,
@@ -279,6 +282,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.l
         catalog['data'] += plotlink
     catalog['data'] += "</span>"
     
+    catalog['numphoto'] = len(photometry)
     prange = xrange(len(photometry))
     instrulist = sorted(filter(None, list(set([photometry[x]['instrument'] for x in prange]))))
     if len(instrulist) > 0:
@@ -468,13 +472,13 @@ for source in sortedsources:
     csvout.writerow(source)
 f.close()
 
-nophoto = [x['plot'] for x in catalogrows].count('')
+nophoto = sum(i < 3 for i in [x['numphoto'] for x in catalogrows])
 hasphoto = len(catalogrows) - nophoto
 f = open(outdir + 'pie.csv', 'wb')
 csvout = csv.writer(f)
 csvout.writerow(['Category','Number'])
-csvout.writerow(['Has photometry', hasphoto])
-csvout.writerow(['No photometry', nophoto])
+csvout.writerow(['Has light curve', hasphoto])
+csvout.writerow(['No light curve', nophoto])
 f.close()
 f = open(outdir + 'hasphoto.html', 'wb')
 f.write(str(hasphoto))
@@ -503,11 +507,11 @@ years = [int(x['discoveryear']) for x in catalogrows]
 yearrange = range(min(years), max(years))
 f = open(outdir + 'area.csv', 'wb')
 csvout = csv.writer(f)
-csvout.writerow(['Year','Has Photometry','No Photometry'])
+csvout.writerow(['Year','Has light curve','No light curve'])
 csvout.writerow(['date','number','number'])
 for year in yearrange:
     yearind = [i for i, x in enumerate(catalogrows) if int(x['discoveryear']) == year]
-    hasphoto = len(yearind) - [x['plot'] for x in [catalogrows[y] for y in yearind]].count('')
-    nophoto = [x['plot'] for x in [catalogrows[y] for y in yearind]].count('')
+    hasphoto = len(yearind) - sum(i < 3 for i in [x['numphoto'] for x in [catalogrows[y] for y in yearind]])
+    nophoto = sum(i < 3 for i in [x['numphoto'] for x in [catalogrows[y] for y in yearind]])
     csvout.writerow([year, hasphoto, nophoto])
 f.close()
