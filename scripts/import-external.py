@@ -31,7 +31,7 @@ dogaia =      True
 docsp =       True
 doitep =      True
 doasiago =    True
-dorochester = False
+dorochester = True
 dofirstmax =  True
 dolennarz =   True
 writeevents = True
@@ -53,14 +53,27 @@ eventsources = OrderedDict()
 
 def add_event(name):
     if name not in events:
-        newname = name.replace('/', '_')
-        print newname
-        events[newname] = SortedDict()
-        eventphotometry[newname] = []
-        eventsources[newname] = []
-        return newname
+        for event in events:
+            if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
+                return event
+        print name
+        events[name] = SortedDict()
+        eventphotometry[name] = []
+        eventsources[name] = []
+        add_alias(name, name)
+        return name
     else:
         return name
+
+def event_filename(name):
+    return(name.replace('/', '_'))
+
+def add_alias(name, alias):
+    if 'aliases' in events[name]:
+        if alias not in events[name]['aliases']:
+            events[name]['aliases'].append(alias)
+    else:
+        events[name]['aliases'] = [alias]
 
 def snname(string):
     newstring = string.replace(' ', '').upper()
@@ -78,14 +91,14 @@ def round_sig(x, sig=2):
         return 0.0
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
-def get_source_alias(name, reference, secondary = ''):
+def get_source(name, reference, secondary = ''):
     if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-        alias = str(len(eventsources[name]) + 1)
-        eventsources[name].append(['source', 'name', reference, 'alias', alias] + (['secondary', 1] if secondary else []))
+        source = str(len(eventsources[name]) + 1)
+        eventsources[name].append(['source', 'name', reference, 'alias', source] + (['secondary', 1] if secondary else []))
     else:
-        alias = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
+        source = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
             [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
-    return alias
+    return source
 
 def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = ""):
     if not time or not abmag:
@@ -192,15 +205,15 @@ if dovizier:
     table = result[result.keys()[0]]
     for row in table:
         name = 'SN' + row['SN']
-        alias = get_source_alias(name, reference)
+        source = get_source(name, reference)
         if row['Bmag']:
-            add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = alias)
+            add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = source)
         if row['Vmag']:
-            add_photometry(name, time = row['MJD'], band = 'V', abmag = row['Vmag'], aberr = row['e_Vmag'], source = alias)
+            add_photometry(name, time = row['MJD'], band = 'V', abmag = row['Vmag'], aberr = row['e_Vmag'], source = source)
         if row['Rmag']:
-            add_photometry(name, time = row['MJD'], band = 'R', abmag = row['Rmag'], aberr = row['e_Rmag'], source = alias)
+            add_photometry(name, time = row['MJD'], band = 'R', abmag = row['Rmag'], aberr = row['e_Rmag'], source = source)
         if row['Imag']:
-            add_photometry(name, time = row['MJD'], band = 'I', abmag = row['Imag'], aberr = row['e_Imag'], source = alias)
+            add_photometry(name, time = row['MJD'], band = 'I', abmag = row['Imag'], aberr = row['e_Imag'], source = source)
 
     reference = "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>"
     result = Vizier.get_catalogs("J/ApJS/219/13/table3")
@@ -216,8 +229,8 @@ if dovizier:
     table = result[result.keys()[0]]
     for row in table:
         name = 'LSQ' + row['LSQ']
-        alias = get_source_alias(name, reference)
-        add_photometry(name, time = jd_to_mjd(row['JD']), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = alias)
+        source = get_source(name, reference)
+        add_photometry(name, time = jd_to_mjd(row['JD']), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
 
 # Suspect catalog
 if dosuspect:
@@ -260,19 +273,19 @@ if dosuspect:
                         band = bands[0].split(':')[1].strip()
 
                         secondaryreference = "<a href='https://www.nhn.ou.edu/~suspect/'>SUSPECT</a>"
-                        secondaryalias = get_source_alias(name, secondaryreference, 1)
+                        secondarysource = get_source(name, secondaryreference, 1)
 
                         reference = ''
                         for link in bandsoup.body.findAll('a'):
                             if 'adsabs' in link['href']:
                                 reference = str(link).replace('"', "'")
-                        alias = get_source_alias(name, reference)
+                        source = get_source(name, reference)
 
                         for r, row in enumerate(bandtable.findAll('tr')):
                             if r == 0:
                                 continue
                             col = row.findAll('td')
-                            mjd = str(float(col[0].renderContents()) - 2400000.5)
+                            mjd = str(jd_to_mjd(float(col[0].renderContents())))
                             mag = col[3].renderContents()
                             if mag.isspace():
                                 mag = ''
@@ -283,7 +296,7 @@ if dosuspect:
                                 aberr = ''
                             else:
                                 aberr = str(float(aberr))
-                            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondaryalias + ',' + alias)
+                            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
 
 # CfA data
 if docfa:
@@ -333,9 +346,9 @@ if docfa:
                             bibcode = refstr
                             print bibcode
                             secondaryreference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
-                            secondaryalias = get_source_alias(name, secondaryreference, 1)
+                            secondarysource = get_source(name, secondaryreference, 1)
                             reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>" + refstr + "</a>"
-                            alias = get_source_alias(name, reference)
+                            source = get_source(name, reference)
 
                 elif len(row) > 1 and row[1] == "HJD":
                     tu = "HJD"
@@ -346,17 +359,17 @@ if docfa:
                 for v, val in enumerate(row):
                     if v == 0:
                         if tu == 'JD':
-                            mjd = str(float(val) + jdoffset - 2400000.5)
+                            mjd = str(jd_to_mjd(float(val) + jdoffset))
                             tuout = 'MJD'
                         elif tu == 'HJD':
-                            mjd = str(float(val) - 2400000.5)
+                            mjd = str(jd_to_mjd(float(val)))
                             tuout = 'MJD'
                         else:
                             mjd = val
                             tuout = tu
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
-                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = secondaryalias + ',' + alias)
+                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = secondarysource + ',' + source)
 
     # Hicken 2012
     tsvin = open("../external/hicken-2012-standard.dat", 'rb')
@@ -373,9 +386,9 @@ if docfa:
         name = add_event(name)
 
         reference = "<a href='http://adsabs.harvard.edu/abs/2012ApJS..200...12H'>Hicken et al. 2012</a>"
-        alias = get_source_alias(name, reference)
+        source = get_source(name, reference)
         add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
-            abmag = row[6].strip(), aberr = row[7].strip(), source = alias)
+            abmag = row[6].strip(), aberr = row[7].strip(), source = source)
     
     # Bianco 2014
     tsvin = open("../external/bianco-2014-standard.dat", 'rb')
@@ -385,8 +398,8 @@ if docfa:
         name = add_event(name)
 
         reference = "<a href='http://adsabs.harvard.edu/abs/2014ApJS..213...19B'>Bianco et al. 2014</a>"
-        alias = get_source_alias(name, reference)
-        add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = alias)
+        source = get_source(name, reference)
+        add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = source)
 
 # Now import the UCB SNDB
 if doucb:
@@ -405,7 +418,7 @@ if doucb:
         events[name]['discoveryear'] = year
 
         reference = "<a href='http://heracles.astro.berkeley.edu/sndb/info'>UCB Filippenko Group's Supernova Database (SNDB)</a>"
-        alias = get_source_alias(name, reference)
+        source = get_source(name, reference)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
@@ -415,7 +428,7 @@ if doucb:
             aberr = row[2]
             band = row[4]
             instrument = row[5]
-            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = alias)
+            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
     
 # Import SDSS
 sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -441,7 +454,7 @@ if dosdss:
                 events[name]['sndec'] = row[-2]
 
                 reference = "<a href='http://classic.sdss.org/supernova/lightcurves.html'>SDSS Supernova Survey</a>"
-                alias = get_source_alias(name, reference)
+                source = get_source(name, reference)
             if r == 1:
                 events[name]['redshift'] = row[2]
             if r >= 19:
@@ -454,7 +467,7 @@ if dosdss:
                 abmag = row[3]
                 aberr = row[4]
                 instrument = "SDSS"
-                add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = alias)
+                add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
 
 #Import GAIA
 if dogaia:
@@ -486,7 +499,7 @@ if dogaia:
         events[name]['discoveryear'] = year
 
         reference = "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>"
-        alias = get_source_alias(name, reference)
+        source = get_source(name, reference)
 
         events[name]['snra'] = col[2].renderContents().strip()
         events[name]['sndec'] = col[3].renderContents().strip()
@@ -498,12 +511,12 @@ if dogaia:
         photodata = photsoup.renderContents().split('\n')[2:-1]
         for ph in photodata:
             photo = ph.split(',')
-            mjd = str(float(photo[1].strip()) - 2400000.5)
+            mjd = str(jd_to_mjd(float(photo[1].strip())))
             abmag = photo[2].strip()
             aberr = 0.
             instrument = 'GAIA'
             band = 'G'
-            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = alias)
+            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
 
 # Import CSP
 cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
@@ -524,7 +537,7 @@ if docsp:
         events[name]['discoveryear'] = year
 
         reference = "<a href='http://csp.obs.carnegiescience.edu/data'>Carnegie Supernova Project</a>"
-        alias = get_source_alias(name, reference)
+        source = get_source(name, reference)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
@@ -541,7 +554,7 @@ if docsp:
                     mjd = val
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
-                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = alias)
+                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = source)
 
 # Import ITEP
 if doitep:
@@ -552,7 +565,7 @@ if doitep:
         if r <= 1 or len(row) < 7:
             continue
         name = 'SN' + row[0].strip()
-        mjd = str(float(row[1].strip()) - 2400000.5)
+        mjd = str(jd_to_mjd(float(row[1].strip())))
         band = row[2].strip()
         abmag = row[3].strip()
         aberr = row[4].strip()
@@ -564,11 +577,11 @@ if doitep:
             events[name]['discoveryear'] = year
 
             secondaryreference = "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>"
-            secondaryalias = get_source_alias(name, secondaryreference, 1)
+            secondarysource = get_source(name, secondaryreference, 1)
 
-        alias = get_source_alias(name, reference) if reference else ''
+        source = get_source(name, reference) if reference else ''
 
-        add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondaryalias + ',' + alias)
+        add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondarysource + ',' + source)
 
 
 # Now import the Asiago catalog
@@ -653,15 +666,48 @@ if doasiago:
             if (discoverer != ''):
                 events[name]['discoverer'] = discoverer
 
-#if dorochester:
-#    response = urllib2.urlopen('file:///var/www/html/sne/sne/external/sndateall.html')
-#    html = response.read()
-#
-#    soup = BeautifulSoup(html)
-#    pre = ' '.join([re.sub('<[^<]+?>', '', str(row)) for row in soup.findAll("pre")[0].contents])
-#    rows = pre.split('\n\r')
-#    for row in rows:
-#        print row
+if dorochester:
+    response = urllib2.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
+    #response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
+    html = response.read()
+
+    soup = BeautifulSoup(html)
+    rows = soup.findAll('tr')
+    secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
+    for r, row in enumerate(rows):
+        if r == 0:
+            continue
+        cols = row.findAll('td')
+        name = re.sub('<[^<]+?>', '', str(cols[0].contents[0]))
+        if name[:4].isdigit():
+            name = 'SN' + name
+        name = add_event(name)
+
+        secondarysource = get_source(name, secondaryreference, secondary = 1)
+
+        events[name]['claimedtype'] = str(cols[1].contents[0])
+        if str(cols[2].contents[0]) != 'anonymous':
+            events[name]['host'] = str(cols[2].contents[0])
+        events[name]['snra'] = str(cols[3].contents[0])
+        events[name]['sndec'] = str(cols[4].contents[0])
+        astrot = astrotime(float(cols[6].contents[0]), format='jd')
+        events[name]['discoverday'] = astrot.datetime.day
+        events[name]['discovermonth'] = astrot.datetime.month
+        events[name]['discoveryear'] = astrot.datetime.year
+        astrot = astrotime(float(cols[7].contents[0]), format='jd')
+        events[name]['maxday'] = astrot.datetime.day
+        events[name]['maxmonth'] = astrot.datetime.month
+        events[name]['maxyear'] = astrot.datetime.year
+        if cols[11].contents[0] != 'n/a':
+            events[name]['redshift'] = float(cols[11].contents[0])
+        source = get_source(name, str(cols[12].contents[0]).replace('"', "'"))
+        if float(cols[8].contents[0]) <= 90.0:
+            add_photometry(name, time = astrot.mjd, abmag = float(cols[8].contents[0]), source = ','.join([source, secondarysource]))
+        events[name]['discoverer'] = str(cols[13].contents[0])
+        if cols[14].contents:
+            add_alias(name, str(cols[14].contents[0]))
+
+print events
 
 if dofirstmax:
     for name in events:
@@ -677,7 +723,7 @@ if dolennarz:
         name = 'SN' + row['SN']
         name = add_event(name)
 
-        alias = get_source_alias(name, reference)
+        source = get_source(name, reference)
 
         if row['Ddate']:
             dateparts = row['Ddate'].split('-')
@@ -691,7 +737,7 @@ if dolennarz:
             if not eventphotometry[name]:
                 if row['Dmag']:
                     mjd = astrot.mjd
-                    add_photometry(name, time = mjd, band = row['Dband'], abmag = row['Dmag'], source = alias)
+                    add_photometry(name, time = mjd, band = row['Dband'], abmag = row['Dmag'], source = source)
             if 'discoveryear' not in events[name] and 'discovermonth' not in events[name] and 'discoverday' not in events[name]:
                 events[name]['discoveryear'] = astrot.datetime.year
                 if len(dateparts) >= 2:
@@ -710,7 +756,7 @@ if dolennarz:
             if not eventphotometry[name]:
                 if row['Mmag']:
                     mjd = astrot.mjd
-                    add_photometry(name, time = mjd, band = row['Mband'], abmag = row['Mmag'], source = alias)
+                    add_photometry(name, time = mjd, band = row['Mband'], abmag = row['Mmag'], source = source)
             if 'maxyear' not in events[name] and 'maxmonth' not in events[name] and 'maxday' not in events[name]:
                 events[name]['maxyear'] = astrot.datetime.year
                 if len(dateparts) >= 2:
@@ -734,7 +780,8 @@ if writeevents:
     # Write it all out!
     for name in events:
         print 'Writing ' + name
-        outfile = open(outdir + name + '.dat', 'wb')
+        filename = event_filename(name)
+        outfile = open(outdir + filename + '.dat', 'wb')
         csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
         
         csvout.writerow(['name', name])
@@ -744,6 +791,8 @@ if writeevents:
         
         for key in events[name]:
             if events[name][key]:
+                if isinstance(events[name][key], list) and not isinstance(events[name][key], basestring):
+                    events[name][key] = ",".join(events[name][key])
                 csvout.writerow([key, events[name][key]])
 
         sortedphotometry = sorted(eventphotometry[name], key=itemgetter('time'))
@@ -753,8 +802,8 @@ if writeevents:
 
         outfile.close()
 
-        # Compress the output
-        Popen(["bzip2", '-k', '-f', outdir + name + '.dat'])
+    # Compress the output
+    Popen(["bzip2", '-k', outdir + '*.dat'])
 
 # Print some useful facts
 if printextra:
