@@ -173,7 +173,7 @@ if dovizier:
             names = row["Names"].split(',')
             for nam in names:
                 if nam.strip()[:2] == 'SN':
-                    events[name]['discoveryear'] = nam[3:].strip()
+                    events[name]['discoveryear'] = nam.strip()[2:]
 
         events[name]['snra'] = row['RAJ2000']
         events[name]['sndec'] = row['DEJ2000']
@@ -688,7 +688,7 @@ if writeevents:
         outfile.close()
 
         # Compress the output
-        Popen(["bzip2", '-f', outdir + name + '.dat'])
+        Popen(["bzip2", '-k', '-f', outdir + name + '.dat'])
 
 # Print some useful facts
 if printextra:
