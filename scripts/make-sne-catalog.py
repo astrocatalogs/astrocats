@@ -17,12 +17,14 @@ from bokeh.models import HoverTool
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
+writecatalog = True
 indir = "../data/"
 outdir = "../"
 
 columnkey = [
     "num",
     "name",
+    "aliases",
     "discoveryear",
     "discovermonth",
     "discoverday",
@@ -46,6 +48,7 @@ columnkey = [
 header = [
     "",
     "Name",
+    "Other Names",
     "Discovery Year",
     "Discovery Month",
     "Discovery Day",
@@ -69,14 +72,15 @@ header = [
 showcols = [
     True,
     True,
-    False,
-    False,
-    False,
     True,
     False,
     False,
     False,
     True,
+    False,
+    False,
+    False,
+    True,
     True,
     False,
     True,
@@ -86,7 +90,7 @@ showcols = [
     False,
     False,
     False,
-    True,
+    True
 ]
 
 photokeys = [
@@ -193,6 +197,9 @@ seed(101)
 bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in xrange(len(bandcodes))]
 shuffle(bandcolors)
 
+def event_filename(name):
+    return(name.replace('/', '_'))
+
 # Replace bands with real colors, if possible.
 for b, code in enumerate(bandcodes):
     if (code in bandwavelengths):
@@ -252,8 +259,9 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.l
         sourcerow = OrderedDict.fromkeys(sourcekeys, '')
         if row[0] == 'photometry':
             plotavail = True;
-            plotlink = "<a class='lci' href='sne/" + eventname + ".html' target='_blank'></a>";
+            plotlink = eventname + ".html";
             catalog['plot'] = plotlink
+            plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a>";
 
             photodict = dict(zip(row[1:], row[2:]))
 
@@ -383,7 +391,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.l
         print outdir + eventname + ".html"
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
-    #if fcnt > 10:
+    #if fcnt > 100:
     #    break
 
 # Construct the date
@@ -411,50 +419,58 @@ for r, row in enumerate(catalogrows):
     catalogrows[r]['maxdate'] = maxdatestr
 
 # Write it all out at the end
-f = open(outdir + 'sne-catalog.csv', 'wb')
-csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
+if writecatalog:
+    f = open(outdir + 'sne-catalog.csv', 'wb')
+    csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
 
-prunedheader = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
-csvout.writerow(prunedheader)
+    prunedheader = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
+    csvout.writerow(prunedheader)
 
-catalogrows.sort(key=operator.itemgetter('discoverdate'), reverse=True)
-prunedrows = []
-for r, row in enumerate(catalogrows):
-    prunedrow = [row[coldict[i]] for (i, j) in enumerate(showcols) if j]
-    csvout.writerow(prunedrow)
-    prunedrows.append(prunedrow)
+    catalogrows.sort(key=operator.itemgetter('discoverdate'), reverse=True)
+    prunedrows = []
+    for r, row in enumerate(catalogrows):
+        prunedrow = [row[coldict[i]] for (i, j) in enumerate(showcols) if j]
+        csvout.writerow(prunedrow)
+        prunedrows.append(prunedrow)
 
-prunedfooter = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
-csvout.writerow(prunedfooter)
-f.close()
+    prunedfooter = [header[coldict[i]] for (i, j) in enumerate(showcols) if j]
+    csvout.writerow(prunedfooter)
+    f.close()
 
-jsonobj = dict.fromkeys(['data'])
-jsonobj['data'] = prunedrows
-jsonstring = json.dumps(jsonobj, indent=4, separators=(',', ': '))
-f = open(outdir + 'sne-catalog.json', 'wb')
-f.write(jsonstring)
-f.close()
+    jsonobj = dict.fromkeys(['data'])
+    jsonobj['data'] = prunedrows
+    jsonstring = json.dumps(jsonobj, indent=4, separators=(',', ': '))
+    f = open(outdir + 'sne-catalog.json', 'wb')
+    f.write(jsonstring)
+    f.close()
 
-f = open(outdir + 'catalog.html', 'wb')
-f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
-f.write('\t<thead>\n')
-f.write('\t\t<tr>\n')
-for i, j in enumerate(showcols):
-    if j:
-        f.write('\t\t\t<th class="' + coldict[i] + '">' + header[coldict[i]] + '</th>\n')
-f.write('\t\t</tr>\n')
-f.write('\t</thead>\n')
-f.write('\t<tfoot>\n')
-f.write('\t\t<tr>\n')
-for i, j in enumerate(showcols):
-    if j:
-        f.write('\t\t\t<th>' + header[coldict[i]] + '</th>\n')
-f.write('\t\t</tr>\n')
-f.write('\t</thead>\n')
-f.write('</table>\n')
-f.close()
+    f = open(outdir + 'catalog.html', 'wb')
+    f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
+    f.write('\t<thead>\n')
+    f.write('\t\t<tr>\n')
+    for i, j in enumerate(showcols):
+        if j:
+            f.write('\t\t\t<th class="' + coldict[i] + '">' + header[coldict[i]] + '</th>\n')
+    f.write('\t\t</tr>\n')
+    f.write('\t</thead>\n')
+    f.write('\t<tfoot>\n')
+    f.write('\t\t<tr>\n')
+    for i, j in enumerate(showcols):
+        if j:
+            f.write('\t\t\t<th>' + header[coldict[i]] + '</th>\n')
+    f.write('\t\t</tr>\n')
+    f.write('\t</thead>\n')
+    f.write('</table>\n')
+    f.close()
 
 # Make a few small files for generating charts
+f = open(outdir + 'snepages.csv', 'wb')
+csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
+for row in catalogrows:
+    if row['plot']:
+        csvout.writerow([row['aliases'], 'https://sne.space/sne/' + row['plot']])
+f.close()
+
 f = open(outdir + 'sources.csv', 'wb')
 sourcedict = dict()
 for sources in sourcerows:
@@ -503,14 +519,14 @@ for ctype in sortedctypes:
     csvout.writerow(ctype)
 f.close()
 
-years = [int(x['discoveryear']) for x in catalogrows]
+years = filter(None, [int(x['discoveryear']) if x['discoveryear'] else '' for x in catalogrows])
 yearrange = range(min(years), max(years))
 f = open(outdir + 'area.csv', 'wb')
 csvout = csv.writer(f)
 csvout.writerow(['Year','Has light curve','No light curve'])
 csvout.writerow(['date','number','number'])
 for year in yearrange:
-    yearind = [i for i, x in enumerate(catalogrows) if int(x['discoveryear']) == year]
+    yearind = [i for i, x in enumerate(catalogrows) if x['discoveryear'] and int(x['discoveryear']) == year]
     hasphoto = len(yearind) - sum(i < 3 for i in [x['numphoto'] for x in [catalogrows[y] for y in yearind]])
     nophoto = sum(i < 3 for i in [x['numphoto'] for x in [catalogrows[y] for y in yearind]])
     csvout.writerow([year, hasphoto, nophoto])
