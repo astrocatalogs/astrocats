@@ -48,7 +48,7 @@ columnkey = [
 header = [
     "",
     "Name",
-    "Other Names",
+    "Aliases",
     "Discovery Year",
     "Discovery Month",
     "Discovery Day",
