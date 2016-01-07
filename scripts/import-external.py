@@ -7,6 +7,7 @@ import re
 import urllib2
 import calendar
 import sys
+import subprocess
 from astroquery.vizier import Vizier
 from astropy.time import Time as astrotime
 from collections import OrderedDict
@@ -14,7 +15,6 @@ from sortedcontainers import SortedDict
 from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 from operator import itemgetter
-from subprocess import Popen
 
 clight = 29979245800.
 
@@ -22,20 +22,21 @@ outdir = '../data/'
 
 eventnames = []
 
-dovizier =    True
-dosuspect =   True
-docfa =       True
-doucb =       True
-dosdss =      True
-dogaia =      True
-docsp =       True
-doitep =      True
-doasiago =    True
-dorochester = True
-dofirstmax =  True
-dolennarz =   True
-writeevents = True
-printextra =  False
+dovizier =       False
+dosuspect =      False
+docfa =          False
+doucb =          False
+dosdss =         False
+dogaia =         False
+docsp =          False
+doitep =         False
+doasiago =       False
+dorochester =    False
+dofirstmax =     False
+dolennarz =      False
+writeevents =    False
+compressevents = True
+printextra =     False
 
 photometrykeys = [
     'timeunit',
@@ -301,8 +302,8 @@ if dosuspect:
 # CfA data
 if docfa:
     for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.lower()):
-        tsvin = open(file,'rb')
-        tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
+        f = open(file,'rb')
+        tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         csv_data = []
         for r, row in enumerate(tsvin):
             new = []
@@ -370,10 +371,11 @@ if docfa:
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
                             add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = secondarysource + ',' + source)
+        f.close()
 
     # Hicken 2012
-    tsvin = open("../external/hicken-2012-standard.dat", 'rb')
-    tsvin = csv.reader(tsvin, delimiter='|', skipinitialspace=True)
+    f = open("../external/hicken-2012-standard.dat", 'rb')
+    tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     for r, row in enumerate(tsvin):
         if r <= 47:
             continue
@@ -400,12 +402,13 @@ if docfa:
         reference = "<a href='http://adsabs.harvard.edu/abs/2014ApJS..213...19B'>Bianco et al. 2014</a>"
         source = get_source(name, reference)
         add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = source)
+    f.close()
 
 # Now import the UCB SNDB
 if doucb:
     for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower()):
-        tsvin = open(file,'rb')
-        tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
+        f = open(file,'rb')
+        tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
         eventname = os.path.basename(os.path.splitext(file)[0])
 
@@ -429,14 +432,14 @@ if doucb:
             band = row[4]
             instrument = row[5]
             add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
+        f.close()
     
 # Import SDSS
-sdssbands = ['u', 'g', 'r', 'i', 'z']
-
 if dosdss:
+    sdssbands = ['u', 'g', 'r', 'i', 'z']
     for file in sorted(glob.glob("../external/SDSS/*.sum"), key=lambda s: s.lower()):
-        tsvin = open(file,'rb')
-        tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
+        f = open(file,'rb')
+        tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
         for r, row in enumerate(tsvin):
             if r == 0:
@@ -468,6 +471,7 @@ if dosdss:
                 aberr = row[4]
                 instrument = "SDSS"
                 add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
+        f.close()
 
 #Import GAIA
 if dogaia:
@@ -519,12 +523,11 @@ if dogaia:
             add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
 
 # Import CSP
-cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-
 if docsp:
+    cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     for file in sorted(glob.glob("../external/CSP/*.dat"), key=lambda s: s.lower()):
-        tsvin = open(file,'rb')
-        tsvin = csv.reader(tsvin, delimiter='\t', skipinitialspace=True)
+        f = open(file,'rb')
+        tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
         eventname = os.path.basename(os.path.splitext(file)[0])
 
@@ -555,11 +558,12 @@ if docsp:
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
                         add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = source)
+        f.close()
 
 # Import ITEP
 if doitep:
-    tsvin = open("../external/itep-lc-cat-28dec2015.txt",'rb')
-    tsvin = csv.reader(tsvin, delimiter='|', skipinitialspace=True)
+    f = open("../external/itep-lc-cat-28dec2015.txt",'rb')
+    tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     curname = ''
     for r, row in enumerate(tsvin):
         if r <= 1 or len(row) < 7:
@@ -582,6 +586,7 @@ if doitep:
         source = get_source(name, reference) if reference else ''
 
         add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondarysource + ',' + source)
+    f.close
 
 
 # Now import the Asiago catalog
@@ -667,8 +672,8 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if dorochester:
-    response = urllib2.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
-    #response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
+    #response = urllib2.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
+    response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
     html = response.read()
 
     soup = BeautifulSoup(html)
@@ -685,29 +690,30 @@ if dorochester:
 
         secondarysource = get_source(name, secondaryreference, secondary = 1)
 
-        events[name]['claimedtype'] = str(cols[1].contents[0])
+        if str(cols[1].contents[0]) != 'unk':
+            events[name]['claimedtype'] = str(cols[1].contents[0])
         if str(cols[2].contents[0]) != 'anonymous':
             events[name]['host'] = str(cols[2].contents[0])
         events[name]['snra'] = str(cols[3].contents[0])
         events[name]['sndec'] = str(cols[4].contents[0])
-        astrot = astrotime(float(cols[6].contents[0]), format='jd')
-        events[name]['discoverday'] = astrot.datetime.day
-        events[name]['discovermonth'] = astrot.datetime.month
-        events[name]['discoveryear'] = astrot.datetime.year
-        astrot = astrotime(float(cols[7].contents[0]), format='jd')
-        events[name]['maxday'] = astrot.datetime.day
-        events[name]['maxmonth'] = astrot.datetime.month
-        events[name]['maxyear'] = astrot.datetime.year
+        if str(cols[6].contents[0]) != '2440587':
+            astrot = astrotime(float(cols[6].contents[0]), format='jd')
+            events[name]['discoverday'] = astrot.datetime.day
+            events[name]['discovermonth'] = astrot.datetime.month
+            events[name]['discoveryear'] = astrot.datetime.year
+        if str(cols[7].contents[0]) != '2440587':
+            astrot = astrotime(float(cols[7].contents[0]), format='jd')
+            events[name]['maxday'] = astrot.datetime.day
+            events[name]['maxmonth'] = astrot.datetime.month
+            events[name]['maxyear'] = astrot.datetime.year
+            source = get_source(name, str(cols[12].contents[0]).replace('"', "'"))
+            if float(cols[8].contents[0]) <= 90.0:
+                add_photometry(name, time = astrot.mjd, abmag = float(cols[8].contents[0]), source = ','.join([source, secondarysource]))
         if cols[11].contents[0] != 'n/a':
             events[name]['redshift'] = float(cols[11].contents[0])
-        source = get_source(name, str(cols[12].contents[0]).replace('"', "'"))
-        if float(cols[8].contents[0]) <= 90.0:
-            add_photometry(name, time = astrot.mjd, abmag = float(cols[8].contents[0]), source = ','.join([source, secondarysource]))
         events[name]['discoverer'] = str(cols[13].contents[0])
         if cols[14].contents:
             add_alias(name, str(cols[14].contents[0]))
-
-print events
 
 if dofirstmax:
     for name in events:
@@ -802,8 +808,11 @@ if writeevents:
 
         outfile.close()
 
-    # Compress the output
-    Popen(["bzip2", '-k', outdir + '*.dat'])
+# Compress the output
+if compressevents:
+    print 'Compressing output...'
+    print 'bzip2 -k -f ' + outdir + '*.dat'
+    subprocess.call(['bzip2 -k -f ' + outdir + '*.dat'], shell=True)
 
 # Print some useful facts
 if printextra:
