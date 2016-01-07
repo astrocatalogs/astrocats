@@ -22,19 +22,19 @@ outdir = '../data/'
 
 eventnames = []
 
-dovizier =       False
-dosuspect =      False
-docfa =          False
-doucb =          False
-dosdss =         False
-dogaia =         False
-docsp =          False
-doitep =         False
-doasiago =       False
-dorochester =    False
-dofirstmax =     False
-dolennarz =      False
-writeevents =    False
+dovizier =       True
+dosuspect =      True
+docfa =          True
+doucb =          True
+dosdss =         True
+dogaia =         True
+docsp =          True
+doitep =         True
+doasiago =       True
+dorochester =    True
+dofirstmax =     True
+dolennarz =      True
+writeevents =    True
 compressevents = True
 printextra =     False
 
@@ -683,37 +683,37 @@ if dorochester:
         if r == 0:
             continue
         cols = row.findAll('td')
-        name = re.sub('<[^<]+?>', '', str(cols[0].contents[0]))
+        name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
         if name[:4].isdigit():
             name = 'SN' + name
         name = add_event(name)
 
         secondarysource = get_source(name, secondaryreference, secondary = 1)
 
-        if str(cols[1].contents[0]) != 'unk':
-            events[name]['claimedtype'] = str(cols[1].contents[0])
-        if str(cols[2].contents[0]) != 'anonymous':
-            events[name]['host'] = str(cols[2].contents[0])
-        events[name]['snra'] = str(cols[3].contents[0])
-        events[name]['sndec'] = str(cols[4].contents[0])
-        if str(cols[6].contents[0]) != '2440587':
-            astrot = astrotime(float(cols[6].contents[0]), format='jd')
+        if str(cols[1].contents[0]).strip() != 'unk':
+            events[name]['claimedtype'] = str(cols[1].contents[0]).strip()
+        if str(cols[2].contents[0]).strip() != 'anonymous':
+            events[name]['host'] = str(cols[2].contents[0]).strip()
+        events[name]['snra'] = str(cols[3].contents[0]).strip()
+        events[name]['sndec'] = str(cols[4].contents[0]).strip()
+        if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
+            astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
             events[name]['discoverday'] = astrot.datetime.day
             events[name]['discovermonth'] = astrot.datetime.month
             events[name]['discoveryear'] = astrot.datetime.year
-        if str(cols[7].contents[0]) != '2440587':
-            astrot = astrotime(float(cols[7].contents[0]), format='jd')
+        if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
+            astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
             events[name]['maxday'] = astrot.datetime.day
             events[name]['maxmonth'] = astrot.datetime.month
             events[name]['maxyear'] = astrot.datetime.year
-            source = get_source(name, str(cols[12].contents[0]).replace('"', "'"))
-            if float(cols[8].contents[0]) <= 90.0:
-                add_photometry(name, time = astrot.mjd, abmag = float(cols[8].contents[0]), source = ','.join([source, secondarysource]))
+            source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
+            if float(str(cols[8].contents[0]).strip()) <= 90.0:
+                add_photometry(name, time = astrot.mjd, abmag = float(str(cols[8].contents[0]).strip()), source = ','.join([source, secondarysource]))
         if cols[11].contents[0] != 'n/a':
-            events[name]['redshift'] = float(cols[11].contents[0])
-        events[name]['discoverer'] = str(cols[13].contents[0])
+            events[name]['redshift'] = float(str(cols[11].contents[0]).strip())
+        events[name]['discoverer'] = str(cols[13].contents[0]).strip()
         if cols[14].contents:
-            add_alias(name, str(cols[14].contents[0]))
+            add_alias(name, str(cols[14].contents[0]).strip())
 
 if dofirstmax:
     for name in events:
@@ -812,7 +812,7 @@ if writeevents:
 if compressevents:
     print 'Compressing output...'
     print 'bzip2 -k -f ' + outdir + '*.dat'
-    subprocess.call(['bzip2 -k -f ' + outdir + '*.dat'], shell=True)
+    os.system('bzip2 -k -f ' + outdir + '*.dat')
 
 # Print some useful facts
 if printextra:

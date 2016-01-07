@@ -259,7 +259,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.l
         sourcerow = OrderedDict.fromkeys(sourcekeys, '')
         if row[0] == 'photometry':
             plotavail = True;
-            plotlink = eventname + ".html";
+            plotlink = "sne/" + eventname + ".html";
             catalog['plot'] = plotlink
             plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a>";
 
@@ -285,7 +285,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.l
             catalog[row[0]] = row[1]
 
     catalog['data'] = "<span class='ics'>"
-    catalog['data'] += "<a class='dci' href='sne/data/" + eventname + ".dat.bz2' target='_blank'></a>"
+    catalog['data'] += "<a class='dci' href='sne/data/" + eventname + ".dat.bz2'></a>"
     if plotavail:
         catalog['data'] += plotlink
     catalog['data'] += "</span>"
@@ -468,7 +468,7 @@ f = open(outdir + 'snepages.csv', 'wb')
 csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
 for row in catalogrows:
     if row['plot']:
-        csvout.writerow([row['aliases'], 'https://sne.space/sne/' + row['plot']])
+        csvout.writerow([row['aliases'], 'https://sne.space/' + row['plot']])
 f.close()
 
 f = open(outdir + 'sources.csv', 'wb')
