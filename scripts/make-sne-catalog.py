@@ -144,7 +144,9 @@ bandcodes = [
     "J",
     "H",
     "K",
-    "C"
+    "C",
+    "CR",
+    "CV"
 ]
 
 bandaliases = {
@@ -287,7 +289,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.dat"), key=lambda s: s.l
     catalog['data'] = "<span class='ics'>"
     catalog['data'] += "<a class='dci' href='sne/data/" + eventname + ".dat.bz2'></a>"
     if plotavail:
-        catalog['data'] += plotlink
+        catalog['data'] += plotlink + " " + str(len(photometry))
     catalog['data'] += "</span>"
     
     catalog['numphoto'] = len(photometry)
