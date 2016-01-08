@@ -570,6 +570,10 @@ if docsp:
 
 # Import ITEP
 if doitep:
+    f = open("../external/itep-refs.txt",'rb')
+    refrep = f.read().splitlines()
+    f.close()
+    refrepf = dict(zip(refrep[1::2], refrep[::2]))
     f = open("../external/itep-lc-cat-28dec2015.txt",'rb')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     curname = ''
@@ -582,6 +586,8 @@ if doitep:
         abmag = row[3].strip()
         aberr = row[4].strip()
         reference = row[6].strip().strip(',')
+        if reference in refrepf:
+            reference = refrepf[reference]
         if curname != name:
             curname = name
             name = add_event(name)
@@ -594,7 +600,7 @@ if doitep:
         source = get_source(name, reference) if reference else ''
 
         add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondarysource + ',' + source)
-    f.close
+    f.close()
 
 
 # Now import the Asiago catalog
