@@ -1,6 +1,7 @@
 "name"	"SN2013fg"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003648.txt'>CBET 3648</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"SN2013fg,PSN J08212244-1318370"
 "claimedtype"	"Ia"
 "discoverday"	"1"
@@ -18,3 +19,5 @@
 "sndec"	"-13:18:37.0"
 "snra"	"08:21:22.44"
 "photometry"	"timeunit"	"MJD"	"time"	"56536.5"	"abmag"	"15.4"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56546.792"	"band"	"IR"	"abmag"	"16.8"	"source"	"3,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56547.8"	"band"	"IR"	"abmag"	"16.7"	"source"	"3,1"

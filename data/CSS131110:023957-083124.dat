@@ -1,6 +1,7 @@
 "name"	"CSS131110:023957-083124"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=5659'>ATEL 5659</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"CSS131110:023957-083124,LSQ13cuw"
 "claimedtype"	"IIP"
 "discoverday"	"9"
@@ -14,3 +15,4 @@
 "sndec"	"-08:31:24.2"
 "snra"	"02:39:57.35"
 "photometry"	"timeunit"	"MJD"	"time"	"56605.5"	"abmag"	"18.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56617.154"	"band"	"C"	"abmag"	"18.9"	"source"	"3,1"

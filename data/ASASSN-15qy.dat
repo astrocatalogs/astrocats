@@ -1,6 +1,7 @@
 "name"	"ASASSN-15qy"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=8153'>ATEL 8153</a>"	"alias"	"2"
+"source"	"name"	"Roland Santallo"	"alias"	"3"
 "aliases"	"ASASSN-15qy"
 "claimedtype"	"Ia"
 "discoverday"	"18"
@@ -14,3 +15,4 @@
 "sndec"	"-33:21:02.7"
 "snra"	"00:01:18.26"
 "photometry"	"timeunit"	"MJD"	"time"	"57313.5"	"abmag"	"16.4"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57314.48"	"band"	"V"	"abmag"	"16.43"	"source"	"3,1"

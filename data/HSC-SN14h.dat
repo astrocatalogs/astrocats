@@ -1,6 +1,7 @@
 "name"	"HSC-SN14h"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6291'>ATEL 6291</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"HSC-SN14h"
 "discoverday"	"1"
 "discoverer"	"Subaru/Hyper Suprime-Cam"
@@ -12,3 +13,4 @@
 "sndec"	"+28:42:29.3"
 "snra"	"23:23:06.80"
 "photometry"	"timeunit"	"MJD"	"time"	"56839.5"	"abmag"	"23.1"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56846.392"	"band"	"C"	"abmag"	"22.6"	"source"	"3,1"

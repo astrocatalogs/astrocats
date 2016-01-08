@@ -1,6 +1,7 @@
 "name"	"ASASSN-15ln"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7670'>ATEL 7670</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"ASASSN-15ln,CSS150918:005341+180529"
 "claimedtype"	"II"
 "discoverday"	"20"
@@ -15,3 +16,5 @@
 "sndec"	"+18:05:29.0"
 "snra"	"00:53:41.40"
 "photometry"	"timeunit"	"MJD"	"time"	"57193.5"	"abmag"	"15.9"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57231.499"	"band"	"UV"	"abmag"	"16.6"	"source"	"3,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57271.41"	"band"	"UV"	"abmag"	"17.0"	"source"	"3,1"

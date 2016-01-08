@@ -1,6 +1,7 @@
 "name"	"OGLE-2014-SN-033"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6307'>ATEL 6307</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"OGLE-2014-SN-033"
 "discoverday"	"1"
 "discoverer"	"OGLE-IV wide field survey"
@@ -12,3 +13,4 @@
 "sndec"	"-73:36:55.5"
 "snra"	"23:23:52.40"
 "photometry"	"timeunit"	"MJD"	"time"	"56839.5"	"abmag"	"19.9"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56855.586"	"band"	"L"	"abmag"	"20.1"	"source"	"3,1"

@@ -1,6 +1,7 @@
 "name"	"ASASSN-15dz"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7145'>ATEL 7145</a>"	"alias"	"2"
+"source"	"name"	"Kunihiro Shima"	"alias"	"3"
 "aliases"	"ASASSN-15dz"
 "claimedtype"	"Ia"
 "discoverday"	"21"
@@ -15,3 +16,4 @@
 "sndec"	"+08:54:31.7"
 "snra"	"16:41:20.87"
 "photometry"	"timeunit"	"MJD"	"time"	"57102.5"	"abmag"	"15.9"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57103.7688"	"band"	"U"	"abmag"	"15.9"	"source"	"3,1"

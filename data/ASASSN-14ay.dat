@@ -1,6 +1,7 @@
 "name"	"ASASSN-14ay"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6150'>ATEL 6150</a>"	"alias"	"2"
+"source"	"name"	"Rafael Benavides"	"alias"	"3"
 "aliases"	"ASASSN-14ay"
 "claimedtype"	"Ia"
 "discoverday"	"18"
@@ -14,3 +15,4 @@
 "sndec"	"+37:24:57.8"
 "snra"	"15:57:03.15"
 "photometry"	"timeunit"	"MJD"	"time"	"56795.5"	"abmag"	"16.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56810.077"	"band"	"CV"	"abmag"	"16.30"	"source"	"3,1"

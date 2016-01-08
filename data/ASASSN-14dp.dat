@@ -1,6 +1,7 @@
 "name"	"ASASSN-14dp"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6297'>ATEL 6297</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"ASASSN-14dp"
 "claimedtype"	"II"
 "discoverday"	"6"
@@ -15,3 +16,4 @@
 "sndec"	"-37:54:24.5"
 "snra"	"11:21:58.45"
 "photometry"	"timeunit"	"MJD"	"time"	"56844.5"	"abmag"	"16.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56846.382"	"band"	"L"	"abmag"	"15.8"	"source"	"3,1"

@@ -1,6 +1,7 @@
 "name"	"SN2013dq"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003573.txt'>CBET 3573</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"SN2013dq,PSN J00513484+2943149"
 "claimedtype"	"Ia-91T"
 "discoverday"	"26"
@@ -18,3 +19,5 @@
 "sndec"	"+29:43:14.9"
 "snra"	"00:51:34.84"
 "photometry"	"timeunit"	"MJD"	"time"	"56469.5"	"abmag"	"16.8"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56543.408"	"band"	"UV"	"abmag"	"18.8"	"source"	"3,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56576.301"	"band"	"UV"	"abmag"	"19.7"	"source"	"3,1"

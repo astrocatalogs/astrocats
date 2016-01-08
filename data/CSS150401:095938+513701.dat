@@ -1,6 +1,7 @@
 "name"	"CSS150401:095938+513701"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>"	"alias"	"2"
+"source"	"name"	"Gianpiero Locatelli"	"alias"	"3"
 "aliases"	"CSS150401:095938+513701"
 "discoverday"	"31"
 "discoverer"	"CRTS"
@@ -12,3 +13,4 @@
 "sndec"	"+51:37:00.8"
 "snra"	"09:59:38.23"
 "photometry"	"timeunit"	"MJD"	"time"	"57112.5"	"abmag"	"18.1"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57114.933"	"band"	"U"	"abmag"	"17.9"	"source"	"3,1"

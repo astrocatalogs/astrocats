@@ -1,6 +1,7 @@
 "name"	"ASASSN-15so"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=8256'>ATEL 8256</a>"	"alias"	"2"
+"source"	"name"	"Bernd Gaehrken"	"alias"	"3"
 "aliases"	"ASASSN-15so"
 "claimedtype"	"Ia"
 "discoverday"	"22"
@@ -15,3 +16,4 @@
 "sndec"	"+48:19:07.2"
 "snra"	"11:14:11.04"
 "photometry"	"timeunit"	"MJD"	"time"	"57348.5"	"abmag"	"13.7"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57370.0"	"band"	"V"	"abmag"	"13.9"	"source"	"3,1"

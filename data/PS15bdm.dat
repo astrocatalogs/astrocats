@@ -1,6 +1,7 @@
 "name"	"PS15bdm"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>"	"alias"	"2"
+"source"	"name"	"Joel Nicolas"	"alias"	"3"
 "aliases"	"PS15bdm"
 "discoverday"	"3"
 "discoverer"	"PS1"
@@ -12,3 +13,4 @@
 "sndec"	"+63:06:49.5"
 "snra"	"14:33:48.69"
 "photometry"	"timeunit"	"MJD"	"time"	"57206.5"	"abmag"	"20.6"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57209.901"	"band"	"CR"	"abmag"	"20.8"	"source"	"3,1"

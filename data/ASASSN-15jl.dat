@@ -1,6 +1,7 @@
 "name"	"ASASSN-15jl"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7527'>ATEL 7527</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"ASASSN-15jl,PS15aol"
 "claimedtype"	"Ia"
 "discoverday"	"12"
@@ -14,3 +15,4 @@
 "sndec"	"+50:58:35.4"
 "snra"	"15:22:41.12"
 "photometry"	"timeunit"	"MJD"	"time"	"57154.5"	"abmag"	"17.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57162.42"	"band"	"C"	"abmag"	"16.3"	"source"	"3,1"

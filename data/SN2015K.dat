@@ -1,6 +1,7 @@
 "name"	"SN2015K"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004116.txt'>CBET 4116</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"SN2015K,PSN J23355226+2336521"
 "claimedtype"	"Ic"
 "discoverday"	"25"
@@ -18,3 +19,4 @@
 "sndec"	"+23:36:52.1"
 "snra"	"23:35:52.26"
 "photometry"	"timeunit"	"MJD"	"time"	"57137.5"	"abmag"	"16.1"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57231.463"	"band"	"UV"	"abmag"	"17.5"	"source"	"3,1"

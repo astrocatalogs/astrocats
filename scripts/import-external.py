@@ -15,6 +15,7 @@ from sortedcontainers import SortedDict
 from math import log10, floor, sqrt
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 from operator import itemgetter
+from string import ascii_letters
 
 clight = 29979245800.
 
@@ -91,6 +92,13 @@ def round_sig(x, sig=2):
     if x == 0.0:
         return 0.0
     return round(x, sig-int(floor(log10(abs(x))))-1)
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 def get_source(name, reference, secondary = ''):
     if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
@@ -608,7 +616,7 @@ if doasiago:
 
     for record in records:
         if len(record) > 1 and record[1] != '':
-            name = snname("SN" + record[1])
+            name = snname("SN" + record[1]).strip('?')
             name = add_event(name)
 
             year = re.findall(r'\d+', name)[0]
@@ -703,9 +711,6 @@ if dorochester:
             events[name]['discoveryear'] = astrot.datetime.year
         if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
             astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-            events[name]['maxday'] = astrot.datetime.day
-            events[name]['maxmonth'] = astrot.datetime.month
-            events[name]['maxyear'] = astrot.datetime.year
             source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
             if float(str(cols[8].contents[0]).strip()) <= 90.0:
                 add_photometry(name, time = astrot.mjd, abmag = float(str(cols[8].contents[0]).strip()), source = ','.join([source, secondarysource]))
@@ -714,6 +719,52 @@ if dorochester:
         events[name]['discoverer'] = str(cols[13].contents[0]).strip()
         if cols[14].contents:
             add_alias(name, str(cols[14].contents[0]).strip())
+
+    vsnetfiles = ["latestsne.dat"]
+    for vsnetfile in vsnetfiles:
+        f = open("../external/" + vsnetfile,'rb')
+        tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        for r, row in enumerate(tsvin):
+            if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
+                continue
+            name = row[0].strip()
+            if name[:4].isdigit():
+                name = 'SN' + name
+            if name[:4] == 'PSNJ':
+                name = 'PSN ' + name[4:]
+            name = add_event(name)
+            if not is_number(row[1]):
+                continue
+            print row
+            year = row[1][:4]
+            month = row[1][4:6]
+            day = row[1][6:]
+            if '.' not in day:
+                day = day[:2] + '.' + day[2:]
+            mjd = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+            abmag = row[2].rstrip(ascii_letters)
+            if not is_number(abmag):
+                continue
+            if abmag.isdigit():
+                if int(abmag) > 100:
+                    abmag = abmag[:2] + '.' + abmag[2:]
+            secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
+            secondarysource = get_source(name, secondaryreference, secondary = 1)
+            band = row[2].lstrip('1234567890.')
+            if len(row) >= 4:
+                if is_number(row[3]):
+                    aberr = row[3]
+                    refind = 4
+                else:
+                    aberr = ''
+                    refind = 3
+                reference = ' '.join(row[refind:])
+                source = get_source(name, reference)
+                sources = ','.join([source,secondarysource])
+            else:
+                sources = secondarysource
+            add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = sources)
+        f.close()
 
 if dofirstmax:
     for name in events:

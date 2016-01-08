@@ -1,6 +1,7 @@
 "name"	"ASASSN-15kg"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7574'>ATEL 7574</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"ASASSN-15kg"
 "claimedtype"	"Ia-91T"
 "discoverday"	"26"
@@ -14,3 +15,4 @@
 "sndec"	"-04:35:31.0"
 "snra"	"08:40:12.01"
 "photometry"	"timeunit"	"MJD"	"time"	"57168.5"	"abmag"	"16.0"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57171.444"	"band"	"C"	"abmag"	"16.3"	"source"	"3,1"

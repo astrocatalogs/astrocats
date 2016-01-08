@@ -1,6 +1,7 @@
 "name"	"SN2013fm"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003661.txt'>CBET 3661</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"SN2013fm,PSN J07310540+5756108"
 "claimedtype"	"Ia"
 "discoverday"	"5"
@@ -18,3 +19,4 @@
 "sndec"	"+57:56:10.8"
 "snra"	"07:31:05.40"
 "photometry"	"timeunit"	"MJD"	"time"	"56540.5"	"abmag"	"16.7"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56569.506"	"band"	"UV"	"abmag"	"19.5"	"source"	"3,1"

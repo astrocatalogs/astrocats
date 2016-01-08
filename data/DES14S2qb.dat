@@ -1,6 +1,7 @@
 "name"	"DES14S2qb"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6520'>ATEL 6520</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"DES14S2qb"
 "claimedtype"	"Ia"
 "discoverday"	"17"
@@ -14,3 +15,4 @@
 "sndec"	"-00:54:22.1"
 "snra"	"02:43:59.72"
 "photometry"	"timeunit"	"MJD"	"time"	"56917.5"	"abmag"	"22.1"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56934.454"	"band"	"C"	"abmag"	"22.8"	"source"	"3,1"

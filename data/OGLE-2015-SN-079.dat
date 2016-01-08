@@ -1,6 +1,7 @@
 "name"	"OGLE-2015-SN-079"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7318'>ATEL 7318</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimcombe"	"alias"	"3"
 "aliases"	"OGLE-2015-SN-079"
 "discoverday"	"29"
 "discoverer"	"OGLE-IV wide field survey"
@@ -12,3 +13,4 @@
 "sndec"	"-74:22:44.6"
 "snra"	"06:25:35.94"
 "photometry"	"timeunit"	"MJD"	"time"	"57110.5"	"abmag"	"18.9"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57114.43"	"band"	"C"	"abmag"	"19.3"	"source"	"3,1"

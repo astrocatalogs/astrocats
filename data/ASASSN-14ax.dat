@@ -1,6 +1,7 @@
 "name"	"ASASSN-14ax"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6133'>ATEL 6133</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"ASASSN-14ax"
 "claimedtype"	"Ia"
 "discoverday"	"3"
@@ -14,3 +15,5 @@
 "sndec"	"+27:06:19.6"
 "snra"	"17:10:00.70"
 "photometry"	"timeunit"	"MJD"	"time"	"56780.5"	"abmag"	"16.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56814.408"	"band"	"UV"	"abmag"	"17.2"	"source"	"3,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56863.224"	"band"	"UV"	"abmag"	"17.6"	"source"	"3,1"
