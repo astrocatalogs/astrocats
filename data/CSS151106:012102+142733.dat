@@ -1,6 +1,7 @@
 "name"	"CSS151106:012102+142733"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>"	"alias"	"2"
+"source"	"name"	"Joel Nicolas"	"alias"	"3"
 "aliases"	"CSS151106:012102+142733"
 "discoverday"	"5"
 "discoverer"	"CRTS"
@@ -12,3 +13,4 @@
 "sndec"	"+14:27:33.5"
 "snra"	"01:21:02.02"
 "photometry"	"timeunit"	"MJD"	"time"	"57331.5"	"abmag"	"19.3"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57333.908"	"band"	"CR"	"abmag"	"20.2"	"source"	"3,1"

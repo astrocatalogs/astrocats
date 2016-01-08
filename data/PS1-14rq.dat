@@ -1,6 +1,7 @@
 "name"	"PS1-14rq"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"PS1-14rq"
 "claimedtype"	"II"
 "discoverday"	"16"
@@ -15,3 +16,4 @@
 "sndec"	"-21:03:57.1"
 "snra"	"10:17:13.15"
 "photometry"	"timeunit"	"MJD"	"time"	"56732.5"	"abmag"	"15.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56733.301"	"band"	"R"	"abmag"	"15.2"	"source"	"3,1"

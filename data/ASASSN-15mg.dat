@@ -1,6 +1,7 @@
 "name"	"ASASSN-15mg"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7780'>ATEL 7780</a>"	"alias"	"2"
+"source"	"name"	"Joel Nicolas"	"alias"	"3"
 "aliases"	"ASASSN-15mg"
 "claimedtype"	"Ia"
 "discoverday"	"8"
@@ -14,3 +15,4 @@
 "sndec"	"+41:50:59.6"
 "snra"	"15:32:22.80"
 "photometry"	"timeunit"	"MJD"	"time"	"57211.5"	"abmag"	"16.8"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57212.861"	"band"	"CV"	"abmag"	"16.8"	"source"	"3,1"

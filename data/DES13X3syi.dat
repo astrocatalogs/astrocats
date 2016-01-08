@@ -1,6 +1,7 @@
 "name"	"DES13X3syi"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=5642'>ATEL 5642</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"DES13X3syi"
 "claimedtype"	"Ia"
 "discoverday"	"8"
@@ -14,3 +15,4 @@
 "sndec"	"-05:19:27.0"
 "snra"	"02:25:22.91"
 "photometry"	"timeunit"	"MJD"	"time"	"56634.5"	"abmag"	"22.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56635.306"	"band"	"C"	"abmag"	"22.2"	"source"	"3,1"

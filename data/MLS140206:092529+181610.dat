@@ -1,6 +1,7 @@
 "name"	"MLS140206:092529+181610"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>"	"alias"	"2"
+"source"	"name"	"Joel Nicolas"	"alias"	"3"
 "aliases"	"MLS140206:092529+181610"
 "discoverday"	"6"
 "discoverer"	"CRTS"
@@ -12,3 +13,4 @@
 "sndec"	"+18:16:10.2"
 "snra"	"09:25:28.89"
 "photometry"	"timeunit"	"MJD"	"time"	"56694.5"	"abmag"	"20.3"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56695.98"	"band"	"CR"	"abmag"	"20.3"	"source"	"3,1"

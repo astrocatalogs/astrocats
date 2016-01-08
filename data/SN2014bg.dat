@@ -1,6 +1,7 @@
 "name"	"SN2014bg"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003890.txt'>CBET 3890</a>"	"alias"	"2"
+"source"	"name"	"Stan Howerton"	"alias"	"3"
 "aliases"	"SN2014bg,PSN J14354590+2443179"
 "claimedtype"	"Ia"
 "discoverday"	"7"
@@ -18,3 +19,4 @@
 "sndec"	"+24:43:17.9"
 "snra"	"14:35:45.90"
 "photometry"	"timeunit"	"MJD"	"time"	"56815.5"	"abmag"	"16.1"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56829.208"	"band"	"V"	"abmag"	"17.4"	"source"	"3,1"

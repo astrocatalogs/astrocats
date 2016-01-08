@@ -1,6 +1,7 @@
 "name"	"LSQ13bug"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=5329'>ATEL 5329</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"LSQ13bug"
 "claimedtype"	"Ia"
 "discoverday"	"27"
@@ -15,3 +16,4 @@
 "sndec"	"-26:54:19.8"
 "snra"	"21:09:04.08"
 "photometry"	"timeunit"	"MJD"	"time"	"56531.5"	"abmag"	"17.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56532.513"	"band"	"IR"	"abmag"	"17.5"	"source"	"3,1"

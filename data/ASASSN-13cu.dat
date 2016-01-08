@@ -1,6 +1,7 @@
 "name"	"ASASSN-13cu"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=5363'>ATEL 5363</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"ASASSN-13cu,PS1-13dbv"
 "claimedtype"	"Ia"
 "discoverday"	"5"
@@ -15,3 +16,4 @@
 "sndec"	"-10:26:21.9"
 "snra"	"00:40:09.93"
 "photometry"	"timeunit"	"MJD"	"time"	"56540.5"	"abmag"	"16.7"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56541.426"	"band"	"L"	"abmag"	"16.7"	"source"	"3,1"

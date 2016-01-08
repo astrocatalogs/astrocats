@@ -1,6 +1,7 @@
 "name"	"ASASSN-13ch"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=5333'>ATEL 5333</a>"	"alias"	"2"
+"source"	"name"	"Stan Howerton"	"alias"	"3"
 "aliases"	"ASASSN-13ch"
 "claimedtype"	"Ia"
 "discoverday"	"31"
@@ -15,3 +16,4 @@
 "sndec"	"-00:35:27.4"
 "snra"	"16:16:34.06"
 "photometry"	"timeunit"	"MJD"	"time"	"56535.5"	"abmag"	"15.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56536.146"	"band"	"U"	"abmag"	"15.5"	"source"	"3,1"

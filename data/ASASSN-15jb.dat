@@ -1,6 +1,7 @@
 "name"	"ASASSN-15jb"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=7507'>ATEL 7507</a>"	"alias"	"2"
+"source"	"name"	"Gianpiero Locatelli"	"alias"	"3"
 "aliases"	"ASASSN-15jb"
 "claimedtype"	"Ia"
 "discoverday"	"12"
@@ -14,3 +15,4 @@
 "sndec"	"+34:07:43.0"
 "snra"	"11:20:06.40"
 "photometry"	"timeunit"	"MJD"	"time"	"57154.5"	"abmag"	"17.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57159.848"	"band"	"Rc"	"abmag"	"17.7"	"source"	"3,1"

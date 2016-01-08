@@ -1,6 +1,7 @@
 "name"	"PSN J16525760+0223367"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J16525760+0223367.html'>CBAT TOCP</a>"	"alias"	"2"
+"source"	"name"	"Stan Howerton"	"alias"	"3"
 "aliases"	"PSN J16525760+0223367,PS1-14xw"
 "claimedtype"	"Ia"
 "discoverday"	"30"
@@ -15,3 +16,4 @@
 "sndec"	"+02:23:36.7"
 "snra"	"16:52:57.60"
 "photometry"	"timeunit"	"MJD"	"time"	"56777.5"	"abmag"	"15.8"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56780.292"	"band"	"U"	"abmag"	"16.2"	"source"	"3,1"

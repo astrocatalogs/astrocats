@@ -1,6 +1,7 @@
 "name"	"SN2013ey"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003636.txt'>CBET 3636</a>"	"alias"	"2"
+"source"	"name"	"Massimiliano Martignoni "	"alias"	"3"
 "aliases"	"SN2013ey,PSN J20580373+1103108"
 "claimedtype"	"Ia"
 "discoverday"	"17"
@@ -18,3 +19,5 @@
 "sndec"	"+11:03:10.8"
 "snra"	"20:58:03.73"
 "photometry"	"timeunit"	"MJD"	"time"	"56521.5"	"abmag"	"14.6"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56524.843"	"band"	"V"	"abmag"	"15.9"	"source"	"3,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56525.858"	"band"	"V"	"abmag"	"16.1"	"source"	"3,1"

@@ -1,6 +1,7 @@
 "name"	"SN2014by"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003927.txt'>CBET 3927</a>"	"alias"	"2"
+"source"	"name"	"Joel Nicolas"	"alias"	"3"
 "aliases"	"SN2014by,PSN J14274900+1133400"
 "claimedtype"	"Ia"
 "discoverday"	"14"
@@ -18,3 +19,4 @@
 "sndec"	"+11:33:40.0"
 "snra"	"14:27:49.00"
 "photometry"	"timeunit"	"MJD"	"time"	"56852.5"	"abmag"	"15.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56889.858"	"band"	"CV"	"abmag"	"17.4"	"source"	"3,1"

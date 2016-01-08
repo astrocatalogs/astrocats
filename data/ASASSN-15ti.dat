@@ -1,6 +1,7 @@
 "name"	"ASASSN-15ti"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=8351'>ATEL 8351</a>"	"alias"	"2"
+"source"	"name"	"MDe"	"alias"	"3"
 "aliases"	"ASASSN-15ti"
 "claimedtype"	"Ia"
 "discoverday"	"30"
@@ -14,3 +15,4 @@
 "sndec"	"+37:54:00.7"
 "snra"	"03:05:08.62"
 "photometry"	"timeunit"	"MJD"	"time"	"57356.5"	"abmag"	"16.6"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57385.774"	"band"	"CV"	"abmag"	"17.2"	"source"	"3,1"

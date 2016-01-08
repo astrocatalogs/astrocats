@@ -1,6 +1,7 @@
 "name"	"SN2014dh"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003982.txt'>CBET 3982</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"SN2014dh"
 "claimedtype"	"Ia"
 "discoverday"	"22"
@@ -17,3 +18,4 @@
 "sndec"	"-00:32:47.1"
 "snra"	"20:56:32.41"
 "photometry"	"timeunit"	"MJD"	"time"	"56922.5"	"abmag"	"18.4"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56923.451"	"band"	"C"	"abmag"	"18.4"	"source"	"3,1"

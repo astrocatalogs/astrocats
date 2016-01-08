@@ -1,6 +1,7 @@
 "name"	"PS1-14uj"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"PS1-14uj"
 "discoverday"	"18"
 "discoverer"	"PS1"
@@ -12,3 +13,4 @@
 "sndec"	"+18:27:59.9"
 "snra"	"16:19:29.24"
 "photometry"	"timeunit"	"MJD"	"time"	"56734.5"	"abmag"	"17.9"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56739.482"	"band"	"UV"	"abmag"	"18.0"	"source"	"3,1"

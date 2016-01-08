@@ -1,6 +1,7 @@
 "name"	"OGLE-2014-SN-047"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6423'>ATEL 6423</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"OGLE-2014-SN-047"
 "claimedtype"	"I"
 "discoverday"	"19"
@@ -14,3 +15,4 @@
 "sndec"	"-75:40:47.1"
 "snra"	"03:30:15.46"
 "photometry"	"timeunit"	"MJD"	"time"	"56857.5"	"abmag"	"19.4"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56870.821"	"band"	"L"	"abmag"	"18.6"	"source"	"3,1"

@@ -1,6 +1,7 @@
 "name"	"PS1-14ru"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>"	"alias"	"2"
+"source"	"name"	"Gregor Krannich"	"alias"	"3"
 "aliases"	"PS1-14ru"
 "discoverday"	"8"
 "discoverer"	"PS1"
@@ -12,3 +13,4 @@
 "sndec"	"+57:31:09.6"
 "snra"	"10:55:45.14"
 "photometry"	"timeunit"	"MJD"	"time"	"56724.5"	"abmag"	"15.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56736.854"	"band"	"V"	"abmag"	"19.1"	"source"	"3,1"

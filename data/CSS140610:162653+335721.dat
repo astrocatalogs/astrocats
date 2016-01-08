@@ -1,6 +1,7 @@
 "name"	"CSS140610:162653+335721"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>"	"alias"	"2"
+"source"	"name"	"Joseph Brimacombe"	"alias"	"3"
 "aliases"	"CSS140610:162653+335721"
 "discoverday"	"9"
 "discoverer"	"CRTS"
@@ -12,3 +13,4 @@
 "sndec"	"+33:57:21.4"
 "snra"	"16:26:52.68"
 "photometry"	"timeunit"	"MJD"	"time"	"56817.5"	"abmag"	"19.2"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56825.397"	"band"	"C"	"abmag"	"19.5"	"source"	"3,1"

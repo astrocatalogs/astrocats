@@ -1,6 +1,7 @@
 "name"	"Gaia15acd"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>"	"alias"	"2"
+"source"	"name"	"Kunihiro Shima"	"alias"	"3"
 "aliases"	"Gaia15acd"
 "discoverday"	"18"
 "discoverer"	"Gaia Photometric Science Alerts programme"
@@ -12,3 +13,4 @@
 "sndec"	"+25:43:22.7"
 "snra"	"18:01:53.26"
 "photometry"	"timeunit"	"MJD"	"time"	"57071.5"	"abmag"	"17.7"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57072.7634"	"band"	"U"	"abmag"	"17.7"	"source"	"3,1"

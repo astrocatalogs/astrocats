@@ -1,6 +1,7 @@
 "name"	"ASASSN-15bb"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=6936'>ATEL 6936</a>"	"alias"	"2"
+"source"	"name"	"Kunihiro Shima"	"alias"	"3"
 "aliases"	"ASASSN-15bb,Gaia15acj"
 "claimedtype"	"IIP"
 "discoverday"	"16"
@@ -15,3 +16,4 @@
 "sndec"	"-36:36:00.2"
 "snra"	"13:01:06.38"
 "photometry"	"timeunit"	"MJD"	"time"	"57038.5"	"abmag"	"16.5"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"57039.7757"	"band"	"U"	"abmag"	"16.5"	"source"	"3,1"

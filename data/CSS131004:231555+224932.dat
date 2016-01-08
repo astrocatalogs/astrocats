@@ -1,6 +1,7 @@
 "name"	"CSS131004:231555+224932"
 "source"	"name"	"<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"	"alias"	"1"	"secondary"	"1"
 "source"	"name"	"<a href='http://www.astronomerstelegram.org/?read=5437'>ATEL 5437</a>"	"alias"	"2"
+"source"	"name"	"Thomas Langhans"	"alias"	"3"
 "aliases"	"CSS131004:231555+224932"
 "claimedtype"	"Ia"
 "discoverday"	"3"
@@ -14,3 +15,5 @@
 "sndec"	"+22:49:32.1"
 "snra"	"23:15:54.63"
 "photometry"	"timeunit"	"MJD"	"time"	"56568.5"	"abmag"	"18.6"	"source"	"2,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56579.265"	"band"	"UV"	"abmag"	"19.3"	"source"	"3,1"
+"photometry"	"timeunit"	"MJD"	"time"	"56595.15"	"band"	"UV"	"abmag"	"20.0"	"source"	"3,1"
