@@ -1,0 +1,26 @@
+{
+    "SN2007kg": {
+        "name": "SN2007kg",
+        "aliases": [
+            "SN2007kg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54365.0",
+                "band": "R",
+                "abmag": "17.17",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2007",
+        "discovermonth": "9",
+        "discoverday": "22"
+    }
+}

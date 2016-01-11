@@ -1,0 +1,66 @@
+{
+    "ASASSN-15hy": {
+        "name": "ASASSN-15hy",
+        "aliases": [
+            "ASASSN-15hy"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "MDe",
+                "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57150.119",
+                "band": "CV",
+                "abmag": "15.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57171.095",
+                "band": "CV",
+                "abmag": "16.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57198.026",
+                "band": "CV",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57198.066",
+                "band": "CV",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57272.846",
+                "band": "CV",
+                "abmag": "18.4",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 5,
+        "maxday": 8,
+        "discoveryear": 2015,
+        "discovermonth": 5,
+        "discoverday": 8
+    }
+}

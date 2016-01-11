@@ -1,0 +1,61 @@
+{
+    "SN2014bn": {
+        "name": "SN2014bn",
+        "aliases": [
+            "SN2014bn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56827.343",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56828.429",
+                "band": "C",
+                "abmag": "17.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56837.401",
+                "band": "UV",
+                "abmag": "18.3",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 19,
+        "discovermonth": 6,
+        "host": "IC 1370",
+        "claimedtype": "Ia",
+        "hvel": "15162",
+        "galra": "211514",
+        "galdec": "+021131",
+        "snra": "211513.30",
+        "sndec": "+021122.4",
+        "discoverer": "Ciabattari, Mazzoni, Petroni",
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 19,
+        "z": 0.0519
+    }
+}

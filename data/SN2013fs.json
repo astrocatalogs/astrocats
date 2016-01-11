@@ -1,0 +1,61 @@
+{
+    "SN2013fs": {
+        "name": "SN2013fs",
+        "aliases": [
+            "SN2013fs"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56589.8076223",
+                "band": "R",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56602.904",
+                "band": "CV",
+                "abmag": "16.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56639.837",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 24,
+        "discovermonth": 10,
+        "host": "NGC 7610",
+        "claimedtype": "II P",
+        "hvel": "3506",
+        "galra": "231941",
+        "galdec": "+101106",
+        "snra": "231944.70",
+        "sndec": "+101105.0",
+        "discoverer": "Itagaki",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 24,
+        "z": 0.0118
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "ASASSN-14ma": {
+        "name": "ASASSN-14ma",
+        "aliases": [
+            "ASASSN-14ma"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57010.88634",
+                "band": "CV",
+                "abmag": "16.82",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 19,
+        "discoveryear": 2014,
+        "discovermonth": 12,
+        "discoverday": 19
+    }
+}

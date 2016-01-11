@@ -1,0 +1,101 @@
+{
+    "SN2014K": {
+        "name": "SN2014K",
+        "aliases": [
+            "SN2014K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "4"
+            },
+            {
+                "name": "Marc Serrau",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56683.035",
+                "band": "CV",
+                "abmag": "15.85",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56686.115",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56690.8215",
+                "band": "CR",
+                "abmag": "16.112",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56721.872",
+                "band": "CR",
+                "abmag": "16.4",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56722.83",
+                "band": "CR",
+                "abmag": "17.0",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56724.313",
+                "band": "UV",
+                "abmag": "16.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56725.795",
+                "band": "CR",
+                "abmag": "17.0",
+                "source": "5,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 26,
+        "discovermonth": 1,
+        "host": "M+12-09-21",
+        "claimedtype": "Ia",
+        "hvel": "3485",
+        "galra": "085109",
+        "galdec": "+715027",
+        "snra": "085108.15",
+        "sndec": "+715033.9",
+        "discoverer": "Cortini",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 26,
+        "z": 0.0117
+    }
+}

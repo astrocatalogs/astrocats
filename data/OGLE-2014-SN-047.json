@@ -1,0 +1,34 @@
+{
+    "OGLE-2014-SN-047": {
+        "name": "OGLE-2014-SN-047",
+        "aliases": [
+            "OGLE-2014-SN-047"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56870.821",
+                "band": "L",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 1,
+        "discoveryear": 2014,
+        "discovermonth": 8,
+        "discoverday": 1
+    }
+}

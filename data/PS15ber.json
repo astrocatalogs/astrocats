@@ -1,0 +1,45 @@
+{
+    "PS15ber": {
+        "name": "PS15ber",
+        "aliases": [
+            "PS15ber"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57213.937",
+                "band": "CV",
+                "abmag": "18.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57214.875",
+                "band": "CR",
+                "abmag": "17.4",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 11,
+        "discoveryear": 2015,
+        "discovermonth": 7,
+        "discoverday": 10
+    }
+}

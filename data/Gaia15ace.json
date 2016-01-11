@@ -1,0 +1,65 @@
+{
+    "Gaia15ace": {
+        "name": "Gaia15ace",
+        "aliases": [
+            "Gaia15ace"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57065.112999999896",
+                "band": "G",
+                "abmag": "17.67",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57065.18699999992",
+                "band": "G",
+                "abmag": "17.64",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57098.58900000015",
+                "band": "G",
+                "abmag": "19.23",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.7639",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "3,2"
+            }
+        ],
+        "discoveryear": 2015,
+        "snra": "254.83222",
+        "sndec": "29.94392",
+        "claimedtype": "e Ia",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 19,
+        "discovermonth": 2,
+        "discoverday": 12
+    }
+}

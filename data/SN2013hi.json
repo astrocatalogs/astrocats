@@ -1,0 +1,43 @@
+{
+    "SN2013hi": {
+        "name": "SN2013hi",
+        "aliases": [
+            "SN2013hi"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56628.867",
+                "band": "V",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 12,
+        "host": "PGC0166460",
+        "claimedtype": "Ia",
+        "hvel": "7605",
+        "galra": "031424",
+        "galdec": "+461049",
+        "snra": "031424.73",
+        "sndec": "+461049.0",
+        "discoverer": "Denisenko",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 2,
+        "z": 0.0257
+    }
+}

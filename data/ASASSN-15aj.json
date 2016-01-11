@@ -1,0 +1,56 @@
+{
+    "ASASSN-15aj": {
+        "name": "ASASSN-15aj",
+        "aliases": [
+            "ASASSN-15aj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57031.6",
+                "band": "R",
+                "abmag": "14.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57031.7542",
+                "band": "U",
+                "abmag": "14.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57037.729",
+                "band": "V",
+                "abmag": "14.7",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 9,
+        "discoveryear": 2015,
+        "discovermonth": 1,
+        "discoverday": 9
+    }
+}

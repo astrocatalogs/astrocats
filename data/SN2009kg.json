@@ -1,0 +1,26 @@
+{
+    "SN2009kg": {
+        "name": "SN2009kg",
+        "aliases": [
+            "SN2009kg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54992.0",
+                "band": "",
+                "abmag": "21.9",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2009",
+        "discovermonth": "6",
+        "discoverday": "10"
+    }
+}

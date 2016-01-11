@@ -1,0 +1,43 @@
+{
+    "SN2013ab": {
+        "name": "SN2013ab",
+        "aliases": [
+            "SN2013ab"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pro ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56540.791",
+                "band": "CR",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 5,
+        "discovermonth": 9,
+        "host": "NGC 5669",
+        "claimedtype": "II P",
+        "hvel": "1338",
+        "galra": "143244",
+        "galdec": "+095329",
+        "snra": "143244.49",
+        "sndec": "+095312.3",
+        "discoverer": "LOSS",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 5,
+        "z": 0.00447
+    }
+}

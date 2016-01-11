@@ -1,0 +1,29 @@
+{
+    "SN1990M": {
+        "name": "SN1990M",
+        "aliases": [
+            "SN1990M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48057.0",
+                "band": "",
+                "abmag": "13.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1990",
+        "discovermonth": "6",
+        "discoverday": "15",
+        "maxyear": "1990",
+        "maxmonth": "6",
+        "maxday": "15"
+    }
+}

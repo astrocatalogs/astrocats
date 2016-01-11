@@ -1,0 +1,26 @@
+{
+    "SN2010ej": {
+        "name": "SN2010ej",
+        "aliases": [
+            "SN2010ej"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55362.0",
+                "band": "",
+                "abmag": "19.2",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2010",
+        "discovermonth": "6",
+        "discoverday": "15"
+    }
+}

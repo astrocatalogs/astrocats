@@ -1,0 +1,83 @@
+{
+    "SN2014ab": {
+        "name": "SN2014ab",
+        "aliases": [
+            "SN2014ab"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56726.985",
+                "band": "CR",
+                "abmag": "15.35",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.276",
+                "band": "U",
+                "abmag": "15.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.962",
+                "band": "CV",
+                "abmag": "15.85",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.196",
+                "band": "U",
+                "abmag": "15.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56803.238",
+                "band": "UV",
+                "abmag": "15.8",
+                "source": "5,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 10,
+        "discovermonth": 3,
+        "host": "A134805+0723",
+        "claimedtype": "IIn",
+        "hvel": "6000",
+        "galra": "134805",
+        "galdec": "+072316",
+        "snra": "134805.99",
+        "sndec": "+072316.4",
+        "discoverer": "Howerton et al.",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 10,
+        "z": 0.0202
+    }
+}

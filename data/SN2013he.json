@@ -1,0 +1,43 @@
+{
+    "SN2013he": {
+        "name": "SN2013he",
+        "aliases": [
+            "SN2013he"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56657.149",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 31,
+        "discovermonth": 12,
+        "host": "NGC 4774",
+        "claimedtype": "II P",
+        "hvel": "8341",
+        "galra": "125307",
+        "galdec": "+364907",
+        "snra": "125306.27",
+        "sndec": "+364900.1",
+        "discoverer": "Leonini et al.",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 31,
+        "z": 0.0282
+    }
+}

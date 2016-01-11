@@ -1,0 +1,41 @@
+{
+    "ASASSN-15lo": {
+        "name": "ASASSN-15lo",
+        "aliases": [
+            "ASASSN-15lo"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57231.424",
+                "band": "UV",
+                "abmag": "18.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.364",
+                "band": "UV",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 28,
+        "discoveryear": 2015,
+        "discovermonth": 7,
+        "discoverday": 28
+    }
+}

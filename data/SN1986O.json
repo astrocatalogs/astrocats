@@ -1,0 +1,29 @@
+{
+    "SN1986O": {
+        "name": "SN1986O",
+        "aliases": [
+            "SN1986O"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46788.0",
+                "band": "",
+                "abmag": "14",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1986",
+        "discovermonth": "12",
+        "discoverday": "24",
+        "maxyear": "1986",
+        "maxmonth": "12",
+        "maxday": "20"
+    }
+}

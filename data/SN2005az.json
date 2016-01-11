@@ -1,0 +1,29 @@
+{
+    "SN2005az": {
+        "name": "SN2005az",
+        "aliases": [
+            "SN2005az"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53457.0",
+                "band": "",
+                "abmag": "16.3",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2005",
+        "discovermonth": "3",
+        "discoverday": "28",
+        "maxyear": "2005",
+        "maxmonth": "4",
+        "maxday": "15"
+    }
+}

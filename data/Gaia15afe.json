@@ -1,0 +1,49 @@
+{
+    "Gaia15afe": {
+        "name": "Gaia15afe",
+        "aliases": [
+            "Gaia15afe"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57158.82400000002",
+                "band": "G",
+                "abmag": "18.95",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57159.0",
+                "band": "G",
+                "abmag": "18.79",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57159.07400000002",
+                "band": "G",
+                "abmag": "19.01",
+                "instrument": "GAIA",
+                "source": "1"
+            }
+        ],
+        "discoveryear": 2015,
+        "snra": "210.46355",
+        "sndec": "21.55940",
+        "claimedtype": "II",
+        "maxyear": 2015,
+        "maxmonth": 5,
+        "maxday": 17,
+        "discovermonth": 5,
+        "discoverday": 16
+    }
+}

@@ -1,0 +1,72 @@
+{
+    "SN2015as": {
+        "name": "SN2015as",
+        "aliases": [
+            "SN2015as"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "CRTS CSS151202:100812+515040",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57358.15",
+                "band": "CV",
+                "abmag": "14.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57360.78",
+                "band": "U",
+                "abmag": "14.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57368.118",
+                "band": "CV",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57358.0",
+                "band": "C",
+                "abmag": "14.2",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 2,
+        "discovermonth": 12,
+        "host": "UGC 5460",
+        "claimedtype": "II",
+        "hvel": "1085",
+        "galra": "100809",
+        "galdec": "+515042",
+        "snra": "100811.37",
+        "sndec": "+515040.9",
+        "discoverer": "Nishimura",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 2,
+        "z": 0.00363
+    }
+}

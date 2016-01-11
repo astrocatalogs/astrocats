@@ -1,0 +1,34 @@
+{
+    "ASASSN-15ez": {
+        "name": "ASASSN-15ez",
+        "aliases": [
+            "ASASSN-15ez"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57117.881",
+                "band": "R",
+                "abmag": "16.70",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 5,
+        "discoveryear": 2015,
+        "discovermonth": 4,
+        "discoverday": 5
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "PSN 01510872+3155218": {
+        "name": "PSN 01510872+3155218",
+        "aliases": [
+            "PSN 01510872+3155218"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56983.659",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56983.932",
+                "band": "V",
+                "abmag": "17.9",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 22,
+        "discoveryear": 2014,
+        "discovermonth": 11,
+        "discoverday": 22
+    }
+}

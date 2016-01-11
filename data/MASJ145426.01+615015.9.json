@@ -1,0 +1,34 @@
+{
+    "MASJ145426.01+615015.9": {
+        "name": "MASJ145426.01+615015.9",
+        "aliases": [
+            "MASJ145426.01+615015.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimcombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56804.331",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 27,
+        "discoveryear": 2014,
+        "discovermonth": 5,
+        "discoverday": 27
+    }
+}

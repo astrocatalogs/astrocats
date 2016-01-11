@@ -1,0 +1,89 @@
+{
+    "PSN 03033627+4656520": {
+        "name": "PSN 03033627+4656520",
+        "aliases": [
+            "PSN 03033627+4656520"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Zhijian Xu & Xing Gao",
+                "alias": "2"
+            },
+            {
+                "name": "Joeph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "4"
+            },
+            {
+                "name": "LLA",
+                "alias": "5"
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "6"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "7"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56900.0",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56900.329",
+                "band": "C",
+                "abmag": "17.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56901.981",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56903.127",
+                "band": "CV",
+                "abmag": "17.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56914.931",
+                "band": "RC",
+                "abmag": "16.4",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56916.1102",
+                "band": "CV",
+                "abmag": "17.97",
+                "source": "7,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 14,
+        "discoveryear": 2014,
+        "discovermonth": 8,
+        "discoverday": 31
+    }
+}

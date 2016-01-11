@@ -1,0 +1,70 @@
+{
+    "ASASSN-15rw": {
+        "name": "ASASSN-15rw",
+        "aliases": [
+            "ASASSN-15rw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Andy Cason",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57324.216",
+                "band": "V",
+                "abmag": "15.65",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57326.174",
+                "band": "V",
+                "abmag": "15.50",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57336.7576",
+                "band": "U",
+                "abmag": "15.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57341.959",
+                "band": "CV",
+                "abmag": "16.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57355.823",
+                "band": "CV",
+                "abmag": "16.6",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 10,
+        "discoveryear": 2015,
+        "discovermonth": 10,
+        "discoverday": 29
+    }
+}

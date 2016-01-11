@@ -1,0 +1,115 @@
+{
+    "SN2015N": {
+        "name": "SN2015N",
+        "aliases": [
+            "SN2015N"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57254.09826",
+                "band": "CV",
+                "abmag": "17.32",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57236.062",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57252.994",
+                "band": "CV",
+                "abmag": "17.45",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57224.881",
+                "band": "CV",
+                "abmag": "16.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57230.996",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57231.29",
+                "band": "UV",
+                "abmag": "16.8",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57252.99408",
+                "band": "CV",
+                "abmag": "17.45",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.249",
+                "band": "UV",
+                "abmag": "18.5",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57316.203",
+                "band": "UV",
+                "abmag": "19.7",
+                "source": "6,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 21,
+        "discovermonth": 7,
+        "host": "UGC 11797",
+        "claimedtype": "Ia",
+        "hvel": "3747",
+        "galra": "214320",
+        "galdec": "+433434",
+        "snra": "214316.89",
+        "sndec": "+433447.6",
+        "discoverer": "LOSS",
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 21,
+        "z": 0.0126
+    }
+}

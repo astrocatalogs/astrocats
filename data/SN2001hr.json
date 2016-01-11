@@ -1,0 +1,26 @@
+{
+    "SN2001hr": {
+        "name": "SN2001hr",
+        "aliases": [
+            "SN2001hr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52225.0",
+                "band": "I",
+                "abmag": "23.9",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2001",
+        "discovermonth": "11",
+        "discoverday": "12"
+    }
+}

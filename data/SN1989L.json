@@ -1,0 +1,29 @@
+{
+    "SN1989L": {
+        "name": "SN1989L",
+        "aliases": [
+            "SN1989L"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47650.0",
+                "band": "",
+                "abmag": "17.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1989",
+        "discovermonth": "5",
+        "discoverday": "4",
+        "maxyear": "1989",
+        "maxmonth": "6",
+        "maxday": "5"
+    }
+}

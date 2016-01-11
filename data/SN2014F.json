@@ -1,0 +1,54 @@
+{
+    "SN2014F": {
+        "name": "SN2014F",
+        "aliases": [
+            "SN2014F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56705.554",
+                "band": "UV",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56725.167",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 17,
+        "discovermonth": 2,
+        "host": "NGC 6667",
+        "claimedtype": "II",
+        "hvel": "2582",
+        "galra": "183040",
+        "galdec": "+675913",
+        "snra": "183031.79",
+        "sndec": "+675929.7",
+        "discoverer": "Itagaki",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 9,
+        "z": 0.00865
+    }
+}

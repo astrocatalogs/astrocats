@@ -1,0 +1,35 @@
+{
+    "PTF10mwb": {
+        "name": "PTF10mwb",
+        "aliases": [
+            "PTF10mwb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "13 BVD CMC",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55387.966",
+                "band": "CR",
+                "abmag": "16.20",
+                "aberr": "0.03",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2010,
+        "maxmonth": 7,
+        "maxday": 10,
+        "discoveryear": 2010,
+        "discovermonth": 7,
+        "discoverday": 10
+    }
+}

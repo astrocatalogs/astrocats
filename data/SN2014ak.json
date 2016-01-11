@@ -1,0 +1,122 @@
+{
+    "SN2014ak": {
+        "name": "SN2014ak",
+        "aliases": [
+            "SN2014ak"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Zhijian Xu & Xing Gao",
+                "alias": "3"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "4"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "5"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56753.847",
+                "band": "CV",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56756.836",
+                "band": "CV",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56761.842",
+                "band": "CV",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56761.847",
+                "band": "g",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56761.852",
+                "band": "r",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56771.0",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56753.873",
+                "band": "V",
+                "abmag": "16.30",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56753.926",
+                "band": "CV",
+                "abmag": "16.08",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.113",
+                "band": "U",
+                "abmag": "16.8",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56771.0",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 6,
+        "discovermonth": 4,
+        "host": "NGC 2446",
+        "claimedtype": "Ia",
+        "hvel": "5575",
+        "galra": "074839",
+        "galdec": "+543643",
+        "snra": "074844.10",
+        "sndec": "+543640.5",
+        "discoverer": "Xu, Gao",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 6,
+        "z": 0.0188
+    }
+}

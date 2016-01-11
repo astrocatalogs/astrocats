@@ -1,0 +1,29 @@
+{
+    "SN1991M": {
+        "name": "SN1991M",
+        "aliases": [
+            "SN1991M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48327.0",
+                "band": "B",
+                "abmag": "14.4",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1991",
+        "discovermonth": "3",
+        "discoverday": "12",
+        "maxyear": "1991",
+        "maxmonth": "3",
+        "maxday": "19"
+    }
+}

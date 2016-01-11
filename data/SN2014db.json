@@ -1,0 +1,43 @@
+{
+    "SN2014db": {
+        "name": "SN2014db",
+        "aliases": [
+            "SN2014db"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56913.532",
+                "band": "UV",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 13,
+        "discovermonth": 9,
+        "host": "UGC 2988",
+        "claimedtype": "II P",
+        "hvel": "3811",
+        "galra": "041339",
+        "galdec": "+252858",
+        "snra": "041338.46",
+        "sndec": "+252846.2",
+        "discoverer": "LOSS",
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 13,
+        "z": 0.0128
+    }
+}

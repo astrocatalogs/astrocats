@@ -1,0 +1,29 @@
+{
+    "SN1936A": {
+        "name": "SN1936A",
+        "aliases": [
+            "SN1936A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "28176.0",
+                "band": "",
+                "abmag": "14.4",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1936",
+        "discovermonth": "1",
+        "discoverday": "9",
+        "maxyear": "1936",
+        "maxmonth": "1",
+        "maxday": "21"
+    }
+}

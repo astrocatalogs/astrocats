@@ -1,0 +1,29 @@
+{
+    "SN1996bk": {
+        "name": "SN1996bk",
+        "aliases": [
+            "SN1996bk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50368.0",
+                "band": "",
+                "abmag": "14.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1996",
+        "discovermonth": "10",
+        "discoverday": "12",
+        "maxyear": "1996",
+        "maxmonth": "10",
+        "maxday": "9"
+    }
+}

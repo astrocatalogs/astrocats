@@ -1,0 +1,52 @@
+{
+    "PSN 22340480+6826240": {
+        "name": "PSN 22340480+6826240",
+        "aliases": [
+            "PSN 22340480+6826240"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56860.918",
+                "band": "CR",
+                "abmag": "16.29",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56863.374",
+                "band": "UV",
+                "abmag": "17.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56885.273",
+                "band": "UV",
+                "abmag": "17.4",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 7,
+        "maxday": 22,
+        "discoveryear": 2014,
+        "discovermonth": 7,
+        "discoverday": 22
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "SN2006ht": {
+        "name": "SN2006ht",
+        "aliases": [
+            "SN2006ht"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53998.0",
+                "band": "g",
+                "abmag": "23",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2006",
+        "discovermonth": "9",
+        "discoverday": "20",
+        "maxyear": "2006",
+        "maxmonth": "10",
+        "maxday": "5"
+    }
+}

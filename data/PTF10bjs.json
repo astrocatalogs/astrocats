@@ -1,0 +1,59 @@
+{
+    "PTF10bjs": {
+        "name": "PTF10bjs",
+        "aliases": [
+            "PTF10bjs"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Nic",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55270.857",
+                "band": "CR",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55271.961",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55278.953",
+                "band": "CR",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55291.903",
+                "band": "CR",
+                "abmag": "17.3",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2010,
+        "maxmonth": 3,
+        "maxday": 15,
+        "discoveryear": 2010,
+        "discovermonth": 3,
+        "discoverday": 15
+    }
+}

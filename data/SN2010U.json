@@ -1,0 +1,34 @@
+{
+    "SN2010U": {
+        "name": "SN2010U",
+        "aliases": [
+            "SN2010U"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Nic",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55233.98",
+                "band": "CR",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2010,
+        "maxmonth": 2,
+        "maxday": 6,
+        "discoveryear": 2010,
+        "discovermonth": 2,
+        "discoverday": 6
+    }
+}

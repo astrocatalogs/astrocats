@@ -1,0 +1,45 @@
+{
+    "PSN 09582423+5604456": {
+        "name": "PSN 09582423+5604456",
+        "aliases": [
+            "PSN 09582423+5604456"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56622.357",
+                "band": "R",
+                "abmag": "18.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56622.443",
+                "band": "C",
+                "abmag": "19.5",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 26,
+        "discoveryear": 2013,
+        "discovermonth": 11,
+        "discoverday": 26
+    }
+}

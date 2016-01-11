@@ -1,0 +1,123 @@
+{
+    "SN2014ai": {
+        "name": "SN2014ai",
+        "aliases": [
+            "SN2014ai"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "2"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "5"
+            },
+            {
+                "name": "Z. Jin, X. Gao",
+                "alias": "6"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "7"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "8"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56740.094",
+                "band": "CR",
+                "abmag": "14.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.909",
+                "band": "U",
+                "abmag": "15.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56753.861",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56761.865",
+                "band": "CV",
+                "abmag": "17.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56732.855",
+                "band": "R",
+                "abmag": "16.07",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56736.781",
+                "band": "V",
+                "abmag": "17.2",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.12",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.004",
+                "band": "CV",
+                "abmag": "16.70",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.121",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "7,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 16,
+        "discovermonth": 3,
+        "host": "NGC 2832",
+        "claimedtype": "Ia",
+        "hvel": "6869",
+        "galra": "091947",
+        "galdec": "+334459",
+        "snra": "091944.17",
+        "sndec": "+334549.4",
+        "discoverer": "Forbes et al., Itagaki",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 24,
+        "z": 0.0232
+    }
+}

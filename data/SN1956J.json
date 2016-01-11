@@ -1,0 +1,26 @@
+{
+    "SN1956J": {
+        "name": "SN1956J",
+        "aliases": [
+            "SN1956J"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "35572.0",
+                "band": "",
+                "abmag": "19.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1956",
+        "discovermonth": "4",
+        "discoverday": "9"
+    }
+}

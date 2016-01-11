@@ -1,0 +1,29 @@
+{
+    "SN1965M": {
+        "name": "SN1965M",
+        "aliases": [
+            "SN1965M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39037.0",
+                "band": "",
+                "abmag": "16",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1965",
+        "discovermonth": "10",
+        "discoverday": "4",
+        "maxyear": "1965",
+        "maxmonth": "10",
+        "maxday": "9"
+    }
+}

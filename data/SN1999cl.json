@@ -1,0 +1,29 @@
+{
+    "SN1999cl": {
+        "name": "SN1999cl",
+        "aliases": [
+            "SN1999cl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51327.0",
+                "band": "",
+                "abmag": "16.4",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1999",
+        "discovermonth": "5",
+        "discoverday": "29",
+        "maxyear": "1999",
+        "maxmonth": "6",
+        "maxday": "15"
+    }
+}

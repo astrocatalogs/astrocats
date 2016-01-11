@@ -1,0 +1,98 @@
+{
+    "SN2014H": {
+        "name": "SN2014H",
+        "aliases": [
+            "SN2014H"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "5"
+            },
+            {
+                "name": "Enrique Diez",
+                "alias": "6"
+            },
+            {
+                "name": "LLA",
+                "alias": "7"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56678.072",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.175",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56680.928",
+                "band": "CV",
+                "abmag": "16.261",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56700.827",
+                "band": "CR",
+                "abmag": "17.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56704.8907",
+                "band": "CR",
+                "abmag": "16.581",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56707.819",
+                "band": "CV",
+                "abmag": "17.5",
+                "source": "7,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 21,
+        "discovermonth": 1,
+        "host": "A033701+3204",
+        "claimedtype": "Ia",
+        "hvel": "4500",
+        "galra": "033701",
+        "galdec": "+320452",
+        "snra": "033701.48",
+        "sndec": "+320501.7",
+        "discoverer": "Li et al.",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 21,
+        "z": 0.0151
+    }
+}

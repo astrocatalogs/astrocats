@@ -1,0 +1,26 @@
+{
+    "SN2006ir": {
+        "name": "SN2006ir",
+        "aliases": [
+            "SN2006ir"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54001.0",
+                "band": "I",
+                "abmag": "16.9",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2006",
+        "discovermonth": "9",
+        "discoverday": "23"
+    }
+}

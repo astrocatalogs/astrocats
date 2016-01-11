@@ -1,0 +1,34 @@
+{
+    "PS15abr": {
+        "name": "PS15abr",
+        "aliases": [
+            "PS15abr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57126.853",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 14,
+        "discoveryear": 2015,
+        "discovermonth": 4,
+        "discoverday": 14
+    }
+}

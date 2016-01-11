@@ -1,0 +1,29 @@
+{
+    "SN1992ag": {
+        "name": "SN1992ag",
+        "aliases": [
+            "SN1992ag"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48802.0",
+                "band": "",
+                "abmag": "16.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1992",
+        "discovermonth": "6",
+        "discoverday": "29",
+        "maxyear": "1992",
+        "maxmonth": "7",
+        "maxday": "3"
+    }
+}

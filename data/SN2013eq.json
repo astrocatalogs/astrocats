@@ -1,0 +1,43 @@
+{
+    "SN2013eq": {
+        "name": "SN2013eq",
+        "aliases": [
+            "SN2013eq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pro ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56540.828",
+                "band": "CR",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 5,
+        "discovermonth": 9,
+        "host": "A173315+3628",
+        "claimedtype": "II P",
+        "hvel": "12600",
+        "galra": "173315",
+        "galdec": "+362835",
+        "snra": "173315.73",
+        "sndec": "+362835.2",
+        "discoverer": "Mikuz",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 5,
+        "z": 0.043
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "SN1997bp": {
+        "name": "SN1997bp",
+        "aliases": [
+            "SN1997bp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50544.0",
+                "band": "",
+                "abmag": "13.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1997",
+        "discovermonth": "4",
+        "discoverday": "6",
+        "maxyear": "1997",
+        "maxmonth": "4",
+        "maxday": "11"
+    }
+}

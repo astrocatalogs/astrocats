@@ -1,0 +1,43 @@
+{
+    "SN2008S": {
+        "name": "SN2008S",
+        "aliases": [
+            "SN2008S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54501.202",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "maxday": 5,
+        "maxmonth": 2,
+        "host": "NGC 6946",
+        "claimedtype": "IIn?",
+        "hvel": "48",
+        "galra": "203452",
+        "galdec": "+600915",
+        "snra": "203445.35",
+        "sndec": "+600557.8",
+        "discoverer": "Arbour",
+        "maxyear": 2008,
+        "discovermonth": 2,
+        "discoverday": 5,
+        "z": 0.00016
+    }
+}

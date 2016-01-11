@@ -1,0 +1,72 @@
+{
+    "SN2014bw": {
+        "name": "SN2014bw",
+        "aliases": [
+            "SN2014bw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56836.924",
+                "band": "CR",
+                "abmag": "16.85",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56838.012",
+                "band": "CV",
+                "abmag": "17.14",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56838.343",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56858.99112",
+                "band": "CV",
+                "abmag": "17.77",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 28,
+        "discovermonth": 6,
+        "host": "PGC0059263",
+        "claimedtype": "IIn",
+        "hvel": "11013",
+        "galra": "165546",
+        "galdec": "+261517",
+        "snra": "165544.77",
+        "sndec": "+261528.6",
+        "discoverer": "Ciabattari, Mazzoni, Rossi",
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 28,
+        "z": 0.0374
+    }
+}

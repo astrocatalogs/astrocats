@@ -1,0 +1,26 @@
+{
+    "SN2001kq": {
+        "name": "SN2001kq",
+        "aliases": [
+            "SN2001kq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51991.0",
+                "band": "",
+                "abmag": "19.1",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2001",
+        "discovermonth": "3",
+        "discoverday": "23"
+    }
+}

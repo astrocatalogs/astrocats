@@ -1,0 +1,41 @@
+{
+    "SN2013eh": {
+        "name": "SN2013eh",
+        "aliases": [
+            "SN2013eh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Mse",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56513.861",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 9,
+        "discovermonth": 8,
+        "host": "A161609+3832",
+        "claimedtype": "Ia",
+        "galra": "161609",
+        "galdec": "+383245",
+        "snra": "161609.19",
+        "sndec": "+383253.0",
+        "discoverer": "Zhang, Wang, Chen ",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 9
+    }
+}

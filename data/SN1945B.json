@@ -1,0 +1,28 @@
+{
+    "SN1945B": {
+        "name": "SN1945B",
+        "aliases": [
+            "SN1945B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "31649.0",
+                "band": "B",
+                "abmag": "13.7",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1945",
+        "discovermonth": "7",
+        "discoverday": "13",
+        "maxyear": "1945",
+        "maxmonth": "7"
+    }
+}

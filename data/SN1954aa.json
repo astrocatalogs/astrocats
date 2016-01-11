@@ -1,0 +1,26 @@
+{
+    "SN1954aa": {
+        "name": "SN1954aa",
+        "aliases": [
+            "SN1954aa"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "34834.0",
+                "band": "",
+                "abmag": "19.9",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1954",
+        "discovermonth": "4",
+        "discoverday": "2"
+    }
+}

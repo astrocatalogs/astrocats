@@ -1,0 +1,78 @@
+{
+    "PS15ahs": {
+        "name": "PS15ahs",
+        "aliases": [
+            "PS15ahs"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            },
+            {
+                "name": "Jordi Camarasa",
+                "alias": "4"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "5"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57148.351",
+                "band": "C",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57151.603",
+                "band": "C",
+                "abmag": "15.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57151.96172",
+                "band": "R",
+                "abmag": "16.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57152.917",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57185.6944",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "6,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 5,
+        "maxday": 9,
+        "discoveryear": 2015,
+        "discovermonth": 5,
+        "discoverday": 6
+    }
+}

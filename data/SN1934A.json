@@ -1,0 +1,29 @@
+{
+    "SN1934A": {
+        "name": "SN1934A",
+        "aliases": [
+            "SN1934A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "27713.0",
+                "band": "",
+                "abmag": "13.6",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1934",
+        "discovermonth": "10",
+        "discoverday": "3",
+        "maxyear": "1934",
+        "maxmonth": "10",
+        "maxday": "11"
+    }
+}

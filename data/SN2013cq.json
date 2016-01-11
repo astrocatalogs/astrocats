@@ -1,0 +1,147 @@
+{
+    "SN2013cq": {
+        "name": "SN2013cq",
+        "aliases": [
+            "SN2013cq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2013arXiv1305.6832X'>2013arXiv1305.6832X</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56415.55237499997",
+                "band": "r_SDSS",
+                "abmag": "23.52",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56417.51480499981",
+                "band": "r_SDSS",
+                "abmag": "22.1683",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56417.943915000185",
+                "band": "r_SDSS",
+                "abmag": "22.5715",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56418.95980500011",
+                "band": "r_SDSS",
+                "abmag": "22.5202",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56421.03417500015",
+                "band": "r_SDSS",
+                "abmag": "22.5305",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56423.036274999846",
+                "band": "r_SDSS",
+                "abmag": "22.2723",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56423.55507500004",
+                "band": "r_SDSS",
+                "abmag": "22.1475",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56425.0122750001",
+                "band": "r_SDSS",
+                "abmag": "22.1267",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56425.988175000064",
+                "band": "r_SDSS",
+                "abmag": "22.1267",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56427.95217500022",
+                "band": "r_SDSS",
+                "abmag": "22.1996",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56429.859575000126",
+                "band": "r_SDSS",
+                "abmag": "22.21",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56433.03807500005",
+                "band": "r_SDSS",
+                "abmag": "22.7142",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56433.935374999885",
+                "band": "r_SDSS",
+                "abmag": "22.8352",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56434.985375000164",
+                "band": "r_SDSS",
+                "abmag": "22.7748",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56435.83297500014",
+                "band": "r_SDSS",
+                "abmag": "22.7547",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56436.963975000195",
+                "band": "r_SDSS",
+                "abmag": "22.8652",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 3,
+        "discovermonth": 5,
+        "host": "A113232+2741",
+        "claimedtype": "Ic",
+        "redshift": "0.34",
+        "galra": "113232",
+        "galdec": "+274156",
+        "snra": "113232.84",
+        "sndec": "+274156.2",
+        "discoverer": "de Ugarte Postigo e al., Maselli et al.",
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 13
+    }
+}

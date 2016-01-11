@@ -1,0 +1,67 @@
+{
+    "NM331512a": {
+        "name": "NM331512a",
+        "aliases": [
+            "NM331512a"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Koichi Nishiyama and Fujio Kabashima",
+                "alias": "2"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "3"
+            },
+            {
+                "name": "Paolo Corelli",
+                "alias": "4"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57357.4663",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57357.7401",
+                "band": "V",
+                "abmag": "16.145",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57358.914",
+                "band": "mV",
+                "abmag": "17.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57365.852",
+                "band": "CV",
+                "abmag": "18.3",
+                "source": "5,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 1,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 1
+    }
+}

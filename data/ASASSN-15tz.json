@@ -1,0 +1,67 @@
+{
+    "ASASSN-15tz": {
+        "name": "ASASSN-15tz",
+        "aliases": [
+            "ASASSN-15tz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "2"
+            },
+            {
+                "name": "Xing Gao,Hanjie Tan confirmation",
+                "alias": "3"
+            },
+            {
+                "name": "Xing Gao and Hanjie Tan",
+                "alias": "4"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57370.90541",
+                "band": "V",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57371.73387",
+                "band": "V",
+                "abmag": "17.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57373.68449",
+                "band": "V",
+                "abmag": "16.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57377.82",
+                "band": "R",
+                "abmag": "16.95",
+                "source": "5,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 17,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 14
+    }
+}

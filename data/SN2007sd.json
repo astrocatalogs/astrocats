@@ -1,0 +1,29 @@
+{
+    "SN2007sd": {
+        "name": "SN2007sd",
+        "aliases": [
+            "SN2007sd"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54415.0",
+                "band": "g",
+                "abmag": "21",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2007",
+        "discovermonth": "11",
+        "discoverday": "11",
+        "maxyear": "2007",
+        "maxmonth": "11",
+        "maxday": "21"
+    }
+}

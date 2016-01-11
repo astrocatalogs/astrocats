@@ -1,0 +1,50 @@
+{
+    "SN2013ey": {
+        "name": "SN2013ey",
+        "aliases": [
+            "SN2013ey"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56525.858",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56524.843",
+                "band": "V",
+                "abmag": "15.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 20,
+        "discovermonth": 8,
+        "host": "M+02-53-09",
+        "claimedtype": "Ia",
+        "hvel": "8352",
+        "galra": "205804",
+        "galdec": "+110314",
+        "snra": "205803.73",
+        "sndec": "+110310.8",
+        "discoverer": "Ciabattari, Mazzoni, Rossi",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 20,
+        "z": 0.0283
+    }
+}

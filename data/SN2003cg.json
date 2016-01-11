@@ -1,0 +1,29 @@
+{
+    "SN2003cg": {
+        "name": "SN2003cg",
+        "aliases": [
+            "SN2003cg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52719.0",
+                "band": "",
+                "abmag": "14.4",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2003",
+        "discovermonth": "3",
+        "discoverday": "21",
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "30"
+    }
+}

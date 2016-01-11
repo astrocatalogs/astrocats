@@ -1,0 +1,50 @@
+{
+    "SN2014B": {
+        "name": "SN2014B",
+        "aliases": [
+            "SN2014B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56660.432",
+                "band": "C",
+                "abmag": "18.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56662.463",
+                "band": "C",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 3,
+        "discovermonth": 1,
+        "host": "NGC 4939",
+        "claimedtype": "II P",
+        "hvel": "3109",
+        "galra": "130415",
+        "galdec": "-102021",
+        "snra": "130417.70",
+        "sndec": "-102001.2",
+        "discoverer": "LOSS",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 3,
+        "z": 0.0104
+    }
+}

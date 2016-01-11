@@ -1,0 +1,50 @@
+{
+    "SN2013hp": {
+        "name": "SN2013hp",
+        "aliases": [
+            "SN2013hp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56642.204",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56643.097",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 16,
+        "discovermonth": 12,
+        "host": "UGC 12432",
+        "claimedtype": "Ia",
+        "hvel": "8375",
+        "galra": "231358",
+        "galdec": "+245342",
+        "snra": "231359.72",
+        "sndec": "+245338.9",
+        "discoverer": "Li, Wang, Zhang",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 17,
+        "z": 0.0283
+    }
+}

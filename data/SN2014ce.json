@@ -1,0 +1,54 @@
+{
+    "SN2014ce": {
+        "name": "SN2014ce",
+        "aliases": [
+            "SN2014ce"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Zhijian Xu & Xing Gao",
+                "alias": "2"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56897.0",
+                "band": "U",
+                "abmag": "14.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56902.56011",
+                "band": "U",
+                "abmag": "14.85",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 28,
+        "discovermonth": 8,
+        "host": "NGC 7673",
+        "claimedtype": "II",
+        "hvel": "3379",
+        "galra": "232741",
+        "galdec": "+233520",
+        "snra": "232740.86",
+        "sndec": "+233521.4",
+        "discoverer": "LOSS",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 28,
+        "z": 0.0113
+    }
+}

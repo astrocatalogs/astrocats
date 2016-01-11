@@ -1,0 +1,29 @@
+{
+    "SN1966K": {
+        "name": "SN1966K",
+        "aliases": [
+            "SN1966K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39478.0",
+                "band": "",
+                "abmag": "17.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1966",
+        "discovermonth": "12",
+        "discoverday": "19",
+        "maxyear": "1966",
+        "maxmonth": "12",
+        "maxday": "30"
+    }
+}

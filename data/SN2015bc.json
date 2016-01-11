@@ -1,0 +1,34 @@
+{
+    "SN2015bc": {
+        "name": "SN2015bc",
+        "aliases": [
+            "SN2015bc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57360.6542",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 4,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 4
+    }
+}

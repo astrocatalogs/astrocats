@@ -1,0 +1,29 @@
+{
+    "SN2002ck": {
+        "name": "SN2002ck",
+        "aliases": [
+            "SN2002ck"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52387.0",
+                "band": "",
+                "abmag": "16.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2002",
+        "discovermonth": "4",
+        "discoverday": "23",
+        "maxyear": "2002",
+        "maxmonth": "5",
+        "maxday": "2"
+    }
+}

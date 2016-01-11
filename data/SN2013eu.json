@@ -1,0 +1,43 @@
+{
+    "SN2013eu": {
+        "name": "SN2013eu",
+        "aliases": [
+            "SN2013eu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56626.558",
+                "band": "UV",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 11,
+        "host": "UGC 5609",
+        "claimedtype": "Ia",
+        "hvel": "2729",
+        "galra": "102422",
+        "galdec": "+783633",
+        "snra": "102422.31",
+        "sndec": "+783623.5",
+        "discoverer": "Cortini",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 30,
+        "z": 0.00914
+    }
+}

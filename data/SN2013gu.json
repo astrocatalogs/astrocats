@@ -1,0 +1,86 @@
+{
+    "SN2013gu": {
+        "name": "SN2013gu",
+        "aliases": [
+            "SN2013gu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56633.847",
+                "band": "CV",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56634.789",
+                "band": "CV",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56635.752",
+                "band": "CV",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56635.118",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56636.108",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56700.777",
+                "band": "CR",
+                "abmag": "17.3",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 7,
+        "discovermonth": 12,
+        "host": "PGC1265294",
+        "claimedtype": "II P",
+        "hvel": "5319",
+        "galra": "014638",
+        "galdec": "+041334",
+        "snra": "014638.27",
+        "sndec": "+041324.4",
+        "discoverer": "Shurpakov",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 7,
+        "z": 0.0179
+    }
+}

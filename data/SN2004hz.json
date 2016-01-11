@@ -1,0 +1,29 @@
+{
+    "SN2004hz": {
+        "name": "SN2004hz",
+        "aliases": [
+            "SN2004hz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53272.0",
+                "band": "",
+                "abmag": "20.1",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2004",
+        "discovermonth": "9",
+        "discoverday": "24",
+        "maxyear": "2004",
+        "maxmonth": "10",
+        "maxday": "8"
+    }
+}

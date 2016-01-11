@@ -1,0 +1,26 @@
+{
+    "SN1978F": {
+        "name": "SN1978F",
+        "aliases": [
+            "SN1978F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43814.0",
+                "band": "",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1978",
+        "discovermonth": "11",
+        "discoverday": "2"
+    }
+}

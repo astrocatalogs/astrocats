@@ -1,0 +1,43 @@
+{
+    "SN2014eg": {
+        "name": "SN2014eg",
+        "aliases": [
+            "SN2014eg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Roland Santallo",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57075.43756",
+                "band": "V",
+                "abmag": "17.04",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 22,
+        "discovermonth": 2,
+        "host": "E154-G10",
+        "claimedtype": "Ia pec",
+        "hvel": "5507",
+        "galra": "024509",
+        "galdec": "-554427",
+        "snra": "024509.27",
+        "sndec": "-554416.9",
+        "discoverer": "Kangas et al.",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 22,
+        "z": 0.0185
+    }
+}

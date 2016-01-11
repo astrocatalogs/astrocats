@@ -1,0 +1,65 @@
+{
+    "SN2014ag": {
+        "name": "SN2014ag",
+        "aliases": [
+            "SN2014ag"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56744.192",
+                "band": "CV",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.302",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56755.015",
+                "band": "CV",
+                "abmag": "17.25",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 28,
+        "discovermonth": 3,
+        "host": "M+07-34-101",
+        "claimedtype": "Ia",
+        "hvel": "9493",
+        "galra": "163041",
+        "galdec": "+443048",
+        "snra": "163040.68",
+        "sndec": "+443034.7",
+        "discoverer": "Gress",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 28,
+        "z": 0.0322
+    }
+}

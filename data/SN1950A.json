@@ -1,0 +1,29 @@
+{
+    "SN1950A": {
+        "name": "SN1950A",
+        "aliases": [
+            "SN1950A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "33360.0",
+                "band": "",
+                "abmag": "17.7",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1950",
+        "discovermonth": "3",
+        "discoverday": "20",
+        "maxyear": "1950",
+        "maxmonth": "2",
+        "maxday": "18"
+    }
+}

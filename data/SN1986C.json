@@ -1,0 +1,26 @@
+{
+    "SN1986C": {
+        "name": "SN1986C",
+        "aliases": [
+            "SN1986C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46494.0",
+                "band": "B",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1986",
+        "discovermonth": "3",
+        "discoverday": "5"
+    }
+}

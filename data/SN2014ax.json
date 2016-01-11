@@ -1,0 +1,57 @@
+{
+    "SN2014ax": {
+        "name": "SN2014ax",
+        "aliases": [
+            "SN2014ax"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56783.39",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56784.388",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56785.291",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 6,
+        "discovermonth": 5,
+        "host": "UGC 10318",
+        "claimedtype": "II P",
+        "hvel": "9727",
+        "galra": "161618",
+        "galdec": "+640609",
+        "snra": "161618.16",
+        "sndec": "+640606.3",
+        "discoverer": "Boles",
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 6,
+        "z": 0.033
+    }
+}

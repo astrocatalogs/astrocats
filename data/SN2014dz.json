@@ -1,0 +1,43 @@
+{
+    "SN2014dz": {
+        "name": "SN2014dz",
+        "aliases": [
+            "SN2014dz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57053.38",
+                "band": "R",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 31,
+        "discovermonth": 1,
+        "host": "PGC0213221",
+        "claimedtype": "Ia",
+        "hvel": "5283",
+        "galra": "032814",
+        "galdec": "+380059",
+        "snra": "032814.19",
+        "sndec": "+380111.1",
+        "discoverer": "Gagliano et al.",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 31,
+        "z": 0.0178
+    }
+}

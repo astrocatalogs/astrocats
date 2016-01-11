@@ -1,0 +1,29 @@
+{
+    "SN1963I": {
+        "name": "SN1963I",
+        "aliases": [
+            "SN1963I"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38163.0",
+                "band": "",
+                "abmag": "14.3",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1963",
+        "discovermonth": "5",
+        "discoverday": "14",
+        "maxyear": "1963",
+        "maxmonth": "5",
+        "maxday": "5"
+    }
+}

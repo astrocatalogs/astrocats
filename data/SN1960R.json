@@ -1,0 +1,29 @@
+{
+    "SN1960R": {
+        "name": "SN1960R",
+        "aliases": [
+            "SN1960R"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37288.0",
+                "band": "",
+                "abmag": "12",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1960",
+        "discovermonth": "12",
+        "discoverday": "20",
+        "maxyear": "1960",
+        "maxmonth": "12",
+        "maxday": "19"
+    }
+}

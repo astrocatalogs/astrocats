@@ -1,0 +1,57 @@
+{
+    "SN2014az": {
+        "name": "SN2014az",
+        "aliases": [
+            "SN2014az"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56837.474",
+                "band": "UV",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56863.456",
+                "band": "UV",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56913.328",
+                "band": "UV",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 29,
+        "discovermonth": 6,
+        "host": "NGC 7691",
+        "claimedtype": "II P",
+        "hvel": "4061",
+        "galra": "233224",
+        "galdec": "+155052",
+        "snra": "233222.84",
+        "sndec": "+155110.6",
+        "discoverer": "Parker",
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 29,
+        "z": 0.0136
+    }
+}

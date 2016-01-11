@@ -1,0 +1,26 @@
+{
+    "SN1984O": {
+        "name": "SN1984O",
+        "aliases": [
+            "SN1984O"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "45995.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1984",
+        "discovermonth": "10",
+        "discoverday": "22"
+    }
+}

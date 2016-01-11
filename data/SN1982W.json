@@ -1,0 +1,29 @@
+{
+    "SN1982W": {
+        "name": "SN1982W",
+        "aliases": [
+            "SN1982W"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "45317.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1982",
+        "discovermonth": "12",
+        "discoverday": "14",
+        "maxyear": "1982",
+        "maxmonth": "11",
+        "maxday": "22"
+    }
+}

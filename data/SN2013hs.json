@@ -1,0 +1,94 @@
+{
+    "SN2013hs": {
+        "name": "SN2013hs",
+        "aliases": [
+            "SN2013hs"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "5"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56672.745",
+                "band": "CV",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56673.89",
+                "band": "",
+                "abmag": "15.87",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.054",
+                "band": "V",
+                "abmag": "16.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56681.864",
+                "band": "CV",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56682.864",
+                "band": "CV",
+                "abmag": "16.43",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56700.788",
+                "band": "CR",
+                "abmag": "17.1",
+                "source": "6,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 15,
+        "discovermonth": 1,
+        "host": "UGC 1461",
+        "claimedtype": "Ia",
+        "hvel": "5868",
+        "galra": "015853",
+        "galdec": "+053538",
+        "snra": "015853.71",
+        "sndec": "+053525.2",
+        "discoverer": "Howerton et al.",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 16,
+        "z": 0.0198
+    }
+}

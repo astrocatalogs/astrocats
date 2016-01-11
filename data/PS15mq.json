@@ -1,0 +1,34 @@
+{
+    "PS15mq": {
+        "name": "PS15mq",
+        "aliases": [
+            "PS15mq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57099.85",
+                "band": "V",
+                "abmag": "19.2",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 18,
+        "discoveryear": 2015,
+        "discovermonth": 3,
+        "discoverday": 18
+    }
+}

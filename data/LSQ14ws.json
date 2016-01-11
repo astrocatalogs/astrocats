@@ -1,0 +1,34 @@
+{
+    "LSQ14ws": {
+        "name": "LSQ14ws",
+        "aliases": [
+            "LSQ14ws"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56711.924",
+                "band": "CR",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 23,
+        "discoveryear": 2014,
+        "discovermonth": 2,
+        "discoverday": 23
+    }
+}

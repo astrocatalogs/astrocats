@@ -1,0 +1,26 @@
+{
+    "SN2008bk": {
+        "name": "SN2008bk",
+        "aliases": [
+            "SN2008bk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54550.0",
+                "band": "V",
+                "abmag": "13.05",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2008",
+        "discovermonth": "3",
+        "discoverday": "25"
+    }
+}

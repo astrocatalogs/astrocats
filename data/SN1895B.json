@@ -1,0 +1,29 @@
+{
+    "SN1895B": {
+        "name": "SN1895B",
+        "aliases": [
+            "SN1895B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "13380.0",
+                "band": "",
+                "abmag": "8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1895",
+        "discovermonth": "7",
+        "discoverday": "6",
+        "maxyear": "1895",
+        "maxmonth": "7",
+        "maxday": "6"
+    }
+}

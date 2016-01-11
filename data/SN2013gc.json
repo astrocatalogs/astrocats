@@ -1,0 +1,43 @@
+{
+    "SN2013gc": {
+        "name": "SN2013gc",
+        "aliases": [
+            "SN2013gc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56623.522",
+                "band": "C",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 27,
+        "discovermonth": 11,
+        "host": "E430-G20",
+        "claimedtype": "IIn",
+        "hvel": "1023",
+        "galra": "080708",
+        "galdec": "-280308",
+        "snra": "080711.88",
+        "sndec": "-280326.3",
+        "discoverer": "Antezana et al.",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 27,
+        "z": 0.00342
+    }
+}

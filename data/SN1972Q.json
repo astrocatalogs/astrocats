@@ -1,0 +1,29 @@
+{
+    "SN1972Q": {
+        "name": "SN1972Q",
+        "aliases": [
+            "SN1972Q"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41665.0",
+                "band": "",
+                "abmag": "15.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1972",
+        "discovermonth": "12",
+        "discoverday": "14",
+        "maxyear": "1972",
+        "maxmonth": "12",
+        "maxday": "17"
+    }
+}

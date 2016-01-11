@@ -1,0 +1,56 @@
+{
+    "ASASSN-15mi": {
+        "name": "ASASSN-15mi",
+        "aliases": [
+            "ASASSN-15mi"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57216.255",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57221.5215",
+                "band": "U",
+                "abmag": "15.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57226.894",
+                "band": "CV",
+                "abmag": "16.3",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 18,
+        "discoveryear": 2015,
+        "discovermonth": 7,
+        "discoverday": 13
+    }
+}

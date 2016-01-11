@@ -1,0 +1,29 @@
+{
+    "SN1964F": {
+        "name": "SN1964F",
+        "aliases": [
+            "SN1964F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38576.0",
+                "band": "",
+                "abmag": "14",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1964",
+        "discovermonth": "6",
+        "discoverday": "30",
+        "maxyear": "1964",
+        "maxmonth": "6",
+        "maxday": "13"
+    }
+}

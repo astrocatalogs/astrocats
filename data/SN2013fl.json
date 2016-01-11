@@ -1,0 +1,65 @@
+{
+    "SN2013fl": {
+        "name": "SN2013fl",
+        "aliases": [
+            "SN2013fl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "2"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56564.831",
+                "band": "RC",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56589.823",
+                "band": "L",
+                "abmag": "17.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56566.175",
+                "band": "C",
+                "abmag": "17.7",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 29,
+        "discovermonth": 9,
+        "host": "UGC 10908",
+        "claimedtype": "II P",
+        "hvel": "5818",
+        "galra": "173338",
+        "galdec": "+502225",
+        "snra": "173339.53",
+        "sndec": "+502225.5",
+        "discoverer": "Boles",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 29,
+        "z": 0.0196
+    }
+}

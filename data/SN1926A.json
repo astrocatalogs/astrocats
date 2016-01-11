@@ -1,0 +1,29 @@
+{
+    "SN1926A": {
+        "name": "SN1926A",
+        "aliases": [
+            "SN1926A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "24644.0",
+                "band": "",
+                "abmag": "14",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1926",
+        "discovermonth": "5",
+        "discoverday": "9",
+        "maxyear": "1926",
+        "maxmonth": "5",
+        "maxday": "9"
+    }
+}

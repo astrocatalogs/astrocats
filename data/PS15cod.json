@@ -1,0 +1,34 @@
+{
+    "PS15cod": {
+        "name": "PS15cod",
+        "aliases": [
+            "PS15cod"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57338.4729",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 12,
+        "discoveryear": 2015,
+        "discovermonth": 11,
+        "discoverday": 12
+    }
+}

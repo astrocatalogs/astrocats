@@ -1,0 +1,26 @@
+{
+    "SN1968T": {
+        "name": "SN1968T",
+        "aliases": [
+            "SN1968T"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "40146.0",
+                "band": "V",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1968",
+        "discovermonth": "10",
+        "discoverday": "17"
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "SN2014an": {
+        "name": "SN2014an",
+        "aliases": [
+            "SN2014an"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56754.288",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.383",
+                "band": "UV",
+                "abmag": "18.0",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 7,
+        "discovermonth": 4,
+        "host": "A145143+0833",
+        "claimedtype": "Ia",
+        "galra": "145143",
+        "galdec": "+083357",
+        "snra": "145142.93",
+        "sndec": "+083412.5",
+        "discoverer": "Tominaga et al.",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 7
+    }
+}

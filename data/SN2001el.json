@@ -1,0 +1,29 @@
+{
+    "SN2001el": {
+        "name": "SN2001el",
+        "aliases": [
+            "SN2001el"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52169.0",
+                "band": "",
+                "abmag": "14.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2001",
+        "discovermonth": "9",
+        "discoverday": "17",
+        "maxyear": "2001",
+        "maxmonth": "9",
+        "maxday": "30"
+    }
+}

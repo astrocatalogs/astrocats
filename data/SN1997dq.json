@@ -1,0 +1,26 @@
+{
+    "SN1997dq": {
+        "name": "SN1997dq",
+        "aliases": [
+            "SN1997dq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50754.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1997",
+        "discovermonth": "11",
+        "discoverday": "2"
+    }
+}

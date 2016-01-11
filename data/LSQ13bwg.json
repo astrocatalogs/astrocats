@@ -1,0 +1,34 @@
+{
+    "LSQ13bwg": {
+        "name": "LSQ13bwg",
+        "aliases": [
+            "LSQ13bwg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56532.738",
+                "band": "IR",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 28,
+        "discoveryear": 2013,
+        "discovermonth": 8,
+        "discoverday": 28
+    }
+}

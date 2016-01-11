@@ -1,0 +1,34 @@
+{
+    "PS1-14qm": {
+        "name": "PS1-14qm",
+        "aliases": [
+            "PS1-14qm"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56721.988",
+                "band": "CR",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 5,
+        "discoveryear": 2014,
+        "discovermonth": 3,
+        "discoverday": 5
+    }
+}

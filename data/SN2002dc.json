@@ -1,0 +1,26 @@
+{
+    "SN2002dc": {
+        "name": "SN2002dc",
+        "aliases": [
+            "SN2002dc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52405.0",
+                "band": "V",
+                "abmag": "23.27",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2002",
+        "discovermonth": "5",
+        "discoverday": "11"
+    }
+}

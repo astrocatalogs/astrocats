@@ -1,0 +1,29 @@
+{
+    "SN1993B": {
+        "name": "SN1993B",
+        "aliases": [
+            "SN1993B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49004.0",
+                "band": "",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1993",
+        "discovermonth": "1",
+        "discoverday": "17",
+        "maxyear": "1993",
+        "maxmonth": "1",
+        "maxday": "17"
+    }
+}

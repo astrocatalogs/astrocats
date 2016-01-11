@@ -1,0 +1,29 @@
+{
+    "SN2008ha": {
+        "name": "SN2008ha",
+        "aliases": [
+            "SN2008ha"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54777.0",
+                "band": "",
+                "abmag": "18.2",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2008",
+        "discovermonth": "11",
+        "discoverday": "7",
+        "maxyear": "2008",
+        "maxmonth": "11",
+        "maxday": "12"
+    }
+}

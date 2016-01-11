@@ -1,0 +1,26 @@
+{
+    "SN1941C": {
+        "name": "SN1941C",
+        "aliases": [
+            "SN1941C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "30100.0",
+                "band": "",
+                "abmag": "16.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1941",
+        "discovermonth": "4",
+        "discoverday": "16"
+    }
+}

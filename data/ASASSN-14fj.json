@@ -1,0 +1,67 @@
+{
+    "ASASSN-14fj": {
+        "name": "ASASSN-14fj",
+        "aliases": [
+            "ASASSN-14fj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "Giancarlo Cortini",
+                "alias": "4"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56883.842",
+                "band": "CV",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56886.881",
+                "band": "CV",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56887.88",
+                "band": "U",
+                "abmag": "16.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56888.899",
+                "band": "CR",
+                "abmag": "16.52",
+                "source": "5,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 19,
+        "discoveryear": 2014,
+        "discovermonth": 8,
+        "discoverday": 14
+    }
+}

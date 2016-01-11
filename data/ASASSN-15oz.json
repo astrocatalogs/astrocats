@@ -1,0 +1,34 @@
+{
+    "ASASSN-15oz": {
+        "name": "ASASSN-15oz",
+        "aliases": [
+            "ASASSN-15oz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57271.557",
+                "band": "C",
+                "abmag": "14.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 9,
+        "maxday": 6,
+        "discoveryear": 2015,
+        "discovermonth": 9,
+        "discoverday": 6
+    }
+}

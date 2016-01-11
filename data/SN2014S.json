@@ -1,0 +1,43 @@
+{
+    "SN2014S": {
+        "name": "SN2014S",
+        "aliases": [
+            "SN2014S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56721.004",
+                "band": "CR",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 5,
+        "discovermonth": 3,
+        "host": "A104026+5357",
+        "claimedtype": "II",
+        "hvel": "12000",
+        "galra": "104026",
+        "galdec": "+535753",
+        "snra": "104024.98",
+        "sndec": "+535758.6",
+        "discoverer": "Tanaka et al.",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 5,
+        "z": 0.0409
+    }
+}

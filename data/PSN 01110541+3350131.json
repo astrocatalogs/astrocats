@@ -1,0 +1,34 @@
+{
+    "PSN 01110541+3350131": {
+        "name": "PSN 01110541+3350131",
+        "aliases": [
+            "PSN 01110541+3350131"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57067.4771",
+                "band": "U",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 14,
+        "discoveryear": 2015,
+        "discovermonth": 2,
+        "discoverday": 14
+    }
+}

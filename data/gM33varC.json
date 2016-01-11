@@ -1,0 +1,34 @@
+{
+    "gM33varC": {
+        "name": "gM33varC",
+        "aliases": [
+            "gM33varC"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pedro Re'",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56576.981",
+                "band": "CR",
+                "abmag": "15.79",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 11,
+        "discoveryear": 2013,
+        "discovermonth": 10,
+        "discoverday": 11
+    }
+}

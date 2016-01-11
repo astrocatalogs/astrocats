@@ -1,0 +1,68 @@
+{
+    "SN2013dn": {
+        "name": "SN2013dn",
+        "aliases": [
+            "SN2013dn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pro ",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56541.064",
+                "band": "CR",
+                "abmag": "17.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56569.251",
+                "band": "UV",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56595.204",
+                "band": "UV",
+                "abmag": "17.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56626.178",
+                "band": "UV",
+                "abmag": "17.6",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 9,
+        "host": "PGC0071942",
+        "claimedtype": "IIn",
+        "hvel": "16844",
+        "galra": "233746",
+        "galdec": "+144224",
+        "snra": "233745.74",
+        "sndec": "+144237.1",
+        "discoverer": "Drake et al.",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 6,
+        "z": 0.0579
+    }
+}

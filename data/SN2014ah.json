@@ -1,0 +1,54 @@
+{
+    "SN2014ah": {
+        "name": "SN2014ah",
+        "aliases": [
+            "SN2014ah"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56737.424",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.928",
+                "band": "CV",
+                "abmag": "15.87",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 21,
+        "discovermonth": 3,
+        "host": "M+02-30-44",
+        "claimedtype": "Ia",
+        "hvel": "6303",
+        "galra": "115531",
+        "galdec": "+115526",
+        "snra": "115530.83",
+        "sndec": "+115526.3",
+        "discoverer": "Leonini et al.",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 7,
+        "z": 0.0213
+    }
+}

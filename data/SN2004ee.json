@@ -1,0 +1,26 @@
+{
+    "SN2004ee": {
+        "name": "SN2004ee",
+        "aliases": [
+            "SN2004ee"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53217.0",
+                "band": "",
+                "abmag": "17.2",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2004",
+        "discovermonth": "7",
+        "discoverday": "31"
+    }
+}

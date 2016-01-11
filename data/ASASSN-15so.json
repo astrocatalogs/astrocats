@@ -1,0 +1,34 @@
+{
+    "ASASSN-15so": {
+        "name": "ASASSN-15so",
+        "aliases": [
+            "ASASSN-15so"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Bernd Gaehrken",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57370.0",
+                "band": "V",
+                "abmag": "13.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 14,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 14
+    }
+}

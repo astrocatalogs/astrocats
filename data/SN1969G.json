@@ -1,0 +1,26 @@
+{
+    "SN1969G": {
+        "name": "SN1969G",
+        "aliases": [
+            "SN1969G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "40324.0",
+                "band": "",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1969",
+        "discovermonth": "4",
+        "discoverday": "13"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "SN2013ga": {
+        "name": "SN2013ga",
+        "aliases": [
+            "SN2013ga"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Massimiliano Martignoni",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56602.901",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 11,
+        "host": "UGC 11895",
+        "claimedtype": "Ia",
+        "hvel": "4702",
+        "galra": "220422",
+        "galdec": "+394437",
+        "snra": "220421.53",
+        "sndec": "+394434.0",
+        "discoverer": "Rich et al.",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 6,
+        "z": 0.0158
+    }
+}
