@@ -1,0 +1,47 @@
+{
+    "SN1961D": {
+        "name": "SN1961D",
+        "aliases": [
+            "SN1961D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1962PASP...74..215H'>PASP 74, 215</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37312.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1961,
+        "maxday": 13,
+        "maxmonth": 1,
+        "host": "CGCG 159-89",
+        "claimedtype": "I",
+        "hvel": "7912",
+        "galra": "125054",
+        "galdec": "+275031",
+        "snra": "12:50:56.40",
+        "sndec": "+27:50:19.0",
+        "discoverer": "Kearns",
+        "discoverday": 13,
+        "discovermonth": 1,
+        "maxyear": 1961,
+        "z": 0.0267
+    }
+}

@@ -1,0 +1,120 @@
+{
+    "SN2002kk": {
+        "name": "SN2002kk",
+        "aliases": [
+            "SN2002kk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08066.html#Item1'>IAUC 8066</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52501.439999999944",
+                "band": "C",
+                "abmag": "19.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52501.450000000186",
+                "band": "C",
+                "abmag": "19.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52501.45999999996",
+                "band": "C",
+                "abmag": "19.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52504.0",
+                "band": "C",
+                "abmag": "19.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52512.0",
+                "band": "C",
+                "abmag": "19",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52522.0",
+                "band": "C",
+                "abmag": "19.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52544.0",
+                "band": "C",
+                "abmag": "20.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52545.0",
+                "band": "C",
+                "abmag": "20.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52555.0",
+                "band": "C",
+                "abmag": "20.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52511.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2002,
+        "maxday": 26,
+        "maxmonth": 8,
+        "host": "A215858-0008",
+        "claimedtype": "Ia",
+        "hvel": "27000",
+        "galra": "215858",
+        "galdec": "-000823",
+        "snra": "21:58:58.65",
+        "sndec": "-00:08:23.5",
+        "discoverer": "Nearby Supernova Factory",
+        "discoverday": 15,
+        "discovermonth": 8,
+        "redshift": 0.09,
+        "maxyear": 2002,
+        "z": 0.0945
+    }
+}

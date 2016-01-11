@@ -1,0 +1,59 @@
+{
+    "ASASSN-15ln": {
+        "name": "ASASSN-15ln",
+        "aliases": [
+            "ASASSN-15ln",
+            "CSS150918:005341+180529"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7670'>ATEL 7670</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57193.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57231.499",
+                "band": "UV",
+                "abmag": "16.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.41",
+                "band": "UV",
+                "abmag": "17.0",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "UGC 546",
+        "snra": "00:53:41.40",
+        "sndec": "+18:05:29.0",
+        "discoverday": 20,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "redshift": 0.015014,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 20
+    }
+}

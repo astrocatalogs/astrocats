@@ -1,0 +1,41 @@
+{
+    "PSN J01522974-1846385": {
+        "name": "PSN J01522974-1846385",
+        "aliases": [
+            "PSN J01522974-1846385",
+            "SNhunt152"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J01522974-1846385.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56208.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "ESO 543-G21",
+        "snra": "01:52:29.74",
+        "sndec": "-18:46:38.5",
+        "discoverday": 8,
+        "discovermonth": 10,
+        "discoveryear": 2012,
+        "redshift": 0.01914,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 10,
+        "maxday": 8
+    }
+}

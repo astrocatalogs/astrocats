@@ -1,0 +1,45 @@
+{
+    "SN2012bt": {
+        "name": "SN2012bt",
+        "aliases": [
+            "SN2012bt",
+            "PSN J18081305-6223542"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003087.txt'>CBET 3087</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55995.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 9,
+        "discovermonth": 3,
+        "host": "IC 4674",
+        "claimedtype": "Ic",
+        "hvel": "4311",
+        "galra": "180813",
+        "galdec": "-622344",
+        "snra": "18:08:13.05",
+        "sndec": "-62:23:54.3",
+        "discoverer": "CHASE",
+        "redshift": 0.0144,
+        "maxyear": 2012,
+        "maxmonth": 3,
+        "maxday": 9,
+        "z": 0.0145
+    }
+}

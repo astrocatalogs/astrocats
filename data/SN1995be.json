@@ -1,0 +1,44 @@
+{
+    "SN1995be": {
+        "name": "SN1995be",
+        "aliases": [
+            "SN1995be"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06400/06433.html'>IAUC 6433</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49915.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1995,
+        "discoverday": 17,
+        "discovermonth": 7,
+        "host": "A155814+1946",
+        "galra": "155814",
+        "galdec": "+194606",
+        "snra": "15:58:14.30",
+        "sndec": "+19:46:06.5",
+        "discoverer": "Robert McNaught",
+        "maxyear": 1995,
+        "maxmonth": 7,
+        "maxday": 17
+    }
+}

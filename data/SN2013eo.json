@@ -1,0 +1,45 @@
+{
+    "SN2013eo": {
+        "name": "SN2013eo",
+        "aliases": [
+            "SN2013eo",
+            "PSN J20065788-5625312"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003614.txt'>CBET 3614</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56503.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 7,
+        "host": "PGC 161935",
+        "claimedtype": "Ia",
+        "hvel": "15590",
+        "galra": "200656",
+        "galdec": "-562518",
+        "snra": "20:06:57.88",
+        "sndec": "-56:25:31.2",
+        "discoverer": "Peter Marples and Greg Bock",
+        "redshift": 0.05,
+        "maxyear": 2013,
+        "maxmonth": 7,
+        "maxday": 30,
+        "z": 0.0534
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "PS1-13dom": {
+        "name": "PS1-13dom",
+        "aliases": [
+            "PS1-13dom"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5521'>ATEL 5521</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56586.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "02:40:49.25",
+        "sndec": "-23:02:50.5",
+        "discoverday": 21,
+        "discovermonth": 10,
+        "discoveryear": 2013,
+        "redshift": 0.06,
+        "discoverer": "PS1",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 21
+    }
+}

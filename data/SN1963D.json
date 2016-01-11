@@ -1,0 +1,158 @@
+{
+    "SN1963D": {
+        "name": "SN1963D",
+        "aliases": [
+            "SN1963D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1965MmSAI..36..299B'>1965MmSAI..36..299B</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1985PZ.....22..191T'>1985PZ.....22..191T</a>",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "4",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01800/01816.html'>IAUC 1816</a>",
+                "alias": "5"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38054.0",
+                "band": "B",
+                "abmag": "15.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38056.0",
+                "band": "B",
+                "abmag": "16",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38057.00999999978",
+                "band": "B",
+                "abmag": "16.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38057.799999999814",
+                "band": "B",
+                "abmag": "16.23",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38060.02000000002",
+                "band": "B",
+                "abmag": "16.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38060.799999999814",
+                "band": "B",
+                "abmag": "16.65",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38061.89999999991",
+                "band": "B",
+                "abmag": "16.53",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38065.0",
+                "band": "B",
+                "abmag": "16.94",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38084.0",
+                "band": "B",
+                "abmag": "18.85",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38086.0",
+                "band": "B",
+                "abmag": "18.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38089.02000000002",
+                "band": "B",
+                "abmag": "18.95",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38102.939999999944",
+                "band": "B",
+                "abmag": "19.05",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38105.950000000186",
+                "band": "B",
+                "abmag": "19.05",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38149.35999999987",
+                "band": "B",
+                "abmag": "19.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "38051.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "5,4"
+            }
+        ],
+        "discoveryear": 1963,
+        "maxday": 22,
+        "maxmonth": 1,
+        "host": "NGC 4146",
+        "claimedtype": "Ia*",
+        "hvel": "6522",
+        "galra": "121018",
+        "galdec": "+262552",
+        "discoverer": "Leonida Rosino",
+        "snra": "12:10:20.0",
+        "sndec": "+26:25:22.0",
+        "discoverday": 22,
+        "discovermonth": 1,
+        "maxyear": 1963,
+        "z": 0.022
+    }
+}

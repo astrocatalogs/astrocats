@@ -1,0 +1,37 @@
+{
+    "MASTER OT J075942.06+560045.8": {
+        "name": "MASTER OT J075942.06+560045.8",
+        "aliases": [
+            "MASTER OT J075942.06+560045.8"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4963'>ATEL 4963</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56381.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "07:59:42.06",
+        "sndec": "+56:00:45.8",
+        "discoverday": 30,
+        "discovermonth": 3,
+        "discoveryear": 2013,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 30
+    }
+}

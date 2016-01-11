@@ -1,0 +1,105 @@
+{
+    "SN1989D": {
+        "name": "SN1989D",
+        "aliases": [
+            "SN1989D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1991SvA....68..341K'>1991SvA....68..341K</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04700/04730.html'>IAUC 4730</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47565.89999999991",
+                "band": "B",
+                "abmag": "16.34",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47566.0",
+                "band": "B",
+                "abmag": "16.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47585.799999999814",
+                "band": "B",
+                "abmag": "18.12",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47585.799999999814",
+                "band": "V",
+                "abmag": "17.48",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47587.799999999814",
+                "band": "B",
+                "abmag": "18.53",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47589.89999999991",
+                "band": "B",
+                "abmag": "18.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47591.799999999814",
+                "band": "B",
+                "abmag": "18.56",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47559.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1989,
+        "discoverday": 2,
+        "discovermonth": 2,
+        "host": "NGC 2963",
+        "claimedtype": "Ia",
+        "hvel": "6553",
+        "galra": "094750",
+        "galdec": "+725756",
+        "snra": "09:47:50.7",
+        "sndec": "+72:58:15.0",
+        "discoverer": "Paul Wild",
+        "maxyear": 1989,
+        "maxmonth": 2,
+        "maxday": 2,
+        "z": 0.0221
+    }
+}

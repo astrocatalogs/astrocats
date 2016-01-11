@@ -1,0 +1,37 @@
+{
+    "K0211-002": {
+        "name": "K0211-002",
+        "aliases": [
+            "K0211-002"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/CBAT_PSN.html'>CBET PSN</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52580.5",
+                "band": "",
+                "abmag": "26.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "02:17:16.18",
+        "sndec": "-05:06:02.7",
+        "discoverday": 2,
+        "discovermonth": 11,
+        "discoveryear": 2002,
+        "discoverer": "M. Doi",
+        "maxyear": 2002,
+        "maxmonth": 11,
+        "maxday": 2
+    }
+}

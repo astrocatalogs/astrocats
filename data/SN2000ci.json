@@ -1,0 +1,69 @@
+{
+    "SN2000ci": {
+        "name": "SN2000ci",
+        "aliases": [
+            "SN2000ci"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07400/07424.html#Item1'>IAUC 7424</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51676.279999999795",
+                "band": "C",
+                "abmag": "18.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51679.99000000022",
+                "band": "R",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51675.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 11,
+        "discovermonth": 5,
+        "host": "NGC 6470",
+        "hvel": "8120",
+        "galra": "174413",
+        "galdec": "+673535",
+        "snra": "17:44:13.21",
+        "sndec": "+67:35:46.3",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2000,
+        "maxmonth": 5,
+        "maxday": 12,
+        "z": 0.0275
+    }
+}

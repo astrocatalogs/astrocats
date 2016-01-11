@@ -1,0 +1,113 @@
+{
+    "SN2003B": {
+        "name": "SN2003B",
+        "aliases": [
+            "SN2003B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08042.html#Item1'>IAUC 8042</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52636.08999999985",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52644.5",
+                "band": "C",
+                "abmag": "15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52646.79000000004",
+                "band": "R",
+                "abmag": "15.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52650.74000000022",
+                "band": "R",
+                "abmag": "15.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52652.060000000056",
+                "band": "R",
+                "abmag": "15.98",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52692.799999999814",
+                "band": "R",
+                "abmag": "15.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52701.75",
+                "band": "R",
+                "abmag": "16.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52728.70999999996",
+                "band": "R",
+                "abmag": "17.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52645.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 28,
+        "discovermonth": 12,
+        "host": "NGC 1097",
+        "claimedtype": "II",
+        "hvel": "1274",
+        "galra": "024619",
+        "galdec": "-301630",
+        "snra": "02:46:13.788",
+        "sndec": "-30:13:45.19",
+        "discoverer": "Robert Evans",
+        "redshift": 0.004,
+        "maxyear": 2003,
+        "maxmonth": 1,
+        "maxday": 5,
+        "z": 0.00426
+    }
+}

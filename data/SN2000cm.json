@@ -1,0 +1,106 @@
+{
+    "SN2000cm": {
+        "name": "SN2000cm",
+        "aliases": [
+            "SN2000cm"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07400/07436.html#Item1'>IAUC 7436</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51695.0",
+                "band": "I",
+                "abmag": "16",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51699.87000000011",
+                "band": "C",
+                "abmag": "14.95",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51700.85999999987",
+                "band": "C",
+                "abmag": "15.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51710.87000000011",
+                "band": "R",
+                "abmag": "15.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51712.0",
+                "band": "C",
+                "abmag": "15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51718.93000000017",
+                "band": "C",
+                "abmag": "15.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51725.87000000011",
+                "band": "R",
+                "abmag": "16",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51698.5",
+                "band": "",
+                "abmag": "14.9",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 31,
+        "discovermonth": 5,
+        "host": "FGC 1384",
+        "claimedtype": "Ia",
+        "hvel": "2170",
+        "galra": "121259",
+        "galdec": "+071800",
+        "snra": "12:12:59.43",
+        "sndec": "+07:18:00.8",
+        "discoverer": "Jean Mueller",
+        "redshift": 0.008,
+        "maxyear": 2000,
+        "maxmonth": 6,
+        "maxday": 3,
+        "z": 0.00726
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "HSC-SN14o": {
+        "name": "HSC-SN14o",
+        "aliases": [
+            "HSC-SN14o"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6763'>ATEL 6763</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56986.5",
+                "band": "",
+                "abmag": "25.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "03:18:23.50",
+        "sndec": "+41:18:42.6",
+        "discoverday": 25,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "discoverer": "Subaru/Hyper Suprime-Cam",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 25
+    }
+}

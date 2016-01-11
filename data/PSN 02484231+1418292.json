@@ -1,0 +1,45 @@
+{
+    "PSN 02484231+1418292": {
+        "name": "PSN 02484231+1418292",
+        "aliases": [
+            "PSN 02484231+1418292"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56702.18",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56712.83297",
+                "band": "U",
+                "abmag": "20.4",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 14,
+        "discoveryear": 2014,
+        "discovermonth": 2,
+        "discoverday": 14
+    }
+}

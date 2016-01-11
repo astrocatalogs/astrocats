@@ -1,0 +1,45 @@
+{
+    "SN2013K": {
+        "name": "SN2013K",
+        "aliases": [
+            "SN2013K",
+            "PSN J17393154-8518381"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003391.txt'>CBET 3391</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56311.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 19,
+        "discovermonth": 1,
+        "host": "ESO 9-G10",
+        "claimedtype": "IIP",
+        "hvel": "2419",
+        "galra": "173931",
+        "galdec": "-851837",
+        "snra": "17:39:31.54",
+        "sndec": "-85:18:38.1",
+        "discoverer": "Stu Parker",
+        "redshift": 0.008,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 19,
+        "z": 0.0081
+    }
+}

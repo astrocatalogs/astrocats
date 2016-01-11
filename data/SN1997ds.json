@@ -1,0 +1,41 @@
+{
+    "SN1997ds": {
+        "name": "SN1997ds",
+        "aliases": [
+            "SN1997ds"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50769.0",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1997",
+        "discoverday": "19",
+        "discovermonth": "11",
+        "host": "MCG -1-57-7",
+        "claimedtype": "II",
+        "hvel": "2833",
+        "galra": "222412",
+        "galdec": "-032856",
+        "snra": "22:24:11.51",
+        "sndec": "-03:29:10.5",
+        "discoverer": "BAO Supernova Survey",
+        "redshift": 0.0057,
+        "z": 0.00949
+    }
+}

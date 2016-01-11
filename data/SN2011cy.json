@@ -1,0 +1,43 @@
+{
+    "SN2011cy": {
+        "name": "SN2011cy",
+        "aliases": [
+            "SN2011cy",
+            "MLS110507:145837+022059"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002733.txt'>CBET 2733</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55687.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 6,
+        "discovermonth": 5,
+        "host": "A145837+0220",
+        "claimedtype": "Ia",
+        "redshift": 0.16,
+        "galra": "145837",
+        "galdec": "+022059",
+        "snra": "14:58:37.10",
+        "sndec": "+02:20:59.1",
+        "discoverer": "CRTS",
+        "maxyear": 2011,
+        "maxmonth": 5,
+        "maxday": 6
+    }
+}

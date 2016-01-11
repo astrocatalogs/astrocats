@@ -1,0 +1,56 @@
+{
+    "PSN 03281419+3801111": {
+        "name": "PSN 03281419+3801111",
+        "aliases": [
+            "PSN 03281419+3801111"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Andrea Mantero ",
+                "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57012.9",
+                "band": "V",
+                "abmag": "16.99",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57013.2",
+                "band": "R",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57013.836",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 22,
+        "discoveryear": 2014,
+        "discovermonth": 12,
+        "discoverday": 21
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "SN2008dg": {
+        "name": "SN2008dg",
+        "aliases": [
+            "SN2008dg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54625.0",
+                "band": "",
+                "abmag": "18.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2008",
+        "discoverday": "8",
+        "discovermonth": 6,
+        "host": "A125850+2422",
+        "hvel": "12900",
+        "galra": "125850",
+        "galdec": "+242257",
+        "snra": "125850.55",
+        "sndec": "+242257.4",
+        "discoverer": "Drake et al.",
+        "z": 0.044
+    }
+}

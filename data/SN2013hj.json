@@ -1,0 +1,81 @@
+{
+    "SN2013hj": {
+        "name": "SN2013hj",
+        "aliases": [
+            "SN2013hj",
+            "PS1-13eqx"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003757.txt'>CBET 3757</a>",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56637.5",
+                "band": "",
+                "abmag": "14.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56329.101",
+                "band": "CV",
+                "abmag": "15.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56641.126",
+                "band": "V",
+                "abmag": "14.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56641.131",
+                "band": "B",
+                "abmag": "14.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56690.9252",
+                "band": "CR",
+                "abmag": "14.646",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 2,
+        "host": "MCG -2-24-3",
+        "claimedtype": "II",
+        "hvel": "2090",
+        "galra": "091207",
+        "galdec": "-152552",
+        "snra": "09:12:06.29",
+        "sndec": "-15:25:46.0",
+        "discoverer": "CHASE",
+        "redshift": 0.0069,
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 11,
+        "z": 0.007
+    }
+}

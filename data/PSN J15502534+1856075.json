@@ -1,0 +1,38 @@
+{
+    "PSN J15502534+1856075": {
+        "name": "PSN J15502534+1856075",
+        "aliases": [
+            "PSN J15502534+1856075"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J15502534+1856075.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57366.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "host": "NGC 6004",
+        "snra": "15:50:25.34",
+        "sndec": "+18:56:07.5",
+        "discoverday": 10,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "discoverer": "Koichi Itagaki",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 10
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "MASTER OT J023036.19+291256.9": {
+        "name": "MASTER OT J023036.19+291256.9",
+        "aliases": [
+            "MASTER OT J023036.19+291256.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4740'>ATEL 4740</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56306.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "02:30:36.19",
+        "sndec": "+29:12:56.9",
+        "discoverday": 14,
+        "discovermonth": 1,
+        "discoveryear": 2013,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 14
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "PS15abr": {
+        "name": "PS15abr",
+        "aliases": [
+            "PS15abr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57123.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57126.853",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "IIP",
+        "snra": "12:02:35.45",
+        "sndec": "+20:24:39.1",
+        "discoverday": 11,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "redshift": 0.025,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 14
+    }
+}

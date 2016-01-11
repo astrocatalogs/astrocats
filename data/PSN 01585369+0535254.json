@@ -1,0 +1,70 @@
+{
+    "PSN 01585369+0535254": {
+        "name": "PSN 01585369+0535254",
+        "aliases": [
+            "PSN 01585369+0535254"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Seiichiro Kiyota",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56652.1794",
+                "band": "V",
+                "abmag": "15.57",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56652.218",
+                "band": "C",
+                "abmag": "15.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56652.282",
+                "band": "V",
+                "abmag": "15.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56654.197",
+                "band": "C",
+                "abmag": "15.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56654.468",
+                "band": "V",
+                "abmag": "15.5",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 26,
+        "discoveryear": 2013,
+        "discovermonth": 12,
+        "discoverday": 26
+    }
+}

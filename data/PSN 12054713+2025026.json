@@ -1,0 +1,67 @@
+{
+    "PSN 12054713+2025026": {
+        "name": "PSN 12054713+2025026",
+        "aliases": [
+            "PSN 12054713+2025026"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Andre Mantero",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57127.937",
+                "band": "U",
+                "abmag": "19.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57128.597",
+                "band": "C",
+                "abmag": "19.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57129.6736",
+                "band": "U",
+                "abmag": "18.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57132.916",
+                "band": "V",
+                "abmag": "18.87",
+                "source": "5,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 20,
+        "discoveryear": 2015,
+        "discovermonth": 4,
+        "discoverday": 15
+    }
+}

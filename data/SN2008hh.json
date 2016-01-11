@@ -1,0 +1,178 @@
+{
+    "SN2008hh": {
+        "name": "SN2008hh",
+        "aliases": [
+            "SN2008hh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2014ApJS..213...19B'>Bianco et al. 2014</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001500/CBET001575.txt'>CBET 1575</a>",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54792.121",
+                "band": "J",
+                "abmag": "16.289",
+                "instrument": "PAIRITEL",
+                "aberr": "0.094",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54795.207",
+                "band": "J",
+                "abmag": "16.277",
+                "instrument": "PAIRITEL",
+                "aberr": "0.095",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54801.196",
+                "band": "J",
+                "abmag": "16.195",
+                "instrument": "PAIRITEL",
+                "aberr": "0.137",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54802.193",
+                "band": "J",
+                "abmag": "16.365",
+                "instrument": "PAIRITEL",
+                "aberr": "0.095",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54792.121",
+                "band": "H",
+                "abmag": "16.094",
+                "instrument": "PAIRITEL",
+                "aberr": "0.131",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54794.171",
+                "band": "H",
+                "abmag": "16.066",
+                "instrument": "PAIRITEL",
+                "aberr": "0.123",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54795.207",
+                "band": "H",
+                "abmag": "16.084",
+                "instrument": "PAIRITEL",
+                "aberr": "0.127",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54801.196",
+                "band": "H",
+                "abmag": "16.034",
+                "instrument": "PAIRITEL",
+                "aberr": "0.194",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54802.193",
+                "band": "H",
+                "abmag": "16.144",
+                "instrument": "PAIRITEL",
+                "aberr": "0.134",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54792.121",
+                "band": "Ks",
+                "abmag": "15.708",
+                "instrument": "PAIRITEL",
+                "aberr": "0.157",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54794.171",
+                "band": "Ks",
+                "abmag": "16.013",
+                "instrument": "PAIRITEL",
+                "aberr": "0.150",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54795.207",
+                "band": "Ks",
+                "abmag": "15.766",
+                "instrument": "PAIRITEL",
+                "aberr": "0.126",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54801.196",
+                "band": "Ks",
+                "abmag": "15.907",
+                "instrument": "PAIRITEL",
+                "aberr": "0.223",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54802.193",
+                "band": "Ks",
+                "abmag": "15.944",
+                "instrument": "PAIRITEL",
+                "aberr": "0.171",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54788.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "3,2"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 18,
+        "discovermonth": 11,
+        "host": "IC 112",
+        "claimedtype": "Ic",
+        "hvel": "5768",
+        "galra": "012603",
+        "galdec": "+112639",
+        "snra": "01:26:03.65",
+        "sndec": "+11:26:26.5",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0194,
+        "maxyear": 2008,
+        "maxmonth": 11,
+        "maxday": 22,
+        "z": 0.0194
+    }
+}

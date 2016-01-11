@@ -1,0 +1,47 @@
+{
+    "SN1989F": {
+        "name": "SN1989F",
+        "aliases": [
+            "SN1989F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04700/04758.html'>IAUC 4758</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47591.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1989,
+        "discoverday": 6,
+        "discovermonth": 3,
+        "host": "UGC 8084",
+        "claimedtype": "II",
+        "hvel": "2771",
+        "galra": "125822",
+        "galdec": "+024737",
+        "snra": "12:58:23.2",
+        "sndec": "+02:47:55.0",
+        "discoverer": "Paul Wild",
+        "maxyear": 1989,
+        "maxmonth": 3,
+        "maxday": 6,
+        "z": 0.00929
+    }
+}

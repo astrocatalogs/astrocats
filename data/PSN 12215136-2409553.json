@@ -1,0 +1,34 @@
+{
+    "PSN 12215136-2409553": {
+        "name": "PSN 12215136-2409553",
+        "aliases": [
+            "PSN 12215136-2409553"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stu Parker",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56845.371",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 7,
+        "maxday": 7,
+        "discoveryear": 2014,
+        "discovermonth": 7,
+        "discoverday": 7
+    }
+}

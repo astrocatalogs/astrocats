@@ -1,0 +1,39 @@
+{
+    "PSN J16012095+0849515": {
+        "name": "PSN J16012095+0849515",
+        "aliases": [
+            "PSN J16012095+0849515",
+            "PS1-13cyq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J16012095+0849515.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56433.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "host": "UGC 10130",
+        "snra": "16:01:20.95",
+        "sndec": "+08:49:51.5",
+        "discoverday": 21,
+        "discovermonth": 5,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 21
+    }
+}

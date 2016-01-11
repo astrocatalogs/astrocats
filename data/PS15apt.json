@@ -1,0 +1,49 @@
+{
+    "PS15apt": {
+        "name": "PS15apt",
+        "aliases": [
+            "PS15apt"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57176.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57180.92",
+                "band": "CR",
+                "abmag": "18.8",
+                "source": "3,1"
+            }
+        ],
+        "host": "NGC 6670B",
+        "snra": "18:33:32.52",
+        "sndec": "+59:53:13.4",
+        "discoverday": 3,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 3
+    }
+}

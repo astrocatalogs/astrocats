@@ -1,0 +1,656 @@
+{
+    "LSQ12hzs": {
+        "name": "LSQ12hzs",
+        "aliases": [
+            "LSQ12hzs"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4692'>ATEL 4692</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "B",
+                "abmag": "19.383",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.036",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "B",
+                "abmag": "19.212",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.021",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "B",
+                "abmag": "19.121",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.018",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "B",
+                "abmag": "19.101",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.026",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "B",
+                "abmag": "19.028",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.02",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "18.991",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "18.941",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "18.882",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.01",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "18.914",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.01",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "18.927",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.011",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "18.937",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "B",
+                "abmag": "19.071",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.013",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "B",
+                "abmag": "19.153",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.015",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "B",
+                "abmag": "19.349",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.017",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "B",
+                "abmag": "19.588",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.024",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "B",
+                "abmag": "19.94",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.057",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56319.5",
+                "band": "B",
+                "abmag": "20.525",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.078",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "V",
+                "abmag": "19.194",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.028",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "V",
+                "abmag": "19.121",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.021",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "V",
+                "abmag": "18.974",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.018",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "V",
+                "abmag": "18.901",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.019",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.843",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.794",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.015",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.763",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.013",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.745",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.014",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.748",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.013",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.772",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "V",
+                "abmag": "18.829",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.013",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "V",
+                "abmag": "18.884",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.014",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "V",
+                "abmag": "19.011",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.016",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "V",
+                "abmag": "19.088",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.021",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "V",
+                "abmag": "19.305",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.035",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56319.5",
+                "band": "V",
+                "abmag": "19.574",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.039",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56319.5",
+                "band": "V",
+                "abmag": "19.556",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.038",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "r",
+                "abmag": "19.176",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.022",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "r",
+                "abmag": "19.084",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.018",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "r",
+                "abmag": "18.958",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.015",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "r",
+                "abmag": "18.908",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.013",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.781",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.74",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.015",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.736",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.011",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.662",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.011",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.656",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.01",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.63",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.016",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "r",
+                "abmag": "18.664",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.017",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "r",
+                "abmag": "18.717",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.012",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "r",
+                "abmag": "18.907",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.015",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "r",
+                "abmag": "19.005",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.016",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "r",
+                "abmag": "19.199",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.024",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56319.5",
+                "band": "r",
+                "abmag": "19.312",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.021",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "i",
+                "abmag": "19.267",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.025",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "i",
+                "abmag": "19.255",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.029",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "i",
+                "abmag": "19.143",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.023",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "i",
+                "abmag": "19.146",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.02",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "i",
+                "abmag": "19.095",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.019",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "i",
+                "abmag": "19.031",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.021",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.012",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.018",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.036",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.017",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.041",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.018",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.017",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.024",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.09",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.018",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.101",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.034",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56299.5",
+                "band": "i",
+                "abmag": "19.111",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.022",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "i",
+                "abmag": "19.207",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.02",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "i",
+                "abmag": "19.334",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.022",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "i",
+                "abmag": "19.61",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.033",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56309.5",
+                "band": "i",
+                "abmag": "19.695",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.043",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56319.5",
+                "band": "i",
+                "abmag": "19.829",
+                "instrument": "La Silla-QUEST",
+                "aberr": "0.035",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "3,2"
+            }
+        ],
+        "snra": "04:01:53.19",
+        "sndec": "-26:39:50.3",
+        "redshift": 0.07,
+        "ebv": "0.023",
+        "claimedtype": "Ia",
+        "discoverday": 28,
+        "discovermonth": 12,
+        "discoveryear": 2012,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 7
+    }
+}

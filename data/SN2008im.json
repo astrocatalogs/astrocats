@@ -1,0 +1,48 @@
+{
+    "SN2008im": {
+        "name": "SN2008im",
+        "aliases": [
+            "SN2008im"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001600/CBET001635.txt'>CBET 1635</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54829.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 29,
+        "discovermonth": 12,
+        "host": "UGC 2906",
+        "claimedtype": "Ib",
+        "hvel": "2610",
+        "galra": "040102",
+        "galdec": "+740458",
+        "snra": "04:01:02.15",
+        "sndec": "+74:05:48.5",
+        "discoverer": "Mikko Paivinen and Petri Kehusmaa",
+        "redshift": 0.0083,
+        "maxyear": 2008,
+        "maxmonth": 12,
+        "maxday": 29,
+        "z": 0.00874
+    }
+}

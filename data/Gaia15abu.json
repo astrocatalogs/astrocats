@@ -1,0 +1,75 @@
+{
+    "Gaia15abu": {
+        "name": "Gaia15abu",
+        "aliases": [
+            "Gaia15abu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57062.60800000001",
+                "band": "G",
+                "abmag": "18.55",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57062.68200000003",
+                "band": "G",
+                "abmag": "18.50",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57096.3330000001",
+                "band": "G",
+                "abmag": "20.15",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57096.40700000012",
+                "band": "G",
+                "abmag": "20.14",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57061.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "3,2"
+            }
+        ],
+        "discoveryear": 2015,
+        "snra": "17:04:50.13",
+        "sndec": "+41:01:04.3",
+        "claimedtype": "Ia-pec",
+        "discoverday": 8,
+        "discovermonth": 2,
+        "redshift": 0.075,
+        "discoverer": "Gaia Photometric Science Alerts programme",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 8
+    }
+}

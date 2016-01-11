@@ -1,0 +1,38 @@
+{
+    "CL1226_1": {
+        "name": "CL1226_1",
+        "aliases": [
+            "CL1226_1"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=723'>ATEL 723</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53759.5",
+                "band": "",
+                "abmag": "20.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "12:26:54.507",
+        "sndec": "+33:33:58.28",
+        "discoverday": 24,
+        "discovermonth": 1,
+        "discoveryear": 2006,
+        "redshift": 0.888,
+        "discoverer": "HST cluster SN project",
+        "maxyear": 2006,
+        "maxmonth": 1,
+        "maxday": 24
+    }
+}

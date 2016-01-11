@@ -1,0 +1,47 @@
+{
+    "SN1963C": {
+        "name": "SN1963C",
+        "aliases": [
+            "SN1963C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1964PASP...76..325Z'>PASP 76, 325</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38052.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1963,
+        "maxday": 23,
+        "maxmonth": 1,
+        "host": "CGCG 160-48",
+        "claimedtype": "I",
+        "hvel": "6489",
+        "galra": "125748",
+        "galdec": "+275259",
+        "snra": "12:57:47.73",
+        "sndec": "+27:53:05.7",
+        "discoverer": "Fritz Zwicky",
+        "discoverday": 23,
+        "discovermonth": 1,
+        "maxyear": 1963,
+        "z": 0.0219
+    }
+}

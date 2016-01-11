@@ -1,0 +1,48 @@
+{
+    "SN2008dv": {
+        "name": "SN2008dv",
+        "aliases": [
+            "SN2008dv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001400/CBET001425.txt'>CBET 1425</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54647.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 30,
+        "discovermonth": 6,
+        "host": "NGC 1343",
+        "claimedtype": "Ic",
+        "hvel": "2180",
+        "galra": "033750",
+        "galdec": "+723420",
+        "snra": "03:37:51.43",
+        "sndec": "+72:34:21.8",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.0074,
+        "maxyear": 2008,
+        "maxmonth": 6,
+        "maxday": 30,
+        "z": 0.0073
+    }
+}

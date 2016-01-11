@@ -1,0 +1,60 @@
+{
+    "SN1996cc": {
+        "name": "SN1996cc",
+        "aliases": [
+            "SN1996cc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50440.87000000011",
+                "band": "V",
+                "abmag": "15.58",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50442.220000000205",
+                "band": "C",
+                "abmag": "15.2",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1996,
+        "discoverday": 23,
+        "discovermonth": 12,
+        "host": "NGC 5673",
+        "claimedtype": "II",
+        "hvel": "2166",
+        "galra": "143131",
+        "galdec": "+495731",
+        "snra": "14:31:28.45",
+        "sndec": "+49:57:43.8",
+        "discoverer": "Shunji Sasaki",
+        "redshift": 0.0068,
+        "maxyear": 1996,
+        "maxmonth": 12,
+        "maxday": 25,
+        "z": 0.00725
+    }
+}

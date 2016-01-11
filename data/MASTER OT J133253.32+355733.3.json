@@ -1,0 +1,39 @@
+{
+    "MASTER OT J133253.32+355733.3": {
+        "name": "MASTER OT J133253.32+355733.3",
+        "aliases": [
+            "MASTER OT J133253.32+355733.3"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4805'>ATEL 4805</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56333.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:32:53.32",
+        "sndec": "+35:57:33.3",
+        "discoverday": 10,
+        "discovermonth": 2,
+        "discoveryear": 2013,
+        "redshift": 0.06,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 10
+    }
+}

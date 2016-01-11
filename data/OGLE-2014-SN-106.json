@@ -1,0 +1,37 @@
+{
+    "OGLE-2014-SN-106": {
+        "name": "OGLE-2014-SN-106",
+        "aliases": [
+            "OGLE-2014-SN-106"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6596'>ATEL 6596</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56947.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "03:00:22.25",
+        "sndec": "-63:20:11.5",
+        "discoverday": 17,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 17
+    }
+}

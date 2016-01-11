@@ -1,0 +1,112 @@
+{
+    "SN1977F": {
+        "name": "SN1977F",
+        "aliases": [
+            "SN1977F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1978A%26AS...34..387C'>1978A&AS...34..387C</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03000/03037.html'>IAUC 3037</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43156.95999999996",
+                "band": "B",
+                "abmag": "16.37",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43158.93000000017",
+                "band": "B",
+                "abmag": "16.46",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43182.919999999925",
+                "band": "B",
+                "abmag": "18.11",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43188.87999999989",
+                "band": "B",
+                "abmag": "18.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43197.99000000022",
+                "band": "B",
+                "abmag": "18.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43199.87000000011",
+                "band": "B",
+                "abmag": "18.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43200.029999999795",
+                "band": "B",
+                "abmag": "18.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43225.91000000015",
+                "band": "B",
+                "abmag": "18.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "43157.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1977,
+        "maxday": 14,
+        "maxmonth": 1,
+        "host": "UGC 5912",
+        "claimedtype": "I",
+        "hvel": "6295",
+        "galra": "104828",
+        "galdec": "+263509",
+        "discoverer": "Leonida Rosino",
+        "snra": "10:48:26.9",
+        "sndec": "+26:34:39.0",
+        "discoverday": 13,
+        "discovermonth": 1,
+        "maxyear": 1977,
+        "z": 0.0212
+    }
+}

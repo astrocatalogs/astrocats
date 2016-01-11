@@ -1,0 +1,46 @@
+{
+    "SN2001gh": {
+        "name": "SN2001gh",
+        "aliases": [
+            "SN2001gh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07762.html#Item1'>IAUC 7762</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52223.5",
+                "band": "",
+                "abmag": "20.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 10,
+        "discovermonth": 11,
+        "host": "A005703-2742",
+        "claimedtype": "II",
+        "redshift": 0.16,
+        "galra": "005703",
+        "galdec": "-274232",
+        "snra": "00:57:03.63",
+        "sndec": "-27:42:32.9",
+        "discoverer": "G. Altavilla, et. el.",
+        "maxyear": 2001,
+        "maxmonth": 11,
+        "maxday": 10
+    }
+}

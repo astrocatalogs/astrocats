@@ -1,0 +1,46 @@
+{
+    "SN2002B": {
+        "name": "SN2002B",
+        "aliases": [
+            "SN2002B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07791.html#Item1'>IAUC 7791</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52280.5",
+                "band": "",
+                "abmag": "20.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2002,
+        "maxday": 6,
+        "maxmonth": 1,
+        "host": "A054046-7151",
+        "claimedtype": "Ia",
+        "redshift": 0.143,
+        "galra": "054046",
+        "galdec": "-715115",
+        "snra": "05:40:46.06",
+        "sndec": "-71:51:15.1",
+        "discoverer": "SuperMACHO project",
+        "discoverday": 6,
+        "discovermonth": 1,
+        "maxyear": 2002
+    }
+}

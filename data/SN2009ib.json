@@ -1,0 +1,41 @@
+{
+    "SN2009ib": {
+        "name": "SN2009ib",
+        "aliases": [
+            "SN2009ib"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55049.0",
+                "band": "R",
+                "abmag": "14.7",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "2009",
+        "discoverday": "6",
+        "discovermonth": "8",
+        "host": "NGC 1559",
+        "claimedtype": "IIP",
+        "hvel": "1294",
+        "galra": "041736",
+        "galdec": "-624701",
+        "snra": "04:17:39.92",
+        "sndec": "-62:46:38.7",
+        "discoverer": "CHASE",
+        "redshift": 0.0044,
+        "z": 0.00433
+    }
+}

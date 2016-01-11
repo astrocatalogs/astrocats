@@ -1,0 +1,127 @@
+{
+    "SN2000er": {
+        "name": "SN2000er",
+        "aliases": [
+            "SN2000er"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07528.html#Item1'>IAUC 7528</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51871.830000000075",
+                "band": "C",
+                "abmag": "15.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51872.779999999795",
+                "band": "R",
+                "abmag": "15.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51874.169999999925",
+                "band": "B",
+                "abmag": "17.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51874.169999999925",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51874.169999999925",
+                "band": "V",
+                "abmag": "16.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51874.830000000075",
+                "band": "R",
+                "abmag": "15.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51876.37000000011",
+                "band": "R",
+                "abmag": "15.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51877.450000000186",
+                "band": "R",
+                "abmag": "15.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51878.37999999989",
+                "band": "R",
+                "abmag": "15.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51879.419999999925",
+                "band": "R",
+                "abmag": "15.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51871.5",
+                "band": "",
+                "abmag": "15.1",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 23,
+        "discovermonth": 11,
+        "host": "ESO 115-G9",
+        "claimedtype": "Ib-pec",
+        "hvel": "9345",
+        "galra": "022430",
+        "galdec": "-582604",
+        "snra": "02:24:32.54",
+        "sndec": "-58:26:18.0",
+        "discoverer": "Robin Chassagne",
+        "redshift": 0.031,
+        "maxyear": 2000,
+        "maxmonth": 11,
+        "maxday": 23,
+        "z": 0.0317
+    }
+}

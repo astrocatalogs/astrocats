@@ -1,0 +1,72 @@
+{
+    "CSS140222:112037+302809": {
+        "name": "CSS140222:112037+302809",
+        "aliases": [
+            "CSS140222:112037+302809"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            },
+            {
+                "name": "Andy Cason",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56749.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.234",
+                "band": "UV",
+                "abmag": "17.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56755.227",
+                "band": "V",
+                "abmag": "17.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56755.26",
+                "band": "V",
+                "abmag": "17.5",
+                "source": "5,1"
+            }
+        ],
+        "claimedtype": "IIn",
+        "snra": "11:20:37.13",
+        "sndec": "+30:28:09.4",
+        "discoverday": 2,
+        "discovermonth": 4,
+        "discoveryear": 2014,
+        "redshift": 0.033,
+        "discoverer": "CRTS",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 2
+    }
+}

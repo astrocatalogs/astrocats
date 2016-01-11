@@ -1,0 +1,45 @@
+{
+    "PSN 00393478+0051176": {
+        "name": "PSN 00393478+0051176",
+        "aliases": [
+            "PSN 00393478+0051176"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56947.531",
+                "band": "C",
+                "abmag": "20.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56951.961",
+                "band": "CR",
+                "abmag": "20.11",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 21,
+        "discoveryear": 2014,
+        "discovermonth": 10,
+        "discoverday": 17
+    }
+}

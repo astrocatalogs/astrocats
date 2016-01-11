@@ -1,0 +1,47 @@
+{
+    "SN1991au": {
+        "name": "SN1991au",
+        "aliases": [
+            "SN1991au"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05300/05336.html'>IAUC 5336</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48499.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1991,
+        "discoverday": 31,
+        "discovermonth": 8,
+        "host": "UGC 11616",
+        "claimedtype": "II?",
+        "hvel": "2613",
+        "galra": "204110",
+        "galdec": "+632947",
+        "discoverer": "Jean Mueller",
+        "snra": "20:41:07.7",
+        "sndec": "+63:29:44.0",
+        "maxyear": 1991,
+        "maxmonth": 8,
+        "maxday": 31,
+        "z": 0.00875
+    }
+}

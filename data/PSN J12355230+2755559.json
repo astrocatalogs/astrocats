@@ -1,0 +1,40 @@
+{
+    "PSN J12355230+2755559": {
+        "name": "PSN J12355230+2755559",
+        "aliases": [
+            "PSN J12355230+2755559"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002976.txt'>CBET 2976</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55936.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "LBV",
+        "host": "NGC 4559",
+        "snra": "12:35:52.30",
+        "sndec": "+27:55:55.9",
+        "discoverday": 10,
+        "discovermonth": 1,
+        "discoveryear": 2012,
+        "redshift": 0.003,
+        "discoverer": "LOSS",
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 10
+    }
+}

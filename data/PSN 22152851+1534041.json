@@ -1,0 +1,52 @@
+{
+    "PSN 22152851+1534041": {
+        "name": "PSN 22152851+1534041",
+        "aliases": [
+            "PSN 22152851+1534041"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "2"
+            },
+            {
+                "name": "Stu Parker",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56545.972",
+                "band": "CR",
+                "abmag": "16.70",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56543.0",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56544.016",
+                "band": "CR",
+                "abmag": "16.58",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 8,
+        "discoveryear": 2013,
+        "discovermonth": 9,
+        "discoverday": 8
+    }
+}

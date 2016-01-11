@@ -1,0 +1,41 @@
+{
+    "PSN J14432601+5725412": {
+        "name": "PSN J14432601+5725412",
+        "aliases": [
+            "PSN J14432601+5725412",
+            "MASTER OT J144326.01+572541.2"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7618'>ATEL 7618</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57181.5",
+                "band": "",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "PGC 52589",
+        "snra": "14:43:26.01",
+        "sndec": "+57:25:41.2",
+        "discoverday": 8,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "redshift": 0.06797,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 8
+    }
+}

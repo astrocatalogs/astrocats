@@ -1,0 +1,46 @@
+{
+    "SN1998fc": {
+        "name": "SN1998fc",
+        "aliases": [
+            "SN1998fc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07000/07082.html'>IAUC 7082</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51166.5",
+                "band": "",
+                "abmag": "20.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1998,
+        "discoverday": 19,
+        "discovermonth": 12,
+        "host": "A025912+0329",
+        "claimedtype": "Ia",
+        "redshift": 0.1,
+        "galra": "025912",
+        "galdec": "+032939",
+        "snra": "02:59:12.61",
+        "sndec": "+03:29:39.0",
+        "discoverer": "Wise Observatory Optical Transients Search",
+        "maxyear": 1998,
+        "maxmonth": 12,
+        "maxday": 19
+    }
+}

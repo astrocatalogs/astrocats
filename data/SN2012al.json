@@ -1,0 +1,45 @@
+{
+    "SN2012al": {
+        "name": "SN2012al",
+        "aliases": [
+            "SN2012al",
+            "PSN J10061161+4717406"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003033.txt'>CBET 3033</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55980.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 23,
+        "discovermonth": 2,
+        "host": "A100611+4717",
+        "claimedtype": "IIn",
+        "hvel": "12000",
+        "galra": "100611",
+        "galdec": "+471740",
+        "snra": "10:06:11.61",
+        "sndec": "+47:17:40.6",
+        "discoverer": "CRTS",
+        "redshift": 0.04,
+        "maxyear": 2012,
+        "maxmonth": 2,
+        "maxday": 23,
+        "z": 0.0409
+    }
+}

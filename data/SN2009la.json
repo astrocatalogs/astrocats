@@ -1,0 +1,48 @@
+{
+    "SN2009la": {
+        "name": "SN2009la",
+        "aliases": [
+            "SN2009la"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002000/CBET002013.txt'>CBET 2013</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55146.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2009,
+        "discoverday": 11,
+        "discovermonth": 11,
+        "host": "NGC 1572",
+        "claimedtype": "Ia",
+        "hvel": "6012",
+        "galra": "042243",
+        "galdec": "-403603",
+        "snra": "04:22:45.74",
+        "sndec": "-40:36:48.1",
+        "discoverer": "Stu Parker",
+        "redshift": 0.0204,
+        "maxyear": 2009,
+        "maxmonth": 11,
+        "maxday": 11,
+        "z": 0.0203
+    }
+}

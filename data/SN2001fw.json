@@ -1,0 +1,70 @@
+{
+    "SN2001fw": {
+        "name": "SN2001fw",
+        "aliases": [
+            "SN2001fw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07751.html#Item1'>IAUC 7751</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52224.14999999991",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52231.00999999978",
+                "band": "R",
+                "abmag": "17.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52223.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 10,
+        "discovermonth": 11,
+        "host": "UGC 2116",
+        "claimedtype": "Ib",
+        "hvel": "8853",
+        "galra": "023812",
+        "galdec": "+305051",
+        "snra": "02:38:10.45",
+        "sndec": "+30:50:54.6",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2001,
+        "maxmonth": 11,
+        "maxday": 18,
+        "z": 0.03
+    }
+}

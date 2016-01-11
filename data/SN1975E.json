@@ -1,0 +1,46 @@
+{
+    "SN1975E": {
+        "name": "SN1975E",
+        "aliases": [
+            "SN1975E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02700/02776.html'>IAUC 2776</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "42538.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1975,
+        "discoverday": 6,
+        "discovermonth": 5,
+        "host": "NGC 4102",
+        "hvel": "845",
+        "galra": "120623",
+        "galdec": "+524241",
+        "discoverer": "Dunlap",
+        "snra": "12:06:25.5",
+        "sndec": "+52:43:03.0",
+        "maxyear": 1975,
+        "maxmonth": 5,
+        "maxday": 6,
+        "z": 0.00282
+    }
+}

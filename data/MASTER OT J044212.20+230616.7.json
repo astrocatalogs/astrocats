@@ -1,0 +1,41 @@
+{
+    "MASTER OT J044212.20+230616.7": {
+        "name": "MASTER OT J044212.20+230616.7",
+        "aliases": [
+            "MASTER OT J044212.20+230616.7",
+            "PS1-14abq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6484'>ATEL 6484</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56919.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "IIn",
+        "host": "PGC 1681539",
+        "snra": "04:42:12.20",
+        "sndec": "+23:06:16.7",
+        "discoverday": 19,
+        "discovermonth": 9,
+        "discoveryear": 2014,
+        "redshift": 0.017,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 19
+    }
+}

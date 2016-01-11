@@ -1,0 +1,67 @@
+{
+    "SN2013hb": {
+        "name": "SN2013hb",
+        "aliases": [
+            "SN2013hb",
+            "PSN J01504632+3306356"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003746.txt'>CBET 3746</a>",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "Maurice Audejean",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56592.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56644.753",
+                "band": "CV",
+                "abmag": "17.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56626.887",
+                "band": "CV",
+                "abmag": "17.2",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 27,
+        "discovermonth": 10,
+        "host": "A015046+3306",
+        "claimedtype": "Ia",
+        "hvel": "10500",
+        "galra": "015046",
+        "galdec": "+330635",
+        "snra": "01:50:46.32",
+        "sndec": "+33:06:35.6",
+        "discoverer": "CRTS",
+        "redshift": 0.035,
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 27,
+        "z": 0.0357
+    }
+}

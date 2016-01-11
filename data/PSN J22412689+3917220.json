@@ -1,0 +1,40 @@
+{
+    "PSN J22412689+3917220": {
+        "name": "PSN J22412689+3917220",
+        "aliases": [
+            "PSN J22412689+3917220"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J22412689+3917220.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57269.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "UGC 12156",
+        "snra": "22:41:26.89",
+        "sndec": "+39:17:22.0",
+        "discoverday": 4,
+        "discovermonth": 9,
+        "discoveryear": 2015,
+        "redshift": 0.039,
+        "discoverer": "Jaroslaw Grzegorzek",
+        "maxyear": 2015,
+        "maxmonth": 9,
+        "maxday": 4
+    }
+}

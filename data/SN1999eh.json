@@ -1,0 +1,40 @@
+{
+    "SN1999eh": {
+        "name": "SN1999eh",
+        "aliases": [
+            "SN1999eh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51463.0",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "12",
+        "discovermonth": "10",
+        "host": "NGC 2770",
+        "claimedtype": "Ib",
+        "hvel": "1955",
+        "galra": "090933",
+        "galdec": "+330725",
+        "snra": "09:09:32.67",
+        "sndec": "+33:07:16.9",
+        "discoverer": "Mark Armstrong",
+        "z": 0.00654
+    }
+}

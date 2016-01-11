@@ -1,0 +1,46 @@
+{
+    "SN2005mu": {
+        "name": "SN2005mu",
+        "aliases": [
+            "SN2005mu",
+            "SNF20050519-000"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=499'>ATEL 499</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53508.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 18,
+        "discovermonth": 5,
+        "host": "A213552-2627",
+        "claimedtype": "Ia",
+        "galra": "213552",
+        "galdec": "-262703",
+        "snra": "21:35:52.5",
+        "sndec": "-26:27:03.5",
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2005,
+        "maxmonth": 5,
+        "maxday": 18
+    }
+}

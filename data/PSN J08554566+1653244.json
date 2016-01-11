@@ -1,0 +1,38 @@
+{
+    "PSN J08554566+1653244": {
+        "name": "PSN J08554566+1653244",
+        "aliases": [
+            "PSN J08554566+1653244",
+            "MLS111025:085546+165324"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J08554566+1653244.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55858.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "2,1"
+            }
+        ],
+        "snra": "08:55:45.65",
+        "sndec": "+16:53:24.3",
+        "discoverday": 24,
+        "discovermonth": 10,
+        "discoveryear": 2011,
+        "discoverer": "CRTS",
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 24
+    }
+}

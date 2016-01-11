@@ -1,0 +1,146 @@
+{
+    "SN1999bw": {
+        "name": "SN1999bw",
+        "aliases": [
+            "SN1999bw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51280.200000000186",
+                "band": "C",
+                "abmag": "18.49",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51283.189999999944",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51287.189999999944",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51288.189999999944",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51289.47999999998",
+                "band": "C",
+                "abmag": "17.88",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51289.58999999985",
+                "band": "C",
+                "abmag": "17.87",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51290.97999999998",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51297.5",
+                "band": "C",
+                "abmag": "17.59",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51300.560000000056",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51308.470000000205",
+                "band": "C",
+                "abmag": "17.28",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51310.50999999978",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51311.54000000004",
+                "band": "C",
+                "abmag": "17.34",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51314.549999999814",
+                "band": "C",
+                "abmag": "17.43",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51315.529999999795",
+                "band": "C",
+                "abmag": "17.43",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51318.49000000022",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 12,
+        "discovermonth": 4,
+        "host": "NGC 3198",
+        "claimedtype": "IIn/LBV",
+        "hvel": "663",
+        "galra": "101955",
+        "galdec": "+453259",
+        "snra": "10:19:46.81",
+        "sndec": "+45:31:35.0",
+        "discoverer": "LOSS",
+        "maxyear": 1999,
+        "maxmonth": 5,
+        "maxday": 10,
+        "z": 0.00221
+    }
+}

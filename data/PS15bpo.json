@@ -1,0 +1,48 @@
+{
+    "PS15bpo": {
+        "name": "PS15bpo",
+        "aliases": [
+            "PS15bpo"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57270.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.319",
+                "band": "UV",
+                "abmag": "18.8",
+                "source": "3,1"
+            }
+        ],
+        "snra": "23:06:03.52",
+        "sndec": "+33:36:08.8",
+        "discoverday": 5,
+        "discovermonth": 9,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 9,
+        "maxday": 5
+    }
+}

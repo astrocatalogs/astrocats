@@ -1,0 +1,38 @@
+{
+    "PSN J11454904+2037407": {
+        "name": "PSN J11454904+2037407",
+        "aliases": [
+            "PSN J11454904+2037407"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J11454904+2037407.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55614.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 36683",
+        "snra": "11:45:49.04",
+        "sndec": "+20:37:40.7",
+        "discoverday": 22,
+        "discovermonth": 2,
+        "discoveryear": 2011,
+        "discoverer": "LOSS",
+        "maxyear": 2011,
+        "maxmonth": 2,
+        "maxday": 22
+    }
+}

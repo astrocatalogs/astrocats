@@ -1,0 +1,49 @@
+{
+    "SN2004ip": {
+        "name": "SN2004ip",
+        "aliases": [
+            "SN2004ip",
+            "PSN K0409-001"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08800/08823.html#Item2'>IAUC 8823</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53260.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 12,
+        "discovermonth": 9,
+        "host": "IRAS18293-3413",
+        "claimedtype": "IIP",
+        "hvel": "5542",
+        "galra": "183241",
+        "galdec": "-341128",
+        "snra": "18:32:41.26",
+        "sndec": "-34:11:26.7",
+        "discoverer": "ESO",
+        "redshift": 0.0182,
+        "maxyear": 2004,
+        "maxmonth": 9,
+        "maxday": 12,
+        "z": 0.0187
+    }
+}

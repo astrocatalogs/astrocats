@@ -1,0 +1,44 @@
+{
+    "SN1999cn": {
+        "name": "SN1999cn",
+        "aliases": [
+            "SN1999cn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51343.0",
+                "band": "V",
+                "abmag": "17.9",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "14",
+        "discovermonth": "6",
+        "host": "MCG +2-38-43",
+        "claimedtype": "Ic",
+        "hvel": "6678",
+        "galra": "150646",
+        "galdec": "+125101",
+        "snra": "15:06:46.6",
+        "sndec": "+12:51:29.0",
+        "discoverer": "Telescopio Nazionale Galileo",
+        "redshift": 0.023,
+        "maxyear": "1999",
+        "maxmonth": "6",
+        "maxday": "15",
+        "z": 0.0225
+    }
+}

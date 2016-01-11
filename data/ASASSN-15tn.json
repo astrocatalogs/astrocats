@@ -1,0 +1,51 @@
+{
+    "ASASSN-15tn": {
+        "name": "ASASSN-15tn",
+        "aliases": [
+            "ASASSN-15tn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8376'>ATEL 8376</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57357.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57365.901",
+                "band": "Rc",
+                "abmag": "16.4",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "CGCG 496-51",
+        "snra": "23:10:11.42",
+        "sndec": "+30:34:46.5",
+        "discoverday": 1,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "redshift": 0.03,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 1
+    }
+}

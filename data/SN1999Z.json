@@ -1,0 +1,53 @@
+{
+    "SN1999Z": {
+        "name": "SN1999Z",
+        "aliases": [
+            "SN1999Z"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51249.200000000186",
+                "band": "C",
+                "abmag": "17.15",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 12,
+        "discovermonth": 3,
+        "host": "UGC 5608",
+        "claimedtype": "IIn",
+        "hvel": "15100",
+        "galra": "102238",
+        "galdec": "+272121",
+        "snra": "10:22:37.23",
+        "sndec": "+27:21:19.8",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.05,
+        "maxyear": 1999,
+        "maxmonth": 3,
+        "maxday": 12,
+        "z": 0.0517
+    }
+}

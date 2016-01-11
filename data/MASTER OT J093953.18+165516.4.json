@@ -1,0 +1,41 @@
+{
+    "MASTER OT J093953.18+165516.4": {
+        "name": "MASTER OT J093953.18+165516.4",
+        "aliases": [
+            "MASTER OT J093953.18+165516.4",
+            "MLS130215:093953+165516"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4799'>ATEL 4799</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56329.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia-91T",
+        "host": "CGCG 92-24",
+        "snra": "09:39:53.18",
+        "sndec": "+16:55:16.4",
+        "discoverday": 6,
+        "discovermonth": 2,
+        "discoveryear": 2013,
+        "redshift": 0.04779,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 6
+    }
+}

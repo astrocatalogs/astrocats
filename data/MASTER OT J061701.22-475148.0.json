@@ -1,0 +1,38 @@
+{
+    "MASTER OT J061701.22-475148.0": {
+        "name": "MASTER OT J061701.22-475148.0",
+        "aliases": [
+            "MASTER OT J061701.22-475148.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7356'>ATEL 7356</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57119.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "host": "ESO 205-5",
+        "snra": "06:17:01.22",
+        "sndec": "-47:51:48.0",
+        "discoverday": 7,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 7
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "MAS022118.32+405115.8": {
+        "name": "MAS022118.32+405115.8",
+        "aliases": [
+            "MAS022118.32+405115.8"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56962.465",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 1,
+        "discoveryear": 2014,
+        "discovermonth": 11,
+        "discoverday": 1
+    }
+}

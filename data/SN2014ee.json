@@ -1,0 +1,45 @@
+{
+    "SN2014ee": {
+        "name": "SN2014ee",
+        "aliases": [
+            "SN2014ee",
+            "PSN J07591099+3254392"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004048.txt'>CBET 4048</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56980.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 19,
+        "discovermonth": 11,
+        "host": "UGC 4132",
+        "claimedtype": "IIn",
+        "hvel": "5210",
+        "galra": "075913",
+        "galdec": "+325454",
+        "snra": "07:59:10.99",
+        "sndec": "+32:54:39.2",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0174,
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 19,
+        "z": 0.0175
+    }
+}

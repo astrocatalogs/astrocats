@@ -1,0 +1,47 @@
+{
+    "SN2008dp": {
+        "name": "SN2008dp",
+        "aliases": [
+            "SN2008dp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001400/CBET001416.txt'>CBET 1416</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54641.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 24,
+        "discovermonth": 6,
+        "host": "ESO 320-G26",
+        "hvel": "2840",
+        "galra": "114950",
+        "galdec": "-384705",
+        "snra": "11:49:48.86",
+        "sndec": "-38:47:02.1",
+        "discoverer": "Berto Monard",
+        "redshift": 0.0092,
+        "maxyear": 2008,
+        "maxmonth": 6,
+        "maxday": 24,
+        "z": 0.00952
+    }
+}

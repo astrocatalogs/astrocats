@@ -1,0 +1,81 @@
+{
+    "SN2000bi": {
+        "name": "SN2000bi",
+        "aliases": [
+            "SN2000bi"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07300/07398.html#Item1'>IAUC 7398</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51625.89999999991",
+                "band": "R",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51641.919999999925",
+                "band": "R",
+                "abmag": "19.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51642.85000000009",
+                "band": "R",
+                "abmag": "19.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51654.830000000075",
+                "band": "R",
+                "abmag": "19.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51624.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 21,
+        "discovermonth": 3,
+        "host": "PGC 20784",
+        "galra": "072133",
+        "galdec": "+554530",
+        "snra": "07:21:33.52",
+        "sndec": "+55:45:30.8",
+        "discoverer": "Monte Agliale Supernovae Search",
+        "maxyear": 2000,
+        "maxmonth": 3,
+        "maxday": 22
+    }
+}

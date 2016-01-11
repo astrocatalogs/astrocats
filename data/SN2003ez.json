@@ -1,0 +1,48 @@
+{
+    "SN2003ez": {
+        "name": "SN2003ez",
+        "aliases": [
+            "SN2003ez"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08141.html#Item1'>IAUC 8141</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52790.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 31,
+        "discovermonth": 5,
+        "host": "PGC 42782",
+        "claimedtype": "Ia",
+        "hvel": "14343",
+        "galra": "124312",
+        "galdec": "-023007",
+        "snra": "12:43:11.878",
+        "sndec": "-02:30:04.19",
+        "discoverer": "LOTOSS",
+        "redshift": 0.048,
+        "maxyear": 2003,
+        "maxmonth": 5,
+        "maxday": 31,
+        "z": 0.049
+    }
+}

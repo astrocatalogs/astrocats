@@ -1,0 +1,41 @@
+{
+    "PSN J03185112-1303472": {
+        "name": "PSN J03185112-1303472",
+        "aliases": [
+            "PSN J03185112-1303472",
+            "SNhunt146"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J03185112-1303472.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56166.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "NGC 1296",
+        "snra": "03:18:51.12",
+        "sndec": "-13:03:47.2",
+        "discoverday": 27,
+        "discovermonth": 8,
+        "discoveryear": 2012,
+        "redshift": 0.031,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 8,
+        "maxday": 27
+    }
+}

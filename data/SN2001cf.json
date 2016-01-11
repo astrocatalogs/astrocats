@@ -1,0 +1,78 @@
+{
+    "SN2001cf": {
+        "name": "SN2001cf",
+        "aliases": [
+            "SN2001cf"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07600/07636.html#Item1'>IAUC 7636</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52055.87000000011",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52055.93000000017",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52062.89999999991",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52054.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 25,
+        "discovermonth": 5,
+        "host": "UGC 7020",
+        "claimedtype": "IIb",
+        "hvel": "6137",
+        "galra": "120237",
+        "galdec": "+410315",
+        "snra": "12:02:31.64",
+        "sndec": "+41:02:58.9",
+        "discoverer": "G. Sala",
+        "redshift": 0.02,
+        "maxyear": 2001,
+        "maxmonth": 6,
+        "maxday": 2,
+        "z": 0.0207
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "SN2011bi": {
+        "name": "SN2011bi",
+        "aliases": [
+            "SN2011bi",
+            "PSN J17100581+4222201"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002600/CBET002691.txt'>CBET 2691</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55654.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 3,
+        "discovermonth": 4,
+        "host": "PGC 59729",
+        "claimedtype": "IIP",
+        "hvel": "8296",
+        "galra": "171005",
+        "galdec": "+422218",
+        "snra": "17:10:05.80",
+        "sndec": "+42:22:20.1",
+        "discoverer": "Tom Boles",
+        "redshift": 0.0277,
+        "maxyear": 2011,
+        "maxmonth": 4,
+        "maxday": 3,
+        "z": 0.0281
+    }
+}

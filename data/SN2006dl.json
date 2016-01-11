@@ -1,0 +1,47 @@
+{
+    "SN2006dl": {
+        "name": "SN2006dl",
+        "aliases": [
+            "SN2006dl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08727.html#Item2'>IAUC 8727</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53914.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 28,
+        "discovermonth": 6,
+        "host": "MCG +4-31-5",
+        "claimedtype": "IIb/Ib",
+        "hvel": "6556",
+        "galra": "130516",
+        "galdec": "+255728",
+        "snra": "13:05:16.73",
+        "sndec": "+25:57:27.8",
+        "discoverer": "LOSS",
+        "maxyear": 2006,
+        "maxmonth": 6,
+        "maxday": 28,
+        "z": 0.0221
+    }
+}

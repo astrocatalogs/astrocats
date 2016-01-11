@@ -1,0 +1,47 @@
+{
+    "SN1964C": {
+        "name": "SN1964C",
+        "aliases": [
+            "SN1964C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1964PASP...76..325Z'>PASP 76, 325</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38434.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1964,
+        "discoverday": 9,
+        "discovermonth": 2,
+        "host": "IC 1188",
+        "claimedtype": "I",
+        "hvel": "10699",
+        "galra": "160607",
+        "galdec": "+172739",
+        "snra": "16:06:06.86",
+        "sndec": "+17:27:34.7",
+        "discoverer": "Fritz Zwicky",
+        "maxyear": 1964,
+        "maxmonth": 2,
+        "maxday": 9,
+        "z": 0.0363
+    }
+}

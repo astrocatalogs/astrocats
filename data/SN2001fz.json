@@ -1,0 +1,91 @@
+{
+    "SN2001fz": {
+        "name": "SN2001fz",
+        "aliases": [
+            "SN2001fz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07753.html#Item2'>IAUC 7753</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52228.799999999814",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52229.700000000186",
+                "band": "C",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52231.299999999814",
+                "band": "R",
+                "abmag": "17.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52237.080000000075",
+                "band": "R",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52286.919999999925",
+                "band": "R",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52228.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 15,
+        "discovermonth": 11,
+        "host": "NGC 2280",
+        "claimedtype": "II",
+        "hvel": "1963",
+        "galra": "064448",
+        "galdec": "-273820",
+        "snra": "06:44:50.26",
+        "sndec": "-27:37:12.7",
+        "discoverer": "BAO",
+        "maxyear": 2001,
+        "maxmonth": 11,
+        "maxday": 16,
+        "z": 0.00657
+    }
+}

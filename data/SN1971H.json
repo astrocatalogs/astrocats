@@ -1,0 +1,44 @@
+{
+    "SN1971H": {
+        "name": "SN1971H",
+        "aliases": [
+            "SN1971H"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1972PASP...84..844K'>PASP 84, 844</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41058.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1971,
+        "discoverday": 17,
+        "discovermonth": 4,
+        "host": "A112054+2818",
+        "galra": "112054",
+        "galdec": "+2818",
+        "discoverer": "Charles Kowal",
+        "snra": "11:20:52.9",
+        "sndec": "+28:17:03.0",
+        "maxyear": 1971,
+        "maxmonth": 4,
+        "maxday": 17
+    }
+}

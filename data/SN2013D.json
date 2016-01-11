@@ -1,0 +1,45 @@
+{
+    "SN2013D": {
+        "name": "SN2013D",
+        "aliases": [
+            "SN2013D",
+            "MASTER OT J034115.13+152303.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4702'>ATEL 4702</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56294.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 1,
+        "host": "PGC 1483058",
+        "claimedtype": "Ia",
+        "hvel": "8130",
+        "galra": "034114",
+        "galdec": "+152244",
+        "snra": "03:41:15.13",
+        "sndec": "+15:23:03.9",
+        "discoverer": "MASTER",
+        "redshift": 0.027119,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 2,
+        "z": 0.0275
+    }
+}

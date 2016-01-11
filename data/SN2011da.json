@@ -1,0 +1,45 @@
+{
+    "SN2011da": {
+        "name": "SN2011da",
+        "aliases": [
+            "SN2011da",
+            "CSS110504:122228+374940"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002733.txt'>CBET 2733</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55684.5",
+                "band": "",
+                "abmag": "19.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 3,
+        "discovermonth": 5,
+        "host": "A122227+3749",
+        "claimedtype": "IIP",
+        "hvel": "18000",
+        "galra": "122227",
+        "galdec": "+374939",
+        "snra": "12:22:27.91",
+        "sndec": "+37:49:39.5",
+        "discoverer": "CRTS",
+        "redshift": 0.06,
+        "maxyear": 2011,
+        "maxmonth": 5,
+        "maxday": 3,
+        "z": 0.062
+    }
+}

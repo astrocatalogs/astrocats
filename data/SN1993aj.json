@@ -1,0 +1,47 @@
+{
+    "SN1993aj": {
+        "name": "SN1993aj",
+        "aliases": [
+            "SN1993aj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05900/05915.html'>IAUC 5915</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49347.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1993,
+        "discoverday": 26,
+        "discovermonth": 12,
+        "host": "A120421-0043",
+        "claimedtype": "Ia",
+        "hvel": "22500",
+        "galra": "120421",
+        "galdec": "-004313",
+        "snra": "12:04:21.15",
+        "sndec": "-00:43:13.9",
+        "discoverer": "Christian Pollas",
+        "maxyear": 1993,
+        "maxmonth": 12,
+        "maxday": 26,
+        "z": 0.0781
+    }
+}

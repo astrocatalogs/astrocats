@@ -1,0 +1,44 @@
+{
+    "SN2000U": {
+        "name": "SN2000U",
+        "aliases": [
+            "SN2000U"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07300/07384.html#Item1'>IAUC 7384</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51606.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 3,
+        "discovermonth": 3,
+        "host": "A124527-1210",
+        "galra": "124527",
+        "galdec": "-121034",
+        "snra": "12:45:27.90",
+        "sndec": "-12:10:34.3",
+        "discoverer": "EROS",
+        "maxyear": 2000,
+        "maxmonth": 3,
+        "maxday": 3
+    }
+}

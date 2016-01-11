@@ -1,0 +1,46 @@
+{
+    "SN1953F": {
+        "name": "SN1953F",
+        "aliases": [
+            "SN1953F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1971PASP...83..307K'>PASP 83, 307</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "34717.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1953,
+        "discoverday": 6,
+        "discovermonth": 12,
+        "host": "UGC 12711",
+        "hvel": "4982",
+        "galra": "233759",
+        "galdec": "+315947",
+        "discoverer": "Fritz Zwicky",
+        "snra": "23:37:53.5",
+        "sndec": "+31:59:47.0",
+        "maxyear": 1953,
+        "maxmonth": 12,
+        "maxday": 6,
+        "z": 0.0168
+    }
+}

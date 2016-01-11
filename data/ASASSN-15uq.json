@@ -1,0 +1,37 @@
+{
+    "ASASSN-15uq": {
+        "name": "ASASSN-15uq",
+        "aliases": [
+            "ASASSN-15uq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8473'>ATEL 8473</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57384.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "07:09:58.69",
+        "sndec": "-65:07:56.10",
+        "discoverday": 28,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 28
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "SN2007bv": {
+        "name": "SN2007bv",
+        "aliases": [
+            "SN2007bv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08800/08834.html#Item2'>IAUC 8834</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54207.5",
+                "band": "",
+                "abmag": "19.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 17,
+        "discovermonth": 4,
+        "host": "CGCG 50-27",
+        "claimedtype": "II",
+        "hvel": "15000",
+        "galra": "153410",
+        "galdec": "+070548",
+        "snra": "15:34:10.87",
+        "sndec": "+07:05:48.7",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.05,
+        "maxyear": 2007,
+        "maxmonth": 4,
+        "maxday": 17,
+        "z": 0.0514
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "SN1964F": {
+        "name": "SN1964F",
+        "aliases": [
+            "SN1964F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01800/01868.html'>IAUC 1868</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38557.5",
+                "band": "",
+                "abmag": "14.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1964,
+        "maxday": 11,
+        "maxmonth": 6,
+        "host": "M61",
+        "claimedtype": "II",
+        "hvel": "1574",
+        "galra": "122155",
+        "galdec": "+042825",
+        "discoverer": "Leonida Rosino",
+        "snra": "12:21:53.00",
+        "sndec": "+04:28:27.0",
+        "discoverday": 11,
+        "discovermonth": 6,
+        "maxyear": 1964,
+        "z": 0.00526
+    }
+}

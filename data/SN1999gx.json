@@ -1,0 +1,39 @@
+{
+    "SN1999gx": {
+        "name": "SN1999gx",
+        "aliases": [
+            "SN1999gx"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51428.0",
+                "band": "g",
+                "abmag": "23.3",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "7",
+        "discovermonth": "9",
+        "host": "A003415+0004",
+        "claimedtype": "Ia",
+        "redshift": "0.493",
+        "galra": "003415",
+        "galdec": "+000426",
+        "snra": "00:34:15.47",
+        "sndec": "+00:04:26.2",
+        "discoverer": "C. Balland and M. Mouchet"
+    }
+}

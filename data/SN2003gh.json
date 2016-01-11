@@ -1,0 +1,47 @@
+{
+    "SN2003gh": {
+        "name": "SN2003gh",
+        "aliases": [
+            "SN2003gh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08159.html#Item1'>IAUC 8159</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52820.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 30,
+        "discovermonth": 6,
+        "host": "NGC 2466",
+        "claimedtype": "Ia",
+        "hvel": "5284",
+        "galra": "074516",
+        "galdec": "-712437",
+        "snra": "07:45:17.938",
+        "sndec": "-71:24:37.39",
+        "discoverer": "Berto Monard",
+        "maxyear": 2003,
+        "maxmonth": 6,
+        "maxday": 30,
+        "z": 0.0178
+    }
+}

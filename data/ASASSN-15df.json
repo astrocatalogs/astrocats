@@ -1,0 +1,73 @@
+{
+    "ASASSN-15df": {
+        "name": "ASASSN-15df",
+        "aliases": [
+            "ASASSN-15df",
+            "CSS150227:103530+343423"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7097'>ATEL 7097</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57079.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.512",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.667",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.875",
+                "band": "Rc",
+                "abmag": "16.95",
+                "source": "5,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "10:35:29.72",
+        "sndec": "+34:34:23.7",
+        "discoverday": 18,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "redshift": 0.03631,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 26
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "SN1998C": {
+        "name": "SN1998C",
+        "aliases": [
+            "SN1998C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50834.0",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1998",
+        "discoverday": "21",
+        "discovermonth": "1",
+        "host": "UGC 3825",
+        "claimedtype": "II",
+        "hvel": "8281",
+        "galra": "072333",
+        "galdec": "+412607",
+        "snra": "07:23:34.638",
+        "sndec": "+41:26:04.2",
+        "discoverer": "BAO Supernova Survey",
+        "redshift": 0.0286,
+        "z": 0.028
+    }
+}

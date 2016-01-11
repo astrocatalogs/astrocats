@@ -1,0 +1,46 @@
+{
+    "SN1968B": {
+        "name": "SN1968B",
+        "aliases": [
+            "SN1968B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02000/02056.html'>IAUC 2056</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39890.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1968,
+        "discoverday": 4,
+        "discovermonth": 2,
+        "host": "NGC 4874",
+        "hvel": "7127",
+        "galra": "125936",
+        "galdec": "+275744",
+        "discoverer": "Fritz Zwicky",
+        "snra": "12:59:34.8",
+        "sndec": "+27:57:34.0",
+        "maxyear": 1968,
+        "maxmonth": 2,
+        "maxday": 4,
+        "z": 0.0241
+    }
+}

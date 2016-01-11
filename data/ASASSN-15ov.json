@@ -1,0 +1,57 @@
+{
+    "ASASSN-15ov": {
+        "name": "ASASSN-15ov",
+        "aliases": [
+            "ASASSN-15ov"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7948'>ATEL 7948</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57258.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57258.68",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57259.744",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "03:30:59.15",
+        "sndec": "-18:33:23.2",
+        "discoverday": 24,
+        "discovermonth": 8,
+        "discoveryear": 2015,
+        "redshift": 0.029,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 24
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "SN2003ad": {
+        "name": "SN2003ad",
+        "aliases": [
+            "SN2003ad"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08065.html#Item1'>IAUC 8065</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52673.470000000205",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52672.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 2,
+        "discovermonth": 2,
+        "host": "A145628+4521",
+        "claimedtype": "II",
+        "hvel": "10500",
+        "galra": "145628",
+        "galdec": "+452109",
+        "snra": "14:56:28.078",
+        "sndec": "+45:21:09.29",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.035,
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 3,
+        "z": 0.0357
+    }
+}

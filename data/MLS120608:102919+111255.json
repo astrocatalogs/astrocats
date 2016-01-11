@@ -1,0 +1,37 @@
+{
+    "MLS120608:102919+111255": {
+        "name": "MLS120608:102919+111255",
+        "aliases": [
+            "MLS120608:102919+111255"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://skyalert.org/'>SkyAlert</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56085.5",
+                "band": "",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "snra": "10:29:19.44",
+        "sndec": "+11:12:54.54",
+        "discoverday": 7,
+        "discovermonth": 6,
+        "discoveryear": 2012,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 6,
+        "maxday": 7
+    }
+}

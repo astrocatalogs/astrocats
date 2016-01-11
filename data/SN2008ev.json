@@ -1,0 +1,48 @@
+{
+    "SN2008ev": {
+        "name": "SN2008ev",
+        "aliases": [
+            "SN2008ev"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001400/CBET001468.txt'>CBET 1468</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54687.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 9,
+        "discovermonth": 8,
+        "host": "UGC 10155",
+        "claimedtype": "II",
+        "hvel": "9267",
+        "galra": "160302",
+        "galdec": "+393844",
+        "snra": "16:03:02.09",
+        "sndec": "+39:38:44.2",
+        "discoverer": "Doug Rich",
+        "redshift": 0.0309,
+        "maxyear": 2008,
+        "maxmonth": 8,
+        "maxday": 9,
+        "z": 0.0314
+    }
+}

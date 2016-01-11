@@ -1,0 +1,46 @@
+{
+    "SN2006fc": {
+        "name": "SN2006fc",
+        "aliases": [
+            "SN2006fc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08749.html#Item2'>IAUC 8749</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53988.5",
+                "band": "",
+                "abmag": "20.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 10,
+        "discovermonth": 9,
+        "host": "A213446+0110",
+        "claimedtype": "Ia",
+        "redshift": 0.12,
+        "galra": "213446",
+        "galdec": "+011033",
+        "snra": "21:34:46.61",
+        "sndec": "+01:10:33.3",
+        "discoverer": "SDSS Collaboration",
+        "maxyear": 2006,
+        "maxmonth": 9,
+        "maxday": 10
+    }
+}

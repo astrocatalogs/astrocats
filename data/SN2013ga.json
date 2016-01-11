@@ -1,0 +1,56 @@
+{
+    "SN2013ga": {
+        "name": "SN2013ga",
+        "aliases": [
+            "SN2013ga",
+            "PSN J22042153+3944340"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003704.txt'>CBET 3704</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Massimiliano Martignoni",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56583.5",
+                "band": "",
+                "abmag": "15.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56602.901",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 18,
+        "discovermonth": 10,
+        "host": "UGC 11895",
+        "claimedtype": "Ia",
+        "hvel": "4702",
+        "galra": "220422",
+        "galdec": "+394437",
+        "snra": "22:04:21.53",
+        "sndec": "+39:44:34.0",
+        "discoverer": "Doug Rich",
+        "redshift": 0.0156,
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 18,
+        "z": 0.0158
+    }
+}

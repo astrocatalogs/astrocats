@@ -1,0 +1,40 @@
+{
+    "PS1-11ka": {
+        "name": "PS1-11ka",
+        "aliases": [
+            "PS1-11ka"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3190'>ATEL 3190</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55595.5",
+                "band": "",
+                "abmag": "20.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ib/c",
+        "host": "NGC 4226",
+        "snra": "12:16:26.983",
+        "sndec": "+47:01:28.37",
+        "discoverday": 3,
+        "discovermonth": 2,
+        "discoveryear": 2011,
+        "redshift": 0.024,
+        "discoverer": "PS1",
+        "maxyear": 2011,
+        "maxmonth": 2,
+        "maxday": 3
+    }
+}

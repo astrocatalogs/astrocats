@@ -1,0 +1,48 @@
+{
+    "SN2010dx": {
+        "name": "SN2010dx",
+        "aliases": [
+            "SN2010dx"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002300/CBET002314.txt'>CBET 2314</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55354.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2010,
+        "discoverday": 7,
+        "discovermonth": 6,
+        "host": "NGC 7038",
+        "claimedtype": "II",
+        "hvel": "4934",
+        "galra": "211508",
+        "galdec": "-471314",
+        "snra": "21:15:11.09",
+        "sndec": "-47:13:34.3",
+        "discoverer": "CHASE",
+        "redshift": 0.0165,
+        "maxyear": 2010,
+        "maxmonth": 6,
+        "maxday": 7,
+        "z": 0.0166
+    }
+}

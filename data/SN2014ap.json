@@ -1,0 +1,45 @@
+{
+    "SN2014ap": {
+        "name": "SN2014ap",
+        "aliases": [
+            "SN2014ap",
+            "PSN J11301337+2410072"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003856.txt'>CBET 3856</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56744.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 28,
+        "discovermonth": 3,
+        "host": "PGC 35452",
+        "claimedtype": "Ia",
+        "hvel": "6998",
+        "galra": "113013",
+        "galdec": "+241011",
+        "snra": "11:30:13.37",
+        "sndec": "+24:10:07.2",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.023,
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 28,
+        "z": 0.0236
+    }
+}

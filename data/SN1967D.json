@@ -1,0 +1,46 @@
+{
+    "SN1967D": {
+        "name": "SN1967D",
+        "aliases": [
+            "SN1967D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1968PASP...80..462Z'>PASP 80, 462</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39532.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1967,
+        "discoverday": 11,
+        "discovermonth": 2,
+        "host": "PGC0037345",
+        "hvel": "6196",
+        "galra": "115414",
+        "galdec": "+200139",
+        "discoverer": "Rudnicki",
+        "snra": "11:54:15.6",
+        "sndec": "+20:01:27.0",
+        "maxyear": 1967,
+        "maxmonth": 2,
+        "maxday": 11,
+        "z": 0.0209
+    }
+}

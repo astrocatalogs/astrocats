@@ -1,0 +1,39 @@
+{
+    "PSN J03322558-3534253": {
+        "name": "PSN J03322558-3534253",
+        "aliases": [
+            "PSN J03322558-3534253",
+            "MASTER OT J021038.91+533751.8"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7894'>ATEL 7894</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57242.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 647263",
+        "snra": "03:32:25.58",
+        "sndec": "-35:34:25.3",
+        "discoverday": 8,
+        "discovermonth": 8,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 8
+    }
+}

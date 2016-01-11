@@ -1,0 +1,39 @@
+{
+    "SSS130221:133330-194457": {
+        "name": "SSS130221:133330-194457",
+        "aliases": [
+            "SSS130221:133330-194457"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4851'>ATEL 4851</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56343.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "IIn",
+        "snra": "13:33:30.00",
+        "sndec": "-19:44:56.7",
+        "discoverday": 20,
+        "discovermonth": 2,
+        "discoveryear": 2013,
+        "redshift": 0.096,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 20
+    }
+}

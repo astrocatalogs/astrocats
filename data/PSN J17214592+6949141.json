@@ -1,0 +1,41 @@
+{
+    "PSN J17214592+6949141": {
+        "name": "PSN J17214592+6949141",
+        "aliases": [
+            "PSN J17214592+6949141",
+            "iPTF14awe"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6130'>ATEL 6130</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56784.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "PGC 2732472",
+        "snra": "17:21:45.92",
+        "sndec": "+69:49:14.1",
+        "discoverday": 7,
+        "discovermonth": 5,
+        "discoveryear": 2014,
+        "redshift": 0.041,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 7
+    }
+}

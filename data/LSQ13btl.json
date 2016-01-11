@@ -1,0 +1,39 @@
+{
+    "LSQ13btl": {
+        "name": "LSQ13btl",
+        "aliases": [
+            "LSQ13btl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5296'>ATEL 5296</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56518.5",
+                "band": "",
+                "abmag": "19.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "20:42:08.62",
+        "sndec": "-18:10:24.8",
+        "discoverday": 14,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.15,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 14
+    }
+}

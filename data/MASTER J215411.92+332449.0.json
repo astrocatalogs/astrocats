@@ -1,0 +1,37 @@
+{
+    "MASTER J215411.92+332449.0": {
+        "name": "MASTER J215411.92+332449.0",
+        "aliases": [
+            "MASTER J215411.92+332449.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4377'>ATEL 4377</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56184.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            }
+        ],
+        "snra": "21:54:11.92",
+        "sndec": "+33:24:49.0",
+        "discoverday": 14,
+        "discovermonth": 9,
+        "discoveryear": 2012,
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 14
+    }
+}

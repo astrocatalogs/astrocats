@@ -1,0 +1,44 @@
+{
+    "SN1966O": {
+        "name": "SN1966O",
+        "aliases": [
+            "SN1966O"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/cgi-bin/bib_query?1971AJ.....76..756K'>AJ 76, 756</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39171.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1966,
+        "discoverday": 15,
+        "discovermonth": 2,
+        "host": "Intergal.",
+        "galra": "111613",
+        "galdec": "+292137",
+        "snra": "11:16:13.00",
+        "sndec": "+29:21:37.0",
+        "discoverer": "Anderson, Luyten",
+        "maxyear": 1966,
+        "maxmonth": 2,
+        "maxday": 15
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "SN2007cd": {
+        "name": "SN2007cd",
+        "aliases": [
+            "SN2007cd"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/000900/CBET000950.txt'>CBET 950</a>",
+                "alias": "2"
+            },
+            {
+                "name": "MSe",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54216.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54223.919",
+                "band": "CR",
+                "abmag": "17.5",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 26,
+        "discovermonth": 4,
+        "host": "NGC 5174",
+        "hvel": "6748",
+        "galra": "132926",
+        "galdec": "+110024",
+        "snra": "13:29:26.48",
+        "sndec": "+11:00:44.8",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.0228,
+        "maxyear": 2007,
+        "maxmonth": 5,
+        "maxday": 3,
+        "z": 0.0228
+    }
+}

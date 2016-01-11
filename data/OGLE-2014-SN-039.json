@@ -1,0 +1,48 @@
+{
+    "OGLE-2014-SN-039": {
+        "name": "OGLE-2014-SN-039",
+        "aliases": [
+            "OGLE-2014-SN-039"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6307'>ATEL 6307</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56855.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56856.76",
+                "band": "L",
+                "abmag": "18.7",
+                "source": "3,1"
+            }
+        ],
+        "snra": "01:33:18.01",
+        "sndec": "-77:30:47.5",
+        "discoverday": 17,
+        "discovermonth": 7,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 7,
+        "maxday": 17
+    }
+}

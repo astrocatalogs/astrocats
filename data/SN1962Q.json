@@ -1,0 +1,46 @@
+{
+    "SN1962Q": {
+        "name": "SN1962Q",
+        "aliases": [
+            "SN1962Q"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1962Q'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37719.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1962,
+        "discoverday": 24,
+        "discovermonth": 2,
+        "host": "NGC 2276",
+        "hvel": "2407",
+        "galra": "072713",
+        "galdec": "+854520",
+        "discoverer": "Shachbazian, Iskudarian",
+        "snra": "07:26:55.4",
+        "sndec": "+85:45:06.0",
+        "maxyear": 1962,
+        "maxmonth": 2,
+        "maxday": 24,
+        "z": 0.00806
+    }
+}

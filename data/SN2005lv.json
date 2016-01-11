@@ -1,0 +1,46 @@
+{
+    "SN2005lv": {
+        "name": "SN2005lv",
+        "aliases": [
+            "SN2005lv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08600/08645.html#Item2'>IAUC 8645</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53709.5",
+                "band": "",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 5,
+        "discovermonth": 12,
+        "host": "UGC 2964",
+        "hvel": "8970",
+        "galra": "040857",
+        "galdec": "+271152",
+        "snra": "04:08:56.47",
+        "sndec": "+27:11:50.8",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2005,
+        "maxmonth": 12,
+        "maxday": 5,
+        "z": 0.0304
+    }
+}

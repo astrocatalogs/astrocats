@@ -1,0 +1,64 @@
+{
+    "SN1997ab": {
+        "name": "SN1997ab",
+        "aliases": [
+            "SN1997ab"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06500/06589.html'>IAUC 6589</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50538.45999999996",
+                "band": "V",
+                "abmag": "15.97",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50506.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1997,
+        "maxday": 31,
+        "maxmonth": 3,
+        "host": "A095100+2004",
+        "claimedtype": "IIP",
+        "hvel": "3750",
+        "galra": "095100",
+        "galdec": "+200424",
+        "snra": "09:51:00.40",
+        "sndec": "+20:04:24.0",
+        "discoverer": "Hagen, Reimers",
+        "discoverday": 27,
+        "discovermonth": 2,
+        "redshift": 0.012,
+        "maxyear": 1997,
+        "z": 0.0126
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "PS15cev": {
+        "name": "PS15cev",
+        "aliases": [
+            "PS15cev",
+            "DES15C2eaz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57297.5",
+                "band": "",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "PGC 738925",
+        "snra": "03:40:21.46",
+        "sndec": "-28:40:02.9",
+        "discoverday": 2,
+        "discovermonth": 10,
+        "discoveryear": 2015,
+        "redshift": 0.062,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 10,
+        "maxday": 2
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "SN2003hn": {
+        "name": "SN2003hn",
+        "aliases": [
+            "SN2003hn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08186.html#Item1'>IAUC 8186</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52876.5",
+                "band": "",
+                "abmag": "14.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 25,
+        "discovermonth": 8,
+        "host": "NGC 1448",
+        "claimedtype": "II",
+        "hvel": "1167",
+        "galra": "034432",
+        "galdec": "-443841",
+        "snra": "03:44:36.10",
+        "sndec": "-44:37:49.0",
+        "discoverer": "Robert Evans",
+        "maxyear": 2003,
+        "maxmonth": 8,
+        "maxday": 25,
+        "z": 0.0039
+    }
+}

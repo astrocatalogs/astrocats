@@ -1,0 +1,46 @@
+{
+    "SN2006nw": {
+        "name": "SN2006nw",
+        "aliases": [
+            "SN2006nw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000700/CBET000743.txt'>CBET 743</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54038.5",
+                "band": "",
+                "abmag": "21.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 30,
+        "discovermonth": 10,
+        "host": "A020255-0032",
+        "claimedtype": "Ia",
+        "redshift": 0.16,
+        "galra": "020255",
+        "galdec": "-003201",
+        "snra": "02:02:55.95",
+        "sndec": "-00:32:01.9",
+        "discoverer": "SDSS Collaboration",
+        "maxyear": 2006,
+        "maxmonth": 10,
+        "maxday": 30
+    }
+}

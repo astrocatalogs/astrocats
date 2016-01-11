@@ -1,0 +1,45 @@
+{
+    "SN2011jg": {
+        "name": "SN2011jg",
+        "aliases": [
+            "SN2011jg",
+            "PSN J16171887+5919298"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002952.txt'>CBET 2952</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55911.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 16,
+        "discovermonth": 12,
+        "host": "UGC 10331",
+        "claimedtype": "IIb",
+        "hvel": "4519",
+        "galra": "161721",
+        "galdec": "+591913",
+        "snra": "16:17:18.87",
+        "sndec": "+59:19:29.7",
+        "discoverer": "Giancarlo Cortini",
+        "redshift": 0.0149,
+        "maxyear": 2011,
+        "maxmonth": 12,
+        "maxday": 16,
+        "z": 0.0152
+    }
+}

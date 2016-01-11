@@ -1,0 +1,2632 @@
+{
+    "SN2005cf": {
+        "name": "SN2005cf",
+        "aliases": [
+            "SN2005cf"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://heracles.astro.berkeley.edu/sndb/info'>UCB Filippenko Group's Supernova Database (SNDB)</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2009arXiv0901.4787H'>2009arXiv0901.4787H</a>",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "4",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08500/08534.html#Item1'>IAUC 8534</a>",
+                "alias": "5"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53521.27",
+                "band": "R",
+                "abmag": "15.21200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.27",
+                "band": "V",
+                "abmag": "15.27900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.27",
+                "band": "I",
+                "abmag": "15.32700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.27",
+                "band": "B",
+                "abmag": "15.59500",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.37",
+                "band": "R",
+                "abmag": "14.79300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.37",
+                "band": "I",
+                "abmag": "14.92300",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.37",
+                "band": "V",
+                "abmag": "14.93100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.37",
+                "band": "B",
+                "abmag": "15.12600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.37",
+                "band": "R",
+                "abmag": "14.52400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.37",
+                "band": "I",
+                "abmag": "14.62600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.37",
+                "band": "V",
+                "abmag": "14.65000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.37",
+                "band": "B",
+                "abmag": "14.78300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.29",
+                "band": "R",
+                "abmag": "14.31400",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.29",
+                "band": "V",
+                "abmag": "14.46900",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.29",
+                "band": "B",
+                "abmag": "14.52000",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.35",
+                "band": "R",
+                "abmag": "14.28300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.35",
+                "band": "I",
+                "abmag": "14.37700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.35",
+                "band": "V",
+                "abmag": "14.41900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.35",
+                "band": "B",
+                "abmag": "14.52300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.25",
+                "band": "R",
+                "abmag": "14.15700",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.25",
+                "band": "I",
+                "abmag": "14.16900",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.25",
+                "band": "V",
+                "abmag": "14.31400",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.25",
+                "band": "B",
+                "abmag": "14.32000",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.35",
+                "band": "R",
+                "abmag": "13.76400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.35",
+                "band": "I",
+                "abmag": "13.87900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.35",
+                "band": "V",
+                "abmag": "13.93800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.35",
+                "band": "B",
+                "abmag": "13.98900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53528.34",
+                "band": "R",
+                "abmag": "13.67600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53528.34",
+                "band": "I",
+                "abmag": "13.80800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53528.34",
+                "band": "V",
+                "abmag": "13.82600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53528.34",
+                "band": "B",
+                "abmag": "13.87800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53531.33",
+                "band": "R",
+                "abmag": "13.54200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53531.33",
+                "band": "V",
+                "abmag": "13.63600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53531.33",
+                "band": "B",
+                "abmag": "13.68100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53531.33",
+                "band": "I",
+                "abmag": "13.73200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53532.36",
+                "band": "R",
+                "abmag": "13.53500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53532.36",
+                "band": "V",
+                "abmag": "13.59000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53532.36",
+                "band": "B",
+                "abmag": "13.67100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53532.36",
+                "band": "I",
+                "abmag": "13.73500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.34",
+                "band": "R",
+                "abmag": "13.48300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.34",
+                "band": "V",
+                "abmag": "13.56000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.34",
+                "band": "B",
+                "abmag": "13.64000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.34",
+                "band": "I",
+                "abmag": "13.75100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.33",
+                "band": "R",
+                "abmag": "13.48600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.33",
+                "band": "V",
+                "abmag": "13.54100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.33",
+                "band": "B",
+                "abmag": "13.66200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.33",
+                "band": "I",
+                "abmag": "13.77000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53535.33",
+                "band": "R",
+                "abmag": "13.44200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53535.33",
+                "band": "B",
+                "abmag": "13.64700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53536.33",
+                "band": "R",
+                "abmag": "13.46500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53536.33",
+                "band": "V",
+                "abmag": "13.54900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53536.33",
+                "band": "B",
+                "abmag": "13.67700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53536.33",
+                "band": "I",
+                "abmag": "13.83300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53537.32",
+                "band": "R",
+                "abmag": "13.50200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53537.32",
+                "band": "V",
+                "abmag": "13.56400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53537.32",
+                "band": "I",
+                "abmag": "13.88800",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.22",
+                "band": "V",
+                "abmag": "13.74300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.22",
+                "band": "R",
+                "abmag": "13.75200",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.22",
+                "band": "B",
+                "abmag": "14.08800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.22",
+                "band": "I",
+                "abmag": "14.13100",
+                "instrument": "kait3",
+                "aberr": "0.01600",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53543.32",
+                "band": "V",
+                "abmag": "13.80400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53543.32",
+                "band": "R",
+                "abmag": "13.81000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53543.32",
+                "band": "I",
+                "abmag": "14.17000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53543.32",
+                "band": "B",
+                "abmag": "14.19500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53544.29",
+                "band": "V",
+                "abmag": "13.86500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53544.29",
+                "band": "R",
+                "abmag": "13.88800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53544.29",
+                "band": "I",
+                "abmag": "14.24600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53544.29",
+                "band": "B",
+                "abmag": "14.26000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53545.31",
+                "band": "V",
+                "abmag": "13.89800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53545.31",
+                "band": "R",
+                "abmag": "13.95300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53545.31",
+                "band": "I",
+                "abmag": "14.27600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53545.31",
+                "band": "B",
+                "abmag": "14.36900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53546.24",
+                "band": "V",
+                "abmag": "13.96200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53546.24",
+                "band": "R",
+                "abmag": "14.01900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53546.24",
+                "band": "I",
+                "abmag": "14.33200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53546.24",
+                "band": "B",
+                "abmag": "14.43800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.32",
+                "band": "V",
+                "abmag": "14.03400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.32",
+                "band": "R",
+                "abmag": "14.05200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.32",
+                "band": "I",
+                "abmag": "14.34800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.32",
+                "band": "B",
+                "abmag": "14.55800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.28",
+                "band": "V",
+                "abmag": "14.07200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.28",
+                "band": "R",
+                "abmag": "14.08600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.28",
+                "band": "I",
+                "abmag": "14.34800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.28",
+                "band": "B",
+                "abmag": "14.65200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.29",
+                "band": "V",
+                "abmag": "14.13800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.29",
+                "band": "R",
+                "abmag": "14.14200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.29",
+                "band": "I",
+                "abmag": "14.35500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.29",
+                "band": "B",
+                "abmag": "14.77600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53550.28",
+                "band": "R",
+                "abmag": "14.17400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53550.28",
+                "band": "V",
+                "abmag": "14.19100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53550.28",
+                "band": "I",
+                "abmag": "14.34600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53550.28",
+                "band": "B",
+                "abmag": "14.87000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53551.22",
+                "band": "R",
+                "abmag": "14.18200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53551.22",
+                "band": "V",
+                "abmag": "14.23800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53551.22",
+                "band": "I",
+                "abmag": "14.32600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53551.22",
+                "band": "B",
+                "abmag": "14.97400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53553.23",
+                "band": "R",
+                "abmag": "14.22300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53553.23",
+                "band": "I",
+                "abmag": "14.28500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53553.23",
+                "band": "V",
+                "abmag": "14.34700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53553.23",
+                "band": "B",
+                "abmag": "15.17900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53555.26",
+                "band": "I",
+                "abmag": "14.26800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53555.26",
+                "band": "R",
+                "abmag": "14.28300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53555.26",
+                "band": "V",
+                "abmag": "14.46900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53555.26",
+                "band": "B",
+                "abmag": "15.40000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53557.23",
+                "band": "I",
+                "abmag": "14.21600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53557.23",
+                "band": "R",
+                "abmag": "14.30000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53557.23",
+                "band": "V",
+                "abmag": "14.55800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53557.23",
+                "band": "B",
+                "abmag": "15.58800",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.20",
+                "band": "I",
+                "abmag": "14.19500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.20",
+                "band": "R",
+                "abmag": "14.33900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.20",
+                "band": "V",
+                "abmag": "14.67800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.20",
+                "band": "B",
+                "abmag": "15.74600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.26",
+                "band": "I",
+                "abmag": "14.21600",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.26",
+                "band": "R",
+                "abmag": "14.38800",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.26",
+                "band": "V",
+                "abmag": "14.75000",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53559.26",
+                "band": "B",
+                "abmag": "15.75400",
+                "instrument": "nickel",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53561.22",
+                "band": "I",
+                "abmag": "14.17300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53561.22",
+                "band": "R",
+                "abmag": "14.41600",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53561.22",
+                "band": "V",
+                "abmag": "14.78400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53561.22",
+                "band": "B",
+                "abmag": "15.91100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53563.22",
+                "band": "I",
+                "abmag": "14.18300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53563.22",
+                "band": "R",
+                "abmag": "14.50000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53563.22",
+                "band": "V",
+                "abmag": "14.89500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53563.22",
+                "band": "B",
+                "abmag": "16.08500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53565.20",
+                "band": "I",
+                "abmag": "14.25400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53565.20",
+                "band": "R",
+                "abmag": "14.61700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53565.20",
+                "band": "V",
+                "abmag": "15.00500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53565.20",
+                "band": "B",
+                "abmag": "16.20200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53570.19",
+                "band": "I",
+                "abmag": "14.59000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53570.19",
+                "band": "R",
+                "abmag": "14.98500",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53570.19",
+                "band": "V",
+                "abmag": "15.35700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53570.19",
+                "band": "B",
+                "abmag": "16.47200",
+                "instrument": "kait3",
+                "aberr": "0.02500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53572.20",
+                "band": "I",
+                "abmag": "14.60500",
+                "instrument": "kait3",
+                "aberr": "0.03600",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53572.20",
+                "band": "R",
+                "abmag": "15.05800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53572.20",
+                "band": "V",
+                "abmag": "15.40900",
+                "instrument": "kait3",
+                "aberr": "0.01500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53572.20",
+                "band": "B",
+                "abmag": "16.61300",
+                "instrument": "kait3",
+                "aberr": "0.03500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53574.20",
+                "band": "I",
+                "abmag": "14.85000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53574.20",
+                "band": "R",
+                "abmag": "15.18700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53574.20",
+                "band": "V",
+                "abmag": "15.52000",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53574.20",
+                "band": "B",
+                "abmag": "16.65700",
+                "instrument": "kait3",
+                "aberr": "0.02000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53576.22",
+                "band": "I",
+                "abmag": "14.95100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53576.22",
+                "band": "R",
+                "abmag": "15.26200",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53576.22",
+                "band": "V",
+                "abmag": "15.60800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53576.22",
+                "band": "B",
+                "abmag": "16.72000",
+                "instrument": "kait3",
+                "aberr": "0.01600",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53578.19",
+                "band": "I",
+                "abmag": "15.07300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53578.19",
+                "band": "R",
+                "abmag": "15.34400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53578.19",
+                "band": "V",
+                "abmag": "15.64100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53578.19",
+                "band": "B",
+                "abmag": "16.72200",
+                "instrument": "kait3",
+                "aberr": "0.01700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53580.19",
+                "band": "I",
+                "abmag": "15.14400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53580.19",
+                "band": "R",
+                "abmag": "15.40800",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53580.19",
+                "band": "V",
+                "abmag": "15.70100",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53580.19",
+                "band": "B",
+                "abmag": "16.76500",
+                "instrument": "kait3",
+                "aberr": "0.02600",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53582.19",
+                "band": "I",
+                "abmag": "15.24700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53582.19",
+                "band": "R",
+                "abmag": "15.46400",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53582.19",
+                "band": "V",
+                "abmag": "15.73900",
+                "instrument": "kait3",
+                "aberr": "0.01200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53582.19",
+                "band": "B",
+                "abmag": "16.82700",
+                "instrument": "kait3",
+                "aberr": "0.02500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53584.19",
+                "band": "I",
+                "abmag": "15.33700",
+                "instrument": "kait3",
+                "aberr": "0.01400",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53584.19",
+                "band": "R",
+                "abmag": "15.54300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53584.19",
+                "band": "V",
+                "abmag": "15.83000",
+                "instrument": "kait3",
+                "aberr": "0.01300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53584.19",
+                "band": "B",
+                "abmag": "16.84200",
+                "instrument": "kait3",
+                "aberr": "0.02100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53586.18",
+                "band": "I",
+                "abmag": "15.43300",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53586.18",
+                "band": "R",
+                "abmag": "15.62400",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53586.18",
+                "band": "V",
+                "abmag": "15.88300",
+                "instrument": "kait3",
+                "aberr": "0.01200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53586.18",
+                "band": "B",
+                "abmag": "16.87000",
+                "instrument": "kait3",
+                "aberr": "0.01700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53588.19",
+                "band": "I",
+                "abmag": "15.53600",
+                "instrument": "kait3",
+                "aberr": "0.01300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53588.19",
+                "band": "R",
+                "abmag": "15.69900",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53588.19",
+                "band": "V",
+                "abmag": "15.94200",
+                "instrument": "kait3",
+                "aberr": "0.01200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53588.19",
+                "band": "B",
+                "abmag": "16.90500",
+                "instrument": "kait3",
+                "aberr": "0.02700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53590.18",
+                "band": "I",
+                "abmag": "15.61100",
+                "instrument": "kait3",
+                "aberr": "0.01700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53590.18",
+                "band": "R",
+                "abmag": "15.76000",
+                "instrument": "kait3",
+                "aberr": "0.01700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53590.18",
+                "band": "V",
+                "abmag": "15.96900",
+                "instrument": "kait3",
+                "aberr": "0.01100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53590.18",
+                "band": "B",
+                "abmag": "16.95600",
+                "instrument": "kait3",
+                "aberr": "0.02500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53592.18",
+                "band": "I",
+                "abmag": "15.68900",
+                "instrument": "kait3",
+                "aberr": "0.01700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53592.18",
+                "band": "R",
+                "abmag": "15.80700",
+                "instrument": "kait3",
+                "aberr": "0.01300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53592.18",
+                "band": "V",
+                "abmag": "16.00600",
+                "instrument": "kait3",
+                "aberr": "0.01300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53592.18",
+                "band": "B",
+                "abmag": "17.00700",
+                "instrument": "kait3",
+                "aberr": "0.02500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53596.18",
+                "band": "R",
+                "abmag": "15.89000",
+                "instrument": "kait3",
+                "aberr": "0.05300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53596.18",
+                "band": "V",
+                "abmag": "16.14100",
+                "instrument": "kait3",
+                "aberr": "0.05200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53596.18",
+                "band": "B",
+                "abmag": "17.05100",
+                "instrument": "kait3",
+                "aberr": "0.06300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53599.17",
+                "band": "I",
+                "abmag": "15.95200",
+                "instrument": "kait3",
+                "aberr": "0.02400",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53599.17",
+                "band": "R",
+                "abmag": "16.01600",
+                "instrument": "kait3",
+                "aberr": "0.01700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53599.17",
+                "band": "V",
+                "abmag": "16.19700",
+                "instrument": "kait3",
+                "aberr": "0.01000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53599.17",
+                "band": "B",
+                "abmag": "17.06600",
+                "instrument": "kait3",
+                "aberr": "0.05600",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53602.16",
+                "band": "R",
+                "abmag": "16.13000",
+                "instrument": "kait3",
+                "aberr": "0.01500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53602.16",
+                "band": "I",
+                "abmag": "16.14700",
+                "instrument": "kait3",
+                "aberr": "0.03800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53602.16",
+                "band": "V",
+                "abmag": "16.29200",
+                "instrument": "kait3",
+                "aberr": "0.02300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53602.16",
+                "band": "B",
+                "abmag": "17.09800",
+                "instrument": "kait3",
+                "aberr": "0.04100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53605.16",
+                "band": "R",
+                "abmag": "16.20200",
+                "instrument": "kait3",
+                "aberr": "0.01500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53605.16",
+                "band": "I",
+                "abmag": "16.24900",
+                "instrument": "kait3",
+                "aberr": "0.02400",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53605.16",
+                "band": "V",
+                "abmag": "16.35200",
+                "instrument": "kait3",
+                "aberr": "0.02000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53605.16",
+                "band": "B",
+                "abmag": "17.22700",
+                "instrument": "kait3",
+                "aberr": "0.01900",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53608.16",
+                "band": "R",
+                "abmag": "16.31500",
+                "instrument": "kait3",
+                "aberr": "0.02100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53608.16",
+                "band": "I",
+                "abmag": "16.42400",
+                "instrument": "kait3",
+                "aberr": "0.03700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53608.16",
+                "band": "V",
+                "abmag": "16.46400",
+                "instrument": "kait3",
+                "aberr": "0.01900",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53608.16",
+                "band": "B",
+                "abmag": "17.23800",
+                "instrument": "kait3",
+                "aberr": "0.03900",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53611.16",
+                "band": "R",
+                "abmag": "16.39500",
+                "instrument": "kait3",
+                "aberr": "0.02000",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53611.16",
+                "band": "I",
+                "abmag": "16.47300",
+                "instrument": "kait3",
+                "aberr": "0.02800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53611.16",
+                "band": "V",
+                "abmag": "16.50100",
+                "instrument": "kait3",
+                "aberr": "0.01900",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53611.16",
+                "band": "B",
+                "abmag": "17.21000",
+                "instrument": "kait3",
+                "aberr": "0.02700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53614.15",
+                "band": "R",
+                "abmag": "16.47600",
+                "instrument": "kait3",
+                "aberr": "0.02700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53614.15",
+                "band": "I",
+                "abmag": "16.50000",
+                "instrument": "kait3",
+                "aberr": "0.04300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53614.15",
+                "band": "V",
+                "abmag": "16.58900",
+                "instrument": "kait3",
+                "aberr": "0.02800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53614.15",
+                "band": "B",
+                "abmag": "17.28000",
+                "instrument": "kait3",
+                "aberr": "0.03800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53617.15",
+                "band": "R",
+                "abmag": "16.61000",
+                "instrument": "kait3",
+                "aberr": "0.02200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53617.15",
+                "band": "V",
+                "abmag": "16.68500",
+                "instrument": "kait3",
+                "aberr": "0.02500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53617.15",
+                "band": "I",
+                "abmag": "16.69200",
+                "instrument": "kait3",
+                "aberr": "0.03700",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53617.15",
+                "band": "B",
+                "abmag": "17.26600",
+                "instrument": "kait3",
+                "aberr": "0.03400",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53618.15",
+                "band": "R",
+                "abmag": "16.58700",
+                "instrument": "kait3",
+                "aberr": "0.02300",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53618.15",
+                "band": "V",
+                "abmag": "16.68300",
+                "instrument": "kait3",
+                "aberr": "0.02900",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53618.15",
+                "band": "I",
+                "abmag": "16.78200",
+                "instrument": "kait3",
+                "aberr": "0.04500",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53618.15",
+                "band": "B",
+                "abmag": "17.45700",
+                "instrument": "kait3",
+                "aberr": "0.04200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53621.15",
+                "band": "V",
+                "abmag": "16.72100",
+                "instrument": "kait3",
+                "aberr": "0.02900",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53621.15",
+                "band": "R",
+                "abmag": "16.73200",
+                "instrument": "kait3",
+                "aberr": "0.03100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53621.15",
+                "band": "I",
+                "abmag": "16.95600",
+                "instrument": "kait3",
+                "aberr": "0.06200",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53621.15",
+                "band": "B",
+                "abmag": "17.49000",
+                "instrument": "kait3",
+                "aberr": "0.02800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53624.14",
+                "band": "R",
+                "abmag": "16.74200",
+                "instrument": "kait3",
+                "aberr": "0.03100",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53624.14",
+                "band": "V",
+                "abmag": "16.85000",
+                "instrument": "kait3",
+                "aberr": "0.02800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53624.14",
+                "band": "I",
+                "abmag": "16.97900",
+                "instrument": "kait3",
+                "aberr": "0.04800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53624.14",
+                "band": "B",
+                "abmag": "17.39300",
+                "instrument": "kait3",
+                "aberr": "0.07800",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53520.73890000023",
+                "band": "V",
+                "abmag": "15.342",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53520.743499999866",
+                "band": "B",
+                "abmag": "15.644",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53520.74599999981",
+                "band": "U",
+                "abmag": "15.907",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53520.748999999836",
+                "band": "U",
+                "abmag": "15.911",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.7359000002",
+                "band": "V",
+                "abmag": "15.004",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.736599999946",
+                "band": "V",
+                "abmag": "15.008",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.74129999988",
+                "band": "B",
+                "abmag": "15.184",
+                "aberr": "0.016",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53521.74679999985",
+                "band": "U",
+                "abmag": "15.315",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.764800000004",
+                "band": "V",
+                "abmag": "14.717",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.76649999991",
+                "band": "U",
+                "abmag": "14.79",
+                "aberr": "0.019",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.76949999994",
+                "band": "U",
+                "abmag": "14.833",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53522.77270000009",
+                "band": "B",
+                "abmag": "14.822",
+                "aberr": "0.02",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.67750000022",
+                "band": "V",
+                "abmag": "14.5",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.679099999834",
+                "band": "U",
+                "abmag": "14.426",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.68209999986",
+                "band": "U",
+                "abmag": "14.425",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53523.68530000001",
+                "band": "B",
+                "abmag": "14.559",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.68390000006",
+                "band": "V",
+                "abmag": "14.287",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.68559999997",
+                "band": "U",
+                "abmag": "14.11",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.688599999994",
+                "band": "U",
+                "abmag": "14.128",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53524.691800000146",
+                "band": "B",
+                "abmag": "14.313",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.67870000005",
+                "band": "V",
+                "abmag": "14.117",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.680399999954",
+                "band": "U",
+                "abmag": "13.875",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.68339999998",
+                "band": "U",
+                "abmag": "13.867",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53525.68660000013",
+                "band": "B",
+                "abmag": "14.132",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53526.68699999992",
+                "band": "V",
+                "abmag": "13.972",
+                "aberr": "0.016",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53526.688699999824",
+                "band": "U",
+                "abmag": "13.683",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53526.691800000146",
+                "band": "U",
+                "abmag": "13.685",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53526.6949",
+                "band": "B",
+                "abmag": "13.984",
+                "aberr": "0.02",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.82290000003",
+                "band": "V",
+                "abmag": "13.846",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.82890000008",
+                "band": "B",
+                "abmag": "13.867",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.83199999994",
+                "band": "U",
+                "abmag": "13.508",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53527.83570000017",
+                "band": "U",
+                "abmag": "13.523",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53529.6743999999",
+                "band": "V",
+                "abmag": "13.708",
+                "aberr": "0.019",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53529.6762000001",
+                "band": "U",
+                "abmag": "13.386",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53529.67920000013",
+                "band": "U",
+                "abmag": "13.39",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53529.682399999816",
+                "band": "B",
+                "abmag": "13.715",
+                "aberr": "0.022",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53530.6688000001",
+                "band": "V",
+                "abmag": "13.651",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53530.67050000001",
+                "band": "U",
+                "abmag": "13.337",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53530.67350000003",
+                "band": "U",
+                "abmag": "13.347",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53530.676700000186",
+                "band": "B",
+                "abmag": "13.67",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.72910000011",
+                "band": "V",
+                "abmag": "13.575",
+                "aberr": "0.02",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.733899999876",
+                "band": "B",
+                "abmag": "13.628",
+                "aberr": "0.019",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.73629999999",
+                "band": "U",
+                "abmag": "13.4",
+                "aberr": "0.017",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53533.739399999846",
+                "band": "U",
+                "abmag": "13.384",
+                "aberr": "0.016",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.73909999989",
+                "band": "V",
+                "abmag": "13.568",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.74379999982",
+                "band": "B",
+                "abmag": "13.643",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.74630000023",
+                "band": "U",
+                "abmag": "13.434",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53534.74929999979",
+                "band": "U",
+                "abmag": "13.469",
+                "aberr": "0.016",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53535.68889999995",
+                "band": "V",
+                "abmag": "13.574",
+                "aberr": "0.01",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53535.69370000018",
+                "band": "B",
+                "abmag": "13.692",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53535.69609999983",
+                "band": "U",
+                "abmag": "13.524",
+                "aberr": "0.01",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53535.69920000015",
+                "band": "U",
+                "abmag": "13.522",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.674199999776",
+                "band": "V",
+                "abmag": "13.798",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.67590000015",
+                "band": "U",
+                "abmag": "14.204",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.679000000004",
+                "band": "U",
+                "abmag": "14.184",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.68209999986",
+                "band": "B",
+                "abmag": "14.176",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.68820000021",
+                "band": "V",
+                "abmag": "13.805",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.689900000114",
+                "band": "U",
+                "abmag": "14.226",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.69290000014",
+                "band": "U",
+                "abmag": "14.216",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53542.69609999983",
+                "band": "B",
+                "abmag": "14.173",
+                "aberr": "0.01",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.65409999993",
+                "band": "V",
+                "abmag": "14.074",
+                "aberr": "0.01",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.65579999983",
+                "band": "U",
+                "abmag": "14.801",
+                "aberr": "0.01",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.65879999986",
+                "band": "U",
+                "abmag": "14.803",
+                "aberr": "0.01",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53547.66190000018",
+                "band": "B",
+                "abmag": "14.655",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.7108",
+                "band": "V",
+                "abmag": "14.142",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.71249999991",
+                "band": "U",
+                "abmag": "14.974",
+                "aberr": "0.013",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.71549999993",
+                "band": "U",
+                "abmag": "14.975",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53548.718799999915",
+                "band": "B",
+                "abmag": "14.789",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.65439999988",
+                "band": "V",
+                "abmag": "14.192",
+                "aberr": "0.014",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.65609999979",
+                "band": "U",
+                "abmag": "15.105",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.65920000011",
+                "band": "U",
+                "abmag": "15.132",
+                "aberr": "0.011",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53549.66229999997",
+                "band": "B",
+                "abmag": "14.892",
+                "aberr": "0.016",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53556.67379999999",
+                "band": "V",
+                "abmag": "14.564",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53556.67860000022",
+                "band": "B",
+                "abmag": "15.647",
+                "aberr": "0.015",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53556.680999999866",
+                "band": "U",
+                "abmag": "15.989",
+                "aberr": "0.012",
+                "source": "2,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53530.5",
+                "band": "",
+                "abmag": "13.5",
+                "source": "5,4"
+            }
+        ],
+        "discoveryear": 2005,
+        "maxday": 9,
+        "maxmonth": 6,
+        "host": "MCG -1-39-3",
+        "claimedtype": "Ia",
+        "hvel": "1937",
+        "galra": "152133",
+        "galdec": "-072652",
+        "snra": "15:21:32.21",
+        "sndec": "-07:24:47.5",
+        "discoverer": "LOSS",
+        "discoverday": 30,
+        "discovermonth": 5,
+        "redshift": 0.0065,
+        "maxyear": 2005,
+        "z": 0.00648
+    }
+}

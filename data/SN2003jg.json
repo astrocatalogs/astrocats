@@ -1,0 +1,47 @@
+{
+    "SN2003jg": {
+        "name": "SN2003jg",
+        "aliases": [
+            "SN2003jg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08200/08235.html#Item1'>IAUC 8235</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52935.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 23,
+        "discovermonth": 10,
+        "host": "NGC 2997",
+        "claimedtype": "Ib/c",
+        "hvel": "1090",
+        "galra": "094539",
+        "galdec": "-311128",
+        "snra": "09:45:37.91",
+        "sndec": "-31:11:21.0",
+        "discoverer": "Perth Astronomical Research Group",
+        "maxyear": 2003,
+        "maxmonth": 10,
+        "maxday": 23,
+        "z": 0.00364
+    }
+}

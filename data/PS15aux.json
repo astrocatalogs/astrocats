@@ -1,0 +1,38 @@
+{
+    "PS15aux": {
+        "name": "PS15aux",
+        "aliases": [
+            "PS15aux"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7672'>ATEL 7672</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57190.5",
+                "band": "",
+                "abmag": "20.4",
+                "source": "2,1"
+            }
+        ],
+        "host": "IC 1342",
+        "snra": "21:00:26.00",
+        "sndec": "-14:29:31.9",
+        "discoverday": 17,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 17
+    }
+}

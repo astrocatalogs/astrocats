@@ -1,0 +1,34 @@
+{
+    "PSN 12060299+4729335": {
+        "name": "PSN 12060299+4729335",
+        "aliases": [
+            "PSN 12060299+4729335"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Giancarlo Cortin",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56809.92",
+                "band": "C",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 1,
+        "discoveryear": 2014,
+        "discovermonth": 6,
+        "discoverday": 1
+    }
+}

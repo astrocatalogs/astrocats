@@ -1,0 +1,34 @@
+{
+    "PNVJ01335420+3026108": {
+        "name": "PNVJ01335420+3026108",
+        "aliases": [
+            "PNVJ01335420+3026108"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57384.74409",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 28,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 28
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "SN2005dn": {
+        "name": "SN2005dn",
+        "aliases": [
+            "SN2005dn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08500/08589.html#Item2'>IAUC 8589</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53608.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 26,
+        "discovermonth": 8,
+        "host": "NGC 6861F",
+        "claimedtype": "II",
+        "hvel": "3186",
+        "galra": "201112",
+        "galdec": "-481634",
+        "snra": "20:11:11.73",
+        "sndec": "-48:16:35.5",
+        "discoverer": "Brazilian Supernovae Search",
+        "redshift": 0.011,
+        "maxyear": 2005,
+        "maxmonth": 8,
+        "maxday": 26,
+        "z": 0.0107
+    }
+}

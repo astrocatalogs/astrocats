@@ -1,0 +1,71 @@
+{
+    "SN2003bf": {
+        "name": "SN2003bf",
+        "aliases": [
+            "SN2003bf"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08082.html#Item1'>IAUC 8082</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52688.450000000186",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52691.35000000009",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52687.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 17,
+        "discovermonth": 2,
+        "host": "A080826+1219",
+        "claimedtype": "Ia",
+        "hvel": "10200",
+        "galra": "080826",
+        "galdec": "+121956",
+        "snra": "08:08:26.358",
+        "sndec": "+12:19:56.29",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.034,
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 21,
+        "z": 0.0346
+    }
+}

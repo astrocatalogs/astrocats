@@ -1,0 +1,39 @@
+{
+    "PS1-13dkw": {
+        "name": "PS1-13dkw",
+        "aliases": [
+            "PS1-13dkw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5458'>ATEL 5458</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56568.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "00:30:19.05",
+        "sndec": "-01:41:46.8",
+        "discoverday": 3,
+        "discovermonth": 10,
+        "discoveryear": 2013,
+        "redshift": 0.044,
+        "discoverer": "PS1",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 3
+    }
+}

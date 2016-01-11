@@ -1,0 +1,150 @@
+{
+    "PSN 22412689+3917220": {
+        "name": "PSN 22412689+3917220",
+        "aliases": [
+            "PSN 22412689+3917220"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "2"
+            },
+            {
+                "name": "G. Locatelli",
+                "alias": "3"
+            },
+            {
+                "name": "Jaroslaw Grzegorzek",
+                "alias": "4"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "5"
+            },
+            {
+                "name": "LLA",
+                "alias": "6"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "7"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "8"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "9"
+            },
+            {
+                "name": "Zhijian Xu & Xing Gao",
+                "alias": "10"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57253.0",
+                "band": "R",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57253.0",
+                "band": "C",
+                "abmag": "17.55",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57253.067",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57253.933",
+                "band": "CR",
+                "abmag": "17.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57255.733",
+                "band": "CV",
+                "abmag": "17.3",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57256.772",
+                "band": "C",
+                "abmag": "17.0",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57263.017",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57270.804",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57276.038",
+                "band": "CV",
+                "abmag": "16.68",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57276.03842",
+                "band": "CV",
+                "abmag": "16.68",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57283.0",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57303.791",
+                "band": "CV",
+                "abmag": "17.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57306.914",
+                "band": "U",
+                "abmag": "17.9",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 29,
+        "discoveryear": 2015,
+        "discovermonth": 8,
+        "discoverday": 19
+    }
+}

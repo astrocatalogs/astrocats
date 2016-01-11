@@ -1,0 +1,39 @@
+{
+    "PTF12alp": {
+        "name": "PTF12alp",
+        "aliases": [
+            "PTF12alp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3957'>ATEL 3957</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55960.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:07:39.48",
+        "sndec": "+06:20:08.9",
+        "discoverday": 3,
+        "discovermonth": 2,
+        "discoveryear": 2012,
+        "redshift": 0.0232,
+        "discoverer": "PTF",
+        "maxyear": 2012,
+        "maxmonth": 2,
+        "maxday": 3
+    }
+}

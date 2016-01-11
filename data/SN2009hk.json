@@ -1,0 +1,47 @@
+{
+    "SN2009hk": {
+        "name": "SN2009hk",
+        "aliases": [
+            "SN2009hk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001800/CBET001875.txt'>CBET 1875</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55022.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2009,
+        "discoverday": 10,
+        "discovermonth": 7,
+        "host": "MCG -4-48-26",
+        "claimedtype": "Ia",
+        "hvel": "5500",
+        "galra": "203839",
+        "galdec": "-250729",
+        "snra": "20:38:37.42",
+        "sndec": "-25:06:56.0",
+        "discoverer": "ROTSE",
+        "maxyear": 2009,
+        "maxmonth": 7,
+        "maxday": 10,
+        "z": 0.0185
+    }
+}

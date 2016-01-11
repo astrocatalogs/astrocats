@@ -1,0 +1,83 @@
+{
+    "ASASSN-14iu": {
+        "name": "ASASSN-14iu",
+        "aliases": [
+            "ASASSN-14iu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6571'>ATEL 6571</a>",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "H. Tan",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56954.5",
+                "band": "",
+                "abmag": "14.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56955.156",
+                "band": "CV",
+                "abmag": "14.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56961.159",
+                "band": "CV",
+                "abmag": "14.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56966.8585",
+                "band": "V",
+                "abmag": "14.73",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56968.149",
+                "band": "CV",
+                "abmag": "14.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56977.204",
+                "band": "CV",
+                "abmag": "14.6",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "NGC 2771",
+        "snra": "09:10:39.53",
+        "sndec": "+50:22:48.3",
+        "discoverday": 24,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "redshift": 0.016855,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 24
+    }
+}

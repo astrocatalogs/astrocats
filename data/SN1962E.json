@@ -1,0 +1,47 @@
+{
+    "SN1962E": {
+        "name": "SN1962E",
+        "aliases": [
+            "SN1962E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1963PASP...75..236Z'>PASP 75, 236</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37724.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1962,
+        "maxday": 1,
+        "maxmonth": 3,
+        "host": "CGCG 126-12",
+        "claimedtype": "Ia*",
+        "hvel": "14250",
+        "galra": "111506",
+        "galdec": "+255344",
+        "snra": "11:15:05.52",
+        "sndec": "+25:53:31.6",
+        "discoverer": "Rudnicki",
+        "discoverday": 1,
+        "discovermonth": 3,
+        "maxyear": 1962,
+        "z": 0.0487
+    }
+}

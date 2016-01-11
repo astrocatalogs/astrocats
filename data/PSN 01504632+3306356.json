@@ -1,0 +1,45 @@
+{
+    "PSN 01504632+3306356": {
+        "name": "PSN 01504632+3306356",
+        "aliases": [
+            "PSN 01504632+3306356"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "2"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56592.868",
+                "band": "CR",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56621.912",
+                "band": "CR",
+                "abmag": "16.96",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 27,
+        "discoveryear": 2013,
+        "discovermonth": 10,
+        "discoverday": 27
+    }
+}

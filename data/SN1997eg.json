@@ -1,0 +1,171 @@
+{
+    "SN1997eg": {
+        "name": "SN1997eg",
+        "aliases": [
+            "SN1997eg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "D.Yu.Tsvetkov, N.N.Pavlyuk. In preparation.",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50866.08999999985",
+                "band": "I",
+                "abmag": "14.95",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50866.08999999985",
+                "band": "R",
+                "abmag": "15.27",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50866.08999999985",
+                "band": "V",
+                "abmag": "15.79",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50867.08999999985",
+                "band": "B",
+                "abmag": "16.26",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50867.08999999985",
+                "band": "I",
+                "abmag": "14.97",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50867.08999999985",
+                "band": "R",
+                "abmag": "15.31",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50867.08999999985",
+                "band": "V",
+                "abmag": "15.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50868.049999999814",
+                "band": "B",
+                "abmag": "16.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50868.049999999814",
+                "band": "I",
+                "abmag": "15.12",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50868.049999999814",
+                "band": "R",
+                "abmag": "15.22",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50868.049999999814",
+                "band": "V",
+                "abmag": "15.65",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50873.04000000004",
+                "band": "B",
+                "abmag": "15.98",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50873.04000000004",
+                "band": "I",
+                "abmag": "15.06",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50873.04000000004",
+                "band": "R",
+                "abmag": "15.28",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50873.04000000004",
+                "band": "V",
+                "abmag": "15.72",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50874.049999999814",
+                "band": "I",
+                "abmag": "14.92",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50874.049999999814",
+                "band": "R",
+                "abmag": "15.22",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50874.049999999814",
+                "band": "V",
+                "abmag": "15.67",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1998,
+        "discoverday": 22,
+        "discovermonth": 2,
+        "host": "NGC 5012",
+        "claimedtype": "IIn",
+        "hvel": "2661",
+        "galra": "131137",
+        "galdec": "+225456",
+        "snra": "13:11:36.73",
+        "sndec": "+22:55:29.4",
+        "discoverer": "Masakatsu Aoki",
+        "maxyear": 1998,
+        "maxmonth": 3,
+        "maxday": 2,
+        "z": 0.00892
+    }
+}

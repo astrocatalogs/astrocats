@@ -1,0 +1,46 @@
+{
+    "SN1988ai": {
+        "name": "SN1988ai",
+        "aliases": [
+            "SN1988ai"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08137.html'>IAUC 8137</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47471.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1988,
+        "discoverday": 6,
+        "discovermonth": 11,
+        "host": "ESO 293-G34",
+        "hvel": "1562",
+        "galra": "000620",
+        "galdec": "-413000",
+        "snra": "00:06:21.74",
+        "sndec": "-41:28:59.9",
+        "discoverer": "Robert Evans",
+        "maxyear": 1988,
+        "maxmonth": 11,
+        "maxday": 6,
+        "z": 0.00522
+    }
+}

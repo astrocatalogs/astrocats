@@ -1,0 +1,38 @@
+{
+    "PSN J14331573+0354161": {
+        "name": "PSN J14331573+0354161",
+        "aliases": [
+            "PSN J14331573+0354161"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J14331573+0354161.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55582.5",
+                "band": "",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "host": "UGC 9362",
+        "snra": "14:33:15.72",
+        "sndec": "+03:54:16.1",
+        "discoverday": 21,
+        "discovermonth": 1,
+        "discoveryear": 2011,
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2011,
+        "maxmonth": 1,
+        "maxday": 21
+    }
+}

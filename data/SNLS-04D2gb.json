@@ -1,0 +1,39 @@
+{
+    "SNLS-04D2gb": {
+        "name": "SNLS-04D2gb",
+        "aliases": [
+            "SNLS-04D2gb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.aanda.org/index.php?option=com_article&amp;access=standard&amp;Itemid=129&amp;url2004/04/21'>Paper</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53115.5",
+                "band": "",
+                "abmag": "25.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "10:02:22.676",
+        "sndec": "+01:53:39.34",
+        "discoverday": 20,
+        "discovermonth": 4,
+        "discoveryear": 2004,
+        "redshift": 0.43,
+        "discoverer": "Supernova Legacy Project",
+        "maxyear": 2004,
+        "maxmonth": 4,
+        "maxday": 20
+    }
+}

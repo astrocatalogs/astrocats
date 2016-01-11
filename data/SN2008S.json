@@ -1,0 +1,55 @@
+{
+    "SN2008S": {
+        "name": "SN2008S",
+        "aliases": [
+            "SN2008S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001200/CBET001234.txt'>CBET 1234</a>",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54500.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54501.202",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "maxday": 4,
+        "maxmonth": 2,
+        "host": "NGC 6946",
+        "claimedtype": "LBV",
+        "hvel": "48",
+        "galra": "203452",
+        "galdec": "+600915",
+        "snra": "20:34:45.35",
+        "sndec": "+60:05:57.8",
+        "discoverer": "Ron Arbour",
+        "discoverday": 4,
+        "discovermonth": 2,
+        "redshift": 0.00016,
+        "maxyear": 2008,
+        "z": 0.00016
+    }
+}
