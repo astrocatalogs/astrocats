@@ -1,0 +1,40 @@
+{
+    "SMTJ10310056-3658262": {
+        "name": "SMTJ10310056-3658262",
+        "aliases": [
+            "SMTJ10310056-3658262"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7261'>ATEL 7261</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57093.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia-91T",
+        "host": "ESO 375-G52",
+        "snra": "10:31:00.55",
+        "sndec": "-36:58:26.2",
+        "discoverday": 12,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.035,
+        "discoverer": "SkyMapper",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 12
+    }
+}

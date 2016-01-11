@@ -2,21 +2,44 @@
     "SN2012id": {
         "name": "SN2012id",
         "aliases": [
-            "SN2012id"
+            "SN2012id",
+            "PSN J04424114+1834597"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "20",
-        "discovermonth": 12,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003361.txt'>CBET 3361</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56294.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 1,
         "host": "A044241+1834",
         "claimedtype": "Ia",
         "hvel": "3600",
         "galra": "044241",
         "galdec": "+183459",
-        "snra": "044241.14",
-        "sndec": "+183459.7",
-        "discoverer": "Koishikawa",
+        "snra": "04:42:41.14",
+        "sndec": "+18:34:59.7",
+        "discoverer": "M. Koishikawa",
+        "redshift": 0.012,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 2,
         "z": 0.0121
     }
 }

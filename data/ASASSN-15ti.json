@@ -11,24 +11,40 @@
                 "secondary": true
             },
             {
-                "name": "MDe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8351'>ATEL 8351</a>",
                 "alias": "2"
+            },
+            {
+                "name": "MDe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57356.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57385.774",
                 "band": "CV",
                 "abmag": "17.2",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "maxyear": 2015,
-        "maxmonth": 12,
-        "maxday": 29,
+        "claimedtype": "Ia",
+        "snra": "03:05:08.62",
+        "sndec": "+37:54:00.7",
+        "discoverday": 30,
+        "discovermonth": 11,
         "discoveryear": 2015,
-        "discovermonth": 12,
-        "discoverday": 29
+        "redshift": 0.016,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 30
     }
 }

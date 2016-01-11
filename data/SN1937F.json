@@ -6,24 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/00700/00789.html'>IAUC 789</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "28876.0",
+                "time": "28875.5",
                 "band": "",
                 "abmag": "13.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1937",
-        "discovermonth": "12",
-        "discoverday": "9",
-        "maxyear": "1937",
-        "maxmonth": "12",
-        "maxday": "26"
+        "discoveryear": 1937,
+        "maxday": 8,
+        "maxmonth": 12,
+        "host": "NGC 3184",
+        "claimedtype": "II P",
+        "hvel": "588",
+        "galra": "101817",
+        "galdec": "+412528",
+        "discoverer": "Fritz Zwicky",
+        "snra": "10:18:16.7",
+        "sndec": "+41:22:29.0",
+        "discoverday": 8,
+        "discovermonth": 12,
+        "maxyear": 1937,
+        "z": 0.00196
     }
 }

@@ -2,21 +2,44 @@
     "SN2011go": {
         "name": "SN2011go",
         "aliases": [
-            "SN2011go"
+            "SN2011go",
+            "PSN J06555100+4041466"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "30",
-        "discovermonth": 9,
-        "host": "M+07-15-02",
-        "claimedtype": "II",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002849.txt'>CBET 2849</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55846.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 12,
+        "discovermonth": 10,
+        "host": "MCG +7-15-2",
+        "claimedtype": "IIP",
         "hvel": "6250",
         "galra": "065551",
         "galdec": "+404139",
-        "snra": "065551.00",
-        "sndec": "+404146.6",
-        "discoverer": "Boles",
+        "snra": "06:55:51.00",
+        "sndec": "+40:41:46.5",
+        "discoverer": "Tom Boles",
+        "redshift": 0.0209,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 12,
         "z": 0.0211
     }
 }

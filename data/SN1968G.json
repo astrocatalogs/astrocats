@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02000/02070.html'>IAUC 2070</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "39969.0",
+                "time": "39968.5",
                 "band": "",
                 "abmag": "17.4",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1968",
-        "discovermonth": "4",
-        "discoverday": "23"
+        "discoveryear": 1968,
+        "discoverday": 22,
+        "discovermonth": 4,
+        "host": "A081554+2028",
+        "claimedtype": "I",
+        "hvel": "12800",
+        "galra": "081554",
+        "galdec": "+2028",
+        "discoverer": "Fritz Zwicky",
+        "snra": "08:15:55.4",
+        "sndec": "+20:27:43.0",
+        "maxyear": 1968,
+        "maxmonth": 4,
+        "maxday": 22,
+        "z": 0.0436
     }
 }

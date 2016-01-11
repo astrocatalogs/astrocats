@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,20 @@
                 "time": "50461.0",
                 "band": "",
                 "abmag": "17.5",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1997",
+        "discoverday": "13",
         "discovermonth": "1",
-        "discoverday": "13"
+        "host": "NGC 3160",
+        "claimedtype": "Ic",
+        "hvel": "6795",
+        "galra": "101355",
+        "galdec": "+385034",
+        "snra": "10:13:56.18",
+        "sndec": "+38:49:00.5",
+        "discoverer": "BAO Supernova Survey",
+        "z": 0.0229
     }
 }

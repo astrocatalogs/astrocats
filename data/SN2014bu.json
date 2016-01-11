@@ -2,7 +2,8 @@
     "SN2014bu": {
         "name": "SN2014bu",
         "aliases": [
-            "SN2014bu"
+            "SN2014bu",
+            "PSN J01505845+2159598"
         ],
         "sources": [
             {
@@ -11,58 +12,70 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003910.txt'>CBET 3910</a>",
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56824.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56827.447",
                 "band": "C",
                 "abmag": "16.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56829.443",
                 "band": "C",
                 "abmag": "16.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56863.493",
                 "band": "UV",
                 "abmag": "15.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56913.417",
                 "band": "UV",
                 "abmag": "15.9",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 19,
+        "discoverday": 16,
         "discovermonth": 6,
         "host": "NGC 694",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "2935",
         "galra": "015059",
         "galdec": "+215949",
-        "snra": "015058.45",
-        "sndec": "+215959.8",
-        "discoverer": "Monard",
+        "snra": "01:50:58.45",
+        "sndec": "+21:59:59.8",
+        "discoverer": "Berto Monard",
+        "redshift": 0.00984,
         "maxyear": 2014,
-        "maxmonth": 7,
-        "maxday": 25,
+        "maxmonth": 6,
+        "maxday": 16,
         "z": 0.00984
     }
 }

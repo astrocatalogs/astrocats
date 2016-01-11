@@ -2,21 +2,44 @@
     "SN2013dc": {
         "name": "SN2013dc",
         "aliases": [
-            "SN2013dc"
+            "SN2013dc",
+            "PSN J16525897+0224255"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "11",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003551.txt'>CBET 3551</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56392.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 10,
         "discovermonth": 4,
         "host": "NGC 6240",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "7351",
         "galra": "165259",
         "galdec": "+022403",
-        "snra": "165258.97",
-        "sndec": "+022425.2",
-        "discoverer": "Block",
+        "snra": "16:52:58.97",
+        "sndec": "+02:24:25.5",
+        "discoverer": "Adam Block",
+        "redshift": 0.0245,
+        "maxyear": 2013,
+        "maxmonth": 4,
+        "maxday": 10,
         "z": 0.0248
     }
 }

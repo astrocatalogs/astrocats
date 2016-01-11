@@ -2,21 +2,44 @@
     "SN2012ij": {
         "name": "SN2012ij",
         "aliases": [
-            "SN2012ij"
+            "SN2012ij",
+            "PSN J11401584+1727222"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "29",
-        "discovermonth": 12,
-        "host": "M+03-30-38",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003370.txt'>CBET 3370</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56331.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 8,
+        "discovermonth": 2,
+        "host": "PGC 36194",
         "claimedtype": "Ia",
         "hvel": "3133",
         "galra": "114016",
         "galdec": "+172726",
-        "snra": "114015.84",
-        "sndec": "+172722.2",
-        "discoverer": "Wang et al.",
+        "snra": "11:40:15.84",
+        "sndec": "+17:27:22.2",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.010998,
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 8,
         "z": 0.0105
     }
 }

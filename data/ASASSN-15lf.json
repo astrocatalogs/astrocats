@@ -11,138 +11,155 @@
                 "secondary": true
             },
             {
-                "name": "Gianluca Masi",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7634'>ATEL 7634</a>",
                 "alias": "2"
             },
             {
-                "name": "Joel Nicolas",
+                "name": "Gianluca Masi",
                 "alias": "3"
             },
             {
-                "name": "Giancarlo Cortini",
+                "name": "Joel Nicolas",
                 "alias": "4"
             },
             {
-                "name": "LLA",
+                "name": "Giancarlo Cortini",
                 "alias": "5"
             },
             {
-                "name": "Esteban Aguilar",
+                "name": "LLA",
                 "alias": "6"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "7"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57194.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57188.826",
                 "band": "R",
                 "abmag": "15.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57188.906",
                 "band": "CV",
                 "abmag": "15.9",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57190.897",
                 "band": "CV",
                 "abmag": "15.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57191.9",
                 "band": "C",
                 "abmag": "16.2",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57194.885",
                 "band": "CV",
                 "abmag": "15.6",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57197.854",
                 "band": "CV",
                 "abmag": "15.9",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57197.984",
                 "band": "CV",
                 "abmag": "15.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57202.967",
                 "band": "CV",
                 "abmag": "15.9",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57208.935",
                 "band": "CV",
                 "abmag": "16.1",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57208.951",
                 "band": "CR",
                 "abmag": "25.94",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57220.893",
                 "band": "CV",
                 "abmag": "16.3",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57226.861",
                 "band": "CV",
                 "abmag": "16.6",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57239.856",
                 "band": "CV",
                 "abmag": "16.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57253.856",
                 "band": "CV",
                 "abmag": "16.9",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57276.833",
                 "band": "CV",
                 "abmag": "18.1",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "IIn",
+        "host": "NGC 4108",
+        "snra": "12:06:45.56",
+        "sndec": "+67:09:24.0",
+        "discoverday": 15,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "redshift": 0.008382,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 6,
-        "maxday": 21,
-        "discoveryear": 2015,
-        "discovermonth": 6,
-        "discoverday": 15
+        "maxday": 21
     }
 }

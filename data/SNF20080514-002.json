@@ -11,17 +11,28 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=1532'>ATEL 1532</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "54945.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "54609.234",
                 "band": "V",
                 "abmag": "15.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
@@ -31,11 +42,16 @@
                 "source": "1"
             }
         ],
-        "maxyear": 2008,
-        "maxmonth": 5,
-        "maxday": 25,
-        "discoveryear": 2008,
+        "claimedtype": "Ia",
+        "host": "UGC 8472",
+        "snra": "13:29:12.82",
+        "sndec": "+11:16:20.6",
+        "discoverday": 23,
         "discovermonth": 5,
-        "discoverday": 23
+        "discoveryear": 2008,
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2009,
+        "maxmonth": 4,
+        "maxday": 24
     }
 }

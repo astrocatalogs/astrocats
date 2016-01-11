@@ -1,0 +1,37 @@
+{
+    "SN1974L": {
+        "name": "SN1974L",
+        "aliases": [
+            "SN1974L"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1975PASP...87..401K'>PASP 87, 401</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "42368.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "11:06:06.0",
+        "sndec": "+28:11:47.0",
+        "discoverday": 17,
+        "discovermonth": 11,
+        "discoveryear": 1974,
+        "discoverer": "Charles Kowal",
+        "maxyear": 1974,
+        "maxmonth": 11,
+        "maxday": 17
+    }
+}

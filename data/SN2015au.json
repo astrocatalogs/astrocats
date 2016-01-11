@@ -2,21 +2,44 @@
     "SN2015au": {
         "name": "SN2015au",
         "aliases": [
-            "SN2015au"
+            "SN2015au",
+            "PSN J22305942-1359561"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2015",
-        "discoverday": "10",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004198.txt'>CBET 4198</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57335.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 9,
         "discovermonth": 11,
         "host": "NGC 7300",
         "claimedtype": "IIb",
         "hvel": "4895",
         "galra": "223100",
         "galdec": "-140013",
-        "snra": "223059.42",
-        "sndec": "-135956.1",
-        "discoverer": "Bock",
+        "snra": "22:30:59.42",
+        "sndec": "-13:59:56.1",
+        "discoverer": "Greg Bock",
+        "redshift": 0.016,
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 9,
         "z": 0.0165
     }
 }

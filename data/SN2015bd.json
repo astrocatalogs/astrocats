@@ -2,7 +2,8 @@
     "SN2015bd": {
         "name": "SN2015bd",
         "aliases": [
-            "SN2015bd"
+            "SN2015bd",
+            "PSN J11234588-0106212"
         ],
         "sources": [
             {
@@ -11,24 +12,41 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004200/CBET004217.txt'>CBET 4217</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57363.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57364.6889",
                 "band": "U",
                 "abmag": "15.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia-91T",
+        "host": "NGC 3662",
+        "snra": "11:23:45.88",
+        "sndec": "-01:06:21.2",
+        "discoverday": 7,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "redshift": 0.0186,
+        "discoverer": "Koichi Itagaki",
         "maxyear": 2015,
         "maxmonth": 12,
-        "maxday": 8,
-        "discoveryear": 2015,
-        "discovermonth": 12,
-        "discoverday": 8
+        "maxday": 7
     }
 }

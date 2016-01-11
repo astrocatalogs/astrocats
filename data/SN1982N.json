@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03700/03722.html'>IAUC 3722</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "45199.0",
+                "time": "45198.5",
                 "band": "",
-                "abmag": "17",
-                "source": "1"
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1982",
-        "discovermonth": "8",
-        "discoverday": "18"
+        "discoveryear": 1982,
+        "discoverday": 17,
+        "discovermonth": 8,
+        "host": "A211512-6556",
+        "galra": "211512",
+        "galdec": "-6556",
+        "discoverer": "Marina Wischnjewsky",
+        "snra": "21:15:16.3",
+        "sndec": "-65:55:14.0",
+        "maxyear": 1982,
+        "maxmonth": 8,
+        "maxday": 17
     }
 }

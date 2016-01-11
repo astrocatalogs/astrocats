@@ -6,20 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1977G'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "43356.0",
+                "time": "43355.5",
                 "band": "",
                 "abmag": "15.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1977",
-        "discovermonth": "8"
+        "discoveryear": 1977,
+        "discovermonth": 7,
+        "host": "NGC 7704",
+        "hvel": "5721",
+        "galra": "233501",
+        "galdec": "+045350",
+        "discoverer": "Karachentsev, Kopylov",
+        "snra": "23:35:08.1",
+        "sndec": "+04:54:36.0",
+        "discoverday": 31,
+        "maxyear": 1977,
+        "maxmonth": 7,
+        "maxday": 31,
+        "z": 0.0193
     }
 }

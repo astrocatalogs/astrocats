@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,21 @@
                 "time": "51013.0",
                 "band": "B",
                 "abmag": "17.5",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1998",
+        "discoverday": "19",
         "discovermonth": "7",
-        "discoverday": "19"
+        "host": "MCG -3-34-8",
+        "claimedtype": "Ia",
+        "hvel": "2454",
+        "galra": "131025",
+        "galdec": "-165557",
+        "snra": "13:10:23.85",
+        "sndec": "+16:56:08.11",
+        "discoverer": "Marina Wischnjewsky",
+        "redshift": 0.01,
+        "z": 0.00822
     }
 }

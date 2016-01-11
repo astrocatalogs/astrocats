@@ -6,21 +6,91 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08038.html#Item1'>IAUC 8038</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52636.0",
-                "band": "",
+                "time": "52597.5",
+                "band": "C",
+                "abmag": "14.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52608.5",
+                "band": "C",
+                "abmag": "15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52619.5",
+                "band": "C",
+                "abmag": "15.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52621.700000000186",
+                "band": "C",
+                "abmag": "15.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52627.10000000009",
+                "band": "C",
+                "abmag": "15.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52636.700000000186",
+                "band": "C",
                 "abmag": "17.5",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52596.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "12",
-        "discoverday": "28"
+        "discoveryear": 2002,
+        "discoverday": 18,
+        "discovermonth": 11,
+        "host": "A093041-1446",
+        "claimedtype": "Ia",
+        "galra": "093041",
+        "galdec": "-144655",
+        "snra": "09:30:41.64",
+        "sndec": "-14:46:55.2",
+        "discoverer": "B. F. Madore",
+        "maxyear": 2002,
+        "maxmonth": 11,
+        "maxday": 19
     }
 }

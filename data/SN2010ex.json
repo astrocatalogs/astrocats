@@ -6,21 +6,54 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002300/CBET002348.txt'>CBET 2348</a>",
+                "alias": "2"
+            },
+            {
+                "name": "JSa",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55378.0",
+                "time": "55377.5",
                 "band": "",
-                "abmag": "16.1",
-                "source": "1"
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55387.039",
+                "band": "CR",
+                "abmag": "15.60",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "7",
-        "discoverday": "1"
+        "discoveryear": 2010,
+        "discoverday": 30,
+        "discovermonth": 6,
+        "host": "PGC 70222",
+        "claimedtype": "Ia",
+        "hvel": "6715",
+        "galra": "230011",
+        "galdec": "+260548",
+        "snra": "23:00:10.90",
+        "sndec": "+26:05:57.2",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0228,
+        "maxyear": 2010,
+        "maxmonth": 7,
+        "maxday": 10,
+        "z": 0.0227
     }
 }

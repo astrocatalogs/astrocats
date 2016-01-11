@@ -1,0 +1,39 @@
+{
+    "OGLE-2013-SN-130": {
+        "name": "OGLE-2013-SN-130",
+        "aliases": [
+            "OGLE-2013-SN-130"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5620'>ATEL 5620</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56626.5",
+                "band": "",
+                "abmag": "19.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia-pec",
+        "snra": "06:36:46.99",
+        "sndec": "-68:52:22.4",
+        "discoverday": 30,
+        "discovermonth": 11,
+        "discoveryear": 2013,
+        "redshift": 0.09,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 30
+    }
+}

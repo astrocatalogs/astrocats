@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07751.html#Item2'>IAUC 7751</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52220.0",
-                "band": "R",
+                "time": "52220.200000000186",
+                "band": "C",
                 "abmag": "18.7",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52225.200000000186",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52219.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "11",
-        "discoverday": "7"
+        "discoveryear": 2001,
+        "discoverday": 6,
+        "discovermonth": 11,
+        "host": "UGC 11922",
+        "claimedtype": "II",
+        "hvel": "7252",
+        "galra": "220854",
+        "galdec": "+402051",
+        "snra": "22:08:54.03",
+        "sndec": "+40:20:50.3",
+        "discoverer": "LOTOSS",
+        "maxyear": 2001,
+        "maxmonth": 11,
+        "maxday": 12,
+        "z": 0.0245
     }
 }

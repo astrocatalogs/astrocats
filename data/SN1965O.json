@@ -6,8 +6,17 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/cgi-bin/bib_query?1971AJ.....76..756K'>AJ 76, 756</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -16,11 +25,18 @@
                 "time": "38768.0",
                 "band": "",
                 "abmag": "17.5",
-                "source": "1"
+                "source": "3"
             }
         ],
         "discoveryear": "1965",
+        "discoverday": "1",
         "discovermonth": "1",
-        "discoverday": "8"
+        "host": "A120224+4955",
+        "galra": "120224",
+        "galdec": "+4955",
+        "discoverer": "unknown",
+        "claimedtype": "unconf",
+        "snra": "12:02:20.00",
+        "sndec": "+49:55:35.0"
     }
 }

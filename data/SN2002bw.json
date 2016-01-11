@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07864.html#Item2'>IAUC 7864</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52363.0",
+                "time": "52363.5",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52365.5",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52362.5",
                 "band": "",
                 "abmag": "17.4",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "3",
-        "discoverday": "30"
+        "discoveryear": 2002,
+        "discoverday": 29,
+        "discovermonth": 3,
+        "host": "PGC 59990",
+        "claimedtype": "Ia",
+        "hvel": "5335",
+        "galra": "171636",
+        "galdec": "-102038",
+        "snra": "17:16:35.60",
+        "sndec": "-10:20:31.8",
+        "discoverer": "LOTOSS",
+        "maxyear": 2002,
+        "maxmonth": 3,
+        "maxday": 30,
+        "z": 0.018
     }
 }

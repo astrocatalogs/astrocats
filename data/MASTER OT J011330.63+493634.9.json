@@ -1,0 +1,40 @@
+{
+    "MASTER OT J011330.63+493634.9": {
+        "name": "MASTER OT J011330.63+493634.9",
+        "aliases": [
+            "MASTER OT J011330.63+493634.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6670'>ATEL 6670</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56965.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "UGC 766",
+        "snra": "01:13:30.63",
+        "sndec": "+49:36:34.9",
+        "discoverday": 4,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "redshift": 0.018283,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 4
+    }
+}

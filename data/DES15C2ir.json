@@ -1,0 +1,39 @@
+{
+    "DES15C2ir": {
+        "name": "DES15C2ir",
+        "aliases": [
+            "DES15C2ir"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7973'>ATEL 7973</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57257.5",
+                "band": "",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "03:40:55.09",
+        "sndec": "-28:41:19.1",
+        "discoverday": 23,
+        "discovermonth": 8,
+        "discoveryear": 2015,
+        "redshift": 0.058,
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 23
+    }
+}

@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05800/05850.html'>IAUC 5850</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49221.0",
-                "band": "R",
+                "time": "49220.5",
+                "band": "",
                 "abmag": "16.3",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1993",
-        "discovermonth": "8",
-        "discoverday": "22"
+        "discoveryear": 1993,
+        "discoverday": 21,
+        "discovermonth": 8,
+        "host": "NGC 2276",
+        "claimedtype": "II",
+        "hvel": "2407",
+        "galra": "072713",
+        "galdec": "+854520",
+        "snra": "07:27:40.60",
+        "sndec": "+85:46:26.2",
+        "discoverer": "Treffers, Filippenko, Leibundgut,",
+        "maxyear": 1993,
+        "maxmonth": 8,
+        "maxday": 21,
+        "z": 0.00806
     }
 }

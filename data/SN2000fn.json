@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07546.html#Item2'>IAUC 7546</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51895.0",
+                "time": "51875.200000000186",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51895.200000000186",
+                "band": "C",
+                "abmag": "18.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51866.5",
                 "band": "",
                 "abmag": "18.8",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2000",
-        "discovermonth": "12",
-        "discoverday": "17"
+        "discoveryear": 2000,
+        "discoverday": 18,
+        "discovermonth": 11,
+        "host": "NGC 2526",
+        "claimedtype": "Ib",
+        "hvel": "4669",
+        "galra": "080659",
+        "galdec": "+080014",
+        "snra": "08:06:57.79",
+        "sndec": "+08:00:19.3",
+        "discoverer": "B. Holmes",
+        "maxyear": 2000,
+        "maxmonth": 11,
+        "maxday": 27,
+        "z": 0.0157
     }
 }

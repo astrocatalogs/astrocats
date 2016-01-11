@@ -2,21 +2,44 @@
     "SN2011ce": {
         "name": "SN2011ce",
         "aliases": [
-            "SN2011ce"
+            "SN2011ce",
+            "PSN J18553580-5343290"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "19",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002715.txt'>CBET 2715</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55669.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 18,
         "discovermonth": 4,
         "host": "NGC 6708",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia-pec",
         "hvel": "2580",
         "galra": "185535",
         "galdec": "-534326",
-        "snra": "185535.84",
-        "sndec": "-534329.1",
-        "discoverer": "Maza et al.",
+        "snra": "18:55:35.79",
+        "sndec": "-53:43:29.0",
+        "discoverer": "CHASE",
+        "redshift": 0.0086,
+        "maxyear": 2011,
+        "maxmonth": 4,
+        "maxday": 18,
         "z": 0.00864
     }
 }

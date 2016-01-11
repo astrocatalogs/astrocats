@@ -4,19 +4,41 @@
         "aliases": [
             "SN2013J"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "19",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003388.txt'>CBET 3388</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56314.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 22,
         "discovermonth": 1,
-        "host": "M+05-27-25",
+        "host": "KUG 1110+283",
         "claimedtype": "Ic",
         "hvel": "10299",
         "galra": "111250",
         "galdec": "+280414",
-        "snra": "111250.30",
-        "sndec": "+280419.7",
-        "discoverer": "Tanaka et al.",
+        "snra": "11:12:50.30",
+        "sndec": "+28:04:19.7",
+        "discoverer": "Kiso Supernova Survey (KISS) collaboration",
+        "redshift": 0.034,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 22,
         "z": 0.035
     }
 }

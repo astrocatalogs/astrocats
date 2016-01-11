@@ -2,21 +2,44 @@
     "SN2013C": {
         "name": "SN2013C",
         "aliases": [
-            "SN2013C"
+            "SN2013C",
+            "PSN J11055522+7231203"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "4",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003375.txt'>CBET 3375</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56304.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 12,
         "discovermonth": 1,
-        "host": "PGC0033561",
+        "host": "PGC 33561",
         "claimedtype": "Ia",
         "hvel": "7182",
         "galra": "110556",
         "galdec": "+723129",
-        "snra": "110555.22",
-        "sndec": "+723120.3",
-        "discoverer": "Tsuboi",
+        "snra": "11:05:55.22",
+        "sndec": "+72:31:20.3",
+        "discoverer": "Masaki Tsuboi",
+        "redshift": 0.023957,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 12,
         "z": 0.0243
     }
 }

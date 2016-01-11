@@ -6,24 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04200/04287.html'>IAUC 4287</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "46775.0",
+                "time": "46774.5",
                 "band": "",
-                "abmag": "15",
-                "source": "1"
+                "abmag": "15.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1986",
-        "discovermonth": "12",
-        "discoverday": "11",
-        "maxyear": "1986",
-        "maxmonth": "12",
-        "maxday": "1"
+        "discoveryear": 1986,
+        "maxday": 10,
+        "maxmonth": 12,
+        "host": "NGC 1667",
+        "claimedtype": "Ia",
+        "hvel": "4551",
+        "galra": "044837",
+        "galdec": "-061913",
+        "snra": "04:48:36.24",
+        "sndec": "-06:19:21.5",
+        "discoverer": "Carlton Pennypacker",
+        "discoverday": 10,
+        "discovermonth": 12,
+        "maxyear": 1986,
+        "z": 0.0153
     }
 }

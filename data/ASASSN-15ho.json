@@ -11,46 +11,62 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7426'>ATEL 7426</a>",
                 "alias": "2"
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Gregor Krannich",
+                "name": "Gianpiero Locatelli",
                 "alias": "4"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57132.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57133.594",
                 "band": "C",
                 "abmag": "17.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57133.819",
                 "band": "U",
                 "abmag": "16.9",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57133.834",
                 "band": "V",
                 "abmag": "16.7",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "09:09:23.89",
+        "sndec": "-04:43:30.10",
+        "discoverday": 20,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "redshift": 0.046,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 4,
-        "maxday": 21,
-        "discoveryear": 2015,
-        "discovermonth": 4,
-        "discoverday": 21
+        "maxday": 20
     }
 }

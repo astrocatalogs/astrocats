@@ -2,7 +2,8 @@
     "iPTF13dkz": {
         "name": "iPTF13dkz",
         "aliases": [
-            "iPTF13dkz"
+            "iPTF13dkz",
+            "PS1-13dnj"
         ],
         "sources": [
             {
@@ -11,24 +12,40 @@
                 "secondary": true
             },
             {
-                "name": "Xing Gao",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5407'>ATEL 5407</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Xing Gao",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56571.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56572.6994",
                 "band": "V",
                 "abmag": "17.8",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "II",
+        "snra": "01:36:11.58",
+        "sndec": "+33:37:01.4",
+        "discoverday": 6,
+        "discovermonth": 10,
+        "discoveryear": 2013,
+        "redshift": 0.016,
+        "discoverer": "PTF",
         "maxyear": 2013,
         "maxmonth": 10,
-        "maxday": 7,
-        "discoveryear": 2013,
-        "discovermonth": 10,
-        "discoverday": 7
+        "maxday": 6
     }
 }

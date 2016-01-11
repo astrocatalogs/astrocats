@@ -2,19 +2,41 @@
     "SN2012bd": {
         "name": "SN2012bd",
         "aliases": [
-            "SN2012bd"
+            "SN2012bd",
+            "MASTER 134433.70+224132.3"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "14",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003061.txt'>CBET 3061</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55999.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 13,
         "discovermonth": 3,
         "host": "A163105+6155",
-        "claimedtype": "II P pec",
+        "claimedtype": "IIP",
         "galra": "163105",
         "galdec": "+615548",
-        "snra": "163105.47",
-        "sndec": "+615548.4",
-        "discoverer": "Lipunov"
+        "snra": "16:31:05.47",
+        "sndec": "+61:55:48.4",
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 3,
+        "maxday": 13
     }
 }

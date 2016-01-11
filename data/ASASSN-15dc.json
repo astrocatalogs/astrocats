@@ -2,7 +2,8 @@
     "ASASSN-15dc": {
         "name": "ASASSN-15dc",
         "aliases": [
-            "ASASSN-15dc"
+            "ASASSN-15dc",
+            "PS15ag"
         ],
         "sources": [
             {
@@ -11,35 +12,51 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7090'>ATEL 7090</a>",
                 "alias": "2"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57069.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57070.738",
                 "band": "C",
                 "abmag": "16.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57071.8438",
                 "band": "U",
                 "abmag": "16.4",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "15:01:30.82",
+        "sndec": "-00:32:24.4",
+        "discoverday": 16,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "redshift": 0.041605,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 2,
-        "maxday": 18,
-        "discoveryear": 2015,
-        "discovermonth": 2,
-        "discoverday": 17
+        "maxday": 18
     }
 }

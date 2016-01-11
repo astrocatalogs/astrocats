@@ -2,7 +2,8 @@
     "SN2013dq": {
         "name": "SN2013dq",
         "aliases": [
-            "SN2013dq"
+            "SN2013dq",
+            "PSN J00513484+2943149"
         ],
         "sources": [
             {
@@ -11,40 +12,52 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003573.txt'>CBET 3573</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56469.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56543.408",
                 "band": "UV",
                 "abmag": "18.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56576.301",
                 "band": "UV",
                 "abmag": "19.7",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 8,
-        "discovermonth": 9,
+        "discoverday": 26,
+        "discovermonth": 6,
         "host": "UGC 525",
-        "claimedtype": "Ia",
+        "claimedtype": "Ia-91T",
         "hvel": "4931",
         "galra": "005135",
         "galdec": "+294259",
-        "snra": "005134.84",
-        "sndec": "+294314.9",
-        "discoverer": "Howerton et al.",
+        "snra": "00:51:34.84",
+        "sndec": "+29:43:14.9",
+        "discoverer": "CRTS",
+        "redshift": 0.0164,
         "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 8,
+        "maxmonth": 6,
+        "maxday": 26,
         "z": 0.0166
     }
 }

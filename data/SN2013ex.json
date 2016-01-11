@@ -2,7 +2,8 @@
     "SN2013ex": {
         "name": "SN2013ex",
         "aliases": [
-            "SN2013ex"
+            "SN2013ex",
+            "ASASSN-13cc"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Juanjo Gonzalez",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003635.txt'>CBET 3635</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Juanjo Gonzalez",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56527.5",
+                "band": "",
+                "abmag": "14.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56629.988",
                 "band": "R",
                 "abmag": "17.82",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 3,
-        "discovermonth": 12,
+        "discoverday": 23,
+        "discovermonth": 8,
         "host": "NGC 1954",
         "claimedtype": "Ia",
         "hvel": "3033",
         "galra": "053248",
         "galdec": "-140346",
-        "snra": "053246.62",
-        "sndec": "-140245.4",
-        "discoverer": "Brimacombe et al.",
+        "snra": "05:32:46.62",
+        "sndec": "-14:02:45.4",
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "redshift": 0.010441,
         "maxyear": 2013,
-        "maxmonth": 12,
-        "maxday": 3,
+        "maxmonth": 8,
+        "maxday": 23,
         "z": 0.0102
     }
 }

@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08149.html#Item2'>IAUC 8149</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52407.0",
-                "band": "i",
+                "time": "52406.5",
+                "band": "",
                 "abmag": "19.9",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "5",
-        "discoverday": "13"
+        "discoveryear": 2002,
+        "discoverday": 12,
+        "discovermonth": 5,
+        "host": "A135050+0942",
+        "galra": "135050",
+        "galdec": "+094202",
+        "snra": "13:50:50.13",
+        "sndec": "+09:42:02.0",
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2002,
+        "maxmonth": 5,
+        "maxday": 12
     }
 }

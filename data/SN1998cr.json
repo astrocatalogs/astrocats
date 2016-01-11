@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,19 @@
                 "time": "50992.0",
                 "band": "",
                 "abmag": "17.6",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1998",
+        "discoverday": "28",
         "discovermonth": "6",
-        "discoverday": "28"
+        "host": "PGC 57979",
+        "hvel": "10046",
+        "galra": "162318",
+        "galdec": "+371257",
+        "snra": "16:23:17.25",
+        "sndec": "+37:12:47.5",
+        "discoverer": "Tim Puckett et al.",
+        "z": 0.0341
     }
 }

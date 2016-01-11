@@ -2,7 +2,8 @@
     "SN2015ap": {
         "name": "SN2015ap",
         "aliases": [
-            "SN2015ap"
+            "SN2015ap",
+            "PSN J02051332+0606084"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "MDe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004190.txt'>CBET 4190</a>",
                 "alias": "2"
+            },
+            {
+                "name": "MDe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57282.5",
+                "band": "",
+                "abmag": "15.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57341.911",
                 "band": "CV",
                 "abmag": "17.0",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2015,
-        "discoverday": 15,
-        "discovermonth": 11,
+        "discoverday": 17,
+        "discovermonth": 9,
         "host": "IC 1776",
         "claimedtype": "Ib",
         "hvel": "3405",
         "galra": "020515",
         "galdec": "+060625",
-        "snra": "020513.32",
-        "sndec": "+060608.4",
+        "snra": "02:05:13.32",
+        "sndec": "+06:06:08.4",
         "discoverer": "LOSS",
+        "redshift": 0.01138,
         "maxyear": 2015,
-        "maxmonth": 11,
-        "maxday": 15,
+        "maxmonth": 9,
+        "maxday": 17,
         "z": 0.0114
     }
 }

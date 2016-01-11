@@ -2,7 +2,8 @@
     "ASASSN-14ew": {
         "name": "ASASSN-14ew",
         "aliases": [
-            "ASASSN-14ew"
+            "ASASSN-14ew",
+            "PSN J20220086-5147469"
         ],
         "sources": [
             {
@@ -11,35 +12,51 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6367'>ATEL 6367</a>",
                 "alias": "2"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56881.5",
+                "band": "",
+                "abmag": "15.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56876.499",
                 "band": "L",
                 "abmag": "15.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56876.666",
                 "band": "V",
                 "abmag": "15.7",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "20:22:00.88",
+        "sndec": "-51:47:46.5",
+        "discoverday": 7,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "redshift": 0.019597,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2014,
         "maxmonth": 8,
-        "maxday": 7,
-        "discoveryear": 2014,
-        "discovermonth": 8,
-        "discoverday": 7
+        "maxday": 12
     }
 }

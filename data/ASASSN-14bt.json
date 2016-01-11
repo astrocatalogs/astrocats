@@ -11,53 +11,70 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6196'>ATEL 6169</a>",
                 "alias": "2"
             },
             {
-                "name": "LLA",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Stan Howerton",
+                "name": "LLA",
                 "alias": "4"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56808.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56810.208",
                 "band": "C",
                 "abmag": "17.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56813.886",
                 "band": "CV",
                 "abmag": "16.6",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56829.156",
                 "band": "V",
                 "abmag": "17.9",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56829.187",
                 "band": "V",
                 "abmag": "16.7",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 5,
+        "claimedtype": "Ia",
+        "host": "UGC 5566",
+        "snra": "10:19:19.96",
+        "sndec": "+58:30:15.4",
+        "discoverday": 31,
+        "discovermonth": 5,
         "discoveryear": 2014,
-        "discovermonth": 6,
-        "discoverday": 2
+        "redshift": 0.0289,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 31
     }
 }

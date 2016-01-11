@@ -2,7 +2,8 @@
     "SN2011fe": {
         "name": "SN2011fe",
         "aliases": [
-            "SN2011fe"
+            "SN2011fe",
+            "PTF11kly"
         ],
         "sources": [
             {
@@ -25,6 +26,15 @@
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012arXiv1203.4013R'>2012arXiv1203.4013R</a>",
                 "alias": "5"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "6",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3581'>ATEL 3581</a>",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -11744,19 +11754,27 @@
                 "abmag": "21.36",
                 "aberr": "0.08",
                 "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55813.5",
+                "band": "",
+                "abmag": "9.9",
+                "source": "7,6"
             }
         ],
         "discoveryear": 2011,
         "discoverday": 23,
         "discovermonth": 8,
-        "host": "NGC 5457",
+        "host": "M101",
         "claimedtype": "Ia",
         "hvel": "240",
         "galra": "140313",
         "galdec": "+542057",
-        "snra": "140305.81",
-        "sndec": "+541625.4",
-        "discoverer": "Nugent et al.",
+        "snra": "14:03:05.80",
+        "sndec": "+54:16:25.3",
+        "discoverer": "PTF",
+        "redshift": 0.000804,
         "maxyear": 2011,
         "maxmonth": 9,
         "maxday": 10,

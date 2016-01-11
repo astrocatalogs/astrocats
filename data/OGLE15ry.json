@@ -1,0 +1,38 @@
+{
+    "OGLE15ry": {
+        "name": "OGLE15ry",
+        "aliases": [
+            "OGLE15ry"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'>OGLE page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57340.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 316301",
+        "snra": "04:05:33.79",
+        "sndec": "-65:05:48.6",
+        "discoverday": 14,
+        "discovermonth": 11,
+        "discoveryear": 2015,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 14
+    }
+}

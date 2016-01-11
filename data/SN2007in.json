@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001000/CBET001063.txt'>CBET 1063</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54352.0",
-                "band": "R",
+                "time": "56178.5",
+                "band": "",
                 "abmag": "19.4",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2007",
-        "discovermonth": "9",
-        "discoverday": "9"
+        "discoveryear": 2012,
+        "discoverday": 8,
+        "discovermonth": 9,
+        "host": "A010813+1844",
+        "claimedtype": "Ia",
+        "hvel": "18000",
+        "galra": "010813",
+        "galdec": "+184427",
+        "snra": "01:08:03.68",
+        "sndec": "+18:44:27.0",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.06,
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 8,
+        "z": 0.062
     }
 }

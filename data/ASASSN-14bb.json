@@ -2,9 +2,39 @@
     "ASASSN-14bb": {
         "name": "ASASSN-14bb",
         "aliases": [
-            "ASASSN-14bb"
+            "ASASSN-14bb",
+            "iPTF14axo"
         ],
-        "sources": [],
-        "photometry": []
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6152'>ATEL 6152</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56795.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "12:14:11.30",
+        "sndec": "+38:39:40.8",
+        "discoverday": 18,
+        "discovermonth": 5,
+        "discoveryear": 2014,
+        "redshift": 0.022,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 18
     }
 }

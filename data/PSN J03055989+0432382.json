@@ -1,0 +1,39 @@
+{
+    "PSN J03055989+0432382": {
+        "name": "PSN J03055989+0432382",
+        "aliases": [
+            "PSN J03055989+0432382",
+            "MASTER OT J030559.89+043238.2"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J03055989+0432382.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56646.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "03:05:59.89",
+        "sndec": "+04:32:38.2",
+        "discoverday": 20,
+        "discovermonth": 12,
+        "discoveryear": 2013,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 20
+    }
+}

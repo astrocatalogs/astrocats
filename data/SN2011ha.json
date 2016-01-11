@@ -2,21 +2,44 @@
     "SN2011ha": {
         "name": "SN2011ha",
         "aliases": [
-            "SN2011ha"
+            "SN2011ha",
+            "MASTER PGC1375631"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "30",
-        "discovermonth": 9,
-        "host": "PGC1375631",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002873.txt'>CBET 2873</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55856.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 22,
+        "discovermonth": 10,
+        "host": "PGC 1375631",
         "claimedtype": "Ia",
         "hvel": "28200",
         "galra": "035741",
         "galdec": "+101013",
-        "snra": "035740.87",
-        "sndec": "+100955.2",
-        "discoverer": "Balanutsa  ",
+        "snra": "03:57:40.87",
+        "sndec": "+10:09:55.2",
+        "discoverer": "MASTER",
+        "redshift": 0.094,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 22,
         "z": 0.0989
     }
 }

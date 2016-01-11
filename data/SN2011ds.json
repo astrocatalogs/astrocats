@@ -2,19 +2,42 @@
     "SN2011ds": {
         "name": "SN2011ds",
         "aliases": [
-            "SN2011ds"
+            "SN2011ds",
+            "PSN J20022093-2013134"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "13",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002751.txt'>CBET 2751</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55693.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 12,
         "discovermonth": 5,
-        "host": "A200220-2013",
+        "host": "ESO 595-G8",
         "claimedtype": "II",
         "galra": "200220",
         "galdec": "-201313",
-        "snra": "200220.93",
-        "sndec": "-201313.4",
-        "discoverer": "Howerton et al."
+        "snra": "20:02:20.93",
+        "sndec": "-20:13:13.3",
+        "discoverer": "CRTS",
+        "redshift": 0.019,
+        "maxyear": 2011,
+        "maxmonth": 5,
+        "maxday": 12
     }
 }

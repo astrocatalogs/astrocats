@@ -2,7 +2,8 @@
     "SN2011dh": {
         "name": "SN2011dh",
         "aliases": [
-            "SN2011dh"
+            "SN2011dh",
+            "PSN J13303600+4706330"
         ],
         "sources": [
             {
@@ -17,6 +18,15 @@
             {
                 "name": "AAVSO, 2011, http://www.aavso.org/ql/results?auid=000-BKC-239&startjd=2455772.66076",
                 "alias": "3"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "4",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002736.txt'>CBET 2736</a>",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -8753,19 +8763,27 @@
                 "abmag": "19.44",
                 "aberr": "0.12",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55730.5",
+                "band": "",
+                "abmag": "12.1",
+                "source": "5,4"
             }
         ],
         "discoveryear": 2011,
         "discoverday": 1,
         "discovermonth": 6,
-        "host": "NGC 5194",
+        "host": "M51",
         "claimedtype": "IIb",
         "hvel": "461",
         "galra": "132953",
         "galdec": "+471143",
-        "snra": "133005.12",
-        "sndec": "+471011.3",
-        "discoverer": "Reiland, Griga, Riou, Lamotte Bailey",
+        "snra": "13:30:05.124",
+        "sndec": "+47:10:11.301",
+        "discoverer": "Tom Reiland",
+        "redshift": 0.002,
         "maxyear": 2011,
         "maxmonth": 6,
         "maxday": 22,

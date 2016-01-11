@@ -11,24 +11,40 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5437'>ATEL 5437</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56559.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56561.534",
                 "band": "CV",
                 "abmag": "18.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "22:58:17.84",
+        "sndec": "-09:06:44.4",
+        "discoverday": 24,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.08,
+        "discoverer": "CRTS",
         "maxyear": 2013,
         "maxmonth": 9,
-        "maxday": 26,
-        "discoveryear": 2013,
-        "discovermonth": 9,
-        "discoverday": 26
+        "maxday": 24
     }
 }

@@ -2,7 +2,8 @@
     "PS15cvo": {
         "name": "PS15cvo",
         "aliases": [
-            "PS15cvo"
+            "PS15cvo",
+            "MASTER OT J022037.36+170217.5"
         ],
         "sources": [
             {
@@ -11,24 +12,38 @@
                 "secondary": true
             },
             {
-                "name": "Joel Nicolas",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57329.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57338.878",
                 "band": "CR",
                 "abmag": "18.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "02:20:37.39",
+        "sndec": "+17:02:18.0",
+        "discoverday": 3,
+        "discovermonth": 11,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
         "maxyear": 2015,
         "maxmonth": 11,
-        "maxday": 12,
-        "discoveryear": 2015,
-        "discovermonth": 11,
-        "discoverday": 12
+        "maxday": 3
     }
 }

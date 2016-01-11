@@ -2,7 +2,8 @@
     "SN2011ht": {
         "name": "SN2011ht",
         "aliases": [
-            "SN2011ht"
+            "SN2011ht",
+            "PSN J10081059+5150570"
         ],
         "sources": [
             {
@@ -13,6 +14,15 @@
             {
                 "name": "Mauerhan et al., 2012, arxiv:1209.0821",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002851.txt'>CBET 2851</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -591,6 +601,13 @@
                 "abmag": "21.43",
                 "aberr": "0.15",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55890.5",
+                "band": "",
+                "abmag": "13.7",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2011,
@@ -601,12 +618,13 @@
         "hvel": "1085",
         "galra": "100809",
         "galdec": "+515042",
-        "snra": "100810.58",
-        "sndec": "+515057.1",
-        "discoverer": "Boles",
+        "snra": "10:08:10.59",
+        "sndec": "+51:50:57.0",
+        "discoverer": "Tom Boles",
+        "redshift": 0.0036,
         "maxyear": 2011,
         "maxmonth": 11,
-        "maxday": 8,
+        "maxday": 25,
         "z": 0.00363
     }
 }

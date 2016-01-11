@@ -2,7 +2,8 @@
     "SN2013fj": {
         "name": "SN2013fj",
         "aliases": [
-            "SN2013fj"
+            "SN2013fj",
+            "PS1-13ddm"
         ],
         "sources": [
             {
@@ -11,52 +12,64 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003654.txt'>CBET 3654</a>",
                 "alias": "2"
             },
             {
-                "name": "Gabino Muriel Brillo",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Adolfo San Segundo",
+                "name": "Gabino Muriel Brillo",
                 "alias": "4"
+            },
+            {
+                "name": "Adolfo San Segundo",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56554.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56545.232",
                 "band": "L",
                 "abmag": "16.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56548.887",
                 "band": "CR",
                 "abmag": "16.67",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56547.936",
                 "band": "CR",
                 "abmag": "15.81",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
         "discoveryear": 2013,
         "discoverday": 10,
         "discovermonth": 9,
-        "host": "PGC0068419",
+        "host": "CGCG 428-62",
         "claimedtype": "Ia",
         "hvel": "10029",
         "galra": "221529",
         "galdec": "+153408",
-        "snra": "221528.51",
-        "sndec": "+153404.1",
-        "discoverer": "Ciabattari, Mazzoni, Carballo",
+        "snra": "22:15:28.51",
+        "sndec": "+15:34:04.1",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.03357,
         "maxyear": 2013,
         "maxmonth": 9,
         "maxday": 12,

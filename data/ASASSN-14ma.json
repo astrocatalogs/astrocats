@@ -2,7 +2,8 @@
     "ASASSN-14ma": {
         "name": "ASASSN-14ma",
         "aliases": [
-            "ASASSN-14ma"
+            "ASASSN-14ma",
+            "PS1-14abt"
         ],
         "sources": [
             {
@@ -11,24 +12,40 @@
                 "secondary": true
             },
             {
-                "name": "Rafael Benavides",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6824'>ATEL 6824</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57017.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57010.88634",
                 "band": "CV",
                 "abmag": "16.82",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "IIP",
+        "snra": "23:55:09.13",
+        "sndec": "+10:12:54.2",
+        "discoverday": 19,
+        "discovermonth": 12,
+        "discoveryear": 2014,
+        "redshift": 0.0137,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2014,
         "maxmonth": 12,
-        "maxday": 19,
-        "discoveryear": 2014,
-        "discovermonth": 12,
-        "discoverday": 19
+        "maxday": 26
     }
 }

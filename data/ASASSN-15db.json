@@ -11,46 +11,63 @@
                 "secondary": true
             },
             {
-                "name": "Bernd Gährken",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7078'>ATEL 7078</a>",
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Bernd Gährken",
                 "alias": "3"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Joseph Brimacombe",
                 "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57071.5",
+                "band": "",
+                "abmag": "14.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56709.1597",
                 "band": "C",
                 "abmag": "13.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57069.517",
                 "band": "C",
                 "abmag": "14.9",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57072.7535",
                 "band": "U",
                 "abmag": "14.2",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "NGC 5996",
+        "snra": "15:46:58.69",
+        "sndec": "+17:53:02.5",
+        "discoverday": 21,
+        "discovermonth": 2,
+        "discoveryear": 2014,
+        "redshift": 0.010998,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2014,
         "maxmonth": 2,
-        "maxday": 21,
-        "discoveryear": 2014,
-        "discovermonth": 2,
-        "discoverday": 21
+        "maxday": 21
     }
 }

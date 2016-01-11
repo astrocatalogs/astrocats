@@ -6,24 +6,66 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Unknown,?",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07780.html#Item1'>IAUC 7780</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52257.0",
-                "band": "",
+                "time": "52257.799999999814",
+                "band": "C",
                 "abmag": "17.2",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52263.75999999978",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52256.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "12",
-        "discoverday": "14",
-        "maxyear": "2001",
-        "maxmonth": "12",
-        "maxday": "24"
+        "discoveryear": 2001,
+        "discoverday": 13,
+        "discovermonth": 12,
+        "host": "A222510+4243",
+        "claimedtype": "Ia",
+        "hvel": "5575",
+        "galra": "222510",
+        "galdec": "+424304",
+        "snra": "22:25:10.42",
+        "sndec": "+42:43:04.2",
+        "discoverer": "Mark Armstrong",
+        "redshift": 0.019,
+        "maxyear": 2001,
+        "maxmonth": 12,
+        "maxday": 20,
+        "z": 0.0188
     }
 }

@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04100/04177.html'>IAUC 4177</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "46474.0",
-                "band": "B",
-                "abmag": "17",
-                "source": "1"
+                "time": "46473.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1986",
-        "discovermonth": "2",
-        "discoverday": "13"
+        "discoveryear": 1986,
+        "discoverday": 12,
+        "discovermonth": 2,
+        "host": "NGC 5101",
+        "claimedtype": "IIn",
+        "hvel": "1861",
+        "galra": "132147",
+        "galdec": "-272553",
+        "discoverer": "Leibundgut, Cameron",
+        "snra": "13:21:42.4",
+        "sndec": "-27:27:43.0",
+        "maxyear": 1986,
+        "maxmonth": 2,
+        "maxday": 12,
+        "z": 0.00623
     }
 }

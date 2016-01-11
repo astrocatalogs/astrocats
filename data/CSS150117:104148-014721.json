@@ -2,7 +2,8 @@
     "CSS150117:104148-014721": {
         "name": "CSS150117:104148-014721",
         "aliases": [
-            "CSS150117:104148-014721"
+            "CSS150117:104148-014721",
+            "PS15hl"
         ],
         "sources": [
             {
@@ -11,24 +12,40 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57038.5",
+                "band": "",
+                "abmag": "19.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57041.7639",
                 "band": "U",
                 "abmag": "19.8",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "10:41:47.99",
+        "sndec": "-01:47:21.3",
+        "discoverday": 16,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.12,
+        "discoverer": "CRTS",
         "maxyear": 2015,
         "maxmonth": 1,
-        "maxday": 19,
-        "discoveryear": 2015,
-        "discovermonth": 1,
-        "discoverday": 19
+        "maxday": 16
     }
 }

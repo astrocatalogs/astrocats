@@ -6,21 +6,54 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001400/CBET001440.txt'>CBET 1440</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54663.0",
+                "time": "55011.5",
                 "band": "",
-                "abmag": "15.5",
-                "source": "1"
+                "abmag": "14.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54674.841",
+                "band": "C",
+                "abmag": "15.8",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2008",
-        "discovermonth": "7",
-        "discoverday": "16"
+        "discoveryear": 2008,
+        "discoverday": 27,
+        "discovermonth": 7,
+        "host": "NGC 307",
+        "claimedtype": "Ia",
+        "hvel": "4002",
+        "galra": "005633",
+        "galdec": "-014616",
+        "snra": "00:56:32.96",
+        "sndec": "-01:46:16.0",
+        "discoverer": "LOSS",
+        "redshift": 0.0134,
+        "maxyear": 2009,
+        "maxmonth": 6,
+        "maxday": 29,
+        "z": 0.0134
     }
 }

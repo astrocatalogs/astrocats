@@ -2,28 +2,71 @@
     "SN2010ba": {
         "name": "SN2010ba",
         "aliases": [
-            "SN2010ba"
+            "SN2010ba",
+            "CSS100321:115821+152011"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002200/CBET002225.txt'>CBET 2225</a>",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55276.0",
+                "time": "55275.5",
                 "band": "",
-                "abmag": "15.2",
+                "abmag": "14.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55295.832",
+                "band": "CR",
+                "abmag": "15.6",
+                "aberr": "0.17",
                 "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55295.832",
+                "band": "CR",
+                "abmag": "15.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55339.874",
+                "band": "CR",
+                "abmag": "16.8",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "3",
-        "discoverday": "21",
-        "maxyear": "2010",
-        "maxmonth": "3",
-        "maxday": "26"
+        "discoveryear": 2010,
+        "discoverday": 20,
+        "discovermonth": 3,
+        "host": "A115821+1520",
+        "claimedtype": "Ia",
+        "galra": "115821",
+        "galdec": "+152012",
+        "snra": "11:58:20.68",
+        "sndec": "+15:20:10.8",
+        "discoverer": "CRTS",
+        "maxyear": 2010,
+        "maxmonth": 3,
+        "maxday": 20
     }
 }

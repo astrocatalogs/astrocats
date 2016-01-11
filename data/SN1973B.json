@@ -6,24 +6,133 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1978A%26AS...34..387C'>1978A&AS...34..387C</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02400/02485.html'>IAUC 2485</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "41694.0",
+                "time": "41717.06999999983",
+                "band": "B",
+                "abmag": "17.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41717.06999999983",
+                "band": "V",
+                "abmag": "15.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41719.080000000075",
+                "band": "B",
+                "abmag": "17.45",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41719.080000000075",
+                "band": "V",
+                "abmag": "16.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41721.049999999814",
+                "band": "B",
+                "abmag": "17.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41721.049999999814",
+                "band": "V",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41738.00999999978",
+                "band": "B",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41740.04000000004",
+                "band": "B",
+                "abmag": "18.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41740.04000000004",
+                "band": "V",
+                "abmag": "17.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41746.080000000075",
+                "band": "B",
+                "abmag": "18.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41746.080000000075",
+                "band": "V",
+                "abmag": "17.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41777.049999999814",
+                "band": "B",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41693.5",
                 "band": "",
-                "abmag": "15",
-                "source": "1"
+                "abmag": "15.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1973",
-        "discovermonth": "1",
-        "discoverday": "12",
-        "maxyear": "1973",
-        "maxmonth": "1",
-        "maxday": "7"
+        "discoveryear": 1973,
+        "maxday": 11,
+        "maxmonth": 1,
+        "host": "A151512+0244",
+        "claimedtype": "I",
+        "galra": "151512",
+        "galdec": "+0244",
+        "discoverer": "Charles Kowal",
+        "snra": "15:15:07.0",
+        "sndec": "+02:44:48.0",
+        "discoverday": 11,
+        "discovermonth": 1,
+        "maxyear": 1973
     }
 }

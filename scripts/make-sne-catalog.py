@@ -204,7 +204,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
     eventname = entry
 
     catalog[entry]['data'] = "<span class='ics'>"
-    catalog[entry]['data'] += "<a class='dci' href='sne/data/" + eventname + ".dat.bz2'></a>"
+    catalog[entry]['data'] += "<a class='dci' href='sne/data/" + eventname + ".json.bz2'></a>"
     plotavail = True if len(catalog[entry]['photometry']) else False
     catalog[entry]['numphoto'] = len(catalog[entry]['photometry'])
     if plotavail:
@@ -304,7 +304,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
         html = file_html(p, CDN, eventname)
         returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
         #html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-        html = re.sub(r'(\<\/body\>)', r'    <a href="data/' + eventname + r'.dat.bz2">Download datafile</a><br><br>\n        \1', html)
+        html = re.sub(r'(\<\/body\>)', r'    <a href="data/' + eventname + r'.json.bz2">Download datafile</a><br><br>\n        \1', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th>ID</th><th>Source</th></tr>\n        \1', html)
             for source in catalog[entry]['sources']:
@@ -334,6 +334,9 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
                 maxdatestr += '-' + str(catalog[entry]['maxday']).zfill(2)
     catalog[entry]['maxdate'] = maxdatestr
 
+    #if fcnt > 100:
+    #    break
+
 # Write it all out at the end
 if writecatalog:
     # Make a few small files for generating charts
@@ -348,7 +351,7 @@ if writecatalog:
     sourcedict = dict()
     for entry in catalog:
         for sourcerow in catalog[entry]['sources']:
-            strippedname = re.sub('<[^<]+?>', '', sourcerow['name'])
+            strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','replace'))
             if strippedname in sourcedict:
                 sourcedict[strippedname] += 1
             else:

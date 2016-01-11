@@ -6,21 +6,66 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07702.html#Item2'>IAUC 7702</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52152.0",
+                "time": "52140.5",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52152.5",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52151.5",
                 "band": "",
                 "abmag": "17.8",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "8",
-        "discoverday": "31"
+        "discoveryear": 2001,
+        "discoverday": 19,
+        "discovermonth": 8,
+        "host": "PGC 74077",
+        "claimedtype": "I",
+        "hvel": "13600",
+        "galra": "021200",
+        "galdec": "+313238",
+        "snra": "02:12:00.43",
+        "sndec": "+31:32:43.8",
+        "discoverer": "LOTOSS",
+        "redshift": 0.045,
+        "maxyear": 2001,
+        "maxmonth": 8,
+        "maxday": 31,
+        "z": 0.0464
     }
 }

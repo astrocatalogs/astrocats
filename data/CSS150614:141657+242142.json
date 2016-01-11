@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Joel Nicolas",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57189.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57190.929",
                 "band": "CV",
                 "abmag": "19.5",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "14:16:57.06",
+        "sndec": "+24:21:41.6",
+        "discoverday": 16,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "discoverer": "CRTS",
         "maxyear": 2015,
         "maxmonth": 6,
-        "maxday": 17,
-        "discoveryear": 2015,
-        "discovermonth": 6,
-        "discoverday": 17
+        "maxday": 16
     }
 }

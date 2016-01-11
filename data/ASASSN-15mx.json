@@ -11,57 +11,73 @@
                 "secondary": true
             },
             {
-                "name": "G. Locatelli",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7816'>ATEL 7816</a>",
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "G. Locatelli",
                 "alias": "3"
             },
             {
-                "name": "Diego Rodriguez",
+                "name": "Joseph Brimacombe",
                 "alias": "4"
             },
             {
-                "name": "LLA",
+                "name": "Diego Rodriguez",
                 "alias": "5"
+            },
+            {
+                "name": "LLA",
+                "alias": "6"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57221.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56859.896",
                 "band": "Rc",
                 "abmag": "16.85",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57224.51",
                 "band": "C",
                 "abmag": "17.0",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57230.893",
                 "band": "CR",
                 "abmag": "17.05",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57238.843",
                 "band": "CV",
                 "abmag": "18.0",
-                "source": "5,1"
+                "source": "6,1"
             }
         ],
-        "maxyear": 2014,
-        "maxmonth": 7,
-        "maxday": 21,
-        "discoveryear": 2014,
+        "claimedtype": "Ia",
+        "snra": "14:24:44.55",
+        "sndec": "+26:02:52.1",
+        "discoverday": 21,
         "discovermonth": 7,
-        "discoverday": 21
+        "discoveryear": 2014,
+        "redshift": 0.031,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 18
     }
 }

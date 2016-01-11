@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02100/02155.html'>IAUC 2155</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "40389.0",
+                "time": "40388.5",
                 "band": "",
-                "abmag": "15",
-                "source": "1"
+                "abmag": "15.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1969",
-        "discovermonth": "6",
-        "discoverday": "17"
+        "discoveryear": 1969,
+        "discoverday": 16,
+        "discovermonth": 6,
+        "host": "NGC 4725",
+        "claimedtype": "I",
+        "hvel": "1206",
+        "galra": "125027",
+        "galdec": "+253001",
+        "discoverer": "Fairall",
+        "snra": "12:50:28.2",
+        "sndec": "+25:30:21.0",
+        "maxyear": 1969,
+        "maxmonth": 6,
+        "maxday": 16,
+        "z": 0.00403
     }
 }

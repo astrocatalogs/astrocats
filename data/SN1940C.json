@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abstract_service.html'>HAC 524</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "29753.0",
+                "time": "29752.5",
                 "band": "",
                 "abmag": "16.3",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1940",
-        "discovermonth": "5",
-        "discoverday": "4"
+        "discoveryear": 1940,
+        "discoverday": 3,
+        "discovermonth": 5,
+        "host": "IC 1099",
+        "claimedtype": "II",
+        "hvel": "8877",
+        "galra": "150655",
+        "galdec": "+563033",
+        "discoverer": "Fritz Zwicky",
+        "snra": "15:06:55.0",
+        "sndec": "+56:30:32.0",
+        "maxyear": 1940,
+        "maxmonth": 5,
+        "maxday": 3,
+        "z": 0.0301
     }
 }

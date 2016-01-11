@@ -2,7 +2,8 @@
     "ASASSN-14fo": {
         "name": "ASASSN-14fo",
         "aliases": [
-            "ASASSN-14fo"
+            "ASASSN-14fo",
+            "CSS140831:203406-015801"
         ],
         "sources": [
             {
@@ -11,57 +12,73 @@
                 "secondary": true
             },
             {
-                "name": "P. Cacella",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6397'>ATEL 6397</a>",
                 "alias": "2"
             },
             {
-                "name": "Marco Russiani",
+                "name": "P. Cacella",
                 "alias": "3"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Marco Russiani",
                 "alias": "4"
             },
             {
-                "name": "Juan-Luis Glez. Carballo ",
+                "name": "Stan Howerton",
                 "alias": "5"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo ",
+                "alias": "6"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "56886.0",
-                "band": "U",
+                "time": "56885.5",
+                "band": "",
                 "abmag": "15.5",
                 "source": "2,1"
             },
             {
                 "timeunit": "MJD",
-                "time": "56886.918",
+                "time": "56886.0",
                 "band": "U",
                 "abmag": "15.5",
                 "source": "3,1"
             },
             {
                 "timeunit": "MJD",
+                "time": "56886.918",
+                "band": "U",
+                "abmag": "15.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56891.146",
                 "band": "U",
                 "abmag": "15.9",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56892.067",
                 "band": "V",
                 "abmag": "15.88",
-                "source": "5,1"
+                "source": "6,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "20:34:06.43",
+        "sndec": "-01:58:03.6",
+        "discoverday": 16,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "redshift": 0.02,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2014,
         "maxmonth": 8,
-        "maxday": 17,
-        "discoveryear": 2014,
-        "discovermonth": 8,
-        "discoverday": 17
+        "maxday": 16
     }
 }

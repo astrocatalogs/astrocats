@@ -2,7 +2,8 @@
     "SN2014bb": {
         "name": "SN2014bb",
         "aliases": [
-            "SN2014bb"
+            "SN2014bb",
+            "PSN J13324911+4152151"
         ],
         "sources": [
             {
@@ -11,44 +12,56 @@
                 "secondary": true
             },
             {
-                "name": "Esteban Aguilar",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003875.txt'>CBET 3875</a>",
                 "alias": "2"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Esteban Aguilar",
                 "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56801.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56802.858",
                 "band": "CR",
                 "abmag": "15.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56812.026",
                 "band": "CV",
                 "abmag": "16.10",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 25,
+        "discoverday": 24,
         "discovermonth": 5,
         "host": "NGC 5214",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia",
         "hvel": "8196",
         "galra": "133249",
         "galdec": "+415219",
-        "snra": "133249.11",
-        "sndec": "+415215.1",
-        "discoverer": "Ciabattari et al.",
+        "snra": "13:32:49.11",
+        "sndec": "+41:52:15.1",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.026942,
         "maxyear": 2014,
         "maxmonth": 5,
-        "maxday": 25,
+        "maxday": 24,
         "z": 0.0277
     }
 }

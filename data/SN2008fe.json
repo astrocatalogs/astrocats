@@ -6,21 +6,61 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001400/CBET001485.txt'>CBET 1485</a>",
+                "alias": "2"
+            },
+            {
+                "name": "FKugel",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54708.0",
+                "time": "54707.5",
                 "band": "",
-                "abmag": "19.2",
-                "source": "1"
+                "abmag": "18.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54705.876",
+                "band": "CR",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54710.84",
+                "band": "CR",
+                "abmag": "18.8",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2008",
-        "discovermonth": "8",
-        "discoverday": "30"
+        "discoveryear": 2008,
+        "discoverday": 27,
+        "discovermonth": 8,
+        "host": "UGC 9578",
+        "claimedtype": "IIP",
+        "hvel": "9280",
+        "galra": "145347",
+        "galdec": "+200656",
+        "snra": "14:53:48.26",
+        "sndec": "+20:06:45.5",
+        "discoverer": "Stanislav Korotkiy et al.",
+        "redshift": 0.031,
+        "maxyear": 2008,
+        "maxmonth": 8,
+        "maxday": 29,
+        "z": 0.0314
     }
 }

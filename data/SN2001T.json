@@ -6,24 +6,73 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07581.html#Item2'>IAUC 7581</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51946.0",
-                "band": "",
+                "time": "51946.89999999991",
+                "band": "C",
                 "abmag": "17",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51948.89999999991",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51965.14000000013",
+                "band": "C",
+                "abmag": "16.86",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51947.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "2",
-        "discoverday": "6",
-        "maxyear": "2001",
-        "maxmonth": "2",
-        "maxday": "19"
+        "discoveryear": 2001,
+        "discoverday": 6,
+        "discovermonth": 2,
+        "host": "MCG -2-37-6",
+        "claimedtype": "II",
+        "hvel": "4166",
+        "galra": "143253",
+        "galdec": "-125830",
+        "snra": "14:32:53.17",
+        "sndec": "-12:58:43.6",
+        "discoverer": "BAO",
+        "redshift": 0.014,
+        "maxyear": 2001,
+        "maxmonth": 2,
+        "maxday": 8,
+        "z": 0.014
     }
 }

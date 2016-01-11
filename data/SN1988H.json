@@ -6,24 +6,128 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1993MNRAS.265..471T'>1993MNRAS.265..471T</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04500/04560.html'>IAUC 4560</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "47223.0",
+                "time": "47232.0",
+                "band": "B",
+                "abmag": "17.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47236.0",
+                "band": "V",
+                "abmag": "16.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47243.299999999814",
+                "band": "V",
+                "abmag": "16.15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47267.0",
+                "band": "B",
+                "abmag": "17.75",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47269.0",
+                "band": "B",
+                "abmag": "17.65",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47269.0",
+                "band": "V",
+                "abmag": "16.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47624.39999999991",
+                "band": "B",
+                "abmag": "22.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47624.39999999991",
+                "band": "R",
+                "abmag": "21.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47624.39999999991",
+                "band": "V",
+                "abmag": "21.55",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47644.10000000009",
+                "band": "R",
+                "abmag": "21.45",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47644.10000000009",
+                "band": "V",
+                "abmag": "21.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47222.5",
                 "band": "",
                 "abmag": "15.5",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1988",
-        "discovermonth": "3",
-        "discoverday": "3",
-        "maxyear": "1988",
-        "maxmonth": "3",
-        "maxday": "4"
+        "discoveryear": 1988,
+        "maxday": 2,
+        "maxmonth": 3,
+        "host": "NGC 5878",
+        "claimedtype": "II",
+        "hvel": "1986",
+        "galra": "151346",
+        "galdec": "-141615",
+        "discoverer": "Saul Perlmutter",
+        "snra": "15:13:44.1",
+        "sndec": "-14:15:21.0",
+        "discoverday": 2,
+        "discovermonth": 3,
+        "maxyear": 1988,
+        "z": 0.00665
     }
 }

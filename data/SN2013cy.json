@@ -2,21 +2,44 @@
     "SN2013cy": {
         "name": "SN2013cy",
         "aliases": [
-            "SN2013cy"
+            "SN2013cy",
+            "PSN J22103421-2239480"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "31",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J22103421-2239480.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56442.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
         "discovermonth": 5,
-        "host": "M-04-52-18",
+        "host": "ESO 532-G25",
         "claimedtype": "Ia",
         "hvel": "9428",
         "galra": "221034",
         "galdec": "-223922",
-        "snra": "221034.21",
-        "sndec": "-223948.0",
-        "discoverer": "Monard",
+        "snra": "22:10:34.21",
+        "sndec": "-22:39:48.0",
+        "discoverer": "Berto Monard",
+        "redshift": 0.034,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 30,
         "z": 0.032
     }
 }

@@ -2,25 +2,44 @@
     "SN2010dj": {
         "name": "SN2010dj",
         "aliases": [
-            "SN2010dj"
+            "SN2010dj",
+            "CSS100512:115735+244228"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002200/CBET002296.txt'>CBET 2296</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55328.0",
-                "band": "g",
+                "time": "55266.5",
+                "band": "",
                 "abmag": "18.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "5",
-        "discoverday": "12"
+        "discoveryear": 2010,
+        "discoverday": 11,
+        "discovermonth": 3,
+        "host": "A115734+2442",
+        "galra": "115734",
+        "galdec": "+244227",
+        "snra": "11:57:34.72",
+        "sndec": "+24:42:27.7",
+        "discoverer": "CRTS",
+        "maxyear": 2010,
+        "maxmonth": 3,
+        "maxday": 11
     }
 }

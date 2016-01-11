@@ -2,7 +2,8 @@
     "SN2015N": {
         "name": "SN2015N",
         "aliases": [
-            "SN2015N"
+            "SN2015N",
+            "PSN J21431689+4334476"
         ],
         "sources": [
             {
@@ -11,105 +12,117 @@
                 "secondary": true
             },
             {
-                "name": "Juan-Luis Glez. Carballo",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004124.txt'>CBET 4124</a>",
                 "alias": "2"
             },
             {
-                "name": "LLA",
+                "name": "Juan-Luis Glez. Carballo",
                 "alias": "3"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "LLA",
                 "alias": "4"
             },
             {
-                "name": "Joel Nicolas",
+                "name": "Rafael Benavides",
                 "alias": "5"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joel Nicolas",
                 "alias": "6"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "7"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57223.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57254.09826",
                 "band": "CV",
                 "abmag": "17.32",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57236.062",
                 "band": "CV",
                 "abmag": "16.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57252.994",
                 "band": "CV",
                 "abmag": "17.45",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57224.881",
                 "band": "CV",
                 "abmag": "16.5",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57230.996",
                 "band": "CV",
                 "abmag": "16.8",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57231.29",
                 "band": "UV",
                 "abmag": "16.8",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57252.99408",
                 "band": "CV",
                 "abmag": "17.45",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57271.249",
                 "band": "UV",
                 "abmag": "18.5",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57316.203",
                 "band": "UV",
                 "abmag": "19.7",
-                "source": "6,1"
+                "source": "7,1"
             }
         ],
         "discoveryear": 2015,
-        "discoverday": 21,
+        "discoverday": 20,
         "discovermonth": 7,
         "host": "UGC 11797",
         "claimedtype": "Ia",
         "hvel": "3747",
         "galra": "214320",
         "galdec": "+433434",
-        "snra": "214316.89",
-        "sndec": "+433447.6",
+        "snra": "21:43:16.89",
+        "sndec": "+43:34:47.6",
         "discoverer": "LOSS",
+        "redshift": 0.019,
         "maxyear": 2015,
         "maxmonth": 7,
-        "maxday": 21,
+        "maxday": 20,
         "z": 0.0126
     }
 }

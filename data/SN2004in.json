@@ -6,24 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08400/08481.html#Item1'>IAUC 8481</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53312.0",
+                "time": "53319.5",
                 "band": "",
                 "abmag": "20.3",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2004",
-        "discovermonth": "11",
-        "discoverday": "3",
-        "maxyear": "2004",
-        "maxmonth": "11",
-        "maxday": "11"
+        "discoveryear": 2004,
+        "maxday": 10,
+        "maxmonth": 11,
+        "host": "A013026+0041",
+        "claimedtype": "Ia",
+        "redshift": 0.161,
+        "galra": "013026",
+        "galdec": "+004132",
+        "snra": "01:30:26.06",
+        "sndec": "+00:41:32.3",
+        "discoverer": "SDSS Collaboration",
+        "discoverday": 10,
+        "discovermonth": 11,
+        "maxyear": 2004
     }
 }

@@ -2,21 +2,44 @@
     "SN2012gd": {
         "name": "SN2012gd",
         "aliases": [
-            "SN2012gd"
+            "SN2012gd",
+            "PSN J01514770+2116206"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "23",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003292.txt'>CBET 3292</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56222.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 22,
         "discovermonth": 10,
-        "host": "PGC1646513",
+        "host": "PGC 1646513",
         "claimedtype": "Ia",
         "hvel": "16500",
         "galra": "015145",
         "galdec": "+211613",
-        "snra": "015147.70",
-        "sndec": "+211620.6",
-        "discoverer": "Balanutsa",
+        "snra": "01:51:47.70",
+        "sndec": "+21:16:20.6",
+        "discoverer": "MASTER",
+        "redshift": 0.055,
+        "maxyear": 2012,
+        "maxmonth": 10,
+        "maxday": 22,
         "z": 0.0566
     }
 }

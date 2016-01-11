@@ -13,6 +13,15 @@
             {
                 "name": "VSNET Oct2003",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07863.html#Item1'>IAUC 7863</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -351,19 +360,27 @@
                 "band": "R",
                 "abmag": "16.7",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52367.5",
+                "band": "",
+                "abmag": "14.7",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2002,
         "discoverday": 28,
         "discovermonth": 3,
         "host": "NGC 4242",
-        "claimedtype": "IIn?",
+        "claimedtype": "IIn/LBV",
         "hvel": "661",
         "galra": "121730",
         "galdec": "+453709",
-        "snra": "121737.18",
-        "sndec": "+453847.4",
-        "discoverer": "Puckett, Gauthier",
+        "snra": "12:17:37.18",
+        "sndec": "+45:38:47.4",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.002,
         "maxyear": 2002,
         "maxmonth": 4,
         "maxday": 1,

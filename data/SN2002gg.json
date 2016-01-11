@@ -6,21 +6,64 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07900/07990.html#Item1'>IAUC 7990</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52552.0",
-                "band": "",
+                "time": "52552.18000000017",
+                "band": "C",
                 "abmag": "20",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52553.0",
+                "band": "C",
+                "abmag": "20.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52551.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "10",
-        "discoverday": "5"
+        "discoveryear": 2002,
+        "discoverday": 4,
+        "discovermonth": 10,
+        "host": "A222745+0655",
+        "claimedtype": "Ia",
+        "redshift": 0.11,
+        "galra": "222745",
+        "galdec": "+065544",
+        "snra": "22:27:45.93",
+        "sndec": "+06:55:44.7",
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2002,
+        "maxmonth": 10,
+        "maxday": 5
     }
 }

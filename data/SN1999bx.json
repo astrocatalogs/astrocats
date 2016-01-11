@@ -6,21 +6,69 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "ISN and VSNET 1999",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51294.0",
-                "band": "",
+                "time": "51294.5",
+                "band": "C",
                 "abmag": "16.5",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51297.580000000075",
+                "band": "C",
+                "abmag": "15.78",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51300.62999999989",
+                "band": "C",
+                "abmag": "15.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51305.700000000186",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "4",
-        "discoverday": "26"
+        "discoveryear": 1999,
+        "discoverday": 26,
+        "discovermonth": 4,
+        "host": "NGC 6745",
+        "claimedtype": "II",
+        "hvel": "4545",
+        "galra": "190142",
+        "galdec": "+404437",
+        "snra": "19:01:41.44",
+        "sndec": "+40:44:52.3",
+        "discoverer": "LOSS",
+        "redshift": 0.0157,
+        "maxyear": 1999,
+        "maxmonth": 5,
+        "maxday": 2,
+        "z": 0.0153
     }
 }

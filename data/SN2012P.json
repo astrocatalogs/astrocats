@@ -2,21 +2,44 @@
     "SN2012P": {
         "name": "SN2012P",
         "aliases": [
-            "SN2012P"
+            "SN2012P",
+            "PSN J14595904+0153251"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "22",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002993.txt'>CBET 2993</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55947.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 21,
         "discovermonth": 1,
         "host": "NGC 5806",
-        "claimedtype": "Ib/c",
+        "claimedtype": "IIb",
         "hvel": "1351",
         "galra": "150001",
         "galdec": "+015328",
-        "snra": "145959.12",
-        "sndec": "+015324.4",
-        "discoverer": "Briganti",
+        "snra": "14:59:59.04",
+        "sndec": "+01:53:24.4",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.004533,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 21,
         "z": 0.00452
     }
 }

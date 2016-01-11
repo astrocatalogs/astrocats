@@ -6,21 +6,51 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001500/CBET001544.txt'>CBET 1544</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54759.0",
-                "band": "R",
-                "abmag": "18.2",
-                "source": "1"
+                "time": "54758.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54763.773",
+                "band": "CR",
+                "abmag": "17.00",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2008",
-        "discovermonth": "10",
-        "discoverday": "20"
+        "discoveryear": 2008,
+        "discoverday": 19,
+        "discovermonth": 10,
+        "host": "A185304+3845",
+        "claimedtype": "Ib/c",
+        "galra": "185304",
+        "galdec": "+384544",
+        "snra": "18:53:04.48",
+        "sndec": "+38:45:44.4",
+        "discoverer": "Stanislav Maticic",
+        "maxyear": 2008,
+        "maxmonth": 10,
+        "maxday": 24
     }
 }

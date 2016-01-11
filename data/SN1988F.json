@@ -6,24 +6,66 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "D.Yu.Tsvetkov, AZh, 71,vyp.1,90,1994",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04500/04554.html'>IAUC 4554</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "47211.0",
+                "time": "47236.0",
+                "band": "B",
+                "abmag": "18.15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47237.10000000009",
+                "band": "V",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47210.5",
                 "band": "",
-                "abmag": "16",
-                "source": "1"
+                "abmag": "16.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1988",
-        "discovermonth": "2",
-        "discoverday": "20",
-        "maxyear": "1988",
-        "maxmonth": "1",
-        "maxday": "2"
+        "discoveryear": 1988,
+        "maxday": 19,
+        "maxmonth": 2,
+        "host": "UGC 9288",
+        "claimedtype": "Ia",
+        "hvel": "5274",
+        "galra": "142859",
+        "galdec": "+135142",
+        "discoverer": "Jean Mueller",
+        "snra": "14:28:57.9",
+        "sndec": "+13:51:16.0",
+        "discoverday": 19,
+        "discovermonth": 2,
+        "redshift": 0.017619,
+        "maxyear": 1988,
+        "z": 0.0177
     }
 }

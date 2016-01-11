@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001600/CBET001675.txt'>CBET 1675</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54861.0",
-                "band": "R",
-                "abmag": "16.1",
-                "source": "1"
+                "time": "54860.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2009",
-        "discovermonth": "1",
-        "discoverday": "30"
+        "discoveryear": 2009,
+        "discoverday": 29,
+        "discovermonth": 1,
+        "host": "UGC 9982",
+        "claimedtype": "Ia",
+        "hvel": "7676",
+        "galra": "154007",
+        "galdec": "+704427",
+        "snra": "15:40:12.85",
+        "sndec": "+70:44:18.1",
+        "discoverer": "Veli-Pekka Hentunen and Markku Nissinen",
+        "redshift": 0.0256,
+        "maxyear": 2009,
+        "maxmonth": 1,
+        "maxday": 29,
+        "z": 0.0259
     }
 }

@@ -1,0 +1,38 @@
+{
+    "MASTER OT J062210.50-542849.8": {
+        "name": "MASTER OT J062210.50-542849.8",
+        "aliases": [
+            "MASTER OT J062210.50-542849.8"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7357'>ATEL 7357</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57119.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 148751",
+        "snra": "06:22:10.50",
+        "sndec": "-54:28:49.8",
+        "discoverday": 7,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 7
+    }
+}

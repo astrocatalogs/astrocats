@@ -2,7 +2,8 @@
     "SN2015K": {
         "name": "SN2015K",
         "aliases": [
-            "SN2015K"
+            "SN2015K",
+            "PSN J23355226+2336521"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004116.txt'>CBET 4116</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57137.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57231.463",
                 "band": "UV",
                 "abmag": "17.5",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2015,
-        "discoverday": 28,
-        "discovermonth": 7,
+        "discoverday": 25,
+        "discovermonth": 4,
         "host": "NGC 7712",
         "claimedtype": "Ic",
         "hvel": "3033",
         "galra": "233552",
         "galdec": "+233707",
-        "snra": "233552.26",
-        "sndec": "+233652.1",
-        "discoverer": "Itagaki",
+        "snra": "23:35:52.26",
+        "sndec": "+23:36:52.1",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.010184,
         "maxyear": 2015,
-        "maxmonth": 7,
-        "maxday": 28,
+        "maxmonth": 4,
+        "maxday": 25,
         "z": 0.0102
     }
 }

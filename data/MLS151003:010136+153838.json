@@ -1,0 +1,37 @@
+{
+    "MLS151003:010136+153838": {
+        "name": "MLS151003:010136+153838",
+        "aliases": [
+            "MLS151003:010136+153838"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57297.5",
+                "band": "",
+                "abmag": "20.4",
+                "source": "2,1"
+            }
+        ],
+        "snra": "01:01:36.08",
+        "sndec": "+15:38:38.3",
+        "discoverday": 2,
+        "discovermonth": 10,
+        "discoveryear": 2015,
+        "discoverer": "CRTS",
+        "maxyear": 2015,
+        "maxmonth": 10,
+        "maxday": 2
+    }
+}

@@ -2,21 +2,44 @@
     "SN2011ef": {
         "name": "SN2011ef",
         "aliases": [
-            "SN2011ef"
+            "SN2011ef",
+            "PSN J23305702+1529243"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "18",
-        "discovermonth": 7,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002772.txt'>CBET 2772</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55850.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 16,
+        "discovermonth": 10,
         "host": "UGC 12640",
         "claimedtype": "IIb",
         "hvel": "4009",
         "galra": "233057",
         "galdec": "+152926",
-        "snra": "233057.02",
-        "sndec": "+152924.3",
+        "snra": "23:30:57.02",
+        "sndec": "+15:29:24.2",
         "discoverer": "LOSS",
+        "redshift": 0.0134,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 16,
         "z": 0.0135
     }
 }

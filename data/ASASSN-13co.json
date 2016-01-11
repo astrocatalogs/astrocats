@@ -11,35 +11,52 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5346'>ATEL 5346</a>",
                 "alias": "2"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Stan Howerton",
                 "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56535.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56535.176",
                 "band": "U",
                 "abmag": "16.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56536.004",
                 "band": "CR",
                 "abmag": "16.55",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "IIP",
+        "host": "CGCG 402-14",
+        "snra": "21:40:38.74",
+        "sndec": "+06:30:36.9",
+        "discoverday": 31,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.0226,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2013,
         "maxmonth": 8,
-        "maxday": 31,
-        "discoveryear": 2013,
-        "discovermonth": 8,
-        "discoverday": 31
+        "maxday": 31
     }
 }

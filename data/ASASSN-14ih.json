@@ -1,0 +1,40 @@
+{
+    "ASASSN-14ih": {
+        "name": "ASASSN-14ih",
+        "aliases": [
+            "ASASSN-14ih"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6521'>ATEL 6521</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56918.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "PGC 69190",
+        "snra": "22:34:29.81",
+        "sndec": "-24:39:52.4",
+        "discoverday": 18,
+        "discovermonth": 9,
+        "discoveryear": 2014,
+        "redshift": 0.032,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 18
+    }
+}

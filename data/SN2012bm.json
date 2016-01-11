@@ -2,21 +2,44 @@
     "SN2012bm": {
         "name": "SN2012bm",
         "aliases": [
-            "SN2012bm"
+            "SN2012bm",
+            "PSN J13054566+4627529"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "27",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003077.txt'>CBET 3077</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56013.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 27,
         "discovermonth": 3,
         "host": "UGC 8189",
         "claimedtype": "Ia",
         "hvel": "7436",
         "galra": "130547",
         "galdec": "+462742",
-        "snra": "130545.66",
-        "sndec": "+462752.9",
-        "discoverer": "Puckett, Newton",
+        "snra": "13:05:45.66",
+        "sndec": "+46:27:52.9",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0248,
+        "maxyear": 2012,
+        "maxmonth": 3,
+        "maxday": 27,
         "z": 0.0251
     }
 }

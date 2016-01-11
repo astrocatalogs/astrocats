@@ -6,21 +6,107 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07845.html#Item1'>IAUC 7845</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52335.0",
-                "band": "",
+                "time": "52335.89999999991",
+                "band": "C",
                 "abmag": "17",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52338.87000000011",
+                "band": "C",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52340.049999999814",
+                "band": "C",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52340.93000000017",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52343.799999999814",
+                "band": "R",
+                "abmag": "15.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52346.08999999985",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52346.85999999987",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52348.10000000009",
+                "band": "R",
+                "abmag": "18.27",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52339.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "3",
-        "discoverday": "2"
+        "discoveryear": 2002,
+        "discoverday": 2,
+        "discovermonth": 3,
+        "host": "UGC 5499",
+        "claimedtype": "Ic-pec",
+        "hvel": "4757",
+        "galra": "101218",
+        "galdec": "+275143",
+        "snra": "10:12:17.28",
+        "sndec": "+27:51:52.4",
+        "discoverer": "Mark Armstrong",
+        "maxyear": 2002,
+        "maxmonth": 3,
+        "maxday": 10,
+        "z": 0.016
     }
 }

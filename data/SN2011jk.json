@@ -2,21 +2,44 @@
     "SN2011jk": {
         "name": "SN2011jk",
         "aliases": [
-            "SN2011jk"
+            "SN2011jk",
+            "PSN J07274305+2006217"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "27",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J07274305+2006217.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55891.5",
+                "band": "",
+                "abmag": "19.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 26,
         "discovermonth": 11,
         "host": "UGC 3843",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "5273",
         "galra": "072544",
         "galdec": "+200608",
-        "snra": "072543.05",
-        "sndec": "+200621.7",
-        "discoverer": "Howerton et al.",
+        "snra": "07:25:43.04",
+        "sndec": "+20:06:21.7",
+        "discoverer": "CRTS",
+        "redshift": 0.0176,
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 26,
         "z": 0.0177
     }
 }

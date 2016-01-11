@@ -2,21 +2,44 @@
     "SN2013ay": {
         "name": "SN2013ay",
         "aliases": [
-            "SN2013ay"
+            "SN2013ay",
+            "PSN J18423786-6456135"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "26",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003400/CBET003456.txt'>CBET 3456</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56376.5",
+                "band": "",
+                "abmag": "15.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 25,
         "discovermonth": 3,
         "host": "IC 4745",
         "claimedtype": "Ia",
         "hvel": "4730",
         "galra": "184236",
         "galdec": "-645635",
-        "snra": "184237.86",
-        "sndec": "-645613.5",
-        "discoverer": "Hamuy et al.",
+        "snra": "18:42:37.86",
+        "sndec": "-64:56:13.5",
+        "discoverer": "CHASE",
+        "redshift": 0.015728,
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 25,
         "z": 0.0159
     }
 }

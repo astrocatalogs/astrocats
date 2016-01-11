@@ -1,0 +1,37 @@
+{
+    "ROTSE3 J125008.3+105456": {
+        "name": "ROTSE3 J125008.3+105456",
+        "aliases": [
+            "ROTSE3 J125008.3+105456"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3438'>ATEL 3438</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55702.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "12:50:08.33",
+        "sndec": "+10:54:56.2",
+        "discoverday": 21,
+        "discovermonth": 5,
+        "discoveryear": 2011,
+        "discoverer": "ROTSE",
+        "maxyear": 2011,
+        "maxmonth": 5,
+        "maxday": 21
+    }
+}

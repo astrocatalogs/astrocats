@@ -4,19 +4,40 @@
         "aliases": [
             "SN2012cm"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "13",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003126.txt'>CBET 3126</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56076.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 29,
         "discovermonth": 5,
         "host": "A091005+2012",
         "claimedtype": "Ia",
         "hvel": "8460",
         "galra": "091005",
         "galdec": "+201246",
-        "snra": "091005.45",
-        "sndec": "+201245.1",
-        "discoverer": "Morokuma et al.",
+        "snra": "09:10:05.45",
+        "sndec": "+20:12:45.1",
+        "discoverer": "Kiso Supernova Survey",
+        "maxyear": 2012,
+        "maxmonth": 5,
+        "maxday": 29,
         "z": 0.0286
     }
 }

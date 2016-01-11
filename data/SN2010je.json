@@ -2,25 +2,47 @@
     "SN2010je": {
         "name": "SN2010je",
         "aliases": [
-            "SN2010je"
+            "SN2010je",
+            "CSS101113:171837+414057"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002500/CBET002525.txt'>CBET 2525</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55502.0",
+                "time": "55501.5",
                 "band": "",
-                "abmag": "17.1",
-                "source": "1"
+                "abmag": "16.6",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "11",
-        "discoverday": "2"
+        "discoveryear": 2010,
+        "discoverday": 1,
+        "discovermonth": 11,
+        "host": "NGC 6350",
+        "hvel": "9765",
+        "galra": "171842",
+        "galdec": "+414139",
+        "snra": "17:18:36.61",
+        "sndec": "+41:40:56.7",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0326,
+        "maxyear": 2010,
+        "maxmonth": 11,
+        "maxday": 1,
+        "z": 0.0331
     }
 }

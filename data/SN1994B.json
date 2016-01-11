@@ -6,21 +6,86 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2001PASP..113.1349H'>2001PASP..113.1349H</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05900/05923.html'>IAUC 5923</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49368.0",
+                "time": "49388.37000000011",
+                "band": "I",
+                "abmag": "19.25",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49388.37000000011",
                 "band": "V",
-                "abmag": "19",
-                "source": "1"
+                "abmag": "19.23",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49426.22999999998",
+                "band": "I",
+                "abmag": "19.46",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49426.22999999998",
+                "band": "R",
+                "abmag": "19.28",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49426.22999999998",
+                "band": "V",
+                "abmag": "20.38",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49367.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1994",
-        "discovermonth": "1",
-        "discoverday": "16"
+        "discoveryear": 1994,
+        "discoverday": 15,
+        "discovermonth": 1,
+        "host": "A082040+1543",
+        "claimedtype": "Ia",
+        "hvel": "26700",
+        "galra": "082040",
+        "galdec": "+154348",
+        "snra": "08:20:40.92",
+        "sndec": "+15:43:48.4",
+        "discoverer": "Christian Pollas",
+        "maxyear": 1994,
+        "maxmonth": 1,
+        "maxday": 15,
+        "z": 0.0934
     }
 }

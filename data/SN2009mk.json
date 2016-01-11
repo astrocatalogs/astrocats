@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002000/CBET002080.txt'>CBET 2080</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55180.0",
+                "time": "55179.5",
                 "band": "",
                 "abmag": "15.3",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2009",
-        "discovermonth": "12",
-        "discoverday": "15"
+        "discoveryear": 2009,
+        "discoverday": 14,
+        "discovermonth": 12,
+        "host": "ESO 293-G34",
+        "claimedtype": "IIb",
+        "hvel": "1562",
+        "galra": "000620",
+        "galdec": "-413000",
+        "snra": "00:06:21.37",
+        "sndec": "-41:28:59.8",
+        "discoverer": "Stu Parker",
+        "redshift": 0.005,
+        "maxyear": 2009,
+        "maxmonth": 12,
+        "maxday": 14,
+        "z": 0.00522
     }
 }

@@ -2,21 +2,44 @@
     "SN2013ce": {
         "name": "SN2013ce",
         "aliases": [
-            "SN2013ce"
+            "SN2013ce",
+            "PSN J11355080+3417027"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "1",
-        "discovermonth": 5,
-        "host": "PGC0035860",
-        "claimedtype": "II P",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003515.txt'>CBET 3515</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56412.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 4,
+        "host": "PGC 35860",
+        "claimedtype": "II",
         "hvel": "6320",
         "galra": "113551",
         "galdec": "+341656",
-        "snra": "113550.80",
-        "sndec": "+341702.7",
-        "discoverer": "Balanutsa",
+        "snra": "11:35:50.80",
+        "sndec": "+34:17:02.7",
+        "discoverer": "MASTER",
+        "redshift": 0.021,
+        "maxyear": 2013,
+        "maxmonth": 4,
+        "maxday": 30,
         "z": 0.0213
     }
 }

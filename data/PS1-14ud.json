@@ -11,31 +11,45 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56734.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56739.439",
                 "band": "UV",
                 "abmag": "19.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.433",
                 "band": "UV",
                 "abmag": "19.2",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "15:29:11.80",
+        "sndec": "+24:03:28.5",
+        "discoverday": 18,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
         "maxyear": 2014,
         "maxmonth": 3,
-        "maxday": 23,
-        "discoveryear": 2014,
-        "discovermonth": 3,
-        "discoverday": 23
+        "maxday": 18
     }
 }

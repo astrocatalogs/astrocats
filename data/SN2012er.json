@@ -2,21 +2,44 @@
     "SN2012er": {
         "name": "SN2012er",
         "aliases": [
-            "SN2012er"
+            "SN2012er",
+            "PSN J17315266+7150120"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "21",
-        "discovermonth": 8,
-        "host": "M+12-16-42",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003224.txt'>CBET 3224</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56184.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 14,
+        "discovermonth": 9,
+        "host": "PGC 60437",
         "claimedtype": "Ia",
         "hvel": "11900",
         "galra": "173156",
         "galdec": "+715026",
-        "snra": "173152.62",
-        "sndec": "+715010.2",
-        "discoverer": "Shurpakov",
+        "snra": "17:31:52.66",
+        "sndec": "+71:50:12.0",
+        "discoverer": "MASTER",
+        "redshift": 0.039694,
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 14,
         "z": 0.0405
     }
 }

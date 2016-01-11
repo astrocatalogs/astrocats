@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02400/02447.html'>IAUC 2447</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "41561.0",
+                "time": "41560.5",
                 "band": "",
-                "abmag": "16",
-                "source": "1"
+                "abmag": "16.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1972",
-        "discovermonth": "9",
-        "discoverday": "1"
+        "discoveryear": 1972,
+        "discoverday": 31,
+        "discovermonth": 8,
+        "host": "A010900+3213",
+        "galra": "010900",
+        "galdec": "+3213",
+        "discoverer": "John Huchra",
+        "snra": "01:08:57.8",
+        "sndec": "+32:13:27.0",
+        "maxyear": 1972,
+        "maxmonth": 8,
+        "maxday": 31
     }
 }

@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1963PASP...75..236Z'>PASP 75, 236</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "37998.0",
+                "time": "37997.5",
                 "band": "",
                 "abmag": "19.8",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1962",
-        "discovermonth": "11",
-        "discoverday": "30"
+        "discoveryear": 1962,
+        "discoverday": 29,
+        "discovermonth": 11,
+        "host": "MCG +7-8-1",
+        "hvel": "14150",
+        "galra": "032429",
+        "galdec": "+400134",
+        "discoverer": "Fritz Zwicky",
+        "snra": "03:24:30.2",
+        "sndec": "+40:01:45.0",
+        "maxyear": 1962,
+        "maxmonth": 11,
+        "maxday": 29,
+        "z": 0.0484
     }
 }

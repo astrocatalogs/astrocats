@@ -11,46 +11,62 @@
                 "secondary": true
             },
             {
-                "name": "Andrea Mantero",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6919'>ATEL 6919</a>",
                 "alias": "2"
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "Andrea Mantero",
                 "alias": "3"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Gianpiero Locatelli",
                 "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57038.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57036.935",
                 "band": "V",
                 "abmag": "16.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57036.944",
                 "band": "U",
                 "abmag": "16.3",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57039.6958",
                 "band": "U",
                 "abmag": "15.9",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "09:39:16.55",
+        "sndec": "+06:25:48.5",
+        "discoverday": 14,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.03,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 1,
-        "maxday": 17,
-        "discoveryear": 2015,
-        "discovermonth": 1,
-        "discoverday": 14
+        "maxday": 16
     }
 }

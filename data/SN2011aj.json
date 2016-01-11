@@ -2,21 +2,44 @@
     "SN2011aj": {
         "name": "SN2011aj",
         "aliases": [
-            "SN2011aj"
+            "SN2011aj",
+            "PSN J16501398+5522280"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "18",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002600/CBET002664.txt'>CBET 2664</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55607.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 15,
         "discovermonth": 2,
         "host": "NGC 6246A",
         "claimedtype": "Ia",
         "hvel": "5267",
         "galra": "165014",
         "galdec": "+552305",
-        "snra": "165013.98",
-        "sndec": "+552228.0",
-        "discoverer": "Jin, Gao",
+        "snra": "16:50:13.97",
+        "sndec": "+55:22:28.0",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.0175,
+        "maxyear": 2011,
+        "maxmonth": 2,
+        "maxday": 15,
         "z": 0.0177
     }
 }

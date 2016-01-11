@@ -6,21 +6,72 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07400/07478.html#Item2'>IAUC 7478</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51773.0",
-                "band": "",
+                "time": "51773.200000000186",
+                "band": "C",
                 "abmag": "17.2",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51774.189999999944",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51776.87000000011",
+                "band": "C",
+                "abmag": "17.15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51772.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2000",
-        "discovermonth": "8",
-        "discoverday": "17"
+        "discoveryear": 2000,
+        "discoverday": 16,
+        "discovermonth": 8,
+        "host": "CGCG 51-70",
+        "claimedtype": "Ia",
+        "hvel": "11891",
+        "galra": "161412",
+        "galdec": "+060904",
+        "snra": "16:14:12.22",
+        "sndec": "+06:09:00.6",
+        "discoverer": "Mike Schwartz",
+        "maxyear": 2000,
+        "maxmonth": 8,
+        "maxday": 16,
+        "z": 0.0405
     }
 }

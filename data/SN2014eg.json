@@ -2,7 +2,8 @@
     "SN2014eg": {
         "name": "SN2014eg",
         "aliases": [
-            "SN2014eg"
+            "SN2014eg",
+            "PESSTO ESO 154-G10"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Roland Santallo",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6711'>ATEL 6711</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Roland Santallo",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57002.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57075.43756",
                 "band": "V",
                 "abmag": "17.04",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 22,
-        "discovermonth": 2,
-        "host": "E154-G10",
-        "claimedtype": "Ia pec",
+        "discoveryear": 2014,
+        "discoverday": 11,
+        "discovermonth": 12,
+        "host": "ESO 154-G10",
+        "claimedtype": "Ia-91T",
         "hvel": "5507",
         "galra": "024509",
         "galdec": "-554427",
-        "snra": "024509.27",
-        "sndec": "-554416.9",
-        "discoverer": "Kangas et al.",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 22,
+        "snra": "02:45:09.27",
+        "sndec": "-55:44:16.9",
+        "discoverer": "ESO Spectroscopic Survey for Transient Objects",
+        "redshift": 0.018,
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 11,
         "z": 0.0185
     }
 }

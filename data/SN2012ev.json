@@ -2,21 +2,44 @@
     "SN2012ev": {
         "name": "SN2012ev",
         "aliases": [
-            "SN2012ev"
+            "SN2012ev",
+            "PSN J22030299-2231010"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "5",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003232.txt'>CBET 3232</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56174.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 4,
         "discovermonth": 9,
         "host": "A220302-2231",
         "claimedtype": "Ia",
         "hvel": "21952",
         "galra": "220302",
         "galdec": "-223101",
-        "snra": "220302.99",
-        "sndec": "-223101.0",
-        "discoverer": "Pignata et al.",
+        "snra": "22:03:02.99",
+        "sndec": "-22:31:01.0",
+        "discoverer": "CHASE",
+        "redshift": 0.0732,
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 4,
         "z": 0.0761
     }
 }

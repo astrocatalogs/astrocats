@@ -1,0 +1,40 @@
+{
+    "LSQ12ale": {
+        "name": "LSQ12ale",
+        "aliases": [
+            "LSQ12ale"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3942'>ATEL 3942</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55984.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "NGC 3843",
+        "snra": "11:43:56.51",
+        "sndec": "+07:55:37.3",
+        "discoverday": 27,
+        "discovermonth": 2,
+        "discoveryear": 2012,
+        "redshift": 0.08,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2012,
+        "maxmonth": 2,
+        "maxday": 27
+    }
+}

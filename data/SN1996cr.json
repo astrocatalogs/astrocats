@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08800/08823.html#Item2'>IAUC 8823</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50158.0",
+                "time": "50160.5",
                 "band": "",
-                "abmag": "19.5",
-                "source": "1"
+                "abmag": "16.6",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1996",
-        "discovermonth": "3",
-        "discoverday": "16"
+        "discoveryear": 1996,
+        "discoverday": 18,
+        "discovermonth": 3,
+        "host": "ESO 97-G13",
+        "claimedtype": "IIn",
+        "hvel": "380",
+        "galra": "141310",
+        "galdec": "-652020",
+        "snra": "14:13:10.01",
+        "sndec": "-65:20:44.4",
+        "discoverer": "Columbia Astrophysics Laboratory",
+        "redshift": 0.0014,
+        "maxyear": 1996,
+        "maxmonth": 3,
+        "maxday": 18,
+        "z": 0.00127
     }
 }

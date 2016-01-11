@@ -1,0 +1,77 @@
+{
+    "MLS121120:034515+275442": {
+        "name": "MLS121120:034515+275442",
+        "aliases": [
+            "MLS121120:034515+275442",
+            "CSS130928:034515+275441"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4595'>ATEL 4595</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56235.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56569.425",
+                "band": "UV",
+                "abmag": "18.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56576.428",
+                "band": "UV",
+                "abmag": "15.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56579.408",
+                "band": "UV",
+                "abmag": "17.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56595.405",
+                "band": "UV",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56601.451",
+                "band": "UV",
+                "abmag": "18.4",
+                "source": "3,1"
+            }
+        ],
+        "snra": "03:45:14.90",
+        "sndec": "+27:54:41.6",
+        "discoverday": 4,
+        "discovermonth": 11,
+        "discoveryear": 2012,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 11
+    }
+}

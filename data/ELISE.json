@@ -1,0 +1,37 @@
+{
+    "ELISE": {
+        "name": "ELISE",
+        "aliases": [
+            "ELISE"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5949'>ATEL 5949</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56718.5",
+                "band": "",
+                "abmag": "22.8",
+                "source": "2,1"
+            }
+        ],
+        "snra": "10:01:36.977",
+        "sndec": "+02:44:40.842",
+        "discoverday": 2,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "DECam",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 2
+    }
+}

@@ -11,24 +11,41 @@
                 "secondary": true
             },
             {
-                "name": "Nic",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002100/CBET002161.txt'>CBET 2161</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Nic",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "55231.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "55233.98",
                 "band": "CR",
                 "abmag": "17.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "LBV",
+        "host": "NGC 4214",
+        "snra": "12:15:41.06",
+        "sndec": "+36:20:02.9",
+        "discoverday": 4,
+        "discovermonth": 2,
+        "discoveryear": 2010,
+        "redshift": 0.001,
+        "discoverer": "Koichi Itagaki",
         "maxyear": 2010,
         "maxmonth": 2,
-        "maxday": 6,
-        "discoveryear": 2010,
-        "discovermonth": 2,
-        "discoverday": 6
+        "maxday": 4
     }
 }

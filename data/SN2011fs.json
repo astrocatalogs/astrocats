@@ -2,21 +2,44 @@
     "SN2011fs": {
         "name": "SN2011fs",
         "aliases": [
-            "SN2011fs"
+            "SN2011fs",
+            "PSN J22171952+3534500"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "15",
-        "discovermonth": 9,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002825.txt'>CBET 2825</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55882.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 17,
+        "discovermonth": 11,
         "host": "UGC 11975",
         "claimedtype": "Ia",
         "hvel": "6220",
         "galra": "221720",
         "galdec": "+353416",
-        "snra": "221719.52",
-        "sndec": "+353450.0",
-        "discoverer": "Jin, Gao",
+        "snra": "22:17:19.52",
+        "sndec": "+35:34:50.0",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.0209,
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 17,
         "z": 0.021
     }
 }

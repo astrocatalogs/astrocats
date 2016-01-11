@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02300/02355.html'>IAUC 2355</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "41182.0",
-                "band": "B",
-                "abmag": "16.9",
-                "source": "1"
+                "time": "41181.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1971",
-        "discovermonth": "8",
-        "discoverday": "19"
+        "discoveryear": 1971,
+        "discoverday": 18,
+        "discovermonth": 8,
+        "host": "NGC 7319",
+        "claimedtype": "I",
+        "hvel": "6614",
+        "galra": "223604",
+        "galdec": "+335834",
+        "discoverer": "Leonida Rosino",
+        "snra": "22:36:05.8",
+        "sndec": "+33:58:16.0",
+        "maxyear": 1971,
+        "maxmonth": 8,
+        "maxday": 18,
+        "z": 0.0223
     }
 }

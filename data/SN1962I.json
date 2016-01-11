@@ -6,24 +6,40 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1963PASP...75..236Z'>PASP 75, 236</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "37812.0",
+                "time": "37811.5",
                 "band": "",
                 "abmag": "17.2",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1962",
-        "discovermonth": "5",
-        "discoverday": "28",
-        "maxyear": "1962",
-        "maxmonth": "5",
-        "maxday": "18"
+        "discoveryear": 1962,
+        "maxday": 27,
+        "maxmonth": 5,
+        "host": "MCG +5-31-112",
+        "claimedtype": "I",
+        "galra": "130253",
+        "galdec": "+273105",
+        "snra": "13:02:52.37",
+        "sndec": "+27:31:10.2",
+        "discoverer": "Berger",
+        "discoverday": 27,
+        "discovermonth": 5,
+        "maxyear": 1962
     }
 }

@@ -11,24 +11,40 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7915'>ATEL 7915</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57248.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57252.714",
                 "band": "C",
                 "abmag": "17.1",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "02:13:07.47",
+        "sndec": "-45:18:08.0",
+        "discoverday": 14,
+        "discovermonth": 8,
+        "discoveryear": 2015,
+        "redshift": 0.04,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 8,
-        "maxday": 18,
-        "discoveryear": 2015,
-        "discovermonth": 8,
-        "discoverday": 18
+        "maxday": 14
     }
 }

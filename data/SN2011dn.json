@@ -2,21 +2,44 @@
     "SN2011dn": {
         "name": "SN2011dn",
         "aliases": [
-            "SN2011dn"
+            "SN2011dn",
+            "PSN J19583553+0236163"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "21",
-        "discovermonth": 6,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002746.txt'>CBET 2746</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55823.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 19,
+        "discovermonth": 9,
         "host": "UGC 11501",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia",
         "hvel": "7543",
         "galra": "195837",
         "galdec": "+023611",
-        "snra": "195835.53",
-        "sndec": "+023611.3",
-        "discoverer": "Leonini",
+        "snra": "19:58:35.52",
+        "sndec": "+02:36:16.2",
+        "discoverer": "Simone Leonini",
+        "redshift": 0.0252,
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 19,
         "z": 0.0255
     }
 }

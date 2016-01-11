@@ -2,7 +2,8 @@
     "SN2014bs": {
         "name": "SN2014bs",
         "aliases": [
-            "SN2014bs"
+            "SN2014bs",
+            "PSN J13420972+0415447"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003904.txt'>CBET 3904</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56810.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56829.141",
                 "band": "V",
                 "abmag": "17.5",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 21,
+        "discoverday": 2,
         "discovermonth": 6,
         "host": "NGC 5270",
         "claimedtype": "Ia",
         "hvel": "7051",
         "galra": "134211",
         "galdec": "+041545",
-        "snra": "134209.72",
-        "sndec": "+041544.7",
-        "discoverer": "Howerton et al.",
+        "snra": "13:42:09.72",
+        "sndec": "+04:15:44.7",
+        "discoverer": "CRTS",
+        "redshift": 0.02352,
         "maxyear": 2014,
         "maxmonth": 6,
-        "maxday": 21,
+        "maxday": 2,
         "z": 0.0238
     }
 }

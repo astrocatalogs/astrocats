@@ -2,21 +2,44 @@
     "SN2013ai": {
         "name": "SN2013ai",
         "aliases": [
-            "SN2013ai"
+            "SN2013ai",
+            "PSN J06161835-2122329"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "1",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003400/CBET003431.txt'>CBET 3431</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56353.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
         "discovermonth": 3,
         "host": "NGC 2207",
         "claimedtype": "II",
         "hvel": "2747",
         "galra": "061622",
         "galdec": "-212221",
-        "snra": "061618.35",
-        "sndec": "-212232.9",
-        "discoverer": "Conseil",
+        "snra": "06:16:18.35",
+        "sndec": "-21:22:32.9",
+        "discoverer": "E. Conseil",
+        "redshift": 0.009,
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 2,
         "z": 0.00921
     }
 }

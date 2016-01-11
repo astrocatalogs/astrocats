@@ -1,0 +1,39 @@
+{
+    "PSN J06234727-6519484": {
+        "name": "PSN J06234727-6519484",
+        "aliases": [
+            "PSN J06234727-6519484"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J06234727-6519484.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56608.5",
+                "band": "",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "PGC 75726",
+        "snra": "06:23:47.27",
+        "sndec": "-65:19:48.4",
+        "discoverday": 12,
+        "discovermonth": 11,
+        "discoveryear": 2013,
+        "discoverer": "Stu Parker",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 12
+    }
+}

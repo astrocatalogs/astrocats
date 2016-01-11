@@ -4,19 +4,41 @@
         "aliases": [
             "SN2006fp"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2006",
-        "discoverday": "17",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08750.html#Item2'>IAUC 8750</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53994.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 16,
         "discovermonth": 9,
         "host": "UGC 12182",
-        "claimedtype": "IIn?",
+        "claimedtype": "LBV",
         "hvel": "1534",
         "galra": "224538",
         "galdec": "+730943",
-        "snra": "224541.13",
-        "sndec": "+730947.8",
-        "discoverer": "Puckett, Gagliano",
+        "snra": "22:45:41.13",
+        "sndec": "+73:09:47.8",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.005,
+        "maxyear": 2006,
+        "maxmonth": 9,
+        "maxday": 16,
         "z": 0.00513
     }
 }

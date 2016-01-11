@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05400/05446.html#Item1'>IAUC 5446</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48648.0",
-                "band": "R",
-                "abmag": "20",
-                "source": "1"
+                "time": "48647.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1992",
-        "discovermonth": "1",
-        "discoverday": "27"
+        "discoveryear": 1992,
+        "discoverday": 26,
+        "discovermonth": 1,
+        "host": "A063517-5956",
+        "claimedtype": "Ia",
+        "hvel": "18000",
+        "galra": "063517",
+        "galdec": "-595602",
+        "snra": "06:35:17.12",
+        "sndec": "-59:56:02.8",
+        "discoverer": "Robert McNaught, Drinkwater",
+        "maxyear": 1992,
+        "maxmonth": 1,
+        "maxday": 26,
+        "z": 0.062
     }
 }

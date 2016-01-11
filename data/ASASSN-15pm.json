@@ -2,7 +2,8 @@
     "ASASSN-15pm": {
         "name": "ASASSN-15pm",
         "aliases": [
-            "ASASSN-15pm"
+            "ASASSN-15pm",
+            "CSS150913:013836-044047"
         ],
         "sources": [
             {
@@ -11,24 +12,40 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8041'>ATEL 8041</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57277.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57284.535",
                 "band": "C",
                 "abmag": "17.7",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "01:38:36.08",
+        "sndec": "-04:40:48.0",
+        "discoverday": 12,
+        "discovermonth": 9,
+        "discoveryear": 2015,
+        "redshift": 0.048784,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 9,
-        "maxday": 19,
-        "discoveryear": 2015,
-        "discovermonth": 9,
-        "discoverday": 19
+        "maxday": 12
     }
 }

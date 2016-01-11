@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05500/05573.html'>IAUC 5573</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48832.0",
-                "band": "B",
-                "abmag": "18",
-                "source": "1"
+                "time": "48831.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1992",
-        "discovermonth": "7",
-        "discoverday": "29"
+        "discoveryear": 1992,
+        "discoverday": 28,
+        "discovermonth": 7,
+        "host": "UGC 10430",
+        "claimedtype": "Ia",
+        "hvel": "8970",
+        "galra": "163033",
+        "galdec": "+412936",
+        "discoverer": "Birkle",
+        "snra": "16:30:30.00",
+        "sndec": "+41:29:00.0",
+        "maxyear": 1992,
+        "maxmonth": 7,
+        "maxday": 28,
+        "z": 0.0304
     }
 }

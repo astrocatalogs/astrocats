@@ -6,24 +6,282 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1998MNRAS.294..448B'>1998MNRAS.294..448B</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06100/06121.html'>IAUC 6121</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49698.0",
+                "time": "49717.200000000186",
+                "band": "R",
+                "abmag": "19.09",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49717.200000000186",
                 "band": "V",
-                "abmag": "19.5",
-                "source": "1"
+                "abmag": "19.46",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49720.299999999814",
+                "band": "R",
+                "abmag": "19.19",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49725.200000000186",
+                "band": "R",
+                "abmag": "19.39",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49725.200000000186",
+                "band": "V",
+                "abmag": "19.86",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49727.200000000186",
+                "band": "R",
+                "abmag": "19.51",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49727.200000000186",
+                "band": "V",
+                "abmag": "19.93",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49730.299999999814",
+                "band": "R",
+                "abmag": "19.59",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49730.299999999814",
+                "band": "V",
+                "abmag": "20.09",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49732.299999999814",
+                "band": "R",
+                "abmag": "19.62",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49733.299999999814",
+                "band": "R",
+                "abmag": "19.69",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49745.200000000186",
+                "band": "R",
+                "abmag": "20.12",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49745.200000000186",
+                "band": "V",
+                "abmag": "20.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49747.200000000186",
+                "band": "R",
+                "abmag": "20.28",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49752.200000000186",
+                "band": "R",
+                "abmag": "20.61",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49752.200000000186",
+                "band": "V",
+                "abmag": "21.55",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49768.200000000186",
+                "band": "R",
+                "abmag": "21.01",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49768.200000000186",
+                "band": "V",
+                "abmag": "21.91",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49776.10000000009",
+                "band": "R",
+                "abmag": "21.07",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49779.10000000009",
+                "band": "R",
+                "abmag": "21.11",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49782.10000000009",
+                "band": "R",
+                "abmag": "21.09",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49782.10000000009",
+                "band": "V",
+                "abmag": "21.97",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49805.0",
+                "band": "R",
+                "abmag": "21.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49827.10000000009",
+                "band": "R",
+                "abmag": "21.41",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49827.10000000009",
+                "band": "V",
+                "abmag": "22.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49837.0",
+                "band": "R",
+                "abmag": "21.46",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49837.0",
+                "band": "V",
+                "abmag": "22.57",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49866.0",
+                "band": "R",
+                "abmag": "21.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49866.0",
+                "band": "V",
+                "abmag": "22.62",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50034.799999999814",
+                "band": "R",
+                "abmag": "22.21",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50159.10000000009",
+                "band": "R",
+                "abmag": "23.02",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50214.0",
+                "band": "R",
+                "abmag": "23.04",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50215.0",
+                "band": "R",
+                "abmag": "23.13",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49697.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1994",
-        "discovermonth": "12",
-        "discoverday": "12",
-        "maxyear": "1994",
-        "maxmonth": "11",
-        "maxday": "18"
+        "discoveryear": 1994,
+        "maxday": 11,
+        "maxmonth": 12,
+        "host": "A090611-1040",
+        "claimedtype": "II",
+        "hvel": "9600",
+        "galra": "090611",
+        "galdec": "-104000",
+        "snra": "09:06:11.25",
+        "sndec": "-10:40:00.0",
+        "discoverer": "Christian Pollas",
+        "discoverday": 11,
+        "discovermonth": 12,
+        "maxyear": 1994,
+        "z": 0.0326
     }
 }

@@ -2,7 +2,8 @@
     "SN2014ce": {
         "name": "SN2014ce",
         "aliases": [
-            "SN2014ce"
+            "SN2014ce",
+            "PSN J23274086+2335214"
         ],
         "sources": [
             {
@@ -11,44 +12,56 @@
                 "secondary": true
             },
             {
-                "name": "Zhijian Xu & Xing Gao",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003942.txt'>CBET 3942</a>",
                 "alias": "2"
             },
             {
-                "name": "Enrique Díez",
+                "name": "Zhijian Xu & Xing Gao",
                 "alias": "3"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56896.5",
+                "band": "",
+                "abmag": "14.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56897.0",
                 "band": "U",
                 "abmag": "14.7",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56902.56011",
                 "band": "U",
                 "abmag": "14.85",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 28,
+        "discoverday": 27,
         "discovermonth": 8,
         "host": "NGC 7673",
         "claimedtype": "II",
         "hvel": "3379",
         "galra": "232741",
         "galdec": "+233520",
-        "snra": "232740.86",
-        "sndec": "+233521.4",
+        "snra": "23:27:40.86",
+        "sndec": "+23:35:21.4",
         "discoverer": "LOSS",
+        "redshift": 0.011,
         "maxyear": 2014,
         "maxmonth": 8,
-        "maxday": 28,
+        "maxday": 27,
         "z": 0.0113
     }
 }

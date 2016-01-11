@@ -1,0 +1,37 @@
+{
+    "SNHiTS15ay": {
+        "name": "SNHiTS15ay",
+        "aliases": [
+            "SNHiTS15ay"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7148'>ATEL 7148</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57077.5",
+                "band": "",
+                "abmag": "22.4",
+                "source": "2,1"
+            }
+        ],
+        "snra": "10:19:45.67",
+        "sndec": "-04:41:56.58",
+        "discoverday": 24,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "discoverer": "High Cadence Transient Survey (HiTS)",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 24
+    }
+}

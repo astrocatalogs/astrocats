@@ -1,0 +1,37 @@
+{
+    "MASTER OT J234303.47+191003.5": {
+        "name": "MASTER OT J234303.47+191003.5",
+        "aliases": [
+            "MASTER OT J234303.47+191003.5"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4621'>ATEL 4621</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56258.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:43:03.47",
+        "sndec": "+19:10:03.5",
+        "discoverday": 27,
+        "discovermonth": 11,
+        "discoveryear": 2012,
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 11,
+        "maxday": 27
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "MLS111031:015238+013231": {
+        "name": "MLS111031:015238+013231",
+        "aliases": [
+            "MLS111031:015238+013231"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3795'>ATEL 3795</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55864.5",
+                "band": "",
+                "abmag": "20.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "01:52:37.92",
+        "sndec": "+01:32:31.3",
+        "discoverday": 30,
+        "discovermonth": 10,
+        "discoveryear": 2011,
+        "discoverer": "CRTS",
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 30
+    }
+}

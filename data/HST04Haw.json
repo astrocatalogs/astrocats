@@ -1,0 +1,39 @@
+{
+    "HST04Haw": {
+        "name": "HST04Haw",
+        "aliases": [
+            "HST04Haw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://arxiv.org/pdf/astro-ph/0611572.pdf'>Paper</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53313.5",
+                "band": "",
+                "abmag": "23.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "12:35:41.16",
+        "sndec": "+62:11:37.2",
+        "discoverday": 4,
+        "discovermonth": 11,
+        "discoveryear": 2004,
+        "redshift": 0.49,
+        "discoverer": "HST",
+        "maxyear": 2004,
+        "maxmonth": 11,
+        "maxday": 4
+    }
+}

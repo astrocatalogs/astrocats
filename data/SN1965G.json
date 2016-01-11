@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01900/01904.html'>IAUC 1904</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "38842.0",
+                "time": "38841.5",
                 "band": "",
-                "abmag": "14",
-                "source": "1"
+                "abmag": "14.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1965",
-        "discovermonth": "3",
-        "discoverday": "23"
+        "discoveryear": 1965,
+        "discoverday": 22,
+        "discovermonth": 3,
+        "host": "NGC 4162",
+        "hvel": "2569",
+        "galra": "121152",
+        "galdec": "+240724",
+        "discoverer": "Haro, Hoffmeister",
+        "snra": "12:11:54.0",
+        "sndec": "+24:06:56.0",
+        "maxyear": 1965,
+        "maxmonth": 3,
+        "maxday": 22,
+        "z": 0.00861
     }
 }

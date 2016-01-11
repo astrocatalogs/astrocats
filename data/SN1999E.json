@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,21 @@
                 "time": "51193.0",
                 "band": "B",
                 "abmag": "18",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1999",
+        "discoverday": "15",
         "discovermonth": "1",
-        "discoverday": "15"
+        "host": "IRAS 13145-1817",
+        "claimedtype": "IIn-pec",
+        "hvel": "7800",
+        "galra": "131716",
+        "galdec": "-183313",
+        "snra": "13:17:16.37",
+        "sndec": "-18:33:13.4",
+        "discoverer": "Roberto Antezana",
+        "redshift": 0.026,
+        "z": 0.0264
     }
 }

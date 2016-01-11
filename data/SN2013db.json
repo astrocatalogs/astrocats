@@ -2,21 +2,44 @@
     "SN2013db": {
         "name": "SN2013db",
         "aliases": [
-            "SN2013db"
+            "SN2013db",
+            "PSN J11404399+2225549"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "29",
-        "discovermonth": 5,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003550.txt'>CBET 3550</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56450.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 7,
+        "discovermonth": 6,
         "host": "NGC 3808",
-        "claimedtype": "II P",
+        "claimedtype": "II",
         "hvel": "7050",
         "galra": "114044",
         "galdec": "+222546",
-        "snra": "114043.99",
-        "sndec": "+222554.9",
-        "discoverer": "Gagliano, Newton, Puckett",
+        "snra": "11:40:43.99",
+        "sndec": "+22:25:54.9",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.023726,
+        "maxyear": 2013,
+        "maxmonth": 6,
+        "maxday": 7,
         "z": 0.0238
     }
 }

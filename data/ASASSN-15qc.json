@@ -2,7 +2,8 @@
     "ASASSN-15qc": {
         "name": "ASASSN-15qc",
         "aliases": [
-            "ASASSN-15qc"
+            "ASASSN-15qc",
+            "PS15cic"
         ],
         "sources": [
             {
@@ -11,100 +12,117 @@
                 "secondary": true
             },
             {
-                "name": "Gregor Krannich",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8111'>ATEL 8111</a>",
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Gregor Krannich",
                 "alias": "3"
             },
             {
-                "name": "Joel Nicolas",
+                "name": "Joseph Brimacombe",
                 "alias": "4"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Joel Nicolas",
                 "alias": "5"
             },
             {
-                "name": "LLA",
+                "name": "Kunihiro Shima",
                 "alias": "6"
             },
             {
-                "name": "MDe",
+                "name": "LLA",
                 "alias": "7"
+            },
+            {
+                "name": "MDe",
+                "alias": "8"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57301.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57298.894",
                 "band": "V",
                 "abmag": "15.7",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57299.645",
                 "band": "C",
                 "abmag": "15.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57302.957",
                 "band": "CV",
                 "abmag": "15.4",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57303.6829",
                 "band": "U",
                 "abmag": "15.2",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57311.928",
                 "band": "CV",
                 "abmag": "15.8",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57312.043",
                 "band": "CV",
                 "abmag": "16.25",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57337.845",
                 "band": "CV",
                 "abmag": "16.6",
-                "source": "7,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57337.976",
                 "band": "CV",
                 "abmag": "16.9",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57341.928",
                 "band": "CV",
                 "abmag": "17.0",
-                "source": "6,1"
+                "source": "7,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "UGC 402",
+        "snra": "00:39:17.98",
+        "sndec": "+03:57:00.1",
+        "discoverday": 3,
+        "discovermonth": 10,
+        "discoveryear": 2015,
+        "redshift": 0.0176,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 10,
-        "maxday": 8,
-        "discoveryear": 2015,
-        "discovermonth": 10,
-        "discoverday": 3
+        "maxday": 8
     }
 }

@@ -2,21 +2,44 @@
     "SN2013fe": {
         "name": "SN2013fe",
         "aliases": [
-            "SN2013fe"
+            "SN2013fe",
+            "PSN J03035325-3924202"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "13",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003646.txt'>CBET 3646</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56516.5",
+                "band": "",
+                "abmag": "14.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 12,
         "discovermonth": 8,
         "host": "A030353-3924",
         "claimedtype": "Ia",
         "hvel": "6092",
         "galra": "030353",
         "galdec": "-392420",
-        "snra": "030353.25",
-        "sndec": "-392420.2",
-        "discoverer": "Antezana et al.",
+        "snra": "03:03:53.25",
+        "sndec": "-39:24:20.2",
+        "discoverer": "CHASE",
+        "redshift": 0.0203,
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 12,
         "z": 0.0205
     }
 }

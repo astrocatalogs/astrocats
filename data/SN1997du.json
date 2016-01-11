@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06700/06776.html'>IAUC 6776</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50751.0",
-                "band": "B",
-                "abmag": "18",
-                "source": "1"
+                "time": "50750.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1997",
-        "discovermonth": "10",
-        "discoverday": "30"
+        "discoveryear": 1997,
+        "discoverday": 29,
+        "discovermonth": 10,
+        "host": "ESO 241-G22",
+        "claimedtype": "II",
+        "hvel": "6003",
+        "galra": "001025",
+        "galdec": "-462931",
+        "snra": "00:10:25.43",
+        "sndec": "-46:29:30.9",
+        "discoverer": "Roberto Antezana",
+        "redshift": 0.02,
+        "maxyear": 1997,
+        "maxmonth": 10,
+        "maxday": 29,
+        "z": 0.0202
     }
 }

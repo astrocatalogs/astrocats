@@ -4,7 +4,37 @@
         "aliases": [
             "ASASSN-15eb"
         ],
-        "sources": [],
-        "photometry": []
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7157'>ATEL 7157</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57078.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "ESO 561-G12",
+        "snra": "08:06:07.40",
+        "sndec": "-22:33:48.9",
+        "discoverday": 25,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "redshift": 0.018,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 25
     }
 }

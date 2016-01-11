@@ -1,0 +1,37 @@
+{
+    "K0404-006": {
+        "name": "K0404-006",
+        "aliases": [
+            "K0404-006"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/CBAT_PSN.html'>CBAT PSN</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53097.5",
+                "band": "",
+                "abmag": "25.4",
+                "source": "2,1"
+            }
+        ],
+        "snra": "12:37:06.73",
+        "sndec": "+62:21:17.8",
+        "discoverday": 2,
+        "discovermonth": 4,
+        "discoveryear": 2004,
+        "discoverer": "R. Gibbons",
+        "maxyear": 2004,
+        "maxmonth": 4,
+        "maxday": 2
+    }
+}

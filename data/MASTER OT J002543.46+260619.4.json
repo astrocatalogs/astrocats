@@ -1,0 +1,37 @@
+{
+    "MASTER OT J002543.46+260619.4": {
+        "name": "MASTER OT J002543.46+260619.4",
+        "aliases": [
+            "MASTER OT J002543.46+260619.4"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8426'>ATEL 8426</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57365.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "snra": "00:25:43.46",
+        "sndec": "+26:06:19.4",
+        "discoverday": 9,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 9
+    }
+}

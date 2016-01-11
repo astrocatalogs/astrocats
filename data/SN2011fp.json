@@ -2,21 +2,44 @@
     "SN2011fp": {
         "name": "SN2011fp",
         "aliases": [
-            "SN2011fp"
+            "SN2011fp",
+            "PSN J00152561+1719119"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "29",
-        "discovermonth": 8,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002820.txt'>CBET 2820</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55840.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 6,
+        "discovermonth": 10,
         "host": "NGC 57",
         "claimedtype": "Ia",
         "hvel": "5440",
         "galra": "001531",
         "galdec": "+171942",
-        "snra": "001525.61",
-        "sndec": "+171911.9",
-        "discoverer": "Itagaki",
+        "snra": "00:15:25.61",
+        "sndec": "+17:19:11.8",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.0181,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 6,
         "z": 0.0183
     }
 }

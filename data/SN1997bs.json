@@ -13,6 +13,11 @@
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2000PASP..112.1532V'>2000PASP..112.1532V</a>",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
             }
         ],
         "photometry": [
@@ -489,17 +494,17 @@
         "discoveryear": 1997,
         "maxday": 16,
         "maxmonth": 4,
-        "host": "NGC 3627",
-        "claimedtype": "IIn?",
+        "host": "M66",
+        "claimedtype": "LBV",
         "hvel": "726",
         "galra": "112015",
         "galdec": "+125930",
-        "snra": "112014.25",
-        "sndec": "+125819.6",
-        "discoverer": "Treffers et al.",
-        "maxyear": 1997,
-        "discovermonth": 4,
+        "snra": "11:20:14.25",
+        "sndec": "+12:58:19.6",
+        "discoverer": "LOSS",
         "discoverday": 15,
+        "discovermonth": 4,
+        "maxyear": 1997,
         "z": 0.00242
     }
 }

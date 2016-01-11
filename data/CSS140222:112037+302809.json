@@ -11,46 +11,62 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Thomas Langhans",
                 "alias": "3"
             },
             {
-                "name": "Andy Cason",
+                "name": "Stan Howerton",
                 "alias": "4"
+            },
+            {
+                "name": "Andy Cason",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56749.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56754.234",
                 "band": "UV",
                 "abmag": "17.7",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56755.227",
                 "band": "V",
                 "abmag": "17.5",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56755.26",
                 "band": "V",
                 "abmag": "17.5",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
+        "claimedtype": "IIn",
+        "snra": "11:20:37.13",
+        "sndec": "+30:28:09.4",
+        "discoverday": 2,
+        "discovermonth": 4,
+        "discoveryear": 2014,
+        "redshift": 0.033,
+        "discoverer": "CRTS",
         "maxyear": 2014,
         "maxmonth": 4,
-        "maxday": 8,
-        "discoveryear": 2014,
-        "discovermonth": 4,
-        "discoverday": 7
+        "maxday": 2
     }
 }

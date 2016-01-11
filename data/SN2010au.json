@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002200/CBET002217.txt'>CBET 2217</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55270.0",
+                "time": "55269.5",
                 "band": "",
                 "abmag": "16.7",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "3",
-        "discoverday": "15"
+        "discoveryear": 2010,
+        "discoverday": 14,
+        "discovermonth": 3,
+        "host": "PGC 82347",
+        "claimedtype": "Ia",
+        "hvel": "18426",
+        "galra": "091236",
+        "galdec": "+345118",
+        "snra": "09:12:36.39",
+        "sndec": "+34:51:17.0",
+        "discoverer": "Ron Arbour",
+        "maxyear": 2010,
+        "maxmonth": 3,
+        "maxday": 14,
+        "z": 0.0635
     }
 }

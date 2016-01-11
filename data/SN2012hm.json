@@ -4,19 +4,40 @@
         "aliases": [
             "SN2012hm"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "7",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003336.txt'>CBET 3336</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56272.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 11,
         "discovermonth": 12,
         "host": "A023323+3940",
         "claimedtype": "Ia",
         "hvel": "10867",
         "galra": "023323",
         "galdec": "+394016",
-        "snra": "023323.32",
-        "sndec": "+394016.9",
-        "discoverer": "Zhang et al.",
+        "snra": "02:33:23.32",
+        "sndec": "+39:40:16.9",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "maxyear": 2012,
+        "maxmonth": 12,
+        "maxday": 11,
         "z": 0.0369
     }
 }

@@ -2,21 +2,44 @@
     "SN2011hh": {
         "name": "SN2011hh",
         "aliases": [
-            "SN2011hh"
+            "SN2011hh",
+            "MASTER OT 025704+494743"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "26",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002888.txt'>CBET 2888</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55862.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 28,
         "discovermonth": 10,
         "host": "A025704+4947",
         "claimedtype": "Ia",
         "hvel": "4500",
         "galra": "025704",
         "galdec": "+494743",
-        "snra": "025704.61",
-        "sndec": "+494743.3",
-        "discoverer": "Lipunov",
+        "snra": "02:57:04.61",
+        "sndec": "+49:47:43.3",
+        "discoverer": "MASTER",
+        "redshift": 0.015,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 28,
         "z": 0.0151
     }
 }

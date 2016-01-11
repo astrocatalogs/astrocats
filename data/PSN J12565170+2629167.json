@@ -1,0 +1,39 @@
+{
+    "PSN J12565170+2629167": {
+        "name": "PSN J12565170+2629167",
+        "aliases": [
+            "PSN J12565170+2629167"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12565170+2629167.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55657.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ib/c",
+        "host": "IC 835",
+        "snra": "12:56:51.70",
+        "sndec": "+26:29:16.7",
+        "discoverday": 6,
+        "discovermonth": 4,
+        "discoveryear": 2011,
+        "discoverer": "Doug Rich",
+        "maxyear": 2011,
+        "maxmonth": 4,
+        "maxday": 6
+    }
+}

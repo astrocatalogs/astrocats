@@ -6,21 +6,46 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51541.0",
+                "time": "51541.169999999925",
                 "band": "V",
                 "abmag": "22.1",
-                "source": "1"
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "12",
-        "discoverday": "29"
+        "discoveryear": 1999,
+        "discoverday": 29,
+        "discovermonth": 12,
+        "host": "A033210-2806",
+        "claimedtype": "Ia",
+        "redshift": 0.274,
+        "galra": "033210",
+        "galdec": "-280616",
+        "snra": "03:32:10.28",
+        "sndec": "-28:06:16.0",
+        "discoverer": "OaPd",
+        "maxyear": 1999,
+        "maxmonth": 12,
+        "maxday": 29
     }
 }

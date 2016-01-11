@@ -2,21 +2,44 @@
     "SN2011fl": {
         "name": "SN2011fl",
         "aliases": [
-            "SN2011fl"
+            "SN2011fl",
+            "PSN J00471993+2749355"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "22",
-        "discovermonth": 8,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002806.txt'>CBET 2806</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55829.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 25,
+        "discovermonth": 9,
         "host": "IC 1584",
         "claimedtype": "Ib",
         "hvel": "4764",
         "galra": "004719",
         "galdec": "+274939",
-        "snra": "004719.93",
-        "sndec": "+274935.5",
-        "discoverer": "Ciabattari et al.",
+        "snra": "00:47:19.93",
+        "sndec": "+27:49:35.5",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0158,
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 25,
         "z": 0.016
     }
 }

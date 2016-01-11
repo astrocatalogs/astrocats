@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08400/08464.html#Item2'>IAUC 8464</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53352.0",
-                "band": "R",
+                "time": "53351.5",
+                "band": "",
                 "abmag": "23.1",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2004",
-        "discovermonth": "12",
-        "discoverday": "13"
+        "discoveryear": 2004,
+        "discoverday": 12,
+        "discovermonth": 12,
+        "host": "A020933-0413",
+        "claimedtype": "Ia",
+        "redshift": 0.4,
+        "galra": "020933",
+        "galdec": "-041304",
+        "snra": "02:09:33.69",
+        "sndec": "-04:13:04.0",
+        "discoverer": "ESSENCE project",
+        "maxyear": 2004,
+        "maxmonth": 12,
+        "maxday": 12
     }
 }

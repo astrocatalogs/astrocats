@@ -2,9 +2,39 @@
     "PS15yl": {
         "name": "PS15yl",
         "aliases": [
-            "PS15yl"
+            "PS15yl",
+            "Gaia15afa"
         ],
-        "sources": [],
-        "photometry": []
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7336'>ATEL 7336</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57111.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:20:23.74",
+        "sndec": "+21:18:25.5",
+        "discoverday": 30,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.038842,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 30
     }
 }

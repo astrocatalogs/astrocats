@@ -2,7 +2,8 @@
     "SN2014ae": {
         "name": "SN2014ae",
         "aliases": [
-            "SN2014ae"
+            "SN2014ae",
+            "MASTER OT J111920.95+724857.3"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Esteban Aguilar",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003832.txt'>CBET 3832</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56720.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56752.972",
                 "band": "CR",
                 "abmag": "17.5",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 5,
-        "discovermonth": 4,
-        "host": "M+12-11-15",
+        "discoverday": 4,
+        "discovermonth": 3,
+        "host": "MCG +12-11-15",
         "claimedtype": "Ia",
         "hvel": "6663",
         "galra": "111918",
         "galdec": "+724927",
-        "snra": "111920.95",
-        "sndec": "+724857.3",
-        "discoverer": "Balanutsa",
+        "snra": "11:19:20.95",
+        "sndec": "+72:48:57.3",
+        "discoverer": "MASTER",
+        "redshift": 0.022225,
         "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 5,
+        "maxmonth": 3,
+        "maxday": 4,
         "z": 0.0225
     }
 }

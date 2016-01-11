@@ -2,21 +2,44 @@
     "SN2014T": {
         "name": "SN2014T",
         "aliases": [
-            "SN2014T"
+            "SN2014T",
+            "CSS140311:143605+022034"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2014",
-        "discoverday": "22",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003815.txt'>CBET 3815</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56709.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 21,
         "discovermonth": 2,
         "host": "A143605+0220",
         "claimedtype": "IIn",
         "hvel": "27000",
         "galra": "143605",
         "galdec": "+022033",
-        "snra": "143604.98",
-        "sndec": "+022034.2",
-        "discoverer": "Tanaka et al.",
+        "snra": "14:36:04.98",
+        "sndec": "+02:20:34.2",
+        "discoverer": "Kiso Supernova Survey (KISS) collaboration",
+        "redshift": 0.09,
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 21,
         "z": 0.0945
     }
 }

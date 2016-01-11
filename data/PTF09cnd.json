@@ -1,0 +1,37 @@
+{
+    "PTF09cnd": {
+        "name": "PTF09cnd",
+        "aliases": [
+            "PTF09cnd"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2241'>ATEL 2241</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55049.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "16:12:08.96",
+        "sndec": "+51:29:16.0",
+        "discoverday": 6,
+        "discovermonth": 8,
+        "discoveryear": 2009,
+        "discoverer": "PTF",
+        "maxyear": 2009,
+        "maxmonth": 8,
+        "maxday": 6
+    }
+}

@@ -2,7 +2,8 @@
     "SN2013fa": {
         "name": "SN2013fa",
         "aliases": [
-            "SN2013fa"
+            "SN2013fa",
+            "PSN J20435357+1230517"
         ],
         "sources": [
             {
@@ -11,199 +12,210 @@
                 "secondary": true
             },
             {
-                "name": "Rodrigo Losada",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003641.txt'>CBET 3641</a>",
                 "alias": "2"
             },
             {
-                "name": "Marco Russiani",
+                "name": "Rodrigo Losada",
                 "alias": "3"
             },
             {
-                "name": "Denis Buczynski",
+                "name": "Marco Russiani",
                 "alias": "4"
             },
             {
-                "name": "Jose Carrillo",
+                "name": "Denis Buczynski",
                 "alias": "5"
             },
             {
-                "name": "Diego Rodriguez",
+                "name": "Jose Carrillo",
                 "alias": "6"
             },
             {
-                "name": "Manfred Mrotzek",
+                "name": "Diego Rodriguez",
                 "alias": "7"
             },
             {
-                "name": "Joel Nicolas",
+                "name": "Manfred Mrotzek",
                 "alias": "8"
             },
             {
-                "name": "Massimiliano Martignoni ",
+                "name": "Joel Nicolas",
                 "alias": "9"
             },
             {
-                "name": "Enrique Díez",
+                "name": "Massimiliano Martignoni ",
                 "alias": "10"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Enrique Díez",
                 "alias": "11"
             },
             {
-                "name": "Pedro Re'",
+                "name": "Stan Howerton",
                 "alias": "12"
             },
             {
-                "name": "Enrico Prosperi ",
+                "name": "Pedro Re'",
                 "alias": "13"
             },
             {
-                "name": "Pro ",
+                "name": "Enrico Prosperi ",
                 "alias": "14"
             },
             {
-                "name": "Adolfo San Segundo",
+                "name": "Pro ",
                 "alias": "15"
             },
             {
-                "name": "LLA",
+                "name": "Adolfo San Segundo",
                 "alias": "16"
+            },
+            {
+                "name": "LLA",
+                "alias": "17"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56547.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56534.937",
                 "band": "CR",
                 "abmag": "15.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56535.872",
                 "band": "U",
                 "abmag": "15.5",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56539.095",
                 "band": "CR",
                 "abmag": "15.7",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56545.936",
                 "band": "U",
                 "abmag": "15.2",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56558.863",
                 "band": "CR",
                 "abmag": "15.20",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56589.865",
                 "band": "L",
                 "abmag": "16.3",
-                "source": "7,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56530.929",
                 "band": "CV",
                 "abmag": "15.4",
-                "source": "8,1"
+                "source": "9,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56531.856",
                 "band": "V",
                 "abmag": "15.9",
-                "source": "9,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56533.841",
                 "band": "V",
                 "abmag": "15.7",
-                "source": "9,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56533.99",
                 "band": "",
                 "abmag": "14.80",
-                "source": "10,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56534.113",
                 "band": "V",
                 "abmag": "15.5",
-                "source": "11,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56536.113",
                 "band": "V",
                 "abmag": "15.3",
-                "source": "11,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56547.903",
                 "band": "CR",
                 "abmag": "14.69",
-                "source": "12,1"
+                "source": "13,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56539.874",
                 "band": "CR",
                 "abmag": "15.29",
-                "source": "13,1"
+                "source": "14,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56540.862",
                 "band": "CR",
                 "abmag": "15.28",
-                "source": "14,1"
+                "source": "15,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56547.868",
                 "band": "CR",
                 "abmag": "14.93",
-                "source": "15,1"
+                "source": "16,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56547.96",
                 "band": "",
                 "abmag": "14.98",
-                "source": "10,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56558.84",
                 "band": "V",
                 "abmag": "15.8",
-                "source": "16,1"
+                "source": "17,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56560.077",
                 "band": "V",
                 "abmag": "16.2",
-                "source": "11,1"
+                "source": "12,1"
             }
         ],
         "discoveryear": 2013,
@@ -214,9 +226,10 @@
         "hvel": "4672",
         "galra": "204354",
         "galdec": "+123043",
-        "snra": "204353.57",
-        "sndec": "+123051.7",
-        "discoverer": "Itagaki",
+        "snra": "20:43:53.57",
+        "sndec": "+12:30:51.7",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.015511,
         "maxyear": 2013,
         "maxmonth": 9,
         "maxday": 12,

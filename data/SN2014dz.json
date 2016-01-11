@@ -2,7 +2,8 @@
     "SN2014dz": {
         "name": "SN2014dz",
         "aliases": [
-            "SN2014dz"
+            "SN2014dz",
+            "PSN J03281419+3801111"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Wim Cuppens",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004052.txt'>CBET 4052</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57017.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57053.38",
                 "band": "R",
                 "abmag": "18.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 31,
-        "discovermonth": 1,
-        "host": "PGC0213221",
+        "discoveryear": 2014,
+        "discoverday": 26,
+        "discovermonth": 12,
+        "host": "PGC 213221",
         "claimedtype": "Ia",
         "hvel": "5283",
         "galra": "032814",
         "galdec": "+380059",
-        "snra": "032814.19",
-        "sndec": "+380111.1",
-        "discoverer": "Gagliano et al.",
-        "maxyear": 2015,
-        "maxmonth": 1,
-        "maxday": 31,
+        "snra": "03:28:14.19",
+        "sndec": "+38:01:11.1",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0176,
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 26,
         "z": 0.0178
     }
 }

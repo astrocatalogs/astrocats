@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03100/03140.html'>IAUC 3140</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "43427.0",
-                "band": "V",
+                "time": "43426.5",
+                "band": "",
                 "abmag": "16.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1977",
-        "discovermonth": "10",
-        "discoverday": "11"
+        "discoveryear": 1977,
+        "discoverday": 10,
+        "discovermonth": 10,
+        "host": "UGC 1558",
+        "hvel": "5295",
+        "galra": "020356",
+        "galdec": "+115744",
+        "snra": "02:03:57.8",
+        "sndec": "+11:57:27.0",
+        "discoverer": "Shao",
+        "maxyear": 1977,
+        "maxmonth": 10,
+        "maxday": 10,
+        "z": 0.0178
     }
 }

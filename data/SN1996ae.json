@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,20 @@
                 "time": "50224.0",
                 "band": "",
                 "abmag": "16.5",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1996",
+        "discoverday": "21",
         "discovermonth": "5",
-        "discoverday": "21"
+        "host": "NGC 5775",
+        "claimedtype": "IIn",
+        "hvel": "1563",
+        "galra": "145358",
+        "galdec": "+033240",
+        "snra": "14:53:59.81",
+        "sndec": "+03:31:46.3",
+        "discoverer": "Vagnozzi, G. Piermarini, and V. Russo, S. Lucia Observatory",
+        "z": 0.00523
     }
 }

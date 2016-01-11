@@ -2,25 +2,45 @@
     "SN2010lf": {
         "name": "SN2010lf",
         "aliases": [
-            "SN2010lf"
+            "SN2010lf",
+            "MLS101112:010719+175909"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3031'>ATEL 3031</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55512.0",
-                "band": "g",
-                "abmag": "17.3",
-                "source": "1"
+                "time": "55511.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "11",
-        "discoverday": "12"
+        "discoveryear": 2010,
+        "discoverday": 11,
+        "discovermonth": 11,
+        "host": "CGCG 458-19",
+        "claimedtype": "IIP",
+        "galra": "010719",
+        "galdec": "+175908",
+        "snra": "01:07:19.37",
+        "sndec": "+17:59:08.6",
+        "discoverer": "CRTS",
+        "maxyear": 2010,
+        "maxmonth": 11,
+        "maxday": 11
     }
 }

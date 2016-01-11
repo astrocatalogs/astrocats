@@ -2,21 +2,44 @@
     "SN2015I": {
         "name": "SN2015I",
         "aliases": [
-            "SN2015I"
+            "SN2015I",
+            "PSN J07174570+2320406"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2015",
-        "discoverday": "2",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004106.txt'>CBET 4106</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57160.5",
+                "band": "",
+                "abmag": "14.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 18,
         "discovermonth": 5,
         "host": "NGC 2357",
         "claimedtype": "Ia",
         "hvel": "2270",
         "galra": "071741",
         "galdec": "+232124",
-        "snra": "071745.70",
-        "sndec": "+232040.6",
-        "discoverer": "Noguchi",
+        "snra": "07:17:45.70",
+        "sndec": "+23:20:40.6",
+        "discoverer": "T. Noguchi",
+        "redshift": 0.007589,
+        "maxyear": 2015,
+        "maxmonth": 5,
+        "maxday": 18,
         "z": 0.0076
     }
 }

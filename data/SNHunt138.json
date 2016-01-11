@@ -1,0 +1,38 @@
+{
+    "SNHunt138": {
+        "name": "SNHunt138",
+        "aliases": [
+            "SNHunt138"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/current.html'>SNHunt</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56094.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 871419",
+        "snra": "19:56:46.70",
+        "sndec": "-18:11:40.0",
+        "discoverday": 16,
+        "discovermonth": 6,
+        "discoveryear": 2012,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 6,
+        "maxday": 16
+    }
+}

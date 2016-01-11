@@ -1,0 +1,28 @@
+{
+    "iPTF15gj": {
+        "name": "iPTF15gj",
+        "aliases": [
+            "iPTF15gj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7027'>ATEL 7027</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [],
+        "claimedtype": "Ia-91T",
+        "snra": "12:35:08.47",
+        "sndec": "+14:07:04.3",
+        "discoverday": "4",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": 0.16,
+        "discoverer": "PTF"
+    }
+}

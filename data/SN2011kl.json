@@ -1,0 +1,40 @@
+{
+    "SN2011kl": {
+        "name": "SN2011kl",
+        "aliases": [
+            "SN2011kl",
+            "GRB 111209A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004196.txt'>CBET 4196</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55903.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "SLSN-Ic",
+        "snra": "00:57:22.64",
+        "sndec": "-46:48:03.6",
+        "discoverday": 8,
+        "discovermonth": 12,
+        "discoveryear": 2011,
+        "redshift": 0.677,
+        "discoverer": "SWIFT",
+        "maxyear": 2011,
+        "maxmonth": 12,
+        "maxday": 8
+    }
+}

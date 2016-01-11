@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57071.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57072.7634",
                 "band": "U",
                 "abmag": "17.7",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "18:01:53.26",
+        "sndec": "+25:43:22.7",
+        "discoverday": 18,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "discoverer": "Gaia Photometric Science Alerts programme",
         "maxyear": 2015,
         "maxmonth": 2,
-        "maxday": 19,
-        "discoveryear": 2015,
-        "discovermonth": 2,
-        "discoverday": 19
+        "maxday": 18
     }
 }

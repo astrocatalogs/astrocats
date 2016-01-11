@@ -11,24 +11,41 @@
                 "secondary": true
             },
             {
-                "name": "Gianluca Masi",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7635'>ATEL 7635</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57194.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57188.833",
                 "band": "R",
                 "abmag": "16.2",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "CGCG 44-42",
+        "snra": "13:15:32.84",
+        "sndec": "+03:30:02.3",
+        "discoverday": 15,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "redshift": 0.02,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 6,
-        "maxday": 15,
-        "discoveryear": 2015,
-        "discovermonth": 6,
-        "discoverday": 15
+        "maxday": 21
     }
 }

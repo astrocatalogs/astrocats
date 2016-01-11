@@ -4,7 +4,36 @@
         "aliases": [
             "LSQ13bwx"
         ],
-        "sources": [],
-        "photometry": []
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5373'>ATEL 5373</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56524.5",
+                "band": "",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "05:03:05.23",
+        "sndec": "-24:04:22.9",
+        "discoverday": 20,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.04,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 20
     }
 }

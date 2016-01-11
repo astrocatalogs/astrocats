@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57040.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57041.7944",
                 "band": "U",
                 "abmag": "18.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "12:28:14.43",
+        "sndec": "+33:45:55.10",
+        "discoverday": 18,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "discoverer": "CRTS",
         "maxyear": 2015,
         "maxmonth": 1,
-        "maxday": 19,
-        "discoveryear": 2015,
-        "discovermonth": 1,
-        "discoverday": 19
+        "maxday": 18
     }
 }

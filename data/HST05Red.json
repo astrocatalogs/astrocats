@@ -1,0 +1,39 @@
+{
+    "HST05Red": {
+        "name": "HST05Red",
+        "aliases": [
+            "HST05Red"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://arxiv.org/pdf/astro-ph/0611572.pdf'>Paper</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53425.5",
+                "band": "",
+                "abmag": "25.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia:",
+        "snra": "12:37:01.70",
+        "sndec": "+62:12:24.0",
+        "discoverday": 24,
+        "discovermonth": 2,
+        "discoveryear": 2005,
+        "redshift": 1.19,
+        "discoverer": "HST",
+        "maxyear": 2005,
+        "maxmonth": 2,
+        "maxday": 24
+    }
+}

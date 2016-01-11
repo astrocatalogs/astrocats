@@ -2,21 +2,44 @@
     "SN2011hi": {
         "name": "SN2011hi",
         "aliases": [
-            "SN2011hi"
+            "SN2011hi",
+            "PSN J13203538+3408222"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "11",
-        "discovermonth": 2,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002889.txt'>CBET 2889</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55668.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 17,
+        "discovermonth": 4,
         "host": "IC 883",
         "claimedtype": "II",
         "hvel": "6892",
         "galra": "132035",
         "galdec": "+340822",
-        "snra": "132035.39",
-        "sndec": "+340821.7",
-        "discoverer": "Kankare et al.",
+        "snra": "13:20:35.38",
+        "sndec": "+34:08:22.23",
+        "discoverer": "E. Kankare, S. Ryder, and S. Mattila",
+        "redshift": 0.0233,
+        "maxyear": 2011,
+        "maxmonth": 4,
+        "maxday": 17,
         "z": 0.0233
     }
 }

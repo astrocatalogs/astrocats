@@ -6,24 +6,40 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08400/08435.html#Item1'>IAUC 8435</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53319.0",
+                "time": "53318.5",
                 "band": "",
-                "abmag": "17",
-                "source": "1"
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2004",
-        "discovermonth": "11",
-        "discoverday": "10",
-        "maxyear": "2004",
-        "maxmonth": "11",
-        "maxday": "3"
+        "discoveryear": 2004,
+        "discoverday": 9,
+        "discovermonth": 11,
+        "host": "MCG +15-1-10",
+        "claimedtype": "Ia",
+        "galra": "114040",
+        "galdec": "+890506",
+        "snra": "11:41:14.96",
+        "sndec": "+89:05:10.6",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2004,
+        "maxmonth": 11,
+        "maxday": 9
     }
 }

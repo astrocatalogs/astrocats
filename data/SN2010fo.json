@@ -2,25 +2,46 @@
     "SN2010fo": {
         "name": "SN2010fo",
         "aliases": [
-            "SN2010fo"
+            "SN2010fo",
+            "PS1-1000289"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002300/CBET002350.txt'>CBET 2350</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55353.0",
-                "band": "r",
-                "abmag": "22",
-                "source": "1"
+                "time": "55352.5",
+                "band": "",
+                "abmag": "22.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "6",
-        "discoverday": "6"
+        "discoveryear": 2010,
+        "discoverday": 5,
+        "discovermonth": 6,
+        "host": "A161853+5546",
+        "claimedtype": "Ia",
+        "redshift": 0.347,
+        "galra": "161853",
+        "galdec": "+554658",
+        "snra": "16:18:53.806",
+        "sndec": "+55:46:58.50",
+        "discoverer": "PS1",
+        "maxyear": 2010,
+        "maxmonth": 6,
+        "maxday": 5
     }
 }

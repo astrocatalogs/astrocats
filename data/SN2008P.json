@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001200/CBET001223.txt'>CBET 1223</a>",
+                "alias": "2"
+            },
+            {
+                "name": "MSe",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54488.0",
+                "time": "54487.5",
                 "band": "",
-                "abmag": "17.5",
-                "source": "1"
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54495.898",
+                "band": "CR",
+                "abmag": "17.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54500.858",
+                "band": "CR",
+                "abmag": "17.0",
+                "source": "4,1"
             }
         ],
-        "discoveryear": "2008",
-        "discovermonth": "1",
-        "discoverday": "23"
+        "discoveryear": 2008,
+        "discoverday": 22,
+        "discovermonth": 1,
+        "host": "NGC 2550A",
+        "claimedtype": "II",
+        "hvel": "3641",
+        "galra": "082840",
+        "galdec": "+734453",
+        "snra": "08:28:39.18",
+        "sndec": "+73:45:02.9",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0121,
+        "maxyear": 2008,
+        "maxmonth": 1,
+        "maxday": 22,
+        "z": 0.0122
     }
 }

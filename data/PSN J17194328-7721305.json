@@ -1,0 +1,40 @@
+{
+    "PSN J17194328-7721305": {
+        "name": "PSN J17194328-7721305",
+        "aliases": [
+            "PSN J17194328-7721305"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J17194328-7721305.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56528.5",
+                "band": "",
+                "abmag": "14.4",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "ESO 44-G10",
+        "snra": "17:19:43.28",
+        "sndec": "-77:21:30.5",
+        "discoverday": 24,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.009,
+        "discoverer": "Peter Aldous",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 24
+    }
+}

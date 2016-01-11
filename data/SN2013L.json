@@ -2,21 +2,44 @@
     "SN2013L": {
         "name": "SN2013L",
         "aliases": [
-            "SN2013L"
+            "SN2013L",
+            "PSN J11452955-5035531"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "22",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003392.txt'>CBET 3392</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56313.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 21,
         "discovermonth": 1,
-        "host": "E216-G39",
+        "host": "ESO 216-G39",
         "claimedtype": "IIn",
         "hvel": "5090",
         "galra": "114527",
         "galdec": "-503529",
-        "snra": "114529.55",
-        "sndec": "-503553.1",
-        "discoverer": "Monard",
+        "snra": "11:45:29.55",
+        "sndec": "-50:35:53.1",
+        "discoverer": "Berto Monard",
+        "redshift": 0.017,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 21,
         "z": 0.0171
     }
 }

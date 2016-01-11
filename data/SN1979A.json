@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03300/03322.html'>IAUC 3322</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "43888.0",
-                "band": "V",
-                "abmag": "15",
-                "source": "1"
+                "time": "43897.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1979",
-        "discovermonth": "1",
-        "discoverday": "15"
+        "discoveryear": 1979,
+        "discoverday": 24,
+        "discovermonth": 1,
+        "host": "NGC 4647",
+        "claimedtype": "I",
+        "hvel": "1415",
+        "galra": "124332",
+        "galdec": "+113456",
+        "discoverer": "Kimeridze",
+        "snra": "12:43:29.0",
+        "sndec": "+11:35:17.0",
+        "maxyear": 1979,
+        "maxmonth": 1,
+        "maxday": 24,
+        "z": 0.00473
     }
 }

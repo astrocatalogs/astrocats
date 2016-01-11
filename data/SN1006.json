@@ -4,10 +4,19 @@
         "aliases": [
             "SN1006"
         ],
-        "sources": [],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            }
+        ],
         "photometry": [],
         "discoveryear": "1006",
-        "snra": "15 02 50",
-        "sndec": "-41 56"
+        "snra": "15:02:22.4",
+        "sndec": "-42:06:09.0",
+        "claimedtype": "Ia",
+        "host": "Milky Way",
+        "discoverer": "Chinese observers"
     }
 }

@@ -11,24 +11,41 @@
                 "secondary": true
             },
             {
-                "name": "Roland Santallo",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7360'>ATEL 7360</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Roland Santallo",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57133.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57136.39612",
                 "band": "V",
                 "abmag": "16.38",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "ESO 266-G15",
+        "snra": "06:45:20.58",
+        "sndec": "-34:53:38.1",
+        "discoverday": 21,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "redshift": 0.024,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 4,
-        "maxday": 24,
-        "discoveryear": 2015,
-        "discovermonth": 4,
-        "discoverday": 24
+        "maxday": 21
     }
 }

@@ -2,7 +2,8 @@
     "SN2009ip": {
         "name": "SN2009ip",
         "aliases": [
-            "SN2009ip"
+            "SN2009ip",
+            "PSN J22230828-2856515"
         ],
         "sources": [
             {
@@ -24,8 +25,12 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001900/CBET001928.txt'>CBET 1928</a>",
                 "alias": "5"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -2583,23 +2588,31 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56204.5",
+                "band": "",
+                "abmag": "13.3",
+                "source": "5,4"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56596.403",
                 "band": "C",
                 "abmag": "19.7",
-                "source": "5,4"
+                "source": "6,4"
             }
         ],
         "discoveryear": 2009,
         "discoverday": 30,
         "discovermonth": 8,
         "host": "NGC 7259",
-        "claimedtype": "IIn?",
+        "claimedtype": "LBV",
         "hvel": "1718",
         "galra": "222305",
         "galdec": "-285717",
-        "snra": "222308.26",
-        "sndec": "-285652.4",
-        "discoverer": "Maza et al. ",
+        "snra": "22:23:08.26",
+        "sndec": "-28:56:52.4",
+        "discoverer": "CHASE",
+        "redshift": 0.005944,
         "maxyear": 2012,
         "maxmonth": 10,
         "maxday": 6,

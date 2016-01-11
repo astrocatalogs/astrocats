@@ -6,21 +6,58 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07900/07941.html#Item1'>IAUC 7941</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52484.0",
+                "time": "52484.12999999989",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52473.5",
                 "band": "",
                 "abmag": "18.4",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "7",
-        "discoverday": "29"
+        "discoveryear": 2002,
+        "discoverday": 18,
+        "discovermonth": 7,
+        "host": "NGC 5772",
+        "claimedtype": "IIP",
+        "hvel": "4916",
+        "galra": "145139",
+        "galdec": "+403557",
+        "snra": "14:51:40.55",
+        "sndec": "+40:36:37.3",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2002,
+        "maxmonth": 7,
+        "maxday": 29,
+        "z": 0.0165
     }
 }

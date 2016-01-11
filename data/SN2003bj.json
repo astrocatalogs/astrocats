@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08085.html#Item1'>IAUC 8085</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52697.0",
+                "time": "52697.799999999814",
+                "band": "C",
+                "abmag": "15.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52699.810000000056",
+                "band": "C",
+                "abmag": "15.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52696.5",
                 "band": "",
                 "abmag": "15.1",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "2",
-        "discoverday": "27"
+        "discoveryear": 2003,
+        "discoverday": 26,
+        "discovermonth": 2,
+        "host": "IC 4219",
+        "claimedtype": "II",
+        "hvel": "3647",
+        "galra": "131830",
+        "galdec": "-313751",
+        "snra": "13:18:29.108",
+        "sndec": "-31:37:37.79",
+        "discoverer": "Robin Chassagne",
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 27,
+        "z": 0.0122
     }
 }

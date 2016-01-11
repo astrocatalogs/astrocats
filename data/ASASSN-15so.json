@@ -11,24 +11,41 @@
                 "secondary": true
             },
             {
-                "name": "Bernd Gaehrken",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8256'>ATEL 8256</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Bernd Gaehrken",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57348.5",
+                "band": "",
+                "abmag": "13.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57370.0",
                 "band": "V",
                 "abmag": "13.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "maxyear": 2015,
-        "maxmonth": 12,
-        "maxday": 14,
+        "claimedtype": "Ia",
+        "host": "NGC 3583",
+        "snra": "11:14:11.04",
+        "sndec": "+48:19:07.2",
+        "discoverday": 22,
+        "discovermonth": 11,
         "discoveryear": 2015,
-        "discovermonth": 12,
-        "discoverday": 14
+        "redshift": 0.007125,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 22
     }
 }

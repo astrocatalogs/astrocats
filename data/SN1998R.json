@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06800/06826.html#Item1'>IAUC 6826</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50867.0",
-                "band": "V",
-                "abmag": "16",
-                "source": "1"
+                "time": "50866.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1998",
-        "discovermonth": "2",
-        "discoverday": "23"
+        "discoveryear": 1998,
+        "discoverday": 22,
+        "discovermonth": 2,
+        "host": "UGC 6271",
+        "claimedtype": "II",
+        "hvel": "2022",
+        "galra": "111437",
+        "galdec": "+301853",
+        "snra": "11:14:37.03",
+        "sndec": "+30:18:51.7",
+        "discoverer": "CfA Supernova group",
+        "redshift": 0.0668,
+        "maxyear": 1998,
+        "maxmonth": 2,
+        "maxday": 22,
+        "z": 0.00677
     }
 }

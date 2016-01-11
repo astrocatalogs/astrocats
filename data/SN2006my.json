@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08773.html#Item1'>IAUC 8773</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54047.0",
+                "time": "54052.5",
                 "band": "",
-                "abmag": "15.3",
-                "source": "1"
+                "abmag": "14.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2006",
-        "discovermonth": "11",
-        "discoverday": "8"
+        "discoveryear": 2006,
+        "discoverday": 13,
+        "discovermonth": 11,
+        "host": "NGC 4651",
+        "claimedtype": "II",
+        "hvel": "805",
+        "galra": "124343",
+        "galdec": "+162336",
+        "snra": "12:43:40.74",
+        "sndec": "+16:23:14.1",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.003,
+        "maxyear": 2006,
+        "maxmonth": 11,
+        "maxday": 13,
+        "z": 0.00269
     }
 }

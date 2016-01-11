@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002400/CBET002481.txt'>CBET 2481</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55469.0",
+                "time": "55468.5",
                 "band": "",
-                "abmag": "17.5",
-                "source": "1"
+                "abmag": "17.3",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "9",
-        "discoverday": "30"
+        "discoveryear": 2010,
+        "discoverday": 29,
+        "discovermonth": 9,
+        "host": "UGC 4543",
+        "claimedtype": "Ic",
+        "hvel": "1991",
+        "galra": "084322",
+        "galdec": "+454408",
+        "snra": "08:43:21.41",
+        "sndec": "+45:44:18.0",
+        "discoverer": "Grzegorz Duszanowicz",
+        "redshift": 0.0079,
+        "maxyear": 2010,
+        "maxmonth": 9,
+        "maxday": 29,
+        "z": 0.00666
     }
 }

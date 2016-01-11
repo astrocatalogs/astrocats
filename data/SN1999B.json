@@ -6,21 +6,69 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51192.0",
-                "band": "",
-                "abmag": "16.9",
-                "source": "1"
+                "time": "51238.12000000011",
+                "band": "B",
+                "abmag": "18.97",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51238.12000000011",
+                "band": "I",
+                "abmag": "16.98",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51238.12000000011",
+                "band": "R",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51238.12000000011",
+                "band": "V",
+                "abmag": "17.73",
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "1",
-        "discoverday": "14"
+        "discoveryear": 1999,
+        "discoverday": 1,
+        "discovermonth": 3,
+        "host": "UGC 7189",
+        "claimedtype": "II",
+        "hvel": "1683",
+        "galra": "121119",
+        "galdec": "+744830",
+        "snra": "12:11:16.11",
+        "sndec": "+74:48:06.9",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.006,
+        "maxyear": 1999,
+        "maxmonth": 3,
+        "maxday": 1,
+        "z": 0.00563
     }
 }

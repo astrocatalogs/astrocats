@@ -11,24 +11,39 @@
                 "secondary": true
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57112.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57119.914",
                 "band": "U",
                 "abmag": "17.2",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "host": "MCG +11-15-3",
+        "snra": "11:46:55.61",
+        "sndec": "+66:09:35.4",
+        "discoverday": 31,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
         "maxyear": 2015,
         "maxmonth": 4,
-        "maxday": 7,
-        "discoveryear": 2015,
-        "discovermonth": 4,
-        "discoverday": 7
+        "maxday": 7
     }
 }

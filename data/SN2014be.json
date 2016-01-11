@@ -2,21 +2,44 @@
     "SN2014be": {
         "name": "SN2014be",
         "aliases": [
-            "SN2014be"
+            "SN2014be",
+            "iPTF14axw"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2014",
-        "discoverday": "7",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003885.txt'>CBET 3885</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56783.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 6,
         "discovermonth": 5,
         "host": "A160935+4226",
         "claimedtype": "Ia",
         "hvel": "21300",
         "galra": "160935",
         "galdec": "+422635",
-        "snra": "160935.12",
-        "sndec": "+422630.4",
-        "discoverer": "Li et al.",
+        "snra": "16:09:35.12",
+        "sndec": "+42:26:30.4",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.071,
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 6,
         "z": 0.0738
     }
 }

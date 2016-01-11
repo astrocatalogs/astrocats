@@ -2,21 +2,44 @@
     "SN2012V": {
         "name": "SN2012V",
         "aliases": [
-            "SN2012V"
+            "SN2012V",
+            "PSN J19471032+5954599"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "25",
-        "discovermonth": 1,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003008.txt'>CBET 3008</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55964.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 7,
+        "discovermonth": 2,
         "host": "NGC 6829",
         "claimedtype": "Ia",
         "hvel": "3311",
         "galra": "194708",
         "galdec": "+595425",
-        "snra": "194710.32",
-        "sndec": "+595459.9",
-        "discoverer": "Cortini",
+        "snra": "19:47:10.32",
+        "sndec": "+59:54:59.9",
+        "discoverer": "Giancarlo Cortini",
+        "redshift": 0.011,
+        "maxyear": 2012,
+        "maxmonth": 2,
+        "maxday": 7,
         "z": 0.0111
     }
 }

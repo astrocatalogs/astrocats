@@ -6,21 +6,112 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/000800/CBET000848.txt'>CBET 848</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Pro",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
+                "name": "Nic",
+                "alias": "5"
+            },
+            {
+                "name": "Van",
+                "alias": "6"
+            },
+            {
+                "name": "VAN",
+                "alias": "7"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "8"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54149.0",
+                "time": "54148.5",
                 "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54158.922",
+                "band": "CR",
+                "abmag": "15.63",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54213.847",
+                "band": "CR",
                 "abmag": "15.7",
-                "source": "1"
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54217.852",
+                "band": "CR",
+                "abmag": "16.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54221.895",
+                "band": "CR",
+                "abmag": "16.2",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54235.852",
+                "band": "CR",
+                "abmag": "17.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54243.907",
+                "band": "CR",
+                "abmag": "17.8",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54250.86",
+                "band": "CR",
+                "abmag": "17.7",
+                "source": "5,1"
             }
         ],
-        "discoveryear": "2007",
-        "discovermonth": "2",
-        "discoverday": "18"
+        "discoveryear": 2007,
+        "discoverday": 17,
+        "discovermonth": 2,
+        "host": "NGC 4030",
+        "claimedtype": "II",
+        "hvel": "1449",
+        "galra": "120024",
+        "galdec": "-010604",
+        "snra": "12:00:27.67",
+        "sndec": "-01:04:51.5",
+        "discoverer": "Takao Doi",
+        "redshift": 0.0049,
+        "maxyear": 2007,
+        "maxmonth": 2,
+        "maxday": 17,
+        "z": 0.00485
     }
 }

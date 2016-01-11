@@ -11,35 +11,51 @@
                 "secondary": true
             },
             {
-                "name": "Wim Cuppens",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6798'>ATEL 6798</a>",
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Wim Cuppens",
                 "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57001.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57002.48",
                 "band": "R",
                 "abmag": "15.7",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57003.088",
                 "band": "C",
                 "abmag": "17.3",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "Ia-91T",
+        "snra": "22:57:19.41",
+        "sndec": "-20:58:00.8",
+        "discoverday": 10,
+        "discovermonth": 12,
+        "discoveryear": 2014,
+        "redshift": 0.026,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2014,
         "maxmonth": 12,
-        "maxday": 11,
-        "discoveryear": 2014,
-        "discovermonth": 12,
-        "discoverday": 11
+        "maxday": 10
     }
 }

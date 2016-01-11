@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02400/02491.html'>IAUC 2491</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "41693.0",
-                "band": "V",
-                "abmag": "17",
-                "source": "1"
+                "time": "41692.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1973",
-        "discovermonth": "1",
-        "discoverday": "11"
+        "discoveryear": 1973,
+        "discoverday": 10,
+        "discovermonth": 1,
+        "host": "NGC 3656",
+        "hvel": "2871",
+        "galra": "112339",
+        "galdec": "+535032",
+        "discoverer": "Charles Kowal",
+        "snra": "11:23:36.7",
+        "sndec": "+53:50:34.0",
+        "maxyear": 1973,
+        "maxmonth": 1,
+        "maxday": 10,
+        "z": 0.00962
     }
 }

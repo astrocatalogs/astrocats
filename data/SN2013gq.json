@@ -2,21 +2,44 @@
     "SN2013gq": {
         "name": "SN2013gq",
         "aliases": [
-            "SN2013gq"
+            "SN2013gq",
+            "PSN J08175346+2328105"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "25",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003730.txt'>CBET 3730</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56382.5",
+                "band": "",
+                "abmag": "14.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 31,
         "discovermonth": 3,
         "host": "NGC 2554",
         "claimedtype": "Ia",
         "hvel": "4126",
         "galra": "081754",
         "galdec": "+232820",
-        "snra": "081753.51",
-        "sndec": "+232811.1",
+        "snra": "08:17:53.46",
+        "sndec": "+23:28:10.5",
         "discoverer": "LOSS",
+        "redshift": 0.014,
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 31,
         "z": 0.0139
     }
 }

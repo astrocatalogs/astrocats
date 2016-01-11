@@ -13,6 +13,15 @@
             {
                 "name": "VSNET 2001",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07596.html#Item1'>IAUC 7596</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -71,18 +80,25 @@
                 "band": "C",
                 "abmag": "19",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51984.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2001,
         "discoverday": 12,
         "discovermonth": 3,
         "host": "NGC 3504",
-        "claimedtype": "IIn?",
+        "claimedtype": "IIn/LBV",
         "hvel": "1518",
         "galra": "110311",
         "galdec": "+275825",
-        "snra": "110315.37",
-        "sndec": "+275829.5",
+        "snra": "11:03:15.37",
+        "sndec": "+27:58:29.5",
         "discoverer": "LOTOSS",
         "maxyear": 2001,
         "maxmonth": 3,

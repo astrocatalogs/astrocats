@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56735.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56745.211",
                 "band": "U",
                 "abmag": "17.2",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "12:52:38.61",
+        "sndec": "+45:05:35.4",
+        "discoverday": 19,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
         "maxyear": 2014,
         "maxmonth": 3,
-        "maxday": 29,
-        "discoveryear": 2014,
-        "discovermonth": 3,
-        "discoverday": 29
+        "maxday": 19
     }
 }

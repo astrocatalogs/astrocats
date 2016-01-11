@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08200/08252.html#Item1'>IAUC 8252</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52980.0",
+                "time": "52979.5",
                 "band": "",
                 "abmag": "18.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "12",
-        "discoverday": "7"
+        "discoveryear": 2003,
+        "discoverday": 6,
+        "discovermonth": 12,
+        "host": "MCG +5-27-49",
+        "claimedtype": "II",
+        "hvel": "7880",
+        "galra": "111812",
+        "galdec": "+302342",
+        "snra": "11:18:12.21",
+        "sndec": "+30:23:41.5",
+        "discoverer": "Mark Armstrong",
+        "redshift": 0.026,
+        "maxyear": 2003,
+        "maxmonth": 12,
+        "maxday": 6,
+        "z": 0.0266
     }
 }

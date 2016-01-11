@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,17 @@
                 "time": "51188.0",
                 "band": "V",
                 "abmag": "19",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1999",
+        "discoverday": "10",
         "discovermonth": "1",
-        "discoverday": "10"
+        "host": "A033655-3933",
+        "galra": "033655",
+        "galdec": "-393304",
+        "snra": "03:36:55.81",
+        "sndec": "-39:33:04.9",
+        "discoverer": "The Mount Stromlo Abell Cluster SN Search"
     }
 }

@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08736.html#Item1'>IAUC 8736</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53886.0",
-                "band": "r",
-                "abmag": "20",
-                "source": "1"
+                "time": "53885.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2006",
-        "discovermonth": "5",
-        "discoverday": "31"
+        "discoveryear": 2006,
+        "discoverday": 30,
+        "discovermonth": 5,
+        "host": "NGC 5185",
+        "hvel": "7352",
+        "galra": "133002",
+        "galdec": "+132459",
+        "snra": "13:30:00.37",
+        "sndec": "+13:24:43.1",
+        "discoverer": "Carnegie Supernova Project",
+        "maxyear": 2006,
+        "maxmonth": 5,
+        "maxday": 30,
+        "z": 0.0248
     }
 }

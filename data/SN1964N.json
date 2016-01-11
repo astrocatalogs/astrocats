@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1968PASP...80..462Z'>PASP 80, 462</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "38649.0",
+                "time": "38648.5",
                 "band": "",
-                "abmag": "16",
-                "source": "1"
+                "abmag": "16.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1964",
-        "discovermonth": "9",
-        "discoverday": "11"
+        "discoveryear": 1964,
+        "discoverday": 10,
+        "discovermonth": 9,
+        "host": "UGC 1903",
+        "hvel": "10484",
+        "galra": "022633",
+        "galdec": "+294947",
+        "discoverer": "Charles Kowal",
+        "snra": "02:26:30.4",
+        "sndec": "+29:49:33.0",
+        "maxyear": 1964,
+        "maxmonth": 9,
+        "maxday": 10,
+        "z": 0.0356
     }
 }

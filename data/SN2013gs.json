@@ -2,7 +2,8 @@
     "SN2013gs": {
         "name": "SN2013gs",
         "aliases": [
-            "SN2013gs"
+            "SN2013gs",
+            "PSN J09310887+4623054"
         ],
         "sources": [
             {
@@ -11,46 +12,57 @@
                 "secondary": true
             },
             {
-                "name": "Massimiliano Martignoni ",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003734.txt'>CBET 3734</a>",
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Massimiliano Martignoni ",
                 "alias": "3"
             },
             {
-                "name": "Manfred Mrotzek",
+                "name": "Thomas Langhans",
                 "alias": "4"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56677.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56629.114",
                 "band": "V",
                 "abmag": "16.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56678.408",
                 "band": "UV",
                 "abmag": "16.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56712.385",
                 "band": "UV",
                 "abmag": "17.4",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56718.823",
                 "band": "U",
                 "abmag": "17.4",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
         "discoveryear": 2013,
@@ -61,12 +73,13 @@
         "hvel": "5064",
         "galra": "093108",
         "galdec": "+462303",
-        "snra": "093108.87",
-        "sndec": "+462305.4",
-        "discoverer": "Zhang et al.",
+        "snra": "09:31:08.87",
+        "sndec": "+46:23:05.4",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.016888,
         "maxyear": 2014,
         "maxmonth": 1,
-        "maxday": 21,
+        "maxday": 20,
         "z": 0.017
     }
 }

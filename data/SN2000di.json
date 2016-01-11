@@ -6,21 +6,79 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07400/07483.html#Item1'>IAUC 7483</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51779.0",
-                "band": "",
+                "time": "51779.700000000186",
+                "band": "C",
                 "abmag": "17.3",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51780.70999999996",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51795.029999999795",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51810.00999999978",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51794.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2000",
-        "discovermonth": "8",
-        "discoverday": "23"
+        "discoveryear": 2000,
+        "discoverday": 23,
+        "discovermonth": 8,
+        "host": "IC 1637",
+        "claimedtype": "II",
+        "hvel": "6002",
+        "galra": "011101",
+        "galdec": "-302616",
+        "snra": "01:11:02.01",
+        "sndec": "-30:26:31.2",
+        "discoverer": "Masakatsu Aoki",
+        "maxyear": 2000,
+        "maxmonth": 9,
+        "maxday": 8,
+        "z": 0.0202
     }
 }

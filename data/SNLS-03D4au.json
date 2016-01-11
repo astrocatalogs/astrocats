@@ -1,0 +1,39 @@
+{
+    "SNLS-03D4au": {
+        "name": "SNLS-03D4au",
+        "aliases": [
+            "SNLS-03D4au"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.aanda.org/index.php?option=com_article&amp;access=standard&amp;Itemid=129&amp;url2003/07/05'>Paper</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52824.5",
+                "band": "",
+                "abmag": "25.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "22:16:09.917",
+        "sndec": "-18:04:39.19",
+        "discoverday": 4,
+        "discovermonth": 7,
+        "discoveryear": 2003,
+        "redshift": 0.468,
+        "discoverer": "Supernova Legacy Project",
+        "maxyear": 2003,
+        "maxmonth": 7,
+        "maxday": 4
+    }
+}

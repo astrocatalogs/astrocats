@@ -2,7 +2,8 @@
     "SN2013gu": {
         "name": "SN2013gu",
         "aliases": [
-            "SN2013gu"
+            "SN2013gu",
+            "CSS131208:014638+041327"
         ],
         "sources": [
             {
@@ -11,76 +12,88 @@
                 "secondary": true
             },
             {
-                "name": "LLA",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003738.txt'>CBET 3738</a>",
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "LLA",
                 "alias": "3"
             },
             {
-                "name": "Enrico Prosperi ",
+                "name": "Joseph Brimacombe",
                 "alias": "4"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56630.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56633.847",
                 "band": "CV",
                 "abmag": "16.6",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56634.789",
                 "band": "CV",
                 "abmag": "16.6",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56635.752",
                 "band": "CV",
                 "abmag": "16.7",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56635.118",
                 "band": "C",
                 "abmag": "16.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56636.108",
                 "band": "C",
                 "abmag": "16.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56700.777",
                 "band": "CR",
                 "abmag": "17.3",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 7,
+        "discoverday": 4,
         "discovermonth": 12,
-        "host": "PGC1265294",
-        "claimedtype": "II P",
+        "host": "PGC 1265294",
+        "claimedtype": "IIP",
         "hvel": "5319",
         "galra": "014638",
         "galdec": "+041334",
-        "snra": "014638.27",
-        "sndec": "+041324.4",
-        "discoverer": "Shurpakov",
+        "snra": "01:46:38.27",
+        "sndec": "+04:13:24.4",
+        "discoverer": "MASTER",
+        "redshift": 0.017742,
         "maxyear": 2013,
         "maxmonth": 12,
-        "maxday": 7,
+        "maxday": 4,
         "z": 0.0179
     }
 }

@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1983aa'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "45464.0",
-                "band": "V",
+                "time": "45454.5",
+                "band": "",
                 "abmag": "19.6",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1983",
-        "discovermonth": "5",
-        "discoverday": "10"
+        "discoveryear": 1983,
+        "discovermonth": 4,
+        "host": "QSO1059+730",
+        "hvel": "26700",
+        "galra": "110136",
+        "galdec": "+0714",
+        "discoverer": "unknown",
+        "snra": "11:02:37.3",
+        "sndec": "+72:46:36.0",
+        "discoverday": 30,
+        "maxyear": 1983,
+        "maxmonth": 4,
+        "maxday": 30,
+        "z": 0.0934
     }
 }

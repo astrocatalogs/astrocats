@@ -1,0 +1,37 @@
+{
+    "MASTER OT J154156.81+105552.0": {
+        "name": "MASTER OT J154156.81+105552.0",
+        "aliases": [
+            "MASTER OT J154156.81+105552.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5185'>ATEL 5185</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56470.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "15:41:56.81",
+        "sndec": "+10:55:52.0",
+        "discoverday": 27,
+        "discovermonth": 6,
+        "discoveryear": 2013,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 6,
+        "maxday": 27
+    }
+}

@@ -2,7 +2,8 @@
     "LSQ14kp": {
         "name": "LSQ14kp",
         "aliases": [
-            "LSQ14kp"
+            "LSQ14kp",
+            "PS1-14se"
         ],
         "sources": [
             {
@@ -11,24 +12,40 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5912'>ATEL 5912</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56684.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56710.313",
                 "band": "C",
                 "abmag": "17.4",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "maxyear": 2014,
-        "maxmonth": 2,
-        "maxday": 22,
+        "claimedtype": "Ia",
+        "snra": "12:10:11.32",
+        "sndec": "-22:10:41.8",
+        "discoverday": 27,
+        "discovermonth": 1,
         "discoveryear": 2014,
-        "discovermonth": 2,
-        "discoverday": 22
+        "redshift": 0.03,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 27
     }
 }

@@ -2,7 +2,8 @@
     "SN2014af": {
         "name": "SN2014af",
         "aliases": [
-            "SN2014af"
+            "SN2014af",
+            "MASTER OT J084721.16+731313.7"
         ],
         "sources": [
             {
@@ -11,42 +12,54 @@
                 "secondary": true
             },
             {
-                "name": "Marc Serrau",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003833.txt'>CBET 3833</a>",
                 "alias": "2"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Marc Serrau",
                 "alias": "3"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56694.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56733.833",
                 "band": "CR",
                 "abmag": "16.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56753.961",
                 "band": "CV",
                 "abmag": "18.12",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 17,
-        "discovermonth": 3,
+        "discoverday": 6,
+        "discovermonth": 2,
         "host": "A084721+7313",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "galra": "084721",
         "galdec": "+731313",
-        "snra": "084721.16",
-        "sndec": "+731313.7",
-        "discoverer": "Denisenko",
+        "snra": "08:47:21.16",
+        "sndec": "+73:13:13.7",
+        "discoverer": "MASTER",
+        "redshift": 0.019,
         "maxyear": 2014,
-        "maxmonth": 3,
-        "maxday": 17
+        "maxmonth": 2,
+        "maxday": 6
     }
 }

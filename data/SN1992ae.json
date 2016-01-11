@@ -6,24 +6,261 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1996AJ....112.2408H'>1996AJ....112.2408H</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05500/05554.html'>IAUC 5554</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48800.0",
+                "time": "48805.330000000075",
+                "band": "V",
+                "abmag": "18.47",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48807.169999999925",
+                "band": "B",
+                "abmag": "18.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48807.169999999925",
+                "band": "V",
+                "abmag": "18.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48807.31999999983",
+                "band": "B",
+                "abmag": "18.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48807.31999999983",
+                "band": "V",
+                "abmag": "18.49",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48809.419999999925",
+                "band": "B",
+                "abmag": "18.85",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48809.419999999925",
+                "band": "V",
+                "abmag": "18.61",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48812.299999999814",
+                "band": "B",
+                "abmag": "18.96",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48812.299999999814",
+                "band": "V",
+                "abmag": "18.78",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48813.16000000015",
+                "band": "B",
+                "abmag": "19.17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48813.16000000015",
+                "band": "V",
+                "abmag": "18.79",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48816.35999999987",
+                "band": "B",
+                "abmag": "19.24",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48816.35999999987",
+                "band": "V",
+                "abmag": "18.95",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48816.35999999987",
+                "band": "V",
+                "abmag": "19.06",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48818.299999999814",
+                "band": "B",
+                "abmag": "19.65",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48818.299999999814",
+                "band": "V",
+                "abmag": "19.12",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48818.310000000056",
+                "band": "B",
+                "abmag": "19.83",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48818.310000000056",
+                "band": "V",
+                "abmag": "19.24",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48822.25999999978",
+                "band": "B",
+                "abmag": "20.18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48822.25999999978",
+                "band": "V",
+                "abmag": "19.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48830.35999999987",
+                "band": "B",
+                "abmag": "21.07",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48830.35999999987",
+                "band": "V",
+                "abmag": "19.92",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48831.299999999814",
+                "band": "B",
+                "abmag": "21.23",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48831.299999999814",
+                "band": "V",
+                "abmag": "19.99",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48834.37999999989",
+                "band": "B",
+                "abmag": "21.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48834.37999999989",
+                "band": "V",
+                "abmag": "20.28",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48835.35000000009",
+                "band": "B",
+                "abmag": "21.59",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48835.35000000009",
+                "band": "V",
+                "abmag": "20.25",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48844.41000000015",
+                "band": "B",
+                "abmag": "21.93",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48844.41000000015",
+                "band": "V",
+                "abmag": "20.76",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48799.5",
                 "band": "",
-                "abmag": "18",
-                "source": "1"
+                "abmag": "18.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1992",
-        "discovermonth": "6",
-        "discoverday": "27",
-        "maxyear": "1992",
-        "maxmonth": "6",
-        "maxday": "30"
+        "discoveryear": 1992,
+        "maxday": 26,
+        "maxmonth": 6,
+        "host": "A212817-6133",
+        "claimedtype": "Ia",
+        "hvel": "22560",
+        "galra": "212817",
+        "galdec": "-613300",
+        "snra": "21:28:17.66",
+        "sndec": "-61:33:00.0",
+        "discoverer": "Roberto Antezana",
+        "discoverday": 26,
+        "discovermonth": 6,
+        "maxyear": 1992,
+        "z": 0.0783
     }
 }

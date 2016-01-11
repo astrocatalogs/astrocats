@@ -2,21 +2,44 @@
     "SN2012dg": {
         "name": "SN2012dg",
         "aliases": [
-            "SN2012dg"
+            "SN2012dg",
+            "PSN J18181880+4741542"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "26",
-        "discovermonth": 6,
-        "host": "CGCG254-30",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003162.txt'>CBET 3162</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56116.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 8,
+        "discovermonth": 7,
+        "host": "CGCG 254-30",
         "claimedtype": "Ia",
         "hvel": "11100",
         "galra": "181818",
         "galdec": "+474151",
-        "snra": "181818.80",
-        "sndec": "+474154.2",
-        "discoverer": "Cabattari, Mazzoni",
+        "snra": "18:18:18.80",
+        "sndec": "+47:41:54.2",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.037,
+        "maxyear": 2012,
+        "maxmonth": 7,
+        "maxday": 8,
         "z": 0.0377
     }
 }

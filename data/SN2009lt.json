@@ -6,21 +6,40 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002000/CBET002043.txt'>CBET 2043</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55156.0",
-                "band": "R",
-                "abmag": "19.7",
-                "source": "1"
+                "time": "55155.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2009",
-        "discovermonth": "11",
-        "discoverday": "21"
+        "discoveryear": 2009,
+        "discoverday": 20,
+        "discovermonth": 11,
+        "host": "A013055+1836",
+        "claimedtype": "Ia",
+        "galra": "013055",
+        "galdec": "+183636",
+        "snra": "01:30:54.49",
+        "sndec": "+18:36:39.9",
+        "discoverer": "Astrotel Observatory",
+        "maxyear": 2009,
+        "maxmonth": 11,
+        "maxday": 20
     }
 }

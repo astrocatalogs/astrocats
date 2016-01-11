@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,20 @@
                 "time": "50219.0",
                 "band": "",
                 "abmag": "17",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1996",
+        "discoverday": "16",
         "discovermonth": "5",
-        "discoverday": "16"
+        "host": "NGC 5557",
+        "claimedtype": "Ia",
+        "hvel": "3195",
+        "galra": "141826",
+        "galdec": "+362938",
+        "snra": "14:18:25.4",
+        "sndec": "+36:29:39.0",
+        "discoverer": "Wayne Johnson (aka Mr. Galaxy)",
+        "z": 0.0107
     }
 }

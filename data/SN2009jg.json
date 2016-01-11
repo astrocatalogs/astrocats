@@ -2,28 +2,88 @@
     "SN2009jg": {
         "name": "SN2009jg",
         "aliases": [
-            "SN2009jg"
+            "SN2009jg",
+            "CSS090922:174034+184249"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001900/CBET001956.txt'>CBET 1956</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55096.0",
+                "time": "55095.5",
                 "band": "",
-                "abmag": "15.8",
-                "source": "1"
+                "abmag": "15.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55106.113",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55107.78",
+                "band": "CR",
+                "abmag": "15.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55117.781",
+                "band": "CR",
+                "abmag": "16.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55118.764",
+                "band": "CR",
+                "abmag": "16.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55123.782",
+                "band": "CR",
+                "abmag": "16.4",
+                "source": "4,1"
             }
         ],
-        "discoveryear": "2009",
-        "discovermonth": "9",
-        "discoverday": "22",
-        "maxyear": "2009",
-        "maxmonth": "9",
-        "maxday": "26"
+        "discoveryear": 2009,
+        "discoverday": 21,
+        "discovermonth": 9,
+        "host": "A174034+1842",
+        "claimedtype": "Ia",
+        "galra": "174034",
+        "galdec": "+184249",
+        "snra": "17:40:34.33",
+        "sndec": "+18:42:49.2",
+        "discoverer": "CRTS",
+        "maxyear": 2009,
+        "maxmonth": 9,
+        "maxday": 21
     }
 }
