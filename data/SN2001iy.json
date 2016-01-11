@@ -1,0 +1,145 @@
+{
+    "SN2001iy": {
+        "name": "SN2001iy",
+        "aliases": [
+            "SN2001iy"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2004ApJ...602..571B'>2004ApJ...602..571B</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07805.html#Item1'>IAUC 7805</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52232.060000000056",
+                "band": "I",
+                "abmag": "24.08",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52236.08999999985",
+                "band": "R",
+                "abmag": "20.75",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52236.14999999991",
+                "band": "I",
+                "abmag": "21.39",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52252.10000000009",
+                "band": "R",
+                "abmag": "19.03",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52252.12000000011",
+                "band": "I",
+                "abmag": "19.04",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52263.06999999983",
+                "band": "I",
+                "abmag": "19.29",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52283.12000000011",
+                "band": "R",
+                "abmag": "23.55",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52283.14000000013",
+                "band": "I",
+                "abmag": "21.18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52288.10000000009",
+                "band": "R",
+                "abmag": "24.08",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52288.12999999989",
+                "band": "I",
+                "abmag": "21.85",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52289.14000000013",
+                "band": "R",
+                "abmag": "24.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52289.16000000015",
+                "band": "I",
+                "abmag": "21.68",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52323.06999999983",
+                "band": "I",
+                "abmag": "26.04",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52251.5",
+                "band": "",
+                "abmag": "23.0",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 19,
+        "discovermonth": 11,
+        "host": "A105224+5716",
+        "redshift": 0.567,
+        "galra": "105224",
+        "galdec": "+571636",
+        "snra": "10:52:24.28",
+        "sndec": "+57:16:36.1",
+        "discoverer": "High Z Supernova Search",
+        "maxyear": 2001,
+        "maxmonth": 12,
+        "maxday": 9
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "SNF20080909-030": {
+        "name": "SNF20080909-030",
+        "aliases": [
+            "SNF20080909-030"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://snfactory.lbl.gov/'>SN Factory</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54717.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "22:01:49.07",
+        "sndec": "+13:03:19.1",
+        "discoverday": 8,
+        "discovermonth": 9,
+        "discoveryear": 2008,
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2008,
+        "maxmonth": 9,
+        "maxday": 8
+    }
+}

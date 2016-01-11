@@ -1,0 +1,48 @@
+{
+    "SN2007rv": {
+        "name": "SN2007rv",
+        "aliases": [
+            "SN2007rv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001100/CBET001152.txt'>CBET 1152</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54410.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 6,
+        "discovermonth": 11,
+        "host": "NGC 689",
+        "claimedtype": "Ia",
+        "hvel": "4203",
+        "galra": "014952",
+        "galdec": "-272756",
+        "snra": "01:49:52.88",
+        "sndec": "-27:28:02.6",
+        "discoverer": "T. G. Tan",
+        "redshift": 0.014,
+        "maxyear": 2007,
+        "maxmonth": 11,
+        "maxday": 6,
+        "z": 0.0141
+    }
+}

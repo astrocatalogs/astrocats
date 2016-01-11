@@ -1,0 +1,70 @@
+{
+    "SN2003M": {
+        "name": "SN2003M",
+        "aliases": [
+            "SN2003M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08048.html#Item1'>IAUC 8048</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52631.5",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52652.5",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52995.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 23,
+        "discovermonth": 12,
+        "host": "UGC 7224",
+        "claimedtype": "Ia-pec",
+        "hvel": "7267",
+        "galra": "121318",
+        "galdec": "+213807",
+        "snra": "12:13:21.008",
+        "sndec": "+21:38:48.49",
+        "discoverer": "LOTOSS",
+        "maxyear": 2003,
+        "maxmonth": 1,
+        "maxday": 13,
+        "z": 0.0245
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "SN2013hy": {
+        "name": "SN2013hy",
+        "aliases": [
+            "SN2013hy",
+            "DES13S2cmm"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5603'>ATEL 5603</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56615.5",
+                "band": "",
+                "abmag": "22.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 19,
+        "discovermonth": 11,
+        "host": "A024232-0121",
+        "claimedtype": "Ia-pec",
+        "redshift": 0.663,
+        "galra": "024232",
+        "galdec": "-012130",
+        "snra": "02:42:32.83",
+        "sndec": "-01:21:30.1",
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 19
+    }
+}

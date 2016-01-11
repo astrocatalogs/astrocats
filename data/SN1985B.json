@@ -1,0 +1,47 @@
+{
+    "SN1985B": {
+        "name": "SN1985B",
+        "aliases": [
+            "SN1985B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04000/04035.html'>IAUC 4035</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46081.5",
+                "band": "",
+                "abmag": "13.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1985,
+        "discoverday": 16,
+        "discovermonth": 1,
+        "host": "NGC 4045",
+        "claimedtype": "Ia",
+        "hvel": "1980",
+        "galra": "120242",
+        "galdec": "+015837",
+        "snra": "12:02:44.08",
+        "sndec": "+01:58:45.5",
+        "discoverer": "Horiguchi",
+        "maxyear": 1985,
+        "maxmonth": 1,
+        "maxday": 16,
+        "z": 0.00663
+    }
+}

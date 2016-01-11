@@ -1,0 +1,39 @@
+{
+    "LSQ14fyc": {
+        "name": "LSQ14fyc",
+        "aliases": [
+            "LSQ14fyc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6699'>ATEL 6699</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56946.5",
+                "band": "",
+                "abmag": "19.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "23:47:40.16",
+        "sndec": "-13:58:54.9",
+        "discoverday": 16,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "redshift": 0.082,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 16
+    }
+}

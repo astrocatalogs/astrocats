@@ -1,0 +1,85 @@
+{
+    "SN1999ga": {
+        "name": "SN1999ga",
+        "aliases": [
+            "SN1999ga",
+            "possible supernova"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07300/07316.html#Item1'>IAUC 7316</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51506.0",
+                "band": "C",
+                "abmag": "15.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51506.950000000186",
+                "band": "C",
+                "abmag": "16",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51510.95999999996",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51516.89999999991",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51505.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 23,
+        "discovermonth": 11,
+        "host": "NGC 2442",
+        "claimedtype": "II",
+        "hvel": "1399",
+        "galra": "073624",
+        "galdec": "-693150",
+        "snra": "07:36:23.9",
+        "sndec": "-69:31:48.0",
+        "discoverer": "Perth Astronomical Research Group",
+        "maxyear": 1999,
+        "maxmonth": 11,
+        "maxday": 24,
+        "z": 0.00468
+    }
+}

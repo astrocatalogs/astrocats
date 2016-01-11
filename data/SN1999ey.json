@@ -1,0 +1,41 @@
+{
+    "SN1999ey": {
+        "name": "SN1999ey",
+        "aliases": [
+            "SN1999ey"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51492.0",
+                "band": "V",
+                "abmag": "20.3",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "10",
+        "discovermonth": "11",
+        "host": "A005803-2740",
+        "claimedtype": "IIn",
+        "hvel": "27900",
+        "galra": "005803",
+        "galdec": "-274032",
+        "snra": "00:58:03.39",
+        "sndec": "-27:40:32.3",
+        "discoverer": "Padova-Asiago Supernova Group",
+        "redshift": 0.093,
+        "z": 0.0978
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "SN2002ig": {
+        "name": "SN2002ig",
+        "aliases": [
+            "SN2002ig"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08020.html#Item1'>IAUC 8020</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52575.5",
+                "band": "",
+                "abmag": "19.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 28,
+        "discovermonth": 10,
+        "host": "A013636+0055",
+        "claimedtype": "II",
+        "hvel": "23100",
+        "galra": "013636",
+        "galdec": "+005525",
+        "snra": "01:36:36.72",
+        "sndec": "+00:55:25.6",
+        "discoverer": "SDSS",
+        "redshift": 0.077,
+        "maxyear": 2002,
+        "maxmonth": 10,
+        "maxday": 28,
+        "z": 0.0803
+    }
+}

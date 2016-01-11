@@ -1,0 +1,45 @@
+{
+    "SN2015ad": {
+        "name": "SN2015ad",
+        "aliases": [
+            "SN2015ad",
+            "PSN J02484234+1418454"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004176.txt'>CBET 4176</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57231.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 28,
+        "discovermonth": 7,
+        "host": "UGC 2282",
+        "claimedtype": "Ia",
+        "hvel": "7240",
+        "galra": "024842",
+        "galdec": "+141849",
+        "snra": "02:48:42.34",
+        "sndec": "+14:18:45.4",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.024,
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 28,
+        "z": 0.0244
+    }
+}

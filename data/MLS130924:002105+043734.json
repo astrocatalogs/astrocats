@@ -1,0 +1,37 @@
+{
+    "MLS130924:002105+043734": {
+        "name": "MLS130924:002105+043734",
+        "aliases": [
+            "MLS130924:002105+043734"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5437'>ATEL 5437</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56558.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "00:21:04.52",
+        "sndec": "+04:37:34.0",
+        "discoverday": 23,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 23
+    }
+}

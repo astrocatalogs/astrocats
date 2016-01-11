@@ -1,0 +1,38 @@
+{
+    "PSN J19000440+4851378": {
+        "name": "PSN J19000440+4851378",
+        "aliases": [
+            "PSN J19000440+4851378"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J19000440+4851378.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55854.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "host": "MCG +8-34-30",
+        "snra": "19:00:04.40",
+        "sndec": "+48:51:37.7",
+        "discoverday": 20,
+        "discovermonth": 10,
+        "discoveryear": 2011,
+        "discoverer": "Tom Boles",
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 20
+    }
+}

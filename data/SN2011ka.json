@@ -1,0 +1,45 @@
+{
+    "SN2011ka": {
+        "name": "SN2011ka",
+        "aliases": [
+            "SN2011ka",
+            "PSN J05142826-6210190"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002996.txt'>CBET 2996</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55927.5",
+                "band": "",
+                "abmag": "14.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 1,
+        "discovermonth": 1,
+        "host": "ESO 119-G46",
+        "claimedtype": "Ia",
+        "hvel": "4953",
+        "galra": "051430",
+        "galdec": "-621014",
+        "snra": "05:14:28.26",
+        "sndec": "-62:10:19.0",
+        "discoverer": "Berto Monard",
+        "redshift": 0.0173,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 1,
+        "z": 0.0167
+    }
+}

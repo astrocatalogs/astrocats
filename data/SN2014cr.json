@@ -1,0 +1,45 @@
+{
+    "SN2014cr": {
+        "name": "SN2014cr",
+        "aliases": [
+            "SN2014cr",
+            "PSN J19370613-4217505"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003956.txt'>CBET 3956</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56837.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 29,
+        "discovermonth": 6,
+        "host": "NGC 6806",
+        "claimedtype": "Ia-02cx",
+        "hvel": "5717",
+        "galra": "193705",
+        "galdec": "-421747",
+        "snra": "19:37:06.13",
+        "sndec": "-42:17:50.5",
+        "discoverer": "Berto Monard",
+        "redshift": 0.02,
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 29,
+        "z": 0.0193
+    }
+}

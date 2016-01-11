@@ -1,0 +1,46 @@
+{
+    "SN1995ax": {
+        "name": "SN1995ax",
+        "aliases": [
+            "SN1995ax"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06200/06270.html'>IAUC 6270</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50039.5",
+                "band": "",
+                "abmag": "22.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1995,
+        "discoverday": 18,
+        "discovermonth": 11,
+        "host": "A022625+0048",
+        "claimedtype": "I",
+        "redshift": "0.615",
+        "galra": "022625",
+        "galdec": "+004844",
+        "snra": "02:26:25.80",
+        "sndec": "+00:48:44.2",
+        "discoverer": "Supernova Cosmology Project",
+        "maxyear": 1995,
+        "maxmonth": 11,
+        "maxday": 18
+    }
+}

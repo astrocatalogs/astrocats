@@ -1,0 +1,45 @@
+{
+    "SN2011fd": {
+        "name": "SN2011fd",
+        "aliases": [
+            "SN2011fd",
+            "PSN J06463985+6021028"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002791.txt'>CBET 2791</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55793.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 20,
+        "discovermonth": 8,
+        "host": "NGC 2273B",
+        "claimedtype": "IIP",
+        "hvel": "2101",
+        "galra": "064632",
+        "galdec": "+602025",
+        "snra": "06:46:39.84",
+        "sndec": "+60:21:02.7",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.007,
+        "maxyear": 2011,
+        "maxmonth": 8,
+        "maxday": 20,
+        "z": 0.00703
+    }
+}

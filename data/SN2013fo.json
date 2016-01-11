@@ -1,0 +1,56 @@
+{
+    "SN2013fo": {
+        "name": "SN2013fo",
+        "aliases": [
+            "SN2013fo",
+            "PSN J01203194+1203122"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003663.txt'>CBET 3663</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56558.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56569.342",
+                "band": "UV",
+                "abmag": "17.9",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 23,
+        "discovermonth": 9,
+        "host": "A012031+1203",
+        "claimedtype": "Ia",
+        "hvel": "16200",
+        "galra": "012031",
+        "galdec": "+120312",
+        "snra": "01:20:31.94",
+        "sndec": "+12:03:12.2",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.054,
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 23,
+        "z": 0.0556
+    }
+}

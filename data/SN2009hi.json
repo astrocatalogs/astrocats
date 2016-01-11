@@ -1,0 +1,48 @@
+{
+    "SN2009hi": {
+        "name": "SN2009hi",
+        "aliases": [
+            "SN2009hi"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001800/CBET001872.txt'>CBET 1872</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55016.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2009,
+        "discoverday": 4,
+        "discovermonth": 7,
+        "host": "NGC 7647",
+        "claimedtype": "Ia",
+        "hvel": "12339",
+        "galra": "232357",
+        "galdec": "+164638",
+        "snra": "23:23:56.24",
+        "sndec": "+16:46:30.0",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.0411,
+        "maxyear": 2009,
+        "maxmonth": 7,
+        "maxday": 4,
+        "z": 0.042
+    }
+}

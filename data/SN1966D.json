@@ -1,0 +1,46 @@
+{
+    "SN1966D": {
+        "name": "SN1966D",
+        "aliases": [
+            "SN1966D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1967PASP...79..456Z'>PASP 79, 456</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39285.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1966,
+        "discoverday": 9,
+        "discovermonth": 6,
+        "host": "PGC0035882",
+        "hvel": "6530",
+        "galra": "113613",
+        "galdec": "+203124",
+        "discoverer": "Rudnicki",
+        "snra": "11:36:11.6",
+        "sndec": "+20:31:16.0",
+        "maxyear": 1966,
+        "maxmonth": 6,
+        "maxday": 9,
+        "z": 0.022
+    }
+}

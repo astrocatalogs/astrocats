@@ -1,0 +1,46 @@
+{
+    "SN2001bc": {
+        "name": "SN2001bc",
+        "aliases": [
+            "SN2001bc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07600/07615.html#Item1'>IAUC 7615</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52018.5",
+                "band": "",
+                "abmag": "23.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 19,
+        "discovermonth": 4,
+        "host": "A094607-2111",
+        "claimedtype": "II",
+        "redshift": 0.195,
+        "galra": "094607",
+        "galdec": "-211128",
+        "snra": "09:46:07.06",
+        "sndec": "-21:11:28.6",
+        "discoverer": "ESO",
+        "maxyear": 2001,
+        "maxmonth": 4,
+        "maxday": 19
+    }
+}

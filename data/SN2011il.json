@@ -1,0 +1,42 @@
+{
+    "SN2011il": {
+        "name": "SN2011il",
+        "aliases": [
+            "SN2011il",
+            "MASTER OT073508.62+191126.1"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3779'>ATEL 3779</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55884.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 19,
+        "discovermonth": 11,
+        "host": "LEDA 1583740",
+        "claimedtype": "Ia",
+        "galra": "073508",
+        "galdec": "+191126",
+        "snra": "07:35:08.62",
+        "sndec": "+19:11:26.1",
+        "discoverer": "MASTER",
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 19
+    }
+}

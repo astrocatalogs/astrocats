@@ -1,0 +1,41 @@
+{
+    "SN1885A": {
+        "name": "SN1885A",
+        "aliases": [
+            "SN1885A",
+            "S And"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "9770.0",
+                "band": "",
+                "abmag": "5.8",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1885",
+        "maxday": "21",
+        "maxmonth": 8,
+        "host": "M31",
+        "claimedtype": "I",
+        "hvel": "-301",
+        "galra": "004244",
+        "galdec": "+411608",
+        "snra": "00:42:43.1",
+        "sndec": "+41:16:04.0",
+        "discoverer": "Hartwig",
+        "z": -0.001
+    }
+}

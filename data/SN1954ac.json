@@ -1,0 +1,46 @@
+{
+    "SN1954ac": {
+        "name": "SN1954ac",
+        "aliases": [
+            "SN1954ac"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05100/05140.html'>IAUC 5140</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "35018.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1954,
+        "discoverday": 3,
+        "discovermonth": 10,
+        "host": "UGC 465",
+        "hvel": "4772",
+        "galra": "004351",
+        "galdec": "+325110",
+        "snra": "00:43:50.78",
+        "sndec": "+32:50:32.9",
+        "discoverer": "Jean Mueller",
+        "maxyear": 1954,
+        "maxmonth": 10,
+        "maxday": 3,
+        "z": 0.016
+    }
+}

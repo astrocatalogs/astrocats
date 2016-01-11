@@ -1,0 +1,45 @@
+{
+    "SN2012bi": {
+        "name": "SN2012bi",
+        "aliases": [
+            "SN2012bi",
+            "PSN J12130023+2516574"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003067.txt'>CBET 3067</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56008.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 22,
+        "discovermonth": 3,
+        "host": "UGC 7217",
+        "claimedtype": "Ia",
+        "hvel": "7303",
+        "galra": "121300",
+        "galdec": "+251654",
+        "snra": "12:13:00.23",
+        "sndec": "+25:16:57.4",
+        "discoverer": "Doug Rich",
+        "redshift": 0.0244,
+        "maxyear": 2012,
+        "maxmonth": 3,
+        "maxday": 22,
+        "z": 0.0247
+    }
+}

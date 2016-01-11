@@ -1,0 +1,69 @@
+{
+    "SN2003bq": {
+        "name": "SN2003bq",
+        "aliases": [
+            "SN2003bq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08089.html#Item2'>IAUC 8089</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52704.950000000186",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52705.79000000004",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52703.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 5,
+        "discovermonth": 3,
+        "host": "UGC 3513",
+        "hvel": "7316",
+        "galra": "064252",
+        "galdec": "+412515",
+        "snra": "06:42:50.128",
+        "sndec": "+41:25:19.99",
+        "discoverer": "Tom Boles",
+        "maxyear": 2003,
+        "maxmonth": 3,
+        "maxday": 6,
+        "z": 0.0247
+    }
+}

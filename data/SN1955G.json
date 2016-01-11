@@ -1,0 +1,46 @@
+{
+    "SN1955G": {
+        "name": "SN1955G",
+        "aliases": [
+            "SN1955G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1973PASP...85..427K'>PASP 85, 427</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "35212.5",
+                "band": "",
+                "abmag": "19.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1955,
+        "discoverday": 15,
+        "discovermonth": 4,
+        "host": "PGC0035168",
+        "hvel": "10544",
+        "galra": "112609",
+        "galdec": "+032954",
+        "discoverer": "Fritz Zwicky",
+        "snra": "11:26:04.9",
+        "sndec": "+03:29:20.0",
+        "maxyear": 1955,
+        "maxmonth": 4,
+        "maxday": 15,
+        "z": 0.0358
+    }
+}

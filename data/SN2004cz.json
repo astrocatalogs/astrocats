@@ -1,0 +1,47 @@
+{
+    "SN2004cz": {
+        "name": "SN2004cz",
+        "aliases": [
+            "SN2004cz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08368.html#Item1'>IAUC 8368</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53181.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 25,
+        "discovermonth": 6,
+        "host": "ESO 407-G9",
+        "claimedtype": "IIP",
+        "hvel": "1571",
+        "galra": "231245",
+        "galdec": "-371228",
+        "snra": "23:12:43.22",
+        "sndec": "-37:12:58.7",
+        "discoverer": "Brazilian Supernovae Search",
+        "maxyear": 2004,
+        "maxmonth": 6,
+        "maxday": 25,
+        "z": 0.00525
+    }
+}

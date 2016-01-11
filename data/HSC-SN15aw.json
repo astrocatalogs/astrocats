@@ -1,0 +1,37 @@
+{
+    "HSC-SN15aw": {
+        "name": "HSC-SN15aw",
+        "aliases": [
+            "HSC-SN15aw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7565'>ATEL 7565</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57165.5",
+                "band": "",
+                "abmag": "22.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:22:27.82",
+        "sndec": "+27:50:59.3",
+        "discoverday": 23,
+        "discovermonth": 5,
+        "discoveryear": 2015,
+        "discoverer": "Subaru/Hyper Suprime-Cam",
+        "maxyear": 2015,
+        "maxmonth": 5,
+        "maxday": 23
+    }
+}

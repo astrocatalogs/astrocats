@@ -1,0 +1,71 @@
+{
+    "SN2003au": {
+        "name": "SN2003au",
+        "aliases": [
+            "SN2003au"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08075.html#Item1'>IAUC 8075</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52687.5",
+                "band": "C",
+                "abmag": "19.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52688.5",
+                "band": "C",
+                "abmag": "19.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52686.5",
+                "band": "",
+                "abmag": "19.2",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 16,
+        "discovermonth": 2,
+        "host": "NGC 6095",
+        "claimedtype": "Ia",
+        "hvel": "9244",
+        "galra": "161111",
+        "galdec": "+611606",
+        "snra": "16:11:11.568",
+        "sndec": "+61:15:58.29",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.031,
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 17,
+        "z": 0.0313
+    }
+}

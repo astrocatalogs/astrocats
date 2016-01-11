@@ -1,0 +1,71 @@
+{
+    "PS1-14is": {
+        "name": "PS1-14is",
+        "aliases": [
+            "PS1-14is"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=1'>PS1 SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56676.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56699.863",
+                "band": "V",
+                "abmag": "16.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56702.185",
+                "band": "R",
+                "abmag": "17.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56721.918",
+                "band": "CV",
+                "abmag": "17.44",
+                "source": "5,1"
+            }
+        ],
+        "host": "MCG +7-18-54",
+        "snra": "08:49:45.09",
+        "sndec": "+40:14:53.2",
+        "discoverday": 19,
+        "discovermonth": 1,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 19
+    }
+}

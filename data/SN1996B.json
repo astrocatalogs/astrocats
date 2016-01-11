@@ -1,0 +1,40 @@
+{
+    "SN1996B": {
+        "name": "SN1996B",
+        "aliases": [
+            "SN1996B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50098.0",
+                "band": "",
+                "abmag": "18",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1996",
+        "discoverday": "16",
+        "discovermonth": "1",
+        "host": "NGC 4357",
+        "claimedtype": "II",
+        "hvel": "4252",
+        "galra": "122358",
+        "galdec": "+484646",
+        "snra": "12:23:56.6",
+        "sndec": "+48:46:42.0",
+        "discoverer": "Alessandro Gabrijelcic",
+        "z": 0.0143
+    }
+}

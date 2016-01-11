@@ -1,0 +1,67 @@
+{
+    "Gaia15aaq": {
+        "name": "Gaia15aaq",
+        "aliases": [
+            "Gaia15aaq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57038.87999999989",
+                "band": "G",
+                "abmag": "18.59",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57038.95399999991",
+                "band": "G",
+                "abmag": "18.51",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57058.20300000021",
+                "band": "G",
+                "abmag": "18.81",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57037.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "3,2"
+            }
+        ],
+        "discoveryear": 2015,
+        "snra": "13:41:24.73",
+        "sndec": "+35:45:43.3",
+        "claimedtype": "Ia",
+        "discoverday": 15,
+        "discovermonth": 1,
+        "redshift": 0.0625,
+        "discoverer": "Gaia Photometric Science Alerts programme",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 15
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "NM331512b": {
+        "name": "NM331512b",
+        "aliases": [
+            "NM331512b"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            },
+            {
+                "name": "Gérard Arlic",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57385.769",
+                "band": "V",
+                "abmag": "17.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57387.8056",
+                "band": "CV",
+                "abmag": "17.5",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 31,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 29
+    }
+}

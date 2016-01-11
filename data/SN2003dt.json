@@ -1,0 +1,48 @@
+{
+    "SN2003dt": {
+        "name": "SN2003dt",
+        "aliases": [
+            "SN2003dt"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08120.html#Item1'>IAUC 8120</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52750.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 21,
+        "discovermonth": 4,
+        "host": "NGC 6962",
+        "claimedtype": "Ia",
+        "hvel": "4254",
+        "galra": "204719",
+        "galdec": "+001915",
+        "snra": "20:47:17.568",
+        "sndec": "+00:18:42.89",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.03,
+        "maxyear": 2003,
+        "maxmonth": 4,
+        "maxday": 21,
+        "z": 0.0143
+    }
+}

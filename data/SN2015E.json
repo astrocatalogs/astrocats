@@ -1,0 +1,66 @@
+{
+    "SN2015E": {
+        "name": "SN2015E",
+        "aliases": [
+            "SN2015E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004053.txt'>CBET 4053</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57066.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57046.873",
+                "band": "U",
+                "abmag": "16.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57067.4806",
+                "band": "U",
+                "abmag": "16.1",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 24,
+        "discovermonth": 1,
+        "host": "PGC 12009",
+        "claimedtype": "Ia",
+        "hvel": "12434",
+        "galra": "031335",
+        "galdec": "+001502",
+        "snra": "03:13:35.31",
+        "sndec": "+00:15:03.1",
+        "discoverer": "Kiso Supernova Survey (KISS) collaboration",
+        "redshift": 0.041,
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 13,
+        "z": 0.0424
+    }
+}

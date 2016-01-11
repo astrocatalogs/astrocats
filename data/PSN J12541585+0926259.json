@@ -1,0 +1,41 @@
+{
+    "PSN J12541585+0926259": {
+        "name": "PSN J12541585+0926259",
+        "aliases": [
+            "PSN J12541585+0926259",
+            "PTF13ai"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12541585+0926259.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56338.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "CGCG 71-70",
+        "snra": "12:54:15.85",
+        "sndec": "+09:26:25.9",
+        "discoverday": 15,
+        "discovermonth": 2,
+        "discoveryear": 2013,
+        "redshift": 0.0453,
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 15
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "SN1988aa": {
+        "name": "SN1988aa",
+        "aliases": [
+            "SN1988aa"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04700/04724.html'>IAUC 4724</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47508.5",
+                "band": "",
+                "abmag": "19.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1988,
+        "discoverday": 13,
+        "discovermonth": 12,
+        "host": "KUG 0010-003",
+        "hvel": "11760",
+        "galra": "001240",
+        "galdec": "-000212",
+        "snra": "00:12:39.9",
+        "sndec": "-00:01:54.0",
+        "discoverer": "Comte",
+        "maxyear": 1988,
+        "maxmonth": 12,
+        "maxday": 13,
+        "z": 0.04
+    }
+}

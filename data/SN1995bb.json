@@ -1,0 +1,37 @@
+{
+    "SN1995bb": {
+        "name": "SN1995bb",
+        "aliases": [
+            "SN1995bb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06200/06271.html'>IAUC 6271</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [],
+        "discoveryear": "1995",
+        "discoverday": "29",
+        "discovermonth": "11",
+        "host": "A001617+1224",
+        "claimedtype": "Ic",
+        "hvel": "1740",
+        "galra": "001617",
+        "galdec": "+122453",
+        "snra": "00:16:17.64",
+        "sndec": "+12:24:53.4",
+        "discoverer": "Tokarz, Garnavich",
+        "redshift": 0.0058,
+        "z": 0.00582
+    }
+}

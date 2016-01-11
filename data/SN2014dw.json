@@ -1,0 +1,56 @@
+{
+    "SN2014dw": {
+        "name": "SN2014dw",
+        "aliases": [
+            "SN2014dw",
+            "PSN J11104841-3727022"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004047.txt'>CBET 4047</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56966.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57046.52",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 5,
+        "discovermonth": 11,
+        "host": "NGC 3568",
+        "claimedtype": "II",
+        "hvel": "2437",
+        "galra": "111049",
+        "galdec": "-372652",
+        "snra": "11:10:48.41",
+        "sndec": "-37:27:02.2",
+        "discoverer": "Stu Parker",
+        "redshift": 0.008152,
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 5,
+        "z": 0.00816
+    }
+}

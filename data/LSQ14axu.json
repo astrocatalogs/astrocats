@@ -1,0 +1,37 @@
+{
+    "LSQ14axu": {
+        "name": "LSQ14axu",
+        "aliases": [
+            "LSQ14axu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6091'>ATEL 6091</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56755.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            }
+        ],
+        "snra": "14:45:11.86",
+        "sndec": "-19:58:52.6",
+        "discoverday": 8,
+        "discovermonth": 4,
+        "discoveryear": 2014,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 8
+    }
+}

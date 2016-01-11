@@ -1,0 +1,45 @@
+{
+    "SN2012L": {
+        "name": "SN2012L",
+        "aliases": [
+            "SN2012L",
+            "CSS120113:075900+270957"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002989.txt'>CBET 2989</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55938.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 12,
+        "discovermonth": 1,
+        "host": "A075900+2709",
+        "claimedtype": "Ia",
+        "hvel": "22500",
+        "galra": "075900",
+        "galdec": "+270957",
+        "snra": "07:59:00.47",
+        "sndec": "+27:09:57.1",
+        "discoverer": "CRTS",
+        "redshift": 0.075,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 12,
+        "z": 0.0781
+    }
+}

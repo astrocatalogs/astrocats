@@ -1,0 +1,46 @@
+{
+    "SN1958D": {
+        "name": "SN1958D",
+        "aliases": [
+            "SN1958D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1972PASP...84..844K'>PASP 84, 844</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "36307.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1958,
+        "discoverday": 14,
+        "discovermonth": 4,
+        "host": "ESO 440-G28",
+        "hvel": "16097",
+        "galra": "115349",
+        "galdec": "-304621",
+        "discoverer": "Fritz Zwicky",
+        "snra": "11:53:43.9",
+        "sndec": "-30:44:55.0",
+        "maxyear": 1958,
+        "maxmonth": 4,
+        "maxday": 14,
+        "z": 0.0552
+    }
+}

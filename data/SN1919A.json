@@ -1,0 +1,47 @@
+{
+    "SN1919A": {
+        "name": "SN1919A",
+        "aliases": [
+            "SN1919A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1922AN....215..215B'>AN 215,215</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "22012.5",
+                "band": "",
+                "abmag": "12.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1919,
+        "maxday": 23,
+        "maxmonth": 2,
+        "host": "M87",
+        "claimedtype": "I",
+        "hvel": "1261",
+        "galra": "123050",
+        "galdec": "+122324",
+        "snra": "12:30:48.6",
+        "sndec": "+12:25:04.0",
+        "discoverer": "Balanowsky",
+        "discoverday": 23,
+        "discovermonth": 2,
+        "maxyear": 1919,
+        "z": 0.00422
+    }
+}

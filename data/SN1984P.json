@@ -1,0 +1,46 @@
+{
+    "SN1984P": {
+        "name": "SN1984P",
+        "aliases": [
+            "SN1984P"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04000/04011.html'>IAUC 4011</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "45968.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1984,
+        "discoverday": 25,
+        "discovermonth": 9,
+        "host": "UGC 2679",
+        "hvel": "6642",
+        "galra": "032004",
+        "galdec": "+012141",
+        "discoverer": "Christian Pollas",
+        "snra": "03:20:04.2",
+        "sndec": "+01:21:54.0",
+        "maxyear": 1984,
+        "maxmonth": 9,
+        "maxday": 25,
+        "z": 0.0224
+    }
+}

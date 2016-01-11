@@ -1,0 +1,45 @@
+{
+    "SN2011ip": {
+        "name": "SN2011ip",
+        "aliases": [
+            "SN2011ip",
+            "PSN J01134759-1241060"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002932.txt'>CBET 2932</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55884.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 19,
+        "discovermonth": 11,
+        "host": "A011348-1241",
+        "claimedtype": "Ic",
+        "hvel": "14700",
+        "galra": "011348",
+        "galdec": "-124107",
+        "snra": "01:13:47.59",
+        "sndec": "-12:41:06.0",
+        "discoverer": "Denis Denisenko",
+        "redshift": 0.049,
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 19,
+        "z": 0.0503
+    }
+}

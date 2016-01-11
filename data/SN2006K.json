@@ -1,0 +1,48 @@
+{
+    "SN2006K": {
+        "name": "SN2006K",
+        "aliases": [
+            "SN2006K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000300/CBET000374.txt'>CBET 374</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53751.5",
+                "band": "",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 16,
+        "discovermonth": 1,
+        "host": "A112946-1725",
+        "claimedtype": "II",
+        "hvel": "9000",
+        "galra": "112946",
+        "galdec": "-172517",
+        "snra": "11:29:46.26",
+        "sndec": "-17:25:17.8",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.03,
+        "maxyear": 2006,
+        "maxmonth": 1,
+        "maxday": 16,
+        "z": 0.0305
+    }
+}

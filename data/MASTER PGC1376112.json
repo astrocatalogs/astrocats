@@ -1,0 +1,38 @@
+{
+    "MASTER PGC1376112": {
+        "name": "MASTER PGC1376112",
+        "aliases": [
+            "MASTER PGC1376112"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3891'>ATEL 3891</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55947.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 1376112",
+        "snra": "07:59:17.19",
+        "sndec": "+10:12:06.1",
+        "discoverday": 21,
+        "discovermonth": 1,
+        "discoveryear": 2012,
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 21
+    }
+}

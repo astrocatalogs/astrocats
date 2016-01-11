@@ -1,0 +1,70 @@
+{
+    "SN2002cg": {
+        "name": "SN2002cg",
+        "aliases": [
+            "SN2002cg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07877.html#Item2'>IAUC 7877</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52377.5",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52378.39999999991",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52376.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 12,
+        "discovermonth": 4,
+        "host": "UGC 10415",
+        "claimedtype": "I",
+        "hvel": "9204",
+        "galra": "162900",
+        "galdec": "+411703",
+        "snra": "16:29:00.48",
+        "sndec": "+41:17:00.4",
+        "discoverer": "LOTOSS",
+        "maxyear": 2002,
+        "maxmonth": 4,
+        "maxday": 14,
+        "z": 0.0312
+    }
+}

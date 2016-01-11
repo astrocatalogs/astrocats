@@ -1,0 +1,47 @@
+{
+    "SN1994K": {
+        "name": "SN1994K",
+        "aliases": [
+            "SN1994K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05900/05972.html'>IAUC 5972</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49442.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1994,
+        "discoverday": 31,
+        "discovermonth": 3,
+        "host": "PGC0028944",
+        "claimedtype": "Ia",
+        "hvel": "7000",
+        "galra": "100026",
+        "galdec": "+125215",
+        "snra": "10:00:24.61",
+        "sndec": "+12:52:31.6",
+        "discoverer": "Jean Mueller",
+        "maxyear": 1994,
+        "maxmonth": 3,
+        "maxday": 31,
+        "z": 0.0236
+    }
+}

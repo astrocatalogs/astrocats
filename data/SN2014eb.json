@@ -1,0 +1,45 @@
+{
+    "SN2014eb": {
+        "name": "SN2014eb",
+        "aliases": [
+            "SN2014eb",
+            "PSN J09525558+4250511"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004055.txt'>CBET 4055</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57002.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 11,
+        "discovermonth": 12,
+        "host": "UGC 5295",
+        "claimedtype": "II",
+        "hvel": "4786",
+        "galra": "095254",
+        "galdec": "+425053",
+        "snra": "09:52:55.58",
+        "sndec": "+42:50:51.1",
+        "discoverer": "Lou Cox, Dick Post,",
+        "redshift": 0.016,
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 11,
+        "z": 0.0161
+    }
+}

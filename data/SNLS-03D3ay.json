@@ -1,0 +1,39 @@
+{
+    "SNLS-03D3ay": {
+        "name": "SNLS-03D3ay",
+        "aliases": [
+            "SNLS-03D3ay"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.aanda.org/index.php?option=com_article&amp;access=standard&amp;Itemid=129&amp;url2003/05/06'>Paper</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52764.5",
+                "band": "",
+                "abmag": "25.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "14:17:58.448",
+        "sndec": "+52:28:57.63",
+        "discoverday": 5,
+        "discovermonth": 5,
+        "discoveryear": 2003,
+        "redshift": 0.371,
+        "discoverer": "Supernova Legacy Project",
+        "maxyear": 2003,
+        "maxmonth": 5,
+        "maxday": 5
+    }
+}

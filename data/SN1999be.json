@@ -1,0 +1,53 @@
+{
+    "SN1999be": {
+        "name": "SN1999be",
+        "aliases": [
+            "SN1999be"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51268.529999999795",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 31,
+        "discovermonth": 3,
+        "host": "CGCG 89-13",
+        "claimedtype": "Ia",
+        "hvel": "5657",
+        "galra": "082340",
+        "galdec": "+181800",
+        "snra": "08:23:38.60",
+        "sndec": "+18:18:20.4",
+        "discoverer": "Supernova Cosmology Project",
+        "redshift": 0.0183,
+        "maxyear": 1999,
+        "maxmonth": 3,
+        "maxday": 31,
+        "z": 0.0191
+    }
+}

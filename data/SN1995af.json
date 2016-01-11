@@ -1,0 +1,44 @@
+{
+    "SN1995af": {
+        "name": "SN1995af",
+        "aliases": [
+            "SN1995af"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06200/06242.html'>IAUC 6242</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49960.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1995,
+        "discoverday": 31,
+        "discovermonth": 8,
+        "host": "A232453+4124",
+        "galra": "232453",
+        "galdec": "+412411",
+        "snra": "23:24:53.45",
+        "sndec": "+41:24:11.5",
+        "discoverer": "Christian Pollas",
+        "maxyear": 1995,
+        "maxmonth": 8,
+        "maxday": 31
+    }
+}

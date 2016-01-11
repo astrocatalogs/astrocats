@@ -1,0 +1,50 @@
+{
+    "LSQ14bcr": {
+        "name": "LSQ14bcr",
+        "aliases": [
+            "LSQ14bcr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6089'>ATEL 6089</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56769.5",
+                "band": "",
+                "abmag": "20.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56770.464",
+                "band": "C",
+                "abmag": "20.3",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "16:19:38.28",
+        "sndec": "-03:07:50.5",
+        "discoverday": 22,
+        "discovermonth": 4,
+        "discoveryear": 2014,
+        "redshift": 0.07,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 22
+    }
+}

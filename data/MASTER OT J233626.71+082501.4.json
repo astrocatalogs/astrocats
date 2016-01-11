@@ -1,0 +1,37 @@
+{
+    "MASTER OT J233626.71+082501.4": {
+        "name": "MASTER OT J233626.71+082501.4",
+        "aliases": [
+            "MASTER OT J233626.71+082501.4"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6444'>ATEL 6444</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56901.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:36:26.71",
+        "sndec": "+08:25:01.4",
+        "discoverday": 1,
+        "discovermonth": 9,
+        "discoveryear": 2014,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 1
+    }
+}

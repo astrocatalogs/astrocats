@@ -1,0 +1,47 @@
+{
+    "SN1961F": {
+        "name": "SN1961F",
+        "aliases": [
+            "SN1961F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01700/01753.html'>IAUC 1753</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37350.5",
+                "band": "",
+                "abmag": "13.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1961,
+        "maxday": 20,
+        "maxmonth": 2,
+        "host": "NGC 3003",
+        "claimedtype": "II",
+        "hvel": "1481",
+        "galra": "094836",
+        "galdec": "+332517",
+        "snra": "09:48:38.31",
+        "sndec": "+33:25:35.1",
+        "discoverer": "Paul Wild",
+        "discoverday": 20,
+        "discovermonth": 2,
+        "maxyear": 1961,
+        "z": 0.00495
+    }
+}

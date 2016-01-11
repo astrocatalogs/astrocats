@@ -1,0 +1,44 @@
+{
+    "SN2002fz": {
+        "name": "SN2002fz",
+        "aliases": [
+            "SN2002fz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07900/07981.html#Item1'>IAUC 7981</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52537.5",
+                "band": "",
+                "abmag": "24.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 20,
+        "discovermonth": 9,
+        "host": "A033248-2754",
+        "galra": "033248",
+        "galdec": "-275417",
+        "snra": "03:32:48.54",
+        "sndec": "-27:54:17.6",
+        "discoverer": "HST GOODS team",
+        "maxyear": 2002,
+        "maxmonth": 9,
+        "maxday": 20
+    }
+}

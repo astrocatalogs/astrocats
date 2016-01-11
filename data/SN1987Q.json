@@ -1,0 +1,46 @@
+{
+    "SN1987Q": {
+        "name": "SN1987Q",
+        "aliases": [
+            "SN1987Q"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05400/05465.html'>IAUC 5465</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47128.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1987,
+        "discoverday": 29,
+        "discovermonth": 11,
+        "host": "UGC 3845",
+        "hvel": "3032",
+        "galra": "072644",
+        "galdec": "+470540",
+        "discoverer": "Jean Mueller",
+        "snra": "07:26:41.1",
+        "sndec": "+47:04:48.0",
+        "maxyear": 1987,
+        "maxmonth": 11,
+        "maxday": 29,
+        "z": 0.0102
+    }
+}

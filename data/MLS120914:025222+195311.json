@@ -1,0 +1,37 @@
+{
+    "MLS120914:025222+195311": {
+        "name": "MLS120914:025222+195311",
+        "aliases": [
+            "MLS120914:025222+195311"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4463'>ATEL 4463</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56183.5",
+                "band": "",
+                "abmag": "20.6",
+                "source": "2,1"
+            }
+        ],
+        "snra": "02:52:22.36",
+        "sndec": "+19:53:11.1",
+        "discoverday": 13,
+        "discovermonth": 9,
+        "discoveryear": 2012,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 13
+    }
+}

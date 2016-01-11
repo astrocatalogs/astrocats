@@ -1,0 +1,48 @@
+{
+    "SN1997bn": {
+        "name": "SN1997bn",
+        "aliases": [
+            "SN1997bn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06600/06612.html'>IAUC 6612</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50540.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1997,
+        "discoverday": 2,
+        "discovermonth": 4,
+        "host": "UGC 4329",
+        "claimedtype": "II",
+        "hvel": "4096",
+        "galra": "081902",
+        "galdec": "+211109",
+        "snra": "08:19:02.20",
+        "sndec": "+21:11:01.7",
+        "discoverer": "BAO Supernova Survey",
+        "redshift": 0.021,
+        "maxyear": 1997,
+        "maxmonth": 4,
+        "maxday": 2,
+        "z": 0.0138
+    }
+}

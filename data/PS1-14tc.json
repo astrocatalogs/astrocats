@@ -1,0 +1,37 @@
+{
+    "PS1-14tc": {
+        "name": "PS1-14tc",
+        "aliases": [
+            "PS1-14tc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56734.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "2,1"
+            }
+        ],
+        "snra": "14:51:27.84",
+        "sndec": "+33:52:48.6",
+        "discoverday": 18,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 18
+    }
+}

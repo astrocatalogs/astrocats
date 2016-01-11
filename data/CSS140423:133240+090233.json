@@ -1,0 +1,37 @@
+{
+    "CSS140423:133240+090233": {
+        "name": "CSS140423:133240+090233",
+        "aliases": [
+            "CSS140423:133240+090233"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56769.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "2,1"
+            }
+        ],
+        "snra": "13:32:40.07",
+        "sndec": "+09:02:32.8",
+        "discoverday": 22,
+        "discovermonth": 4,
+        "discoveryear": 2014,
+        "discoverer": "CRTS",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 22
+    }
+}

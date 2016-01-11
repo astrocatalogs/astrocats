@@ -1,0 +1,76 @@
+{
+    "SN2003cm": {
+        "name": "SN2003cm",
+        "aliases": [
+            "SN2003cm"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08101.html#Item2'>IAUC 8101</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52725.5",
+                "band": "C",
+                "abmag": "19.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52726.5",
+                "band": "C",
+                "abmag": "19.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52727.5",
+                "band": "C",
+                "abmag": "19.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52724.5",
+                "band": "",
+                "abmag": "19.4",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 26,
+        "discovermonth": 3,
+        "host": "UGC 10590",
+        "hvel": "3054",
+        "galra": "165057",
+        "galdec": "+594309",
+        "snra": "16:50:55.028",
+        "sndec": "+59:43:18.19",
+        "discoverer": "LOTOSS",
+        "maxyear": 2003,
+        "maxmonth": 3,
+        "maxday": 27,
+        "z": 0.0102
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "LSQ12cca": {
+        "name": "LSQ12cca",
+        "aliases": [
+            "LSQ12cca"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4076'>ATEL 4076</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56036.5",
+                "band": "",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:59:06.43",
+        "sndec": "-14:35:46.0",
+        "discoverday": 19,
+        "discovermonth": 4,
+        "discoveryear": 2012,
+        "redshift": 0.066,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2012,
+        "maxmonth": 4,
+        "maxday": 19
+    }
+}

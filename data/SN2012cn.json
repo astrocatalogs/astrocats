@@ -1,0 +1,45 @@
+{
+    "SN2012cn": {
+        "name": "SN2012cn",
+        "aliases": [
+            "SN2012cn",
+            "PSN J12082446+6256340"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003128.txt'>CBET 3128</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56064.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 17,
+        "discovermonth": 5,
+        "host": "MCG +11-15-28",
+        "claimedtype": "Ia",
+        "hvel": "12122",
+        "galra": "120824",
+        "galdec": "+625631",
+        "snra": "12:08:24.46",
+        "sndec": "+62:56:24.0",
+        "discoverer": "Tom Boles",
+        "redshift": 0.04,
+        "maxyear": 2012,
+        "maxmonth": 5,
+        "maxday": 17,
+        "z": 0.0413
+    }
+}

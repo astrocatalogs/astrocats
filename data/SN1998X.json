@@ -1,0 +1,41 @@
+{
+    "SN1998X": {
+        "name": "SN1998X",
+        "aliases": [
+            "SN1998X"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50885.0",
+                "band": "R",
+                "abmag": "17",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1998",
+        "discoverday": "13",
+        "discovermonth": "3",
+        "host": "NGC 6754",
+        "claimedtype": "II",
+        "hvel": "3252",
+        "galra": "191125",
+        "galdec": "-503831",
+        "snra": "19:11:23.2",
+        "sndec": "-50:38:34.0",
+        "discoverer": "Perth Astronomical Research Group",
+        "redshift": 0.0104,
+        "z": 0.0109
+    }
+}

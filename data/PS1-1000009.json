@@ -1,0 +1,39 @@
+{
+    "PS1-1000009": {
+        "name": "PS1-1000009",
+        "aliases": [
+            "PS1-1000009"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2397'>ATEL 2397</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55205.5",
+                "band": "",
+                "abmag": "19.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "02:20:22.959",
+        "sndec": "-04:40:21.04",
+        "discoverday": 9,
+        "discovermonth": 1,
+        "discoveryear": 2010,
+        "redshift": 0.15,
+        "discoverer": "PS1",
+        "maxyear": 2010,
+        "maxmonth": 1,
+        "maxday": 9
+    }
+}

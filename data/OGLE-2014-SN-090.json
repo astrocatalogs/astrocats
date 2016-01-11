@@ -1,0 +1,37 @@
+{
+    "OGLE-2014-SN-090": {
+        "name": "OGLE-2014-SN-090",
+        "aliases": [
+            "OGLE-2014-SN-090"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6557'>ATEL 6557</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56935.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "04:48:25.02",
+        "sndec": "-65:05:06.0",
+        "discoverday": 5,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 5
+    }
+}

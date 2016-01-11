@@ -1,0 +1,63 @@
+{
+    "SN2013ey": {
+        "name": "SN2013ey",
+        "aliases": [
+            "SN2013ey",
+            "PSN J20580373+1103108"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003636.txt'>CBET 3636</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56521.5",
+                "band": "",
+                "abmag": "14.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56525.858",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56524.843",
+                "band": "V",
+                "abmag": "15.9",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 17,
+        "discovermonth": 8,
+        "host": "CGCG 425-26",
+        "claimedtype": "Ia",
+        "hvel": "8352",
+        "galra": "205804",
+        "galdec": "+110314",
+        "snra": "20:58:03.73",
+        "sndec": "+11:03:10.8",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.027,
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 17,
+        "z": 0.0283
+    }
+}

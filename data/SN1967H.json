@@ -1,0 +1,47 @@
+{
+    "SN1967H": {
+        "name": "SN1967H",
+        "aliases": [
+            "SN1967H"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02000/02021.html'>IAUC 2021</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "39672.5",
+                "band": "",
+                "abmag": "14.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1967,
+        "discoverday": 1,
+        "discovermonth": 7,
+        "host": "M99",
+        "claimedtype": "II",
+        "hvel": "2412",
+        "galra": "121850",
+        "galdec": "+142459",
+        "discoverer": "Fritz Zwicky",
+        "snra": "12:18:47.100",
+        "sndec": "+14:25:00.0",
+        "maxyear": 1967,
+        "maxmonth": 7,
+        "maxday": 1,
+        "z": 0.00808
+    }
+}

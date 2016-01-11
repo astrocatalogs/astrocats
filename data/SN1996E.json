@@ -1,0 +1,46 @@
+{
+    "SN1996E": {
+        "name": "SN1996E",
+        "aliases": [
+            "SN1996E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06300/06332.html'>IAUC 6332</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50126.5",
+                "band": "",
+                "abmag": "22.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1996,
+        "discoverday": 13,
+        "discovermonth": 2,
+        "host": "A101020-1233",
+        "claimedtype": "Ia",
+        "redshift": "0.43",
+        "galra": "101020",
+        "galdec": "-123309",
+        "snra": "10:10:20.28",
+        "sndec": "-12:33:09.2",
+        "discoverer": "High Z Supernova Search",
+        "maxyear": 1996,
+        "maxmonth": 2,
+        "maxday": 13
+    }
+}

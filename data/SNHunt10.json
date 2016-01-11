@@ -1,0 +1,37 @@
+{
+    "SNHunt10": {
+        "name": "SNHunt10",
+        "aliases": [
+            "SNHunt10"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/current.html'>SNHunt</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55475.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "01:57:31.10",
+        "sndec": "-09:28:53.0",
+        "discoverday": 6,
+        "discovermonth": 10,
+        "discoveryear": 2010,
+        "discoverer": "CRTS",
+        "maxyear": 2010,
+        "maxmonth": 10,
+        "maxday": 6
+    }
+}

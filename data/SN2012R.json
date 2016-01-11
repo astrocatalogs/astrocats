@@ -1,0 +1,45 @@
+{
+    "SN2012R": {
+        "name": "SN2012R",
+        "aliases": [
+            "SN2012R",
+            "PSN J14211421-3613107"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002998.txt'>CBET 2998</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55930.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 4,
+        "discovermonth": 1,
+        "host": "ESO 385-G12",
+        "claimedtype": "II",
+        "hvel": "3724",
+        "galra": "142116",
+        "galdec": "-361336",
+        "snra": "14:21:14.21",
+        "sndec": "-36:13:10.7",
+        "discoverer": "CHASE",
+        "redshift": 0.0124,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 4,
+        "z": 0.0125
+    }
+}

@@ -1,0 +1,96 @@
+{
+    "SN2014ab": {
+        "name": "SN2014ab",
+        "aliases": [
+            "SN2014ab",
+            "PSN J13480599+0723164"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003826.txt'>CBET 3826</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56725.5",
+                "band": "",
+                "abmag": "15.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56726.985",
+                "band": "CR",
+                "abmag": "15.35",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.276",
+                "band": "U",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.962",
+                "band": "CV",
+                "abmag": "15.85",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.196",
+                "band": "U",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56803.238",
+                "band": "UV",
+                "abmag": "15.8",
+                "source": "6,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 9,
+        "discovermonth": 3,
+        "host": "UGC 8728",
+        "claimedtype": "IIn",
+        "hvel": "6000",
+        "galra": "134805",
+        "galdec": "+072316",
+        "snra": "13:48:05.99",
+        "sndec": "+07:23:16.4",
+        "discoverer": "CRTS",
+        "redshift": 0.023226,
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 9,
+        "z": 0.0202
+    }
+}

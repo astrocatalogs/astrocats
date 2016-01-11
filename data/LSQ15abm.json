@@ -1,0 +1,50 @@
+{
+    "LSQ15abm": {
+        "name": "LSQ15abm",
+        "aliases": [
+            "LSQ15abm"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7415'>ATEL 7415</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57112.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57134.294",
+                "band": "C",
+                "abmag": "19.6",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "11:37:35.11",
+        "sndec": "-07:11:05.1",
+        "discoverday": 31,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.091,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 31
+    }
+}

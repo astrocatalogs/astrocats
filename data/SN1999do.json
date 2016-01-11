@@ -1,0 +1,53 @@
+{
+    "SN1999do": {
+        "name": "SN1999do",
+        "aliases": [
+            "SN1999do"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51421.95999999996",
+                "band": "R",
+                "abmag": "14.9",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 31,
+        "discovermonth": 8,
+        "host": "MRK 922",
+        "claimedtype": "Ia",
+        "hvel": "6405",
+        "galra": "225329",
+        "galdec": "+313844",
+        "snra": "22:53:29.87",
+        "sndec": "+31:38:42.9",
+        "discoverer": "LOSS",
+        "redshift": 0.0213,
+        "maxyear": 1999,
+        "maxmonth": 8,
+        "maxday": 31,
+        "z": 0.0216
+    }
+}

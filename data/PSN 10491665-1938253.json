@@ -1,0 +1,78 @@
+{
+    "PSN 10491665-1938253": {
+        "name": "PSN 10491665-1938253",
+        "aliases": [
+            "PSN 10491665-1938253"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro. Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Seiichiro Kiyota",
+                "alias": "5"
+            },
+            {
+                "name": "T. Yusa",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57073.7472",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57073.7472",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57073.7472",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57074.2842",
+                "band": "V",
+                "abmag": "16.83",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57074.3291",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "6,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 21,
+        "discoveryear": 2015,
+        "discovermonth": 2,
+        "discoverday": 20
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "SN1980I": {
+        "name": "SN1980I",
+        "aliases": [
+            "SN1980I"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03400/03492.html'>IAUC 3492</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "44402.5",
+                "band": "",
+                "abmag": "14.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1980,
+        "maxday": 12,
+        "maxmonth": 6,
+        "host": "M84",
+        "claimedtype": "Ia-pec",
+        "hvel": "913",
+        "galra": "122504",
+        "galdec": "+125315",
+        "snra": "12:25:38.1",
+        "sndec": "+12:53:24.0",
+        "discoverer": "Rosker",
+        "discoverday": 12,
+        "discovermonth": 6,
+        "maxyear": 1980,
+        "z": 0.00305
+    }
+}

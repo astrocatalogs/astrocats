@@ -1,0 +1,47 @@
+{
+    "SN2004ec": {
+        "name": "SN2004ec",
+        "aliases": [
+            "SN2004ec"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08396.html#Item1'>IAUC 8396</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53245.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 28,
+        "discovermonth": 8,
+        "host": "UGC 10717",
+        "claimedtype": "IIn",
+        "hvel": "12589",
+        "galra": "170805",
+        "galdec": "+262243",
+        "snra": "17:08:04.96",
+        "sndec": "+26:22:44.4",
+        "discoverer": "Tom Boles",
+        "maxyear": 2004,
+        "maxmonth": 8,
+        "maxday": 28,
+        "z": 0.0429
+    }
+}

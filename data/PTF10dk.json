@@ -1,0 +1,28 @@
+{
+    "PTF10dk": {
+        "name": "PTF10dk",
+        "aliases": [
+            "PTF10dk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://arxiv.org/pdf/1205.2338.pdf'>1205.2338v1</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [],
+        "claimedtype": "II",
+        "snra": "05:08:21.54",
+        "sndec": "+00:12:42.9",
+        "discoverday": "1",
+        "discovermonth": "1",
+        "discoveryear": "2010",
+        "redshift": 0.074,
+        "discoverer": "PTF"
+    }
+}

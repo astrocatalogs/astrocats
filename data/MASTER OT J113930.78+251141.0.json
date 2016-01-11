@@ -1,0 +1,40 @@
+{
+    "MASTER OT J113930.78+251141.0": {
+        "name": "MASTER OT J113930.78+251141.0",
+        "aliases": [
+            "MASTER OT J113930.78+251141.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6595'>ATEL 6595</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56947.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "PGC 1728170",
+        "snra": "11:39:30.78",
+        "sndec": "+25:11:41.0",
+        "discoverday": 17,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "redshift": 0.01226,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 17
+    }
+}

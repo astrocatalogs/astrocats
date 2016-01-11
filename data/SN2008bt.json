@@ -1,0 +1,59 @@
+{
+    "SN2008bt": {
+        "name": "SN2008bt",
+        "aliases": [
+            "SN2008bt"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001300/CBET001336.txt'>CBET 1336</a>",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54568.5",
+                "band": "",
+                "abmag": "15.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54571.861",
+                "band": "CR",
+                "abmag": "15.2",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 12,
+        "discovermonth": 4,
+        "host": "NGC 3404",
+        "claimedtype": "Ia",
+        "hvel": "4554",
+        "galra": "105018",
+        "galdec": "-120631",
+        "snra": "10:50:16.88",
+        "sndec": "-12:06:32.0",
+        "discoverer": "LOSS",
+        "redshift": 0.0154,
+        "maxyear": 2008,
+        "maxmonth": 4,
+        "maxday": 12,
+        "z": 0.0153
+    }
+}

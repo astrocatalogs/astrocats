@@ -1,0 +1,74 @@
+{
+    "SN2014bn": {
+        "name": "SN2014bn",
+        "aliases": [
+            "SN2014bn",
+            "PSN J21151330+0211224"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003897.txt'>CBET 3897</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56815.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56827.343",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56828.429",
+                "band": "C",
+                "abmag": "17.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56837.401",
+                "band": "UV",
+                "abmag": "18.3",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 7,
+        "discovermonth": 6,
+        "host": "IC 1370",
+        "claimedtype": "Ia",
+        "hvel": "15162",
+        "galra": "211514",
+        "galdec": "+021131",
+        "snra": "21:15:13.30",
+        "sndec": "+02:11:22.4",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.05,
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 7,
+        "z": 0.0519
+    }
+}

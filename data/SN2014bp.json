@@ -1,0 +1,56 @@
+{
+    "SN2014bp": {
+        "name": "SN2014bp",
+        "aliases": [
+            "SN2014bp",
+            "CSS140605:153631+465414"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003899.txt'>CBET 3899</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56812.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56814.213",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 4,
+        "discovermonth": 6,
+        "host": "A153631+4654",
+        "claimedtype": "Ia",
+        "hvel": "20400",
+        "galra": "153631",
+        "galdec": "+465414",
+        "snra": "15:36:31.24",
+        "sndec": "+46:54:14.2",
+        "discoverer": "CRTS",
+        "redshift": 0.068,
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 4,
+        "z": 0.0705
+    }
+}

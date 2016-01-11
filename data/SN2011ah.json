@@ -1,0 +1,45 @@
+{
+    "SN2011ah": {
+        "name": "SN2011ah",
+        "aliases": [
+            "SN2011ah",
+            "PSN J05535077-3244442"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002600/CBET002661.txt'>CBET 2661</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55596.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 4,
+        "discovermonth": 2,
+        "host": "ESO 364-G12",
+        "claimedtype": "Ia",
+        "hvel": "8097",
+        "galra": "055352",
+        "galdec": "-324437",
+        "snra": "05:53:50.77",
+        "sndec": "-32:44:44.2",
+        "discoverer": "CHASE",
+        "redshift": 0.027,
+        "maxyear": 2011,
+        "maxmonth": 2,
+        "maxday": 4,
+        "z": 0.0274
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "SN1998dj": {
+        "name": "SN1998dj",
+        "aliases": [
+            "SN1998dj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51033.0",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1998",
+        "discoverday": "8",
+        "discovermonth": "8",
+        "host": "NGC 788",
+        "claimedtype": "Ia",
+        "hvel": "4109",
+        "galra": "020106",
+        "galdec": "-064901",
+        "snra": "02:01:06.92",
+        "sndec": "-06:49:04.8",
+        "discoverer": "LOSS",
+        "z": 0.0138
+    }
+}

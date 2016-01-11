@@ -1,0 +1,34 @@
+{
+    "SN1989Z": {
+        "name": "SN1989Z",
+        "aliases": [
+            "SN1989Z"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47890.0",
+                "band": "",
+                "abmag": "12",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1989",
+        "discoverday": "30",
+        "discovermonth": 12,
+        "host": "NGC 4013",
+        "hvel": "838",
+        "galra": "115832",
+        "galdec": "+435648",
+        "snra": "115833.07",
+        "sndec": "+435652.13",
+        "discoverer": "Shaw",
+        "z": 0.0028
+    }
+}

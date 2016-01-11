@@ -1,0 +1,48 @@
+{
+    "SN1992U": {
+        "name": "SN1992U",
+        "aliases": [
+            "SN1992U"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05400/05499.html'>IAUC 5499</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48720.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1992,
+        "discoverday": 8,
+        "discovermonth": 4,
+        "host": "ESO 74-G4",
+        "claimedtype": "II",
+        "hvel": "3298",
+        "galra": "204043",
+        "galdec": "-704146",
+        "discoverer": "Roberto Antezana",
+        "snra": "20:40:46.5",
+        "sndec": "-70:41:33.0",
+        "redshift": 0.010919,
+        "maxyear": 1992,
+        "maxmonth": 4,
+        "maxday": 8,
+        "z": 0.0111
+    }
+}

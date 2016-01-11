@@ -1,0 +1,38 @@
+{
+    "MASTER OT 082752.77+704606.0": {
+        "name": "MASTER OT 082752.77+704606.0",
+        "aliases": [
+            "MASTER OT 082752.77+704606.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3255'>ATEL 3255</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55645.5",
+                "band": "",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "08:27:52.77",
+        "sndec": "+70:46:06.0",
+        "discoverday": 25,
+        "discovermonth": 3,
+        "discoveryear": 2011,
+        "discoverer": "MASTER",
+        "maxyear": 2011,
+        "maxmonth": 3,
+        "maxday": 25
+    }
+}

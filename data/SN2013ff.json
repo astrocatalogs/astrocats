@@ -1,0 +1,92 @@
+{
+    "SN2013ff": {
+        "name": "SN2013ff",
+        "aliases": [
+            "SN2013ff",
+            "PSN J09133888+7628108"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003656.txt'>CBET 3656</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56538.5",
+                "band": "",
+                "abmag": "15.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56537.813",
+                "band": "CV",
+                "abmag": "15.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56572.179",
+                "band": "V",
+                "abmag": "16.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56626.527",
+                "band": "UV",
+                "abmag": "16.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56655.473",
+                "band": "UV",
+                "abmag": "16.4",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.363",
+                "band": "UV",
+                "abmag": "16.5",
+                "source": "5,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 9,
+        "host": "NGC 2748",
+        "claimedtype": "Ic",
+        "hvel": "1475",
+        "galra": "091343",
+        "galdec": "+762831",
+        "snra": "09:13:38.88",
+        "sndec": "+76:28:10.8",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.004923,
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 3,
+        "z": 0.00493
+    }
+}

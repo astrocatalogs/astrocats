@@ -1,0 +1,45 @@
+{
+    "SN2012gj": {
+        "name": "SN2012gj",
+        "aliases": [
+            "SN2012gj",
+            "PSN J19070073+2900166"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003300.txt'>CBET 3300</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56249.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 18,
+        "discovermonth": 11,
+        "host": "UGC 11404",
+        "claimedtype": "II",
+        "hvel": "3910",
+        "galra": "190704",
+        "galdec": "+290023",
+        "snra": "19:07:00.73",
+        "sndec": "+29:00:16.6",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.013,
+        "maxyear": 2012,
+        "maxmonth": 11,
+        "maxday": 18,
+        "z": 0.0131
+    }
+}

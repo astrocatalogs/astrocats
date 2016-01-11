@@ -1,0 +1,48 @@
+{
+    "SN2010ko": {
+        "name": "SN2010ko",
+        "aliases": [
+            "SN2010ko"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002500/CBET002569.txt'>CBET 2569</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55534.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2010,
+        "discoverday": 4,
+        "discovermonth": 12,
+        "host": "NGC 1954",
+        "claimedtype": "Ia",
+        "hvel": "3033",
+        "galra": "053248",
+        "galdec": "-140346",
+        "snra": "05:32:49.44",
+        "sndec": "-14:05:45.9",
+        "discoverer": "Simone Leonini",
+        "redshift": 0.0104,
+        "maxyear": 2010,
+        "maxmonth": 12,
+        "maxday": 4,
+        "z": 0.0102
+    }
+}

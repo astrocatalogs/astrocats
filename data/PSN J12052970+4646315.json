@@ -1,0 +1,38 @@
+{
+    "PSN J12052970+4646315": {
+        "name": "PSN J12052970+4646315",
+        "aliases": [
+            "PSN J12052970+4646315"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12052970+4646315.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55576.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "host": "UGC 7078",
+        "snra": "12:05:29.70",
+        "sndec": "+46:46:31.7",
+        "discoverday": 15,
+        "discovermonth": 1,
+        "discoveryear": 2011,
+        "discoverer": "Italian Supernovae Search Project",
+        "maxyear": 2011,
+        "maxmonth": 1,
+        "maxday": 15
+    }
+}

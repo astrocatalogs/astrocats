@@ -1,0 +1,33 @@
+{
+    "SN1954J": {
+        "name": "SN1954J",
+        "aliases": [
+            "SN1954J"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1972PASP...84..844K'>PASP 84, 844</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [],
+        "discoveryear": "1954",
+        "maxmonth": 10,
+        "host": "NGC 2403",
+        "claimedtype": "LBV",
+        "hvel": "130",
+        "galra": "073651",
+        "galdec": "+653609",
+        "discoverer": "Fritz Zwicky",
+        "snra": "07:36:55.36",
+        "sndec": "+65:37:52.1",
+        "discoverday": "26",
+        "discovermonth": "11",
+        "z": 0.000434
+    }
+}

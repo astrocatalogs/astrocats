@@ -1,0 +1,45 @@
+{
+    "SN2012au": {
+        "name": "SN2012au",
+        "aliases": [
+            "SN2012au",
+            "PSN J12545218-1014502"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003052.txt'>CBET 3052</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56001.5",
+                "band": "",
+                "abmag": "12.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 15,
+        "discovermonth": 3,
+        "host": "NGC 4790",
+        "claimedtype": "Ib",
+        "hvel": "1404",
+        "galra": "125452",
+        "galdec": "-101452",
+        "snra": "12:54:52.18",
+        "sndec": "-10:14:50.2",
+        "discoverer": "CRTS",
+        "redshift": 0.0045,
+        "maxyear": 2012,
+        "maxmonth": 3,
+        "maxday": 15,
+        "z": 0.00469
+    }
+}

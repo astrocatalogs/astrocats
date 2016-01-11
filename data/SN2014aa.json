@@ -1,0 +1,67 @@
+{
+    "SN2014aa": {
+        "name": "SN2014aa",
+        "aliases": [
+            "SN2014aa",
+            "PSN J11450358+1958254"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003823.txt'>CBET 3823</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56724.5",
+                "band": "",
+                "abmag": "15.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56726.385",
+                "band": "C",
+                "abmag": "15.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.275",
+                "band": "UV",
+                "abmag": "16.2",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 8,
+        "discovermonth": 3,
+        "host": "NGC 3861",
+        "claimedtype": "Ia",
+        "hvel": "5068",
+        "galra": "114504",
+        "galdec": "+195825",
+        "snra": "11:45:03.58",
+        "sndec": "+19:58:25.4",
+        "discoverer": "Ron Arbour",
+        "redshift": 0.016982,
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 8,
+        "z": 0.0171
+    }
+}

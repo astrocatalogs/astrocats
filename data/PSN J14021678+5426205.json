@@ -1,0 +1,40 @@
+{
+    "PSN J14021678+5426205": {
+        "name": "PSN J14021678+5426205",
+        "aliases": [
+            "PSN J14021678+5426205",
+            "iPTF13afz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J14021678+5426205.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57067.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "LRN",
+        "host": "M101",
+        "snra": "14:02:16.78",
+        "sndec": "+54:26:20.5",
+        "discoverday": 14,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "discoverer": "Ciprian Dumitru Vintdevara",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 14
+    }
+}

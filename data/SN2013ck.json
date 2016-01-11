@@ -1,0 +1,45 @@
+{
+    "SN2013ck": {
+        "name": "SN2013ck",
+        "aliases": [
+            "SN2013ck",
+            "CSS130508:152429+483255"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003523.txt'>CBET 3523</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56427.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 15,
+        "discovermonth": 5,
+        "host": "A152429+4832",
+        "claimedtype": "Ia",
+        "hvel": "14700",
+        "galra": "152429",
+        "galdec": "+483254",
+        "snra": "15:24:29.07",
+        "sndec": "+48:32:54.6",
+        "discoverer": "CRTS",
+        "redshift": 0.049,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 15,
+        "z": 0.0503
+    }
+}

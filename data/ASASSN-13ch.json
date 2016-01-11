@@ -1,0 +1,51 @@
+{
+    "ASASSN-13ch": {
+        "name": "ASASSN-13ch",
+        "aliases": [
+            "ASASSN-13ch"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5333'>ATEL 5333</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56535.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56536.146",
+                "band": "U",
+                "abmag": "15.5",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "CGCG 23-30",
+        "snra": "16:16:34.06",
+        "sndec": "-00:35:27.4",
+        "discoverday": 31,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.01646,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 31
+    }
+}

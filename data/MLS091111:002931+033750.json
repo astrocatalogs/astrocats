@@ -1,0 +1,37 @@
+{
+    "MLS091111:002931+033750": {
+        "name": "MLS091111:002931+033750",
+        "aliases": [
+            "MLS091111:002931+033750"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2318'>ATEL 2318</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55145.5",
+                "band": "",
+                "abmag": "20.1",
+                "source": "2,1"
+            }
+        ],
+        "snra": "00:29:31.43",
+        "sndec": "+03:37:50.9",
+        "discoverday": 10,
+        "discovermonth": 11,
+        "discoveryear": 2009,
+        "discoverer": "CRTS",
+        "maxyear": 2009,
+        "maxmonth": 11,
+        "maxday": 10
+    }
+}

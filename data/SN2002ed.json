@@ -1,0 +1,106 @@
+{
+    "SN2002ed": {
+        "name": "SN2002ed",
+        "aliases": [
+            "SN2002ed"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07900/07940.html#Item1'>IAUC 7940</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52482.75999999978",
+                "band": "R",
+                "abmag": "16.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52483.700000000186",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52484.689999999944",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52485.720000000205",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52487.060000000056",
+                "band": "C",
+                "abmag": "16.65",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52487.75",
+                "band": "R",
+                "abmag": "16.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52517.689999999944",
+                "band": "R",
+                "abmag": "16.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52482.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 27,
+        "discovermonth": 7,
+        "host": "NGC 5468",
+        "claimedtype": "IIP",
+        "hvel": "2823",
+        "galra": "140635",
+        "galdec": "-052713",
+        "snra": "14:06:38.22",
+        "sndec": "-05:27:28.0",
+        "discoverer": "Berto Monard",
+        "redshift": 0.0095,
+        "maxyear": 2002,
+        "maxmonth": 7,
+        "maxday": 27,
+        "z": 0.00946
+    }
+}

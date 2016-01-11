@@ -1,0 +1,81 @@
+{
+    "SN1999ew": {
+        "name": "SN1999ew",
+        "aliases": [
+            "SN1999ew"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51495.5",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51496.5",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51496.60000000009",
+                "band": "R",
+                "abmag": "16.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51496.60000000009",
+                "band": "V",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51543.169999999925",
+                "band": "R",
+                "abmag": "17.7",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 13,
+        "discovermonth": 11,
+        "host": "NGC 3677",
+        "claimedtype": "II",
+        "hvel": "7475",
+        "galra": "112617",
+        "galdec": "+465826",
+        "snra": "11:26:17.66",
+        "sndec": "+46:58:32.7",
+        "discoverer": "LOSS",
+        "redshift": 0.025,
+        "maxyear": 1999,
+        "maxmonth": 11,
+        "maxday": 13,
+        "z": 0.0253
+    }
+}

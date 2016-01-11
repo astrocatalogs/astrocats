@@ -1,0 +1,67 @@
+{
+    "SN2014F": {
+        "name": "SN2014F",
+        "aliases": [
+            "SN2014F",
+            "PSN J18303179+6759297"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003785.txt'>CBET 3785</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56668.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56705.554",
+                "band": "UV",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56725.167",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 11,
+        "discovermonth": 1,
+        "host": "NGC 6667",
+        "claimedtype": "II",
+        "hvel": "2582",
+        "galra": "183040",
+        "galdec": "+675913",
+        "snra": "18:30:31.79",
+        "sndec": "+67:59:29.7",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.008613,
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 11,
+        "z": 0.00865
+    }
+}

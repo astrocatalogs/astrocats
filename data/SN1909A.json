@@ -1,0 +1,106 @@
+{
+    "SN1909A": {
+        "name": "SN1909A",
+        "aliases": [
+            "SN1909A",
+            "SS UMa"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1974ApJ...194..223S'>1974ApJ...194..223S</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1909AN....180..245W'>AN 180,245</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "18358.97999999998",
+                "band": "B",
+                "abmag": "13.56",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18379.970000000205",
+                "band": "B",
+                "abmag": "13.47",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18404.850000000093",
+                "band": "B",
+                "abmag": "13.58",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18435.919999999925",
+                "band": "B",
+                "abmag": "14.32",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18525.91000000015",
+                "band": "B",
+                "abmag": "15.12",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18738.899999999907",
+                "band": "B",
+                "abmag": "17.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18741.799999999814",
+                "band": "B",
+                "abmag": "17.78",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "18331.5",
+                "band": "",
+                "abmag": "12.1",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1909,
+        "maxday": 25,
+        "maxmonth": 1,
+        "host": "M101",
+        "claimedtype": "II P",
+        "hvel": "240",
+        "galra": "140313",
+        "galdec": "+542057",
+        "snra": "14:02:02.6",
+        "sndec": "+54:27:57.0",
+        "discoverer": "Wolf",
+        "discoverday": 25,
+        "discovermonth": 1,
+        "maxyear": 1909,
+        "z": 0.000801
+    }
+}

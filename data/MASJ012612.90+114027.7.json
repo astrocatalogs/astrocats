@@ -1,0 +1,34 @@
+{
+    "MASJ012612.90+114027.7": {
+        "name": "MASJ012612.90+114027.7",
+        "aliases": [
+            "MASJ012612.90+114027.7"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57002.47",
+                "band": "R",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 11,
+        "discoveryear": 2014,
+        "discovermonth": 12,
+        "discoverday": 11
+    }
+}

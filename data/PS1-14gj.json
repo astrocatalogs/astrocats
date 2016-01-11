@@ -1,0 +1,39 @@
+{
+    "PS1-14gj": {
+        "name": "PS1-14gj",
+        "aliases": [
+            "PS1-14gj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5842'>ATEL 5842</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56673.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:19:32.99",
+        "sndec": "+16:38:40.8",
+        "discoverday": 16,
+        "discovermonth": 1,
+        "discoveryear": 2014,
+        "redshift": 0.023,
+        "discoverer": "PS1",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 16
+    }
+}

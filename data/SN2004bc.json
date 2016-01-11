@@ -1,0 +1,48 @@
+{
+    "SN2004bc": {
+        "name": "SN2004bc",
+        "aliases": [
+            "SN2004bc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08315.html#Item1'>IAUC 8315</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53095.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 31,
+        "discovermonth": 3,
+        "host": "NGC 3465",
+        "claimedtype": "Ia",
+        "hvel": "7170",
+        "galra": "105931",
+        "galdec": "+751129",
+        "snra": "10:59:31.41",
+        "sndec": "+75:11:28.9",
+        "discoverer": "Federico Manzini",
+        "redshift": 0.024,
+        "maxyear": 2004,
+        "maxmonth": 3,
+        "maxday": 31,
+        "z": 0.0242
+    }
+}

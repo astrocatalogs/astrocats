@@ -1,0 +1,71 @@
+{
+    "SN2001S": {
+        "name": "SN2001S",
+        "aliases": [
+            "SN2001S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07580.html#Item1'>IAUC 7580</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51946.25999999978",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51955.029999999795",
+                "band": "C",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51954.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 6,
+        "discovermonth": 2,
+        "host": "UGC 5491",
+        "claimedtype": "II",
+        "hvel": "9100",
+        "galra": "101158",
+        "galdec": "+585153",
+        "snra": "10:11:57.20",
+        "sndec": "+58:52:02.9",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.03,
+        "maxyear": 2001,
+        "maxmonth": 2,
+        "maxday": 15,
+        "z": 0.0308
+    }
+}

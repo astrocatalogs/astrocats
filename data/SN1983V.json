@@ -1,0 +1,47 @@
+{
+    "SN1983V": {
+        "name": "SN1983V",
+        "aliases": [
+            "SN1983V"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03800/03895.html'>IAUC 3895</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "45662.5",
+                "band": "",
+                "abmag": "13.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1983,
+        "maxday": 24,
+        "maxmonth": 11,
+        "host": "NGC 1365",
+        "claimedtype": "Ic",
+        "hvel": "1662",
+        "galra": "033336",
+        "galdec": "-360826",
+        "snra": "03:33:31.66",
+        "sndec": "-36:08:54.9",
+        "discoverer": "Robert Evans",
+        "discoverday": 24,
+        "discovermonth": 11,
+        "maxyear": 1983,
+        "z": 0.00556
+    }
+}

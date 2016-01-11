@@ -1,0 +1,39 @@
+{
+    "OGLE-2014-SN-135": {
+        "name": "OGLE-2014-SN-135",
+        "aliases": [
+            "OGLE-2014-SN-135"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6700'>ATEL 6700</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56974.5",
+                "band": "",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "04:20:39.35",
+        "sndec": "-71:36:57.1",
+        "discoverday": 13,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "redshift": 0.063,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 13
+    }
+}

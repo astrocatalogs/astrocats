@@ -1,0 +1,47 @@
+{
+    "SN1990ab": {
+        "name": "SN1990ab",
+        "aliases": [
+            "SN1990ab"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05000/05096.html'>IAUC 5096</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48153.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1990,
+        "discoverday": 19,
+        "discovermonth": 9,
+        "host": "A215403-4004",
+        "claimedtype": "Ia",
+        "hvel": "10200",
+        "galra": "215403",
+        "galdec": "-400416",
+        "snra": "21:54:04.00",
+        "sndec": "-40:04:16.1",
+        "discoverer": "Robert McNaught",
+        "maxyear": 1990,
+        "maxmonth": 9,
+        "maxday": 19,
+        "z": 0.0346
+    }
+}

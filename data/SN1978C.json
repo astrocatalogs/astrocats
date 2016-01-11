@@ -1,0 +1,47 @@
+{
+    "SN1978C": {
+        "name": "SN1978C",
+        "aliases": [
+            "SN1978C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03200/03254.html'>IAUC 3254</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43733.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1978,
+        "discoverday": 13,
+        "discovermonth": 8,
+        "host": "ESO 419-G3",
+        "claimedtype": "II",
+        "hvel": "4083",
+        "galra": "034211",
+        "galdec": "-275151",
+        "discoverer": "Schweizer, Phillips",
+        "snra": "03:42:11.7",
+        "sndec": "-27:51:49.0",
+        "maxyear": 1978,
+        "maxmonth": 8,
+        "maxday": 13,
+        "z": 0.0137
+    }
+}

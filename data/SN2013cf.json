@@ -1,0 +1,44 @@
+{
+    "SN2013cf": {
+        "name": "SN2013cf",
+        "aliases": [
+            "SN2013cf",
+            "PSN J11343649+5453244"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003516.txt'>CBET 3516</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56410.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 28,
+        "discovermonth": 4,
+        "host": "PGC 213858",
+        "claimedtype": "IIP",
+        "hvel": "5794",
+        "galra": "113437",
+        "galdec": "+545329",
+        "snra": "11:34:36.49",
+        "sndec": "+54:53:24.4",
+        "discoverer": "Ron Arbour",
+        "maxyear": 2013,
+        "maxmonth": 4,
+        "maxday": 28,
+        "z": 0.0195
+    }
+}

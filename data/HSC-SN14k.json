@@ -1,0 +1,48 @@
+{
+    "HSC-SN14k": {
+        "name": "HSC-SN14k",
+        "aliases": [
+            "HSC-SN14k"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6763'>ATEL 6763</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56989.5",
+                "band": "",
+                "abmag": "22.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56990.341",
+                "band": "C",
+                "abmag": "22.2",
+                "source": "3,1"
+            }
+        ],
+        "snra": "03:16:44.26",
+        "sndec": "+41:27:18.2",
+        "discoverday": 28,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "discoverer": "Subaru/Hyper Suprime-Cam",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 28
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "SN2003lu": {
+        "name": "SN2003lu",
+        "aliases": [
+            "SN2003lu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08200/08284.html#Item2'>IAUC 8284</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52894.5",
+                "band": "",
+                "abmag": "26.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 12,
+        "discovermonth": 9,
+        "host": "A033236-2755",
+        "galra": "033236",
+        "galdec": "-275501",
+        "snra": "03:32:36.128",
+        "sndec": "-27:55:01.49",
+        "discoverer": "HST",
+        "maxyear": 2003,
+        "maxmonth": 9,
+        "maxday": 12
+    }
+}

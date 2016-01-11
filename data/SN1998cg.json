@@ -1,0 +1,46 @@
+{
+    "SN1998cg": {
+        "name": "SN1998cg",
+        "aliases": [
+            "SN1998cg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06900/06917.html'>IAUC 6917</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50933.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1998,
+        "discoverday": 30,
+        "discovermonth": 4,
+        "host": "A121818+2044",
+        "claimedtype": "Ia",
+        "redshift": 0.119,
+        "galra": "121818",
+        "galdec": "+204426",
+        "snra": "12:18:18.13",
+        "sndec": "+20:44:26.0",
+        "discoverer": "Gal-Yam, Maoz",
+        "maxyear": 1998,
+        "maxmonth": 4,
+        "maxday": 30
+    }
+}

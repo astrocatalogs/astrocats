@@ -1,0 +1,51 @@
+{
+    "LSQ13bwe": {
+        "name": "LSQ13bwe",
+        "aliases": [
+            "LSQ13bwe",
+            "MLS130912:232745-042211"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5329'>ATEL 5329</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56528.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56534.426",
+                "band": "L",
+                "abmag": "19.5",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "23:27:44.59",
+        "sndec": "-04:22:11.5",
+        "discoverday": 24,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.15,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 24
+    }
+}

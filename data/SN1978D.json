@@ -1,0 +1,47 @@
+{
+    "SN1978D": {
+        "name": "SN1978D",
+        "aliases": [
+            "SN1978D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03200/03282.html'>IAUC 3282</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43773.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1978,
+        "discoverday": 22,
+        "discovermonth": 9,
+        "host": "A230636-4427",
+        "claimedtype": "I",
+        "hvel": "21000",
+        "galra": "230636",
+        "galdec": "-4427",
+        "discoverer": "Lee, Zealey",
+        "snra": "23:06:38.3",
+        "sndec": "-44:26:52.0",
+        "maxyear": 1978,
+        "maxmonth": 9,
+        "maxday": 22,
+        "z": 0.0727
+    }
+}

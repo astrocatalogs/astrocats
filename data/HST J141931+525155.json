@@ -1,0 +1,38 @@
+{
+    "HST J141931+525155": {
+        "name": "HST J141931+525155",
+        "aliases": [
+            "HST J141931+525155"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3440'>ATEL 3440</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55704.5",
+                "band": "",
+                "abmag": "22.8",
+                "source": "2,1"
+            }
+        ],
+        "snra": "14:19:31.827",
+        "sndec": "+52:51:55.94",
+        "discoverday": 23,
+        "discovermonth": 5,
+        "discoveryear": 2011,
+        "redshift": 0.3541,
+        "discoverer": "HST",
+        "maxyear": 2011,
+        "maxmonth": 5,
+        "maxday": 23
+    }
+}

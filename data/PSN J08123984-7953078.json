@@ -1,0 +1,38 @@
+{
+    "PSN J08123984-7953078": {
+        "name": "PSN J08123984-7953078",
+        "aliases": [
+            "PSN J08123984-7953078"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J08123984-7953078.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57381.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "host": "ESO 18-G1",
+        "snra": "08:12:39.84",
+        "sndec": "-79:53:07.8",
+        "discoverday": 25,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "discoverer": "Stu Parker",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 25
+    }
+}

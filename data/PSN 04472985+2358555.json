@@ -1,0 +1,56 @@
+{
+    "PSN 04472985+2358555": {
+        "name": "PSN 04472985+2358555",
+        "aliases": [
+            "PSN 04472985+2358555"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Robert Koff",
+                "alias": "2"
+            },
+            {
+                "name": "R. A. Koff",
+                "alias": "3"
+            },
+            {
+                "name": "Massimiliano Martignoni",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56607.323",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56607.323",
+                "band": "U",
+                "abmag": "16.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56607.997",
+                "band": "V",
+                "abmag": "16.5",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 11,
+        "discoveryear": 2013,
+        "discovermonth": 11,
+        "discoverday": 11
+    }
+}

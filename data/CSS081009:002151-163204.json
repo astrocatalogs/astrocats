@@ -1,0 +1,37 @@
+{
+    "CSS081009:002151-163204": {
+        "name": "CSS081009:002151-163204",
+        "aliases": [
+            "CSS081009:002151-163204"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=1823'>ATEL 1823</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54747.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "00:21:51.39",
+        "sndec": "-16:32:03.8",
+        "discoverday": 8,
+        "discovermonth": 10,
+        "discoveryear": 2008,
+        "discoverer": "CRTS",
+        "maxyear": 2008,
+        "maxmonth": 10,
+        "maxday": 8
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "SN1999ei": {
+        "name": "SN1999ei",
+        "aliases": [
+            "SN1999ei"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51459.0",
+                "band": "B",
+                "abmag": "17.4",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "8",
+        "discovermonth": "10",
+        "host": "A013352-2841",
+        "claimedtype": "Ia",
+        "hvel": "9300",
+        "galra": "013352",
+        "galdec": "-284157",
+        "snra": "01:33:52.30",
+        "sndec": "-28:41:57.0",
+        "discoverer": "Marina Wischnjewsky",
+        "redshift": 0.031,
+        "z": 0.0315
+    }
+}

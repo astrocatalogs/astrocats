@@ -1,0 +1,56 @@
+{
+    "SN2014bg": {
+        "name": "SN2014bg",
+        "aliases": [
+            "SN2014bg",
+            "PSN J14354590+2443179"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003890.txt'>CBET 3890</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56815.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56829.208",
+                "band": "V",
+                "abmag": "17.4",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 7,
+        "discovermonth": 6,
+        "host": "UGC 9396",
+        "claimedtype": "Ia",
+        "hvel": "10820",
+        "galra": "143546",
+        "galdec": "+244333",
+        "snra": "14:35:45.90",
+        "sndec": "+24:43:17.9",
+        "discoverer": "Mirco Villi, Mario Bombardini, Alessandro Benazzi",
+        "redshift": 0.03604,
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 7,
+        "z": 0.0368
+    }
+}

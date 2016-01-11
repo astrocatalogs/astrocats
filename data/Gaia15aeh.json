@@ -1,0 +1,37 @@
+{
+    "Gaia15aeh": {
+        "name": "Gaia15aeh",
+        "aliases": [
+            "Gaia15aeh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57112.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "snra": "03:37:10.91",
+        "sndec": "-06:50:59.5",
+        "discoverday": 31,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "discoverer": "Gaia Photometric Science Alerts programme",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 31
+    }
+}

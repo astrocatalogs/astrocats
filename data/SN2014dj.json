@@ -1,0 +1,45 @@
+{
+    "SN2014dj": {
+        "name": "SN2014dj",
+        "aliases": [
+            "SN2014dj",
+            "PSN J00574018+4347342"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003993.txt'>CBET 3993</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56923.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 23,
+        "discovermonth": 9,
+        "host": "NGC 317B",
+        "claimedtype": "Ic",
+        "hvel": "5083",
+        "galra": "005740",
+        "galdec": "+434731",
+        "snra": "00:57:40.18",
+        "sndec": "+43:47:34.2",
+        "discoverer": "Doug Rich",
+        "redshift": 0.018,
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 23,
+        "z": 0.0171
+    }
+}

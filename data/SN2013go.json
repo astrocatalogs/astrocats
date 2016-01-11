@@ -1,0 +1,44 @@
+{
+    "SN2013go": {
+        "name": "SN2013go",
+        "aliases": [
+            "SN2013go"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003728.txt'>CBET 3728</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56585.5",
+                "band": "",
+                "abmag": "20.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 20,
+        "discovermonth": 10,
+        "host": "A032744-2829",
+        "claimedtype": "Ia",
+        "hvel": "22800",
+        "galra": "032744",
+        "galdec": "-282913",
+        "snra": "03:27:44.64",
+        "sndec": "-28:29:13.6",
+        "discoverer": "SUDARE/VOICE collaboration",
+        "redshift": 0.076,
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 20,
+        "z": 0.0792
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "SN1975K": {
+        "name": "SN1975K",
+        "aliases": [
+            "SN1975K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1976PASP...88..521K'>PASP 88, 521</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "42632.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1975,
+        "discoverday": 8,
+        "discovermonth": 8,
+        "host": "NGC 6195",
+        "hvel": "9013",
+        "galra": "163633",
+        "galdec": "+390140",
+        "discoverer": "Charles Kowal",
+        "snra": "16:36:31.3",
+        "sndec": "+39:02:08.0",
+        "maxyear": 1975,
+        "maxmonth": 8,
+        "maxday": 8,
+        "z": 0.0305
+    }
+}

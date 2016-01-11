@@ -1,0 +1,34 @@
+{
+    "PSN 09310887+4623054": {
+        "name": "PSN 09310887+4623054",
+        "aliases": [
+            "PSN 09310887+4623054"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56627.451",
+                "band": "R",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 1,
+        "discoveryear": 2013,
+        "discovermonth": 12,
+        "discoverday": 1
+    }
+}

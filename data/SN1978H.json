@@ -1,0 +1,47 @@
+{
+    "SN1978H": {
+        "name": "SN1978H",
+        "aliases": [
+            "SN1978H"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03300/03303.html'>IAUC 3303</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43818.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1978,
+        "discoverday": 6,
+        "discovermonth": 11,
+        "host": "NGC 3780",
+        "claimedtype": "II",
+        "hvel": "2396",
+        "galra": "113923",
+        "galdec": "+561615",
+        "snra": "11:39:23.67",
+        "sndec": "+56:16:00.9",
+        "discoverer": "Paul Wild",
+        "maxyear": 1978,
+        "maxmonth": 11,
+        "maxday": 6,
+        "z": 0.00802
+    }
+}

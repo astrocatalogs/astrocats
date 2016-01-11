@@ -1,0 +1,64 @@
+{
+    "CSS131002:080005+400532": {
+        "name": "CSS131002:080005+400532",
+        "aliases": [
+            "CSS131002:080005+400532"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5437'>ATEL 5437</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56566.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56569.546",
+                "band": "UV",
+                "abmag": "18.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56579.522",
+                "band": "UV",
+                "abmag": "18.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56595.478",
+                "band": "UV",
+                "abmag": "19.3",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "08:00:05.01",
+        "sndec": "+40:05:31.8",
+        "discoverday": 1,
+        "discovermonth": 10,
+        "discoveryear": 2013,
+        "redshift": 0.07,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 1
+    }
+}

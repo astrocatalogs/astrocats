@@ -1,0 +1,39 @@
+{
+    "DES15S2lot": {
+        "name": "DES15S2lot",
+        "aliases": [
+            "DES15S2lot"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8269'>ATEL 8269</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57331.5",
+                "band": "",
+                "abmag": "23.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "02:45:32.15",
+        "sndec": "-00:03:41.8",
+        "discoverday": 5,
+        "discovermonth": 11,
+        "discoveryear": 2015,
+        "redshift": 0.439,
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 5
+    }
+}

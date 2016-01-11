@@ -1,0 +1,37 @@
+{
+    "OGLE-2015-SN-018": {
+        "name": "OGLE-2015-SN-018",
+        "aliases": [
+            "OGLE-2015-SN-018"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6986'>ATEL 6986</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56670.5",
+                "band": "",
+                "abmag": "21.1",
+                "source": "2,1"
+            }
+        ],
+        "snra": "02:36:50.39",
+        "sndec": "-75:00:09.9",
+        "discoverday": 13,
+        "discovermonth": 1,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 13
+    }
+}

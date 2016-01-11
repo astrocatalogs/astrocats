@@ -1,0 +1,41 @@
+{
+    "SN1996bu": {
+        "name": "SN1996bu",
+        "aliases": [
+            "SN1996bu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50401.0",
+                "band": "V",
+                "abmag": "17.6",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1996",
+        "discoverday": "14",
+        "discovermonth": "11",
+        "host": "NGC 3631",
+        "claimedtype": "IIn",
+        "hvel": "1158",
+        "galra": "112103",
+        "galdec": "+531010",
+        "snra": "11:20:59.30",
+        "sndec": "+53:12:08.4",
+        "discoverer": "Reiki Kushida",
+        "redshift": 0.0004,
+        "z": 0.00387
+    }
+}

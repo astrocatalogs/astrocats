@@ -1,0 +1,37 @@
+{
+    "SSS130520:151515-360919": {
+        "name": "SSS130520:151515-360919",
+        "aliases": [
+            "SSS130520:151515-360919"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5187'>ATEL 5187</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56431.5",
+                "band": "",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "snra": "15:15:15.18",
+        "sndec": "-36:09:19.3",
+        "discoverday": 19,
+        "discovermonth": 5,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 19
+    }
+}

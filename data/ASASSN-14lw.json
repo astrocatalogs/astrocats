@@ -1,0 +1,50 @@
+{
+    "ASASSN-14lw": {
+        "name": "ASASSN-14lw",
+        "aliases": [
+            "ASASSN-14lw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6809'>ATEL 6809</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57018.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57004.583",
+                "band": "V",
+                "abmag": "16.3",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia-91T",
+        "snra": "01:06:49.17",
+        "sndec": "-46:58:59.10",
+        "discoverday": 13,
+        "discovermonth": 12,
+        "discoveryear": 2014,
+        "redshift": 0.016,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 27
+    }
+}

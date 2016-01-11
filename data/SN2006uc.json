@@ -1,0 +1,45 @@
+{
+    "SN2006uc": {
+        "name": "SN2006uc",
+        "aliases": [
+            "SN2006uc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000800/CBET000831.txt'>CBET 831</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54084.5",
+                "band": "",
+                "abmag": "21.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 15,
+        "discovermonth": 12,
+        "host": "A075845+5401",
+        "claimedtype": "Ia",
+        "galra": "075845",
+        "galdec": "+540117",
+        "snra": "07:58:45.92",
+        "sndec": "+54:01:17.46",
+        "discoverer": "Steward Observatory",
+        "maxyear": 2006,
+        "maxmonth": 12,
+        "maxday": 15
+    }
+}

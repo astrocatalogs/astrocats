@@ -1,0 +1,44 @@
+{
+    "SN1972S": {
+        "name": "SN1972S",
+        "aliases": [
+            "SN1972S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1972S'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41412.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1972,
+        "discoverday": 5,
+        "discovermonth": 4,
+        "host": "A121718+2355",
+        "galra": "121718",
+        "galdec": "+2355",
+        "discoverer": "Erastova",
+        "snra": "12:17:19.6",
+        "sndec": "+23:55:19.0",
+        "maxyear": 1972,
+        "maxmonth": 4,
+        "maxday": 5
+    }
+}

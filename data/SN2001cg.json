@@ -1,0 +1,78 @@
+{
+    "SN2001cg": {
+        "name": "SN2001cg",
+        "aliases": [
+            "SN2001cg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07600/07637.html#Item1'>IAUC 7637</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52057.200000000186",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52058.200000000186",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52062.93000000017",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52057.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 28,
+        "discovermonth": 5,
+        "host": "IC 3900",
+        "claimedtype": "Ia",
+        "hvel": "7171",
+        "galra": "125542",
+        "galdec": "+271501",
+        "snra": "12:55:40.87",
+        "sndec": "+27:15:03.9",
+        "discoverer": "LOTOSS",
+        "redshift": 0.024,
+        "maxyear": 2001,
+        "maxmonth": 5,
+        "maxday": 28,
+        "z": 0.0242
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "ASASSN-15pe": {
+        "name": "ASASSN-15pe",
+        "aliases": [
+            "ASASSN-15pe",
+            "PSN J17201537+3915398"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://archive.stsci.edu/cgi-bin/dss_search?v=3&amp;r=17+20+15.35'>CGCG 226-5</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Ron Arbour",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57271.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57272.8484",
+                "band": "U",
+                "abmag": "16.2",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "CGCG 226-5",
+        "snra": "17:20:15.35",
+        "sndec": "+39:15:39.4",
+        "discoverday": 6,
+        "discovermonth": 9,
+        "discoveryear": 2015,
+        "redshift": 0.03793,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 9,
+        "maxday": 6
+    }
+}

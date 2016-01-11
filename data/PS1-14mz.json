@@ -1,0 +1,48 @@
+{
+    "PS1-14mz": {
+        "name": "PS1-14mz",
+        "aliases": [
+            "PS1-14mz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56708.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56716.378",
+                "band": "C",
+                "abmag": "19.2",
+                "source": "3,1"
+            }
+        ],
+        "snra": "13:09:43.21",
+        "sndec": "+32:38:48.0",
+        "discoverday": 20,
+        "discovermonth": 2,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 28
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "SN2004cf": {
+        "name": "SN2004cf",
+        "aliases": [
+            "SN2004cf"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08352.html#Item2'>IAUC 8352</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53138.5",
+                "band": "",
+                "abmag": "22.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 13,
+        "discovermonth": 5,
+        "host": "A141105-1144",
+        "claimedtype": "Ib/c",
+        "redshift": 0.247,
+        "galra": "141105",
+        "galdec": "-114409",
+        "snra": "14:11:05.77",
+        "sndec": "-11:44:09.4",
+        "discoverer": "ESO",
+        "maxyear": 2004,
+        "maxmonth": 5,
+        "maxday": 13
+    }
+}

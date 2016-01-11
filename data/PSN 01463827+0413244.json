@@ -1,0 +1,45 @@
+{
+    "PSN 01463827+0413244": {
+        "name": "PSN 01463827+0413244",
+        "aliases": [
+            "PSN 01463827+0413244"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56631.846",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56632.464",
+                "band": "V",
+                "abmag": "16.8",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 5,
+        "discoveryear": 2013,
+        "discovermonth": 12,
+        "discoverday": 5
+    }
+}

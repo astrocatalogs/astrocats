@@ -1,0 +1,45 @@
+{
+    "SN2015ay": {
+        "name": "SN2015ay",
+        "aliases": [
+            "SN2015ay",
+            "PSN J01094677+1318289"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004200/CBET004204.txt'>CBET 4204</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57302.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 7,
+        "discovermonth": 10,
+        "host": "UGC 722",
+        "claimedtype": "II",
+        "hvel": "4219",
+        "galra": "010946",
+        "galdec": "+131832",
+        "snra": "01:09:46.77",
+        "sndec": "+13:18:28.9",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.014,
+        "maxyear": 2015,
+        "maxmonth": 10,
+        "maxday": 7,
+        "z": 0.0142
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "SN2005dl": {
+        "name": "SN2005dl",
+        "aliases": [
+            "SN2005dl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08500/08588.html#Item2'>IAUC 8588</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53613.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 31,
+        "discovermonth": 8,
+        "host": "NGC 2276",
+        "claimedtype": "II",
+        "hvel": "2407",
+        "galra": "072713",
+        "galdec": "+854520",
+        "snra": "07:27:31.75",
+        "sndec": "+85:45:15.0",
+        "discoverer": "CROSS",
+        "redshift": 0.008,
+        "maxyear": 2005,
+        "maxmonth": 8,
+        "maxday": 31,
+        "z": 0.00806
+    }
+}

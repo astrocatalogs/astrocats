@@ -1,0 +1,46 @@
+{
+    "SN2000eh": {
+        "name": "SN2000eh",
+        "aliases": [
+            "SN2000eh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07516.html#Item1'>IAUC 7516</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51837.5",
+                "band": "",
+                "abmag": "22.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 20,
+        "discovermonth": 10,
+        "host": "A041502+0423",
+        "claimedtype": "Ia",
+        "redshift": 0.49,
+        "galra": "041502",
+        "galdec": "+042318",
+        "snra": "04:15:02.44",
+        "sndec": "+04:23:18.1",
+        "discoverer": "High Z Supernova Search",
+        "maxyear": 2000,
+        "maxmonth": 10,
+        "maxday": 20
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "PSN J13332289+5843315": {
+        "name": "PSN J13332289+5843315",
+        "aliases": [
+            "PSN J13332289+5843315",
+            "Gaia15ael"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J13332289+5843315.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57118.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:33:22.89",
+        "sndec": "+58:43:31.5",
+        "discoverday": 6,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "redshift": 0.03,
+        "discoverer": "CRTS",
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 6
+    }
+}

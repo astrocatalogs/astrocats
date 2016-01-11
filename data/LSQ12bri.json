@@ -1,0 +1,40 @@
+{
+    "LSQ12bri": {
+        "name": "LSQ12bri",
+        "aliases": [
+            "LSQ12bri",
+            "CSS120420:133548-212353"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4037'>ATEL 4037</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56022.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "13:35:48.34",
+        "sndec": "-21:23:53.5",
+        "discoverday": 5,
+        "discovermonth": 4,
+        "discoveryear": 2012,
+        "redshift": 0.03,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2012,
+        "maxmonth": 4,
+        "maxday": 5
+    }
+}

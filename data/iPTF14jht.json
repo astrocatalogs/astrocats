@@ -1,0 +1,28 @@
+{
+    "iPTF14jht": {
+        "name": "iPTF14jht",
+        "aliases": [
+            "iPTF14jht"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6889'>ATEL 6889</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [],
+        "claimedtype": "Ia",
+        "snra": "08:36:00.08",
+        "sndec": "+21:22:45.8",
+        "discoverday": "24",
+        "discovermonth": "12",
+        "discoveryear": "2014",
+        "redshift": 0.11,
+        "discoverer": "PTF"
+    }
+}

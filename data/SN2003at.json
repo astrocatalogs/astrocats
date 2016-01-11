@@ -1,0 +1,71 @@
+{
+    "SN2003at": {
+        "name": "SN2003at",
+        "aliases": [
+            "SN2003at"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08074.html#Item1'>IAUC 8074</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52685.14999999991",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52687.060000000056",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52684.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 14,
+        "discovermonth": 2,
+        "host": "MCG +11-20-23",
+        "claimedtype": "II",
+        "hvel": "7200",
+        "galra": "163847",
+        "galdec": "+660109",
+        "snra": "16:38:47.818",
+        "sndec": "+66:01:23.79",
+        "discoverer": "Mark Armstrong",
+        "redshift": 0.024,
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 15,
+        "z": 0.0243
+    }
+}

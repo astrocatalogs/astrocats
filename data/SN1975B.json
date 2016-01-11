@@ -1,0 +1,47 @@
+{
+    "SN1975B": {
+        "name": "SN1975B",
+        "aliases": [
+            "SN1975B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1975B'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "42502.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1975,
+        "discoverday": 31,
+        "discovermonth": 3,
+        "host": "PGC0012417",
+        "claimedtype": "Ia",
+        "hvel": "8539",
+        "galra": "031943",
+        "galdec": "+413751",
+        "discoverer": "Miklos Lovas",
+        "snra": "03:19:42.8",
+        "sndec": "+41:38:01.0",
+        "maxyear": 1975,
+        "maxmonth": 3,
+        "maxday": 31,
+        "z": 0.0289
+    }
+}

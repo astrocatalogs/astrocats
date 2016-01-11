@@ -1,0 +1,48 @@
+{
+    "SN2007it": {
+        "name": "SN2007it",
+        "aliases": [
+            "SN2007it"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001000/CBET001065.txt'>CBET 1065</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54348.5",
+                "band": "",
+                "abmag": "12.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 5,
+        "discovermonth": 9,
+        "host": "NGC 5530",
+        "claimedtype": "II",
+        "hvel": "1194",
+        "galra": "141827",
+        "galdec": "-432319",
+        "snra": "14:18:25.57",
+        "sndec": "-43:22:54.0",
+        "discoverer": "Robert Evans",
+        "redshift": 0.004,
+        "maxyear": 2007,
+        "maxmonth": 9,
+        "maxday": 5,
+        "z": 0.00399
+    }
+}

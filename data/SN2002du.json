@@ -1,0 +1,46 @@
+{
+    "SN2002du": {
+        "name": "SN2002du",
+        "aliases": [
+            "SN2002du"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07900/07929.html#Item2'>IAUC 7929</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52372.5",
+                "band": "",
+                "abmag": "22.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 8,
+        "discovermonth": 4,
+        "host": "A135318-1137",
+        "claimedtype": "II",
+        "redshift": 0.21,
+        "galra": "135318",
+        "galdec": "-113728",
+        "snra": "13:53:18.28",
+        "sndec": "-11:37:28.8",
+        "discoverer": "G. Altavilla, et. el.",
+        "maxyear": 2002,
+        "maxmonth": 4,
+        "maxday": 8
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "PSN J20242491-5026054": {
+        "name": "PSN J20242491-5026054",
+        "aliases": [
+            "PSN J20242491-5026054"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J20242491-5026054.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56981.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "host": "NGC 6899",
+        "snra": "20:24:24.91",
+        "sndec": "-50:26:05.4",
+        "discoverday": 20,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "discoverer": "Berto Monard",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 20
+    }
+}

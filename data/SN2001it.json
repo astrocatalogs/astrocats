@@ -1,0 +1,70 @@
+{
+    "SN2001it": {
+        "name": "SN2001it",
+        "aliases": [
+            "SN2001it"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Unknown,?",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07781.html#Item1'>IAUC 7781</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52265.189999999944",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52269.12999999989",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52264.5",
+                "band": "",
+                "abmag": "18.6",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 21,
+        "discovermonth": 12,
+        "host": "MCG +9-25-15",
+        "claimedtype": "II",
+        "hvel": "10330",
+        "galra": "150610",
+        "galdec": "+532439",
+        "snra": "15:06:09.40",
+        "sndec": "+53:24:41.6",
+        "discoverer": "Tom Boles",
+        "maxyear": 2001,
+        "maxmonth": 12,
+        "maxday": 26,
+        "z": 0.0351
+    }
+}

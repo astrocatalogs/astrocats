@@ -1,0 +1,48 @@
+{
+    "SN1994L": {
+        "name": "SN1994L",
+        "aliases": [
+            "SN1994L"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05900/05975.html'>IAUC 5975</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49449.5",
+                "band": "",
+                "abmag": "14.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1994,
+        "discoverday": 7,
+        "discovermonth": 4,
+        "host": "NGC 2848",
+        "claimedtype": "II",
+        "hvel": "2046",
+        "galra": "092010",
+        "galdec": "-163134",
+        "discoverer": "Brown",
+        "snra": "09:20:17.100",
+        "sndec": "-16:32:00.0",
+        "redshift": 0.006,
+        "maxyear": 1994,
+        "maxmonth": 4,
+        "maxday": 7,
+        "z": 0.00685
+    }
+}

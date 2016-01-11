@@ -1,0 +1,47 @@
+{
+    "SN1985I": {
+        "name": "SN1985I",
+        "aliases": [
+            "SN1985I"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04000/04058.html'>IAUC 4058</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46182.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1985,
+        "discoverday": 27,
+        "discovermonth": 4,
+        "host": "PGC0049009",
+        "claimedtype": "I",
+        "hvel": "8579",
+        "galra": "134854",
+        "galdec": "-300136",
+        "discoverer": "Leibundgut, Albert",
+        "snra": "13:48:53.9",
+        "sndec": "-30:01:43.0",
+        "maxyear": 1985,
+        "maxmonth": 4,
+        "maxday": 27,
+        "z": 0.029
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "CSS130903:012242+181655": {
+        "name": "CSS130903:012242+181655",
+        "aliases": [
+            "CSS130903:012242+181655"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5380'>ATEL 5380</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56537.5",
+                "band": "",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "01:22:41.50",
+        "sndec": "+18:16:54.7",
+        "discoverday": 2,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.06,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 2
+    }
+}

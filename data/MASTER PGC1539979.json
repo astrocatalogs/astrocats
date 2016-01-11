@@ -1,0 +1,38 @@
+{
+    "MASTER PGC1539979": {
+        "name": "MASTER PGC1539979",
+        "aliases": [
+            "MASTER PGC1539979"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3240'>ATEL 3240</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55628.5",
+                "band": "",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 1539979",
+        "snra": "08:39:18.37",
+        "sndec": "+17:43:15.9",
+        "discoverday": 8,
+        "discovermonth": 3,
+        "discoveryear": 2011,
+        "discoverer": "MASTER",
+        "maxyear": 2011,
+        "maxmonth": 3,
+        "maxday": 8
+    }
+}

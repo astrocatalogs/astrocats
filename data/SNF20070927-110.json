@@ -1,0 +1,38 @@
+{
+    "SNF20070927-110": {
+        "name": "SNF20070927-110",
+        "aliases": [
+            "SNF20070927-110"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://snfactory.lbl.gov/'>SN Factory</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54369.5",
+                "band": "",
+                "abmag": "19.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "08:04:59.72",
+        "sndec": "+25:27:15.3",
+        "discoverday": 26,
+        "discovermonth": 9,
+        "discoveryear": 2007,
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2007,
+        "maxmonth": 9,
+        "maxday": 26
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "SN2004eb": {
+        "name": "SN2004eb",
+        "aliases": [
+            "SN2004eb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08396.html#Item1'>IAUC 8396</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53245.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 28,
+        "discovermonth": 8,
+        "host": "NGC 6387",
+        "claimedtype": "II",
+        "hvel": "8521",
+        "galra": "172824",
+        "galdec": "+573243",
+        "snra": "17:28:24.30",
+        "sndec": "+57:32:45.7",
+        "discoverer": "LOSS",
+        "maxyear": 2004,
+        "maxmonth": 8,
+        "maxday": 28,
+        "z": 0.0288
+    }
+}

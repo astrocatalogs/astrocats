@@ -1,0 +1,32 @@
+{
+    "SN1999de": {
+        "name": "SN1999de",
+        "aliases": [
+            "SN1999de"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51370.0",
+                "band": "R",
+                "abmag": "21.2",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "11",
+        "discovermonth": 7,
+        "host": "A002228+2323",
+        "galra": "002228",
+        "galdec": "+232356",
+        "snra": "002228.20",
+        "sndec": "+232356.2",
+        "discoverer": "Gal-Yam, Maoz"
+    }
+}

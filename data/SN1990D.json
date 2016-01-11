@@ -1,0 +1,44 @@
+{
+    "SN1990D": {
+        "name": "SN1990D",
+        "aliases": [
+            "SN1990D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04900/04957.html'>IAUC 4957</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47913.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1990,
+        "discoverday": 22,
+        "discovermonth": 1,
+        "host": "A134325+2906",
+        "galra": "134325",
+        "galdec": "+290637",
+        "snra": "13:43:25.8",
+        "sndec": "+29:06:38.0",
+        "discoverer": "Christian Pollas",
+        "maxyear": 1990,
+        "maxmonth": 1,
+        "maxday": 22
+    }
+}

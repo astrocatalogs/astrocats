@@ -1,0 +1,38 @@
+{
+    "ROTSE3 J235704.6-341106": {
+        "name": "ROTSE3 J235704.6-341106",
+        "aliases": [
+            "ROTSE3 J235704.6-341106"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2790'>ATEL 2790</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55393.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:57:04.57",
+        "sndec": "-34:11:05.5",
+        "discoverday": 16,
+        "discovermonth": 7,
+        "discoveryear": 2010,
+        "redshift": 0.047,
+        "discoverer": "ROTSE",
+        "maxyear": 2010,
+        "maxmonth": 7,
+        "maxday": 16
+    }
+}

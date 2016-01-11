@@ -1,0 +1,41 @@
+{
+    "SN1998cu": {
+        "name": "SN1998cu",
+        "aliases": [
+            "SN1998cu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50993.0",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1998",
+        "discoverday": "30",
+        "discovermonth": "6",
+        "host": "IC 1525",
+        "claimedtype": "II",
+        "hvel": "5063",
+        "galra": "235916",
+        "galdec": "+465321",
+        "snra": "23:59:12.95",
+        "sndec": "+46:52:31.8",
+        "discoverer": "LOSS",
+        "redshift": 0.0167,
+        "z": 0.017
+    }
+}

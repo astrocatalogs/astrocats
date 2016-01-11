@@ -1,0 +1,71 @@
+{
+    "SN2003ao": {
+        "name": "SN2003ao",
+        "aliases": [
+            "SN2003ao"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08070.html#Item1'>IAUC 8070</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52669.39999999991",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52680.39999999991",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52668.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 29,
+        "discovermonth": 1,
+        "host": "NGC 2993",
+        "claimedtype": "II",
+        "hvel": "2227",
+        "galra": "094548",
+        "galdec": "-142208",
+        "snra": "09:45:48.468",
+        "sndec": "-14:22:14.09",
+        "discoverer": "LOTOSS",
+        "redshift": 0.008,
+        "maxyear": 2003,
+        "maxmonth": 1,
+        "maxday": 30,
+        "z": 0.00746
+    }
+}

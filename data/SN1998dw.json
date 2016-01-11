@@ -1,0 +1,48 @@
+{
+    "SN1998dw": {
+        "name": "SN1998dw",
+        "aliases": [
+            "SN1998dw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07000/07007.html'>IAUC 7007</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51052.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1998,
+        "discoverday": 27,
+        "discovermonth": 8,
+        "host": "A010911-1529",
+        "claimedtype": "Ia",
+        "hvel": "15000",
+        "galra": "010911",
+        "galdec": "-152946",
+        "snra": "01:09:11.56",
+        "sndec": "-15:29:46.7",
+        "discoverer": "Mount Stromlo",
+        "redshift": 0.05,
+        "maxyear": 1998,
+        "maxmonth": 8,
+        "maxday": 27,
+        "z": 0.0514
+    }
+}

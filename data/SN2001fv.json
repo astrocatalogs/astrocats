@@ -1,0 +1,85 @@
+{
+    "SN2001fv": {
+        "name": "SN2001fv",
+        "aliases": [
+            "SN2001fv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07750.html#Item1'>IAUC 7750</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52216.169999999925",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52223.16000000015",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52236.189999999944",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52239.18000000017",
+                "band": "R",
+                "abmag": "16.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52215.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 2,
+        "discovermonth": 11,
+        "host": "NGC 3512",
+        "claimedtype": "II",
+        "hvel": "1469",
+        "galra": "110403",
+        "galdec": "+280211",
+        "snra": "11:04:01.66",
+        "sndec": "+28:01:55.7",
+        "discoverer": "Mark Armstrong",
+        "redshift": 0.0046,
+        "maxyear": 2001,
+        "maxmonth": 11,
+        "maxday": 3,
+        "z": 0.00491
+    }
+}

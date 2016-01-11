@@ -1,0 +1,46 @@
+{
+    "SN1992ak": {
+        "name": "SN1992ak",
+        "aliases": [
+            "SN1992ak"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05500/05565.html'>IAUC 5565</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48629.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1992,
+        "discoverday": 8,
+        "discovermonth": 1,
+        "host": "UGC 3862",
+        "hvel": "8151",
+        "galra": "072748",
+        "galdec": "+202345",
+        "snra": "07:27:47.42",
+        "sndec": "+20:23:31.8",
+        "discoverer": "Moraru",
+        "maxyear": 1992,
+        "maxmonth": 1,
+        "maxday": 8,
+        "z": 0.0276
+    }
+}

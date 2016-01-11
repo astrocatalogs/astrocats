@@ -1,0 +1,74 @@
+{
+    "SN1998an": {
+        "name": "SN1998an",
+        "aliases": [
+            "SN1998an"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50911.83999999985",
+                "band": "C",
+                "abmag": "15.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50914.87999999989",
+                "band": "C",
+                "abmag": "14.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50918.87999999989",
+                "band": "C",
+                "abmag": "15.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "50920.83999999985",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1998,
+        "discoverday": 8,
+        "discovermonth": 4,
+        "host": "UGC 3683",
+        "claimedtype": "Ia",
+        "hvel": "5623",
+        "galra": "070814",
+        "galdec": "+460659",
+        "snra": "07:08:17.13",
+        "sndec": "+46:06:54.31",
+        "discoverer": "Ron Arbour",
+        "redshift": 0.019,
+        "maxyear": 1998,
+        "maxmonth": 4,
+        "maxday": 11,
+        "z": 0.0189
+    }
+}

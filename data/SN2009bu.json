@@ -1,0 +1,48 @@
+{
+    "SN2009bu": {
+        "name": "SN2009bu",
+        "aliases": [
+            "SN2009bu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001700/CBET001740.txt'>CBET 1740</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54914.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2009,
+        "discoverday": 24,
+        "discovermonth": 3,
+        "host": "NGC 7408",
+        "claimedtype": "IIP",
+        "hvel": "3443",
+        "galra": "225556",
+        "galdec": "-634141",
+        "snra": "22:56:01.40",
+        "sndec": "-63:41:39.6",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0117,
+        "maxyear": 2009,
+        "maxmonth": 3,
+        "maxday": 24,
+        "z": 0.0116
+    }
+}
