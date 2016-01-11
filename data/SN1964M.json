@@ -1,0 +1,26 @@
+{
+    "SN1964M": {
+        "name": "SN1964M",
+        "aliases": [
+            "SN1964M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38759.0",
+                "band": "",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1964",
+        "discovermonth": "12",
+        "discoverday": "30"
+    }
+}

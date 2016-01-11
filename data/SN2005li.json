@@ -1,0 +1,29 @@
+{
+    "SN2005li": {
+        "name": "SN2005li",
+        "aliases": [
+            "SN2005li"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53678.0",
+                "band": "g",
+                "abmag": "22.6",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2005",
+        "discovermonth": "11",
+        "discoverday": "4",
+        "maxyear": "2005",
+        "maxmonth": "11",
+        "maxday": "14"
+    }
+}

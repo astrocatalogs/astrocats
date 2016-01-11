@@ -1,0 +1,29 @@
+{
+    "SN1998ab": {
+        "name": "SN1998ab",
+        "aliases": [
+            "SN1998ab"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50904.0",
+                "band": "B",
+                "abmag": "16.6",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1998",
+        "discovermonth": "4",
+        "discoverday": "1",
+        "maxyear": "1998",
+        "maxmonth": "4",
+        "maxday": "11"
+    }
+}

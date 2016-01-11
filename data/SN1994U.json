@@ -1,0 +1,29 @@
+{
+    "SN1994U": {
+        "name": "SN1994U",
+        "aliases": [
+            "SN1994U"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49530.0",
+                "band": "",
+                "abmag": "14",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1994",
+        "discovermonth": "6",
+        "discoverday": "27",
+        "maxyear": "1994",
+        "maxmonth": "6",
+        "maxday": "27"
+    }
+}

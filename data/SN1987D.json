@@ -1,0 +1,29 @@
+{
+    "SN1987D": {
+        "name": "SN1987D",
+        "aliases": [
+            "SN1987D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46905.0",
+                "band": "",
+                "abmag": "14",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1987",
+        "discovermonth": "4",
+        "discoverday": "20",
+        "maxyear": "1987",
+        "maxmonth": "4",
+        "maxday": "17"
+    }
+}

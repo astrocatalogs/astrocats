@@ -1,0 +1,29 @@
+{
+    "SN1935A": {
+        "name": "SN1935A",
+        "aliases": [
+            "SN1935A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "27958.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1935",
+        "discovermonth": "6",
+        "discoverday": "5",
+        "maxyear": "1935",
+        "maxmonth": "6",
+        "maxday": "5"
+    }
+}

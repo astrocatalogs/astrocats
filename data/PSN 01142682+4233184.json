@@ -1,0 +1,45 @@
+{
+    "PSN 01142682+4233184": {
+        "name": "PSN 01142682+4233184",
+        "aliases": [
+            "PSN 01142682+4233184"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56997.28",
+                "band": "R",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57000.0",
+                "band": "U",
+                "abmag": "19.1",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 6,
+        "discoveryear": 2014,
+        "discovermonth": 12,
+        "discoverday": 6
+    }
+}

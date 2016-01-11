@@ -1,0 +1,41 @@
+{
+    "CSS131004:231555+224932": {
+        "name": "CSS131004:231555+224932",
+        "aliases": [
+            "CSS131004:231555+224932"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56579.265",
+                "band": "UV",
+                "abmag": "19.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56595.15",
+                "band": "UV",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 14,
+        "discoveryear": 2013,
+        "discovermonth": 10,
+        "discoverday": 14
+    }
+}

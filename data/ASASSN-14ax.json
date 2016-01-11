@@ -1,0 +1,41 @@
+{
+    "ASASSN-14ax": {
+        "name": "ASASSN-14ax",
+        "aliases": [
+            "ASASSN-14ax"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56814.408",
+                "band": "UV",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56863.224",
+                "band": "UV",
+                "abmag": "17.6",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 6,
+        "discoveryear": 2014,
+        "discovermonth": 6,
+        "discoverday": 6
+    }
+}

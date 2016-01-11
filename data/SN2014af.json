@@ -1,0 +1,52 @@
+{
+    "SN2014af": {
+        "name": "SN2014af",
+        "aliases": [
+            "SN2014af"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Marc Serrau",
+                "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56733.833",
+                "band": "CR",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56753.961",
+                "band": "CV",
+                "abmag": "18.12",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 17,
+        "discovermonth": 3,
+        "host": "A084721+7313",
+        "claimedtype": "II P",
+        "galra": "084721",
+        "galdec": "+731313",
+        "snra": "084721.16",
+        "sndec": "+731313.7",
+        "discoverer": "Denisenko",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 17
+    }
+}

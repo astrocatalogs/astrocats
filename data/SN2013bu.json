@@ -1,0 +1,43 @@
+{
+    "SN2013bu": {
+        "name": "SN2013bu",
+        "aliases": [
+            "SN2013bu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Radu Gherase",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56509.96",
+                "band": "V",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 5,
+        "discovermonth": 8,
+        "host": "NGC 7331",
+        "claimedtype": "II P",
+        "hvel": "821",
+        "galra": "223704",
+        "galdec": "+342456",
+        "snra": "223702.17",
+        "sndec": "+342405.2",
+        "discoverer": "Itagaki",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 5,
+        "z": 0.00274
+    }
+}

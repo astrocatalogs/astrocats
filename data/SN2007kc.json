@@ -1,0 +1,26 @@
+{
+    "SN2007kc": {
+        "name": "SN2007kc",
+        "aliases": [
+            "SN2007kc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54364.0",
+                "band": "",
+                "abmag": "15.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2007",
+        "discovermonth": "9",
+        "discoverday": "21"
+    }
+}

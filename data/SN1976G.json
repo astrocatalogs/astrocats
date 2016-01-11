@@ -1,0 +1,29 @@
+{
+    "SN1976G": {
+        "name": "SN1976G",
+        "aliases": [
+            "SN1976G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43072.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1976",
+        "discovermonth": "10",
+        "discoverday": "21",
+        "maxyear": "1976",
+        "maxmonth": "10",
+        "maxday": "11"
+    }
+}

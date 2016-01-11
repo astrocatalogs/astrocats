@@ -1,0 +1,26 @@
+{
+    "SN1948A": {
+        "name": "SN1948A",
+        "aliases": [
+            "SN1948A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "32615.0",
+                "band": "",
+                "abmag": "17",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1948",
+        "discovermonth": "3",
+        "discoverday": "5"
+    }
+}

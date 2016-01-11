@@ -1,0 +1,43 @@
+{
+    "SN2014bq": {
+        "name": "SN2014bq",
+        "aliases": [
+            "SN2014bq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56837.0",
+                "band": "CR",
+                "abmag": "18.07",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 29,
+        "discovermonth": 6,
+        "host": "A160725+3647",
+        "claimedtype": "Ia",
+        "hvel": "22500",
+        "galra": "160725",
+        "galdec": "+364735",
+        "snra": "160725.38",
+        "sndec": "+364735.7",
+        "discoverer": "Drake et al.",
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 29,
+        "z": 0.0781
+    }
+}

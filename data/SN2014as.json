@@ -1,0 +1,43 @@
+{
+    "SN2014as": {
+        "name": "SN2014as",
+        "aliases": [
+            "SN2014as"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56780.242",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 3,
+        "discovermonth": 5,
+        "host": "NGC 5410",
+        "claimedtype": "Ic",
+        "hvel": "3738",
+        "galra": "140055",
+        "galdec": "+405919",
+        "snra": "140054.49",
+        "sndec": "+405859.6",
+        "discoverer": "Grennan",
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 3,
+        "z": 0.0125
+    }
+}

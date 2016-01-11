@@ -1,0 +1,26 @@
+{
+    "SN1992bu": {
+        "name": "SN1992bu",
+        "aliases": [
+            "SN1992bu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48690.0",
+                "band": "K",
+                "abmag": "16.6",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1992",
+        "discovermonth": "3",
+        "discoverday": "9"
+    }
+}

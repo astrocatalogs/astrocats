@@ -1,0 +1,61 @@
+{
+    "SN2013ei": {
+        "name": "SN2013ei",
+        "aliases": [
+            "SN2013ei"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56535.252",
+                "band": "UR",
+                "abmag": "18.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56539.943",
+                "band": "CR",
+                "abmag": "18.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56553.22",
+                "band": "UV",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 31,
+        "discovermonth": 8,
+        "host": "NGC 7068",
+        "claimedtype": "Ia",
+        "hvel": "5183",
+        "galra": "212632",
+        "galdec": "+121104",
+        "snra": "212631.93",
+        "sndec": "+121049.4",
+        "discoverer": "Kochanek et al.",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 31,
+        "z": 0.0174
+    }
+}

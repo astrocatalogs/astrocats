@@ -1,0 +1,34 @@
+{
+    "DES13X3syi": {
+        "name": "DES13X3syi",
+        "aliases": [
+            "DES13X3syi"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56635.306",
+                "band": "C",
+                "abmag": "22.2",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 9,
+        "discoveryear": 2013,
+        "discovermonth": 12,
+        "discoverday": 9
+    }
+}

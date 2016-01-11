@@ -1,0 +1,29 @@
+{
+    "SN1999cw": {
+        "name": "SN1999cw",
+        "aliases": [
+            "SN1999cw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51357.0",
+                "band": "",
+                "abmag": "14.2",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1999",
+        "discovermonth": "6",
+        "discoverday": "28",
+        "maxyear": "1999",
+        "maxmonth": "6",
+        "maxday": "25"
+    }
+}

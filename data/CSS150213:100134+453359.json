@@ -1,0 +1,34 @@
+{
+    "CSS150213:100134+453359": {
+        "name": "CSS150213:100134+453359",
+        "aliases": [
+            "CSS150213:100134+453359"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57067.151",
+                "band": "U",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 14,
+        "discoveryear": 2015,
+        "discovermonth": 2,
+        "discoverday": 14
+    }
+}

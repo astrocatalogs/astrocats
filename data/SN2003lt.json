@@ -1,0 +1,26 @@
+{
+    "SN2003lt": {
+        "name": "SN2003lt",
+        "aliases": [
+            "SN2003lt"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52883.0",
+                "band": "z",
+                "abmag": "26",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2003",
+        "discovermonth": "9",
+        "discoverday": "1"
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "CSS140123:093027+411345": {
+        "name": "CSS140123:093027+411345",
+        "aliases": [
+            "CSS140123:093027+411345"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56684.951",
+                "band": "CR",
+                "abmag": "19.3",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 27,
+        "discoveryear": 2014,
+        "discovermonth": 1,
+        "discoverday": 27
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "SN2015ap": {
+        "name": "SN2015ap",
+        "aliases": [
+            "SN2015ap"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "MDe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57341.911",
+                "band": "CV",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 15,
+        "discovermonth": 11,
+        "host": "IC 1776",
+        "claimedtype": "Ib",
+        "hvel": "3405",
+        "galra": "020515",
+        "galdec": "+060625",
+        "snra": "020513.32",
+        "sndec": "+060608.4",
+        "discoverer": "LOSS",
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 15,
+        "z": 0.0114
+    }
+}

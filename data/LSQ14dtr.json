@@ -1,0 +1,34 @@
+{
+    "LSQ14dtr": {
+        "name": "LSQ14dtr",
+        "aliases": [
+            "LSQ14dtr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56894.751",
+                "band": "C",
+                "abmag": "19.8",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 25,
+        "discoveryear": 2014,
+        "discovermonth": 8,
+        "discoverday": 25
+    }
+}

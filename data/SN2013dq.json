@@ -1,0 +1,50 @@
+{
+    "SN2013dq": {
+        "name": "SN2013dq",
+        "aliases": [
+            "SN2013dq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56543.408",
+                "band": "UV",
+                "abmag": "18.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56576.301",
+                "band": "UV",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 8,
+        "discovermonth": 9,
+        "host": "UGC 525",
+        "claimedtype": "Ia",
+        "hvel": "4931",
+        "galra": "005135",
+        "galdec": "+294259",
+        "snra": "005134.84",
+        "sndec": "+294314.9",
+        "discoverer": "Howerton et al.",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 8,
+        "z": 0.0166
+    }
+}

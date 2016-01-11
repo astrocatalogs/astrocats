@@ -1,0 +1,54 @@
+{
+    "SN2013hb": {
+        "name": "SN2013hb",
+        "aliases": [
+            "SN2013hb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Maurice Audejean",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56644.753",
+                "band": "CV",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56626.887",
+                "band": "CV",
+                "abmag": "17.2",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 11,
+        "host": "A015046+3306",
+        "claimedtype": "Ia pec",
+        "hvel": "10500",
+        "galra": "015046",
+        "galdec": "+330635",
+        "snra": "015046.32",
+        "sndec": "+330635.6",
+        "discoverer": "Howerton et al.",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 30,
+        "z": 0.0357
+    }
+}

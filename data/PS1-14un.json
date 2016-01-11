@@ -1,0 +1,34 @@
+{
+    "PS1-14un": {
+        "name": "PS1-14un",
+        "aliases": [
+            "PS1-14un"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56745.236",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 29,
+        "discoveryear": 2014,
+        "discovermonth": 3,
+        "discoverday": 29
+    }
+}

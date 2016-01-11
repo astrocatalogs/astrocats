@@ -1,0 +1,26 @@
+{
+    "SN1988ag": {
+        "name": "SN1988ag",
+        "aliases": [
+            "SN1988ag"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47506.0",
+                "band": "",
+                "abmag": "18",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1988",
+        "discovermonth": "12",
+        "discoverday": "11"
+    }
+}

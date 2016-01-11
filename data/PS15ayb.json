@@ -1,0 +1,34 @@
+{
+    "PS15ayb": {
+        "name": "PS15ayb",
+        "aliases": [
+            "PS15ayb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57201.07",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 28,
+        "discoveryear": 2015,
+        "discovermonth": 6,
+        "discoverday": 28
+    }
+}

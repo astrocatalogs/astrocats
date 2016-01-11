@@ -1,0 +1,78 @@
+{
+    "PSN 02484234+1418454": {
+        "name": "PSN 02484234+1418454",
+        "aliases": [
+            "PSN 02484234+1418454"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Simone Leonini",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "4"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57232.1241",
+                "band": "CR",
+                "abmag": "16.93",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57234.815",
+                "band": "C",
+                "abmag": "17.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57237.083",
+                "band": "C",
+                "abmag": "17.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57253.952",
+                "band": "R",
+                "abmag": "17.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.514",
+                "band": "UV",
+                "abmag": "18.0",
+                "source": "6,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 29,
+        "discoveryear": 2015,
+        "discovermonth": 7,
+        "discoverday": 29
+    }
+}

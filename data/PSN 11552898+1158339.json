@@ -1,0 +1,34 @@
+{
+    "PSN 11552898+1158339": {
+        "name": "PSN 11552898+1158339",
+        "aliases": [
+            "PSN 11552898+1158339"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56989.64",
+                "band": "R",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 28,
+        "discoveryear": 2014,
+        "discovermonth": 11,
+        "discoverday": 28
+    }
+}

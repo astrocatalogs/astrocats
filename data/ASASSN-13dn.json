@@ -1,0 +1,52 @@
+{
+    "ASASSN-13dn": {
+        "name": "ASASSN-13dn",
+        "aliases": [
+            "ASASSN-13dn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56650.484",
+                "band": "C",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56705.392",
+                "band": "UV",
+                "abmag": "17.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.328",
+                "band": "UV",
+                "abmag": "19.2",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 24,
+        "discoveryear": 2013,
+        "discovermonth": 12,
+        "discoverday": 24
+    }
+}

@@ -1,0 +1,83 @@
+{
+    "SN2014M": {
+        "name": "SN2014M",
+        "aliases": [
+            "SN2014M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "LLA",
+                "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56686.485",
+                "band": "C",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56705.134",
+                "band": "CV",
+                "abmag": "16.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56705.48",
+                "band": "UV",
+                "abmag": "16.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56739.358",
+                "band": "UV",
+                "abmag": "17.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56763.01",
+                "band": "U",
+                "abmag": "18.1",
+                "source": "5,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 29,
+        "discovermonth": 1,
+        "host": "PGC2768068",
+        "claimedtype": "Ia",
+        "hvel": "6660",
+        "galra": "151516",
+        "galdec": "+752907",
+        "snra": "151517.21",
+        "sndec": "+752909.5",
+        "discoverer": "Ma et al.",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 29,
+        "z": 0.0225
+    }
+}

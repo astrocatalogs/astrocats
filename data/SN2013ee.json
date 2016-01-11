@@ -1,0 +1,61 @@
+{
+    "SN2013ee": {
+        "name": "SN2013ee",
+        "aliases": [
+            "SN2013ee"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Marc Serrau",
+                "alias": "2"
+            },
+            {
+                "name": "Giancarlo Cortini",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56655.984",
+                "band": "CR",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56736.853",
+                "band": "CR",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56754.8",
+                "band": "U",
+                "abmag": "16.0",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 29,
+        "discovermonth": 12,
+        "host": "NGC 3079",
+        "claimedtype": "II",
+        "hvel": "1101",
+        "galra": "100158",
+        "galdec": "+554047",
+        "snra": "100156.83",
+        "sndec": "+554144.0",
+        "discoverer": "Cortini",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 29,
+        "z": 0.00368
+    }
+}

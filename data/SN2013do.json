@@ -1,0 +1,43 @@
+{
+    "SN2013do": {
+        "name": "SN2013do",
+        "aliases": [
+            "SN2013do"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pro ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56541.042",
+                "band": "CR",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 9,
+        "host": "UGC 12137",
+        "claimedtype": "II P",
+        "hvel": "4694",
+        "galra": "223949",
+        "galdec": "+381255",
+        "snra": "223950.67",
+        "sndec": "+381244.3",
+        "discoverer": "Wang, Gao",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 6,
+        "z": 0.0158
+    }
+}

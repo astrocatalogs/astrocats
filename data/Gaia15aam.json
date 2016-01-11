@@ -1,0 +1,81 @@
+{
+    "Gaia15aam": {
+        "name": "Gaia15aam",
+        "aliases": [
+            "Gaia15aam"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57030.46799999988",
+                "band": "G",
+                "abmag": "18.19",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57030.643999999855",
+                "band": "G",
+                "abmag": "18.26",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57030.71799999988",
+                "band": "G",
+                "abmag": "18.22",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57067.375",
+                "band": "G",
+                "abmag": "19.25",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57067.44900000002",
+                "band": "G",
+                "abmag": "19.19",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57103.095000000205",
+                "band": "G",
+                "abmag": "20.13",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57103.16900000023",
+                "band": "G",
+                "abmag": "20.11",
+                "instrument": "GAIA",
+                "source": "1"
+            }
+        ],
+        "discoveryear": 2015,
+        "snra": "244.51996",
+        "sndec": "14.40402",
+        "claimedtype": "Ibc",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 8,
+        "discovermonth": 1,
+        "discoverday": 8
+    }
+}

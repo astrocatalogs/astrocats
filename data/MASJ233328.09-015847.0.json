@@ -1,0 +1,34 @@
+{
+    "MASJ233328.09-015847.0": {
+        "name": "MASJ233328.09-015847.0",
+        "aliases": [
+            "MASJ233328.09-015847.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57303.6891",
+                "band": "U",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 10,
+        "maxday": 8,
+        "discoveryear": 2015,
+        "discovermonth": 10,
+        "discoverday": 8
+    }
+}

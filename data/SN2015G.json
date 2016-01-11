@@ -1,0 +1,94 @@
+{
+    "SN2015G": {
+        "name": "SN2015G",
+        "aliases": [
+            "SN2015G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "T. Noguchi",
+                "alias": "2"
+            },
+            {
+                "name": "S. Kiyota",
+                "alias": "3"
+            },
+            {
+                "name": "T. Yusa",
+                "alias": "4"
+            },
+            {
+                "name": "Andy Cason",
+                "alias": "5"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57105.534",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57105.54",
+                "band": "V",
+                "abmag": "16.26",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57107.481",
+                "band": "V",
+                "abmag": "16.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57109.48",
+                "band": "V",
+                "abmag": "16.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57109.49",
+                "band": "Rc",
+                "abmag": "16.4",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57129.725",
+                "band": "U",
+                "abmag": "17.9",
+                "source": "6,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 24,
+        "discovermonth": 3,
+        "host": "NGC 6951",
+        "claimedtype": "Ibn",
+        "hvel": "1331",
+        "galra": "203714",
+        "galdec": "+660620",
+        "snra": "203725.58",
+        "sndec": "+660711.5",
+        "discoverer": "Shima",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 24,
+        "z": 0.00445
+    }
+}

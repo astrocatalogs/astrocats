@@ -1,0 +1,26 @@
+{
+    "SN1958C": {
+        "name": "SN1958C",
+        "aliases": [
+            "SN1958C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "36308.0",
+                "band": "",
+                "abmag": "19.6",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1958",
+        "discovermonth": "4",
+        "discoverday": "15"
+    }
+}

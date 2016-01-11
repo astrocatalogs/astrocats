@@ -1,0 +1,73 @@
+{
+    "Gaia15aap": {
+        "name": "Gaia15aap",
+        "aliases": [
+            "Gaia15aap"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57034.89199999999",
+                "band": "G",
+                "abmag": "18.53",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57034.966000000015",
+                "band": "G",
+                "abmag": "18.52",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57064.628000000026",
+                "band": "G",
+                "abmag": "19.06",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57064.70200000005",
+                "band": "G",
+                "abmag": "18.97",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57104.58600000013",
+                "band": "G",
+                "abmag": "20.48",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57113.41500000004",
+                "band": "G",
+                "abmag": "20.70",
+                "instrument": "GAIA",
+                "source": "1"
+            }
+        ],
+        "discoveryear": 2015,
+        "snra": "231.71731",
+        "sndec": "20.62390",
+        "claimedtype": "Ia",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 12,
+        "discovermonth": 1,
+        "discoverday": 12
+    }
+}

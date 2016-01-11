@@ -1,0 +1,43 @@
+{
+    "SN2014dw": {
+        "name": "SN2014dw",
+        "aliases": [
+            "SN2014dw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57046.52",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 24,
+        "discovermonth": 1,
+        "host": "NGC 3568",
+        "claimedtype": "II",
+        "hvel": "2437",
+        "galra": "111049",
+        "galdec": "-372652",
+        "snra": "111048.41",
+        "sndec": "-372702.2",
+        "discoverer": "Parker",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 24,
+        "z": 0.00816
+    }
+}

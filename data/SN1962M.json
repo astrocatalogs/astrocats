@@ -1,0 +1,29 @@
+{
+    "SN1962M": {
+        "name": "SN1962M",
+        "aliases": [
+            "SN1962M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37994.0",
+                "band": "",
+                "abmag": "11.7",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1962",
+        "discovermonth": "11",
+        "discoverday": "26",
+        "maxyear": "1962",
+        "maxmonth": "12",
+        "maxday": "4"
+    }
+}

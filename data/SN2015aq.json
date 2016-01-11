@@ -1,0 +1,64 @@
+{
+    "SN2015aq": {
+        "name": "SN2015aq",
+        "aliases": [
+            "SN2015aq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "MDe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57342.157",
+                "band": "CV",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57364.133",
+                "band": "CV",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57386.029",
+                "band": "CV",
+                "abmag": "17.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57368.191",
+                "band": "CV",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 16,
+        "discovermonth": 11,
+        "host": "UGC 5015",
+        "claimedtype": "II P",
+        "hvel": "1629",
+        "galra": "092548",
+        "galdec": "+341638",
+        "snra": "092544.53",
+        "sndec": "+341636.1",
+        "discoverer": "Lipunov, Shumkov",
+        "maxyear": 2015,
+        "maxmonth": 11,
+        "maxday": 16,
+        "z": 0.00545
+    }
+}

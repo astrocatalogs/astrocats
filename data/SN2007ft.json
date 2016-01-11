@@ -1,0 +1,26 @@
+{
+    "SN2007ft": {
+        "name": "SN2007ft",
+        "aliases": [
+            "SN2007ft"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54296.0",
+                "band": "R",
+                "abmag": "16",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2007",
+        "discovermonth": "7",
+        "discoverday": "15"
+    }
+}

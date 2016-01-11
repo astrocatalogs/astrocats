@@ -1,0 +1,29 @@
+{
+    "SN2004ic": {
+        "name": "SN2004ic",
+        "aliases": [
+            "SN2004ic"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53288.0",
+                "band": "",
+                "abmag": "20.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2004",
+        "discovermonth": "10",
+        "discoverday": "10",
+        "maxyear": "2004",
+        "maxmonth": "10",
+        "maxday": "10"
+    }
+}

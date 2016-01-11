@@ -1,0 +1,29 @@
+{
+    "SN1970G": {
+        "name": "SN1970G",
+        "aliases": [
+            "SN1970G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "40797.0",
+                "band": "",
+                "abmag": "11.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1970",
+        "discovermonth": "7",
+        "discoverday": "30",
+        "maxyear": "1970",
+        "maxmonth": "8",
+        "maxday": "2"
+    }
+}

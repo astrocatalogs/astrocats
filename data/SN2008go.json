@@ -1,0 +1,26 @@
+{
+    "SN2008go": {
+        "name": "SN2008go",
+        "aliases": [
+            "SN2008go"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54761.0",
+                "band": "",
+                "abmag": "18.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2008",
+        "discovermonth": "10",
+        "discoverday": "22"
+    }
+}

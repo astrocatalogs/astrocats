@@ -1,0 +1,43 @@
+{
+    "SN2013ef": {
+        "name": "SN2013ef",
+        "aliases": [
+            "SN2013ef"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pro ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56541.117",
+                "band": "CR",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 9,
+        "host": "UGC 1395",
+        "claimedtype": "Ia",
+        "hvel": "5184",
+        "galra": "015522",
+        "galdec": "+063642",
+        "snra": "015520.71",
+        "sndec": "+063635.3",
+        "discoverer": "Stanek et al.",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 6,
+        "z": 0.0174
+    }
+}

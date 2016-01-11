@@ -1,0 +1,29 @@
+{
+    "SN1940A": {
+        "name": "SN1940A",
+        "aliases": [
+            "SN1940A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "29675.0",
+                "band": "",
+                "abmag": "14.3",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1940",
+        "discovermonth": "2",
+        "discoverday": "16",
+        "maxyear": "1940",
+        "maxmonth": "2",
+        "maxday": "15"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "SN2013hl": {
+        "name": "SN2013hl",
+        "aliases": [
+            "SN2013hl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56641.418",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 15,
+        "discovermonth": 12,
+        "host": "NGC 3910",
+        "claimedtype": "Ia",
+        "hvel": "7833",
+        "galra": "114959",
+        "galdec": "+212002",
+        "snra": "115000.16",
+        "sndec": "+212016.6",
+        "discoverer": "Itagaki",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 15,
+        "z": 0.0265
+    }
+}

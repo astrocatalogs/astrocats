@@ -1,0 +1,34 @@
+{
+    "HFF13cha": {
+        "name": "HFF13cha",
+        "aliases": [
+            "HFF13cha"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56665.269",
+                "band": "C",
+                "abmag": "22.4",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 8,
+        "discoveryear": 2014,
+        "discovermonth": 1,
+        "discoverday": 8
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "SN1971U": {
+        "name": "SN1971U",
+        "aliases": [
+            "SN1971U"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41301.0",
+                "band": "V",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1971",
+        "discovermonth": "12",
+        "discoverday": "16"
+    }
+}

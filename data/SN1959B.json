@@ -1,0 +1,29 @@
+{
+    "SN1959B": {
+        "name": "SN1959B",
+        "aliases": [
+            "SN1959B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "36692.0",
+                "band": "",
+                "abmag": "18.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1959",
+        "discovermonth": "5",
+        "discoverday": "4",
+        "maxyear": "1959",
+        "maxmonth": "5",
+        "maxday": "4"
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "PTF14hup": {
+        "name": "PTF14hup",
+        "aliases": [
+            "PTF14hup"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56992.242",
+                "band": "C",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 1,
+        "discoveryear": 2014,
+        "discovermonth": 12,
+        "discoverday": 1
+    }
+}

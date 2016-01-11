@@ -1,0 +1,26 @@
+{
+    "SN2001be": {
+        "name": "SN2001be",
+        "aliases": [
+            "SN2001be"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52019.0",
+                "band": "V",
+                "abmag": "21.1",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2001",
+        "discovermonth": "4",
+        "discoverday": "20"
+    }
+}

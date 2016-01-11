@@ -1,0 +1,173 @@
+{
+    "SN2014C": {
+        "name": "SN2014C",
+        "aliases": [
+            "SN2014C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            },
+            {
+                "name": "Raymond Kneip",
+                "alias": "5"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "6"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "7"
+            },
+            {
+                "name": "John Evans",
+                "alias": "8"
+            },
+            {
+                "name": "Enrique Diez",
+                "alias": "9"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "10"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56309.776",
+                "band": "CV",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56663.144",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56666.117",
+                "band": "C",
+                "abmag": "15.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56669.167",
+                "band": "V",
+                "abmag": "15.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56672.009",
+                "band": "V",
+                "abmag": "14.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56673.85",
+                "band": "",
+                "abmag": "14.03",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.043",
+                "band": "V",
+                "abmag": "15.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.774",
+                "band": "CV",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56680.754",
+                "band": "V",
+                "abmag": "14.2",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56682.812",
+                "band": "U",
+                "abmag": "15.3",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56690.7812",
+                "band": "CR",
+                "abmag": "15.139",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56814.465",
+                "band": "UR",
+                "abmag": "17.5",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56837.425",
+                "band": "UR",
+                "abmag": "17.7",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56863.415",
+                "band": "UR",
+                "abmag": "17.9",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56885.345",
+                "band": "UR",
+                "abmag": "18.0",
+                "source": "10,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 17,
+        "discovermonth": 1,
+        "host": "NGC 7331",
+        "claimedtype": "Ib",
+        "hvel": "821",
+        "galra": "223704",
+        "galdec": "+342456",
+        "snra": "223705.60",
+        "sndec": "+342431.9",
+        "discoverer": "LOSS",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 16,
+        "z": 0.00274
+    }
+}

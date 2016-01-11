@@ -1,0 +1,29 @@
+{
+    "SN1983U": {
+        "name": "SN1983U",
+        "aliases": [
+            "SN1983U"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "45642.0",
+                "band": "",
+                "abmag": "12",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1983",
+        "discovermonth": "11",
+        "discoverday": "4",
+        "maxyear": "1983",
+        "maxmonth": "11",
+        "maxday": "1"
+    }
+}

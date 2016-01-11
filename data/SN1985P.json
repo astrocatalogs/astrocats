@@ -1,0 +1,29 @@
+{
+    "SN1985P": {
+        "name": "SN1985P",
+        "aliases": [
+            "SN1985P"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46348.0",
+                "band": "",
+                "abmag": "13.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1985",
+        "discovermonth": "10",
+        "discoverday": "10",
+        "maxyear": "1985",
+        "maxmonth": "10",
+        "maxday": "10"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "SN2015K": {
+        "name": "SN2015K",
+        "aliases": [
+            "SN2015K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57231.463",
+                "band": "UV",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 28,
+        "discovermonth": 7,
+        "host": "NGC 7712",
+        "claimedtype": "Ic",
+        "hvel": "3033",
+        "galra": "233552",
+        "galdec": "+233707",
+        "snra": "233552.26",
+        "sndec": "+233652.1",
+        "discoverer": "Itagaki",
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 28,
+        "z": 0.0102
+    }
+}

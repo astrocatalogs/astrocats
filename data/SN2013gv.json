@@ -1,0 +1,83 @@
+{
+    "SN2013gv": {
+        "name": "SN2013gv",
+        "aliases": [
+            "SN2013gv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "3"
+            },
+            {
+                "name": "Marc Serrau",
+                "alias": "4"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56634.817",
+                "band": "CV",
+                "abmag": "17.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56631.926",
+                "band": "V",
+                "abmag": "18.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56645.84",
+                "band": "CR",
+                "abmag": "16.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56652.87",
+                "band": "CR",
+                "abmag": "16.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56682.9",
+                "band": "CV",
+                "abmag": "18.41",
+                "source": "5,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 5,
+        "discovermonth": 12,
+        "host": "IC 1890",
+        "claimedtype": "Ia",
+        "hvel": "10229",
+        "galra": "030958",
+        "galdec": "+191229",
+        "snra": "030957.30",
+        "sndec": "+191248.6",
+        "discoverer": "Shima",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 26,
+        "z": 0.0347
+    }
+}

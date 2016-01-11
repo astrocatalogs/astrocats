@@ -1,0 +1,26 @@
+{
+    "SN2005cb": {
+        "name": "SN2005cb",
+        "aliases": [
+            "SN2005cb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53503.0",
+                "band": "",
+                "abmag": "15.6",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2005",
+        "discovermonth": "5",
+        "discoverday": "13"
+    }
+}

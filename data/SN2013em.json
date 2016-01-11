@@ -1,0 +1,54 @@
+{
+    "SN2013em": {
+        "name": "SN2013em",
+        "aliases": [
+            "SN2013em"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Pro ",
+                "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56541.056",
+                "band": "CR",
+                "abmag": "18.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56546.946",
+                "band": "CR",
+                "abmag": "18.54",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 9,
+        "host": "PGC0214897",
+        "claimedtype": "Ia",
+        "hvel": "6597",
+        "galra": "230227",
+        "galdec": "+323137",
+        "snra": "230226.62",
+        "sndec": "+323131.2",
+        "discoverer": "Ciabattari, Mazzoni, Petroni",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 11,
+        "z": 0.0223
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "SN1974J": {
+        "name": "SN1974J",
+        "aliases": [
+            "SN1974J"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "42329.0",
+                "band": "",
+                "abmag": "15.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1974",
+        "discovermonth": "10",
+        "discoverday": "9",
+        "maxyear": "1974",
+        "maxmonth": "10",
+        "maxday": "14"
+    }
+}

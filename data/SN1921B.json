@@ -1,0 +1,28 @@
+{
+    "SN1921B": {
+        "name": "SN1921B",
+        "aliases": [
+            "SN1921B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "22785.0",
+                "band": "",
+                "abmag": "13.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1921",
+        "discovermonth": "4",
+        "discoverday": "6",
+        "maxyear": "1921",
+        "maxmonth": "4"
+    }
+}

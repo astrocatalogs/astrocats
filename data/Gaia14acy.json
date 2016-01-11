@@ -1,0 +1,145 @@
+{
+    "Gaia14acy": {
+        "name": "Gaia14acy",
+        "aliases": [
+            "Gaia14acy"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56872.94100000011",
+                "band": "G",
+                "abmag": "19.53",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56873.117000000086",
+                "band": "G",
+                "abmag": "19.48",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56873.19100000011",
+                "band": "G",
+                "abmag": "19.49",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56873.367000000086",
+                "band": "G",
+                "abmag": "19.53",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56873.44100000011",
+                "band": "G",
+                "abmag": "19.64",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56873.617000000086",
+                "band": "G",
+                "abmag": "19.60",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56956.80200000014",
+                "band": "G",
+                "abmag": "18.53",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56956.876000000164",
+                "band": "G",
+                "abmag": "18.53",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56957.05200000014",
+                "band": "G",
+                "abmag": "18.42",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56957.126000000164",
+                "band": "G",
+                "abmag": "18.41",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56969.882999999914",
+                "band": "G",
+                "abmag": "18.65",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56970.05899999989",
+                "band": "G",
+                "abmag": "18.72",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56970.132999999914",
+                "band": "G",
+                "abmag": "18.80",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57055.83499999996",
+                "band": "G",
+                "abmag": "19.58",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57056.01099999994",
+                "band": "G",
+                "abmag": "19.43",
+                "instrument": "GAIA",
+                "source": "1"
+            }
+        ],
+        "discoveryear": 2014,
+        "snra": "10.16959",
+        "sndec": "-28.95650",
+        "claimedtype": "Ia",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 27,
+        "discovermonth": 8,
+        "discoverday": 3
+    }
+}

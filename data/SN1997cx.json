@@ -1,0 +1,29 @@
+{
+    "SN1997cx": {
+        "name": "SN1997cx",
+        "aliases": [
+            "SN1997cx"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50641.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1997",
+        "discovermonth": "7",
+        "discoverday": "12",
+        "maxyear": "1997",
+        "maxmonth": "5",
+        "maxday": "29"
+    }
+}

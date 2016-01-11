@@ -1,0 +1,43 @@
+{
+    "SN2013ex": {
+        "name": "SN2013ex",
+        "aliases": [
+            "SN2013ex"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Juanjo Gonzalez",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56629.988",
+                "band": "R",
+                "abmag": "17.82",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 3,
+        "discovermonth": 12,
+        "host": "NGC 1954",
+        "claimedtype": "Ia",
+        "hvel": "3033",
+        "galra": "053248",
+        "galdec": "-140346",
+        "snra": "053246.62",
+        "sndec": "-140245.4",
+        "discoverer": "Brimacombe et al.",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 3,
+        "z": 0.0102
+    }
+}

@@ -1,0 +1,83 @@
+{
+    "SN2013en": {
+        "name": "SN2013en",
+        "aliases": [
+            "SN2013en"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Mse",
+                "alias": "2"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "3"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "4"
+            },
+            {
+                "name": "Pro ",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56512.855",
+                "band": "CR",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56513.847",
+                "band": "CR",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56534.03",
+                "band": "",
+                "abmag": "16.25",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56539.839",
+                "band": "CR",
+                "abmag": "18.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56540.835",
+                "band": "CR",
+                "abmag": "18.1",
+                "source": "5,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 8,
+        "discovermonth": 8,
+        "host": "UGC 11369",
+        "claimedtype": "Ia pec",
+        "hvel": "4548",
+        "galra": "185138",
+        "galdec": "+233805",
+        "snra": "185137.35",
+        "sndec": "+233820.6",
+        "discoverer": "Ciabattari, Mazzoni, Rossi",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 30,
+        "z": 0.0153
+    }
+}

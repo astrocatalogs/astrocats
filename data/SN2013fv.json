@@ -1,0 +1,57 @@
+{
+    "SN2013fv": {
+        "name": "SN2013fv",
+        "aliases": [
+            "SN2013fv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56595.355",
+                "band": "UV",
+                "abmag": "18.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56635.299",
+                "band": "UV",
+                "abmag": "18.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56655.21",
+                "band": "UV",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 10,
+        "host": "UGC 2789",
+        "claimedtype": "II",
+        "hvel": "3135",
+        "galra": "033614",
+        "galdec": "+673353",
+        "snra": "033616.05",
+        "sndec": "+673415.7",
+        "discoverer": "LOSS",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 30,
+        "z": 0.0105
+    }
+}

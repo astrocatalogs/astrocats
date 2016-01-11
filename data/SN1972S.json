@@ -1,0 +1,26 @@
+{
+    "SN1972S": {
+        "name": "SN1972S",
+        "aliases": [
+            "SN1972S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41413.0",
+                "band": "",
+                "abmag": "16.3",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1972",
+        "discovermonth": "4",
+        "discoverday": "6"
+    }
+}

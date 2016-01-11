@@ -1,0 +1,50 @@
+{
+    "SN2015F": {
+        "name": "SN2015F",
+        "aliases": [
+            "SN2015F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Berto Monard",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57110.0",
+                "band": "",
+                "abmag": "12.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57112.0",
+                "band": "",
+                "abmag": "12.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 29,
+        "discovermonth": 3,
+        "host": "NGC 2442",
+        "claimedtype": "Ia",
+        "hvel": "1399",
+        "galra": "073624",
+        "galdec": "-693150",
+        "snra": "073615.76",
+        "sndec": "-693023.0",
+        "discoverer": "Monard",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 29,
+        "z": 0.00468
+    }
+}

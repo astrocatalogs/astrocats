@@ -1,0 +1,43 @@
+{
+    "SN2014dy": {
+        "name": "SN2014dy",
+        "aliases": [
+            "SN2014dy"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57067.4917",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 14,
+        "discovermonth": 2,
+        "host": "A024857-0045",
+        "claimedtype": "Ia",
+        "hvel": "22500",
+        "galra": "024857",
+        "galdec": "-004538",
+        "snra": "024857.86",
+        "sndec": "-004538.5",
+        "discoverer": "Matsumoto et al.",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 14,
+        "z": 0.0781
+    }
+}

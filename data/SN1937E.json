@@ -1,0 +1,26 @@
+{
+    "SN1937E": {
+        "name": "SN1937E",
+        "aliases": [
+            "SN1937E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "28863.0",
+                "band": "",
+                "abmag": "15",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1937",
+        "discovermonth": "11",
+        "discoverday": "26"
+    }
+}

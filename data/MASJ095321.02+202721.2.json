@@ -1,0 +1,34 @@
+{
+    "MASJ095321.02+202721.2": {
+        "name": "MASJ095321.02+202721.2",
+        "aliases": [
+            "MASJ095321.02+202721.2"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56961.217",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 31,
+        "discoveryear": 2014,
+        "discovermonth": 10,
+        "discoverday": 31
+    }
+}

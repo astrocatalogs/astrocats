@@ -1,0 +1,29 @@
+{
+    "SN2007kz": {
+        "name": "SN2007kz",
+        "aliases": [
+            "SN2007kz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54365.0",
+                "band": "g",
+                "abmag": "21.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2007",
+        "discovermonth": "9",
+        "discoverday": "22",
+        "maxyear": "2007",
+        "maxmonth": "10",
+        "maxday": "3"
+    }
+}

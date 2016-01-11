@@ -1,0 +1,87 @@
+{
+    "SN2014dr": {
+        "name": "SN2014dr",
+        "aliases": [
+            "SN2014dr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Jaroslaw Grzegorzek",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Marc Deldem",
+                "alias": "5"
+            },
+            {
+                "name": "MDe",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56958.072",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56947.492",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56957.6861",
+                "band": "U",
+                "abmag": "16.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56961.992",
+                "band": "CV",
+                "abmag": "17.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56980.995",
+                "band": "CV",
+                "abmag": "17.4",
+                "source": "6,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 17,
+        "discovermonth": 10,
+        "host": "UGC 2705",
+        "claimedtype": "II",
+        "hvel": "6867",
+        "galra": "032247",
+        "galdec": "+000858",
+        "snra": "032246.39",
+        "sndec": "+000920.7",
+        "discoverer": "Howerton et al.",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 27,
+        "z": 0.0232
+    }
+}

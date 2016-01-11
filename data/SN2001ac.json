@@ -1,0 +1,92 @@
+{
+    "SN2001ac": {
+        "name": "SN2001ac",
+        "aliases": [
+            "SN2001ac"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51980.39999999991",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51981.299999999814",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51985.799999999814",
+                "band": "R",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51986.85999999987",
+                "band": "R",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51986.970000000205",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51987.14999999991",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51988.99000000022",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52022.87999999989",
+                "band": "C",
+                "abmag": "19",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 12,
+        "discovermonth": 3,
+        "host": "NGC 3504",
+        "claimedtype": "IIn?",
+        "hvel": "1518",
+        "galra": "110311",
+        "galdec": "+275825",
+        "snra": "110315.37",
+        "sndec": "+275829.5",
+        "discoverer": "LOTOSS",
+        "maxyear": 2001,
+        "maxmonth": 3,
+        "maxday": 17,
+        "z": 0.00508
+    }
+}

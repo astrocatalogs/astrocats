@@ -1,0 +1,29 @@
+{
+    "SN2000am": {
+        "name": "SN2000am",
+        "aliases": [
+            "SN2000am"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51606.0",
+                "band": "R",
+                "abmag": "20.1",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2000",
+        "discovermonth": "3",
+        "discoverday": "3",
+        "maxyear": "2000",
+        "maxmonth": "3",
+        "maxday": "14"
+    }
+}

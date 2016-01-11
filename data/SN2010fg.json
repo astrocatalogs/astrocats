@@ -1,0 +1,26 @@
+{
+    "SN2010fg": {
+        "name": "SN2010fg",
+        "aliases": [
+            "SN2010fg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55353.0",
+                "band": "r",
+                "abmag": "22.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2010",
+        "discovermonth": "6",
+        "discoverday": "6"
+    }
+}

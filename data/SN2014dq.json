@@ -1,0 +1,54 @@
+{
+    "SN2014dq": {
+        "name": "SN2014dq",
+        "aliases": [
+            "SN2014dq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56955.4972",
+                "band": "U",
+                "abmag": "15.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56966.44",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 25,
+        "discovermonth": 10,
+        "host": "E467-G51",
+        "claimedtype": "II",
+        "hvel": "1769",
+        "galra": "222317",
+        "galdec": "-285851",
+        "snra": "222316.09",
+        "sndec": "-285831.8",
+        "discoverer": "Bok",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 25,
+        "z": 0.00592
+    }
+}

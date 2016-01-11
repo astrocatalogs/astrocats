@@ -1,0 +1,34 @@
+{
+    "ASASSN-15gr": {
+        "name": "ASASSN-15gr",
+        "aliases": [
+            "ASASSN-15gr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Roland Santallo",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57136.39612",
+                "band": "V",
+                "abmag": "16.38",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 24,
+        "discoveryear": 2015,
+        "discovermonth": 4,
+        "discoverday": 24
+    }
+}

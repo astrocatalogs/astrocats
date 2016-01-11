@@ -1,0 +1,26 @@
+{
+    "SN1973M": {
+        "name": "SN1973M",
+        "aliases": [
+            "SN1973M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41841.0",
+                "band": "V",
+                "abmag": "19",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1973",
+        "discovermonth": "6",
+        "discoverday": "8"
+    }
+}

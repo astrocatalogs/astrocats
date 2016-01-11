@@ -1,0 +1,43 @@
+{
+    "SN2014df": {
+        "name": "SN2014df",
+        "aliases": [
+            "SN2014df"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Maciel B. Sparrenberger",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56864.295",
+                "band": "U",
+                "abmag": "15.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 26,
+        "discovermonth": 7,
+        "host": "NGC 1448",
+        "claimedtype": "Ib",
+        "hvel": "1167",
+        "galra": "034432",
+        "galdec": "-443841",
+        "snra": "034423.99",
+        "sndec": "-444008.1",
+        "discoverer": "Monard",
+        "maxyear": 2014,
+        "maxmonth": 7,
+        "maxday": 26,
+        "z": 0.0039
+    }
+}

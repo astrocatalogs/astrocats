@@ -1,0 +1,54 @@
+{
+    "SN2014dk": {
+        "name": "SN2014dk",
+        "aliases": [
+            "SN2014dk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56931.865",
+                "band": "CV",
+                "abmag": "17.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56948.03634",
+                "band": "CV",
+                "abmag": "17.62",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 1,
+        "discovermonth": 10,
+        "host": "A002811+0709",
+        "claimedtype": "Ia",
+        "hvel": "11400",
+        "galra": "002811",
+        "galdec": "+070943",
+        "snra": "002811.96",
+        "sndec": "+070943.9",
+        "discoverer": "Drake et al.",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 1,
+        "z": 0.0388
+    }
+}

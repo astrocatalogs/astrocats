@@ -1,0 +1,43 @@
+{
+    "SN2014bg": {
+        "name": "SN2014bg",
+        "aliases": [
+            "SN2014bg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56829.208",
+                "band": "V",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 21,
+        "discovermonth": 6,
+        "host": "UGC 9396",
+        "claimedtype": "Ia",
+        "hvel": "10820",
+        "galra": "143546",
+        "galdec": "+244333",
+        "snra": "143545.90",
+        "sndec": "+244317.9",
+        "discoverer": "Villi, Bombardini, Benazzi",
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 21,
+        "z": 0.0368
+    }
+}

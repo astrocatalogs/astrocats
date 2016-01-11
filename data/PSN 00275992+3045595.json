@@ -1,0 +1,45 @@
+{
+    "PSN 00275992+3045595": {
+        "name": "PSN 00275992+3045595",
+        "aliases": [
+            "PSN 00275992+3045595"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "2"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57269.493",
+                "band": "C",
+                "abmag": "14.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57272.802",
+                "band": "R",
+                "abmag": "16.4",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 9,
+        "maxday": 4,
+        "discoveryear": 2015,
+        "discovermonth": 9,
+        "discoverday": 4
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "SN2013hj": {
+        "name": "SN2013hj",
+        "aliases": [
+            "SN2013hj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56329.101",
+                "band": "CV",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56641.126",
+                "band": "V",
+                "abmag": "14.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56641.131",
+                "band": "B",
+                "abmag": "14.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56690.9252",
+                "band": "CR",
+                "abmag": "14.646",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 6,
+        "discovermonth": 2,
+        "host": "M-02-24-03",
+        "claimedtype": "II",
+        "hvel": "2090",
+        "galra": "091207",
+        "galdec": "-152552",
+        "snra": "091206.29",
+        "sndec": "-152546.0",
+        "discoverer": "Antezana et al.",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 15,
+        "z": 0.007
+    }
+}

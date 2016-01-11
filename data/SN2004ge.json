@@ -1,0 +1,29 @@
+{
+    "SN2004ge": {
+        "name": "SN2004ge",
+        "aliases": [
+            "SN2004ge"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53326.0",
+                "band": "",
+                "abmag": "17.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2004",
+        "discovermonth": "11",
+        "discoverday": "17",
+        "maxyear": "2004",
+        "maxmonth": "12",
+        "maxday": "2"
+    }
+}

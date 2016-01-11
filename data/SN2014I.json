@@ -1,0 +1,54 @@
+{
+    "SN2014I": {
+        "name": "SN2014I",
+        "aliases": [
+            "SN2014I"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56676.284",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.094",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 19,
+        "discovermonth": 1,
+        "host": "E487-G36",
+        "claimedtype": "Ia",
+        "hvel": "9030",
+        "galra": "054221",
+        "galdec": "-253228",
+        "snra": "054219.80",
+        "sndec": "-253239.9",
+        "discoverer": "Parker",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 21,
+        "z": 0.0306
+    }
+}

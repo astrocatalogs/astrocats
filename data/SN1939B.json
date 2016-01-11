@@ -1,0 +1,29 @@
+{
+    "SN1939B": {
+        "name": "SN1939B",
+        "aliases": [
+            "SN1939B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "29402.0",
+                "band": "",
+                "abmag": "11.9",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1939",
+        "discovermonth": "5",
+        "discoverday": "19",
+        "maxyear": "1939",
+        "maxmonth": "5",
+        "maxday": "1"
+    }
+}

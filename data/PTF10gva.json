@@ -1,0 +1,34 @@
+{
+    "PTF10gva": {
+        "name": "PTF10gva",
+        "aliases": [
+            "PTF10gva"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55339.9",
+                "band": "CR",
+                "abmag": "15.8",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2010,
+        "maxmonth": 5,
+        "maxday": 23,
+        "discoveryear": 2010,
+        "discovermonth": 5,
+        "discoverday": 23
+    }
+}

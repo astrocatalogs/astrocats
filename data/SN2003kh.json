@@ -1,0 +1,29 @@
+{
+    "SN2003kh": {
+        "name": "SN2003kh",
+        "aliases": [
+            "SN2003kh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52970.0",
+                "band": "",
+                "abmag": "17.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2003",
+        "discovermonth": "11",
+        "discoverday": "27",
+        "maxyear": "2003",
+        "maxmonth": "11",
+        "maxday": "20"
+    }
+}

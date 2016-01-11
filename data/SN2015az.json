@@ -1,0 +1,50 @@
+{
+    "SN2015az": {
+        "name": "SN2015az",
+        "aliases": [
+            "SN2015az"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57360.6601",
+                "band": "U",
+                "abmag": "14.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57364.656",
+                "band": "U",
+                "abmag": "14.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 4,
+        "discovermonth": 12,
+        "host": "UGC 2561",
+        "claimedtype": "Ia",
+        "hvel": "6031",
+        "galra": "030943",
+        "galdec": "+405827",
+        "snra": "030942.51",
+        "sndec": "+405829.3",
+        "discoverer": "Gagliano et al.",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 4,
+        "z": 0.0203
+    }
+}

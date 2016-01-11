@@ -1,0 +1,68 @@
+{
+    "SN2014bu": {
+        "name": "SN2014bu",
+        "aliases": [
+            "SN2014bu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56827.447",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56829.443",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56863.493",
+                "band": "UV",
+                "abmag": "15.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56913.417",
+                "band": "UV",
+                "abmag": "15.9",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 19,
+        "discovermonth": 6,
+        "host": "NGC 694",
+        "claimedtype": "II P",
+        "hvel": "2935",
+        "galra": "015059",
+        "galdec": "+215949",
+        "snra": "015058.45",
+        "sndec": "+215959.8",
+        "discoverer": "Monard",
+        "maxyear": 2014,
+        "maxmonth": 7,
+        "maxday": 25,
+        "z": 0.00984
+    }
+}

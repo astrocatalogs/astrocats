@@ -1,0 +1,26 @@
+{
+    "SN1999gv": {
+        "name": "SN1999gv",
+        "aliases": [
+            "SN1999gv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51248.0",
+                "band": "V",
+                "abmag": "22.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1999",
+        "discovermonth": "3",
+        "discoverday": "11"
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "SN2014ea": {
+        "name": "SN2014ea",
+        "aliases": [
+            "SN2014ea"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "MDe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57063.989",
+                "band": "CR",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.997",
+                "band": "CR",
+                "abmag": "17.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57093.962",
+                "band": "CR",
+                "abmag": "18.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57119.885",
+                "band": "CR",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 10,
+        "discovermonth": 2,
+        "host": "M+05-26-14",
+        "claimedtype": "Ia",
+        "hvel": "6295",
+        "galra": "104827",
+        "galdec": "+263502",
+        "snra": "104832.31",
+        "sndec": "+263517.9",
+        "discoverer": "Drake et al.",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 10,
+        "z": 0.0212
+    }
+}

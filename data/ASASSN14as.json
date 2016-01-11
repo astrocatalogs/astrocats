@@ -1,0 +1,45 @@
+{
+    "ASASSN14as": {
+        "name": "ASASSN14as",
+        "aliases": [
+            "ASASSN14as"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56780.226",
+                "band": "U",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56802.984",
+                "band": "CV",
+                "abmag": "17.7",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 3,
+        "discoveryear": 2014,
+        "discovermonth": 5,
+        "discoverday": 3
+    }
+}

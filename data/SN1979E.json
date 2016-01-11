@@ -1,0 +1,26 @@
+{
+    "SN1979E": {
+        "name": "SN1979E",
+        "aliases": [
+            "SN1979E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "44104.0",
+                "band": "",
+                "abmag": "16",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1979",
+        "discovermonth": "8",
+        "discoverday": "19"
+    }
+}

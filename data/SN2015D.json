@@ -1,0 +1,54 @@
+{
+    "SN2015D": {
+        "name": "SN2015D",
+        "aliases": [
+            "SN2015D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57042.49",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57046.47",
+                "band": "R",
+                "abmag": "17.0",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 20,
+        "discovermonth": 1,
+        "host": "NGC 5020",
+        "claimedtype": "II P",
+        "hvel": "3360",
+        "galra": "131240",
+        "galdec": "+123559",
+        "snra": "131241.16",
+        "sndec": "+123601.8",
+        "discoverer": "Jin, Gao",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 24,
+        "z": 0.0113
+    }
+}

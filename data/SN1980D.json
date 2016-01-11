@@ -1,0 +1,29 @@
+{
+    "SN1980D": {
+        "name": "SN1980D",
+        "aliases": [
+            "SN1980D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "44315.0",
+                "band": "",
+                "abmag": "15.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1980",
+        "discovermonth": "3",
+        "discoverday": "17",
+        "maxyear": "1980",
+        "maxmonth": "3",
+        "maxday": "7"
+    }
+}

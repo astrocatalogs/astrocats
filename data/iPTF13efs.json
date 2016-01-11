@@ -1,0 +1,41 @@
+{
+    "iPTF13efs": {
+        "name": "iPTF13efs",
+        "aliases": [
+            "iPTF13efs"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56646.313",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56654.35",
+                "band": "C",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 20,
+        "discoveryear": 2013,
+        "discovermonth": 12,
+        "discoverday": 20
+    }
+}

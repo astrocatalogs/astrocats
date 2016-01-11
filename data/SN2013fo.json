@@ -1,0 +1,43 @@
+{
+    "SN2013fo": {
+        "name": "SN2013fo",
+        "aliases": [
+            "SN2013fo"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56569.342",
+                "band": "UV",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 4,
+        "discovermonth": 10,
+        "host": "A012031+1203",
+        "claimedtype": "Ia",
+        "hvel": "16200",
+        "galra": "012031",
+        "galdec": "+120312",
+        "snra": "012031.94",
+        "sndec": "+120312.2",
+        "discoverer": "Zhang, Wang, Chen ",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 4,
+        "z": 0.0556
+    }
+}

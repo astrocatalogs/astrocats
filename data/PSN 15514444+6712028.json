@@ -1,0 +1,34 @@
+{
+    "PSN 15514444+6712028": {
+        "name": "PSN 15514444+6712028",
+        "aliases": [
+            "PSN 15514444+6712028"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57190.91",
+                "band": "V",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 17,
+        "discoveryear": 2015,
+        "discovermonth": 6,
+        "discoverday": 17
+    }
+}

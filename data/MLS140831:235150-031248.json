@@ -1,0 +1,34 @@
+{
+    "MLS140831:235150-031248": {
+        "name": "MLS140831:235150-031248",
+        "aliases": [
+            "MLS140831:235150-031248"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56903.981",
+                "band": "CR",
+                "abmag": "20.4",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 3,
+        "discoveryear": 2014,
+        "discovermonth": 9,
+        "discoverday": 3
+    }
+}

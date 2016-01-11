@@ -1,0 +1,41 @@
+{
+    "SNF20080514-002": {
+        "name": "SNF20080514-002",
+        "aliases": [
+            "SNF20080514-002"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54609.234",
+                "band": "V",
+                "abmag": "15.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54611.881",
+                "band": "CR",
+                "abmag": "15.05",
+                "source": "1"
+            }
+        ],
+        "maxyear": 2008,
+        "maxmonth": 5,
+        "maxday": 25,
+        "discoveryear": 2008,
+        "discovermonth": 5,
+        "discoverday": 23
+    }
+}

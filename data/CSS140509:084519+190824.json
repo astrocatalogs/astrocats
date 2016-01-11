@@ -1,0 +1,34 @@
+{
+    "CSS140509:084519+190824": {
+        "name": "CSS140509:084519+190824",
+        "aliases": [
+            "CSS140509:084519+190824"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimaacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56788.176",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 11,
+        "discoveryear": 2014,
+        "discovermonth": 5,
+        "discoverday": 11
+    }
+}

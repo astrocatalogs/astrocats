@@ -1,0 +1,26 @@
+{
+    "SN1975E": {
+        "name": "SN1975E",
+        "aliases": [
+            "SN1975E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "42539.0",
+                "band": "V",
+                "abmag": "16.7",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1975",
+        "discovermonth": "5",
+        "discoverday": "7"
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "SN2001V": {
+        "name": "SN2001V",
+        "aliases": [
+            "SN2001V"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51959.0",
+                "band": "",
+                "abmag": "16",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2001",
+        "discovermonth": "2",
+        "discoverday": "19",
+        "maxyear": "2001",
+        "maxmonth": "3",
+        "maxday": "5"
+    }
+}

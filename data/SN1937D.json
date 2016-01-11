@@ -1,0 +1,29 @@
+{
+    "SN1937D": {
+        "name": "SN1937D",
+        "aliases": [
+            "SN1937D"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "28785.0",
+                "band": "",
+                "abmag": "12.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1937",
+        "discovermonth": "9",
+        "discoverday": "9",
+        "maxyear": "1937",
+        "maxmonth": "9",
+        "maxday": "18"
+    }
+}

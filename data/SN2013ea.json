@@ -1,0 +1,41 @@
+{
+    "SN2013ea": {
+        "name": "SN2013ea",
+        "aliases": [
+            "SN2013ea"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56553.318",
+                "band": "UR",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 18,
+        "discovermonth": 9,
+        "host": "A012016+3010",
+        "claimedtype": "Ia",
+        "galra": "012016",
+        "galdec": "+301055",
+        "snra": "012016.45",
+        "sndec": "+301055.7",
+        "discoverer": "Shurpakov",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 18
+    }
+}

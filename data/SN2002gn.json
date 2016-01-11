@@ -1,0 +1,29 @@
+{
+    "SN2002gn": {
+        "name": "SN2002gn",
+        "aliases": [
+            "SN2002gn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52557.0",
+                "band": "r",
+                "abmag": "19.8",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2002",
+        "discovermonth": "10",
+        "discoverday": "10",
+        "maxyear": "2002",
+        "maxmonth": "9",
+        "maxday": "30"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "SN2015A": {
+        "name": "SN2015A",
+        "aliases": [
+            "SN2015A"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "MDe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57063.943",
+                "band": "CV",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 10,
+        "discovermonth": 2,
+        "host": "NGC 2955",
+        "claimedtype": "Ia",
+        "hvel": "7019",
+        "galra": "094117",
+        "galdec": "+355256",
+        "snra": "094115.55",
+        "sndec": "+355317.4",
+        "discoverer": "Itagaki",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 10,
+        "z": 0.0237
+    }
+}

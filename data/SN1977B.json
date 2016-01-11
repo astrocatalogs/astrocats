@@ -1,0 +1,26 @@
+{
+    "SN1977B": {
+        "name": "SN1977B",
+        "aliases": [
+            "SN1977B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "43220.0",
+                "band": "",
+                "abmag": "14",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1977",
+        "discovermonth": "3",
+        "discoverday": "18"
+    }
+}

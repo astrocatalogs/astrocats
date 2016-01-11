@@ -1,0 +1,29 @@
+{
+    "SN1984J": {
+        "name": "SN1984J",
+        "aliases": [
+            "SN1984J"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "45908.0",
+                "band": "",
+                "abmag": "13.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1984",
+        "discovermonth": "7",
+        "discoverday": "27",
+        "maxyear": "1984",
+        "maxmonth": "7",
+        "maxday": "28"
+    }
+}

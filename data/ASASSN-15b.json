@@ -1,0 +1,34 @@
+{
+    "ASASSN-15b": {
+        "name": "ASASSN-15b",
+        "aliases": [
+            "ASASSN-15b"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57042.67",
+                "band": "R",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 20,
+        "discoveryear": 2015,
+        "discovermonth": 1,
+        "discoverday": 20
+    }
+}

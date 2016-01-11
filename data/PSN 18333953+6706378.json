@@ -1,0 +1,56 @@
+{
+    "PSN 18333953+6706378": {
+        "name": "PSN 18333953+6706378",
+        "aliases": [
+            "PSN 18333953+6706378"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Ron Arbour",
+                "alias": "2"
+            },
+            {
+                "name": "Martin Mobberley",
+                "alias": "3"
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57385.7388",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57385.763",
+                "band": "U",
+                "abmag": "16.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57386.931",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 29,
+        "discoveryear": 2015,
+        "discovermonth": 12,
+        "discoverday": 29
+    }
+}

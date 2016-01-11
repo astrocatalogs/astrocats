@@ -1,0 +1,26 @@
+{
+    "SN1999eg": {
+        "name": "SN1999eg",
+        "aliases": [
+            "SN1999eg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51455.0",
+                "band": "",
+                "abmag": "17.5",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "1999",
+        "discovermonth": "10",
+        "discoverday": "4"
+    }
+}

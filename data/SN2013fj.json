@@ -1,0 +1,65 @@
+{
+    "SN2013fj": {
+        "name": "SN2013fj",
+        "aliases": [
+            "SN2013fj"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Gabino Muriel Brillo",
+                "alias": "3"
+            },
+            {
+                "name": "Adolfo San Segundo",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56545.232",
+                "band": "L",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56548.887",
+                "band": "CR",
+                "abmag": "16.67",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56547.936",
+                "band": "CR",
+                "abmag": "15.81",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 10,
+        "discovermonth": 9,
+        "host": "PGC0068419",
+        "claimedtype": "Ia",
+        "hvel": "10029",
+        "galra": "221529",
+        "galdec": "+153408",
+        "snra": "221528.51",
+        "sndec": "+153404.1",
+        "discoverer": "Ciabattari, Mazzoni, Carballo",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 12,
+        "z": 0.034
+    }
+}

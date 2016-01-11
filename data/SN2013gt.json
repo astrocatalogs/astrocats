@@ -1,0 +1,72 @@
+{
+    "SN2013gt": {
+        "name": "SN2013gt",
+        "aliases": [
+            "SN2013gt"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56628.995",
+                "band": "V",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56655.364",
+                "band": "UV",
+                "abmag": "17.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.251",
+                "band": "UV",
+                "abmag": "17.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56716.785",
+                "band": "U",
+                "abmag": "17.35",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 12,
+        "host": "PGC0020784",
+        "claimedtype": "Ia",
+        "hvel": "11420",
+        "galra": "072131",
+        "galdec": "+554525",
+        "snra": "072131.66",
+        "sndec": "+554532.3",
+        "discoverer": "Sun, Jin, Gao",
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 28,
+        "z": 0.0388
+    }
+}

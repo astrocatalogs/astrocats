@@ -1,0 +1,26 @@
+{
+    "SN2009gf": {
+        "name": "SN2009gf",
+        "aliases": [
+            "SN2009gf"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "1"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54997.0",
+                "band": "",
+                "abmag": "16.1",
+                "source": "1"
+            }
+        ],
+        "discoveryear": "2009",
+        "discovermonth": "6",
+        "discoverday": "15"
+    }
+}
