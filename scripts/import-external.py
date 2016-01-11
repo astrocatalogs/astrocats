@@ -850,12 +850,12 @@ if writeevents:
         if 'claimedtype' in events[name] and events[name]['claimedtype'] == '?':
             del events[name]['claimedtype']
         if 'z' in events[name] and 'hvel' not in events[name]:
-            z = events[name]['redshift']
-            events[name]['hvel'] = round(round_sig(clight/1.e5*((z + 1.)**2. - 1.)/
-                ((z + 1.)**2. + 1.), sig = 3))
+            z = float(events[name]['redshift'])
+            events[name]['hvel'] = str(round(round_sig(clight/1.e5*((z + 1.)**2. - 1.)/
+                ((z + 1.)**2. + 1.), sig = 3)))
         elif 'hvel' in events[name] and 'z' not in events[name]:
             voc = float(events[name]['hvel'])*1.e5/clight
-            events[name]['z'] = round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3)
+            events[name]['z'] = str(round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3))
         if 'hvel' in events[name]:
             events[name]['hvel'] = '%g'%(float(events[name]['hvel']))
         if 'host' in events[name]:
