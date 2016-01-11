@@ -1,19 +1,22 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3.5
 
 import csv
 import glob
 import os
 import re
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import calendar
 import sys
 import subprocess
+import json
+import codecs
+import numpy
+from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astropy.time import Time as astrotime
 from collections import OrderedDict
-from sortedcontainers import SortedDict
-from math import log10, floor, sqrt
-from BeautifulSoup import BeautifulSoup, SoupStrainer
+from math import log10, floor, sqrt, isnan
+from bs4 import BeautifulSoup, SoupStrainer
 from operator import itemgetter
 from string import ascii_letters
 
@@ -23,46 +26,35 @@ outdir = '../data/'
 
 eventnames = []
 
-dovizier =       True
-dosuspect =      True
-docfa =          True
-doucb =          True
-dosdss =         True
-dogaia =         True
-docsp =          True
-doitep =         True
-doasiago =       True
-dorochester =    True
-dofirstmax =     True
+dovizier =       False
+dosuspect =      False
+docfa =          False
+doucb =          False
+dosdss =         False
+dogaia =         False
+docsp =          False
+doitep =         False
+doasiago =       False
+dorochester =    False
+dofirstmax =     False
 dolennarz =      True
 writeevents =    True
 compressevents = True
 printextra =     False
 
-photometrykeys = [
-    'timeunit',
-    'time',
-    'band',
-    'instrument',
-    'abmag',
-    'aberr',
-    'source'
-]
-
 events = OrderedDict()
-eventphotometry = OrderedDict()
-eventsources = OrderedDict()
 
 def add_event(name):
     if name not in events:
         for event in events:
             if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
                 return event
-        print name
-        events[name] = SortedDict()
-        eventphotometry[name] = []
-        eventsources[name] = []
+        print(name)
+        events[name] = OrderedDict()
+        events[name]['name'] = name
         add_alias(name, name)
+        events[name]['sources'] = []
+        events[name]['photometry'] = []
         return name
     else:
         return name
@@ -101,57 +93,75 @@ def is_number(s):
         return False
 
 def get_source(name, reference, secondary = ''):
-    if len(eventsources[name]) == 0 or reference not in [eventsources[name][es][2] for es in xrange(len(eventsources[name]))]:
-        source = str(len(eventsources[name]) + 1)
-        eventsources[name].append(['source', 'name', reference, 'alias', source] + (['secondary', 1] if secondary else []))
+    nsources = len(events[name]['sources'])
+    if len(events[name]['sources']) == 0 or reference not in [events[name]['sources'][x]['name'] for x in range(nsources)]:
+        source = str(nsources + 1)
+        newsource = OrderedDict()
+        newsource['name'] = reference
+        newsource['alias'] =  source
+        if secondary:
+            newsource['secondary'] = True
+        events[name]['sources'].append(newsource)
     else:
-        source = [eventsources[name][es][4] for es in xrange(len(eventsources[name]))][
-            [eventsources[name][es][2] for es in xrange(len(eventsources[name]))].index(reference)]
+        sourcexs = range(nsources)
+        source = [events[name]['sources'][x]['alias'] for x in sourcexs][
+            [events[name]['sources'][x]['name'] for x in sourcexs].index(reference)]
     return source
 
 def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = ""):
     if not time or not abmag:
-        print 'Error: Time or AB mag not specified when adding photometry.\n'
-        print 'Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"'
-        sys.exit()
+        print('Warning: Time or AB mag not specified when adding photometry.\n')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"')
+        return
+
+    if not is_number(time) or not is_number(abmag):
+        print('Warning: Time or AB mag not numerical.\n')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"')
+        return
+
+    if aberr and not is_number(aberr):
+        print('Warning: AB error not numerical.\n')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB err: "' + aberr + '"')
+        return
 
     # Look for duplicate data and don't add if duplicate
-    for photo in eventphotometry[name]:
-        if (photo['timeunit'] == timeunit and float(photo['time']) == float(time) and
-            photo['band'] == band and float(photo['abmag']) == float(abmag) and
-            ((not photo['aberr'] and not aberr) or (photo['aberr'] and aberr and float(photo['aberr']) == float(aberr)) or
-            (photo['aberr'] and not aberr))):
+    for photo in events[name]['photometry']:
+        if (photo['timeunit'] == timeunit and photo['band'] == band and
+            Decimal(photo['time']) == Decimal(time) and
+            Decimal(photo['abmag']) == Decimal(abmag) and
+            (('aberr' not in photo and not aberr) or ('aberr' in photo and aberr and Decimal(photo['aberr']) == Decimal(aberr)) or
+            ('aberr' in photo and not aberr))):
             return
 
-    photoentry = OrderedDict.fromkeys(photometrykeys)
+    photoentry = OrderedDict()
     photoentry['timeunit'] = timeunit
-    photoentry['time'] = time
+    photoentry['time'] = str(time)
     photoentry['band'] = band
-    photoentry['abmag'] = abmag
+    photoentry['abmag'] = str(abmag)
     if instrument:
         photoentry['instrument'] = instrument
     if aberr:
-        photoentry['aberr'] = aberr
+        photoentry['aberr'] = str(aberr)
     if source:
         photoentry['source'] = source
-    eventphotometry[name].append(photoentry)
+    events[name]['photometry'].append(photoentry)
 
 def get_max_light(name):
-    if not eventphotometry[name]:
+    if not events[name]['photometry']:
         return None
 
-    eventphoto = [eventphotometry[name][x]['abmag'] for x in xrange(len(eventphotometry[name]))]
+    eventphoto = [events[name]['photometry'][x]['abmag'] for x in range(len(events[name]['photometry']))]
     mlindex = eventphoto.index(min(eventphoto))
-    mlmjd = float(eventphotometry[name][mlindex]['time'])
+    mlmjd = float(events[name]['photometry'][mlindex]['time'])
     return astrotime(mlmjd, format='mjd').datetime
 
 def get_first_light(name):
-    if not eventphotometry[name]:
+    if not events[name]['photometry']:
         return None
 
-    eventtime = [eventphotometry[name][x]['time'] for x in xrange(len(eventphotometry[name]))]
+    eventtime = [events[name]['photometry'][x]['time'] for x in range(len(events[name]['photometry']))]
     flindex = eventtime.index(min(eventtime))
-    flmjd = float(eventphotometry[name][flindex]['time'])
+    flmjd = float(events[name]['photometry'][flindex]['time'])
     return astrotime(flmjd, format='mjd').datetime
 
 def set_first_max_light(name):
@@ -170,13 +180,20 @@ def set_first_max_light(name):
 def jd_to_mjd(jd):
     return jd - 2400000.5
 
+def utf8(x):
+    return str(x, 'utf-8')
+
+def convert_aq_output(row):
+    return OrderedDict([(x, '%g'%float(row[x]) if is_number(row[x]) else utf8(row[x])) for x in row.colnames])
+
 # Import primary data sources from Vizier
 if dovizier:
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs("VII/272/snrs")
-    table = result[result.keys()[0]]
+    table = result[list(result.keys())[0]]
 
     for row in table:
+        row = convert_aq_output(row)
         name = ''
         if row["Names"]:
             names = row["Names"].split(',')
@@ -204,63 +221,68 @@ if dovizier:
 
     reference = "<a href='http://adsabs.harvard.edu/abs/2014MNRAS.442..844F'>2014MNRAS.442..844F</a>"
     result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
-    table = result[result.keys()[0]]
+    table = result[list(result.keys())[0]]
     for row in table:
+        row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = add_event(name)
         events[name]['redshift'] = row['zhost']
         events[name]['ebv'] = row['E_B-V_']
+
     result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
-    table = result[result.keys()[0]]
+    table = result[list(result.keys())[0]]
     for row in table:
-        name = 'SN' + row['SN']
+        row = convert_aq_output(row)
+        name = 'SN' + str(row['SN'])
         source = get_source(name, reference)
-        if row['Bmag']:
+        if row['Bmag'] and is_number(row['Bmag']):
             add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = source)
-        if row['Vmag']:
+        if row['Vmag'] and is_number(row['Vmag']):
             add_photometry(name, time = row['MJD'], band = 'V', abmag = row['Vmag'], aberr = row['e_Vmag'], source = source)
-        if row['Rmag']:
+        if row['Rmag'] and is_number(row['Rmag']):
             add_photometry(name, time = row['MJD'], band = 'R', abmag = row['Rmag'], aberr = row['e_Rmag'], source = source)
-        if row['Imag']:
+        if row['Imag'] and is_number(row['Imag']):
             add_photometry(name, time = row['MJD'], band = 'I', abmag = row['Imag'], aberr = row['e_Imag'], source = source)
 
     reference = "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>"
     result = Vizier.get_catalogs("J/ApJS/219/13/table3")
-    table = result[result.keys()[0]]
+    table = result[list(result.keys())[0]]
     for row in table:
-        name = 'LSQ' + row['LSQ']
+        row = convert_aq_output(row)
+        name = u'LSQ' + str(row['LSQ'])
         name = add_event(name)
         events[name]['snra'] = row['RAJ2000']
         events[name]['sndec'] = row['DEJ2000']
         events[name]['redshift'] = row['z']
         events[name]['ebv'] = row['E_B-V_']
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
-    table = result[result.keys()[0]]
+    table = result[list(result.keys())[0]]
     for row in table:
+        row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
         source = get_source(name, reference)
-        add_photometry(name, time = jd_to_mjd(row['JD']), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
+        add_photometry(name, time = str(jd_to_mjd(float(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
 
 # Suspect catalog
 if dosuspect:
-    response = urllib2.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
+    response = urllib.request.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
 
-    soup = BeautifulSoup(response)
+    soup = BeautifulSoup(response.read(), "html5lib")
     i = 0
     for a in soup.findAll('a'):
         if 'phot=yes' in a['href'] and not 'spec=yes' in a['href']:
             if int(a.contents[0]) > 0:
                 i = i + 1
                 photlink = 'http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/' + a['href']
-                eventresp = urllib2.urlopen(photlink)
-                eventsoup = BeautifulSoup(eventresp)
+                eventresp = urllib.request.urlopen(photlink)
+                eventsoup = BeautifulSoup(eventresp, "html5lib")
                 ei = 0
                 for ea in eventsoup.findAll('a'):
                     if ea.contents[0] == 'I':
                         ei = ei + 1
                         bandlink = 'http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/' + ea['href']
-                        bandresp = urllib2.urlopen(bandlink)
-                        bandsoup = BeautifulSoup(bandresp)
+                        bandresp = urllib.request.urlopen(bandlink)
+                        bandsoup = BeautifulSoup(bandresp, "html5lib")
                         bandtable = bandsoup.find('table')
                         if ei == 1:
                             names = bandsoup.body.findAll(text=re.compile("Name"))
@@ -294,23 +316,23 @@ if dosuspect:
                             if r == 0:
                                 continue
                             col = row.findAll('td')
-                            mjd = str(jd_to_mjd(float(col[0].renderContents())))
-                            mag = col[3].renderContents()
+                            mjd = str(jd_to_mjd(float(col[0].contents[0])))
+                            mag = col[3].contents[0]
                             if mag.isspace():
                                 mag = ''
                             else:
-                                mag = str(float(mag))
-                            aberr = col[4].renderContents()
+                                mag = str(mag)
+                            aberr = col[4].contents[0]
                             if aberr.isspace():
                                 aberr = ''
                             else:
-                                aberr = str(float(aberr))
+                                aberr = str(aberr)
                             add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
 
 # CfA data
 if docfa:
     for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.lower()):
-        f = open(file,'rb')
+        f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         csv_data = []
         for r, row in enumerate(tsvin):
@@ -322,7 +344,7 @@ if docfa:
         for r, row in enumerate(csv_data):
             for c, col in enumerate(row):
                 csv_data[r][c] = col.strip()
-            csv_data[r] = filter(None, csv_data[r])
+            csv_data[r] = [_f for _f in csv_data[r] if _f]
 
         eventname = os.path.basename(os.path.splitext(file)[0])
 
@@ -351,9 +373,9 @@ if docfa:
                     for ci, col in enumerate(row[2:]):
                         if col[0] == "(":
                             refstr = ' '.join(row[2+ci:])
-                            refstr = refstr.translate(None, '()')
+                            refstr = refstr.replace('(','').replace(')','')
                             bibcode = refstr
-                            print bibcode
+                            print(bibcode)
                             secondaryreference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
                             secondarysource = get_source(name, secondaryreference, 1)
                             reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>" + refstr + "</a>"
@@ -378,11 +400,11 @@ if docfa:
                             tuout = tu
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
-                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = secondarysource + ',' + source)
+                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)//2], abmag = row[v], aberr = row[v+1], source = secondarysource + ',' + source)
         f.close()
 
     # Hicken 2012
-    f = open("../external/hicken-2012-standard.dat", 'rb')
+    f = open("../external/hicken-2012-standard.dat", 'r')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     for r, row in enumerate(tsvin):
         if r <= 47:
@@ -401,7 +423,7 @@ if docfa:
             abmag = row[6].strip(), aberr = row[7].strip(), source = source)
     
     # Bianco 2014
-    tsvin = open("../external/bianco-2014-standard.dat", 'rb')
+    tsvin = open("../external/bianco-2014-standard.dat", 'r')
     tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
     for row in tsvin:
         name = 'SN' + row[0]
@@ -415,7 +437,7 @@ if docfa:
 # Now import the UCB SNDB
 if doucb:
     for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower()):
-        f = open(file,'rb')
+        f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
         eventname = os.path.basename(os.path.splitext(file)[0])
@@ -446,7 +468,7 @@ if doucb:
 if dosdss:
     sdssbands = ['u', 'g', 'r', 'i', 'z']
     for file in sorted(glob.glob("../external/SDSS/*.sum"), key=lambda s: s.lower()):
-        f = open(file,'rb')
+        f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
         for r, row in enumerate(tsvin):
@@ -484,17 +506,17 @@ if dosdss:
 #Import GAIA
 if dogaia:
     #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
-    response = urllib2.urlopen('file:///var/www/html/sne/sne/external/selected-gaia-science-alerts')
+    response = urllib.request.urlopen('file:///var/www/html/sne/sne/external/selected-gaia-science-alerts')
     html = response.read()
 
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, "html5lib")
     table = soup.findAll("table")[1]
     for r, row in enumerate(table.findAll('tr')):
         if r == 0:
             continue
 
         col = row.findAll('td')
-        classname = col[7].renderContents()
+        classname = col[7].contents[0]
 
         if 'SN' not in classname:
             continue
@@ -513,14 +535,14 @@ if dogaia:
         reference = "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>"
         source = get_source(name, reference)
 
-        events[name]['snra'] = col[2].renderContents().strip()
-        events[name]['sndec'] = col[3].renderContents().strip()
+        events[name]['snra'] = col[2].contents[0].strip()
+        events[name]['sndec'] = col[3].contents[0].strip()
         events[name]['claimedtype'] = classname.replace('SN', '').strip()
 
         photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
-        photresp = urllib2.urlopen(photlink)
-        photsoup = BeautifulSoup(photresp)
-        photodata = photsoup.renderContents().split('\n')[2:-1]
+        photresp = urllib.request.urlopen(photlink)
+        photsoup = BeautifulSoup(photresp, "html5lib")
+        photodata = str(photsoup.contents[0]).split('\n')[2:-1]
         for ph in photodata:
             photo = ph.split(',')
             mjd = str(jd_to_mjd(float(photo[1].strip())))
@@ -534,7 +556,7 @@ if dogaia:
 if docsp:
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     for file in sorted(glob.glob("../external/CSP/*.dat"), key=lambda s: s.lower()):
-        f = open(file,'rb')
+        f = open(file,'r')
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
         eventname = os.path.basename(os.path.splitext(file)[0])
@@ -554,9 +576,6 @@ if docsp:
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
                     events[name]['redshift'] = row[0].split(' ')[-1]
-                    redshift = float(events[name]['redshift'])
-                    events[name]['hvel'] = round(round_sig(clight/1.e5*((redshift + 1.)**2. - 1.)/
-                        ((redshift + 1.)**2. + 1.), sig = 3))
                     events[name]['snra'] = row[1].split(' ')[-1]
                     events[name]['sndec'] = row[2].split(' ')[-1]
                 continue
@@ -565,16 +584,16 @@ if docsp:
                     mjd = val
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
-                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)/2], abmag = row[v], aberr = row[v+1], source = source)
+                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)//2], abmag = row[v], aberr = row[v+1], source = source)
         f.close()
 
 # Import ITEP
 if doitep:
-    f = open("../external/itep-refs.txt",'rb')
+    f = open("../external/itep-refs.txt",'r')
     refrep = f.read().splitlines()
     f.close()
-    refrepf = dict(zip(refrep[1::2], refrep[::2]))
-    f = open("../external/itep-lc-cat-28dec2015.txt",'rb')
+    refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
+    f = open("../external/itep-lc-cat-28dec2015.txt",'r')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     curname = ''
     for r, row in enumerate(tsvin):
@@ -605,11 +624,11 @@ if doitep:
 
 # Now import the Asiago catalog
 if doasiago:
-    response = urllib2.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
-    html = response.read()
-    html = html.replace('\r', '')
+    response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
+    html = response.read().decode('utf-8')
+    html = html.replace("\r", "")
 
-    soup = BeautifulSoup(html)
+    soup = BeautifulSoup(html, "html5lib")
     table = soup.find("table")
 
     records = []
@@ -618,7 +637,7 @@ if doasiago:
             continue
 
         col = row.findAll('td')
-        records.append([x.renderContents() for x in col])
+        records.append([utf8(x.renderContents()) for x in col])
 
     for record in records:
         if len(record) > 1 and record[1] != '':
@@ -656,11 +675,8 @@ if doasiago:
             if redvel != '':
                 if round(float(redvel)) == float(redvel):
                     hvel = int(redvel)
-                    voc = float(hvel)*1.e5/clight
-                    redshift = round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3)
                 else:
                     redshift = float(redvel)
-                    hvel = round(round_sig(clight/1.e5*((redshift + 1.)**2. - 1.)/((redshift + 1.)**2. + 1.), sig = 3))
                 redshift = str(redshift)
                 hvel = str(hvel)
 
@@ -686,49 +702,50 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if dorochester:
-    #response = urllib2.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
-    response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
-    html = response.read()
+    #response = urllib.request.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
+    ##response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
+    #html = response.read()
 
-    soup = BeautifulSoup(html)
-    rows = soup.findAll('tr')
-    secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
-    for r, row in enumerate(rows):
-        if r == 0:
-            continue
-        cols = row.findAll('td')
-        name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
-        if name[:4].isdigit():
-            name = 'SN' + name
-        name = add_event(name)
+    #soup = BeautifulSoup(html, "html5lib")
+    #rows = soup.findAll('tr')
+    #secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
+    #for r, row in enumerate(rows):
+    #    if r == 0:
+    #        continue
+    #    cols = row.findAll('td')
+    #    if not len(cols):
+    #        continue
+    #    name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
+    #    if name[:4].isdigit():
+    #        name = 'SN' + name
+    #    name = add_event(name)
 
-        secondarysource = get_source(name, secondaryreference, secondary = 1)
-
-        if str(cols[1].contents[0]).strip() != 'unk':
-            events[name]['claimedtype'] = str(cols[1].contents[0]).strip()
-        if str(cols[2].contents[0]).strip() != 'anonymous':
-            events[name]['host'] = str(cols[2].contents[0]).strip()
-        events[name]['snra'] = str(cols[3].contents[0]).strip()
-        events[name]['sndec'] = str(cols[4].contents[0]).strip()
-        if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
-            astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
-            events[name]['discoverday'] = astrot.datetime.day
-            events[name]['discovermonth'] = astrot.datetime.month
-            events[name]['discoveryear'] = astrot.datetime.year
-        if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
-            astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-            source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
-            if float(str(cols[8].contents[0]).strip()) <= 90.0:
-                add_photometry(name, time = astrot.mjd, abmag = float(str(cols[8].contents[0]).strip()), source = ','.join([source, secondarysource]))
-        if cols[11].contents[0] != 'n/a':
-            events[name]['redshift'] = float(str(cols[11].contents[0]).strip())
-        events[name]['discoverer'] = str(cols[13].contents[0]).strip()
-        if cols[14].contents:
-            add_alias(name, str(cols[14].contents[0]).strip())
+    #    secondarysource = get_source(name, secondaryreference, secondary = 1)
+    #    if str(cols[1].contents[0]).strip() != 'unk':
+    #        events[name]['claimedtype'] = str(cols[1].contents[0]).strip()
+    #    if str(cols[2].contents[0]).strip() != 'anonymous':
+    #        events[name]['host'] = str(cols[2].contents[0]).strip()
+    #    events[name]['snra'] = str(cols[3].contents[0]).strip()
+    #    events[name]['sndec'] = str(cols[4].contents[0]).strip()
+    #    if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
+    #        astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
+    #        events[name]['discoverday'] = str(astrot.datetime.day)
+    #        events[name]['discovermonth'] = str(astrot.datetime.month)
+    #        events[name]['discoveryear'] = str(astrot.datetime.year)
+    #    if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
+    #        astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
+    #        source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
+    #        if float(str(cols[8].contents[0]).strip()) <= 90.0:
+    #            add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = ','.join([source, secondarysource]))
+    #    if cols[11].contents[0] != 'n/a':
+    #        events[name]['redshift'] = float(str(cols[11].contents[0]).strip())
+    #    events[name]['discoverer'] = str(cols[13].contents[0]).strip()
+    #    if cols[14].contents:
+    #        add_alias(name, str(cols[14].contents[0]).strip())
 
     vsnetfiles = ["latestsne.dat"]
     for vsnetfile in vsnetfiles:
-        f = open("../external/" + vsnetfile,'rb')
+        f = open("../external/" + vsnetfile,'r',encoding='latin1')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         for r, row in enumerate(tsvin):
             if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
@@ -741,7 +758,6 @@ if dorochester:
             name = add_event(name)
             if not is_number(row[1]):
                 continue
-            print row
             year = row[1][:4]
             month = row[1][4:6]
             day = row[1][6:]
@@ -779,10 +795,11 @@ if dofirstmax:
 if dolennarz:
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs("J/A+A/538/A120/usc")
-    table = result[result.keys()[0]]
+    table = result[list(result.keys())[0]]
 
     reference = "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>"
     for row in table:
+        row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = add_event(name)
 
@@ -797,16 +814,16 @@ if dolennarz:
             else:
                 astrot = astrotime(row['Ddate'] + '-01-01', scale='utc')
 
-            if not eventphotometry[name]:
-                if row['Dmag']:
-                    mjd = astrot.mjd
+            if not events[name]['photometry']:
+                if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
+                    mjd = str(astrot.mjd)
                     add_photometry(name, time = mjd, band = row['Dband'], abmag = row['Dmag'], source = source)
             if 'discoveryear' not in events[name] and 'discovermonth' not in events[name] and 'discoverday' not in events[name]:
-                events[name]['discoveryear'] = astrot.datetime.year
+                events[name]['discoveryear'] = str(astrot.datetime.year)
                 if len(dateparts) >= 2:
-                    events[name]['discovermonth'] = astrot.datetime.month
+                    events[name]['discovermonth'] = str(astrot.datetime.month)
                 if len(dateparts) == 3:
-                    events[name]['discoverday'] = astrot.datetime.day
+                    events[name]['discoverday'] = str(astrot.datetime.day)
         if row['Mdate']:
             dateparts = row['Mdate'].split('-')
             if len(dateparts) == 3:
@@ -816,22 +833,29 @@ if dolennarz:
             else:
                 astrot = astrotime(row['Mdate'] + '-01-01', scale='utc')
 
-            if not eventphotometry[name]:
-                if row['Mmag']:
-                    mjd = astrot.mjd
+            if not events[name]['photometry']:
+                if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
+                    mjd = str(astrot.mjd)
                     add_photometry(name, time = mjd, band = row['Mband'], abmag = row['Mmag'], source = source)
             if 'maxyear' not in events[name] and 'maxmonth' not in events[name] and 'maxday' not in events[name]:
-                events[name]['maxyear'] = astrot.datetime.year
+                events[name]['maxyear'] = str(astrot.datetime.year)
                 if len(dateparts) >= 2:
-                    events[name]['maxmonth'] = astrot.datetime.month
+                    events[name]['maxmonth'] = str(astrot.datetime.month)
                 if len(dateparts) == 3:
-                    events[name]['maxday'] = astrot.datetime.day
+                    events[name]['maxday'] = str(astrot.datetime.day)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
         if 'claimedtype' in events[name] and events[name]['claimedtype'] == '?':
             del events[name]['claimedtype']
+        if 'z' in events[name] and 'hvel' not in events[name]:
+            z = events[name]['redshift']
+            events[name]['hvel'] = round(round_sig(clight/1.e5*((z + 1.)**2. - 1.)/
+                ((z + 1.)**2. + 1.), sig = 3))
+        elif 'hvel' in events[name] and 'z' not in events[name]:
+            voc = float(events[name]['hvel'])*1.e5/clight
+            events[name]['z'] = round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3)
         if 'hvel' in events[name]:
             events[name]['hvel'] = '%g'%(float(events[name]['hvel']))
         if 'host' in events[name]:
@@ -842,38 +866,46 @@ if writeevents:
 
     # Write it all out!
     for name in events:
-        print 'Writing ' + name
+        print('Writing ' + name)
         filename = event_filename(name)
-        outfile = open(outdir + filename + '.dat', 'wb')
-        csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-        
-        csvout.writerow(['name', name])
 
-        for row in eventsources[name]:
-            csvout.writerow(row)
-        
-        for key in events[name]:
-            if events[name][key]:
-                if isinstance(events[name][key], list) and not isinstance(events[name][key], basestring):
-                    events[name][key] = ",".join(events[name][key])
-                csvout.writerow([key, events[name][key]])
+        events[name]['sources'] = events[name]['sources']
+        events[name]['photometry'] = events[name]['photometry']
+        jsonstring = json.dumps({name:events[name]}, indent=4, separators=(',', ': '), ensure_ascii=False)
+        f = codecs.open(outdir + filename + '.json', 'w', encoding='utf8')
+        f.write(jsonstring)
+        f.close()
 
-        sortedphotometry = sorted(eventphotometry[name], key=itemgetter('time'))
-        for entry in sortedphotometry:
-            row = ['photometry'] + list(sum(((k, v) for k, v in entry.items() if v), ()))
-            csvout.writerow(row)
+        #outfile = open(outdir + filename + '.dat', 'wb')
+        #csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
+        #
+        #csvout.writerow(['name', name])
 
-        outfile.close()
+        #for row in events[name]['sources']:
+        #    csvout.writerow(row)
+        #
+        #for key in events[name]:
+        #    if events[name][key]:
+        #        if isinstance(events[name][key], list) and not isinstance(events[name][key], basestring):
+        #            events[name][key] = ",".join(events[name][key])
+        #        csvout.writerow([key, events[name][key]])
+
+        #sortedphotometry = sorted(events[name]['photometry'], key=itemgetter('time'))
+        #for entry in sortedphotometry:
+        #    row = ['photometry'] + list(sum(((k, v) for k, v in entry.items() if v), ()))
+        #    csvout.writerow(row)
+
+        #outfile.close()
 
 # Compress the output
 if compressevents:
-    print 'Compressing output...'
-    print 'bzip2 -k -f ' + outdir + '*.dat'
-    os.system('bzip2 -k -f ' + outdir + '*.dat')
+    print('Compressing output...')
+    print('bzip2 -k -f ' + outdir + '*.json')
+    os.system('bzip2 -k -f ' + outdir + '*.json')
 
 # Print some useful facts
 if printextra:
-    print 'Printing events without any photometry:'
+    print('Printing events without any photometry:')
     for name in events:
-        if not eventphotometry[name]:
-            print name
+        if not events[name]['photometry']:
+            print(name)
