@@ -1,0 +1,68 @@
+Title: The Sloan Digital Sky Survey-II: Photometry and Supernova Ia 
+       Light Curves from the 2005 data 
+Authors: Holtzman J.A., Marriner J., Kessler R., Sako M., Dilday B., 
+         Frieman J.A., Schneider D.P., Bassett B., Becker A., Cinabro D., 
+         DeJongh F., Depoy D.L., Doi M., Garnavich P.M., Hogan C.J., Jha S., 
+         Konishi K., Lampeitl H., Marshall J.L., McGinnis D., Miknaitis G., 
+         Nichol R.C., Prieto J.L., Reiss A.G., Richmond M.W., Romani R., 
+         Smith M., Takanashi N., Tokita K., van der Heyden K., Yasuda N., 
+         Zheng C. 
+================================================================================
+Description of contents: 
+
+ These files contain results of the scene modelling photometry for each of
+ the spectroscopically confirmed or spectroscopically probable Type Ia 
+ supernovae from the 2005 season of the SDSS supernova survey.
+ There is a single file for each of the 146 different supernovae.
+ Each file contains a header section that gives information about the
+ particular supernova: 
+
+  SDSS CID: internal SDSS designation
+  IAU: IAU designation if it exists
+  RA/DEC: J2000 coordinates
+  Z/ZERR: redshift and its error, as determined by the SDSS SN team (see 
+          Zheng et al. 2008)
+  SDSS TYPE: internal SDSS type (120=SNIa, 119=probable SNIa, 118=SNIa
+          confirmed by another team)
+  GALAXY_SB: galaxy SB (asinh mag/square arcsec) at the location of
+          the SN, for assumed 1.2" FWHM seeing
+  SFD extinction: foreground extinction from Schlegel, Finkbeiner, & Davis 
+          in the direction of the SN (but this correction has NOT been
+          applied to the data)
+ The header also contains a few notes on the definition of the data columns.
+
+ The data sections contain fifteen columns:
+
+ 1. FLAG: gives values of the photometry flags (see paper) for each measurement.
+   FLAG==0 means there are no liens on the measurement. 
+   FLAG>1024 means the measurement is likely bad. For 0<FLAG<1024, the 
+   measurement is likely OK, but there was some lien on the frames so it was 
+   not used to constrain the galaxy background (except for 16 and 32). 
+   See paper for more details.
+ 2. MJD: modified Julian date of the measurement.
+ 3. FILT: gives the filter in which the measurement was obtained: [01234] 
+   corresponds to [ugriz].
+ 4. MAG: gives the asinh magnitude of the supernova for this epoch and filter
+   in the native SDSS photometric system
+ 5. ERR: gives the error on the magnitude
+ 6. SKYERR: gives an estimate of systematic error from uncertainty in
+   sky determination
+ 7. GALERR: gives an estimate of systematic error from uncertainty in
+   galaxy background determination
+ 8. FLUX: gives the derived flux in microJansky, using the SDSS/AB correction
+   from the paper: ABmag-SDSSmag = [ -0.037 0.024 0.005 0.018 0.016 ] for 
+   [ugriz]
+ 9. FLUXERR: error in the flux
+ 10. SKYERR: as column 6, but in flux units
+ 11. GALERR: as column 7, but in flux units
+ 12. NPRE: gives the number of available frames before 2005, which 
+   constrain the total brightness of the underlying galaxy.
+ 13. TELE: gives the telescope used for the measurment, always sdss here
+ 14. RUN: gives the SDSS run number in which the observation was obtained
+ 15. STRIP: the SDSS strip identification, either 82N or 82S for these data
+
+System requirements: None. These are text files.
+
+Additional comments: None.
+
+================================================================================
