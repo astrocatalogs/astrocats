@@ -1,0 +1,38 @@
+{
+    "PSN J15320170+6814480": {
+        "name": "PSN J15320170+6814480",
+        "aliases": [
+            "PSN J15320170+6814480"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J15320170+6814480.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56894.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "host": "IC 1129",
+        "snra": "15:32:01.70",
+        "sndec": "+68:14:48.0",
+        "discoverday": 25,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "discoverer": "Mario Bombardini and Mirco Villi",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 25
+    }
+}

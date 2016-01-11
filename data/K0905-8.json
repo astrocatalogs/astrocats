@@ -1,0 +1,38 @@
+{
+    "K0905-8": {
+        "name": "K0905-8",
+        "aliases": [
+            "K0905-8",
+            "CSS090518:124150+300142"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/001800/CBET001828.txt'>CBET 1828</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54968.5",
+                "band": "",
+                "abmag": "19.6",
+                "source": "2,1"
+            }
+        ],
+        "snra": "12:41:50.08",
+        "sndec": "+30:01:41.8",
+        "discoverday": 17,
+        "discovermonth": 5,
+        "discoveryear": 2009,
+        "discoverer": "CRTS",
+        "maxyear": 2009,
+        "maxmonth": 5,
+        "maxday": 17
+    }
+}

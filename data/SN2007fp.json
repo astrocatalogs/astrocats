@@ -1,0 +1,48 @@
+{
+    "SN2007fp": {
+        "name": "SN2007fp",
+        "aliases": [
+            "SN2007fp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/000900/CBET000976.txt'>CBET 976</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54156.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 25,
+        "discovermonth": 2,
+        "host": "NGC 3340",
+        "claimedtype": "II",
+        "hvel": "5646",
+        "galra": "104218",
+        "galdec": "-002236",
+        "snra": "10:42:18.21",
+        "sndec": "-00:22:38.4",
+        "discoverer": "Lulin Observatory",
+        "redshift": 0.018,
+        "maxyear": 2007,
+        "maxmonth": 2,
+        "maxday": 25,
+        "z": 0.019
+    }
+}

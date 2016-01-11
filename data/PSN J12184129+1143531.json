@@ -1,0 +1,41 @@
+{
+    "PSN J12184129+1143531": {
+        "name": "PSN J12184129+1143531",
+        "aliases": [
+            "PSN J12184129+1143531",
+            "SNhunt181"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12184129+1143531.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56387.5",
+                "band": "",
+                "abmag": "19.4",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ibc",
+        "host": "IC 3128A",
+        "snra": "12:18:41.29",
+        "sndec": "+11:43:53.1",
+        "discoverday": 5,
+        "discovermonth": 4,
+        "discoveryear": 2013,
+        "redshift": 0.04,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 4,
+        "maxday": 5
+    }
+}

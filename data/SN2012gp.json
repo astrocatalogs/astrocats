@@ -1,0 +1,45 @@
+{
+    "SN2012gp": {
+        "name": "SN2012gp",
+        "aliases": [
+            "SN2012gp",
+            "PSN J06200624-6457085"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003306.txt'>CBET 3306</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56219.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
+        "discovermonth": 10,
+        "host": "PGC 75651",
+        "claimedtype": "Ia",
+        "hvel": "15773",
+        "galra": "062006",
+        "galdec": "-645708",
+        "snra": "06:20:06.24",
+        "sndec": "-64:57:08.5",
+        "discoverer": "Stu Parker",
+        "redshift": 0.0526,
+        "maxyear": 2012,
+        "maxmonth": 10,
+        "maxday": 19,
+        "z": 0.0541
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "SN1999C": {
+        "name": "SN1999C",
+        "aliases": [
+            "SN1999C"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51192.0",
+                "band": "R",
+                "abmag": "19.6",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "14",
+        "discovermonth": "1",
+        "host": "A100851+7110",
+        "claimedtype": "Ia",
+        "redshift": 0.125,
+        "galra": "100851",
+        "galdec": "+711042",
+        "snra": "10:08:51.21",
+        "sndec": "+71:10:42.9",
+        "discoverer": "Wise Observatory"
+    }
+}

@@ -1,0 +1,47 @@
+{
+    "SN1989E": {
+        "name": "SN1989E",
+        "aliases": [
+            "SN1989E"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04700/04736.html'>IAUC 4736</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47563.5",
+                "band": "",
+                "abmag": "18.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1989,
+        "discoverday": 6,
+        "discovermonth": 2,
+        "host": "KUG 1335+290",
+        "claimedtype": "Ib?",
+        "hvel": "7918",
+        "galra": "133739",
+        "galdec": "+284810",
+        "snra": "13:37:38.6",
+        "sndec": "+28:48:09.0",
+        "discoverer": "Christian Pollas",
+        "maxyear": 1989,
+        "maxmonth": 2,
+        "maxday": 6,
+        "z": 0.0268
+    }
+}

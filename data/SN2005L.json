@@ -1,0 +1,47 @@
+{
+    "SN2005L": {
+        "name": "SN2005L",
+        "aliases": [
+            "SN2005L"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08400/08469.html#Item1'>IAUC 8469</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53384.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 14,
+        "discovermonth": 1,
+        "host": "MCG +7-33-5",
+        "claimedtype": "Ia-pec",
+        "hvel": "21000",
+        "galra": "155325",
+        "galdec": "+392311",
+        "snra": "15:53:25.92",
+        "sndec": "+39:23:08.1",
+        "discoverer": "Tom Boles",
+        "maxyear": 2005,
+        "maxmonth": 1,
+        "maxday": 14,
+        "z": 0.0727
+    }
+}

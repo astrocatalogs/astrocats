@@ -1,0 +1,44 @@
+{
+    "SN2000bl": {
+        "name": "SN2000bl",
+        "aliases": [
+            "SN2000bl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07400/07404.html#Item1'>IAUC 7404</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51626.5",
+                "band": "",
+                "abmag": "19.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 23,
+        "discovermonth": 3,
+        "host": "A085520-0723",
+        "galra": "085520",
+        "galdec": "-072342",
+        "snra": "08:55:20.44",
+        "sndec": "-07:23:42.9",
+        "discoverer": "Nearby Galaxy Supernova Search",
+        "maxyear": 2000,
+        "maxmonth": 3,
+        "maxday": 23
+    }
+}

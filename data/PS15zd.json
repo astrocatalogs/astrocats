@@ -1,0 +1,39 @@
+{
+    "PS15zd": {
+        "name": "PS15zd",
+        "aliases": [
+            "PS15zd"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57115.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "15:07:49.77",
+        "sndec": "+02:13:55.0",
+        "discoverday": 3,
+        "discovermonth": 4,
+        "discoveryear": 2015,
+        "redshift": 0.091,
+        "discoverer": "PS1",
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 3
+    }
+}

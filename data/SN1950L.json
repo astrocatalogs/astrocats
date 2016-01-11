@@ -1,0 +1,46 @@
+{
+    "SN1950L": {
+        "name": "SN1950L",
+        "aliases": [
+            "SN1950L"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1974PASP...86..516K'>PASP 86, 516</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "33416.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1950,
+        "discoverday": 15,
+        "discovermonth": 5,
+        "host": "PGC0094270",
+        "hvel": "12136",
+        "galra": "154210",
+        "galdec": "+215756",
+        "discoverer": "Fritz Zwicky",
+        "snra": "15:42:10.9",
+        "sndec": "+21:57:21.0",
+        "maxyear": 1950,
+        "maxmonth": 5,
+        "maxday": 15,
+        "z": 0.0413
+    }
+}

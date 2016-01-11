@@ -1,0 +1,85 @@
+{
+    "SN2000N": {
+        "name": "SN2000N",
+        "aliases": [
+            "SN2000N"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07300/07374.html#Item1'>IAUC 7374</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51607.39999999991",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51608.200000000186",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51616.06999999983",
+                "band": "R",
+                "abmag": "17.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51659.16000000015",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51658.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 4,
+        "discovermonth": 3,
+        "host": "MCG -2-34-54",
+        "claimedtype": "II",
+        "hvel": "3990",
+        "galra": "132756",
+        "galdec": "-132524",
+        "snra": "13:27:56.19",
+        "sndec": "-13:24:48.3",
+        "discoverer": "LOSS",
+        "redshift": 0.013,
+        "maxyear": 2000,
+        "maxmonth": 4,
+        "maxday": 25,
+        "z": 0.0134
+    }
+}

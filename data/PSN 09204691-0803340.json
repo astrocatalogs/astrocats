@@ -1,0 +1,56 @@
+{
+    "PSN 09204691-0803340": {
+        "name": "PSN 09204691-0803340",
+        "aliases": [
+            "PSN 09204691-0803340"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56982.674",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56987.7632",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57046.34",
+                "band": "R",
+                "abmag": "19.8",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 26,
+        "discoveryear": 2014,
+        "discovermonth": 11,
+        "discoverday": 21
+    }
+}

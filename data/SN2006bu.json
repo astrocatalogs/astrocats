@@ -1,0 +1,129 @@
+{
+    "SN2006bu": {
+        "name": "SN2006bu",
+        "aliases": [
+            "SN2006bu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2009arXiv0901.4787H'>2009arXiv0901.4787H</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08705.html#Item1'>IAUC 8705</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53857.85699999984",
+                "band": "V",
+                "abmag": "18.332",
+                "aberr": "0.028",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53857.85999999987",
+                "band": "B",
+                "abmag": "18.422",
+                "aberr": "0.032",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53858.74800000014",
+                "band": "V",
+                "abmag": "18.335",
+                "aberr": "0.031",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53858.751000000164",
+                "band": "B",
+                "abmag": "18.468",
+                "aberr": "0.035",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53860.84700000007",
+                "band": "V",
+                "abmag": "18.465",
+                "aberr": "0.043",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53860.85499999998",
+                "band": "B",
+                "abmag": "18.575",
+                "aberr": "0.035",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53862.69799999986",
+                "band": "V",
+                "abmag": "18.589",
+                "aberr": "0.07",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53862.700999999885",
+                "band": "B",
+                "abmag": "18.767",
+                "aberr": "0.093",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53881.86599999992",
+                "band": "V",
+                "abmag": "19.313",
+                "aberr": "0.081",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "53851.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 26,
+        "discovermonth": 4,
+        "host": "A135247+0518",
+        "claimedtype": "Ia",
+        "hvel": "25000",
+        "galra": "135247",
+        "galdec": "+051849",
+        "snra": "13:52:47.81",
+        "sndec": "+05:18:49.4",
+        "discoverer": "R. Holmes et al.",
+        "redshift": 0.083,
+        "maxyear": 2006,
+        "maxmonth": 4,
+        "maxday": 26,
+        "z": 0.0872
+    }
+}

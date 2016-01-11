@@ -1,0 +1,45 @@
+{
+    "SN2013hc": {
+        "name": "SN2013hc",
+        "aliases": [
+            "SN2013hc",
+            "PSN J18032459+7013306"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003747.txt'>CBET 3747</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56595.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 10,
+        "host": "CGCG 340-33",
+        "claimedtype": "II-pec",
+        "hvel": "13280",
+        "galra": "180324",
+        "galdec": "+701325",
+        "snra": "18:03:24.59",
+        "sndec": "+70:13:30.6",
+        "discoverer": "D. Lane, N. Gray, and P. Gray",
+        "redshift": 0.0443,
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 30,
+        "z": 0.0453
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "SN2013aw": {
+        "name": "SN2013aw",
+        "aliases": [
+            "SN2013aw",
+            "PSN J10305847+2004529"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003400/CBET003453.txt'>CBET 3453</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56414.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 5,
+        "host": "PGC 91020",
+        "claimedtype": "II",
+        "hvel": "7957",
+        "galra": "103058",
+        "galdec": "+200455",
+        "snra": "10:30:58.47",
+        "sndec": "+20:04:52.9",
+        "discoverer": "CRTS",
+        "redshift": 0.026,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 2,
+        "z": 0.0269
+    }
+}

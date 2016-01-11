@@ -1,0 +1,105 @@
+{
+    "SN1971K": {
+        "name": "SN1971K",
+        "aliases": [
+            "SN1971K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1985PZ.....22..191T'>1985PZ.....22..191T</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/02300/02335.html'>IAUC 2335</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41114.799999999814",
+                "band": "B",
+                "abmag": "16.72",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41114.810000000056",
+                "band": "B",
+                "abmag": "16.48",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41117.89999999991",
+                "band": "B",
+                "abmag": "16.33",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41118.799999999814",
+                "band": "B",
+                "abmag": "16.34",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41127.799999999814",
+                "band": "B",
+                "abmag": "16.37",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41128.83999999985",
+                "band": "B",
+                "abmag": "16.38",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41129.83999999985",
+                "band": "B",
+                "abmag": "16.47",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "41113.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1971,
+        "maxday": 11,
+        "maxmonth": 6,
+        "host": "NGC 3811",
+        "claimedtype": "II* P",
+        "hvel": "3103",
+        "galra": "114117",
+        "galdec": "+474127",
+        "discoverer": "Kulikovskij",
+        "snra": "11:41:13.2",
+        "sndec": "+47:41:17.0",
+        "discoverday": 11,
+        "discovermonth": 6,
+        "maxyear": 1971,
+        "z": 0.0104
+    }
+}

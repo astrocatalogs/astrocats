@@ -1,0 +1,45 @@
+{
+    "SN2012cx": {
+        "name": "SN2012cx",
+        "aliases": [
+            "SN2012cx",
+            "PSN J17100586+4222235"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003149.txt'>CBET 3149</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56097.5",
+                "band": "",
+                "abmag": "15.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
+        "discovermonth": 6,
+        "host": "PGC 59729",
+        "claimedtype": "Ia",
+        "hvel": "8296",
+        "galra": "171005",
+        "galdec": "+422218",
+        "snra": "17:10:05.86",
+        "sndec": "+42:22:23.5",
+        "discoverer": "Ella Sanders, R. Kot and D. Coffin",
+        "redshift": 0.0277,
+        "maxyear": 2012,
+        "maxmonth": 6,
+        "maxday": 19,
+        "z": 0.0281
+    }
+}

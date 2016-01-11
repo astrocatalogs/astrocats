@@ -1,0 +1,45 @@
+{
+    "SN2011iu": {
+        "name": "SN2011iu",
+        "aliases": [
+            "SN2011iu",
+            "PSN J23510228+4643217"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002939.txt'>CBET 2939</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55893.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 28,
+        "discovermonth": 11,
+        "host": "UGC 12809",
+        "claimedtype": "Ia",
+        "hvel": "13971",
+        "galra": "235103",
+        "galdec": "+462326",
+        "snra": "23:51:02.27",
+        "sndec": "+46:43:21.7",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.046,
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 28,
+        "z": 0.0477
+    }
+}

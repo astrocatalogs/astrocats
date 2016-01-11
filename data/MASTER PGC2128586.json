@@ -1,0 +1,37 @@
+{
+    "MASTER PGC2128586": {
+        "name": "MASTER PGC2128586",
+        "aliases": [
+            "MASTER PGC2128586"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3213'>ATEL 3213</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55628.5",
+                "band": "",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "snra": "12:50:29.47",
+        "sndec": "+38:29:45.8",
+        "discoverday": 8,
+        "discovermonth": 3,
+        "discoveryear": 2011,
+        "discoverer": "MASTER",
+        "maxyear": 2011,
+        "maxmonth": 3,
+        "maxday": 8
+    }
+}

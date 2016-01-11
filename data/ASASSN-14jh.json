@@ -1,0 +1,51 @@
+{
+    "ASASSN-14jh": {
+        "name": "ASASSN-14jh",
+        "aliases": [
+            "ASASSN-14jh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6647'>ATEL 6647</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56933.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56965.7694",
+                "band": "U",
+                "abmag": "16.4",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "MCG +10-13-8",
+        "snra": "08:40:44.27",
+        "sndec": "+57:15:04.9",
+        "discoverday": 3,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "redshift": 0.017533,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 3
+    }
+}

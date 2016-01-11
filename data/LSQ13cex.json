@@ -1,0 +1,39 @@
+{
+    "LSQ13cex": {
+        "name": "LSQ13cex",
+        "aliases": [
+            "LSQ13cex"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5392'>ATEL 5392</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56544.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "23:04:03.12",
+        "sndec": "-14:58:42.4",
+        "discoverday": 9,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.08,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 9
+    }
+}

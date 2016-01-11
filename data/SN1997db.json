@@ -1,0 +1,40 @@
+{
+    "SN1997db": {
+        "name": "SN1997db",
+        "aliases": [
+            "SN1997db"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50662.0",
+                "band": "V",
+                "abmag": "16.9",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1997",
+        "discoverday": "2",
+        "discovermonth": "8",
+        "host": "UGC 11861",
+        "claimedtype": "II",
+        "hvel": "1483",
+        "galra": "215624",
+        "galdec": "+731539",
+        "snra": "21:56:20.53",
+        "sndec": "+73:14:49.4",
+        "discoverer": "Mike Schwartz",
+        "z": 0.00496
+    }
+}

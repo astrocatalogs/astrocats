@@ -1,0 +1,45 @@
+{
+    "PSN 02283286+2017077": {
+        "name": "PSN 02283286+2017077",
+        "aliases": [
+            "PSN 02283286+2017077"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57221.7396",
+                "band": "U",
+                "abmag": "14.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.451",
+                "band": "UV",
+                "abmag": "16.5",
+                "source": "3,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 18,
+        "discoveryear": 2015,
+        "discovermonth": 7,
+        "discoverday": 18
+    }
+}

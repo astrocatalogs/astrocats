@@ -1,0 +1,59 @@
+{
+    "SN2008cc": {
+        "name": "SN2008cc",
+        "aliases": [
+            "SN2008cc"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001300/CBET001356.txt'>CBET 1356</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54586.5",
+                "band": "",
+                "abmag": "14.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54587.777",
+                "band": "CV",
+                "abmag": "14.6",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2008,
+        "discoverday": 30,
+        "discovermonth": 4,
+        "host": "ESO 107-G4",
+        "claimedtype": "Ia",
+        "hvel": "3128",
+        "galra": "210329",
+        "galdec": "-671049",
+        "snra": "21:03:29.62",
+        "sndec": "-67:11:01.1",
+        "discoverer": "CHASE",
+        "redshift": 0.0104,
+        "maxyear": 2008,
+        "maxmonth": 4,
+        "maxday": 30,
+        "z": 0.0105
+    }
+}

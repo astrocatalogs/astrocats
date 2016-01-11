@@ -1,0 +1,47 @@
+{
+    "SN1939B": {
+        "name": "SN1939B",
+        "aliases": [
+            "SN1939B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/00700/00774.html'>IAUC 774</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "29401.5",
+                "band": "",
+                "abmag": "11.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1939,
+        "maxday": 18,
+        "maxmonth": 5,
+        "host": "M59",
+        "claimedtype": "I",
+        "hvel": "433",
+        "galra": "124203",
+        "galdec": "+113849",
+        "discoverer": "Fritz Zwicky",
+        "snra": "12:42:02.5",
+        "sndec": "+11:37:53.0",
+        "discoverday": 18,
+        "discovermonth": 5,
+        "maxyear": 1939,
+        "z": 0.00145
+    }
+}

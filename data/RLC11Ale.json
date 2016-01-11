@@ -1,0 +1,29 @@
+{
+    "RLC11Ale": {
+        "name": "RLC11Ale",
+        "aliases": [
+            "RLC11Ale",
+            "SN Alexander"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8170'>ATEL 8170</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [],
+        "host": "MACSJ0949.8+1708",
+        "snra": "09:49:48.07",
+        "sndec": "+17:07:24.0",
+        "discoverday": "23",
+        "discovermonth": "4",
+        "discoveryear": "2011",
+        "redshift": 0.383,
+        "discoverer": "HST"
+    }
+}

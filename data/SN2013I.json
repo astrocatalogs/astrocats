@@ -1,0 +1,43 @@
+{
+    "SN2013I": {
+        "name": "SN2013I",
+        "aliases": [
+            "SN2013I",
+            "DES12S1a"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003386.txt'>CBET 3386</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55936.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 10,
+        "discovermonth": 1,
+        "host": "A024943+0045",
+        "claimedtype": "Ia",
+        "galra": "024943",
+        "galdec": "+004535",
+        "snra": "02:49:42.17",
+        "sndec": "+00:45:35.7",
+        "discoverer": "Dark Energy Survey",
+        "redshift": 0.036,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 10
+    }
+}

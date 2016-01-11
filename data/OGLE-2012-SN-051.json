@@ -1,0 +1,40 @@
+{
+    "OGLE-2012-SN-051": {
+        "name": "OGLE-2012-SN-051",
+        "aliases": [
+            "OGLE-2012-SN-051"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4689'>ATEL 4689</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56289.5",
+                "band": "",
+                "abmag": "19.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "ESO 85-G38",
+        "snra": "05:04:06.71",
+        "sndec": "-63:34:57.0",
+        "discoverday": 28,
+        "discovermonth": 12,
+        "discoveryear": 2012,
+        "redshift": 0.11,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2012,
+        "maxmonth": 12,
+        "maxday": 28
+    }
+}

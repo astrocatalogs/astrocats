@@ -1,0 +1,84 @@
+{
+    "SN2007K": {
+        "name": "SN2007K",
+        "aliases": [
+            "SN2007K"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000800/CBET000812.txt'>CBET 812</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Pro",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54115.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54130.862",
+                "band": "CR",
+                "abmag": "16.26",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54135.829",
+                "band": "CR",
+                "abmag": "16.24",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54144.822",
+                "band": "CR",
+                "abmag": "16.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54158.845",
+                "band": "CR",
+                "abmag": "16.32",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 15,
+        "discovermonth": 1,
+        "host": "MCG +6-20-50",
+        "claimedtype": "IIn",
+        "hvel": "6505",
+        "galra": "091426",
+        "galdec": "+360645",
+        "snra": "09:14:26.21",
+        "sndec": "+36:06:52.4",
+        "discoverer": "LOSS",
+        "redshift": 0.022,
+        "maxyear": 2007,
+        "maxmonth": 2,
+        "maxday": 13,
+        "z": 0.0219
+    }
+}

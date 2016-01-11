@@ -1,0 +1,39 @@
+{
+    "MASTER 134201.21-023856.2": {
+        "name": "MASTER 134201.21-023856.2",
+        "aliases": [
+            "MASTER 134201.21-023856.2"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4065'>ATEL 4065</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56037.5",
+                "band": "",
+                "abmag": "19.4",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II?",
+        "snra": "13:42:01.21",
+        "sndec": "-02:38:56.2",
+        "discoverday": 20,
+        "discovermonth": 4,
+        "discoveryear": 2012,
+        "redshift": 0.13,
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 4,
+        "maxday": 20
+    }
+}

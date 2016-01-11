@@ -1,0 +1,66 @@
+{
+    "SN2006rk": {
+        "name": "SN2006rk",
+        "aliases": [
+            "SN2006rk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08784.html#Item1'>IAUC 8784</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Pro",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54044.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54144.801",
+                "band": "CR",
+                "abmag": "18.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54146.841",
+                "band": "CR",
+                "abmag": "18.5",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 5,
+        "discovermonth": 11,
+        "host": "MCG +5-17-19",
+        "claimedtype": "II",
+        "hvel": "3000",
+        "galra": "071624",
+        "galdec": "+273709",
+        "snra": "07:16:24.51",
+        "sndec": "+27:37:25.5",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.01,
+        "maxyear": 2006,
+        "maxmonth": 11,
+        "maxday": 5,
+        "z": 0.0101
+    }
+}

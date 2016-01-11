@@ -1,0 +1,45 @@
+{
+    "SN2014ds": {
+        "name": "SN2014ds",
+        "aliases": [
+            "SN2014ds",
+            "PSN J08111645+2510474"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004010.txt'>CBET 4010</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56940.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 10,
+        "discovermonth": 10,
+        "host": "NGC 2536",
+        "claimedtype": "IIb",
+        "hvel": "4142",
+        "galra": "081116",
+        "galdec": "+251046",
+        "snra": "08:11:16.45",
+        "sndec": "+25:10:47.4",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.0137,
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 10,
+        "z": 0.0139
+    }
+}

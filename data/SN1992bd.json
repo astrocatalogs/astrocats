@@ -1,0 +1,47 @@
+{
+    "SN1992bd": {
+        "name": "SN1992bd",
+        "aliases": [
+            "SN1992bd"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05600/05638.html'>IAUC 5638</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48906.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1992,
+        "discoverday": 11,
+        "discovermonth": 10,
+        "host": "NGC 1097",
+        "claimedtype": "II",
+        "hvel": "1274",
+        "galra": "024619",
+        "galdec": "-301630",
+        "discoverer": "Smith, Wells",
+        "snra": "02:46:18.9",
+        "sndec": "-30:16:30.0",
+        "maxyear": 1992,
+        "maxmonth": 10,
+        "maxday": 11,
+        "z": 0.00426
+    }
+}

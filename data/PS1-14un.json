@@ -1,0 +1,49 @@
+{
+    "PS1-14un": {
+        "name": "PS1-14un",
+        "aliases": [
+            "PS1-14un",
+            "CSS140402:135154+523528"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56748.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.236",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "3,1"
+            }
+        ],
+        "snra": "13:51:53.40",
+        "sndec": "+52:35:27.6",
+        "discoverday": 29,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 1
+    }
+}

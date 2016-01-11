@@ -1,0 +1,129 @@
+{
+    "SN2014cy": {
+        "name": "SN2014cy",
+        "aliases": [
+            "SN2014cy",
+            "PSN J23441603+1046125"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003964.txt'>CBET 3964</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "4"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "5"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "6"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "7"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "8"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "9"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56949.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57010.3",
+                "band": "R",
+                "abmag": "16.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56906.926",
+                "band": "U",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56915.9689",
+                "band": "CV",
+                "abmag": "16.03",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56927.86",
+                "band": "U",
+                "abmag": "15.4",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56929.83481",
+                "band": "V",
+                "abmag": "16.15",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56947.923",
+                "band": "C",
+                "abmag": "15.74",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56950.97899",
+                "band": "CV",
+                "abmag": "15.01",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56959.038",
+                "band": "U",
+                "abmag": "16.2",
+                "source": "9,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 6,
+        "discovermonth": 9,
+        "host": "NGC 7742",
+        "claimedtype": "IIP",
+        "hvel": "1661",
+        "galra": "234416",
+        "galdec": "+104601",
+        "snra": "23:44:16.03",
+        "sndec": "+10:46:12.5",
+        "discoverer": "Ken'ichi Nishimura",
+        "redshift": 0.005547,
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 19,
+        "z": 0.00556
+    }
+}

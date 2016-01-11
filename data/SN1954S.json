@@ -1,0 +1,46 @@
+{
+    "SN1954S": {
+        "name": "SN1954S",
+        "aliases": [
+            "SN1954S"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1973PASP...85..427K'>PASP 85, 427</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "34991.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1954,
+        "discoverday": 6,
+        "discovermonth": 9,
+        "host": "A003542-0830",
+        "hvel": "17050",
+        "galra": "003542",
+        "galdec": "-0830",
+        "discoverer": "Fritz Zwicky",
+        "snra": "00:35:44.1",
+        "sndec": "-08:30:35.0",
+        "maxyear": 1954,
+        "maxmonth": 9,
+        "maxday": 6,
+        "z": 0.0586
+    }
+}

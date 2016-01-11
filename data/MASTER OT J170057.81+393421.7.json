@@ -1,0 +1,38 @@
+{
+    "MASTER OT J170057.81+393421.7": {
+        "name": "MASTER OT J170057.81+393421.7",
+        "aliases": [
+            "MASTER OT J170057.81+393421.7"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6317'>ATEL 6317</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56848.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "host": "MCG +7-35-15",
+        "snra": "17:00:57.81",
+        "sndec": "+39:34:21.7",
+        "discoverday": 10,
+        "discovermonth": 7,
+        "discoveryear": 2014,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 7,
+        "maxday": 10
+    }
+}

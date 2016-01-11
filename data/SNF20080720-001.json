@@ -1,0 +1,38 @@
+{
+    "SNF20080720-001": {
+        "name": "SNF20080720-001",
+        "aliases": [
+            "SNF20080720-001"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=1624'>ATEL 1624</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54666.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "01:05:27.20",
+        "sndec": "+37:51:11.0",
+        "discoverday": 19,
+        "discovermonth": 7,
+        "discoveryear": 2008,
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2008,
+        "maxmonth": 7,
+        "maxday": 19
+    }
+}

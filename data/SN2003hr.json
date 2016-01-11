@@ -1,0 +1,47 @@
+{
+    "SN2003hr": {
+        "name": "SN2003hr",
+        "aliases": [
+            "SN2003hr"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08191.html#Item2'>IAUC 8191</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52894.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 12,
+        "discovermonth": 9,
+        "host": "NGC 2551",
+        "claimedtype": "II",
+        "hvel": "2263",
+        "galra": "082449",
+        "galdec": "+732446",
+        "snra": "08:24:39.06",
+        "sndec": "+73:24:23.3",
+        "discoverer": "Tom Boles",
+        "maxyear": 2003,
+        "maxmonth": 9,
+        "maxday": 12,
+        "z": 0.00758
+    }
+}

@@ -1,0 +1,106 @@
+{
+    "SN2003O": {
+        "name": "SN2003O",
+        "aliases": [
+            "SN2003O"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08055.html#Item1'>IAUC 8055</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52657.95999999996",
+                "band": "C",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52659.14999999991",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52662.77000000002",
+                "band": "R",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52663.85999999987",
+                "band": "R",
+                "abmag": "17.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52663.85999999987",
+                "band": "V",
+                "abmag": "17.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52668.029999999795",
+                "band": "C",
+                "abmag": "17.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52676.79000000004",
+                "band": "R",
+                "abmag": "17.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52658.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 18,
+        "discovermonth": 1,
+        "host": "UGC 2798",
+        "claimedtype": "II",
+        "hvel": "4930",
+        "galra": "033810",
+        "galdec": "+405858",
+        "snra": "03:38:09.138",
+        "sndec": "+40:58:38.09",
+        "discoverer": "Doug Rich",
+        "redshift": 0.016,
+        "maxyear": 2003,
+        "maxmonth": 1,
+        "maxday": 20,
+        "z": 0.0166
+    }
+}

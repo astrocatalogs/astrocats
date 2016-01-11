@@ -1,0 +1,45 @@
+{
+    "SN2014cn": {
+        "name": "SN2014cn",
+        "aliases": [
+            "SN2014cn",
+            "PSN J12091154+2910209"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003952.txt'>CBET 3952</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56771.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 24,
+        "discovermonth": 4,
+        "host": "NGC 4134",
+        "claimedtype": "II",
+        "hvel": "3840",
+        "galra": "120910",
+        "galdec": "+291037",
+        "snra": "12:09:11.54",
+        "sndec": "+29:10:20.9",
+        "discoverer": "LOSS",
+        "redshift": 0.012762,
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 24,
+        "z": 0.0129
+    }
+}

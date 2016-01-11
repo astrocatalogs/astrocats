@@ -1,0 +1,40 @@
+{
+    "PS1-12bwn": {
+        "name": "PS1-12bwn",
+        "aliases": [
+            "PS1-12bwn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4516'>ATEL 4516</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56221.5",
+                "band": "",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia-pec",
+        "host": "CGCG 205-21",
+        "snra": "07:09:24.29",
+        "sndec": "+39:06:15.8",
+        "discoverday": 21,
+        "discovermonth": 10,
+        "discoveryear": 2012,
+        "redshift": 0.023,
+        "discoverer": "PS1",
+        "maxyear": 2012,
+        "maxmonth": 10,
+        "maxday": 21
+    }
+}

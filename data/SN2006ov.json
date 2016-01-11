@@ -1,0 +1,48 @@
+{
+    "SN2006ov": {
+        "name": "SN2006ov",
+        "aliases": [
+            "SN2006ov"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08781.html#Item2'>IAUC 8781</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54063.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 24,
+        "discovermonth": 11,
+        "host": "M61",
+        "claimedtype": "II",
+        "hvel": "1574",
+        "galra": "122155",
+        "galdec": "+042825",
+        "snra": "12:21:55.30",
+        "sndec": "+04:29:16.7",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.005,
+        "maxyear": 2006,
+        "maxmonth": 11,
+        "maxday": 24,
+        "z": 0.00526
+    }
+}

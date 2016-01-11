@@ -1,0 +1,132 @@
+{
+    "PSN 19273770+5422340": {
+        "name": "PSN 19273770+5422340",
+        "aliases": [
+            "PSN 19273770+5422340"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Jaroslaw Grzegorzek",
+                "alias": "2"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "3"
+            },
+            {
+                "name": "G. Locatelli",
+                "alias": "4"
+            },
+            {
+                "name": "A. Mantero",
+                "alias": "5"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "6"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "7"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "8"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "9"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57243.971",
+                "band": "U",
+                "abmag": "18.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57243.0243",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57243.875",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57245.859",
+                "band": "Rc",
+                "abmag": "18.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57245.869",
+                "band": "V",
+                "abmag": "18.8",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57246.163",
+                "band": "C",
+                "abmag": "19.0",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57246.867",
+                "band": "CR",
+                "abmag": "19.1",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57246.971",
+                "band": "U",
+                "abmag": "19.1",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57249.6375",
+                "band": "U",
+                "abmag": "19.2",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57250.876",
+                "band": "CR",
+                "abmag": "18.8",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57253.906",
+                "band": "CR",
+                "abmag": "18.8",
+                "source": "7,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 9,
+        "discoveryear": 2015,
+        "discovermonth": 8,
+        "discoverday": 9
+    }
+}

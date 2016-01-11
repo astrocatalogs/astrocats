@@ -1,0 +1,38 @@
+{
+    "PS1-14an": {
+        "name": "PS1-14an",
+        "aliases": [
+            "PS1-14an"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=2'>PS1 SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56666.5",
+                "band": "",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "host": "ESO 488-G5",
+        "snra": "05:45:01.92",
+        "sndec": "-26:11:46.4",
+        "discoverday": 9,
+        "discovermonth": 1,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 9
+    }
+}

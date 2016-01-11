@@ -1,0 +1,81 @@
+{
+    "SN2014ao": {
+        "name": "SN2014ao",
+        "aliases": [
+            "SN2014ao",
+            "PSN J08343332-0232361"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003855.txt'>CBET 3855</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Nor Schramm",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56764.5",
+                "band": "",
+                "abmag": "15.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56768.049",
+                "band": "U",
+                "abmag": "13.65",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56769.05",
+                "band": "U",
+                "abmag": "13.64",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56772.042",
+                "band": "U",
+                "abmag": "13.81",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56780.124",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 17,
+        "discovermonth": 4,
+        "host": "NGC 2615",
+        "claimedtype": "Ia",
+        "hvel": "4097",
+        "galra": "083433",
+        "galdec": "-023248",
+        "snra": "08:34:33.32",
+        "sndec": "-02:32:36.1",
+        "discoverer": "LOSS",
+        "redshift": 0.014,
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 22,
+        "z": 0.0138
+    }
+}

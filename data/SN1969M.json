@@ -1,0 +1,46 @@
+{
+    "SN1969M": {
+        "name": "SN1969M",
+        "aliases": [
+            "SN1969M"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1970PASP...82..736K'>PASP 82, 736</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "40561.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1969,
+        "discoverday": 6,
+        "discovermonth": 12,
+        "host": "PGC0012992",
+        "hvel": "6818",
+        "galra": "032948",
+        "galdec": "+400116",
+        "discoverer": "Charles Kowal",
+        "snra": "03:29:49.0",
+        "sndec": "+40:01:15.0",
+        "maxyear": 1969,
+        "maxmonth": 12,
+        "maxday": 6,
+        "z": 0.023
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "SMT J21413915-5643445": {
+        "name": "SMT J21413915-5643445",
+        "aliases": [
+            "SMT J21413915-5643445"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5480'>ATEL 5480</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56572.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "21:41:39.15",
+        "sndec": "-56:43:44.5",
+        "discoverday": 7,
+        "discovermonth": 10,
+        "discoveryear": 2013,
+        "redshift": 0.142,
+        "discoverer": "SkyMapper Supernova search",
+        "maxyear": 2013,
+        "maxmonth": 10,
+        "maxday": 7
+    }
+}

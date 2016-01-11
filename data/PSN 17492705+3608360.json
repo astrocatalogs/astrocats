@@ -1,0 +1,85 @@
+{
+    "PSN 17492705+3608360": {
+        "name": "PSN 17492705+3608360",
+        "aliases": [
+            "PSN 17492705+3608360"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LLA",
+                "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Maurice Gavin",
+                "alias": "5"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57124.17",
+                "band": "R",
+                "abmag": "15.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57127.597",
+                "band": "C",
+                "abmag": "15.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57138.7181",
+                "band": "U",
+                "abmag": "15.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57163.918",
+                "band": "U",
+                "abmag": "15.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57169.92",
+                "band": "V",
+                "abmag": "15.9",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57175.915",
+                "band": "CV",
+                "abmag": "15.1",
+                "source": "6,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 15,
+        "discoveryear": 2015,
+        "discovermonth": 4,
+        "discoverday": 12
+    }
+}

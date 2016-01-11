@@ -1,0 +1,38 @@
+{
+    "PTF10guz": {
+        "name": "PTF10guz",
+        "aliases": [
+            "PTF10guz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2600'>ATEL 2600</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55321.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia-pec",
+        "snra": "12:49:22.81",
+        "sndec": "-06:23:51.3",
+        "discoverday": 5,
+        "discovermonth": 5,
+        "discoveryear": 2010,
+        "discoverer": "PTF",
+        "maxyear": 2010,
+        "maxmonth": 5,
+        "maxday": 5
+    }
+}

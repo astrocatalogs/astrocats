@@ -1,0 +1,44 @@
+{
+    "SN2003ca": {
+        "name": "SN2003ca",
+        "aliases": [
+            "SN2003ca"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08093.html#Item1'>IAUC 8093</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52705.5",
+                "band": "",
+                "abmag": "23.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 7,
+        "discovermonth": 3,
+        "host": "A092358+3002",
+        "galra": "092358",
+        "galdec": "+300239",
+        "snra": "09:23:58.918",
+        "sndec": "+30:02:39.59",
+        "discoverer": "Deep Lens Survey Transient Team",
+        "maxyear": 2003,
+        "maxmonth": 3,
+        "maxday": 7
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "ASASSN-15tt": {
+        "name": "ASASSN-15tt",
+        "aliases": [
+            "ASASSN-15tt"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8383'>ATEL 8383</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57363.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "06:38:01.49",
+        "sndec": "-37:39:30.9",
+        "discoverday": 7,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "redshift": 0.034,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 7
+    }
+}

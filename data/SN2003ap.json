@@ -1,0 +1,78 @@
+{
+    "SN2003ap": {
+        "name": "SN2003ap",
+        "aliases": [
+            "SN2003ap"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08071.html#Item1'>IAUC 8071</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52679.310000000056",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52679.330000000075",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52679.35000000009",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52678.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 8,
+        "discovermonth": 2,
+        "host": "A095052-2151",
+        "claimedtype": "Ia",
+        "hvel": "9000",
+        "galra": "095052",
+        "galdec": "-215110",
+        "snra": "09:50:52.838",
+        "sndec": "-21:51:10.19",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.03,
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 9,
+        "z": 0.0305
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "SN1985O": {
+        "name": "SN1985O",
+        "aliases": [
+            "SN1985O"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04100/04108.html'>IAUC 4108</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "46317.0",
+                "band": "",
+                "abmag": "16.5",
+                "source": "3"
+            }
+        ],
+        "discoveryear": "1985",
+        "discoverday": "9",
+        "discovermonth": "9",
+        "host": "UGC 511",
+        "claimedtype": "II",
+        "hvel": "4572",
+        "galra": "005010",
+        "galdec": "+314352",
+        "discoverer": "Miklos Lovas",
+        "snra": "00:50:09.9",
+        "sndec": "+31:43:52.0",
+        "z": 0.0154
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "SN1999dl": {
+        "name": "SN1999dl",
+        "aliases": [
+            "SN1999dl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51401.0",
+                "band": "",
+                "abmag": "19.1",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "11",
+        "discovermonth": "8",
+        "host": "A230411+2707",
+        "galra": "230411",
+        "galdec": "+270707",
+        "snra": "23:04:11.70",
+        "sndec": "+27:07:07.3",
+        "discoverer": "Tim Puckett et al."
+    }
+}

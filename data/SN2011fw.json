@@ -1,0 +1,45 @@
+{
+    "SN2011fw": {
+        "name": "SN2011fw",
+        "aliases": [
+            "SN2011fw",
+            "PSN J03205424+3752053"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002829.txt'>CBET 2829</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55836.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 2,
+        "discovermonth": 10,
+        "host": "MCG +6-8-15",
+        "claimedtype": "Ia",
+        "hvel": "5104",
+        "galra": "032054",
+        "galdec": "+375202",
+        "snra": "03:20:54.24",
+        "sndec": "+37:52:05.3",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0168,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 2,
+        "z": 0.0172
+    }
+}

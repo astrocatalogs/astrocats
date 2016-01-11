@@ -1,0 +1,47 @@
+{
+    "SN2009dr": {
+        "name": "SN2009dr",
+        "aliases": [
+            "SN2009dr",
+            "CSS090425:144442+494345"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001700/CBET001783.txt'>CBET 1783</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54937.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2009,
+        "discoverday": 16,
+        "discovermonth": 4,
+        "host": "A144442+4943",
+        "claimedtype": "Ia",
+        "redshift": 0.1,
+        "galra": "144442",
+        "galdec": "+494344",
+        "snra": "14:44:42.08",
+        "sndec": "+49:43:44.9",
+        "discoverer": "PTF",
+        "maxyear": 2009,
+        "maxmonth": 4,
+        "maxday": 16
+    }
+}

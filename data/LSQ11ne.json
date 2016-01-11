@@ -1,0 +1,39 @@
+{
+    "LSQ11ne": {
+        "name": "LSQ11ne",
+        "aliases": [
+            "LSQ11ne"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3827'>ATEL 3827</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55921.5",
+                "band": "",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "01:55:39.59",
+        "sndec": "-07:30:25.0",
+        "discoverday": 26,
+        "discovermonth": 12,
+        "discoveryear": 2011,
+        "redshift": 0.093,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2011,
+        "maxmonth": 12,
+        "maxday": 26
+    }
+}

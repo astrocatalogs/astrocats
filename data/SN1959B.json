@@ -1,0 +1,47 @@
+{
+    "SN1959B": {
+        "name": "SN1959B",
+        "aliases": [
+            "SN1959B"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1960PASP...72..208H'>PASP 72, 208</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "36691.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1959,
+        "maxday": 3,
+        "maxmonth": 5,
+        "host": "NGC 4921",
+        "claimedtype": "Pec",
+        "hvel": "5457",
+        "galra": "130126",
+        "galdec": "+275312",
+        "snra": "13:01:27.55",
+        "sndec": "+27:52:22.8",
+        "discoverer": "Milton Humason",
+        "discoverday": 3,
+        "discovermonth": 5,
+        "maxyear": 1959,
+        "z": 0.0184
+    }
+}

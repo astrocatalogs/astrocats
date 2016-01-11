@@ -1,0 +1,48 @@
+{
+    "SN2005lb": {
+        "name": "SN2005lb",
+        "aliases": [
+            "SN2005lb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08600/08640.html#Item1'>IAUC 8640</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53618.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 5,
+        "discovermonth": 9,
+        "host": "A225450-0015",
+        "claimedtype": "II",
+        "hvel": "9000",
+        "galra": "225450",
+        "galdec": "-001509",
+        "snra": "22:54:50.05",
+        "sndec": "-00:15:09.0",
+        "discoverer": "SDSS",
+        "redshift": 0.03,
+        "maxyear": 2005,
+        "maxmonth": 9,
+        "maxday": 5,
+        "z": 0.0305
+    }
+}

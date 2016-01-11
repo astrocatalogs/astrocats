@@ -1,0 +1,40 @@
+{
+    "PSN J17285509-6609103": {
+        "name": "PSN J17285509-6609103",
+        "aliases": [
+            "PSN J17285509-6609103"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J17285509-6609103.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56530.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "ESO 102-G6",
+        "snra": "17:28:55.09",
+        "sndec": "-66:09:10.3",
+        "discoverday": 26,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "redshift": 0.02,
+        "discoverer": "Peter Marples",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 26
+    }
+}

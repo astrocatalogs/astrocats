@@ -1,0 +1,45 @@
+{
+    "SN2014ay": {
+        "name": "SN2014ay",
+        "aliases": [
+            "SN2014ay",
+            "ASASSN-14at"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003871.txt'>CBET 3871</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56780.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 3,
+        "discovermonth": 5,
+        "host": "UGC 11037",
+        "claimedtype": "II",
+        "hvel": "3127",
+        "galra": "175505",
+        "galdec": "+181526",
+        "snra": "17:55:05.43",
+        "sndec": "+18:15:26.5",
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "redshift": 0.010431,
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 3,
+        "z": 0.0105
+    }
+}

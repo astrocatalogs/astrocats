@@ -1,0 +1,67 @@
+{
+    "PSN 10404316+3556581": {
+        "name": "PSN 10404316+3556581",
+        "aliases": [
+            "PSN 10404316+3556581"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "4"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56740.2396",
+                "band": "R",
+                "abmag": "17.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56741.322",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.879",
+                "band": "V",
+                "abmag": "17.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.15",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "5,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 24,
+        "discoveryear": 2014,
+        "discovermonth": 3,
+        "discoverday": 24
+    }
+}

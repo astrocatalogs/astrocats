@@ -1,0 +1,40 @@
+{
+    "iPTF14fpb": {
+        "name": "iPTF14fpb",
+        "aliases": [
+            "iPTF14fpb",
+            "MLS140923:004747+111424"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6534'>ATEL 6534</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56922.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "00:47:46.58",
+        "sndec": "+11:14:24.5",
+        "discoverday": 22,
+        "discovermonth": 9,
+        "discoveryear": 2014,
+        "redshift": 0.06,
+        "discoverer": "PTF",
+        "maxyear": 2014,
+        "maxmonth": 9,
+        "maxday": 22
+    }
+}

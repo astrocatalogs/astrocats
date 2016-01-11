@@ -1,0 +1,34 @@
+{
+    "PSN 18120245-5858271": {
+        "name": "PSN 18120245-5858271",
+        "aliases": [
+            "PSN 18120245-5858271"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "CHASE",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56351.0",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 28,
+        "discoveryear": 2013,
+        "discovermonth": 2,
+        "discoverday": 28
+    }
+}

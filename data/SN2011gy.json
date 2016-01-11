@@ -1,0 +1,45 @@
+{
+    "SN2011gy": {
+        "name": "SN2011gy",
+        "aliases": [
+            "SN2011gy",
+            "PSN J03293530+4052029"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002871.txt'>CBET 2871</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55873.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 8,
+        "discovermonth": 11,
+        "host": "MCG +7-8-15",
+        "claimedtype": "Ia",
+        "hvel": "5061",
+        "galra": "032935",
+        "galdec": "+405208",
+        "snra": "03:29:35.29",
+        "sndec": "+40:52:02.9",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.0169,
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 8,
+        "z": 0.017
+    }
+}

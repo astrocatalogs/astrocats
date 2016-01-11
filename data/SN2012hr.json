@@ -1,0 +1,45 @@
+{
+    "SN2012hr": {
+        "name": "SN2012hr",
+        "aliases": [
+            "SN2012hr",
+            "PSN J06213846-5942506"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003346.txt'>CBET 3346</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56296.5",
+                "band": "",
+                "abmag": "13.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 4,
+        "discovermonth": 1,
+        "host": "ESO 121-G26",
+        "claimedtype": "Ia",
+        "hvel": "2258",
+        "galra": "062139",
+        "galdec": "-594424",
+        "snra": "06:21:38.46",
+        "sndec": "-59:42:50.6",
+        "discoverer": "Peter Marples",
+        "redshift": 0.008,
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 4,
+        "z": 0.00756
+    }
+}

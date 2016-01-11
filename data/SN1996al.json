@@ -1,0 +1,40 @@
+{
+    "SN1996al": {
+        "name": "SN1996al",
+        "aliases": [
+            "SN1996al"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50286.0",
+                "band": "",
+                "abmag": "14",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1996",
+        "discoverday": "22",
+        "discovermonth": "7",
+        "host": "NGC 7689",
+        "claimedtype": "II",
+        "hvel": "1820",
+        "galra": "233316",
+        "galdec": "-540537",
+        "snra": "23:33:16.1",
+        "sndec": "-50:05:02.0",
+        "discoverer": "Robert Evans",
+        "z": 0.00609
+    }
+}

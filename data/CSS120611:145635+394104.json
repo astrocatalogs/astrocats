@@ -1,0 +1,37 @@
+{
+    "CSS120611:145635+394104": {
+        "name": "CSS120611:145635+394104",
+        "aliases": [
+            "CSS120611:145635+394104"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://skyalert.org/'>SkyAlert</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56088.5",
+                "band": "",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "snra": "14:56:34.75",
+        "sndec": "+39:41:03.55",
+        "discoverday": 10,
+        "discovermonth": 6,
+        "discoveryear": 2012,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 6,
+        "maxday": 10
+    }
+}

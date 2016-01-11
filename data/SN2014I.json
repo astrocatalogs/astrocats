@@ -1,0 +1,67 @@
+{
+    "SN2014I": {
+        "name": "SN2014I",
+        "aliases": [
+            "SN2014I",
+            "PSN J05421980-2532399"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003791.txt'>CBET 3791</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56683.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56676.284",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.094",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 19,
+        "discovermonth": 1,
+        "host": "ESO 487-G36",
+        "claimedtype": "Ia",
+        "hvel": "9030",
+        "galra": "054221",
+        "galdec": "-253228",
+        "snra": "05:42:19.80",
+        "sndec": "-25:32:39.9",
+        "discoverer": "Stu Parker",
+        "redshift": 0.03,
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 21,
+        "z": 0.0306
+    }
+}

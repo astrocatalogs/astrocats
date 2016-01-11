@@ -1,0 +1,133 @@
+{
+    "SN1991X": {
+        "name": "SN1991X",
+        "aliases": [
+            "SN1991X"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1989IAUC.5288....1C'>1989IAUC.5288....1C</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05200/05258.html'>IAUC 5258</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "48366.0",
+                "band": "V",
+                "abmag": "15.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48381.39999999991",
+                "band": "V",
+                "abmag": "13.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48381.5",
+                "band": "V",
+                "abmag": "13.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48381.529999999795",
+                "band": "V",
+                "abmag": "13.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48381.580000000075",
+                "band": "V",
+                "abmag": "14.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48381.89999999991",
+                "band": "V",
+                "abmag": "14",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48382.0",
+                "band": "V",
+                "abmag": "13.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48382.970000000205",
+                "band": "V",
+                "abmag": "14",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48386.0",
+                "band": "V",
+                "abmag": "13",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48388.52000000002",
+                "band": "V",
+                "abmag": "14.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48415.220000000205",
+                "band": "V",
+                "abmag": "14.15",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "48380.5",
+                "band": "",
+                "abmag": "13.7",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1991,
+        "discoverday": 20,
+        "discovermonth": 4,
+        "host": "NGC 4902",
+        "claimedtype": "Ia",
+        "hvel": "2626",
+        "galra": "130100",
+        "galdec": "-143049",
+        "snra": "13:01:00.73",
+        "sndec": "-14:30:38.1",
+        "discoverer": "Robert Evans",
+        "maxyear": 1991,
+        "maxmonth": 5,
+        "maxday": 10,
+        "z": 0.0088
+    }
+}

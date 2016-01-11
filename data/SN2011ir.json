@@ -1,0 +1,45 @@
+{
+    "SN2011ir": {
+        "name": "SN2011ir",
+        "aliases": [
+            "SN2011ir",
+            "PSN J11480032+0429471"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002934.txt'>CBET 2934</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55885.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 20,
+        "discovermonth": 11,
+        "host": "UGC 6771",
+        "claimedtype": "II",
+        "hvel": "5981",
+        "galra": "114800",
+        "galdec": "+042917",
+        "snra": "11:48:00.31",
+        "sndec": "+04:29:47.0",
+        "discoverer": "Shigeru Furuyama",
+        "redshift": 0.0199,
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 20,
+        "z": 0.0202
+    }
+}

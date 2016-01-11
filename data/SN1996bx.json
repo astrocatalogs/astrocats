@@ -1,0 +1,47 @@
+{
+    "SN1996bx": {
+        "name": "SN1996bx",
+        "aliases": [
+            "SN1996bx"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06500/06517.html'>IAUC 6517</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50404.5",
+                "band": "",
+                "abmag": "19.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1996,
+        "discoverday": 17,
+        "discovermonth": 11,
+        "host": "A035916-5322",
+        "claimedtype": "Ia",
+        "hvel": "18000",
+        "galra": "035916",
+        "galdec": "-532226",
+        "snra": "03:59:16.45",
+        "sndec": "-53:22:26.3",
+        "discoverer": "Mount Stromlo",
+        "maxyear": 1996,
+        "maxmonth": 11,
+        "maxday": 17,
+        "z": 0.062
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "SN2001iu": {
+        "name": "SN2001iu",
+        "aliases": [
+            "SN2001iu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07805.html#Item1'>IAUC 7805</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52251.5",
+                "band": "",
+                "abmag": "24.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 8,
+        "discovermonth": 12,
+        "host": "A074813+1015",
+        "galra": "074813",
+        "galdec": "+101504",
+        "snra": "07:48:13.97",
+        "sndec": "+10:15:04.5",
+        "discoverer": "High Z Supernova Search",
+        "maxyear": 2001,
+        "maxmonth": 12,
+        "maxday": 8
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "PSN J11220840-3804001": {
+        "name": "PSN J11220840-3804001",
+        "aliases": [
+            "PSN J11220840-3804001"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J11220840-3804001.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56807.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "IIb",
+        "host": "ESO 319-G16",
+        "snra": "11:22:08.40",
+        "sndec": "-38:04:00.1",
+        "discoverday": 30,
+        "discovermonth": 5,
+        "discoveryear": 2014,
+        "redshift": 0.01,
+        "discoverer": "Stu Parker",
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 30
+    }
+}

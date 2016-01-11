@@ -1,0 +1,45 @@
+{
+    "SN2013gx": {
+        "name": "SN2013gx",
+        "aliases": [
+            "SN2013gx",
+            "MASTER OT J010223.27+203321.2"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003742.txt'>CBET 3742</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56624.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 28,
+        "discovermonth": 11,
+        "host": "A010224+2033",
+        "claimedtype": "IIP",
+        "hvel": "7200",
+        "galra": "010224",
+        "galdec": "+203333",
+        "snra": "01:02:23.27",
+        "sndec": "+20:33:21.2",
+        "discoverer": "MASTER",
+        "redshift": 0.024,
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 28,
+        "z": 0.0243
+    }
+}

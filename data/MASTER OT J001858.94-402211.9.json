@@ -1,0 +1,38 @@
+{
+    "MASTER OT J001858.94-402211.9": {
+        "name": "MASTER OT J001858.94-402211.9",
+        "aliases": [
+            "MASTER OT J001858.94-402211.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8163'>ATEL 8163</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57307.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 587150",
+        "snra": "00:18:58.94",
+        "sndec": "-40:22:11.9",
+        "discoverday": 12,
+        "discovermonth": 10,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 10,
+        "maxday": 12
+    }
+}

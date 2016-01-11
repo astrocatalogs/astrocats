@@ -1,0 +1,45 @@
+{
+    "SN2014cl": {
+        "name": "SN2014cl",
+        "aliases": [
+            "SN2014cl",
+            "PSN J02160910-1156026"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003950.txt'>CBET 3950</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56823.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 15,
+        "discovermonth": 6,
+        "host": "IC 217",
+        "claimedtype": "IIb",
+        "hvel": "1902",
+        "galra": "021610",
+        "galdec": "-115537",
+        "snra": "02:16:09.10",
+        "sndec": "-11:56:02.6",
+        "discoverer": "CHASE",
+        "redshift": 0.006304,
+        "maxyear": 2014,
+        "maxmonth": 6,
+        "maxday": 15,
+        "z": 0.00636
+    }
+}

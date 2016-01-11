@@ -1,0 +1,66 @@
+{
+    "SN2007G": {
+        "name": "SN2007G",
+        "aliases": [
+            "SN2007G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/000800/CBET000804.txt'>CBET 804</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Pro",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54440.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54130.736",
+                "band": "CR",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54135.726",
+                "band": "CR",
+                "abmag": "16.40",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 30,
+        "discovermonth": 1,
+        "host": "UGC 68",
+        "claimedtype": "II",
+        "hvel": "8761",
+        "galra": "000810",
+        "galdec": "+270013",
+        "snra": "00:08:09.81",
+        "sndec": "+27:00:11.4",
+        "discoverer": "Tsinghua Center for Astrophysics",
+        "redshift": 0.03,
+        "maxyear": 2007,
+        "maxmonth": 12,
+        "maxday": 6,
+        "z": 0.0297
+    }
+}

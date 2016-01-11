@@ -1,0 +1,48 @@
+{
+    "SN2005ev": {
+        "name": "SN2005ev",
+        "aliases": [
+            "SN2005ev"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000200/CBET000244.txt'>CBET 244</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53645.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 2,
+        "discovermonth": 10,
+        "host": "UGC 1990",
+        "claimedtype": "Ia",
+        "hvel": "4617",
+        "galra": "023104",
+        "galdec": "+274156",
+        "snra": "02:31:04.93",
+        "sndec": "+27:42:06.5",
+        "discoverer": "Nearby Supernova Factory",
+        "redshift": 0.0154,
+        "maxyear": 2005,
+        "maxmonth": 10,
+        "maxday": 2,
+        "z": 0.0155
+    }
+}

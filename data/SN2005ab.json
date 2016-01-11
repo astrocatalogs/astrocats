@@ -1,0 +1,47 @@
+{
+    "SN2005ab": {
+        "name": "SN2005ab",
+        "aliases": [
+            "SN2005ab"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08400/08478.html#Item1'>IAUC 8478</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53407.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 6,
+        "discovermonth": 2,
+        "host": "NGC 4617",
+        "claimedtype": "II",
+        "hvel": "4624",
+        "galra": "124106",
+        "galdec": "+502336",
+        "snra": "12:41:05.18",
+        "sndec": "+50:22:56.2",
+        "discoverer": "Koichi Itagaki",
+        "maxyear": 2005,
+        "maxmonth": 2,
+        "maxday": 6,
+        "z": 0.0155
+    }
+}

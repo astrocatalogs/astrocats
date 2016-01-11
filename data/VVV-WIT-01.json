@@ -1,0 +1,39 @@
+{
+    "VVV-WIT-01": {
+        "name": "VVV-WIT-01",
+        "aliases": [
+            "VVV-WIT-01"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4041'>ATEL 4041</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55255.5",
+                "band": "",
+                "abmag": "12.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia?",
+        "host": "Milky Way",
+        "snra": "16:10:53.45",
+        "sndec": "-51:55:32.4",
+        "discoverday": 28,
+        "discovermonth": 2,
+        "discoveryear": 2010,
+        "discoverer": "VVV survey",
+        "maxyear": 2010,
+        "maxmonth": 2,
+        "maxday": 28
+    }
+}

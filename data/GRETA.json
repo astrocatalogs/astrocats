@@ -1,0 +1,39 @@
+{
+    "GRETA": {
+        "name": "GRETA",
+        "aliases": [
+            "GRETA"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5949'>ATEL 5949</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56718.5",
+                "band": "",
+                "abmag": "21.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "11:11:15.948",
+        "sndec": "+00:52:59.642",
+        "discoverday": 2,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "redshift": 0.085,
+        "discoverer": "DECam",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 2
+    }
+}

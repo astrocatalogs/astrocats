@@ -1,0 +1,37 @@
+{
+    "OGLE-2013-SN-056": {
+        "name": "OGLE-2013-SN-056",
+        "aliases": [
+            "OGLE-2013-SN-056"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5321'>ATEL 5321</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56521.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "04:55:34.55",
+        "sndec": "-63:05:31.2",
+        "discoverday": 17,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 17
+    }
+}

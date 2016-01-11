@@ -1,0 +1,57 @@
+{
+    "SN2010ea": {
+        "name": "SN2010ea",
+        "aliases": [
+            "SN2010ea"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002300/CBET002320.txt'>CBET 2320</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Nic",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55344.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55360.941",
+                "band": "CR",
+                "abmag": "18.2",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2010,
+        "discoverday": 28,
+        "discovermonth": 5,
+        "host": "PGC 43005",
+        "hvel": "9000",
+        "galra": "124530",
+        "galdec": "+535200",
+        "snra": "12:45:29.52",
+        "sndec": "+53:51:49.2",
+        "discoverer": "MASTER",
+        "maxyear": 2010,
+        "maxmonth": 5,
+        "maxday": 28,
+        "z": 0.0305
+    }
+}

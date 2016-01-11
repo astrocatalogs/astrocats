@@ -1,0 +1,46 @@
+{
+    "SN1999ar": {
+        "name": "SN1999ar",
+        "aliases": [
+            "SN1999ar"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07100/07125.html#Item1'>IAUC 7125</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51242.5",
+                "band": "",
+                "abmag": "19.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 5,
+        "discovermonth": 3,
+        "host": "A092016+0033",
+        "claimedtype": "Ia",
+        "redshift": 0.15,
+        "galra": "092016",
+        "galdec": "+003339",
+        "snra": "09:20:16.00",
+        "sndec": "+00:33:39.6",
+        "discoverer": "Nearby Galaxy Supernova Search",
+        "maxyear": 1999,
+        "maxmonth": 3,
+        "maxday": 5
+    }
+}

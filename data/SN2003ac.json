@@ -1,0 +1,84 @@
+{
+    "SN2003ac": {
+        "name": "SN2003ac",
+        "aliases": [
+            "SN2003ac"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08064.html#Item2'>IAUC 8064</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52646.5",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52659.39999999991",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52672.5",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52673.39999999991",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52645.5",
+                "band": "",
+                "abmag": "18.9",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 6,
+        "discovermonth": 1,
+        "host": "IC 3203",
+        "claimedtype": "II",
+        "hvel": "6928",
+        "galra": "122145",
+        "galdec": "+255308",
+        "snra": "12:21:47.358",
+        "sndec": "+25:52:33.19",
+        "discoverer": "LOTOSS",
+        "maxyear": 2003,
+        "maxmonth": 1,
+        "maxday": 7,
+        "z": 0.0234
+    }
+}

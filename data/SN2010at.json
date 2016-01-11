@@ -1,0 +1,78 @@
+{
+    "SN2010at": {
+        "name": "SN2010at",
+        "aliases": [
+            "SN2010at"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002200/CBET002216.txt'>CBET 2216</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Nic",
+                "alias": "3"
+            },
+            {
+                "name": "5 BVD USN",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55273.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55278.928",
+                "band": "CR",
+                "abmag": "16.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55291.876",
+                "band": "CR",
+                "abmag": "17.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55295.995",
+                "band": "CR",
+                "abmag": "17.18",
+                "aberr": "0.17",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2010,
+        "discoverday": 18,
+        "discovermonth": 3,
+        "host": "MCG +13-9-10",
+        "claimedtype": "Ia-pec",
+        "hvel": "14120",
+        "galra": "120508",
+        "galdec": "+760759",
+        "snra": "12:04:59.47",
+        "sndec": "+76:07:52.3",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0418,
+        "maxyear": 2010,
+        "maxmonth": 3,
+        "maxday": 23,
+        "z": 0.0483
+    }
+}

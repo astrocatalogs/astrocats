@@ -1,0 +1,46 @@
+{
+    "SN1962F": {
+        "name": "SN1962F",
+        "aliases": [
+            "SN1962F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1963PASP...75..236Z'>PASP 75, 236</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "37781.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1962,
+        "discoverday": 27,
+        "discovermonth": 4,
+        "host": "UGC 4308",
+        "hvel": "3565",
+        "galra": "081726",
+        "galdec": "+214108",
+        "snra": "08:17:28.53",
+        "sndec": "+21:40:27.0",
+        "discoverer": "Berger",
+        "maxyear": 1962,
+        "maxmonth": 4,
+        "maxday": 27,
+        "z": 0.012
+    }
+}

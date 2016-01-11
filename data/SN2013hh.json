@@ -1,0 +1,56 @@
+{
+    "SN2013hh": {
+        "name": "SN2013hh",
+        "aliases": [
+            "SN2013hh",
+            "PSN J11290437+1714095"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003754.txt'>CBET 3754</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56636.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.488",
+                "band": "UV",
+                "abmag": "17.4",
+                "source": "3,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 10,
+        "discovermonth": 12,
+        "host": "UGC 6483",
+        "claimedtype": "Ia-91T",
+        "hvel": "3894",
+        "galra": "112902",
+        "galdec": "+171355",
+        "snra": "11:29:04.37",
+        "sndec": "+17:14:09.5",
+        "discoverer": "TAROT Calern telescope",
+        "redshift": 0.012,
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 10,
+        "z": 0.0131
+    }
+}

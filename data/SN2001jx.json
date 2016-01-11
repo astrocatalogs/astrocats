@@ -1,0 +1,46 @@
+{
+    "SN2001jx": {
+        "name": "SN2001jx",
+        "aliases": [
+            "SN2001jx"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07833.html#Item2'>IAUC 7833</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52053.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 24,
+        "discovermonth": 5,
+        "host": "NGC 4622",
+        "hvel": "4367",
+        "galra": "124238",
+        "galdec": "-404438",
+        "snra": "12:42:40.04",
+        "sndec": "-40:43:12.5",
+        "discoverer": "HST",
+        "maxyear": 2001,
+        "maxmonth": 5,
+        "maxday": 24,
+        "z": 0.0147
+    }
+}

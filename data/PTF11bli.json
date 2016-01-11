@@ -1,0 +1,40 @@
+{
+    "PTF11bli": {
+        "name": "PTF11bli",
+        "aliases": [
+            "PTF11bli"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3253'>ATEL 3253</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55634.5",
+                "band": "",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ib/c",
+        "host": "PGC 2036567",
+        "snra": "14:02:16.18",
+        "sndec": "+33:39:41.5",
+        "discoverday": 14,
+        "discovermonth": 3,
+        "discoveryear": 2011,
+        "redshift": 0.0344,
+        "discoverer": "PTF",
+        "maxyear": 2011,
+        "maxmonth": 3,
+        "maxday": 14
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "MLS131104:021417+101931": {
+        "name": "MLS131104:021417+101931",
+        "aliases": [
+            "MLS131104:021417+101931"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5659'>ATEL 5659</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56599.5",
+                "band": "",
+                "abmag": "20.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56602.138",
+                "band": "C",
+                "abmag": "21.4",
+                "source": "3,1"
+            }
+        ],
+        "snra": "02:14:17.19",
+        "sndec": "+10:19:30.6",
+        "discoverday": 3,
+        "discovermonth": 11,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 3
+    }
+}

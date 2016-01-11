@@ -1,0 +1,37 @@
+{
+    "KORA": {
+        "name": "KORA",
+        "aliases": [
+            "KORA"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5956'>ATEL 5956</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56721.5",
+                "band": "",
+                "abmag": "22.6",
+                "source": "2,1"
+            }
+        ],
+        "snra": "10:10:03.145",
+        "sndec": "-01:34:49.034",
+        "discoverday": 5,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "DECam",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 5
+    }
+}

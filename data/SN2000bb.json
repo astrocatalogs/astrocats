@@ -1,0 +1,44 @@
+{
+    "SN2000bb": {
+        "name": "SN2000bb",
+        "aliases": [
+            "SN2000bb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07300/07391.html#Item1'>IAUC 7391</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51603.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 29,
+        "discovermonth": 2,
+        "host": "A103238-0200",
+        "galra": "103238",
+        "galdec": "-020024",
+        "snra": "10:32:38.83",
+        "sndec": "-02:00:24.2",
+        "discoverer": "Palomar-Quest",
+        "maxyear": 2000,
+        "maxmonth": 2,
+        "maxday": 29
+    }
+}

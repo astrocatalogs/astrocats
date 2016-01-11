@@ -1,0 +1,45 @@
+{
+    "SN2012cf": {
+        "name": "SN2012cf",
+        "aliases": [
+            "SN2012cf",
+            "PSN J13411049+3022372"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003110.txt'>CBET 3110</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56069.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 22,
+        "discovermonth": 5,
+        "host": "Mkn 268",
+        "claimedtype": "Ia",
+        "hvel": "11700",
+        "galra": "134111",
+        "galdec": "+302241",
+        "snra": "13:41:10.49",
+        "sndec": "+30:22:37.2",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.039861,
+        "maxyear": 2012,
+        "maxmonth": 5,
+        "maxday": 22,
+        "z": 0.0398
+    }
+}

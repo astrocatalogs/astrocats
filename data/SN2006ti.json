@@ -1,0 +1,46 @@
+{
+    "SN2006ti": {
+        "name": "SN2006ti",
+        "aliases": [
+            "SN2006ti"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000800/CBET000830.txt'>CBET 830</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54066.5",
+                "band": "",
+                "abmag": "20.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2006,
+        "discoverday": 27,
+        "discovermonth": 11,
+        "host": "A232913-0847",
+        "claimedtype": "II",
+        "redshift": 0.23,
+        "galra": "232913",
+        "galdec": "-084758",
+        "snra": "23:29:13.128",
+        "sndec": "-08:47:58.14",
+        "discoverer": "ESSENCE project",
+        "maxyear": 2006,
+        "maxmonth": 11,
+        "maxday": 27
+    }
+}

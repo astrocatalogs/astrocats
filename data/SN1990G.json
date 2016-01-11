@@ -1,0 +1,47 @@
+{
+    "SN1990G": {
+        "name": "SN1990G",
+        "aliases": [
+            "SN1990G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04900/04982.html'>IAUC 4982</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47968.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1990,
+        "discoverday": 18,
+        "discovermonth": 3,
+        "host": "IC 2735",
+        "claimedtype": "Ia",
+        "hvel": "10669",
+        "galra": "112104",
+        "galdec": "+342039",
+        "snra": "11:21:03.9",
+        "sndec": "+34:20:51.0",
+        "discoverer": "Jean Mueller",
+        "maxyear": 1990,
+        "maxmonth": 3,
+        "maxday": 18,
+        "z": 0.0362
+    }
+}

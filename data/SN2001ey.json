@@ -1,0 +1,77 @@
+{
+    "SN2001ey": {
+        "name": "SN2001ey",
+        "aliases": [
+            "SN2001ey"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07735.html#Item2'>IAUC 7735</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52198.169999999925",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52202.87000000011",
+                "band": "R",
+                "abmag": "17.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52220.10999999987",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52197.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 15,
+        "discovermonth": 10,
+        "host": "MCG -1-57-10",
+        "claimedtype": "IIn",
+        "hvel": "7558",
+        "galra": "222630",
+        "galdec": "-062339",
+        "snra": "22:26:30.77",
+        "sndec": "-06:23:28.6",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2001,
+        "maxmonth": 10,
+        "maxday": 20,
+        "z": 0.0255
+    }
+}

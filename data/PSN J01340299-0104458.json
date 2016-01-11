@@ -1,0 +1,40 @@
+{
+    "PSN J01340299-0104458": {
+        "name": "PSN J01340299-0104458",
+        "aliases": [
+            "PSN J01340299-0104458"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J01340299-0104458.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56885.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "UGC 1120",
+        "snra": "01:34:02.99",
+        "sndec": "-01:04:45.8",
+        "discoverday": 16,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "redshift": 0.015561,
+        "discoverer": "Berto Monard",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 16
+    }
+}

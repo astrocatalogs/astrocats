@@ -1,0 +1,42 @@
+{
+    "SN2013ad": {
+        "name": "SN2013ad",
+        "aliases": [
+            "SN2013ad",
+            "CSS130215:033841+101827"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003400/CBET003425.txt'>CBET 3425</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56353.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 3,
+        "host": "A033841+1018",
+        "claimedtype": "Ia-91T",
+        "galra": "033841",
+        "galdec": "+101827",
+        "snra": "03:38:41.03",
+        "sndec": "+10:18:27.2",
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 2
+    }
+}

@@ -1,0 +1,107 @@
+{
+    "SN2013cj": {
+        "name": "SN2013cj",
+        "aliases": [
+            "SN2013cj",
+            "PSN J17045295+1255104"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003520.txt'>CBET 3520</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "4"
+            },
+            {
+                "name": "Pro ",
+                "alias": "5"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "6"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "7"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56455.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56727.181",
+                "band": "C",
+                "abmag": "18.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56539.824",
+                "band": "CR",
+                "abmag": "17.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56540.821",
+                "band": "CR",
+                "abmag": "17.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56729.081",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56733.5",
+                "band": "R",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56739.548",
+                "band": "UR",
+                "abmag": "17.4",
+                "source": "7,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 12,
+        "discovermonth": 6,
+        "host": "UGC 10685",
+        "claimedtype": "IIn",
+        "hvel": "9642",
+        "galra": "170451",
+        "galdec": "+125530",
+        "snra": "17:04:52.95",
+        "sndec": "+12:55:10.4",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.032162,
+        "maxyear": 2013,
+        "maxmonth": 6,
+        "maxday": 12,
+        "z": 0.0327
+    }
+}

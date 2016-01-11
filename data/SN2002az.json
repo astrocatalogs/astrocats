@@ -1,0 +1,44 @@
+{
+    "SN2002az": {
+        "name": "SN2002az",
+        "aliases": [
+            "SN2002az"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07833.html#Item1'>IAUC 7833</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52318.5",
+                "band": "",
+                "abmag": "22.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 13,
+        "discovermonth": 2,
+        "host": "A105417-0454",
+        "galra": "105417",
+        "galdec": "-045416",
+        "snra": "10:54:17.44",
+        "sndec": "-04:54:16.0",
+        "discoverer": "Deep Lense survey",
+        "maxyear": 2002,
+        "maxmonth": 2,
+        "maxday": 13
+    }
+}

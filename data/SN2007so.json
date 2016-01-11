@@ -1,0 +1,48 @@
+{
+    "SN2007so": {
+        "name": "SN2007so",
+        "aliases": [
+            "SN2007so"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001100/CBET001168.txt'>CBET 1168</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "54446.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2007,
+        "discoverday": 12,
+        "discovermonth": 12,
+        "host": "IC 1846",
+        "claimedtype": "Ia",
+        "hvel": "8943",
+        "galra": "024744",
+        "galdec": "+131519",
+        "snra": "02:47:43.13",
+        "sndec": "+13:15:14.8",
+        "discoverer": "LOSS",
+        "redshift": 0.0297,
+        "maxyear": 2007,
+        "maxmonth": 12,
+        "maxday": 12,
+        "z": 0.0303
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "SN2013ft": {
+        "name": "SN2013ft",
+        "aliases": [
+            "SN2013ft",
+            "PSN J23413520+0343305"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003672.txt'>CBET 3672</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56556.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 21,
+        "discovermonth": 9,
+        "host": "NGC 7732",
+        "claimedtype": "IIP",
+        "hvel": "2931",
+        "galra": "234134",
+        "galdec": "+034330",
+        "snra": "23:41:35.20",
+        "sndec": "+03:43:30.5",
+        "discoverer": "LOSS",
+        "redshift": 0.0096,
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 21,
+        "z": 0.00983
+    }
+}

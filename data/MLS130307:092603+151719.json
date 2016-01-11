@@ -1,0 +1,37 @@
+{
+    "MLS130307:092603+151719": {
+        "name": "MLS130307:092603+151719",
+        "aliases": [
+            "MLS130307:092603+151719"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4872'>ATEL 4872</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56357.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "09:26:03.47",
+        "sndec": "+15:17:19.4",
+        "discoverday": 6,
+        "discovermonth": 3,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 6
+    }
+}

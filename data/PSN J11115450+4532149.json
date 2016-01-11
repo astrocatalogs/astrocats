@@ -1,0 +1,40 @@
+{
+    "PSN J11115450+4532149": {
+        "name": "PSN J11115450+4532149",
+        "aliases": [
+            "PSN J11115450+4532149",
+            "MASTER OT J111154.50+453214.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4873'>ATEL 4873</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56357.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "host": "MCG +8-21-1",
+        "snra": "11:11:54.50",
+        "sndec": "+45:32:14.9",
+        "discoverday": 6,
+        "discovermonth": 3,
+        "discoveryear": 2013,
+        "redshift": 0.02846,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 6
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "SN2012eh": {
+        "name": "SN2012eh",
+        "aliases": [
+            "SN2012eh",
+            "PSN J01273145+1449058"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003208.txt'>CBET 3208</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56158.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
+        "discovermonth": 8,
+        "host": "IC 1706",
+        "claimedtype": "II",
+        "hvel": "6487",
+        "galra": "012731",
+        "galdec": "+144911",
+        "snra": "01:27:31.45",
+        "sndec": "+14:49:05.8",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.022,
+        "maxyear": 2012,
+        "maxmonth": 8,
+        "maxday": 19,
+        "z": 0.0219
+    }
+}

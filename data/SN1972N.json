@@ -1,0 +1,46 @@
+{
+    "SN1972N": {
+        "name": "SN1972N",
+        "aliases": [
+            "SN1972N"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1973PASP...85..427K'>PASP 85, 427</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "41597.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1972,
+        "discoverday": 7,
+        "discovermonth": 10,
+        "host": "UGC 279",
+        "hvel": "6371",
+        "galra": "002815",
+        "galdec": "+304808",
+        "discoverer": "Charles Kowal",
+        "snra": "00:28:17.2",
+        "sndec": "+30:48:57.0",
+        "maxyear": 1972,
+        "maxmonth": 10,
+        "maxday": 7,
+        "z": 0.0215
+    }
+}

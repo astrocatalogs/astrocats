@@ -1,0 +1,144 @@
+{
+    "SN2013ev": {
+        "name": "SN2013ev",
+        "aliases": [
+            "SN2013ev",
+            "PSN J18531845+3303527"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003627.txt'>CBET 3627</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "3"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "4"
+            },
+            {
+                "name": "Mse",
+                "alias": "5"
+            },
+            {
+                "name": "Radu Gherase",
+                "alias": "6"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "7"
+            },
+            {
+                "name": "Pro ",
+                "alias": "8"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "9"
+            },
+            {
+                "name": "Adolfo San Segundo",
+                "alias": "10"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "11"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56525.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56533.905",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56553.822",
+                "band": "R",
+                "abmag": "16.55",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56523.935",
+                "band": "CR",
+                "abmag": "16.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56530.85",
+                "band": "V",
+                "abmag": "17.0",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56539.846",
+                "band": "CR",
+                "abmag": "18.1",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56540.842",
+                "band": "CR",
+                "abmag": "17.7",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56545.91",
+                "band": "CR",
+                "abmag": "17.30",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56546.843",
+                "band": "CR",
+                "abmag": "16.53",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56557.057",
+                "band": "U",
+                "abmag": "17.9",
+                "source": "11,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 19,
+        "discovermonth": 8,
+        "host": "IC 1296",
+        "claimedtype": "II",
+        "hvel": "5118",
+        "galra": "185319",
+        "galdec": "+330400",
+        "snra": "18:53:18.45",
+        "sndec": "+33:03:52.7",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.017,
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 11,
+        "z": 0.0172
+    }
+}

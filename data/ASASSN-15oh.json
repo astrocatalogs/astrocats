@@ -1,0 +1,109 @@
+{
+    "ASASSN-15oh": {
+        "name": "ASASSN-15oh",
+        "aliases": [
+            "ASASSN-15oh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7911'>ATEL 7911</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "4"
+            },
+            {
+                "name": "LLA",
+                "alias": "5"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "6"
+            },
+            {
+                "name": "MDe",
+                "alias": "7"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57254.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57251.841",
+                "band": "Rc",
+                "abmag": "15.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57251.927",
+                "band": "C",
+                "abmag": "16.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57255.055",
+                "band": "CV",
+                "abmag": "15.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57257.91",
+                "band": "CR",
+                "abmag": "15.40",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57272.965",
+                "band": "CV",
+                "abmag": "16.5",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57286.932",
+                "band": "CV",
+                "abmag": "17.0",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57303.817",
+                "band": "CV",
+                "abmag": "17.8",
+                "source": "5,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "MCG +6-49-27",
+        "snra": "22:30:41.98",
+        "sndec": "+39:17:35.2",
+        "discoverday": 17,
+        "discovermonth": 8,
+        "discoveryear": 2015,
+        "redshift": 0.016835,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 23
+    }
+}

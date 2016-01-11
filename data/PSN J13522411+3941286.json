@@ -1,0 +1,40 @@
+{
+    "PSN J13522411+3941286": {
+        "name": "PSN J13522411+3941286",
+        "aliases": [
+            "PSN J13522411+3941286"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J13522411+3941286.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57071.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "IIn",
+        "host": "NGC 5337",
+        "snra": "13:52:24.11",
+        "sndec": "+39:41:28.6",
+        "discoverday": 18,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "redshift": 0.007222,
+        "discoverer": "Xing Gao et al.",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 18
+    }
+}

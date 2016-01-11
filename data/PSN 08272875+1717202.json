@@ -1,0 +1,34 @@
+{
+    "PSN 08272875+1717202": {
+        "name": "PSN 08272875+1717202",
+        "aliases": [
+            "PSN 08272875+1717202"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56562.801",
+                "band": "IR",
+                "abmag": "19.1",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 27,
+        "discoveryear": 2013,
+        "discovermonth": 9,
+        "discoverday": 27
+    }
+}

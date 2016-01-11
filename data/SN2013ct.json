@@ -1,0 +1,103 @@
+{
+    "SN2013ct": {
+        "name": "SN2013ct",
+        "aliases": [
+            "SN2013ct",
+            "PS1-13dnm"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003539.txt'>CBET 3539</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Pro ",
+                "alias": "3"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "4"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "5"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "6"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56421.5",
+                "band": "",
+                "abmag": "12.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56541.095",
+                "band": "CR",
+                "abmag": "15.72",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56548.04",
+                "band": "",
+                "abmag": "15.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56576.344",
+                "band": "UV",
+                "abmag": "16.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56601.212",
+                "band": "UV",
+                "abmag": "16.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56626.211",
+                "band": "UV",
+                "abmag": "16.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56630.923",
+                "band": "CR",
+                "abmag": "16.87",
+                "source": "6,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 9,
+        "discovermonth": 5,
+        "host": "NGC 428",
+        "claimedtype": "Ia",
+        "hvel": "1045",
+        "galra": "011256",
+        "galdec": "+005854",
+        "snra": "01:12:54.92",
+        "sndec": "+00:58:45.7",
+        "discoverer": "Stu Parker",
+        "redshift": 0.003843,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 9,
+        "z": 0.00349
+    }
+}

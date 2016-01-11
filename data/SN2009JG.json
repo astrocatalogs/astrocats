@@ -1,0 +1,35 @@
+{
+    "SN2009JG": {
+        "name": "SN2009JG",
+        "aliases": [
+            "SN2009JG"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "J47",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55107.838",
+                "band": "CR",
+                "abmag": "15.89",
+                "aberr": "1",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2009,
+        "maxmonth": 10,
+        "maxday": 3,
+        "discoveryear": 2009,
+        "discovermonth": 10,
+        "discoverday": 3
+    }
+}

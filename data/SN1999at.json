@@ -1,0 +1,41 @@
+{
+    "SN1999at": {
+        "name": "SN1999at",
+        "aliases": [
+            "SN1999at"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51227.0",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1999",
+        "discoverday": "10",
+        "discovermonth": "3",
+        "host": "A102311+1759",
+        "claimedtype": "Ia",
+        "hvel": "8180",
+        "galra": "102311",
+        "galdec": "+175906",
+        "snra": "10:23:11.30",
+        "sndec": "+17:59:06.0",
+        "discoverer": "Supernova Cosmology Project",
+        "redshift": 0.027,
+        "z": 0.0277
+    }
+}

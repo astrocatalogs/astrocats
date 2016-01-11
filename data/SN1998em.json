@@ -1,0 +1,41 @@
+{
+    "SN1998em": {
+        "name": "SN1998em",
+        "aliases": [
+            "SN1998em"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51112.0",
+                "band": "B",
+                "abmag": "16.5",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1998",
+        "discoverday": "26",
+        "discovermonth": "10",
+        "host": "IC 4837A",
+        "claimedtype": "Ia",
+        "hvel": "4000",
+        "galra": "191516",
+        "galdec": "-540757",
+        "snra": "19:15:12.69",
+        "sndec": "-54:06:49.7",
+        "discoverer": "L. E. Gonzalez",
+        "redshift": 0.0091,
+        "z": 0.0134
+    }
+}

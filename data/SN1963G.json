@@ -1,0 +1,46 @@
+{
+    "SN1963G": {
+        "name": "SN1963G",
+        "aliases": [
+            "SN1963G"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://cdsbib.u-strasbg.fr/cgi-bin/cdsbib?1963IBVS...25....1K'>IBVS 25</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "38078.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1963,
+        "discoverday": 18,
+        "discovermonth": 2,
+        "host": "IC 3112",
+        "hvel": "7741",
+        "galra": "121748",
+        "galdec": "+260151",
+        "snra": "12:17:48.94",
+        "sndec": "+26:01:32.4",
+        "discoverer": "Kurochkin",
+        "maxyear": 1963,
+        "maxmonth": 2,
+        "maxday": 18,
+        "z": 0.0262
+    }
+}

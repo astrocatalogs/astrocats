@@ -1,0 +1,47 @@
+{
+    "SN2010aa": {
+        "name": "SN2010aa",
+        "aliases": [
+            "SN2010aa"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/002100/CBET002171.txt'>CBET 2171</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55235.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2010,
+        "discoverday": 8,
+        "discovermonth": 2,
+        "host": "NGC 692",
+        "hvel": "6256",
+        "galra": "014842",
+        "galdec": "-483854",
+        "snra": "01:48:43.21",
+        "sndec": "-48:39:00.7",
+        "discoverer": "Berto Monard",
+        "redshift": 0.0212,
+        "maxyear": 2010,
+        "maxmonth": 2,
+        "maxday": 8,
+        "z": 0.0211
+    }
+}

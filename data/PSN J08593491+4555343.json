@@ -1,0 +1,41 @@
+{
+    "PSN J08593491+4555343": {
+        "name": "PSN J08593491+4555343",
+        "aliases": [
+            "PSN J08593491+4555343",
+            "PS15tb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J08593491+4555343.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57095.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "UGC 4709",
+        "snra": "08:59:34.91",
+        "sndec": "+45:55:34.3",
+        "discoverday": 14,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.0281,
+        "discoverer": "Italian Supernovae Search Project",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 14
+    }
+}

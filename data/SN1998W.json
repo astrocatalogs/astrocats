@@ -1,0 +1,41 @@
+{
+    "SN1998W": {
+        "name": "SN1998W",
+        "aliases": [
+            "SN1998W"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "50888.0",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2"
+            }
+        ],
+        "discoveryear": "1998",
+        "discoverday": "16",
+        "discovermonth": "3",
+        "host": "NGC 3075",
+        "claimedtype": "II",
+        "hvel": "3566",
+        "galra": "095856",
+        "galdec": "+142514",
+        "snra": "09:58:54.83",
+        "sndec": "+14:25:25.7",
+        "discoverer": "LOSS",
+        "redshift": 0.0116,
+        "z": 0.012
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "OGLE15xk": {
+        "name": "OGLE15xk",
+        "aliases": [
+            "OGLE15xk"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'>OGLE page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57366.5",
+                "band": "",
+                "abmag": "20.7",
+                "source": "2,1"
+            }
+        ],
+        "snra": "04:20:06.92",
+        "sndec": "-70:23:49.8",
+        "discoverday": 10,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2015,
+        "maxmonth": 12,
+        "maxday": 10
+    }
+}

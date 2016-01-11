@@ -1,0 +1,67 @@
+{
+    "SN2015D": {
+        "name": "SN2015D",
+        "aliases": [
+            "SN2015D",
+            "PSN J13124116+1236018"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004051.txt'>CBET 4051</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57039.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57042.49",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57046.47",
+                "band": "R",
+                "abmag": "17.0",
+                "source": "4,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 17,
+        "discovermonth": 1,
+        "host": "NGC 5020",
+        "claimedtype": "II",
+        "hvel": "3360",
+        "galra": "131240",
+        "galdec": "+123559",
+        "snra": "13:12:41.16",
+        "sndec": "+12:36:01.8",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.011,
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 24,
+        "z": 0.0113
+    }
+}

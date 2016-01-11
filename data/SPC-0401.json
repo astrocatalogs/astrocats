@@ -1,0 +1,40 @@
+{
+    "SPC-0401": {
+        "name": "SPC-0401",
+        "aliases": [
+            "SPC-0401",
+            "Mingus"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='unannounced'>unannounced</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53097.5",
+                "band": "",
+                "abmag": "25.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "12:37:09.5",
+        "sndec": "+62:22:15.5",
+        "discoverday": 2,
+        "discovermonth": 4,
+        "discoveryear": 2004,
+        "redshift": 1.71,
+        "discoverer": "HST",
+        "maxyear": 2004,
+        "maxmonth": 4,
+        "maxday": 2
+    }
+}

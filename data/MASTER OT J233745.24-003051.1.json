@@ -1,0 +1,37 @@
+{
+    "MASTER OT J233745.24-003051.1": {
+        "name": "MASTER OT J233745.24-003051.1",
+        "aliases": [
+            "MASTER OT J233745.24-003051.1"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4695'>ATEL 4695</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56292.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:37:45.24",
+        "sndec": "-00:30:51.1",
+        "discoverday": 31,
+        "discovermonth": 12,
+        "discoveryear": 2012,
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 12,
+        "maxday": 31
+    }
+}

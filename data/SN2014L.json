@@ -1,0 +1,255 @@
+{
+    "SN2014L": {
+        "name": "SN2014L",
+        "aliases": [
+            "SN2014L",
+            "PSN J12184868+1424435"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003795.txt'>CBET 3795</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Juanjo Gonzalez ",
+                "alias": "3"
+            },
+            {
+                "name": "Constantine Emmanouilidi",
+                "alias": "4"
+            },
+            {
+                "name": "Leonor Ana",
+                "alias": "5"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "6"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "7"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "8"
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "9"
+            },
+            {
+                "name": "R Lynn van Rooijen",
+                "alias": "10"
+            },
+            {
+                "name": "Enrique Diez",
+                "alias": "11"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "12"
+            },
+            {
+                "name": "LLA",
+                "alias": "13"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "14"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "15"
+            },
+            {
+                "name": "Marc Serrau",
+                "alias": "16"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56693.5",
+                "band": "",
+                "abmag": "14.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.014",
+                "band": "R",
+                "abmag": "14.56",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.137",
+                "band": "U",
+                "abmag": "15.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.26",
+                "band": "C",
+                "abmag": "15.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.499",
+                "band": "R",
+                "abmag": "15.31",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.504",
+                "band": "V",
+                "abmag": "15.3",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.508",
+                "band": "I",
+                "abmag": "15.3",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.512",
+                "band": "B",
+                "abmag": "15.61",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.518",
+                "band": "C",
+                "abmag": "15.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56688.665",
+                "band": "L",
+                "abmag": "15.3",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56688.988",
+                "band": "CV",
+                "abmag": "14.9",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56690.03",
+                "band": "V",
+                "abmag": "14.3",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56693.033",
+                "band": "",
+                "abmag": "14.06",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56693.0463",
+                "band": "CR",
+                "abmag": "14.546",
+                "source": "11,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56694.007",
+                "band": "CV",
+                "abmag": "14.4",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56704.0777",
+                "band": "CR",
+                "abmag": "14.943",
+                "source": "11,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56710.0154",
+                "band": "CR",
+                "abmag": "15.386",
+                "source": "12,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56711.175",
+                "band": "CV",
+                "abmag": "15.4",
+                "source": "13,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56718.059",
+                "band": "R",
+                "abmag": "14.72",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56722.088",
+                "band": "CV",
+                "abmag": "15.94",
+                "source": "14,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.903",
+                "band": "V",
+                "abmag": "16.6",
+                "source": "15,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56761.917",
+                "band": "CR",
+                "abmag": "16.0",
+                "source": "16,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56780.913",
+                "band": "CR",
+                "abmag": "15.9",
+                "source": "16,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 30,
+        "discovermonth": 1,
+        "host": "M99",
+        "claimedtype": "Ic",
+        "hvel": "2412",
+        "galra": "121850",
+        "galdec": "+142459",
+        "snra": "12:18:48.68",
+        "sndec": "+14:24:43.5",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.008029,
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 5,
+        "z": 0.00808
+    }
+}

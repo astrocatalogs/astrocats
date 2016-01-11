@@ -1,0 +1,37 @@
+{
+    "PS1-13dhe": {
+        "name": "PS1-13dhe",
+        "aliases": [
+            "PS1-13dhe"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=7'>PS1 SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56557.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "22:59:41.06",
+        "sndec": "+06:36:33.0",
+        "discoverday": 22,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "discoverer": "PS1",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 22
+    }
+}

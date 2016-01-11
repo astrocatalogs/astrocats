@@ -1,0 +1,84 @@
+{
+    "SN2001ds": {
+        "name": "SN2001ds",
+        "aliases": [
+            "SN2001ds"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07600/07684.html#Item2'>IAUC 7684</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52135.99000000022",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52137.0",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52137.5",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52138.39999999991",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52134.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2001,
+        "discoverday": 13,
+        "discovermonth": 8,
+        "host": "UGC 1654",
+        "claimedtype": "Ia",
+        "hvel": "10896",
+        "galra": "021009",
+        "galdec": "+364212",
+        "snra": "02:10:08.73",
+        "sndec": "+36:42:20.3",
+        "discoverer": "Tom Boles",
+        "maxyear": 2001,
+        "maxmonth": 8,
+        "maxday": 14,
+        "z": 0.037
+    }
+}

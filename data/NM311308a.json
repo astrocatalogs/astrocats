@@ -1,0 +1,34 @@
+{
+    "NM311308a": {
+        "name": "NM311308a",
+        "aliases": [
+            "NM311308a"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56546.012",
+                "band": "CR",
+                "abmag": "16.28",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 11,
+        "discoveryear": 2013,
+        "discovermonth": 9,
+        "discoverday": 11
+    }
+}

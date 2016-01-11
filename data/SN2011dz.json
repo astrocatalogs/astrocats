@@ -1,0 +1,45 @@
+{
+    "SN2011dz": {
+        "name": "SN2011dz",
+        "aliases": [
+            "SN2011dz",
+            "PTF11dxu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002761.txt'>CBET 2761</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55795.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 22,
+        "discovermonth": 8,
+        "host": "UGC 10273",
+        "claimedtype": "Ia",
+        "hvel": "7381",
+        "galra": "161245",
+        "galdec": "+281706",
+        "snra": "16:12:44.83",
+        "sndec": "+28:17:02.3",
+        "discoverer": "PTF",
+        "redshift": 0.0245,
+        "maxyear": 2011,
+        "maxmonth": 8,
+        "maxday": 22,
+        "z": 0.0249
+    }
+}

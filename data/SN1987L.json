@@ -1,0 +1,63 @@
+{
+    "SN1987L": {
+        "name": "SN1987L",
+        "aliases": [
+            "SN1987L"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "D.Yu.Tsvetkov, AZh, 71,vyp.1,90,1994",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04400/04441.html'>IAUC 4441</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "47126.0",
+                "band": "B",
+                "abmag": "17.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "47022.5",
+                "band": "",
+                "abmag": "14.2",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 1987,
+        "maxday": 15,
+        "maxmonth": 8,
+        "host": "NGC 2336",
+        "claimedtype": "II",
+        "hvel": "2200",
+        "galra": "072704",
+        "galdec": "+801041",
+        "snra": "07:27:26.36",
+        "sndec": "+80:09:30.6",
+        "discoverer": "Patchick",
+        "discoverday": 15,
+        "discovermonth": 8,
+        "maxyear": 1987,
+        "z": 0.00737
+    }
+}

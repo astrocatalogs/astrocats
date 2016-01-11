@@ -1,0 +1,48 @@
+{
+    "SN2004J": {
+        "name": "SN2004J",
+        "aliases": [
+            "SN2004J"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08200/08272.html#Item2'>IAUC 8272</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53022.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2004,
+        "discoverday": 18,
+        "discovermonth": 1,
+        "host": "ESO 554-G33",
+        "claimedtype": "Ia",
+        "hvel": "7570",
+        "galra": "054633",
+        "galdec": "-174654",
+        "snra": "05:46:32.18",
+        "sndec": "-17:46:53.0",
+        "discoverer": "LOSS",
+        "redshift": 0.025,
+        "maxyear": 2004,
+        "maxmonth": 1,
+        "maxday": 18,
+        "z": 0.0256
+    }
+}

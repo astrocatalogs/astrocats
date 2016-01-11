@@ -1,0 +1,45 @@
+{
+    "SN2015ae": {
+        "name": "SN2015ae",
+        "aliases": [
+            "SN2015ae",
+            "PSN J23470615+2929074"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004178.txt'>CBET 4178</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57240.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 6,
+        "discovermonth": 8,
+        "host": "NGC 7753",
+        "claimedtype": "II",
+        "hvel": "5190",
+        "galra": "234705",
+        "galdec": "+292902",
+        "snra": "23:47:06.15",
+        "sndec": "+29:29:07.4",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.017,
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 6,
+        "z": 0.0175
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "MLS131109:091919+171410": {
+        "name": "MLS131109:091919+171410",
+        "aliases": [
+            "MLS131109:091919+171410"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56607.476",
+                "band": "C",
+                "abmag": "20.5",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 11,
+        "discoveryear": 2013,
+        "discovermonth": 11,
+        "discoverday": 11
+    }
+}

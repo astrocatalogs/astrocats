@@ -1,0 +1,46 @@
+{
+    "SN1994F": {
+        "name": "SN1994F",
+        "aliases": [
+            "SN1994F"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05900/05956.html'>IAUC 5956</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "49360.5",
+                "band": "",
+                "abmag": "22.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 1994,
+        "discoverday": 8,
+        "discovermonth": 1,
+        "host": "A114959+1042",
+        "claimedtype": "Ia",
+        "redshift": "0.354",
+        "galra": "114959",
+        "galdec": "+104257",
+        "snra": "11:49:59.54",
+        "sndec": "+10:42:58.0",
+        "discoverer": "Saul Perlmutter",
+        "maxyear": 1994,
+        "maxmonth": 1,
+        "maxday": 8
+    }
+}

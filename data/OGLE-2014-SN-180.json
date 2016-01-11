@@ -1,0 +1,37 @@
+{
+    "OGLE-2014-SN-180": {
+        "name": "OGLE-2014-SN-180",
+        "aliases": [
+            "OGLE-2014-SN-180"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6810'>ATEL 6810</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56997.5",
+                "band": "",
+                "abmag": "23.3",
+                "source": "2,1"
+            }
+        ],
+        "snra": "06:20:32.04",
+        "sndec": "-70:25:46.0",
+        "discoverday": 6,
+        "discovermonth": 12,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 6
+    }
+}

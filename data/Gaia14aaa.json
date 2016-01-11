@@ -1,0 +1,267 @@
+{
+    "Gaia14aaa": {
+        "name": "Gaia14aaa",
+        "aliases": [
+            "Gaia14aaa"
+        ],
+        "sources": [
+            {
+                "name": "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>",
+                "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56870.753000000026",
+                "band": "G",
+                "abmag": "18.14",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56870.82700000005",
+                "band": "G",
+                "abmag": "19.12",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56871.07800000021",
+                "band": "G",
+                "abmag": "19.15",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56871.25400000019",
+                "band": "G",
+                "abmag": "19.14",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56871.50400000019",
+                "band": "G",
+                "abmag": "19.20",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56871.57800000021",
+                "band": "G",
+                "abmag": "19.08",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56871.82800000021",
+                "band": "G",
+                "abmag": "19.07",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56899.02499999991",
+                "band": "G",
+                "abmag": "17.12",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56899.09899999993",
+                "band": "G",
+                "abmag": "17.00",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56899.27499999991",
+                "band": "G",
+                "abmag": "17.11",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56899.34899999993",
+                "band": "G",
+                "abmag": "17.01",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56899.52499999991",
+                "band": "G",
+                "abmag": "16.99",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56915.03299999982",
+                "band": "G",
+                "abmag": "17.79",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56915.10699999984",
+                "band": "G",
+                "abmag": "17.54",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56915.28299999982",
+                "band": "G",
+                "abmag": "17.78",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56915.35699999984",
+                "band": "G",
+                "abmag": "17.60",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56946.6660000002",
+                "band": "G",
+                "abmag": "18.42",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56946.74000000022",
+                "band": "G",
+                "abmag": "18.42",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56969.49399999995",
+                "band": "G",
+                "abmag": "18.68",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56969.67100000009",
+                "band": "G",
+                "abmag": "18.86",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57038.621999999974",
+                "band": "G",
+                "abmag": "19.06",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57038.695999999996",
+                "band": "G",
+                "abmag": "19.31",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57055.873999999836",
+                "band": "G",
+                "abmag": "19.26",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57055.94799999986",
+                "band": "G",
+                "abmag": "19.20",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57100.05899999989",
+                "band": "G",
+                "abmag": "19.38",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57100.132999999914",
+                "band": "G",
+                "abmag": "19.17",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57108.06399999978",
+                "band": "G",
+                "abmag": "19.09",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57152.08099999977",
+                "band": "G",
+                "abmag": "20.43",
+                "instrument": "GAIA",
+                "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56898.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "3,2"
+            }
+        ],
+        "discoveryear": 2014,
+        "snra": "13:21:02.31",
+        "sndec": "+45:32:21.9",
+        "claimedtype": "Ia",
+        "discoverday": 1,
+        "discovermonth": 8,
+        "redshift": 0.42,
+        "discoverer": "Gaia Photometric Science Alerts programme",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 30
+    }
+}

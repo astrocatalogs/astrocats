@@ -1,0 +1,40 @@
+{
+    "MASTER OT J160432.41+122840.7": {
+        "name": "MASTER OT J160432.41+122840.7",
+        "aliases": [
+            "MASTER OT J160432.41+122840.7"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5855'>ATEL 5855</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56693.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "PGC 1410207",
+        "snra": "16:04:32.41",
+        "sndec": "+12:28:40.7",
+        "discoverday": 5,
+        "discovermonth": 2,
+        "discoveryear": 2014,
+        "redshift": 0.0408,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 2,
+        "maxday": 5
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "PNVJ00452282+4131589": {
+        "name": "PNVJ00452282+4131589",
+        "aliases": [
+            "PNVJ00452282+4131589"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56525.003",
+                "band": "V",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 21,
+        "discoveryear": 2013,
+        "discovermonth": 8,
+        "discoverday": 21
+    }
+}

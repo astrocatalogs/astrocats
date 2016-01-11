@@ -1,0 +1,174 @@
+{
+    "PSN 15053007+0138024": {
+        "name": "PSN 15053007+0138024",
+        "aliases": [
+            "PSN 15053007+0138024"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Aurelio Grillo",
+                "alias": "4"
+            },
+            {
+                "name": "LLA",
+                "alias": "5"
+            },
+            {
+                "name": "MDe",
+                "alias": "6"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "7"
+            },
+            {
+                "name": "Jaroslaw Grzegorzek",
+                "alias": "8"
+            },
+            {
+                "name": "Marc Deldem",
+                "alias": "9"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57100.721",
+                "band": "L",
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57103.7576",
+                "band": "U",
+                "abmag": "14.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57103.788",
+                "band": "V",
+                "abmag": "15.02",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57110.373",
+                "band": "V",
+                "abmag": "13.87",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57115.19",
+                "band": "U",
+                "abmag": "13.6",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57124.107",
+                "band": "CV",
+                "abmag": "14.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57124.973",
+                "band": "CV",
+                "abmag": "14.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57125.0187",
+                "band": "U",
+                "abmag": "14.7",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57127.01",
+                "band": "CV",
+                "abmag": "14.8",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57134.026",
+                "band": "CV",
+                "abmag": "15.2",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57135.08",
+                "band": "U",
+                "abmag": "15.4",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57135.965",
+                "band": "CV",
+                "abmag": "15.4",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57137.134",
+                "band": "V",
+                "abmag": "15.52",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57141.943",
+                "band": "CV",
+                "abmag": "15.8",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57160.938",
+                "band": "CV",
+                "abmag": "16.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57178.882",
+                "band": "V",
+                "abmag": "17.1",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57194.883",
+                "band": "CV",
+                "abmag": "17.5",
+                "source": "6,1"
+            }
+        ],
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 3,
+        "discoveryear": 2015,
+        "discovermonth": 3,
+        "discoverday": 19
+    }
+}

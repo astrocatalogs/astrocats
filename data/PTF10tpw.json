@@ -1,0 +1,39 @@
+{
+    "PTF10tpw": {
+        "name": "PTF10tpw",
+        "aliases": [
+            "PTF10tpw"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2835'>ATEL 2835</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55417.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "22:54:04.92",
+        "sndec": "-13:01:53.6",
+        "discoverday": 9,
+        "discovermonth": 8,
+        "discoveryear": 2010,
+        "redshift": 0.111,
+        "discoverer": "PTF",
+        "maxyear": 2010,
+        "maxmonth": 8,
+        "maxday": 9
+    }
+}

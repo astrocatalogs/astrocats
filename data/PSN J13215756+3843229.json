@@ -1,0 +1,40 @@
+{
+    "PSN J13215756+3843229": {
+        "name": "PSN J13215756+3843229",
+        "aliases": [
+            "PSN J13215756+3843229"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J13215756+3843229.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57084.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "LBV",
+        "host": "NGC 5112",
+        "snra": "13:21:57.56",
+        "sndec": "+38:43:22.9",
+        "discoverday": 3,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.003252,
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 3
+    }
+}

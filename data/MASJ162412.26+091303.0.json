@@ -1,0 +1,56 @@
+{
+    "MASJ162412.26+091303.0": {
+        "name": "MASJ162412.26+091303.0",
+        "aliases": [
+            "MASJ162412.26+091303.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "2"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56885.89",
+                "band": "CR",
+                "abmag": "16.50",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56888.886",
+                "band": "CR",
+                "abmag": "17.72",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56891.139",
+                "band": "U",
+                "abmag": "17.6",
+                "source": "4,1"
+            }
+        ],
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 16,
+        "discoveryear": 2014,
+        "discovermonth": 8,
+        "discoverday": 16
+    }
+}

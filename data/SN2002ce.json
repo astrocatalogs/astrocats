@@ -1,0 +1,99 @@
+{
+    "SN2002ce": {
+        "name": "SN2002ce",
+        "aliases": [
+            "SN2002ce"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07875.html#Item1'>IAUC 7875</a>",
+                "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52374.87000000011",
+                "band": "C",
+                "abmag": "16.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52377.83999999985",
+                "band": "R",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52377.87000000011",
+                "band": "C",
+                "abmag": "16.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52380.02000000002",
+                "band": "C",
+                "abmag": "16.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52388.91000000015",
+                "band": "R",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52400.080000000075",
+                "band": "C",
+                "abmag": "17.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52379.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "4,3"
+            }
+        ],
+        "discoveryear": 2002,
+        "discoverday": 10,
+        "discovermonth": 4,
+        "host": "NGC 2604",
+        "claimedtype": "II",
+        "hvel": "2012",
+        "galra": "083323",
+        "galdec": "+293220",
+        "snra": "08:33:22.1",
+        "sndec": "+29:32:01",
+        "discoverer": "Ron Arbour",
+        "redshift": 0.007,
+        "maxyear": 2002,
+        "maxmonth": 4,
+        "maxday": 10,
+        "z": 0.00673
+    }
+}

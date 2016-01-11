@@ -1,0 +1,47 @@
+{
+    "SN2005bq": {
+        "name": "SN2005bq",
+        "aliases": [
+            "SN2005bq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08500/08515.html#Item2'>IAUC 8515</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53476.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2005,
+        "discoverday": 16,
+        "discovermonth": 4,
+        "host": "IC 4367",
+        "claimedtype": "Ic",
+        "hvel": "4110",
+        "galra": "140537",
+        "galdec": "-391212",
+        "snra": "14:05:37.05",
+        "sndec": "-39:12:04.4",
+        "discoverer": "Berto Monard",
+        "maxyear": 2005,
+        "maxmonth": 4,
+        "maxday": 16,
+        "z": 0.0138
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "SN1999cz": {
+        "name": "SN1999cz",
+        "aliases": [
+            "SN1999cz"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51350.529999999795",
+                "band": "C",
+                "abmag": "16",
+                "source": "1,2"
+            }
+        ],
+        "discoveryear": 1999,
+        "discoverday": 21,
+        "discovermonth": 6,
+        "host": "NGC 5078",
+        "claimedtype": "Ic",
+        "hvel": "2157",
+        "galra": "131950",
+        "galdec": "-272432",
+        "snra": "13:19:48.53",
+        "sndec": "-27:24:04.5",
+        "discoverer": "Perth Astronomical Research Group",
+        "maxyear": 1999,
+        "maxmonth": 6,
+        "maxday": 21,
+        "z": 0.00722
+    }
+}

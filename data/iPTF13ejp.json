@@ -1,0 +1,50 @@
+{
+    "iPTF13ejp": {
+        "name": "iPTF13ejp",
+        "aliases": [
+            "iPTF13ejp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5762'>ATEL 5762</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56655.5",
+                "band": "",
+                "abmag": "19.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56677.928",
+                "band": "C",
+                "abmag": "19.9",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "02:32:49.31",
+        "sndec": "+49:38:28.4",
+        "discoverday": 29,
+        "discovermonth": 12,
+        "discoveryear": 2013,
+        "redshift": 0.027,
+        "discoverer": "PTF",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 29
+    }
+}

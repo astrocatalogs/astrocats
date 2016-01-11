@@ -1,0 +1,37 @@
+{
+    "MASTER OT J111357.37-465849.1": {
+        "name": "MASTER OT J111357.37-465849.1",
+        "aliases": [
+            "MASTER OT J111357.37-465849.1"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7525'>ATEL 7525</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57158.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "snra": "11:13:57.37",
+        "sndec": "-46:58:49.1",
+        "discoverday": 16,
+        "discovermonth": 5,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 5,
+        "maxday": 16
+    }
+}
