@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01900/01901.html'>IAUC 1901</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "38845.0",
+                "time": "38844.5",
                 "band": "",
                 "abmag": "16.4",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1965",
-        "discovermonth": "3",
-        "discoverday": "26"
+        "discoveryear": 1965,
+        "discoverday": 25,
+        "discovermonth": 3,
+        "host": "KUG 0947+346",
+        "hvel": "6583",
+        "galra": "095010",
+        "galdec": "+342454",
+        "snra": "09:50:07.07",
+        "sndec": "+34:24:54.6",
+        "discoverer": "Fritz Zwicky",
+        "maxyear": 1965,
+        "maxmonth": 3,
+        "maxday": 25,
+        "z": 0.0222
     }
 }

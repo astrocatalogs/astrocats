@@ -2,21 +2,44 @@
     "SN2012gq": {
         "name": "SN2012gq",
         "aliases": [
-            "SN2012gq"
+            "SN2012gq",
+            "PSN J02524601+4655523"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "14",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003307.txt'>CBET 3307</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56250.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
         "discovermonth": 11,
         "host": "UGC 2351",
         "claimedtype": "II",
         "hvel": "8420",
         "galra": "025245",
         "galdec": "+465617",
-        "snra": "025246.01",
-        "sndec": "+465552.3",
-        "discoverer": "Wang, Gao",
+        "snra": "02:52:46.01",
+        "sndec": "+46:55:52.3",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.0281,
+        "maxyear": 2012,
+        "maxmonth": 11,
+        "maxday": 19,
         "z": 0.0285
     }
 }

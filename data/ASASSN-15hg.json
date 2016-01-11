@@ -11,35 +11,52 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7413'>ATEL 7413</a>",
                 "alias": "2"
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57133.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56767.527",
                 "band": "C",
                 "abmag": "17.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57132.812",
                 "band": "Rc",
                 "abmag": "16.9",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "CGCG 63-98",
+        "snra": "09:53:48.62",
+        "sndec": "+09:11:37.8",
+        "discoverday": 20,
+        "discovermonth": 4,
+        "discoveryear": 2014,
+        "redshift": 0.029771,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 4,
-        "maxday": 20,
-        "discoveryear": 2014,
-        "discovermonth": 4,
-        "discoverday": 20
+        "maxday": 21
     }
 }

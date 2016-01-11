@@ -2,21 +2,44 @@
     "SN2011db": {
         "name": "SN2011db",
         "aliases": [
-            "SN2011db"
+            "SN2011db",
+            "PSN J13490590+1714005"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "12",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002725.txt'>CBET 2725</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55692.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 11,
         "discovermonth": 5,
-        "host": "M+03-35-27",
+        "host": "PGC 49027",
         "claimedtype": "II",
         "hvel": "7606",
         "galra": "134906",
         "galdec": "+171418",
-        "snra": "134905.90",
-        "sndec": "+171400.5",
-        "discoverer": "Drake et al.",
+        "snra": "13:49:05.90",
+        "sndec": "+17:14:00.5",
+        "discoverer": "CRTS",
+        "redshift": 0.0254,
+        "maxyear": 2011,
+        "maxmonth": 5,
+        "maxday": 11,
         "z": 0.0257
     }
 }

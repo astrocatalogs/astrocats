@@ -2,7 +2,8 @@
     "ASASSN-14mw": {
         "name": "ASASSN-14mw",
         "aliases": [
-            "ASASSN-14mw"
+            "ASASSN-14mw",
+            "OGLE-2014-SN-212"
         ],
         "sources": [
             {
@@ -11,31 +12,48 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6858'>ATEL 6858</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57029.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57028.493",
                 "band": "C",
                 "abmag": "15.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57031.497",
                 "band": "C",
                 "abmag": "16.0",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "PGC 6240",
+        "snra": "01:41:25.16",
+        "sndec": "-65:37:01.3",
+        "discoverday": 6,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.0274,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 1,
-        "maxday": 6,
-        "discoveryear": 2015,
-        "discovermonth": 1,
-        "discoverday": 6
+        "maxday": 7
     }
 }

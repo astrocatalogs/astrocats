@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06500/06549.html'>IAUC 6549</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50456.0",
-                "band": "R",
-                "abmag": "21",
-                "source": "1"
+                "time": "50455.5",
+                "band": "",
+                "abmag": "21.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1997",
-        "discovermonth": "1",
-        "discoverday": "8"
+        "discoveryear": 1997,
+        "discoverday": 7,
+        "discovermonth": 1,
+        "host": "A031143-1202",
+        "galra": "031143",
+        "galdec": "-120211",
+        "snra": "03:11:43.82",
+        "sndec": "-12:02:11.0",
+        "discoverer": "Supernova Cosmology Project",
+        "maxyear": 1997,
+        "maxmonth": 1,
+        "maxday": 7
     }
 }

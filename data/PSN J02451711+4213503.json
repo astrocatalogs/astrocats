@@ -1,0 +1,39 @@
+{
+    "PSN J02451711+4213503": {
+        "name": "PSN J02451711+4213503",
+        "aliases": [
+            "PSN J02451711+4213503"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J02451711+4213503.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56875.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia-91T",
+        "snra": "02:45:17.11",
+        "sndec": "+42:13:50.3",
+        "discoverday": 6,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "redshift": 0.03,
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 6
+    }
+}

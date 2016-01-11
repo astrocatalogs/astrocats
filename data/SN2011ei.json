@@ -2,21 +2,44 @@
     "SN2011ei": {
         "name": "SN2011ei",
         "aliases": [
-            "SN2011ei"
+            "SN2011ei",
+            "PSN J20342262-3158236"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "25",
-        "discovermonth": 7,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002777.txt'>CBET 2777</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55849.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 15,
+        "discovermonth": 10,
         "host": "NGC 6925",
-        "claimedtype": "IIb",
+        "claimedtype": "II",
         "hvel": "2699",
         "galra": "203421",
         "galdec": "-315851",
-        "snra": "203422.62",
-        "sndec": "-315823.6",
-        "discoverer": "Parker",
+        "snra": "20:34:22.62",
+        "sndec": "-31:58:23.6",
+        "discoverer": "Stu Parker",
+        "redshift": 0.0093,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 15,
         "z": 0.00904
     }
 }

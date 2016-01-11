@@ -2,7 +2,8 @@
     "SN2014dm": {
         "name": "SN2014dm",
         "aliases": [
-            "SN2014dm"
+            "SN2014dm",
+            "PSN J04080713-0849372"
         ],
         "sources": [
             {
@@ -11,44 +12,56 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003996.txt'>CBET 3996</a>",
                 "alias": "2"
             },
             {
-                "name": "LLA",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56926.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56931.798",
                 "band": "C",
                 "abmag": "17.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56934.163",
                 "band": "CV",
                 "abmag": "16.9",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 1,
-        "discovermonth": 10,
-        "host": "NGC 1516A",
+        "discoverday": 26,
+        "discovermonth": 9,
+        "host": "NGC 1524",
         "claimedtype": "Ia",
         "hvel": "9934",
         "galra": "040807",
         "galdec": "-084945",
-        "snra": "040807.13",
-        "sndec": "-084937.2",
-        "discoverer": "Itagaki",
+        "snra": "04:08:07.13",
+        "sndec": "-08:49:37.2",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.033,
         "maxyear": 2014,
-        "maxmonth": 10,
-        "maxday": 4,
+        "maxmonth": 9,
+        "maxday": 26,
         "z": 0.0337
     }
 }

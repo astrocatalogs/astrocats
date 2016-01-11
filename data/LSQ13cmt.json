@@ -2,7 +2,8 @@
     "LSQ13cmt": {
         "name": "LSQ13cmt",
         "aliases": [
-            "LSQ13cmt"
+            "LSQ13cmt",
+            "CSS131012:010242-215224"
         ],
         "sources": [
             {
@@ -11,24 +12,40 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5443'>ATEL 5443</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56576.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56573.346",
                 "band": "C",
                 "abmag": "18.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "01:02:41.95",
+        "sndec": "-21:52:23.4",
+        "discoverday": 8,
+        "discovermonth": 10,
+        "discoveryear": 2013,
+        "redshift": 0.057,
+        "discoverer": "La Silla-QUEST",
         "maxyear": 2013,
         "maxmonth": 10,
-        "maxday": 8,
-        "discoveryear": 2013,
-        "discovermonth": 10,
-        "discoverday": 8
+        "maxday": 11
     }
 }

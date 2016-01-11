@@ -6,21 +6,90 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08104.html#Item2'>IAUC 8104</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52725.0",
+                "time": "52693.54000000004",
+                "band": "C",
+                "abmag": "19.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52707.35999999987",
+                "band": "C",
+                "abmag": "19.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52722.16000000015",
+                "band": "C",
+                "abmag": "20.1",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52724.14000000013",
+                "band": "C",
+                "abmag": "20.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52725.14000000013",
+                "band": "C",
+                "abmag": "19.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52730.220000000205",
+                "band": "C",
+                "abmag": "20.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52724.5",
                 "band": "",
                 "abmag": "19.9",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "3",
-        "discoverday": "27"
+        "discoveryear": 2003,
+        "discoverday": 23,
+        "discovermonth": 2,
+        "host": "A105302-0041",
+        "galra": "105302",
+        "galdec": "-004103",
+        "snra": "10:53:02.668",
+        "sndec": "-00:41:03.99",
+        "discoverer": "Nearby Supernova Factory",
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 23
     }
 }

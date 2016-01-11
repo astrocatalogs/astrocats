@@ -1,0 +1,38 @@
+{
+    "OGLE-2014-SN-152": {
+        "name": "OGLE-2014-SN-152",
+        "aliases": [
+            "OGLE-2014-SN-152"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6722'>ATEL 6722</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56979.5",
+                "band": "",
+                "abmag": "19.5",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 311168",
+        "snra": "06:16:42.50",
+        "sndec": "-65:40:43.7",
+        "discoverday": 18,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 18
+    }
+}

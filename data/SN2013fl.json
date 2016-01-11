@@ -2,7 +2,8 @@
     "SN2013fl": {
         "name": "SN2013fl",
         "aliases": [
-            "SN2013fl"
+            "SN2013fl",
+            "PSN J17333955+5022255"
         ],
         "sources": [
             {
@@ -11,52 +12,64 @@
                 "secondary": true
             },
             {
-                "name": "Denis Buczynski",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003660.txt'>CBET 3660</a>",
                 "alias": "2"
             },
             {
-                "name": "Manfred Mrotzek",
+                "name": "Denis Buczynski",
                 "alias": "3"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Manfred Mrotzek",
                 "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56556.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56564.831",
                 "band": "RC",
                 "abmag": "17.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56589.823",
                 "band": "L",
                 "abmag": "17.6",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56566.175",
                 "band": "C",
                 "abmag": "17.7",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 29,
+        "discoverday": 21,
         "discovermonth": 9,
         "host": "UGC 10908",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "5818",
         "galra": "173338",
         "galdec": "+502225",
-        "snra": "173339.53",
-        "sndec": "+502225.5",
-        "discoverer": "Boles",
+        "snra": "17:33:39.55",
+        "sndec": "+50:22:25.5",
+        "discoverer": "Tom Boles",
+        "redshift": 0.019407,
         "maxyear": 2013,
         "maxmonth": 9,
         "maxday": 29,

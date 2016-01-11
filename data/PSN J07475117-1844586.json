@@ -1,0 +1,40 @@
+{
+    "PSN J07475117-1844586": {
+        "name": "PSN J07475117-1844586",
+        "aliases": [
+            "PSN J07475117-1844586"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J07475117-1844586.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56361.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "LBV",
+        "host": "ESO 560-G13",
+        "snra": "07:47:51.17",
+        "sndec": "-18:44:58.6",
+        "discoverday": 10,
+        "discovermonth": 3,
+        "discoveryear": 2013,
+        "redshift": 0.011,
+        "discoverer": "CHASE",
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 10
+    }
+}

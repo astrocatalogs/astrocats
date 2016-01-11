@@ -2,21 +2,44 @@
     "SN2011es": {
         "name": "SN2011es",
         "aliases": [
-            "SN2011es"
+            "SN2011es",
+            "CSS110527:134355+253253"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "27",
-        "discovermonth": 5,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002787.txt'>CBET 2787</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55753.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 11,
+        "discovermonth": 7,
         "host": "A134354+2532",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "15000",
         "galra": "134354",
         "galdec": "+253252",
-        "snra": "134354.95",
-        "sndec": "+253252.9",
-        "discoverer": "Graham et al.",
+        "snra": "13:43:54.95",
+        "sndec": "+25:32:52.9",
+        "discoverer": "CRTS",
+        "redshift": 0.05,
+        "maxyear": 2011,
+        "maxmonth": 7,
+        "maxday": 11,
         "z": 0.0514
     }
 }

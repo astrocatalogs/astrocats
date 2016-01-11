@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1955L'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "35189.0",
+                "time": "35188.5",
                 "band": "",
                 "abmag": "16.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1955",
-        "discovermonth": "3",
-        "discoverday": "23"
+        "discoveryear": 1955,
+        "discoverday": 22,
+        "discovermonth": 3,
+        "host": "MCG +5-26-47",
+        "hvel": "8723",
+        "galra": "110459",
+        "galdec": "+300137",
+        "discoverer": "Miklos Lovas",
+        "snra": "11:04:55.8",
+        "sndec": "+30:03:02.0",
+        "maxyear": 1955,
+        "maxmonth": 3,
+        "maxday": 22,
+        "z": 0.0295
     }
 }

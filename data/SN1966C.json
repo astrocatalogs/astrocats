@@ -6,24 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1967PASP...79..456Z'>PASP 79, 456</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "39146.0",
+                "time": "39145.5",
                 "band": "",
                 "abmag": "16.8",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1966",
-        "discovermonth": "1",
-        "discoverday": "21",
-        "maxyear": "1966",
-        "maxmonth": "2",
-        "maxday": "3"
+        "discoveryear": 1966,
+        "maxday": 20,
+        "maxmonth": 1,
+        "host": "GIN 578",
+        "hvel": "10344",
+        "galra": "162909",
+        "galdec": "+405915",
+        "discoverer": "Rudnicki",
+        "snra": "16:29:11.2",
+        "sndec": "+40:59:34.0",
+        "discoverday": 20,
+        "discovermonth": 1,
+        "maxyear": 1966,
+        "z": 0.0351
     }
 }

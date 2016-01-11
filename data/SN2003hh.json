@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08184.html#Item2'>IAUC 8184</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52869.0",
+                "time": "52868.5",
                 "band": "",
                 "abmag": "18.7",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "8",
-        "discoverday": "18"
+        "discoveryear": 2003,
+        "discoverday": 17,
+        "discovermonth": 8,
+        "host": "UGC 12890",
+        "claimedtype": "Ia",
+        "hvel": "11602",
+        "galra": "000007",
+        "galdec": "+081645",
+        "snra": "00:00:07.088",
+        "sndec": "+08:16:42.39",
+        "discoverer": "LOTOSS",
+        "maxyear": 2003,
+        "maxmonth": 8,
+        "maxday": 17,
+        "z": 0.0395
     }
 }

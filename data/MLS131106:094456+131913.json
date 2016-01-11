@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5659'>ATEL 5659</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56601.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56604.516",
                 "band": "C",
                 "abmag": "20.1",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "09:44:55.91",
+        "sndec": "+13:19:12.8",
+        "discoverday": 5,
+        "discovermonth": 11,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
         "maxyear": 2013,
         "maxmonth": 11,
-        "maxday": 8,
-        "discoveryear": 2013,
-        "discovermonth": 11,
-        "discoverday": 8
+        "maxday": 5
     }
 }

@@ -1,0 +1,69 @@
+{
+    "PSN J07370423+6535509": {
+        "name": "PSN J07370423+6535509",
+        "aliases": [
+            "PSN J07370423+6535509",
+            "SNhunt225"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J07370423+6535509.html'>CBAT TOCP</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Giancarlo Cortini",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56431.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56797.89",
+                "band": "U",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56979.046",
+                "band": "L",
+                "abmag": "18.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56991.396",
+                "band": "L",
+                "abmag": "18.5",
+                "source": "4,1"
+            }
+        ],
+        "claimedtype": "LBV",
+        "host": "NGC 2403",
+        "snra": "07:37:04.20",
+        "sndec": "+65:35:46.0",
+        "discoverday": 19,
+        "discovermonth": 5,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 19
+    }
+}

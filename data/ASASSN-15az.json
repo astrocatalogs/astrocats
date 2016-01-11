@@ -11,35 +11,51 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6921'>ATEL 6921</a>",
                 "alias": "2"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57036.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57036.725",
                 "band": "C",
                 "abmag": "16.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57037.7438",
                 "band": "U",
                 "abmag": "16.4",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "11:08:37.60",
+        "sndec": "-10:14:57.8",
+        "discoverday": 14,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.028,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 1,
-        "maxday": 15,
-        "discoveryear": 2015,
-        "discovermonth": 1,
-        "discoverday": 14
+        "maxday": 14
     }
 }

@@ -2,21 +2,44 @@
     "SN2015V": {
         "name": "SN2015V",
         "aliases": [
-            "SN2015V"
+            "SN2015V",
+            "PSN J17492705+3608360"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2015",
-        "discoverday": "4",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004167.txt'>CBET 4167</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57126.5",
+                "band": "",
+                "abmag": "15.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 14,
         "discovermonth": 4,
         "host": "UGC 11000",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "1369",
         "galra": "174927",
         "galdec": "+360844",
-        "snra": "174927.05",
-        "sndec": "+360836.0",
+        "snra": "17:49:27.05",
+        "sndec": "+36:08:36.0",
         "discoverer": "LOSS",
+        "redshift": 0.004566,
+        "maxyear": 2015,
+        "maxmonth": 4,
+        "maxday": 14,
         "z": 0.00458
     }
 }

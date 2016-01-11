@@ -26,17 +26,17 @@ outdir = '../data/'
 
 eventnames = []
 
-dovizier =       False
-dosuspect =      False
-docfa =          False
-doucb =          False
-dosdss =         False
-dogaia =         False
-docsp =          False
-doitep =         False
-doasiago =       False
-dorochester =    False
-dofirstmax =     False
+dovizier =       True
+dosuspect =      True
+docfa =          True
+doucb =          True
+dosdss =         True
+dogaia =         True
+docsp =          True
+doitep =         True
+doasiago =       True
+dorochester =    True
+dofirstmax =     True
 dolennarz =      True
 writeevents =    True
 compressevents = True
@@ -235,13 +235,13 @@ if dovizier:
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
         source = get_source(name, reference)
-        if row['Bmag'] and is_number(row['Bmag']):
+        if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
             add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = source)
-        if row['Vmag'] and is_number(row['Vmag']):
+        if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
             add_photometry(name, time = row['MJD'], band = 'V', abmag = row['Vmag'], aberr = row['e_Vmag'], source = source)
-        if row['Rmag'] and is_number(row['Rmag']):
+        if 'Rmag' in row and is_number(row['Rmag']) and not isnan(float(row['Rmag'])):
             add_photometry(name, time = row['MJD'], band = 'R', abmag = row['Rmag'], aberr = row['e_Rmag'], source = source)
-        if row['Imag'] and is_number(row['Imag']):
+        if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
             add_photometry(name, time = row['MJD'], band = 'I', abmag = row['Imag'], aberr = row['e_Imag'], source = source)
 
     reference = "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>"
@@ -702,46 +702,46 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if dorochester:
-    #response = urllib.request.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
-    ##response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
-    #html = response.read()
+    response = urllib.request.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
+    #response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
+    html = response.read()
 
-    #soup = BeautifulSoup(html, "html5lib")
-    #rows = soup.findAll('tr')
-    #secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
-    #for r, row in enumerate(rows):
-    #    if r == 0:
-    #        continue
-    #    cols = row.findAll('td')
-    #    if not len(cols):
-    #        continue
-    #    name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
-    #    if name[:4].isdigit():
-    #        name = 'SN' + name
-    #    name = add_event(name)
+    soup = BeautifulSoup(html, "html5lib")
+    rows = soup.findAll('tr')
+    secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
+    for r, row in enumerate(rows):
+        if r == 0:
+            continue
+        cols = row.findAll('td')
+        if not len(cols):
+            continue
+        name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
+        if name[:4].isdigit():
+            name = 'SN' + name
+        name = add_event(name)
 
-    #    secondarysource = get_source(name, secondaryreference, secondary = 1)
-    #    if str(cols[1].contents[0]).strip() != 'unk':
-    #        events[name]['claimedtype'] = str(cols[1].contents[0]).strip()
-    #    if str(cols[2].contents[0]).strip() != 'anonymous':
-    #        events[name]['host'] = str(cols[2].contents[0]).strip()
-    #    events[name]['snra'] = str(cols[3].contents[0]).strip()
-    #    events[name]['sndec'] = str(cols[4].contents[0]).strip()
-    #    if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
-    #        astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
-    #        events[name]['discoverday'] = str(astrot.datetime.day)
-    #        events[name]['discovermonth'] = str(astrot.datetime.month)
-    #        events[name]['discoveryear'] = str(astrot.datetime.year)
-    #    if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
-    #        astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-    #        source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
-    #        if float(str(cols[8].contents[0]).strip()) <= 90.0:
-    #            add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = ','.join([source, secondarysource]))
-    #    if cols[11].contents[0] != 'n/a':
-    #        events[name]['redshift'] = float(str(cols[11].contents[0]).strip())
-    #    events[name]['discoverer'] = str(cols[13].contents[0]).strip()
-    #    if cols[14].contents:
-    #        add_alias(name, str(cols[14].contents[0]).strip())
+        secondarysource = get_source(name, secondaryreference, secondary = 1)
+        if str(cols[1].contents[0]).strip() != 'unk':
+            events[name]['claimedtype'] = str(cols[1].contents[0]).strip()
+        if str(cols[2].contents[0]).strip() != 'anonymous':
+            events[name]['host'] = str(cols[2].contents[0]).strip()
+        events[name]['snra'] = str(cols[3].contents[0]).strip()
+        events[name]['sndec'] = str(cols[4].contents[0]).strip()
+        if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
+            astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
+            events[name]['discoverday'] = str(astrot.datetime.day)
+            events[name]['discovermonth'] = str(astrot.datetime.month)
+            events[name]['discoveryear'] = str(astrot.datetime.year)
+        if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
+            astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
+            source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
+            if float(str(cols[8].contents[0]).strip()) <= 90.0:
+                add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = ','.join([source, secondarysource]))
+        if cols[11].contents[0] != 'n/a':
+            events[name]['redshift'] = float(str(cols[11].contents[0]).strip())
+        events[name]['discoverer'] = str(cols[13].contents[0]).strip()
+        if cols[14].contents:
+            add_alias(name, str(cols[14].contents[0]).strip())
 
     vsnetfiles = ["latestsne.dat"]
     for vsnetfile in vsnetfiles:

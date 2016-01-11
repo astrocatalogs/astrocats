@@ -6,21 +6,60 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51540.0",
-                "band": "",
+                "time": "51540.5",
+                "band": "C",
                 "abmag": "19.3",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51553.080000000075",
+                "band": "R",
+                "abmag": "19.22",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51556.5",
+                "band": "C",
+                "abmag": "19.5",
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "12",
-        "discoverday": "28"
+        "discoveryear": 1999,
+        "discoverday": 28,
+        "discovermonth": 12,
+        "host": "NGC 4725",
+        "hvel": "1206",
+        "galra": "125027",
+        "galdec": "+253001",
+        "snra": "12:50:26.28",
+        "sndec": "+25:28:16.5",
+        "discoverer": "LOSS",
+        "maxyear": 2000,
+        "maxmonth": 1,
+        "maxday": 10,
+        "z": 0.00403
     }
 }

@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56771.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56780.286",
                 "band": "U",
                 "abmag": "18.0",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 3,
+        "snra": "16:12:37.49",
+        "sndec": "+46:34:02.2",
+        "discoverday": 24,
+        "discovermonth": 4,
         "discoveryear": 2014,
-        "discovermonth": 5,
-        "discoverday": 3
+        "discoverer": "CRTS",
+        "maxyear": 2014,
+        "maxmonth": 4,
+        "maxday": 24
     }
 }

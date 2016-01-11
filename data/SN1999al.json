@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07100/07117.html#Item1'>IAUC 7117</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51230.0",
-                "band": "V",
+                "time": "51229.5",
+                "band": "",
                 "abmag": "19.4",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "2",
-        "discoverday": "21"
+        "discoveryear": 1999,
+        "discoverday": 20,
+        "discovermonth": 2,
+        "host": "A111025-0726",
+        "claimedtype": "Ic",
+        "hvel": "19500",
+        "galra": "111025",
+        "galdec": "-072637",
+        "snra": "11:10:25.68",
+        "sndec": "-07:26:37.0",
+        "discoverer": "EROS collaboration",
+        "redshift": 0.065,
+        "maxyear": 1999,
+        "maxmonth": 2,
+        "maxday": 20,
+        "z": 0.0673
     }
 }

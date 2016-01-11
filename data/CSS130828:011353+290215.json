@@ -11,31 +11,45 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5437'>ATEL 5437</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56534.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56535.414",
                 "band": "UR",
                 "abmag": "18.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56543.453",
                 "band": "UR",
                 "abmag": "19.0",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "01:13:53.26",
+        "sndec": "+29:02:14.7",
+        "discoverday": 30,
+        "discovermonth": 8,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
         "maxyear": 2013,
         "maxmonth": 8,
-        "maxday": 31,
-        "discoveryear": 2013,
-        "discovermonth": 8,
-        "discoverday": 31
+        "maxday": 30
     }
 }

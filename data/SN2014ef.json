@@ -2,21 +2,44 @@
     "SN2014ef": {
         "name": "SN2014ef",
         "aliases": [
-            "SN2014ef"
+            "SN2014ef",
+            "PSN J00563965-0954028"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2014",
-        "discoverday": "13",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004059.txt'>CBET 4059</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57012.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 21,
         "discovermonth": 12,
         "host": "NGC 309",
         "claimedtype": "Ib",
         "hvel": "5649",
         "galra": "005643",
         "galdec": "-095451",
-        "snra": "005639.65",
-        "sndec": "-095402.8",
-        "discoverer": "Itagaki",
+        "snra": "00:56:39.65",
+        "sndec": "-09:54:02.8",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.02,
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 21,
         "z": 0.019
     }
 }

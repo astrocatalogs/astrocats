@@ -1,0 +1,51 @@
+{
+    "SN in MACSJ0717.5+3745": {
+        "name": "SN in MACSJ0717.5+3745",
+        "aliases": [
+            "SN in MACSJ0717.5+3745",
+            "HFF13cha"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5728'>ATEL 5728</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56649.5",
+                "band": "",
+                "abmag": "23.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56665.269",
+                "band": "C",
+                "abmag": "22.4",
+                "source": "3,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "07:17:32.78",
+        "sndec": "+37:44:41.2",
+        "discoverday": 23,
+        "discovermonth": 12,
+        "discoveryear": 2013,
+        "redshift": 0.557,
+        "discoverer": "HST",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 8
+    }
+}

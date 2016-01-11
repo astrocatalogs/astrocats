@@ -2,21 +2,44 @@
     "SN2011dy": {
         "name": "SN2011dy",
         "aliases": [
-            "SN2011dy"
+            "SN2011dy",
+            "PSN J23292013+0323086"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "28",
-        "discovermonth": 6,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002760.txt'>CBET 2760</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55830.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 26,
+        "discovermonth": 9,
         "host": "UGC 12628",
         "claimedtype": "II",
         "hvel": "4646",
         "galra": "232922",
         "galdec": "+032324",
-        "snra": "232920.13",
-        "sndec": "+032308.6",
-        "discoverer": "Briggs, Newton, Puckett",
+        "snra": "23:29:20.12",
+        "sndec": "+03:23:08.6",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0156,
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 26,
         "z": 0.0156
     }
 }

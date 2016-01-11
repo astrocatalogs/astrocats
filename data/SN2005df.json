@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08500/08580.html#Item1'>IAUC 8580</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53586.0",
-                "band": "V",
-                "abmag": "12.5",
-                "source": "1"
+                "time": "53595.5",
+                "band": "",
+                "abmag": "12.3",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2005",
-        "discovermonth": "8",
-        "discoverday": "4"
+        "discoveryear": 2005,
+        "discoverday": 13,
+        "discovermonth": 8,
+        "host": "NGC 1559",
+        "claimedtype": "Ia",
+        "hvel": "1294",
+        "galra": "041736",
+        "galdec": "-624701",
+        "snra": "04:17:37.85",
+        "sndec": "-62:46:09.5",
+        "discoverer": "Robert Evans",
+        "maxyear": 2005,
+        "maxmonth": 8,
+        "maxday": 13,
+        "z": 0.00433
     }
 }

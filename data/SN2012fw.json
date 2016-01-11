@@ -2,21 +2,44 @@
     "SN2012fw": {
         "name": "SN2012fw",
         "aliases": [
-            "SN2012fw"
+            "SN2012fw",
+            "PSN J21015899-4816259"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "19",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003282.txt'>CBET 3282</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56157.5",
+                "band": "",
+                "abmag": "15.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 18,
         "discovermonth": 8,
-        "host": "E235-G37",
+        "host": "ESO 235-G37",
         "claimedtype": "Ia",
         "hvel": "5589",
         "galra": "210200",
         "galdec": "-481628",
-        "snra": "210158.99",
-        "sndec": "-481625.9",
-        "discoverer": "Klotz et al.",
+        "snra": "21:01:58.99",
+        "sndec": "-48:16:25.9",
+        "discoverer": "TAROT La Silla telescope",
+        "redshift": 0.0186,
+        "maxyear": 2012,
+        "maxmonth": 8,
+        "maxday": 18,
         "z": 0.0188
     }
 }

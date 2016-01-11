@@ -4,19 +4,41 @@
         "aliases": [
             "SN2003gm"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2003",
-        "discoverday": "6",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08164.html#Item1'>IAUC 8164</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "52825.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2003,
+        "discoverday": 5,
         "discovermonth": 7,
         "host": "NGC 5334",
-        "claimedtype": "II?",
+        "claimedtype": "LBV",
         "hvel": "1383",
         "galra": "135254",
         "galdec": "-010652",
-        "snra": "135251.72",
-        "sndec": "-010639.2",
-        "discoverer": "LOTOSS",
+        "snra": "13:52:51.728",
+        "sndec": "-01:06:39.29",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.0047,
+        "maxyear": 2003,
+        "maxmonth": 7,
+        "maxday": 5,
         "z": 0.00462
     }
 }

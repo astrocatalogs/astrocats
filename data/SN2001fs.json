@@ -6,8 +6,26 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2004ApJ...602..571B'>2004ApJ...602..571B</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07745.html#Item1'>IAUC 7745</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -15,12 +33,100 @@
                 "timeunit": "MJD",
                 "time": "52191.0",
                 "band": "I",
-                "abmag": "24.4",
-                "source": "1"
+                "abmag": "23.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52204.02000000002",
+                "band": "R",
+                "abmag": "24.61",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52204.080000000075",
+                "band": "I",
+                "abmag": "22.84",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52224.89000000013",
+                "band": "I",
+                "abmag": "24.56",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52230.830000000075",
+                "band": "R",
+                "abmag": "27.58",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52230.87000000011",
+                "band": "I",
+                "abmag": "24.32",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52231.830000000075",
+                "band": "R",
+                "abmag": "29.14",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52231.85999999987",
+                "band": "I",
+                "abmag": "25.32",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52235.830000000075",
+                "band": "I",
+                "abmag": "25.37",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52287.75",
+                "band": "R",
+                "abmag": "27.83",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52288.75999999978",
+                "band": "R",
+                "abmag": "27.73",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52162.5",
+                "band": "",
+                "abmag": "23.9",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "10",
-        "discoverday": "9"
+        "discoveryear": 2001,
+        "discoverday": 10,
+        "discovermonth": 9,
+        "host": "A043930-0128",
+        "claimedtype": "Ia",
+        "redshift": 0.84,
+        "galra": "043930",
+        "galdec": "-012821",
+        "snra": "04:39:30.68",
+        "sndec": "-01:28:21.9",
+        "discoverer": "High Z Supernova Search",
+        "maxyear": 2001,
+        "maxmonth": 10,
+        "maxday": 22
     }
 }

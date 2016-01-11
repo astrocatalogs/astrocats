@@ -1,0 +1,39 @@
+{
+    "SN in MACSJ1423": {
+        "name": "SN in MACSJ1423",
+        "aliases": [
+            "SN in MACSJ1423"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4778'>ATEL 4778</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56310.5",
+                "band": "",
+                "abmag": "22.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "14:23:47.62",
+        "sndec": "+24:04:33.3",
+        "discoverday": 18,
+        "discovermonth": 1,
+        "discoveryear": 2013,
+        "redshift": 0.545,
+        "discoverer": "HST",
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 18
+    }
+}

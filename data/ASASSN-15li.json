@@ -2,7 +2,8 @@
     "ASASSN-15li": {
         "name": "ASASSN-15li",
         "aliases": [
-            "ASASSN-15li"
+            "ASASSN-15li",
+            "PS15bdl"
         ],
         "sources": [
             {
@@ -11,24 +12,39 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7645'>ATEL 7645</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57188.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57221.5424",
                 "band": "U",
                 "abmag": "17.4",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "maxyear": 2015,
-        "maxmonth": 7,
-        "maxday": 18,
+        "claimedtype": "Ia",
+        "snra": "14:25:07.69",
+        "sndec": "+62:53:29.7",
+        "discoverday": 15,
+        "discovermonth": 6,
         "discoveryear": 2015,
-        "discovermonth": 7,
-        "discoverday": 18
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 15
     }
 }

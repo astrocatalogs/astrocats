@@ -2,21 +2,44 @@
     "SN2014bz": {
         "name": "SN2014bz",
         "aliases": [
-            "SN2014bz"
+            "SN2014bz",
+            "PSN J13560419-4335099"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2014",
-        "discoverday": "6",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003932.txt'>CBET 3932</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56782.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 5,
         "discovermonth": 5,
-        "host": "PGC0547157",
+        "host": "PGC 547157",
         "claimedtype": "Ia",
         "hvel": "6780",
         "galra": "135603",
         "galdec": "-433432",
-        "snra": "135604.19",
-        "sndec": "-433509.9",
-        "discoverer": "Conseil",
+        "snra": "13:56:04.19",
+        "sndec": "-43:35:09.9",
+        "discoverer": "E. Conseil",
+        "redshift": 0.025,
+        "maxyear": 2014,
+        "maxmonth": 5,
+        "maxday": 5,
         "z": 0.0229
     }
 }

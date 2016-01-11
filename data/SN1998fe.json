@@ -6,21 +6,67 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51013.0",
-                "band": "",
+                "time": "51013.299999999814",
+                "band": "C",
                 "abmag": "18",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51015.299999999814",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51017.299999999814",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51020.299999999814",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1998",
-        "discovermonth": "7",
-        "discoverday": "19"
+        "discoveryear": 1998,
+        "discoverday": 19,
+        "discovermonth": 7,
+        "host": "NGC 6027D",
+        "hvel": "19813",
+        "galra": "155913",
+        "galdec": "+204533",
+        "snra": "15:59:12.84",
+        "sndec": "+20:45:39.0",
+        "discoverer": "LOSS",
+        "maxyear": 1998,
+        "maxmonth": 7,
+        "maxday": 19,
+        "z": 0.0684
     }
 }

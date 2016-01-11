@@ -2,21 +2,44 @@
     "SN2011jh": {
         "name": "SN2011jh",
         "aliases": [
-            "SN2011jh"
+            "SN2011jh",
+            "PSN J12471442-1003473"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "22",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002953.txt'>CBET 2953</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55921.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 26,
         "discovermonth": 12,
         "host": "NGC 4682",
         "claimedtype": "Ia",
         "hvel": "2307",
         "galra": "124716",
         "galdec": "-100348",
-        "snra": "124714.42",
-        "sndec": "-100347.3",
-        "discoverer": "Hirose",
+        "snra": "12:47:14.42",
+        "sndec": "-10:03:47.2",
+        "discoverer": "Yoji Hirose",
+        "redshift": 0.0078,
+        "maxyear": 2011,
+        "maxmonth": 12,
+        "maxday": 26,
         "z": 0.00773
     }
 }

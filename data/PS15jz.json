@@ -11,46 +11,63 @@
                 "secondary": true
             },
             {
-                "name": "Gregor Krannich",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "Gregor Krannich",
                 "alias": "3"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Gianpiero Locatelli",
                 "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57097.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57088.985",
                 "band": "V",
                 "abmag": "17.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57091.875",
                 "band": "Rc",
                 "abmag": "17.7",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57098.6604",
                 "band": "U",
                 "abmag": "17.3",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "UGC 5814",
+        "snra": "10:42:43.24",
+        "sndec": "+77:29:27.2",
+        "discoverday": 7,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.036,
+        "discoverer": "PS1",
         "maxyear": 2015,
         "maxmonth": 3,
-        "maxday": 17,
-        "discoveryear": 2015,
-        "discovermonth": 3,
-        "discoverday": 7
+        "maxday": 16
     }
 }

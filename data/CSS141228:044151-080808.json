@@ -11,46 +11,62 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "Kunihiro Shima",
                 "alias": "3"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Gianpiero Locatelli",
                 "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57019.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57020.6236",
                 "band": "U",
                 "abmag": "16.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57020.835",
                 "band": "U",
                 "abmag": "17.3",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57021.18",
                 "band": "C",
                 "abmag": "18.5",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
+        "claimedtype": "IIP",
+        "snra": "04:41:50.63",
+        "sndec": "-08:08:07.9",
+        "discoverday": 28,
+        "discovermonth": 12,
+        "discoveryear": 2014,
+        "redshift": 0.02,
+        "discoverer": "CRTS",
         "maxyear": 2014,
         "maxmonth": 12,
-        "maxday": 29,
-        "discoveryear": 2014,
-        "discovermonth": 12,
-        "discoverday": 29
+        "maxday": 28
     }
 }

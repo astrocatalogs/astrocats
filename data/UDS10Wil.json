@@ -1,0 +1,39 @@
+{
+    "UDS10Wil": {
+        "name": "UDS10Wil",
+        "aliases": [
+            "UDS10Wil"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://arxiv.org/abs/1304.0768'>Paper</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55559.5",
+                "band": "",
+                "abmag": "24.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "02:17:46.00",
+        "sndec": "-05:15:23.0",
+        "discoverday": 29,
+        "discovermonth": 12,
+        "discoveryear": 2010,
+        "redshift": 1.914,
+        "discoverer": "HST",
+        "maxyear": 2010,
+        "maxmonth": 12,
+        "maxday": 29
+    }
+}

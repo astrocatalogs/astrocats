@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08037.html#Item1'>IAUC 8037</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52631.0",
-                "band": "",
+                "time": "52631.27000000002",
+                "band": "C",
                 "abmag": "15.9",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52633.85000000009",
+                "band": "R",
+                "abmag": "15.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52630.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "12",
-        "discoverday": "23"
+        "discoveryear": 2002,
+        "discoverday": 22,
+        "discovermonth": 12,
+        "host": "UGC 2984",
+        "claimedtype": "Ic",
+        "hvel": "1540",
+        "galra": "041313",
+        "galdec": "+132515",
+        "snra": "04:13:12.52",
+        "sndec": "+13:25:07.3",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2002,
+        "maxmonth": 12,
+        "maxday": 25,
+        "z": 0.00515
     }
 }

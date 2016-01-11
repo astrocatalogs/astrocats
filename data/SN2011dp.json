@@ -2,21 +2,44 @@
     "SN2011dp": {
         "name": "SN2011dp",
         "aliases": [
-            "SN2011dp"
+            "SN2011dp",
+            "PSN J01452477-0349353"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "2",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002748.txt'>CBET 2748</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55714.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 2,
         "discovermonth": 6,
-        "host": "M-01-05-31",
+        "host": "MCG -1-5-31",
         "claimedtype": "Ia",
         "hvel": "5456",
         "galra": "014525",
         "galdec": "-034938",
-        "snra": "014524.77",
-        "sndec": "-034935.3",
-        "discoverer": "Monard",
+        "snra": "01:45:24.77",
+        "sndec": "-03:49:35.2",
+        "discoverer": "Berto Monard",
+        "redshift": 0.0182,
+        "maxyear": 2011,
+        "maxmonth": 6,
+        "maxday": 2,
         "z": 0.0184
     }
 }

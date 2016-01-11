@@ -1,0 +1,39 @@
+{
+    "DES14S1kdq": {
+        "name": "DES14S1kdq",
+        "aliases": [
+            "DES14S1kdq"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6790'>ATEL 6790</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56975.5",
+                "band": "",
+                "abmag": "23.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "02:49:04.83",
+        "sndec": "+00:34:56.5",
+        "discoverday": 14,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "redshift": 0.3275,
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 14
+    }
+}

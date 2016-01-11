@@ -1,0 +1,40 @@
+{
+    "PS15at": {
+        "name": "PS15at",
+        "aliases": [
+            "PS15at"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7091'>ATEL 7091</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57067.5",
+                "band": "",
+                "abmag": "18.9",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "MCG -1-31-10",
+        "snra": "12:15:38.21",
+        "sndec": "-07:47:28.1",
+        "discoverday": 14,
+        "discovermonth": 2,
+        "discoveryear": 2015,
+        "redshift": 0.033,
+        "discoverer": "PTF",
+        "maxyear": 2015,
+        "maxmonth": 2,
+        "maxday": 14
+    }
+}

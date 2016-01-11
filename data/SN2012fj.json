@@ -2,21 +2,44 @@
     "SN2012fj": {
         "name": "SN2012fj",
         "aliases": [
-            "SN2012fj"
+            "SN2012fj",
+            "PSN J16154486+3157477"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "19",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003266.txt'>CBET 3266</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56188.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 18,
         "discovermonth": 9,
         "host": "NGC 6103",
-        "claimedtype": "II P",
+        "claimedtype": "II",
         "hvel": "9383",
         "galra": "161545",
         "galdec": "+315750",
-        "snra": "161544.86",
-        "sndec": "+315747.7",
-        "discoverer": "Arbour",
+        "snra": "16:15:44.86",
+        "sndec": "+31:57:47.7",
+        "discoverer": "Ron Arbour",
+        "redshift": 0.031422,
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 18,
         "z": 0.0318
     }
 }

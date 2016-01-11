@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56735.5",
+                "band": "",
+                "abmag": "19.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56740.476",
                 "band": "C",
                 "abmag": "19.1",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "17:39:41.84",
+        "sndec": "+69:03:57.3",
+        "discoverday": 19,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
         "maxyear": 2014,
         "maxmonth": 3,
-        "maxday": 24,
-        "discoveryear": 2014,
-        "discovermonth": 3,
-        "discoverday": 24
+        "maxday": 24
     }
 }

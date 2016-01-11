@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001000/CBET001002.txt'>CBET 1002</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54296.0",
-                "band": "R",
-                "abmag": "16",
-                "source": "1"
+                "time": "54295.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2007",
-        "discovermonth": "7",
-        "discoverday": "15"
+        "discoveryear": 2007,
+        "discoverday": 14,
+        "discovermonth": 7,
+        "host": "NGC 4677",
+        "claimedtype": "Ia",
+        "hvel": "3146",
+        "galra": "124657",
+        "galdec": "-413458",
+        "snra": "12:47:03.7",
+        "sndec": "-41:35:22",
+        "discoverer": "TAROT collaboration",
+        "redshift": 0.0104,
+        "maxyear": 2007,
+        "maxmonth": 7,
+        "maxday": 14,
+        "z": 0.0105
     }
 }

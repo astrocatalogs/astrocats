@@ -2,12 +2,22 @@
     "LSQ12fuk": {
         "name": "LSQ12fuk",
         "aliases": [
-            "LSQ12fuk"
+            "LSQ12fuk",
+            "CSS121106:045816-161758"
         ],
         "sources": [
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>",
                 "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4537'>ATEL 4537</a>",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -829,17 +839,26 @@
                 "instrument": "La Silla-QUEST",
                 "aberr": "0.011",
                 "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56230.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "3,2"
             }
         ],
-        "snra": "04 58 15.88",
-        "sndec": "-16 17 58.03",
-        "redshift": "0.02",
+        "snra": "04:58:15.89",
+        "sndec": "-16:17:58.2",
+        "redshift": 0.02,
         "ebv": "0.073",
+        "claimedtype": "Ia",
+        "discoverday": 29,
+        "discovermonth": 10,
+        "discoveryear": 2012,
+        "discoverer": "La Silla-QUEST",
         "maxyear": 2012,
         "maxmonth": 10,
-        "maxday": 29,
-        "discoveryear": 2012,
-        "discovermonth": 10,
-        "discoverday": 29
+        "maxday": 30
     }
 }

@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08400/08480.html#Item1'>IAUC 8480</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53402.0",
-                "band": "R",
-                "abmag": "15.4",
-                "source": "1"
+                "time": "53401.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2005",
-        "discovermonth": "2",
-        "discoverday": "1"
+        "discoveryear": 2005,
+        "discoverday": 31,
+        "discovermonth": 1,
+        "host": "ESO 209-G9",
+        "claimedtype": "Ib",
+        "hvel": "1108",
+        "galra": "075815",
+        "galdec": "-495106",
+        "snra": "07:58:15.84",
+        "sndec": "-49:51:19.9",
+        "discoverer": "R. Martin",
+        "maxyear": 2005,
+        "maxmonth": 1,
+        "maxday": 31,
+        "z": 0.0037
     }
 }

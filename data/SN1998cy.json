@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06900/06972.html'>IAUC 6972</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50953.0",
-                "band": "V",
+                "time": "50952.5",
+                "band": "",
                 "abmag": "19.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1998",
-        "discovermonth": "5",
-        "discoverday": "20"
+        "discoveryear": 1998,
+        "discoverday": 19,
+        "discovermonth": 5,
+        "host": "A140242-0545",
+        "galra": "140242",
+        "galdec": "-054505",
+        "snra": "14:02:42.82",
+        "sndec": "-05:45:05.7",
+        "discoverer": "EROS",
+        "maxyear": 1998,
+        "maxmonth": 5,
+        "maxday": 19
     }
 }

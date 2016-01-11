@@ -2,7 +2,8 @@
     "SN2013cq": {
         "name": "SN2013cq",
         "aliases": [
-            "SN2013cq"
+            "SN2013cq",
+            "GRB 130427A"
         ],
         "sources": [
             {
@@ -13,6 +14,15 @@
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2013arXiv1305.6832X'>2013arXiv1305.6832X</a>",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003531.txt'>CBET 3531</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -127,21 +137,28 @@
                 "band": "r_SDSS",
                 "abmag": "22.8652",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56408.5",
+                "band": "",
+                "abmag": "12.0",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 3,
-        "discovermonth": 5,
+        "discoverday": 26,
+        "discovermonth": 4,
         "host": "A113232+2741",
         "claimedtype": "Ic",
-        "redshift": "0.34",
+        "redshift": 0.34,
         "galra": "113232",
         "galdec": "+274156",
-        "snra": "113232.84",
-        "sndec": "+274156.2",
-        "discoverer": "de Ugarte Postigo e al., Maselli et al.",
+        "snra": "11:32:32.81",
+        "sndec": "+27:41:56.1",
+        "discoverer": "SWIFT burst alert",
         "maxyear": 2013,
-        "maxmonth": 5,
-        "maxday": 13
+        "maxmonth": 4,
+        "maxday": 26
     }
 }

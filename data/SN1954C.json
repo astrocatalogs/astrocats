@@ -6,24 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01400/01476.html'>IAUC 1476</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "35012.0",
+                "time": "35011.5",
                 "band": "",
                 "abmag": "14.9",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1954",
-        "discovermonth": "9",
-        "discoverday": "27",
-        "maxyear": "1954",
-        "maxmonth": "10",
-        "maxday": "4"
+        "discoveryear": 1954,
+        "maxday": 26,
+        "maxmonth": 9,
+        "host": "NGC 5879",
+        "claimedtype": "II",
+        "hvel": "771",
+        "galra": "150947",
+        "galdec": "+570005",
+        "discoverer": "Paul Wild",
+        "snra": "15:09:45.5",
+        "sndec": "+57:00:03.0",
+        "discoverday": 26,
+        "discovermonth": 9,
+        "maxyear": 1954,
+        "z": 0.00258
     }
 }

@@ -4,7 +4,34 @@
         "aliases": [
             "EMILIA"
         ],
-        "sources": [],
-        "photometry": []
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5949'>ATEL 5949</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56720.5",
+                "band": "",
+                "abmag": "21.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "11:34:31.961",
+        "sndec": "+01:08:32.431",
+        "discoverday": 4,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "DECam",
+        "maxyear": 2014,
+        "maxmonth": 3,
+        "maxday": 4
     }
 }

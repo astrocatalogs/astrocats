@@ -2,7 +2,8 @@
     "SN2012hn": {
         "name": "SN2012hn",
         "aliases": [
-            "SN2012hn"
+            "SN2012hn",
+            "PSN J06424255-2726498"
         ],
         "sources": [
             {
@@ -13,6 +14,15 @@
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2013arXiv1302.2983V'>2013arXiv1302.2983V</a>",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003337.txt'>CBET 3337</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -615,22 +625,30 @@
                 "abmag": "23.47",
                 "aberr": "0.217",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56028.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2012,
-        "discoverday": 14,
+        "discoverday": 11,
         "discovermonth": 4,
         "host": "NGC 2272",
-        "claimedtype": "Ic pec",
+        "claimedtype": "Ic-pec",
         "hvel": "2087",
         "galra": "064241",
         "galdec": "-272734",
-        "snra": "064242.55",
-        "sndec": "-272649.8",
-        "discoverer": "Howerton et al.",
+        "snra": "06:42:42.55",
+        "sndec": "-27:26:49.8",
+        "discoverer": "CRTS",
+        "redshift": 0.007,
         "maxyear": 2012,
         "maxmonth": 4,
-        "maxday": 17,
+        "maxday": 11,
         "z": 0.00699
     }
 }

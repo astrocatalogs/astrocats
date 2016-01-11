@@ -11,35 +11,49 @@
                 "secondary": true
             },
             {
-                "name": "Joel Nicolas",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
             },
             {
-                "name": "Esteban Aguilar",
+                "name": "Joel Nicolas",
                 "alias": "3"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57208.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57213.937",
                 "band": "CV",
                 "abmag": "18.0",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57214.875",
                 "band": "CR",
                 "abmag": "17.4",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "snra": "20:40:28.82",
+        "sndec": "+69:59:32.5",
+        "discoverday": 5,
+        "discovermonth": 7,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
         "maxyear": 2015,
         "maxmonth": 7,
-        "maxday": 11,
-        "discoveryear": 2015,
-        "discovermonth": 7,
-        "discoverday": 10
+        "maxday": 5
     }
 }

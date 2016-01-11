@@ -1,0 +1,38 @@
+{
+    "PSN J01074673-1730278": {
+        "name": "PSN J01074673-1730278",
+        "aliases": [
+            "PSN J01074673-1730278"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J01074673-1730278.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55780.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            }
+        ],
+        "host": "IC 1623",
+        "snra": "01:07:46.72",
+        "sndec": "-17:30:27.7",
+        "discoverday": 7,
+        "discovermonth": 8,
+        "discoveryear": 2011,
+        "discoverer": "unknown",
+        "maxyear": 2011,
+        "maxmonth": 8,
+        "maxday": 7
+    }
+}

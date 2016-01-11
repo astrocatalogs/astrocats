@@ -6,20 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/full/1989ApJ...336..421W'>AJ 336,421</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "41377.0",
+                "time": "41376.5",
                 "band": "",
-                "abmag": "14",
-                "source": "1"
+                "abmag": "14.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1972",
-        "discovermonth": "3"
+        "discoveryear": 1972,
+        "discovermonth": 2,
+        "host": "MCG +5-32-1",
+        "hvel": "5029",
+        "galra": "132021",
+        "galdec": "+313054",
+        "discoverer": "unknown",
+        "snra": "13:20:19.8",
+        "sndec": "+31:30:53.0",
+        "discoverday": 29,
+        "maxyear": 1972,
+        "maxmonth": 2,
+        "maxday": 29,
+        "z": 0.0169
     }
 }

@@ -6,21 +6,40 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07700.html'>IAUC 7700</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49776.0",
-                "band": "I",
+                "time": "49772.5",
+                "band": "",
                 "abmag": "26.2",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1995",
-        "discovermonth": "2",
-        "discoverday": "28"
+        "discoveryear": 1995,
+        "discoverday": 24,
+        "discovermonth": 2,
+        "host": "A160420+4304",
+        "redshift": 0.985,
+        "galra": "160420",
+        "galdec": "+430444",
+        "snra": "16:04:20.40",
+        "sndec": "+43:04:44.0",
+        "discoverer": "Gal-Yam, Sharon, Maoz",
+        "maxyear": 1995,
+        "maxmonth": 2,
+        "maxday": 24
     }
 }

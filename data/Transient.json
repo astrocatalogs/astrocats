@@ -1,0 +1,37 @@
+{
+    "Transient": {
+        "name": "Transient",
+        "aliases": [
+            "Transient"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08314.html#Item2'>IAUC 8314</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "53083.5",
+                "band": "",
+                "abmag": "23.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "13:55:31.91",
+        "sndec": "-11:50:57.2",
+        "discoverday": 19,
+        "discovermonth": 3,
+        "discoveryear": 2004,
+        "discoverer": "Deep Lens Survey Transient Team",
+        "maxyear": 2004,
+        "maxmonth": 3,
+        "maxday": 19
+    }
+}

@@ -2,12 +2,18 @@
     "SN1895B": {
         "name": "SN1895B",
         "aliases": [
-            "SN1895B"
+            "SN1895B",
+            "Z Cen"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,14 +22,20 @@
                 "time": "13380.0",
                 "band": "",
                 "abmag": "8",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1895",
-        "discovermonth": "7",
-        "discoverday": "6",
-        "maxyear": "1895",
-        "maxmonth": "7",
-        "maxday": "6"
+        "maxday": "6",
+        "maxmonth": 7,
+        "host": "NGC 5253",
+        "claimedtype": "Ia",
+        "hvel": "403",
+        "galra": "133956",
+        "galdec": "-313824",
+        "snra": "13:39:57.3",
+        "sndec": "-31:38:08.0",
+        "discoverer": "Fleming",
+        "z": 0.00135
     }
 }

@@ -8,6 +8,15 @@
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>",
                 "alias": "1"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "2",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4958'>ATEL 4958</a>",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -1414,17 +1423,26 @@
                 "instrument": "La Silla-QUEST",
                 "aberr": "0.1",
                 "source": "1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56387.5",
+                "band": "",
+                "abmag": "22.0",
+                "source": "3,2"
             }
         ],
-        "snra": "16 06 55.85",
-        "sndec": "+03 00 15.23",
-        "redshift": "0.032",
+        "snra": "16:06:55.85",
+        "sndec": "+03:00:15.1",
+        "redshift": 0.032,
         "ebv": "0.069",
+        "claimedtype": "Ia",
+        "discoverday": 5,
+        "discovermonth": 4,
+        "discoveryear": 2013,
+        "discoverer": "La Silla-QUEST",
         "maxyear": 2013,
         "maxmonth": 4,
-        "maxday": 17,
-        "discoveryear": 2013,
-        "discovermonth": 4,
-        "discoverday": 7
+        "maxday": 17
     }
 }

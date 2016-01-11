@@ -11,35 +11,52 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7604'>ATEL 7604</a>",
                 "alias": "2"
             },
             {
-                "name": "Roland Santallo",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Roland Santallo",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57193.5",
+                "band": "",
+                "abmag": "15.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57181.478",
                 "band": "C",
                 "abmag": "16.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57183.43657",
                 "band": "V",
                 "abmag": "15.52",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "PGC 158354",
+        "snra": "12:58:41.76",
+        "sndec": "-32:07:25.10",
+        "discoverday": 8,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "redshift": 0.0174,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 6,
-        "maxday": 10,
-        "discoveryear": 2015,
-        "discovermonth": 6,
-        "discoverday": 8
+        "maxday": 20
     }
 }

@@ -1,0 +1,37 @@
+{
+    "MLS130214:084133+162450": {
+        "name": "MLS130214:084133+162450",
+        "aliases": [
+            "MLS130214:084133+162450"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4872'>ATEL 4872</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56336.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "08:41:33.11",
+        "sndec": "+16:24:50.0",
+        "discoverday": 13,
+        "discovermonth": 2,
+        "discoveryear": 2013,
+        "discoverer": "CRTS",
+        "maxyear": 2013,
+        "maxmonth": 2,
+        "maxday": 13
+    }
+}

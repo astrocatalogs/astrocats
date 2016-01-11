@@ -2,25 +2,72 @@
     "SN2008bm": {
         "name": "SN2008bm",
         "aliases": [
-            "SN2008bm"
+            "SN2008bm",
+            "CSS080329:130259+103027"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/001300/CBET001320.txt'>CBET 1320</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Nic",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54554.0",
-                "band": "r",
-                "abmag": "17.65",
-                "source": "1"
+                "time": "54553.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54557.885",
+                "band": "CR",
+                "abmag": "17.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54560.895",
+                "band": "CR",
+                "abmag": "17.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54569.937",
+                "band": "CR",
+                "abmag": "17.8",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2008",
-        "discovermonth": "3",
-        "discoverday": "29"
+        "discoveryear": 2008,
+        "discoverday": 28,
+        "discovermonth": 3,
+        "host": "CGCG 71-101",
+        "claimedtype": "IIn",
+        "hvel": "9600",
+        "galra": "130258",
+        "galdec": "+103027",
+        "snra": "13:02:58.75",
+        "sndec": "+10:30:27.0",
+        "discoverer": "CRTS",
+        "maxyear": 2008,
+        "maxmonth": 3,
+        "maxday": 28,
+        "z": 0.0326
     }
 }

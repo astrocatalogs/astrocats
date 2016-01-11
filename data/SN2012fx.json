@@ -2,21 +2,44 @@
     "SN2012fx": {
         "name": "SN2012fx",
         "aliases": [
-            "SN2012fx"
+            "SN2012fx",
+            "PSN J02554120-2725276"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "22",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003283.txt'>CBET 3283</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56160.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 21,
         "discovermonth": 8,
-        "host": "E417-G03",
-        "claimedtype": "Ia pec",
+        "host": "ESO 417-G3",
+        "claimedtype": "Ia",
         "hvel": "5272",
         "galra": "025540",
         "galdec": "-272523",
-        "snra": "025541.26",
-        "sndec": "-272526.2",
-        "discoverer": "Monard",
+        "snra": "02:55:41.20",
+        "sndec": "-27:25:27.6",
+        "discoverer": "Berto Monard",
+        "redshift": 0.02,
+        "maxyear": 2012,
+        "maxmonth": 8,
+        "maxday": 21,
         "z": 0.0177
     }
 }

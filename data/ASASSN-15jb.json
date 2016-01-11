@@ -11,24 +11,40 @@
                 "secondary": true
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7507'>ATEL 7507</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57154.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57159.848",
                 "band": "Rc",
                 "abmag": "17.7",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "11:20:06.40",
+        "sndec": "+34:07:43.0",
+        "discoverday": 12,
+        "discovermonth": 5,
+        "discoveryear": 2015,
+        "redshift": 0.03566,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 5,
-        "maxday": 17,
-        "discoveryear": 2015,
-        "discovermonth": 5,
-        "discoverday": 17
+        "maxday": 12
     }
 }

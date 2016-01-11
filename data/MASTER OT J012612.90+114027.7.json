@@ -1,0 +1,39 @@
+{
+    "MASTER OT J012612.90+114027.7": {
+        "name": "MASTER OT J012612.90+114027.7",
+        "aliases": [
+            "MASTER OT J012612.90+114027.7",
+            "PS1-14acp"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6799'>ATEL 6799</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56999.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 1397065",
+        "snra": "01:26:12.90",
+        "sndec": "+11:40:27.7",
+        "discoverday": 8,
+        "discovermonth": 12,
+        "discoveryear": 2014,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 8
+    }
+}

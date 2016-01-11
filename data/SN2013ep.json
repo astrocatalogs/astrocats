@@ -2,21 +2,44 @@
     "SN2013ep": {
         "name": "SN2013ep",
         "aliases": [
-            "SN2013ep"
+            "SN2013ep",
+            "PSN J22583035+4025445"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "29",
-        "discovermonth": 7,
-        "host": "M+07-47-01",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003615.txt'>CBET 3615</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56506.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
+        "discovermonth": 8,
+        "host": "CGCG 532-3",
         "claimedtype": "IIb",
         "hvel": "5063",
         "galra": "225829",
         "galdec": "+402546",
-        "snra": "225830.35",
-        "sndec": "+402544.5",
-        "discoverer": "Ciabattari",
+        "snra": "22:58:30.35",
+        "sndec": "+40:25:44.5",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.016888,
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 2,
         "z": 0.017
     }
 }

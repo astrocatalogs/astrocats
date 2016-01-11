@@ -6,21 +6,107 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "D.Yu.Tsvetkov, PAZh, 1994, v.20, n6, 441-444",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05700/05718.html'>IAUC 5718</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49052.0",
-                "band": "R",
+                "time": "49058.89999999991",
+                "band": "B",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49061.89999999991",
+                "band": "B",
+                "abmag": "17.45",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49068.799999999814",
+                "band": "B",
+                "abmag": "17.9",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49068.89999999991",
+                "band": "B",
+                "abmag": "18.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49069.89999999991",
+                "band": "B",
+                "abmag": "17.95",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49069.89999999991",
+                "band": "V",
+                "abmag": "17.45",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49078.0",
+                "band": "B",
+                "abmag": "18.35",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49078.0",
+                "band": "V",
+                "abmag": "17.8",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "49050.5",
+                "band": "",
                 "abmag": "16.6",
-                "source": "1"
+                "source": "4,3"
             }
         ],
-        "discoveryear": "1993",
-        "discovermonth": "3",
-        "discoverday": "6"
+        "discoveryear": 1993,
+        "discoverday": 4,
+        "discovermonth": 3,
+        "host": "NGC 3690",
+        "claimedtype": "II",
+        "hvel": "3033",
+        "galra": "112832",
+        "galdec": "+583344",
+        "snra": "11:28:33.44",
+        "sndec": "+58:33:31.2",
+        "discoverer": "Treffers, Filippenko, Leibundgut,",
+        "maxyear": 1993,
+        "maxmonth": 3,
+        "maxday": 4,
+        "z": 0.0102
     }
 }

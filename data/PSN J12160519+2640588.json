@@ -1,0 +1,38 @@
+{
+    "PSN J12160519+2640588": {
+        "name": "PSN J12160519+2640588",
+        "aliases": [
+            "PSN J12160519+2640588",
+            "SNhunt282"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12160519+2640588.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57109.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            }
+        ],
+        "snra": "12:16:05.19",
+        "sndec": "+26:40:58.8",
+        "discoverday": 28,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "discoverer": "CRTS",
+        "maxyear": 2015,
+        "maxmonth": 3,
+        "maxday": 28
+    }
+}

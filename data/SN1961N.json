@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1962PASP...74..215H'>PASP 74, 215</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "37544.0",
+                "time": "37543.5",
                 "band": "",
                 "abmag": "16.8",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1961",
-        "discovermonth": "9",
-        "discoverday": "2"
+        "discoveryear": 1961,
+        "discoverday": 1,
+        "discovermonth": 9,
+        "host": "IC 5342",
+        "hvel": "9253",
+        "galra": "233838",
+        "galdec": "+270040",
+        "snra": "23:38:38.84",
+        "sndec": "+27:00:34.2",
+        "discoverer": "Milton Humason",
+        "maxyear": 1961,
+        "maxmonth": 9,
+        "maxday": 1,
+        "z": 0.0314
     }
 }

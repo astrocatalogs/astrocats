@@ -6,24 +6,133 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2009arXiv0901.4787H'>2009arXiv0901.4787H</a>",
+                "alias": "3"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "4",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07819.html#Item1'>IAUC 7819</a>",
+                "alias": "5"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "6"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52308.0",
+                "time": "52308.5",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52309.5",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52319.88041999983",
+                "band": "V",
+                "abmag": "16.896",
+                "aberr": "0.026",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52319.88365999982",
+                "band": "I",
+                "abmag": "17.529",
+                "aberr": "0.061",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52344.895299999975",
+                "band": "V",
+                "abmag": "18.723",
+                "aberr": "0.048",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52344.89706999995",
+                "band": "R",
+                "abmag": "18.346",
+                "aberr": "0.044",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52344.89851999981",
+                "band": "I",
+                "abmag": "18.162",
+                "aberr": "0.055",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52372.806820000056",
+                "band": "V",
+                "abmag": "19.668",
+                "aberr": "0.09",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52372.80859000003",
+                "band": "R",
+                "abmag": "19.411",
+                "aberr": "0.089",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52372.81002999982",
+                "band": "I",
+                "abmag": "19.94",
+                "aberr": "0.209",
+                "source": "1,3"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52307.5",
                 "band": "",
                 "abmag": "16.5",
-                "source": "1"
+                "source": "5,4"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "2",
-        "discoverday": "3",
-        "maxyear": "2002",
-        "maxmonth": "2",
-        "maxday": "12"
+        "discoveryear": 2002,
+        "discoverday": 2,
+        "discovermonth": 2,
+        "host": "NGC 3746",
+        "claimedtype": "Ia",
+        "hvel": "9074",
+        "galra": "113744",
+        "galdec": "+220034",
+        "snra": "11:37:43.92",
+        "sndec": "+22:00:34.4",
+        "discoverer": "LOTOSS",
+        "maxyear": 2002,
+        "maxmonth": 2,
+        "maxday": 3,
+        "z": 0.0307
     }
 }

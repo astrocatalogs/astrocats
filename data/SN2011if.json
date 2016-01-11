@@ -2,21 +2,43 @@
     "SN2011if": {
         "name": "SN2011if",
         "aliases": [
-            "SN2011if"
+            "SN2011if",
+            "PSN J10061104+2509015"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "31",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002916.txt'>CBET 2916</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55864.5",
+                "band": "",
+                "abmag": "18.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 30,
         "discovermonth": 10,
-        "host": "PGC1726998",
+        "host": "PGC 1726998",
         "claimedtype": "II",
         "hvel": "15556",
         "galra": "100611",
         "galdec": "+250858",
-        "snra": "100611.04",
-        "sndec": "+250901.5",
-        "discoverer": "Kryachko, Korotkiy, Satovskiy",
+        "snra": "10:06:11.03",
+        "sndec": "+25:09:01.5",
+        "discoverer": "T. Kryachko et al.",
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 30,
         "z": 0.0533
     }
 }

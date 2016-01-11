@@ -1,0 +1,39 @@
+{
+    "DES13C1feu": {
+        "name": "DES13C1feu",
+        "aliases": [
+            "DES13C1feu"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5463'>ATEL 5463</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56549.5",
+                "band": "",
+                "abmag": "21.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ic",
+        "snra": "03:33:04.01",
+        "sndec": "-26:57:53.5",
+        "discoverday": 14,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.059,
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2013,
+        "maxmonth": 9,
+        "maxday": 14
+    }
+}

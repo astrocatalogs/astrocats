@@ -2,7 +2,8 @@
     "SN2014bm": {
         "name": "SN2014bm",
         "aliases": [
-            "SN2014bm"
+            "SN2014bm",
+            "PSN J17423216+6735418"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003896.txt'>CBET 3896</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56813.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56829.348",
                 "band": "C",
                 "abmag": "20.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 21,
+        "discoverday": 5,
         "discovermonth": 6,
         "host": "NGC 6456",
         "claimedtype": "Ia",
         "hvel": "12371",
         "galra": "174232",
         "galdec": "+673533",
-        "snra": "174232.16",
-        "sndec": "+673541.8",
-        "discoverer": "Ciabattari, Mazzoni, Donati",
+        "snra": "17:42:32.16",
+        "sndec": "+67:35:41.8",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.041265,
         "maxyear": 2014,
         "maxmonth": 6,
-        "maxday": 21,
+        "maxday": 5,
         "z": 0.0422
     }
 }

@@ -11,90 +11,107 @@
                 "secondary": true
             },
             {
-                "name": "Gianpiero Locatelli",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6892'>ATEL 6892</a>",
                 "alias": "2"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Gianpiero Locatelli",
                 "alias": "3"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Stan Howerton",
                 "alias": "4"
             },
             {
-                "name": "Diego Rodriguez",
+                "name": "Rafael Benavides",
                 "alias": "5"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Diego Rodriguez",
                 "alias": "6"
             },
             {
-                "name": "Masanori Mizutani",
+                "name": "Kunihiro Shima",
                 "alias": "7"
             },
             {
-                "name": "LLA",
+                "name": "Masanori Mizutani",
                 "alias": "8"
+            },
+            {
+                "name": "LLA",
+                "alias": "9"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57041.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57032.729",
                 "band": "U",
                 "abmag": "15.0",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57033.128",
                 "band": "V",
                 "abmag": "14.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57033.83856",
                 "band": "CV",
                 "abmag": "14.71",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57033.839",
                 "band": "CR",
                 "abmag": "14.77",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57034.4292",
                 "band": "U",
                 "abmag": "14.3",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57034.531",
                 "band": "U",
                 "abmag": "14.3",
-                "source": "7,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57042.801",
                 "band": "CV",
                 "abmag": "14.80",
-                "source": "8,1"
+                "source": "9,1"
             }
         ],
+        "claimedtype": "Ia-pec",
+        "host": "UGC 110",
+        "snra": "00:12:01.58",
+        "sndec": "+26:23:37.3",
+        "discoverday": 10,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.015,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 1,
-        "maxday": 12,
-        "discoveryear": 2015,
-        "discovermonth": 1,
-        "discoverday": 10
+        "maxday": 12
     }
 }

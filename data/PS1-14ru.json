@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Gregor Krannich",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56724.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56736.854",
                 "band": "V",
                 "abmag": "19.1",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "10:55:45.14",
+        "sndec": "+57:31:09.6",
+        "discoverday": 8,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "PS1",
         "maxyear": 2014,
         "maxmonth": 3,
-        "maxday": 20,
-        "discoveryear": 2014,
-        "discovermonth": 3,
-        "discoverday": 20
+        "maxday": 8
     }
 }

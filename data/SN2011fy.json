@@ -2,19 +2,42 @@
     "SN2011fy": {
         "name": "SN2011fy",
         "aliases": [
-            "SN2011fy"
+            "SN2011fy",
+            "PSN J18395393+4001437"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "17",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002831.txt'>CBET 2831</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55829.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 25,
         "discovermonth": 9,
-        "host": "A183953+4001",
-        "claimedtype": "II P",
+        "host": "PGC 2159464",
+        "claimedtype": "IIP",
         "galra": "183953",
         "galdec": "+400144",
-        "snra": "183953.92",
-        "sndec": "+400144.2",
-        "discoverer": "Arbour"
+        "snra": "18:39:53.93",
+        "sndec": "+40:01:43.7",
+        "discoverer": "Ron Arbour",
+        "redshift": 0.024,
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 25
     }
 }

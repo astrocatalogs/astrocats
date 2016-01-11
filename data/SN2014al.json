@@ -2,7 +2,8 @@
     "SN2014al": {
         "name": "SN2014al",
         "aliases": [
-            "SN2014al"
+            "SN2014al",
+            "PSN J16265528+3338244"
         ],
         "sources": [
             {
@@ -11,40 +12,52 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003846.txt'>CBET 3846</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56743.5",
+                "band": "",
+                "abmag": "16.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56754.469",
                 "band": "UV",
                 "abmag": "18.0",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56814.364",
                 "band": "UV",
                 "abmag": "19.8",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 7,
-        "discovermonth": 4,
+        "discoverday": 27,
+        "discovermonth": 3,
         "host": "A162655+3338",
         "claimedtype": "Ia",
         "hvel": "12000",
         "galra": "162655",
         "galdec": "+333823",
-        "snra": "162655.28",
-        "sndec": "+333824.4",
-        "discoverer": "Balanutsa",
+        "snra": "16:26:55.31",
+        "sndec": "+33:38:23.10",
+        "discoverer": "MASTER",
+        "redshift": 0.04,
         "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 7,
+        "maxmonth": 3,
+        "maxday": 27,
         "z": 0.0409
     }
 }

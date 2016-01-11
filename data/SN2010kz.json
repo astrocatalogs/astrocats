@@ -2,25 +2,45 @@
     "SN2010kz": {
         "name": "SN2010kz",
         "aliases": [
-            "SN2010kz"
+            "SN2010kz",
+            "CSS101013:024537-111239"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2978'>ATEL 2978</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55482.0",
-                "band": "g",
+                "time": "55481.5",
+                "band": "",
                 "abmag": "17.2",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "10",
-        "discoverday": "13"
+        "discoveryear": 2010,
+        "discoverday": 12,
+        "discovermonth": 10,
+        "host": "LEDA 175492",
+        "claimedtype": "Ia",
+        "galra": "024537",
+        "galdec": "-111239",
+        "snra": "02:45:37.19",
+        "sndec": "-11:12:39.4",
+        "discoverer": "CRTS",
+        "maxyear": 2010,
+        "maxmonth": 10,
+        "maxday": 12
     }
 }

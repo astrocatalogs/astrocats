@@ -2,21 +2,44 @@
     "SN2013dd": {
         "name": "SN2013dd",
         "aliases": [
-            "SN2013dd"
+            "SN2013dd",
+            "PS1-13czm"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "27",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003552.txt'>CBET 3552</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56438.5",
+                "band": "",
+                "abmag": "17.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 26,
         "discovermonth": 5,
-        "host": "A153605+1357",
+        "host": "PGC 1445026",
         "claimedtype": "Ia",
         "hvel": "15615",
         "galra": "153605",
         "galdec": "+135706",
-        "snra": "153605.15",
-        "sndec": "+135706.9",
-        "discoverer": "Shumkov",
+        "snra": "15:36:05.15",
+        "sndec": "+13:57:06.9",
+        "discoverer": "MASTER",
+        "redshift": 0.05205,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 26,
         "z": 0.0535
     }
 }

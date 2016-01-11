@@ -2,7 +2,8 @@
     "SN2013dn": {
         "name": "SN2013dn",
         "aliases": [
-            "SN2013dn"
+            "SN2013dn",
+            "PSN J23374574+1442371"
         ],
         "sources": [
             {
@@ -11,58 +12,70 @@
                 "secondary": true
             },
             {
-                "name": "Pro ",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003570.txt'>CBET 3570</a>",
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Pro ",
                 "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56490.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56541.064",
                 "band": "CR",
                 "abmag": "17.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56569.251",
                 "band": "UV",
                 "abmag": "17.3",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56595.204",
                 "band": "UV",
                 "abmag": "17.5",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56626.178",
                 "band": "UV",
                 "abmag": "17.6",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 6,
-        "discovermonth": 9,
-        "host": "PGC0071942",
+        "discoverday": 17,
+        "discovermonth": 7,
+        "host": "PGC 71942",
         "claimedtype": "IIn",
         "hvel": "16844",
         "galra": "233746",
         "galdec": "+144224",
-        "snra": "233745.74",
-        "sndec": "+144237.1",
-        "discoverer": "Drake et al.",
+        "snra": "23:37:45.74",
+        "sndec": "+14:42:37.1",
+        "discoverer": "CRTS",
+        "redshift": 0.056185,
         "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 6,
+        "maxmonth": 7,
+        "maxday": 17,
         "z": 0.0579
     }
 }

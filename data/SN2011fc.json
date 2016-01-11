@@ -2,21 +2,44 @@
     "SN2011fc": {
         "name": "SN2011fc",
         "aliases": [
-            "SN2011fc"
+            "SN2011fc",
+            "PSN J23013638+3220069"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "11",
-        "discovermonth": 7,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002788.txt'>CBET 2788</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55798.5",
+                "band": "",
+                "abmag": "17.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 25,
+        "discovermonth": 8,
         "host": "A230136+3220",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia",
         "hvel": "15000",
         "galra": "230136",
         "galdec": "+322006",
-        "snra": "230136.38",
-        "sndec": "+322006.9",
-        "discoverer": "Mikuz",
+        "snra": "23:01:36.38",
+        "sndec": "+32:20:06.9",
+        "discoverer": "Blaz Mikuz",
+        "redshift": 0.05,
+        "maxyear": 2011,
+        "maxmonth": 8,
+        "maxday": 25,
         "z": 0.0514
     }
 }

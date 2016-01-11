@@ -11,31 +11,47 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56841.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56838.293",
                 "band": "C",
                 "abmag": "16.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56842.374",
                 "band": "C",
                 "abmag": "17.0",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "16:44:27.40",
+        "sndec": "+28:56:57.8",
+        "discoverday": 30,
+        "discovermonth": 6,
+        "discoveryear": 2014,
+        "redshift": 0.053,
+        "discoverer": "CRTS",
         "maxyear": 2014,
         "maxmonth": 6,
-        "maxday": 30,
-        "discoveryear": 2014,
-        "discovermonth": 6,
-        "discoverday": 30
+        "maxday": 30
     }
 }

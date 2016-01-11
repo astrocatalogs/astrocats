@@ -2,21 +2,44 @@
     "SN2012ib": {
         "name": "SN2012ib",
         "aliases": [
-            "SN2012ib"
+            "SN2012ib",
+            "PSN J15035487+4206553"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "20",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003359.txt'>CBET 3359</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56280.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
         "discovermonth": 12,
         "host": "UGC 9684",
         "claimedtype": "Ib/c",
         "hvel": "5096",
         "galra": "150350",
         "galdec": "+420656",
-        "snra": "150354.87",
-        "sndec": "+420655.3",
-        "discoverer": "Shumkov",
+        "snra": "15:03:54.87",
+        "sndec": "+42:06:55.3",
+        "discoverer": "MASTER",
+        "redshift": 0.016872,
+        "maxyear": 2012,
+        "maxmonth": 12,
+        "maxday": 19,
         "z": 0.0171
     }
 }

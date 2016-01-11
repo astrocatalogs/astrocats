@@ -1,0 +1,39 @@
+{
+    "iPTF13ecn": {
+        "name": "iPTF13ecn",
+        "aliases": [
+            "iPTF13ecn"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5623'>ATEL 5623</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56620.5",
+                "band": "",
+                "abmag": "20.1",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "09:55:32.49",
+        "sndec": "+68:37:08.8",
+        "discoverday": 24,
+        "discovermonth": 11,
+        "discoveryear": 2013,
+        "redshift": 0.039,
+        "discoverer": "PTF",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 24
+    }
+}

@@ -2,19 +2,41 @@
     "SN2011hz": {
         "name": "SN2011hz",
         "aliases": [
-            "SN2011hz"
+            "SN2011hz",
+            "PSN J08523424+5515142"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "3",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002909.txt'>CBET 2909</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55872.5",
+                "band": "",
+                "abmag": "17.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 7,
         "discovermonth": 11,
         "host": "A085234+5515",
-        "claimedtype": "Ia",
+        "claimedtype": "II",
         "galra": "085234",
         "galdec": "+551514",
-        "snra": "085234.24",
-        "sndec": "+551514.2",
-        "discoverer": "Denisenko"
+        "snra": "08:52:34.24",
+        "sndec": "+55:15:14.1",
+        "discoverer": "Denis Denisenko",
+        "maxyear": 2011,
+        "maxmonth": 11,
+        "maxday": 7
     }
 }

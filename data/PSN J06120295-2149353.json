@@ -1,0 +1,40 @@
+{
+    "PSN J06120295-2149353": {
+        "name": "PSN J06120295-2149353",
+        "aliases": [
+            "PSN J06120295-2149353"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5779'>ATEL 5779</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56676.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ic",
+        "host": "NGC 2196",
+        "snra": "06:12:02.95",
+        "sndec": "-21:49:35.3",
+        "discoverday": 19,
+        "discovermonth": 1,
+        "discoveryear": 2014,
+        "redshift": 0.0077,
+        "discoverer": "LOSS",
+        "maxyear": 2014,
+        "maxmonth": 1,
+        "maxday": 19
+    }
+}

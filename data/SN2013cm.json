@@ -2,21 +2,44 @@
     "SN2013cm": {
         "name": "SN2013cm",
         "aliases": [
-            "SN2013cm"
+            "SN2013cm",
+            "CSS130510:172002+234451"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "10",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003525.txt'>CBET 3525</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56428.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 16,
         "discovermonth": 5,
         "host": "PGC1693013",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia",
         "hvel": "12000",
         "galra": "172002",
         "galdec": "+234502",
-        "snra": "172001.94",
-        "sndec": "+234451.3",
-        "discoverer": "Drake et al.",
+        "snra": "17:20:01.93",
+        "sndec": "+23:44:51.3",
+        "discoverer": "CRTS",
+        "redshift": 0.04,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 16,
         "z": 0.0409
     }
 }

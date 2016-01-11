@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07000/07097.html#Item1'>IAUC 7097</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51191.0",
-                "band": "R",
+                "time": "51190.5",
+                "band": "",
                 "abmag": "24.1",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "1",
-        "discoverday": "13"
+        "discoveryear": 1999,
+        "discoverday": 12,
+        "discovermonth": 1,
+        "host": "A104205-0029",
+        "claimedtype": "II",
+        "redshift": 0.21,
+        "galra": "104205",
+        "galdec": "-002900",
+        "snra": "10:42:05.22",
+        "sndec": "-00:29:00.2",
+        "discoverer": "High Z Supernova Search",
+        "maxyear": 1999,
+        "maxmonth": 1,
+        "maxday": 12
     }
 }

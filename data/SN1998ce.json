@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06900/06912.html#Item1'>IAUC 6912</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50952.0",
-                "band": "R",
-                "abmag": "16",
-                "source": "1"
+                "time": "50951.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1998",
-        "discovermonth": "5",
-        "discoverday": "19"
+        "discoveryear": 1998,
+        "discoverday": 18,
+        "discovermonth": 5,
+        "host": "MCG -4-24-19",
+        "claimedtype": "II",
+        "hvel": "2518",
+        "galra": "101035",
+        "galdec": "-254924",
+        "snra": "10:10:34.70",
+        "sndec": "-25:49:30.8",
+        "discoverer": "Perth Astronomical Research Group",
+        "maxyear": 1998,
+        "maxmonth": 5,
+        "maxday": 18,
+        "z": 0.00843
     }
 }

@@ -1,0 +1,37 @@
+{
+    "MASTER J045303.80+182623.5": {
+        "name": "MASTER J045303.80+182623.5",
+        "aliases": [
+            "MASTER J045303.80+182623.5"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4422'>ATEL 4422</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56194.5",
+                "band": "",
+                "abmag": "18.8",
+                "source": "2,1"
+            }
+        ],
+        "snra": "04:53:03.80",
+        "sndec": "+18:26:23.5",
+        "discoverday": 24,
+        "discovermonth": 9,
+        "discoveryear": 2012,
+        "discoverer": "MASTER",
+        "maxyear": 2012,
+        "maxmonth": 9,
+        "maxday": 24
+    }
+}

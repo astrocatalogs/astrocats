@@ -2,7 +2,8 @@
     "CSS140306:094630+061119": {
         "name": "CSS140306:094630+061119",
         "aliases": [
-            "CSS140306:094630+061119"
+            "CSS140306:094630+061119",
+            "MLS140323:094630+061119"
         ],
         "sources": [
             {
@@ -11,24 +12,38 @@
                 "secondary": true
             },
             {
-                "name": "Joel Nicolas",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56721.5",
+                "band": "",
+                "abmag": "19.8",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56723.918",
                 "band": "CR",
                 "abmag": "19.8",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "09:46:30.06",
+        "sndec": "+06:11:18.7",
+        "discoverday": 5,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "discoverer": "CRTS",
         "maxyear": 2014,
         "maxmonth": 3,
-        "maxday": 7,
-        "discoveryear": 2014,
-        "discovermonth": 3,
-        "discoverday": 7
+        "maxday": 5
     }
 }

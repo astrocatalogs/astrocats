@@ -1,0 +1,39 @@
+{
+    "OGLE-2013-SN-124": {
+        "name": "OGLE-2013-SN-124",
+        "aliases": [
+            "OGLE-2013-SN-124"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5608'>ATEL 5608</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56615.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "03:08:52.887",
+        "sndec": "-69:25:10.08",
+        "discoverday": 19,
+        "discovermonth": 11,
+        "discoveryear": 2013,
+        "redshift": 0.13,
+        "discoverer": "OGLE-IV wide field survey",
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 19
+    }
+}

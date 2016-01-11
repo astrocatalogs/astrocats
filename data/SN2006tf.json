@@ -6,21 +6,61 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08790.html#Item2'>IAUC 8790</a>",
+                "alias": "2"
+            },
+            {
+                "name": "TON",
+                "alias": "3"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54081.0",
+                "time": "54112.5",
                 "band": "",
                 "abmag": "16.7",
-                "source": "1"
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54111.085",
+                "band": "CR",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54113.067",
+                "band": "CR",
+                "abmag": "16.6",
+                "source": "3,1"
             }
         ],
-        "discoveryear": "2006",
-        "discovermonth": "12",
-        "discoverday": "12"
+        "discoveryear": 2007,
+        "discoverday": 11,
+        "discovermonth": 1,
+        "host": "A124615+1125",
+        "claimedtype": "IIn",
+        "hvel": "22200",
+        "galra": "124615",
+        "galdec": "+112556",
+        "snra": "12:46:15.82",
+        "sndec": "+11:25:56.3",
+        "discoverer": "ROTSE",
+        "redshift": 0.074,
+        "maxyear": 2007,
+        "maxmonth": 1,
+        "maxday": 13,
+        "z": 0.077
     }
 }

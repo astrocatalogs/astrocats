@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,21 @@
                 "time": "50432.0",
                 "band": "",
                 "abmag": "16.5",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1996",
+        "discoverday": "15",
         "discovermonth": "12",
-        "discoverday": "15"
+        "host": "NGC 7300",
+        "claimedtype": "Ia",
+        "hvel": "4895",
+        "galra": "223100",
+        "galdec": "-140013",
+        "snra": "22:30:59.26",
+        "sndec": "-13:59:50.9",
+        "discoverer": "Masakatsu Aoki",
+        "redshift": 0.017,
+        "z": 0.0165
     }
 }

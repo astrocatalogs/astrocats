@@ -1,0 +1,39 @@
+{
+    "iPTF15crv": {
+        "name": "iPTF15crv",
+        "aliases": [
+            "iPTF15crv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=8130'>ATEL 8130</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57271.5",
+                "band": "",
+                "abmag": "21.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "00:10:29.698",
+        "sndec": "+41:22:18.46",
+        "discoverday": 6,
+        "discovermonth": 9,
+        "discoveryear": 2015,
+        "redshift": 0.15,
+        "discoverer": "PTF",
+        "maxyear": 2015,
+        "maxmonth": 9,
+        "maxday": 6
+    }
+}

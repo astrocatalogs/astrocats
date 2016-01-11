@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08300/08371.html#Item2'>IAUC 8371</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52942.0",
+                "time": "52948.5",
                 "band": "",
-                "abmag": "17.1",
-                "source": "1"
+                "abmag": "16.5",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "10",
-        "discoverday": "30"
+        "discoveryear": 2003,
+        "discoverday": 5,
+        "discovermonth": 11,
+        "host": "ESO 428-G13",
+        "hvel": "7993",
+        "galra": "071626",
+        "galdec": "-293718",
+        "snra": "07:16:25.24",
+        "sndec": "-29:37:04.5",
+        "discoverer": "Lulin Observatory",
+        "maxyear": 2003,
+        "maxmonth": 11,
+        "maxday": 5,
+        "z": 0.027
     }
 }

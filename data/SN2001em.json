@@ -6,21 +6,72 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07700/07722.html#Item1'>IAUC 7722</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52172.0",
-                "band": "",
+                "time": "52172.299999999814",
+                "band": "C",
                 "abmag": "18.6",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52173.299999999814",
+                "band": "C",
+                "abmag": "18.6",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52175.169999999925",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52171.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "9",
-        "discoverday": "20"
+        "discoveryear": 2001,
+        "discoverday": 19,
+        "discovermonth": 9,
+        "host": "UGC 11794",
+        "claimedtype": "Ic",
+        "hvel": "5783",
+        "galra": "214223",
+        "galdec": "+122954",
+        "snra": "21:42:23.66",
+        "sndec": "+12:29:50.9",
+        "discoverer": "LOTOSS",
+        "maxyear": 2001,
+        "maxmonth": 9,
+        "maxday": 23,
+        "z": 0.0195
     }
 }

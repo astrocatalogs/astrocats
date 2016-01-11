@@ -1,0 +1,39 @@
+{
+    "PSN J08203964-0124234": {
+        "name": "PSN J08203964-0124234",
+        "aliases": [
+            "PSN J08203964-0124234",
+            "MASTER OT J082039.64-012423.4"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7636'>ATEL 7636</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57184.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "host": "MCG +0-22-3",
+        "snra": "08:20:39.64",
+        "sndec": "-01:24:23.4",
+        "discoverday": 11,
+        "discovermonth": 6,
+        "discoveryear": 2015,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 6,
+        "maxday": 11
+    }
+}

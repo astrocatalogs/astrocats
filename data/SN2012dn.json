@@ -2,21 +2,44 @@
     "SN2012dn": {
         "name": "SN2012dn",
         "aliases": [
-            "SN2012dn"
+            "SN2012dn",
+            "PSN J20233626-2816434"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "maxday": "24",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003174.txt'>CBET 3174</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56130.5",
+                "band": "",
+                "abmag": "13.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "maxday": 22,
         "maxmonth": 7,
-        "host": "E462-G16",
+        "host": "ESO 462-G16",
         "claimedtype": "Ia",
         "hvel": "2960",
         "galra": "202339",
         "galdec": "-281641",
-        "snra": "202336.26",
-        "sndec": "-281643.4",
-        "discoverer": "Parker",
+        "snra": "20:23:36.26",
+        "sndec": "-28:16:43.4",
+        "discoverer": "Stu Parker",
+        "discoverday": 22,
+        "discovermonth": 7,
+        "redshift": 0.010187,
+        "maxyear": 2012,
         "z": 0.00992
     }
 }

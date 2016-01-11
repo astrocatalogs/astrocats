@@ -2,21 +2,44 @@
     "SN2013ca": {
         "name": "SN2013ca",
         "aliases": [
-            "SN2013ca"
+            "SN2013ca",
+            "PSN J11584325+1908562"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "1",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003508.txt'>CBET 3508</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56414.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 2,
         "discovermonth": 5,
-        "host": "PGC0037698",
-        "claimedtype": "II P",
+        "host": "PGC 37698",
+        "claimedtype": "IIP",
         "hvel": "13410",
         "galra": "115843",
         "galdec": "+190849",
-        "snra": "115843.25",
-        "sndec": "+190856.2",
-        "discoverer": "Zhang et al.",
+        "snra": "11:58:43.25",
+        "sndec": "+19:08:56.2",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.043,
+        "maxyear": 2013,
+        "maxmonth": 5,
+        "maxday": 2,
         "z": 0.0458
     }
 }

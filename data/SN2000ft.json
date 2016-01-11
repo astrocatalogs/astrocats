@@ -6,13 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07587.html#Item1'>IAUC 7587</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
-        "photometry": [],
-        "discoveryear": "2000",
-        "discovermonth": "10",
-        "discoverday": "27"
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "51810.5",
+                "band": "",
+                "abmag": "14.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2000,
+        "discoverday": 23,
+        "discovermonth": 9,
+        "host": "NGC 7469",
+        "hvel": "4846",
+        "galra": "230315",
+        "galdec": "+085229",
+        "snra": "23:03:15.62",
+        "sndec": "+08:52:26.5",
+        "discoverer": "CSIC",
+        "claimedtype": "Radio",
+        "maxyear": 2000,
+        "maxmonth": 9,
+        "maxday": 23,
+        "z": 0.0163
     }
 }

@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/000700/CBET000717.txt'>CBET 717</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54021.0",
-                "band": "R",
+                "time": "54020.5",
+                "band": "",
                 "abmag": "21.6",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2006",
-        "discovermonth": "10",
-        "discoverday": "13"
+        "discoveryear": 2006,
+        "discoverday": 12,
+        "discovermonth": 10,
+        "host": "A023054-0857",
+        "claimedtype": "Ia",
+        "redshift": 0.3,
+        "galra": "023054",
+        "galdec": "-085742",
+        "snra": "02:30:54.302",
+        "sndec": "-08:57:42.06",
+        "discoverer": "ESSENCE project",
+        "maxyear": 2006,
+        "maxmonth": 10,
+        "maxday": 12
     }
 }

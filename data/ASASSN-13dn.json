@@ -2,7 +2,8 @@
     "ASASSN-13dn": {
         "name": "ASASSN-13dn",
         "aliases": [
-            "ASASSN-13dn"
+            "ASASSN-13dn",
+            "CSS140102:125258+322506"
         ],
         "sources": [
             {
@@ -11,42 +12,58 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5665'>ATEL 5665</a>",
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56640.5",
+                "band": "",
+                "abmag": "15.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56650.484",
                 "band": "C",
                 "abmag": "17.1",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56705.392",
                 "band": "UV",
                 "abmag": "17.1",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.328",
                 "band": "UV",
                 "abmag": "19.2",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
+        "claimedtype": "II",
+        "snra": "12:52:58.20",
+        "sndec": "+32:25:09.3",
+        "discoverday": 14,
+        "discovermonth": 12,
+        "discoveryear": 2013,
+        "redshift": 0.023,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2013,
         "maxmonth": 12,
-        "maxday": 24,
-        "discoveryear": 2013,
-        "discovermonth": 12,
-        "discoverday": 24
+        "maxday": 14
     }
 }

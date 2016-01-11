@@ -2,21 +2,44 @@
     "SN2012hk": {
         "name": "SN2012hk",
         "aliases": [
-            "SN2012hk"
+            "SN2012hk",
+            "PSN J10411534+3733218"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "20",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003334.txt'>CBET 3334</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56250.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
         "discovermonth": 11,
-        "host": "PGC2103473",
+        "host": "PGC 2103473",
         "claimedtype": "II",
         "hvel": "7191",
         "galra": "104117",
         "galdec": "+373257",
-        "snra": "104115.34",
-        "sndec": "+373321.8",
-        "discoverer": "Balanutsa",
+        "snra": "10:41:15.34",
+        "sndec": "+37:33:21.8",
+        "discoverer": "MASTER",
+        "redshift": 0.023986,
+        "maxyear": 2012,
+        "maxmonth": 11,
+        "maxday": 19,
         "z": 0.0243
     }
 }

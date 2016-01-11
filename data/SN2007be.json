@@ -6,21 +6,87 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/000900/CBET000917.txt'>CBET 917</a>",
+                "alias": "2"
+            },
+            {
+                "name": "Nic",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
+                "name": "Van",
+                "alias": "5"
+            },
+            {
+                "name": "VAN",
+                "alias": "6"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "7"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54197.0",
+                "time": "54196.5",
                 "band": "",
                 "abmag": "16.8",
-                "source": "1"
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54209.881",
+                "band": "CR",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54213.864",
+                "band": "CR",
+                "abmag": "16.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54221.909",
+                "band": "CR",
+                "abmag": "17.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54243.919",
+                "band": "CR",
+                "abmag": "18.1",
+                "source": "6,1"
             }
         ],
-        "discoveryear": "2007",
-        "discovermonth": "4",
-        "discoverday": "7"
+        "discoveryear": 2007,
+        "discoverday": 6,
+        "discovermonth": 4,
+        "host": "UGC 7800",
+        "claimedtype": "II",
+        "hvel": "3766",
+        "galra": "123806",
+        "galdec": "-000141",
+        "snra": "12:38:06.65",
+        "sndec": "-00:01:51.4",
+        "discoverer": "Stefano Moretti",
+        "redshift": 0.0125,
+        "maxyear": 2007,
+        "maxmonth": 4,
+        "maxday": 6,
+        "z": 0.0126
     }
 }

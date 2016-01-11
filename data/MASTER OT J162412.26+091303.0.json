@@ -1,0 +1,40 @@
+{
+    "MASTER OT J162412.26+091303.0": {
+        "name": "MASTER OT J162412.26+091303.0",
+        "aliases": [
+            "MASTER OT J162412.26+091303.0"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6390'>ATEL 6390</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56881.5",
+                "band": "",
+                "abmag": "16.6",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "CGCG 80-23",
+        "snra": "16:24:12.26",
+        "sndec": "+09:13:03.0",
+        "discoverday": 12,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "redshift": 0.04,
+        "discoverer": "MASTER",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 12
+    }
+}

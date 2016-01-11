@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/lists/Supernovae.html#1950D'>CBAT SN</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "33362.0",
+                "time": "33361.5",
                 "band": "",
                 "abmag": "16.6",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1950",
-        "discovermonth": "3",
-        "discoverday": "22"
+        "discoveryear": 1950,
+        "discoverday": 21,
+        "discovermonth": 3,
+        "host": "A084306+1810",
+        "galra": "084306",
+        "galdec": "+1810",
+        "discoverer": "Chai",
+        "snra": "08:43:11.3",
+        "sndec": "+18:09:16.0",
+        "maxyear": 1950,
+        "maxmonth": 3,
+        "maxday": 21
     }
 }

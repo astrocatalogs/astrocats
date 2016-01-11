@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,14 +21,24 @@
                 "time": "51334.0",
                 "band": "",
                 "abmag": "17.1",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1999",
-        "discovermonth": "6",
         "discoverday": "5",
+        "discovermonth": "6",
+        "host": "UGC 9766",
+        "claimedtype": "Ia",
+        "hvel": "13570",
+        "galra": "151119",
+        "galdec": "+610726",
+        "snra": "15:11:19.18",
+        "sndec": "+61:07:11.4",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.045,
         "maxyear": "1999",
         "maxmonth": "6",
-        "maxday": "8"
+        "maxday": "8",
+        "z": 0.0463
     }
 }

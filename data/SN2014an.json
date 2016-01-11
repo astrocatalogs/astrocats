@@ -11,42 +11,54 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003848.txt'>CBET 3848</a>",
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56753.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56754.288",
                 "band": "C",
                 "abmag": "18.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.383",
                 "band": "UV",
                 "abmag": "18.0",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 7,
+        "discoverday": 6,
         "discovermonth": 4,
-        "host": "A145143+0833",
+        "host": "CGCG 76-79",
         "claimedtype": "Ia",
         "galra": "145143",
         "galdec": "+083357",
-        "snra": "145142.93",
-        "sndec": "+083412.5",
-        "discoverer": "Tominaga et al.",
+        "snra": "14:51:42.93",
+        "sndec": "+08:34:12.5",
+        "discoverer": "Kiso Supernova Survey (KISS) collaboration",
+        "redshift": 0.060609,
         "maxyear": 2014,
         "maxmonth": 4,
-        "maxday": 7
+        "maxday": 6
     }
 }

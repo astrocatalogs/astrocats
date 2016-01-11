@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,20 @@
                 "time": "50924.0",
                 "band": "",
                 "abmag": "17.6",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1998",
+        "discoverday": "21",
         "discovermonth": "4",
-        "discoverday": "21"
+        "host": "IC 2458",
+        "claimedtype": "II",
+        "hvel": "1448",
+        "galra": "092130",
+        "galdec": "+641419",
+        "snra": "09:21:30.498",
+        "sndec": "+64:14:25.4",
+        "discoverer": "LOSS",
+        "z": 0.00484
     }
 }

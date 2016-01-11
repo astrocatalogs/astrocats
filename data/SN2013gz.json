@@ -2,21 +2,44 @@
     "SN2013gz": {
         "name": "SN2013gz",
         "aliases": [
-            "SN2013gz"
+            "SN2013gz",
+            "PSN J17462770+3042132"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "2",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003744.txt'>CBET 3744</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56627.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 1,
         "discovermonth": 12,
         "host": "UGC 10976",
         "claimedtype": "Ia",
         "hvel": "4917",
         "galra": "174628",
         "galdec": "+304217",
-        "snra": "174627.70",
-        "sndec": "+304213.2",
-        "discoverer": "Cortini",
+        "snra": "17:46:27.70",
+        "sndec": "+30:42:13.2",
+        "discoverer": "Giancarlo Cortini",
+        "redshift": 0.016401,
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 1,
         "z": 0.0165
     }
 }

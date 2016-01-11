@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002400/CBET002479.txt'>CBET 2479</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55456.0",
+                "time": "55455.5",
                 "band": "",
-                "abmag": "18.7",
-                "source": "1"
+                "abmag": "18.1",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "9",
-        "discoverday": "17"
+        "discoveryear": 2010,
+        "discoverday": 16,
+        "discovermonth": 9,
+        "host": "UGC 112",
+        "claimedtype": "Ib/c-pec",
+        "hvel": "5015",
+        "galra": "001209",
+        "galdec": "+414512",
+        "snra": "00:12:07.48",
+        "sndec": "+41:45:24.6",
+        "discoverer": "David Grennan",
+        "redshift": 0.025,
+        "maxyear": 2010,
+        "maxmonth": 9,
+        "maxday": 16,
+        "z": 0.0169
     }
 }

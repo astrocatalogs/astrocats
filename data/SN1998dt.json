@@ -6,24 +6,62 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "ISN and VSNET 1999",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51057.0",
-                "band": "",
+                "time": "51057.39999999991",
+                "band": "C",
                 "abmag": "17.7",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51058.5",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51072.029999999795",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1998",
-        "discovermonth": "9",
-        "discoverday": "1",
-        "maxyear": "1998",
-        "maxmonth": "9",
-        "maxday": "12"
+        "discoveryear": 1998,
+        "discoverday": 1,
+        "discovermonth": 9,
+        "host": "NGC 945",
+        "claimedtype": "Ib",
+        "hvel": "4484",
+        "galra": "022837",
+        "galdec": "-103222",
+        "snra": "02:28:35.729",
+        "sndec": "-10:32:59.8",
+        "discoverer": "LOSS",
+        "redshift": 0.0153,
+        "maxyear": 1998,
+        "maxmonth": 9,
+        "maxday": 16,
+        "z": 0.0151
     }
 }

@@ -1,0 +1,39 @@
+{
+    "PSN J10054887-0116544": {
+        "name": "PSN J10054887-0116544",
+        "aliases": [
+            "PSN J10054887-0116544",
+            "MASTER OT J100548.87-011654.4"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4740'>ATEL 4740</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56307.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "host": "PGC 1122406",
+        "snra": "10:05:48.87",
+        "sndec": "-01:16:54.4",
+        "discoverday": 15,
+        "discovermonth": 1,
+        "discoveryear": 2013,
+        "discoverer": "MASTER",
+        "maxyear": 2013,
+        "maxmonth": 1,
+        "maxday": 15
+    }
+}

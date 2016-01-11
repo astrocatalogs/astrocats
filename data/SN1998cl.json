@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06900/06934.html#Item1'>IAUC 6934</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50967.0",
+                "time": "50966.5",
                 "band": "",
-                "abmag": "17",
-                "source": "1"
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1998",
-        "discovermonth": "6",
-        "discoverday": "3"
+        "discoveryear": 1998,
+        "discoverday": 2,
+        "discovermonth": 6,
+        "host": "MRK 261",
+        "claimedtype": "Ia",
+        "hvel": "9129",
+        "galra": "133000",
+        "galdec": "+753408",
+        "snra": "13:29:59.84",
+        "sndec": "+75:34:09.0",
+        "discoverer": "Mike Schwartz",
+        "maxyear": 1998,
+        "maxmonth": 6,
+        "maxday": 2,
+        "z": 0.0309
     }
 }

@@ -6,21 +6,63 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002300/CBET002308.txt'>CBET 2308</a>",
+                "alias": "2"
+            },
+            {
+                "name": "4 BVD CMC",
+                "alias": "3"
+            },
+            {
+                "name": "Nic",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55341.0",
+                "time": "55340.5",
                 "band": "",
-                "abmag": "18.8",
-                "source": "1"
+                "abmag": "18.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55354.073",
+                "band": "CR",
+                "abmag": "18.65",
+                "aberr": "0.05",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55360.994",
+                "band": "CR",
+                "abmag": "18.3",
+                "source": "4,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "5",
-        "discoverday": "25"
+        "discoveryear": 2010,
+        "discoverday": 24,
+        "discovermonth": 5,
+        "host": "UGC 11170",
+        "claimedtype": "IIP",
+        "galra": "181401",
+        "galdec": "+213035",
+        "snra": "18:13:58.75",
+        "sndec": "+21:30:15.7",
+        "discoverer": "LOSS",
+        "maxyear": 2010,
+        "maxmonth": 5,
+        "maxday": 24
     }
 }

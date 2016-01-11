@@ -1,0 +1,28 @@
+{
+    "PTF09dah": {
+        "name": "PTF09dah",
+        "aliases": [
+            "PTF09dah"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://arxiv.org/pdf/1205.2338.pdf'>1205.2338v1</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [],
+        "claimedtype": "IIb",
+        "snra": "22:45:17.05",
+        "sndec": "+21:49:15.2",
+        "discoverday": "1",
+        "discovermonth": "1",
+        "discoveryear": "2009",
+        "redshift": 0.024,
+        "discoverer": "PTF"
+    }
+}

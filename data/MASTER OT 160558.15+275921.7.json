@@ -1,0 +1,37 @@
+{
+    "MASTER OT 160558.15+275921.7": {
+        "name": "MASTER OT 160558.15+275921.7",
+        "aliases": [
+            "MASTER OT 160558.15+275921.7"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3545'>ATEL 3545</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55786.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "snra": "16:05:58.15",
+        "sndec": "+27:59:21.6",
+        "discoverday": 13,
+        "discovermonth": 8,
+        "discoveryear": 2011,
+        "discoverer": "MASTER",
+        "maxyear": 2011,
+        "maxmonth": 8,
+        "maxday": 13
+    }
+}

@@ -6,24 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03700/03739.html'>IAUC 3739</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "45266.0",
-                "band": "B",
-                "abmag": "14.8",
-                "source": "1"
+                "time": "45265.5",
+                "band": "",
+                "abmag": "14.4",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1982",
-        "discovermonth": "10",
-        "discoverday": "24",
-        "maxyear": "1982",
-        "maxmonth": "10",
-        "maxday": "6"
+        "discoveryear": 1982,
+        "discoverday": 23,
+        "discovermonth": 10,
+        "host": "NGC 1187",
+        "claimedtype": "I",
+        "hvel": "1396",
+        "galra": "030238",
+        "galdec": "-225204",
+        "snra": "03:02:39.51",
+        "sndec": "-22:51:01.4",
+        "discoverer": "Muller, Pizarro",
+        "maxyear": 1982,
+        "maxmonth": 10,
+        "maxday": 23,
+        "z": 0.00467
     }
 }

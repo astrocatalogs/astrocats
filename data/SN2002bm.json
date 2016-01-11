@@ -6,21 +6,58 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07845.html#Item2'>IAUC 7845</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52339.0",
-                "band": "",
+                "time": "52339.24000000022",
+                "band": "C",
                 "abmag": "17",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52338.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "3",
-        "discoverday": "6"
+        "discoveryear": 2002,
+        "discoverday": 5,
+        "discovermonth": 3,
+        "host": "MCG -1-32-19",
+        "claimedtype": "Ic",
+        "hvel": "5462",
+        "galra": "123016",
+        "galdec": "-082349",
+        "snra": "12:30:16.90",
+        "sndec": "-08:23:34.8",
+        "discoverer": "Tim Puckett et al.",
+        "maxyear": 2002,
+        "maxmonth": 3,
+        "maxday": 6,
+        "z": 0.0184
     }
 }

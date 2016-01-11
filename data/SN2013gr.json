@@ -2,21 +2,44 @@
     "SN2013gr": {
         "name": "SN2013gr",
         "aliases": [
-            "SN2013gr"
+            "SN2013gr",
+            "PSN J01462790-5840238"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "28",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003733.txt'>CBET 3733</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56625.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 29,
         "discovermonth": 11,
-        "host": "E114-G07",
-        "claimedtype": "Ia pec",
+        "host": "ESO 114-G7",
+        "claimedtype": "Ia-pec",
         "hvel": "2125",
         "galra": "014630",
         "galdec": "-584025",
-        "snra": "014627.90",
-        "sndec": "-584023.8",
-        "discoverer": "Marples",
+        "snra": "01:46:27.90",
+        "sndec": "-58:40:23.8",
+        "discoverer": "Peter Marples",
+        "redshift": 0.007,
+        "maxyear": 2013,
+        "maxmonth": 11,
+        "maxday": 29,
         "z": 0.00711
     }
 }

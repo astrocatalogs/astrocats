@@ -2,7 +2,8 @@
     "SN2014M": {
         "name": "SN2014M",
         "aliases": [
-            "SN2014M"
+            "SN2014M",
+            "PSN J15151721+7529095"
         ],
         "sources": [
             {
@@ -11,57 +12,68 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003796.txt'>CBET 3796</a>",
                 "alias": "2"
             },
             {
-                "name": "LLA",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "LLA",
                 "alias": "4"
             },
             {
-                "name": "Manfred Mrotzek",
+                "name": "Thomas Langhans",
                 "alias": "5"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "6"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56689.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56686.485",
                 "band": "C",
                 "abmag": "16.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56705.134",
                 "band": "CV",
                 "abmag": "16.3",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56705.48",
                 "band": "UV",
                 "abmag": "16.5",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56739.358",
                 "band": "UV",
                 "abmag": "17.1",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56763.01",
                 "band": "U",
                 "abmag": "18.1",
-                "source": "5,1"
+                "source": "6,1"
             }
         ],
         "discoveryear": 2014,
@@ -72,12 +84,13 @@
         "hvel": "6660",
         "galra": "151516",
         "galdec": "+752907",
-        "snra": "151517.21",
-        "sndec": "+752909.5",
-        "discoverer": "Ma et al.",
+        "snra": "15:15:17.21",
+        "sndec": "+75:29:09.5",
+        "discoverer": "Antarctic Survey Telescope (AST)",
+        "redshift": 0.0222,
         "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 29,
+        "maxmonth": 2,
+        "maxday": 1,
         "z": 0.0225
     }
 }

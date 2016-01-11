@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07600/07615.html#Item1'>IAUC 7615</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52019.0",
-                "band": "V",
+                "time": "52018.5",
+                "band": "",
                 "abmag": "21.1",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "4",
-        "discoverday": "20"
+        "discoveryear": 2001,
+        "discoverday": 19,
+        "discovermonth": 4,
+        "host": "A095251-2034",
+        "claimedtype": "Ia",
+        "redshift": 0.241,
+        "galra": "095251",
+        "galdec": "-203400",
+        "snra": "09:52:51.21",
+        "sndec": "-20:34:00.0",
+        "discoverer": "ESO",
+        "maxyear": 2001,
+        "maxmonth": 4,
+        "maxday": 19
     }
 }

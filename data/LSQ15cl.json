@@ -1,0 +1,39 @@
+{
+    "LSQ15cl": {
+        "name": "LSQ15cl",
+        "aliases": [
+            "LSQ15cl"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6965'>ATEL 6965</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57024.5",
+                "band": "",
+                "abmag": "20.4",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "10:45:43.42",
+        "sndec": "-10:18:56.7",
+        "discoverday": 2,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.055,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 2
+    }
+}

@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08600/08646.html#Item1'>IAUC 8646</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53723.0",
+                "time": "53722.5",
                 "band": "",
-                "abmag": "18.1",
-                "source": "1"
+                "abmag": "17.7",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2005",
-        "discovermonth": "12",
-        "discoverday": "19"
+        "discoveryear": 2005,
+        "discoverday": 18,
+        "discovermonth": 12,
+        "host": "IC 221",
+        "claimedtype": "II",
+        "hvel": "4988",
+        "galra": "022241",
+        "galdec": "+281524",
+        "snra": "02:22:39.01",
+        "sndec": "+28:15:07.1",
+        "discoverer": "Tom Boles",
+        "maxyear": 2005,
+        "maxmonth": 12,
+        "maxday": 18,
+        "z": 0.0168
     }
 }

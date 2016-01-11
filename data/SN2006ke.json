@@ -6,21 +6,124 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2009arXiv0901.4787H'>2009arXiv0901.4787H</a>",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08700/08766.html#Item1'>IAUC 8766</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54027.0",
+                "time": "54030.961749999784",
+                "band": "V",
+                "abmag": "18.9",
+                "aberr": "0.046",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54030.96476999996",
+                "band": "B",
+                "abmag": "20.188",
+                "aberr": "0.089",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54038.969140000176",
+                "band": "V",
+                "abmag": "19.401",
+                "aberr": "0.219",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54039.871199999936",
+                "band": "V",
+                "abmag": "19.432",
+                "aberr": "0.089",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54039.87419999996",
+                "band": "B",
+                "abmag": "21.046",
+                "aberr": "0.194",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54040.9161700001",
+                "band": "V",
+                "abmag": "19.472",
+                "aberr": "0.086",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54043.88525999989",
+                "band": "V",
+                "abmag": "19.643",
+                "aberr": "0.089",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54050.991330000106",
+                "band": "V",
+                "abmag": "20.227",
+                "aberr": "0.257",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54069.857780000195",
+                "band": "V",
+                "abmag": "20.419",
+                "aberr": "0.195",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54026.5",
                 "band": "",
-                "abmag": "18.7",
-                "source": "1"
+                "abmag": "18.3",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2006",
-        "discovermonth": "10",
-        "discoverday": "19"
+        "discoveryear": 2006,
+        "discoverday": 18,
+        "discovermonth": 10,
+        "host": "UGC 3365",
+        "claimedtype": "Ia",
+        "hvel": "5151",
+        "galra": "055236",
+        "galdec": "+664900",
+        "snra": "05:52:37.38",
+        "sndec": "+66:49:00.5",
+        "discoverer": "LOSS",
+        "redshift": 0.017,
+        "maxyear": 2006,
+        "maxmonth": 10,
+        "maxday": 18,
+        "z": 0.0173
     }
 }

@@ -2,7 +2,8 @@
     "CSS140326:122257+282955": {
         "name": "CSS140326:122257+282955",
         "aliases": [
-            "CSS140326:122257+282955"
+            "CSS140326:122257+282955",
+            "PS1-14ya"
         ],
         "sources": [
             {
@@ -11,31 +12,48 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6040'>ATEL 6040</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56741.5",
+                "band": "",
+                "abmag": "17.6",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56745.199",
                 "band": "U",
                 "abmag": "18.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56766.159",
                 "band": "U",
                 "abmag": "19.1",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "II",
+        "host": "IC 3237",
+        "snra": "12:22:57.30",
+        "sndec": "+28:29:54.9",
+        "discoverday": 25,
+        "discovermonth": 3,
+        "discoveryear": 2014,
+        "redshift": 0.024,
+        "discoverer": "CRTS",
         "maxyear": 2014,
         "maxmonth": 3,
-        "maxday": 29,
-        "discoveryear": 2014,
-        "discovermonth": 3,
-        "discoverday": 29
+        "maxday": 25
     }
 }

@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05000/05039.html'>IAUC 5039</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48064.0",
-                "band": "R",
-                "abmag": "19",
-                "source": "1"
+                "time": "48063.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1990",
-        "discovermonth": "6",
-        "discoverday": "22"
+        "discoveryear": 1990,
+        "discoverday": 21,
+        "discovermonth": 6,
+        "host": "A161506-1535",
+        "galra": "161506",
+        "galdec": "-153550",
+        "snra": "16:15:06.40",
+        "sndec": "-15:35:50.1",
+        "discoverer": "Robert McNaught",
+        "maxyear": 1990,
+        "maxmonth": 6,
+        "maxday": 21
     }
 }

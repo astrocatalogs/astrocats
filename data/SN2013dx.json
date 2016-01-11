@@ -2,20 +2,42 @@
     "SN2013dx": {
         "name": "SN2013dx",
         "aliases": [
-            "SN2013dx"
+            "SN2013dx",
+            "GRB 130702A"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "2",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003587.txt'>CBET 3587</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56474.5",
+                "band": "",
+                "abmag": "17.4",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 1,
         "discovermonth": 7,
         "host": "A142914+1546",
         "claimedtype": "Ic",
-        "redshift": "0.145",
+        "redshift": 0.145,
         "galra": "142914",
         "galdec": "+154626",
-        "snra": "142914.78",
-        "sndec": "+154626.4",
-        "discoverer": "Schulze et al."
+        "snra": "14:29:14.78",
+        "sndec": "+15:46:26.4",
+        "discoverer": "Fermi spacecraft",
+        "maxyear": 2013,
+        "maxmonth": 7,
+        "maxday": 1
     }
 }

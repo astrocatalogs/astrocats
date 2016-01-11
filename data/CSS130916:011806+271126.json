@@ -2,7 +2,8 @@
     "CSS130916:011806+271126": {
         "name": "CSS130916:011806+271126",
         "aliases": [
-            "CSS130916:011806+271126"
+            "CSS130916:011806+271126",
+            "PS1-13dsg"
         ],
         "sources": [
             {
@@ -11,31 +12,47 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5437'>ATEL 5437</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56552.5",
+                "band": "",
+                "abmag": "18.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56562.315",
                 "band": "UV",
                 "abmag": "18.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56595.31",
                 "band": "UV",
                 "abmag": "19.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia-91T",
+        "snra": "01:18:05.59",
+        "sndec": "+27:11:25.7",
+        "discoverday": 17,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.05,
+        "discoverer": "CRTS",
         "maxyear": 2013,
         "maxmonth": 9,
-        "maxday": 27,
-        "discoveryear": 2013,
-        "discovermonth": 9,
-        "discoverday": 27
+        "maxday": 17
     }
 }

@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08600/08687.html#Item1'>IAUC 8687</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53802.0",
+                "time": "53801.5",
                 "band": "",
-                "abmag": "17.1",
-                "source": "1"
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2006",
-        "discovermonth": "3",
-        "discoverday": "8"
+        "discoveryear": 2006,
+        "discoverday": 7,
+        "discovermonth": 3,
+        "host": "A131241+6316",
+        "claimedtype": "IIP",
+        "hvel": "4500",
+        "galra": "131241",
+        "galdec": "+631645",
+        "snra": "13:12:41.11",
+        "sndec": "+63:16:45.4",
+        "discoverer": "Crni Vrh Obseratory",
+        "redshift": 0.015,
+        "maxyear": 2006,
+        "maxmonth": 3,
+        "maxday": 7,
+        "z": 0.0151
     }
 }

@@ -2,21 +2,44 @@
     "SN2014du": {
         "name": "SN2014du",
         "aliases": [
-            "SN2014du"
+            "SN2014du",
+            "PSN J02262331+2739348"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2014",
-        "discoverday": "31",
-        "discovermonth": 10,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004022.txt'>CBET 4022</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56977.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 16,
+        "discovermonth": 11,
         "host": "UGC 1899",
         "claimedtype": "Ia",
         "hvel": "9733",
         "galra": "022626",
         "galdec": "+273915",
-        "snra": "022623.31",
-        "sndec": "+273934.8",
-        "discoverer": "Ciabattari, Mazzoni, Donati",
+        "snra": "02:26:23.31",
+        "sndec": "+27:39:34.8",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0324,
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 16,
         "z": 0.033
     }
 }

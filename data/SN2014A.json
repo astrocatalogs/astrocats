@@ -2,7 +2,8 @@
     "SN2014A": {
         "name": "SN2014A",
         "aliases": [
-            "SN2014A"
+            "SN2014A",
+            "PS1-14gi"
         ],
         "sources": [
             {
@@ -11,44 +12,56 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003771.txt'>CBET 3771</a>",
                 "alias": "2"
             },
             {
-                "name": "Fabio Martinelli",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Fabio Martinelli",
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56657.5",
+                "band": "",
+                "abmag": "16.4",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56661.528",
                 "band": "C",
                 "abmag": "17.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56702.109",
                 "band": "U",
                 "abmag": "16.7",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 4,
-        "discovermonth": 1,
+        "discoveryear": 2013,
+        "discoverday": 31,
+        "discovermonth": 12,
         "host": "NGC 5054",
-        "claimedtype": "II P",
+        "claimedtype": "IIP",
         "hvel": "1791",
         "galra": "131659",
         "galdec": "-163805",
-        "snra": "131659.36",
-        "sndec": "-163757.0",
+        "snra": "13:16:59.36",
+        "sndec": "-16:37:57.0",
         "discoverer": "LOSS",
-        "maxyear": 2014,
-        "maxmonth": 2,
-        "maxday": 14,
+        "redshift": 0.006,
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 31,
         "z": 0.00599
     }
 }

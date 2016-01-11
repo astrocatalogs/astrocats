@@ -2,21 +2,44 @@
     "SN2012ee": {
         "name": "SN2012ee",
         "aliases": [
-            "SN2012ee"
+            "SN2012ee",
+            "PSN J20451528-0537221"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "13",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003205.txt'>CBET 3205</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56155.5",
+                "band": "",
+                "abmag": "15.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 16,
         "discovermonth": 8,
         "host": "IC 5050",
         "claimedtype": "Ia",
         "hvel": "8073",
         "galra": "204515",
         "galdec": "-053722",
-        "snra": "204515.28",
-        "sndec": "-053722.1",
-        "discoverer": "Howerton et al.",
+        "snra": "20:45:15.28",
+        "sndec": "-05:37:22.1",
+        "discoverer": "CRTS",
+        "redshift": 0.027,
+        "maxyear": 2012,
+        "maxmonth": 8,
+        "maxday": 16,
         "z": 0.0273
     }
 }

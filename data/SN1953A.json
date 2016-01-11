@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1966PASP...78..471Z'>PASP 78, 471</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "34483.0",
+                "time": "34482.5",
                 "band": "",
-                "abmag": "16",
-                "source": "1"
+                "abmag": "16.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1953",
-        "discovermonth": "4",
-        "discoverday": "16"
+        "discoveryear": 1953,
+        "discoverday": 15,
+        "discovermonth": 4,
+        "host": "NGC 3561",
+        "hvel": "8580",
+        "galra": "111115",
+        "galdec": "+284153",
+        "discoverer": "Arp",
+        "snra": "11:11:13.2",
+        "sndec": "+28:42:55.0",
+        "maxyear": 1953,
+        "maxmonth": 4,
+        "maxday": 15,
+        "z": 0.029
     }
 }

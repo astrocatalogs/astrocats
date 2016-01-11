@@ -2,7 +2,8 @@
     "PS15ahs": {
         "name": "PS15ahs",
         "aliases": [
-            "PS15ahs"
+            "PS15ahs",
+            "Gaia15afd"
         ],
         "sources": [
             {
@@ -11,68 +12,85 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7471'>ATEL 7471</a>",
                 "alias": "2"
             },
             {
-                "name": "Masanori Mizutani",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Jordi Camarasa",
+                "name": "Masanori Mizutani",
                 "alias": "4"
             },
             {
-                "name": "Andrea Mantero",
+                "name": "Jordi Camarasa",
                 "alias": "5"
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "Andrea Mantero",
                 "alias": "6"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "7"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57150.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57148.351",
                 "band": "C",
                 "abmag": "17.1",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57151.603",
                 "band": "C",
                 "abmag": "15.9",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57151.96172",
                 "band": "R",
                 "abmag": "16.1",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57152.917",
                 "band": "V",
                 "abmag": "16.1",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57185.6944",
                 "band": "U",
                 "abmag": "17.0",
-                "source": "6,1"
+                "source": "7,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "MCG +7-37-11",
+        "snra": "17:59:29.77",
+        "sndec": "+43:23:24.2",
+        "discoverday": 6,
+        "discovermonth": 5,
+        "discoveryear": 2015,
+        "redshift": 0.031,
+        "discoverer": "PS1",
         "maxyear": 2015,
         "maxmonth": 5,
-        "maxday": 9,
-        "discoveryear": 2015,
-        "discovermonth": 5,
-        "discoverday": 6
+        "maxday": 8
     }
 }

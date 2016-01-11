@@ -2,7 +2,8 @@
     "SN2014E": {
         "name": "SN2014E",
         "aliases": [
-            "SN2014E"
+            "SN2014E",
+            "PSN J12033124+0202357"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003784.txt'>CBET 3784</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56665.5",
+                "band": "",
+                "abmag": "16.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56712.469",
                 "band": "UV",
                 "abmag": "18.7",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2014,
-        "discoverday": 24,
-        "discovermonth": 2,
+        "discoverday": 8,
+        "discovermonth": 1,
         "host": "UGC 7034",
         "claimedtype": "Ia",
         "hvel": "5645",
         "galra": "120338",
         "galdec": "+020249",
-        "snra": "120331.29",
-        "sndec": "+020234.5",
-        "discoverer": "Howerton et al.",
+        "snra": "12:03:31.24",
+        "sndec": "+02:02:35.7",
+        "discoverer": "CRTS",
+        "redshift": 0.018906,
         "maxyear": 2014,
-        "maxmonth": 2,
-        "maxday": 24,
+        "maxmonth": 1,
+        "maxday": 8,
         "z": 0.019
     }
 }

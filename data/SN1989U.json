@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/04900/04920.html'>IAUC 4920</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "47867.0",
-                "band": "R",
-                "abmag": "17",
-                "source": "1"
+                "time": "47866.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1989",
-        "discovermonth": "12",
-        "discoverday": "7"
+        "discoveryear": 1989,
+        "discoverday": 6,
+        "discovermonth": 12,
+        "host": "UGC 5295",
+        "claimedtype": "II",
+        "hvel": "4786",
+        "galra": "095254",
+        "galdec": "+425055",
+        "snra": "09:52:52.10",
+        "sndec": "+42:51:30.0",
+        "discoverer": "Jean Mueller",
+        "maxyear": 1989,
+        "maxmonth": 12,
+        "maxday": 6,
+        "z": 0.0161
     }
 }

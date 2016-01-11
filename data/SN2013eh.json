@@ -2,7 +2,8 @@
     "SN2013eh": {
         "name": "SN2013eh",
         "aliases": [
-            "SN2013eh"
+            "SN2013eh",
+            "PSN J16160919+3832530"
         ],
         "sources": [
             {
@@ -11,31 +12,43 @@
                 "secondary": true
             },
             {
-                "name": "Mse",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003601.txt'>CBET 3601</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Mse",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56512.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56513.861",
                 "band": "CR",
                 "abmag": "16.5",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 9,
+        "discoverday": 8,
         "discovermonth": 8,
         "host": "A161609+3832",
         "claimedtype": "Ia",
         "galra": "161609",
         "galdec": "+383245",
-        "snra": "161609.19",
-        "sndec": "+383253.0",
-        "discoverer": "Zhang, Wang, Chen ",
+        "snra": "16:16:09.19",
+        "sndec": "+38:32:53.0",
+        "discoverer": "THU-NAOC Transient Survey (TNTS)",
+        "redshift": 0.034999,
         "maxyear": 2013,
         "maxmonth": 8,
-        "maxday": 9
+        "maxday": 8
     }
 }

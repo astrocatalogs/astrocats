@@ -2,7 +2,8 @@
     "SN2013hl": {
         "name": "SN2013hl",
         "aliases": [
-            "SN2013hl"
+            "SN2013hl",
+            "PSN J11500016+2120166"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J11500016+2120166.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56638.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56641.418",
                 "band": "C",
                 "abmag": "17.2",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 15,
+        "discoverday": 12,
         "discovermonth": 12,
         "host": "NGC 3910",
         "claimedtype": "Ia",
         "hvel": "7833",
         "galra": "114959",
         "galdec": "+212002",
-        "snra": "115000.16",
-        "sndec": "+212016.6",
-        "discoverer": "Itagaki",
+        "snra": "11:50:00.16",
+        "sndec": "+21:20:16.6",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.026248,
         "maxyear": 2013,
         "maxmonth": 12,
-        "maxday": 15,
+        "maxday": 12,
         "z": 0.0265
     }
 }

@@ -2,7 +2,8 @@
     "SN2014dg": {
         "name": "SN2014dg",
         "aliases": [
-            "SN2014dg"
+            "SN2014dg",
+            "PSN J03481978+7007545"
         ],
         "sources": [
             {
@@ -11,194 +12,205 @@
                 "secondary": true
             },
             {
-                "name": "LLA",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003978.txt'>CBET 3978</a>",
                 "alias": "2"
             },
             {
-                "name": "Mse",
+                "name": "LLA",
                 "alias": "3"
             },
             {
-                "name": "Wim Cuppens",
+                "name": "Mse",
                 "alias": "4"
             },
             {
-                "name": "LeenElineDylan (LED)",
+                "name": "Wim Cuppens",
                 "alias": "5"
             },
             {
-                "name": "Gregor Krannich",
+                "name": "LeenElineDylan (LED)",
                 "alias": "6"
             },
             {
-                "name": "Enrique Díez",
+                "name": "Gregor Krannich",
                 "alias": "7"
             },
             {
-                "name": "Paolo Campaner",
+                "name": "Enrique Díez",
                 "alias": "8"
             },
             {
-                "name": "Juan-Luis Glez. Carballo",
+                "name": "Paolo Campaner",
                 "alias": "9"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Juan-Luis Glez. Carballo",
                 "alias": "10"
             },
             {
-                "name": "Esteban Aguilar",
+                "name": "Rafael Benavides",
                 "alias": "11"
             },
             {
-                "name": "Felipe Peña",
+                "name": "Esteban Aguilar",
                 "alias": "12"
             },
             {
-                "name": "Jose Carrillo",
+                "name": "Felipe Peña",
                 "alias": "13"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "14"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56928.5",
+                "band": "",
+                "abmag": "13.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56926.109",
                 "band": "CV",
                 "abmag": "14.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56943.788",
                 "band": "CV",
                 "abmag": "14.9",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56951.918",
                 "band": "I",
                 "abmag": "14.3",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56955.119",
                 "band": "CV",
                 "abmag": "15.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56963.792",
                 "band": "CV",
                 "abmag": "15.6",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56973.889",
                 "band": "CV",
                 "abmag": "16.0",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57009.38",
                 "band": "R",
                 "abmag": "16.3",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57015.824",
                 "band": "CV",
                 "abmag": "16.6",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57053.37",
                 "band": "R",
                 "abmag": "17.3",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57053.37",
                 "band": "R",
                 "abmag": "18.1",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56916.817",
                 "band": "V",
                 "abmag": "14.3",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56918.993",
                 "band": "",
                 "abmag": "14.40",
-                "source": "7,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56923.042",
                 "band": "U",
                 "abmag": "14.3",
-                "source": "8,1"
+                "source": "9,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56929.92322",
                 "band": "V",
                 "abmag": "13.92",
-                "source": "9,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56933.11",
                 "band": "CV",
                 "abmag": "14.5",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56948.07307",
                 "band": "CV",
                 "abmag": "14.53",
-                "source": "10,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56955.848",
                 "band": "CR",
                 "abmag": "14.9",
-                "source": "11,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56976.864",
                 "band": "CR",
                 "abmag": "15.5",
-                "source": "12,1"
+                "source": "13,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57008.878",
                 "band": "C",
                 "abmag": "16.88",
-                "source": "13,1"
+                "source": "14,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57009.38",
                 "band": "R",
                 "abmag": "16.3",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
         "discoveryear": 2014,
@@ -209,12 +221,13 @@
         "hvel": "1200",
         "galra": "034821",
         "galdec": "+700758",
-        "snra": "034819.78",
-        "sndec": "+700754.5",
-        "discoverer": "Itagaki",
+        "snra": "03:48:19.78",
+        "sndec": "+70:07:54.5",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.004,
         "maxyear": 2014,
         "maxmonth": 9,
-        "maxday": 29,
+        "maxday": 28,
         "z": 0.00401
     }
 }

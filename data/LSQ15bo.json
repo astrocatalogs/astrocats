@@ -1,0 +1,39 @@
+{
+    "LSQ15bo": {
+        "name": "LSQ15bo",
+        "aliases": [
+            "LSQ15bo"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6909'>ATEL 6909</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57032.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "13:30:33.20",
+        "sndec": "-29:33:56.1",
+        "discoverday": 10,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.047,
+        "discoverer": "La Silla-QUEST",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 10
+    }
+}

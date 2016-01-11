@@ -1,0 +1,37 @@
+{
+    "MASTER OT200628.62+562912.9": {
+        "name": "MASTER OT200628.62+562912.9",
+        "aliases": [
+            "MASTER OT200628.62+562912.9"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3639'>ATEL 3639</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55812.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            }
+        ],
+        "snra": "20:06:28.62",
+        "sndec": "+56:29:12.9",
+        "discoverday": 8,
+        "discovermonth": 9,
+        "discoveryear": 2011,
+        "discoverer": "MASTER",
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 8
+    }
+}

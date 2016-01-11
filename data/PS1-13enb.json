@@ -1,0 +1,38 @@
+{
+    "PS1-13enb": {
+        "name": "PS1-13enb",
+        "aliases": [
+            "PS1-13enb"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=3'>PS1 SN page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56640.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "host": "FGC 2364",
+        "snra": "22:06:23.62",
+        "sndec": "+17:26:11.2",
+        "discoverday": 14,
+        "discovermonth": 12,
+        "discoveryear": 2013,
+        "discoverer": "PS1",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 14
+    }
+}

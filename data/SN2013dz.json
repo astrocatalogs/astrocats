@@ -4,19 +4,41 @@
         "aliases": [
             "SN2013dz"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "11",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003589.txt'>CBET 3589</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56483.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 10,
         "discovermonth": 7,
         "host": "A025825+3617",
         "claimedtype": "IIn",
         "hvel": "14700",
         "galra": "025825",
         "galdec": "+361702",
-        "snra": "025824.40",
-        "sndec": "+361703.5",
-        "discoverer": "Dhungana et al.",
+        "snra": "02:58:24.40",
+        "sndec": "+36:17:03.5",
+        "discoverer": "ROTSE",
+        "redshift": 0.049,
+        "maxyear": 2013,
+        "maxmonth": 7,
+        "maxday": 10,
         "z": 0.0503
     }
 }

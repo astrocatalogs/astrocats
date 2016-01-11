@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6307'>ATEL 6307</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56839.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56855.586",
                 "band": "L",
                 "abmag": "20.1",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "23:23:52.40",
+        "sndec": "-73:36:55.5",
+        "discoverday": 1,
+        "discovermonth": 7,
+        "discoveryear": 2014,
+        "discoverer": "OGLE-IV wide field survey",
         "maxyear": 2014,
         "maxmonth": 7,
-        "maxday": 17,
-        "discoveryear": 2014,
-        "discovermonth": 7,
-        "discoverday": 17
+        "maxday": 1
     }
 }

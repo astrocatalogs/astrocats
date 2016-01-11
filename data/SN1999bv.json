@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,21 @@
                 "time": "51287.0",
                 "band": "",
                 "abmag": "18.1",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1999",
+        "discoverday": "19",
         "discovermonth": "4",
-        "discoverday": "19"
+        "host": "MCG +10-25-14",
+        "claimedtype": "IIb",
+        "hvel": "5510",
+        "galra": "172241",
+        "galdec": "+600037",
+        "snra": "17:22:40.73",
+        "sndec": "+60:00:12.9",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.0184,
+        "z": 0.0186
     }
 }

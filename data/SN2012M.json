@@ -2,21 +2,44 @@
     "SN2012M": {
         "name": "SN2012M",
         "aliases": [
-            "SN2012M"
+            "SN2012M",
+            "PSN J14565985+2435595"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "20",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002990.txt'>CBET 2990</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55945.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 19,
         "discovermonth": 1,
-        "host": "M+04-35-18",
+        "host": "PGC 53433",
         "claimedtype": "Ia",
         "hvel": "10006",
         "galra": "145700",
         "galdec": "+243624",
-        "snra": "145659.85",
-        "sndec": "+243559.5",
-        "discoverer": "Dimai",
+        "snra": "14:56:59.85",
+        "sndec": "+24:35:59.5",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0335,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 19,
         "z": 0.034
     }
 }

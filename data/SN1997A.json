@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06500/06531.html'>IAUC 6531</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50451.0",
-                "band": "B",
+                "time": "50450.5",
+                "band": "",
                 "abmag": "18.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1997",
-        "discovermonth": "1",
-        "discoverday": "3"
+        "discoveryear": 1997,
+        "discoverday": 2,
+        "discovermonth": 1,
+        "host": "A043133-6107",
+        "claimedtype": "Ia",
+        "hvel": "17500",
+        "galra": "043133",
+        "galdec": "-610710",
+        "snra": "04:31:33.39",
+        "sndec": "-61:07:10.4",
+        "discoverer": "J. Maza",
+        "redshift": 0.058,
+        "maxyear": 1997,
+        "maxmonth": 1,
+        "maxday": 2,
+        "z": 0.0602
     }
 }

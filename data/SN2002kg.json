@@ -13,6 +13,15 @@
             {
                 "name": "VSNET Oct2003",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08051.html#Item1'>IAUC 8051</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -85,19 +94,27 @@
                 "band": "C",
                 "abmag": "19",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52572.5",
+                "band": "",
+                "abmag": "19.0",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2002,
-        "discoverday": 26,
+        "discoverday": 25,
         "discovermonth": 10,
         "host": "NGC 2403",
-        "claimedtype": "IIn?",
+        "claimedtype": "IIn",
         "hvel": "130",
         "galra": "073651",
         "galdec": "+653609",
-        "snra": "073701.83",
-        "sndec": "+653429.3",
-        "discoverer": "LOTOSS",
+        "snra": "07:37:01.83",
+        "sndec": "+65:34:29.3",
+        "discoverer": "Mike Schwartz",
+        "redshift": 0.0008,
         "maxyear": 2002,
         "maxmonth": 10,
         "maxday": 26,

@@ -11,24 +11,41 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7145'>ATEL 7145</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57102.5",
+                "band": "",
+                "abmag": "15.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57103.7688",
                 "band": "U",
                 "abmag": "15.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "CGCG 80-55",
+        "snra": "16:41:20.87",
+        "sndec": "+08:54:31.7",
+        "discoverday": 21,
+        "discovermonth": 3,
+        "discoveryear": 2015,
+        "redshift": 0.033,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2015,
         "maxmonth": 3,
-        "maxday": 22,
-        "discoveryear": 2015,
-        "discovermonth": 3,
-        "discoverday": 22
+        "maxday": 21
     }
 }

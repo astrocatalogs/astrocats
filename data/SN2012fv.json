@@ -2,21 +2,44 @@
     "SN2012fv": {
         "name": "SN2012fv",
         "aliases": [
-            "SN2012fv"
+            "SN2012fv",
+            "PSN J19065165-6142163"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "20",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003200/CBET003281.txt'>CBET 3281</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56108.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 30,
         "discovermonth": 6,
         "host": "IC 4815",
         "claimedtype": "Ia",
         "hvel": "8313",
         "galra": "190651",
         "galdec": "-614205",
-        "snra": "190651.58",
-        "sndec": "-614217.6",
-        "discoverer": "Klotz  ",
+        "snra": "19:06:51.65",
+        "sndec": "-61:42:16.3",
+        "discoverer": "TAROT La Silla telescope",
+        "redshift": 0.028,
+        "maxyear": 2012,
+        "maxmonth": 6,
+        "maxday": 30,
         "z": 0.0281
     }
 }

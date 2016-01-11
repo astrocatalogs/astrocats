@@ -11,24 +11,38 @@
                 "secondary": true
             },
             {
-                "name": "Joel Nicolas",
+                "name": "<a href='http://star.pst.qub.ac.uk/ps1threepi/psdb/public/'>PS1 SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57308.5",
+                "band": "",
+                "abmag": "20.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57309.941",
                 "band": "CV",
                 "abmag": "20.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "snra": "00:53:47.13",
+        "sndec": "+15:27:33.5",
+        "discoverday": 13,
+        "discovermonth": 10,
+        "discoveryear": 2015,
+        "discoverer": "PS1",
         "maxyear": 2015,
         "maxmonth": 10,
-        "maxday": 14,
-        "discoveryear": 2015,
-        "discovermonth": 10,
-        "discoverday": 14
+        "maxday": 13
     }
 }

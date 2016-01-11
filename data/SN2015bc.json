@@ -2,7 +2,8 @@
     "SN2015bc": {
         "name": "SN2015bc",
         "aliases": [
-            "SN2015bc"
+            "SN2015bc",
+            "PS15dcr"
         ],
         "sources": [
             {
@@ -11,24 +12,41 @@
                 "secondary": true
             },
             {
-                "name": "Kunihiro Shima",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004200/CBET004214.txt'>CBET 4214</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57359.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57360.6542",
                 "band": "U",
                 "abmag": "17.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "II",
+        "host": "UGC 3301",
+        "snra": "05:22:59.91",
+        "sndec": "-00:08:17.4",
+        "discoverday": 3,
+        "discovermonth": 12,
+        "discoveryear": 2015,
+        "redshift": 0.03474,
+        "discoverer": "Tim Puckett et al.",
         "maxyear": 2015,
         "maxmonth": 12,
-        "maxday": 4,
-        "discoveryear": 2015,
-        "discovermonth": 12,
-        "discoverday": 4
+        "maxday": 3
     }
 }

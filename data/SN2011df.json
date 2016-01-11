@@ -2,21 +2,44 @@
     "SN2011df": {
         "name": "SN2011df",
         "aliases": [
-            "SN2011df"
+            "SN2011df",
+            "PSN J19273364+5423113"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "21",
-        "discovermonth": 5,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002729.txt'>CBET 2729</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55840.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 6,
+        "discovermonth": 10,
         "host": "NGC 6801",
         "claimedtype": "Ia",
         "hvel": "4315",
         "galra": "192736",
         "galdec": "+542222",
-        "snra": "192733.64",
-        "sndec": "+542311.3",
-        "discoverer": "Newton, Puckett",
+        "snra": "19:27:33.64",
+        "sndec": "+54:23:11.3",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.0144,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 6,
         "z": 0.0145
     }
 }

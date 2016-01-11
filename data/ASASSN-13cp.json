@@ -11,57 +11,74 @@
                 "secondary": true
             },
             {
-                "name": "Stan Howerton",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5346'>ATEL 5346</a>",
                 "alias": "2"
             },
             {
-                "name": "Marco Russiani",
+                "name": "Stan Howerton",
                 "alias": "3"
             },
             {
-                "name": "Enrico Prosperi ",
+                "name": "Marco Russiani",
                 "alias": "4"
             },
             {
-                "name": "Pro ",
+                "name": "Enrico Prosperi ",
                 "alias": "5"
+            },
+            {
+                "name": "Pro ",
+                "alias": "6"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56537.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56536.13",
                 "band": "U",
                 "abmag": "15.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56538.813",
                 "band": "U",
                 "abmag": "16.0",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56539.81",
                 "band": "CR",
                 "abmag": "15.97",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56540.806",
                 "band": "CR",
                 "abmag": "15.95",
-                "source": "5,1"
+                "source": "6,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "CGCG 136-15",
+        "snra": "15:33:49.24",
+        "sndec": "+21:08:21.9",
+        "discoverday": 1,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.02344,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2013,
         "maxmonth": 9,
-        "maxday": 1,
-        "discoveryear": 2013,
-        "discovermonth": 9,
-        "discoverday": 1
+        "maxday": 1
     }
 }

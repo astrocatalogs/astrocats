@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08149.html#Item1'>IAUC 8149</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52783.0",
-                "band": "i",
+                "time": "52782.5",
+                "band": "",
                 "abmag": "23.7",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "5",
-        "discoverday": "24"
+        "discoveryear": 2003,
+        "discoverday": 23,
+        "discovermonth": 5,
+        "host": "A142022+5217",
+        "galra": "142022",
+        "galdec": "+521704",
+        "snra": "14:20:22.138",
+        "sndec": "+52:17:04.09",
+        "discoverer": "Legacy Survey Supernova Project",
+        "maxyear": 2003,
+        "maxmonth": 5,
+        "maxday": 23
     }
 }

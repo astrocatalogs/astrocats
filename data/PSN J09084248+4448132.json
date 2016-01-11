@@ -1,0 +1,41 @@
+{
+    "PSN J09084248+4448132": {
+        "name": "PSN J09084248+4448132",
+        "aliases": [
+            "PSN J09084248+4448132",
+            "CSS141026:090842+444815"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J09084248+4448132.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56957.5",
+                "band": "",
+                "abmag": "15.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "UGC 4798",
+        "snra": "09:08:42.48",
+        "sndec": "+44:48:13.2",
+        "discoverday": 27,
+        "discovermonth": 10,
+        "discoveryear": 2014,
+        "redshift": 0.0268,
+        "discoverer": "CRTS",
+        "maxyear": 2014,
+        "maxmonth": 10,
+        "maxday": 27
+    }
+}

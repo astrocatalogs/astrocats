@@ -2,7 +2,8 @@
     "CSS140222:141104+253050": {
         "name": "CSS140222:141104+253050",
         "aliases": [
-            "CSS140222:141104+253050"
+            "CSS140222:141104+253050",
+            "PS1-14sk"
         ],
         "sources": [
             {
@@ -11,38 +12,54 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/AllSN.html'>CRTS SN page</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56709.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56712.513",
                 "band": "UV",
                 "abmag": "17.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56724.533",
                 "band": "UV",
                 "abmag": "18.2",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56739.4",
                 "band": "UV",
                 "abmag": "18.5",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ib",
+        "snra": "14:11:04.41",
+        "sndec": "+25:30:49.9",
+        "discoverday": 21,
+        "discovermonth": 2,
+        "discoveryear": 2014,
+        "redshift": 0.031,
+        "discoverer": "CRTS",
         "maxyear": 2014,
         "maxmonth": 2,
-        "maxday": 24,
-        "discoveryear": 2014,
-        "discovermonth": 2,
-        "discoverday": 24
+        "maxday": 21
     }
 }

@@ -6,24 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/01900/01908.html'>IAUC 1908</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "38903.0",
+                "time": "38902.5",
                 "band": "",
-                "abmag": "14",
-                "source": "1"
+                "abmag": "14.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1965",
-        "discovermonth": "5",
-        "discoverday": "23",
-        "maxyear": "1965",
-        "maxmonth": "5",
-        "maxday": "26"
+        "discoveryear": 1965,
+        "maxday": 22,
+        "maxmonth": 5,
+        "host": "NGC 4666",
+        "claimedtype": "II",
+        "hvel": "1519",
+        "galra": "124509",
+        "galdec": "-002738",
+        "discoverer": "Chavira",
+        "snra": "12:45:07.1",
+        "sndec": "-00:28:05.0",
+        "discoverday": 22,
+        "discovermonth": 5,
+        "maxyear": 1965,
+        "z": 0.00508
     }
 }

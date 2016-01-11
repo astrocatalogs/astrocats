@@ -2,21 +2,44 @@
     "SN2014dx": {
         "name": "SN2014dx",
         "aliases": [
-            "SN2014dx"
+            "SN2014dx",
+            "PSN J08293820-1717473"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2014",
-        "discoverday": "25",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004028.txt'>CBET 4028</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57017.5",
+                "band": "",
+                "abmag": "15.6",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2014,
+        "discoverday": 26,
         "discovermonth": 12,
-        "host": "M-03-22-02",
+        "host": "MCG -3-22-2",
         "claimedtype": "Ia",
         "hvel": "5674",
         "galra": "082938",
         "galdec": "-171752",
-        "snra": "082938.20",
-        "sndec": "-171747.3",
-        "discoverer": "Parker",
+        "snra": "08:29:38.20",
+        "sndec": "-17:17:47.3",
+        "discoverer": "Stu Parker",
+        "redshift": 0.018926,
+        "maxyear": 2014,
+        "maxmonth": 12,
+        "maxday": 26,
         "z": 0.0191
     }
 }

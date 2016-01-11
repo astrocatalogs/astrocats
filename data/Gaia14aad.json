@@ -1,0 +1,38 @@
+{
+    "Gaia14aad": {
+        "name": "Gaia14aad",
+        "aliases": [
+            "Gaia14aad"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://gaia.ac.uk/selected-gaia-science-alerts'>GAIA page</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56876.5",
+                "band": "",
+                "abmag": "18.3",
+                "source": "2,1"
+            }
+        ],
+        "snra": "13:58:43.49",
+        "sndec": "+48:42:03.5",
+        "discoverday": 7,
+        "discovermonth": 8,
+        "discoveryear": 2014,
+        "redshift": 0.02,
+        "discoverer": "Gaia Photometric Science Alerts programme",
+        "maxyear": 2014,
+        "maxmonth": 8,
+        "maxday": 7
+    }
+}

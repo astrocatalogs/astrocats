@@ -2,7 +2,8 @@
     "ASASSN-13cu": {
         "name": "ASASSN-13cu",
         "aliases": [
-            "ASASSN-13cu"
+            "ASASSN-13cu",
+            "PS1-13dbv"
         ],
         "sources": [
             {
@@ -11,24 +12,41 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5363'>ATEL 5363</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56540.5",
+                "band": "",
+                "abmag": "16.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56541.426",
                 "band": "L",
                 "abmag": "16.7",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "host": "PGC 2414",
+        "snra": "00:40:09.93",
+        "sndec": "-10:26:21.9",
+        "discoverday": 5,
+        "discovermonth": 9,
+        "discoveryear": 2013,
+        "redshift": 0.027,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
         "maxyear": 2013,
         "maxmonth": 9,
-        "maxday": 6,
-        "discoveryear": 2013,
-        "discovermonth": 9,
-        "discoverday": 6
+        "maxday": 5
     }
 }

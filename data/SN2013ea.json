@@ -2,7 +2,8 @@
     "SN2013ea": {
         "name": "SN2013ea",
         "aliases": [
-            "SN2013ea"
+            "SN2013ea",
+            "PSN J01201645+3010557"
         ],
         "sources": [
             {
@@ -11,31 +12,42 @@
                 "secondary": true
             },
             {
-                "name": "Thomas Langhans",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003593.txt'>CBET 3593</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56481.5",
+                "band": "",
+                "abmag": "16.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56553.318",
                 "band": "UR",
                 "abmag": "18.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 18,
-        "discovermonth": 9,
+        "discoverday": 8,
+        "discovermonth": 7,
         "host": "A012016+3010",
         "claimedtype": "Ia",
         "galra": "012016",
         "galdec": "+301055",
-        "snra": "012016.45",
-        "sndec": "+301055.7",
-        "discoverer": "Shurpakov",
+        "snra": "01:20:16.45",
+        "sndec": "+30:10:55.7",
+        "discoverer": "MASTER",
         "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 18
+        "maxmonth": 7,
+        "maxday": 8
     }
 }

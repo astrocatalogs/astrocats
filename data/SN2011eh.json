@@ -2,21 +2,44 @@
     "SN2011eh": {
         "name": "SN2011eh",
         "aliases": [
-            "SN2011eh"
+            "SN2011eh",
+            "PSN J11183170+5758372"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "20",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002700/CBET002776.txt'>CBET 2776</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55764.5",
+                "band": "",
+                "abmag": "14.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 22,
         "discovermonth": 7,
         "host": "NGC 3613",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia",
         "hvel": "2054",
         "galra": "111836",
         "galdec": "+580000",
-        "snra": "111831.56",
-        "sndec": "+575836.9",
-        "discoverer": "Tsuboi",
+        "snra": "11:18:31.70",
+        "sndec": "+57:58:37.2",
+        "discoverer": "Masaki Tsuboi",
+        "redshift": 0.0068,
+        "maxyear": 2011,
+        "maxmonth": 7,
+        "maxday": 22,
         "z": 0.00688
     }
 }

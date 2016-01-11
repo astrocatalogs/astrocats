@@ -2,20 +2,42 @@
     "SN2013fu": {
         "name": "SN2013fu",
         "aliases": [
-            "SN2013fu"
+            "SN2013fu",
+            "GRB 130831A"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "31",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003677.txt'>CBET 3677</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56534.5",
+                "band": "",
+                "abmag": "14.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 30,
         "discovermonth": 8,
         "host": "A235429+2925",
         "claimedtype": "Ib/c",
-        "redshift": "0.4791",
+        "redshift": 0.4791,
         "galra": "235429",
         "galdec": "+292547",
-        "snra": "235429.91",
-        "sndec": "+292547.6",
-        "discoverer": "Hagen et al., Klose et al."
+        "snra": "23:54:29.89",
+        "sndec": "+29:25:46.2",
+        "discoverer": "SWIFT burst alert",
+        "maxyear": 2013,
+        "maxmonth": 8,
+        "maxday": 30
     }
 }

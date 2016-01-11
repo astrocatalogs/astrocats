@@ -6,21 +6,39 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/03100/03158.html'>IAUC 3158</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "43495.0",
+                "time": "43494.5",
                 "band": "",
-                "abmag": "15",
-                "source": "1"
+                "abmag": "15.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1977",
-        "discovermonth": "12",
-        "discoverday": "18"
+        "discoveryear": 1977,
+        "discoverday": 17,
+        "discovermonth": 12,
+        "host": "CGCG 362-48",
+        "galra": "075854",
+        "galdec": "+8542",
+        "discoverer": "Miklos Lovas",
+        "snra": "07:57:53.4",
+        "sndec": "+85:42:20.0",
+        "maxyear": 1977,
+        "maxmonth": 12,
+        "maxday": 17
     }
 }

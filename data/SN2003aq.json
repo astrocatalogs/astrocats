@@ -6,21 +6,65 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08000/08072.html#Item1'>IAUC 8072</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52676.0",
-                "band": "",
+                "time": "52676.06999999983",
+                "band": "C",
                 "abmag": "18.5",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52684.10999999987",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52675.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "2",
-        "discoverday": "6"
+        "discoveryear": 2003,
+        "discoverday": 5,
+        "discovermonth": 2,
+        "host": "NGC 5490C",
+        "claimedtype": "II",
+        "hvel": "5478",
+        "galra": "141007",
+        "galdec": "+173656",
+        "snra": "14:10:07.248",
+        "sndec": "+17:37:05.39",
+        "discoverer": "Tom Boles",
+        "maxyear": 2003,
+        "maxmonth": 2,
+        "maxday": 14,
+        "z": 0.0184
     }
 }

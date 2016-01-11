@@ -6,21 +6,41 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1969PASP...81..224Z'>PASP 81, 224</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "38825.0",
+                "time": "38824.5",
                 "band": "",
                 "abmag": "15.7",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1965",
-        "discovermonth": "3",
-        "discoverday": "6"
+        "discoveryear": 1965,
+        "discoverday": 5,
+        "discovermonth": 3,
+        "host": "NGC 2599",
+        "hvel": "4746",
+        "galra": "083211",
+        "galdec": "+223348",
+        "discoverer": "Gates",
+        "snra": "08:32:12.1",
+        "sndec": "+22:33:34.0",
+        "maxyear": 1965,
+        "maxmonth": 3,
+        "maxday": 5,
+        "z": 0.016
     }
 }

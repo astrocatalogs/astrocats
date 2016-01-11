@@ -1,0 +1,39 @@
+{
+    "DES12C1a": {
+        "name": "DES12C1a",
+        "aliases": [
+            "DES12C1a"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=4668'>ATEL 4668</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56273.5",
+                "band": "",
+                "abmag": "22.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "03:38:54.5",
+        "sndec": "-27:32:28.2",
+        "discoverday": 12,
+        "discovermonth": 12,
+        "discoveryear": 2012,
+        "redshift": 0.303,
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2012,
+        "maxmonth": 12,
+        "maxday": 12
+    }
+}

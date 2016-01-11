@@ -1,0 +1,37 @@
+{
+    "SNhunt143": {
+        "name": "SNhunt143",
+        "aliases": [
+            "SNhunt143"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/current.html'>SNHunt</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56137.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:49:01.80",
+        "sndec": "-16:32:34.0",
+        "discoverday": 29,
+        "discovermonth": 7,
+        "discoveryear": 2012,
+        "discoverer": "CRTS",
+        "maxyear": 2012,
+        "maxmonth": 7,
+        "maxday": 29
+    }
+}

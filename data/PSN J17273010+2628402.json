@@ -1,0 +1,39 @@
+{
+    "PSN J17273010+2628402": {
+        "name": "PSN J17273010+2628402",
+        "aliases": [
+            "PSN J17273010+2628402",
+            "SNhunt35"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J17273010+2628402.html'>CBAT TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55587.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "host": "NGC 6372",
+        "snra": "17:27:30.10",
+        "sndec": "+26:28:40.2",
+        "discoverday": 26,
+        "discovermonth": 1,
+        "discoveryear": 2011,
+        "discoverer": "CRTS",
+        "maxyear": 2011,
+        "maxmonth": 1,
+        "maxday": 26
+    }
+}

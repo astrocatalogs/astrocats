@@ -1,0 +1,39 @@
+{
+    "PTF11aif": {
+        "name": "PTF11aif",
+        "aliases": [
+            "PTF11aif"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=3195'>ATEL 3195</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55588.5",
+                "band": "",
+                "abmag": "20.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "snra": "02:02:14.97",
+        "sndec": "+32:49:36.3",
+        "discoverday": 27,
+        "discovermonth": 1,
+        "discoveryear": 2011,
+        "redshift": 0.138,
+        "discoverer": "PTF",
+        "maxyear": 2011,
+        "maxmonth": 1,
+        "maxday": 27
+    }
+}

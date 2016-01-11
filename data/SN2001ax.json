@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07600/07608.html#Item1'>IAUC 7608</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51988.0",
-                "band": "R",
+                "time": "51987.5",
+                "band": "",
                 "abmag": "17.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "3",
-        "discoverday": "20"
+        "discoveryear": 2001,
+        "discoverday": 19,
+        "discovermonth": 3,
+        "host": "NPM1G +00.0522",
+        "claimedtype": "II",
+        "hvel": "6000",
+        "galra": "160713",
+        "galdec": "-000449",
+        "snra": "16:07:13.69",
+        "sndec": "-00:04:49.2",
+        "discoverer": "Palomar-Quest",
+        "redshift": 0.02,
+        "maxyear": 2001,
+        "maxmonth": 3,
+        "maxday": 19,
+        "z": 0.0202
     }
 }

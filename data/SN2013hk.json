@@ -2,7 +2,8 @@
     "SN2013hk": {
         "name": "SN2013hk",
         "aliases": [
-            "SN2013hk"
+            "SN2013hk",
+            "PS1-14dh"
         ],
         "sources": [
             {
@@ -11,90 +12,102 @@
                 "secondary": true
             },
             {
-                "name": "LLA",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003758.txt'>CBET 3758</a>",
                 "alias": "2"
             },
             {
-                "name": "Enrique Díez",
+                "name": "LLA",
                 "alias": "3"
             },
             {
-                "name": "Enrique Diez",
+                "name": "Enrique Díez",
                 "alias": "4"
+            },
+            {
+                "name": "Enrique Diez",
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56640.5",
+                "band": "",
+                "abmag": "14.7",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56644.798",
                 "band": "CV",
                 "abmag": "15.3",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56673.88",
                 "band": "",
                 "abmag": "14.92",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56678.832",
                 "band": "CV",
                 "abmag": "15.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56690.7924",
                 "band": "CR",
                 "abmag": "15.063",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56690.831",
                 "band": "CV",
                 "abmag": "15.4",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56704.9175",
                 "band": "CR",
                 "abmag": "15.237",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56709.8895",
                 "band": "CR",
                 "abmag": "15.393",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56710.807",
                 "band": "CV",
                 "abmag": "15.4",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 18,
+        "discoverday": 14,
         "discovermonth": 12,
-        "host": "PGC2816341",
+        "host": "PGC 2816341",
         "claimedtype": "Ia",
         "hvel": "5135",
         "galra": "030211",
         "galdec": "+155538",
-        "snra": "030210.85",
-        "sndec": "+155538.8",
-        "discoverer": "Shappee et al.",
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 16,
+        "snra": "03:02:10.90",
+        "sndec": "+15:55:38.8",
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "redshift": 0.017,
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 14,
         "z": 0.0173
     }
 }

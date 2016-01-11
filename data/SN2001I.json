@@ -6,21 +6,86 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07563.html#Item1'>IAUC 7563</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51924.0",
-                "band": "",
+                "time": "51901.200000000186",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51906.299999999814",
+                "band": "C",
+                "abmag": "17.7",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51924.200000000186",
+                "band": "C",
                 "abmag": "17.2",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51924.75",
+                "band": "C",
+                "abmag": "17.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51925.779999999795",
+                "band": "C",
+                "abmag": "17",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51923.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "1",
-        "discoverday": "15"
+        "discoveryear": 2000,
+        "discoverday": 23,
+        "discovermonth": 12,
+        "host": "UGC 2836",
+        "claimedtype": "IIn",
+        "hvel": "4963",
+        "galra": "034357",
+        "galdec": "+391742",
+        "snra": "03:43:57.28",
+        "sndec": "+39:17:39.4",
+        "discoverer": "LOTOSS",
+        "maxyear": 2001,
+        "maxmonth": 1,
+        "maxday": 16,
+        "z": 0.0167
     }
 }

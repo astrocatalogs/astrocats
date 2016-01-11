@@ -1,0 +1,39 @@
+{
+    "DES14C3tsg": {
+        "name": "DES14C3tsg",
+        "aliases": [
+            "DES14C3tsg"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7022'>ATEL 7022</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57048.5",
+                "band": "",
+                "abmag": "23.8",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "snra": "03:28:25.74",
+        "sndec": "-28:09:50.7",
+        "discoverday": 26,
+        "discovermonth": 1,
+        "discoveryear": 2015,
+        "redshift": 0.21,
+        "discoverer": "Dark Energy Survey",
+        "maxyear": 2015,
+        "maxmonth": 1,
+        "maxday": 26
+    }
+}

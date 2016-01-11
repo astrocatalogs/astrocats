@@ -6,21 +6,86 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07500/07593.html#Item1'>IAUC 7593</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51973.0",
-                "band": "",
+                "time": "51973.200000000186",
+                "band": "C",
                 "abmag": "18",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51974.10000000009",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51980.20999999996",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51982.00999999978",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51989.12999999989",
+                "band": "C",
+                "abmag": "18",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "51972.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2001",
-        "discovermonth": "3",
-        "discoverday": "5"
+        "discoveryear": 2001,
+        "discoverday": 4,
+        "discovermonth": 3,
+        "host": "UGC 10888",
+        "claimedtype": "II",
+        "hvel": "6166",
+        "galra": "173000",
+        "galdec": "+602104",
+        "snra": "17:29:57.71",
+        "sndec": "+60:21:23.2",
+        "discoverer": "Mark Armstrong",
+        "maxyear": 2001,
+        "maxmonth": 3,
+        "maxday": 5,
+        "z": 0.0208
     }
 }

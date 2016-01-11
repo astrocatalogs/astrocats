@@ -2,21 +2,44 @@
     "SN2011jm": {
         "name": "SN2011jm",
         "aliases": [
-            "SN2011jm"
+            "SN2011jm",
+            "TCP J12545110+0239149"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "24",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002962.txt'>CBET 2962</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55918.5",
+                "band": "",
+                "abmag": "14.8",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 23,
         "discovermonth": 12,
         "host": "NGC 4809",
         "claimedtype": "Ic",
         "hvel": "956",
         "galra": "125451",
         "galdec": "+023915",
-        "snra": "125451.10",
-        "sndec": "+023914.9",
-        "discoverer": "Howerton et al.",
+        "snra": "12:54:51.09",
+        "sndec": "+02:39:14.8",
+        "discoverer": "CRTS",
+        "redshift": 0.0031,
+        "maxyear": 2011,
+        "maxmonth": 12,
+        "maxday": 23,
         "z": 0.00319
     }
 }

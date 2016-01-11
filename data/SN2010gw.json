@@ -6,21 +6,43 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002400/CBET002410.txt'>CBET 2410</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "55418.0",
-                "band": "Rc",
-                "abmag": "16.6",
-                "source": "1"
+                "time": "55417.5",
+                "band": "",
+                "abmag": "17.7",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2010",
-        "discovermonth": "8",
-        "discoverday": "10"
+        "discoveryear": 2010,
+        "discoverday": 9,
+        "discovermonth": 8,
+        "host": "IC 4992",
+        "claimedtype": "IIP",
+        "hvel": "4173",
+        "galra": "202328",
+        "galdec": "-713354",
+        "snra": "20:23:25.31",
+        "sndec": "-71:34:04.9",
+        "discoverer": "Stu Parker",
+        "redshift": 0.0139,
+        "maxyear": 2010,
+        "maxmonth": 8,
+        "maxday": 9,
+        "z": 0.014
     }
 }

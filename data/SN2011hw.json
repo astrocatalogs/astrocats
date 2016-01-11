@@ -2,7 +2,8 @@
     "SN2011hw": {
         "name": "SN2011hw",
         "aliases": [
-            "SN2011hw"
+            "SN2011hw",
+            "PSN J22261454+3412591"
         ],
         "sources": [
             {
@@ -13,6 +14,15 @@
             {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012arXiv1204.0043S'>2012arXiv1204.0043S</a>",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002906.txt'>CBET 2906</a>",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -199,22 +209,30 @@
                 "abmag": "18.64",
                 "aberr": "0.12",
                 "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "55884.5",
+                "band": "",
+                "abmag": "15.5",
+                "source": "4,3"
             }
         ],
         "discoveryear": 2011,
-        "discoverday": 3,
-        "discovermonth": 12,
+        "discoverday": 19,
+        "discovermonth": 11,
         "host": "A222614+3412",
-        "claimedtype": "IIn",
+        "claimedtype": "IIn/Ibn",
         "hvel": "6900",
         "galra": "222614",
         "galdec": "+341259",
-        "snra": "222614.54",
-        "sndec": "+341259.1",
-        "discoverer": "Mikuz",
+        "snra": "22:26:14.53",
+        "sndec": "+34:12:59.0",
+        "discoverer": "B. Dintinjana and H. Mikuz",
+        "redshift": 0.023,
         "maxyear": 2011,
-        "maxmonth": 12,
-        "maxday": 6,
+        "maxmonth": 11,
+        "maxday": 19,
         "z": 0.0233
     }
 }

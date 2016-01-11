@@ -1,0 +1,40 @@
+{
+    "ASASSN-14ko": {
+        "name": "ASASSN-14ko",
+        "aliases": [
+            "ASASSN-14ko"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=6732'>ATEL 6732</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56974.5",
+                "band": "",
+                "abmag": "17.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "IIn",
+        "host": "ESO 253-G3",
+        "snra": "05:25:18.13",
+        "sndec": "-46:00:20.3",
+        "discoverday": 13,
+        "discovermonth": 11,
+        "discoveryear": 2014,
+        "redshift": 0.042,
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "maxyear": 2014,
+        "maxmonth": 11,
+        "maxday": 13
+    }
+}

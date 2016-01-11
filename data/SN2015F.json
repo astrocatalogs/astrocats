@@ -2,7 +2,8 @@
     "SN2015F": {
         "name": "SN2015F",
         "aliases": [
-            "SN2015F"
+            "SN2015F",
+            "PSN J07361576-6930230"
         ],
         "sources": [
             {
@@ -11,37 +12,49 @@
                 "secondary": true
             },
             {
-                "name": "Berto Monard",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004081.txt'>CBET 4081</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Berto Monard",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "57102.5",
+                "band": "",
+                "abmag": "12.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57110.0",
                 "band": "",
                 "abmag": "12.8",
-                "source": "2,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57112.0",
                 "band": "",
                 "abmag": "12.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2015,
-        "discoverday": 29,
+        "discoverday": 21,
         "discovermonth": 3,
         "host": "NGC 2442",
         "claimedtype": "Ia",
         "hvel": "1399",
         "galra": "073624",
         "galdec": "-693150",
-        "snra": "073615.76",
-        "sndec": "-693023.0",
-        "discoverer": "Monard",
+        "snra": "07:36:15.76",
+        "sndec": "-69:30:23.0",
+        "discoverer": "Berto Monard",
+        "redshift": 0.004,
         "maxyear": 2015,
         "maxmonth": 3,
         "maxday": 29,

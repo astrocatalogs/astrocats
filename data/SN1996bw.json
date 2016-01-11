@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,21 @@
                 "time": "50417.0",
                 "band": "V",
                 "abmag": "15.5",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1996",
+        "discoverday": "30",
         "discovermonth": "11",
-        "discoverday": "30"
+        "host": "NGC 664",
+        "claimedtype": "II",
+        "hvel": "5412",
+        "galra": "014346",
+        "galdec": "+041322",
+        "snra": "01:43:44.51",
+        "sndec": "+04:13:19.0",
+        "discoverer": "BAO Supernova Survey",
+        "redshift": 0.018,
+        "z": 0.0182
     }
 }

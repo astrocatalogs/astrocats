@@ -2,21 +2,44 @@
     "SN2015ac": {
         "name": "SN2015ac",
         "aliases": [
-            "SN2015ac"
+            "SN2015ac",
+            "PSN J23164332+3359476"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2015",
-        "discoverday": "28",
-        "discovermonth": 7,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004175.txt'>CBET 4175</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57254.5",
+                "band": "",
+                "abmag": "16.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2015,
+        "discoverday": 20,
+        "discovermonth": 8,
         "host": "UGC 12474",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia-pec",
         "hvel": "5110",
         "galra": "231643",
         "galdec": "+335945",
-        "snra": "231643.32",
-        "sndec": "+335947.6",
-        "discoverer": "Emmanouilidi",
+        "snra": "23:16:43.32",
+        "sndec": "+33:59:47.6",
+        "discoverer": "Constantine Emmanouilidi",
+        "redshift": 0.017,
+        "maxyear": 2015,
+        "maxmonth": 8,
+        "maxday": 20,
         "z": 0.0172
     }
 }

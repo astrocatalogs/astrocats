@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,20 @@
                 "time": "50277.0",
                 "band": "",
                 "abmag": "18",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1996",
+        "discoverday": "13",
         "discovermonth": "7",
-        "discoverday": "13"
+        "host": "NGC 5021",
+        "claimedtype": "II",
+        "hvel": "8250",
+        "galra": "131206",
+        "galdec": "+461146",
+        "snra": "13:12:04.42",
+        "sndec": "+46:11:38.4",
+        "discoverer": "Christian Buil",
+        "z": 0.0279
     }
 }

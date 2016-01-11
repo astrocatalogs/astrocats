@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/1961PASP...73..175H'>PASP 73, 175</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "37233.0",
+                "time": "37232.5",
                 "band": "",
-                "abmag": "17",
-                "source": "1"
+                "abmag": "15.7",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1960",
-        "discovermonth": "10",
-        "discoverday": "26"
+        "discoveryear": 1960,
+        "discoverday": 25,
+        "discovermonth": 10,
+        "host": "NGC 2565",
+        "claimedtype": "I",
+        "hvel": "3588",
+        "galra": "081948",
+        "galdec": "+220153",
+        "snra": "08:19:47.44",
+        "sndec": "+22:02:28.7",
+        "discoverer": "Gomes",
+        "maxyear": 1960,
+        "maxmonth": 10,
+        "maxday": 25,
+        "z": 0.012
     }
 }

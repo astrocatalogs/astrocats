@@ -2,21 +2,44 @@
     "SN2013ak": {
         "name": "SN2013ak",
         "aliases": [
-            "SN2013ak"
+            "SN2013ak",
+            "PSN J08070669-2803101"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2013",
-        "discoverday": "9",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003400/CBET003437.txt'>CBET 3437</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56359.5",
+                "band": "",
+                "abmag": "13.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2013,
+        "discoverday": 8,
         "discovermonth": 3,
-        "host": "E430-G20",
+        "host": "ESO 430-G20",
         "claimedtype": "IIb",
         "hvel": "1023",
         "galra": "080708",
         "galdec": "-280308",
-        "snra": "080706.69",
-        "sndec": "-280310.1",
-        "discoverer": "Carrasco et al.",
+        "snra": "08:07:06.69",
+        "sndec": "-28:03:10.1",
+        "discoverer": "CHASE",
+        "redshift": 0.0037,
+        "maxyear": 2013,
+        "maxmonth": 3,
+        "maxday": 8,
         "z": 0.00342
     }
 }

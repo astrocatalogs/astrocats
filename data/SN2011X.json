@@ -2,21 +2,43 @@
     "SN2011X": {
         "name": "SN2011X",
         "aliases": [
-            "SN2011X"
+            "SN2011X",
+            "PSN J13502136-5239585"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "15",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002600/CBET002656.txt'>CBET 2656</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55575.5",
+                "band": "",
+                "abmag": "17.3",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 14,
         "discovermonth": 1,
-        "host": "E221-G07",
-        "claimedtype": "II P",
+        "host": "ESO 221-G7",
+        "claimedtype": "IIP",
         "hvel": "3660",
         "galra": "135028",
         "galdec": "-523938",
-        "snra": "135021.36",
-        "sndec": "-523958.5",
-        "discoverer": "Pignata et al.",
+        "snra": "13:50:21.36",
+        "sndec": "-52:39:58.5",
+        "discoverer": "CHASE",
+        "maxyear": 2011,
+        "maxmonth": 1,
+        "maxday": 14,
         "z": 0.0123
     }
 }

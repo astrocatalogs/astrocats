@@ -6,24 +6,73 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET Oct2003",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/07800/07871.html#Item1'>IAUC 7871</a>",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52368.0",
-                "band": "",
+                "time": "52368.200000000186",
+                "band": "C",
                 "abmag": "18.5",
-                "source": "1"
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52372.87000000011",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52373.299999999814",
+                "band": "C",
+                "abmag": "18.5",
+                "source": "1,2"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "52367.5",
+                "band": "",
+                "abmag": "17.2",
+                "source": "4,3"
             }
         ],
-        "discoveryear": "2002",
-        "discovermonth": "4",
-        "discoverday": "4",
-        "maxyear": "2002",
-        "maxmonth": "4",
-        "maxday": "1"
+        "discoveryear": 2002,
+        "discoverday": 3,
+        "discovermonth": 4,
+        "host": "A083401+5539",
+        "claimedtype": "Ia",
+        "hvel": "19950",
+        "galra": "083401",
+        "galdec": "+553912",
+        "snra": "08:34:01.97",
+        "sndec": "+55:39:12.4",
+        "discoverer": "LOTOSS",
+        "redshift": 0.067,
+        "maxyear": 2002,
+        "maxmonth": 4,
+        "maxday": 8,
+        "z": 0.0689
     }
 }

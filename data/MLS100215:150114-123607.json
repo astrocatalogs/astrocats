@@ -1,0 +1,37 @@
+{
+    "MLS100215:150114-123607": {
+        "name": "MLS100215:150114-123607",
+        "aliases": [
+            "MLS100215:150114-123607"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2447'>ATEL 2447</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55241.5",
+                "band": "",
+                "abmag": "20.7",
+                "source": "2,1"
+            }
+        ],
+        "snra": "15:01:13.77",
+        "sndec": "-12:36:06.5",
+        "discoverday": 14,
+        "discovermonth": 2,
+        "discoveryear": 2010,
+        "discoverer": "CRTS",
+        "maxyear": 2010,
+        "maxmonth": 2,
+        "maxday": 14
+    }
+}

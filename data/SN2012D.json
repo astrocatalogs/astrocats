@@ -2,21 +2,44 @@
     "SN2012D": {
         "name": "SN2012D",
         "aliases": [
-            "SN2012D"
+            "SN2012D",
+            "PSN J12583711+2710252"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "13",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002900/CBET002980.txt'>CBET 2980</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55953.5",
+                "band": "",
+                "abmag": "17.1",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 27,
         "discovermonth": 1,
-        "host": "PGC0044486",
-        "claimedtype": "II P",
+        "host": "PGC 44486",
+        "claimedtype": "IIP",
         "hvel": "7666",
         "galra": "125837",
         "galdec": "+271035",
-        "snra": "125837.11",
-        "sndec": "+271025.2",
-        "discoverer": "Howerton et al.",
+        "snra": "12:58:37.11",
+        "sndec": "+27:10:25.2",
+        "discoverer": "CRTS",
+        "redshift": 0.026,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 27,
         "z": 0.0259
     }
 }

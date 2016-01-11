@@ -2,21 +2,44 @@
     "SN2012cl": {
         "name": "SN2012cl",
         "aliases": [
-            "SN2012cl"
+            "SN2012cl",
+            "PSN J10145093-4337488"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "10",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003100/CBET003125.txt'>CBET 3125</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56056.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 9,
         "discovermonth": 5,
-        "host": "E263-G23",
-        "claimedtype": "II P",
+        "host": "ESO 263-G23",
+        "claimedtype": "IIP",
         "hvel": "3060",
         "galra": "101457",
         "galdec": "-433709",
-        "snra": "101450.93",
-        "sndec": "-433748.8",
-        "discoverer": "Maza et al.",
+        "snra": "10:14:50.93",
+        "sndec": "-43:37:48.8",
+        "discoverer": "CHASE",
+        "redshift": 0.0101,
+        "maxyear": 2012,
+        "maxmonth": 5,
+        "maxday": 9,
         "z": 0.0103
     }
 }

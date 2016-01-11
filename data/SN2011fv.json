@@ -2,21 +2,44 @@
     "SN2011fv": {
         "name": "SN2011fv",
         "aliases": [
-            "SN2011fv"
+            "SN2011fv",
+            "PSN J01180780+1733298"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "26",
-        "discovermonth": 8,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002828.txt'>CBET 2828</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55829.5",
+                "band": "",
+                "abmag": "18.2",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 25,
+        "discovermonth": 9,
         "host": "NGC 459",
         "claimedtype": "II",
         "hvel": "12705",
         "galra": "011808",
         "galdec": "+173345",
-        "snra": "011807.80",
-        "sndec": "+173329.8",
-        "discoverer": "Ciabattari, Mazzoni",
+        "snra": "01:18:07.80",
+        "sndec": "+17:33:29.7",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.0424,
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 25,
         "z": 0.0433
     }
 }

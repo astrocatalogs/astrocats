@@ -1,0 +1,40 @@
+{
+    "PTF10llv": {
+        "name": "PTF10llv",
+        "aliases": [
+            "PTF10llv"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2765'>ATEL 2765</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55363.5",
+                "band": "",
+                "abmag": "19.2",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "II",
+        "host": "LCSB S2647P",
+        "snra": "22:17:44.67",
+        "sndec": "+13:19:30.1",
+        "discoverday": 16,
+        "discovermonth": 6,
+        "discoveryear": 2010,
+        "redshift": 0.067276,
+        "discoverer": "PTF",
+        "maxyear": 2010,
+        "maxmonth": 6,
+        "maxday": 16
+    }
+}

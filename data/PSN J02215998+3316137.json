@@ -1,0 +1,41 @@
+{
+    "PSN J02215998+3316137": {
+        "name": "PSN J02215998+3316137",
+        "aliases": [
+            "PSN J02215998+3316137",
+            "iPTF13ebh"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J02215998+3316137.html'>CBET TOCP</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56629.5",
+                "band": "",
+                "abmag": "14.7",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "NGC 890",
+        "snra": "02:21:59.98",
+        "sndec": "+33:16:13.7",
+        "discoverday": 3,
+        "discovermonth": 12,
+        "discoveryear": 2013,
+        "redshift": 0.013269,
+        "discoverer": "PTF",
+        "maxyear": 2013,
+        "maxmonth": 12,
+        "maxday": 3
+    }
+}

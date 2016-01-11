@@ -13,6 +13,11 @@
             {
                 "name": "VSNET 2001",
                 "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
             }
         ],
         "photometry": [
@@ -126,12 +131,12 @@
         "discoverday": 12,
         "discovermonth": 4,
         "host": "NGC 3198",
-        "claimedtype": "IIn?",
+        "claimedtype": "IIn/LBV",
         "hvel": "663",
         "galra": "101955",
         "galdec": "+453259",
-        "snra": "101946.81",
-        "sndec": "+453135.0",
+        "snra": "10:19:46.81",
+        "sndec": "+45:31:35.0",
         "discoverer": "LOSS",
         "maxyear": 1999,
         "maxmonth": 5,

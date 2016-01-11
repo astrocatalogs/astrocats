@@ -2,21 +2,44 @@
     "SN2012ig": {
         "name": "SN2012ig",
         "aliases": [
-            "SN2012ig"
+            "SN2012ig",
+            "PSN J21142287+1514407"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "21",
-        "discovermonth": 12,
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003300/CBET003364.txt'>CBET 3364</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55928.5",
+                "band": "",
+                "abmag": "16.0",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 2,
+        "discovermonth": 1,
         "host": "UGC 11706",
         "claimedtype": "Ia",
         "hvel": "4736",
         "galra": "211422",
         "galdec": "+151439",
-        "snra": "211422.87",
-        "sndec": "+151440.7",
-        "discoverer": "Xu, Gao",
+        "snra": "21:14:22.87",
+        "sndec": "+15:14:40.7",
+        "discoverer": "Xing Gao et al.",
+        "redshift": 0.015798,
+        "maxyear": 2012,
+        "maxmonth": 1,
+        "maxday": 2,
         "z": 0.0159
     }
 }

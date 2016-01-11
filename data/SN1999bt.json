@@ -6,8 +6,13 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "2"
             }
         ],
         "photometry": [
@@ -16,11 +21,21 @@
                 "time": "51277.0",
                 "band": "",
                 "abmag": "17",
-                "source": "1"
+                "source": "2"
             }
         ],
         "discoveryear": "1999",
+        "discoverday": "9",
         "discovermonth": "4",
-        "discoverday": "9"
+        "host": "A171137+7225",
+        "claimedtype": "Ia",
+        "hvel": "14960",
+        "galra": "171137",
+        "galdec": "+722515",
+        "snra": "17:11:37.77",
+        "sndec": "+72:25:15.5",
+        "discoverer": "Tom Boles",
+        "redshift": 0.0499,
+        "z": 0.0512
     }
 }

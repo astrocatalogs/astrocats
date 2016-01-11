@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/05200/05200.html'>IAUC 5200</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48311.0",
-                "band": "R",
-                "abmag": "18",
-                "source": "1"
+                "time": "48310.5",
+                "band": "",
+                "abmag": "18.0",
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1991",
-        "discovermonth": "2",
-        "discoverday": "24"
+        "discoveryear": 1991,
+        "discoverday": 23,
+        "discovermonth": 2,
+        "host": "MCG +7-34-134",
+        "claimedtype": "Ib/c",
+        "hvel": "8994",
+        "galra": "164115",
+        "galdec": "+391726",
+        "snra": "16:41:15.03",
+        "sndec": "+39:17:32.6",
+        "discoverer": "Christian Pollas",
+        "maxyear": 1991,
+        "maxmonth": 2,
+        "maxday": 23,
+        "z": 0.0305
     }
 }

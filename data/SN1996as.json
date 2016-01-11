@@ -6,21 +6,42 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/06400/06469.html'>IAUC 6469</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50329.0",
+                "time": "50297.5",
                 "band": "",
                 "abmag": "17.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "1996",
-        "discovermonth": "9",
-        "discoverday": "3"
+        "discoveryear": 1996,
+        "discoverday": 2,
+        "discovermonth": 8,
+        "host": "A210536-5222",
+        "claimedtype": "II",
+        "hvel": "10800",
+        "galra": "210536",
+        "galdec": "-522241",
+        "snra": "21:05:36.30",
+        "sndec": "-52:22:41.2",
+        "discoverer": "Robert Evans",
+        "maxyear": 1996,
+        "maxmonth": 8,
+        "maxday": 2,
+        "z": 0.0367
     }
 }

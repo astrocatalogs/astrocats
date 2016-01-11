@@ -11,24 +11,40 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.astronomerstelegram.org/?read=5813'>ATEL 5813</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56679.5",
+                "band": "",
+                "abmag": "19.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56684.335",
                 "band": "C",
                 "abmag": "19.4",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
+        "claimedtype": "Ia",
+        "snra": "09:44:20.20",
+        "sndec": "+04:35:52.5",
+        "discoverday": 22,
+        "discovermonth": 1,
+        "discoveryear": 2014,
+        "redshift": 0.061,
+        "discoverer": "La Silla-QUEST",
         "maxyear": 2014,
         "maxmonth": 1,
-        "maxday": 27,
-        "discoveryear": 2014,
-        "discovermonth": 1,
-        "discoverday": 27
+        "maxday": 27
     }
 }

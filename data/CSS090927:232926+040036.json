@@ -1,0 +1,37 @@
+{
+    "CSS090927:232926+040036": {
+        "name": "CSS090927:232926+040036",
+        "aliases": [
+            "CSS090927:232926+040036"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=2266'>ATEL 2266</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55100.5",
+                "band": "",
+                "abmag": "18.4",
+                "source": "2,1"
+            }
+        ],
+        "snra": "23:29:25.83",
+        "sndec": "+04:00:36.0",
+        "discoverday": 26,
+        "discovermonth": 9,
+        "discoveryear": 2009,
+        "discoverer": "CRTS",
+        "maxyear": 2009,
+        "maxmonth": 9,
+        "maxday": 26
+    }
+}

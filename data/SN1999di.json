@@ -6,21 +6,48 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "VSNET 2001",
+                "alias": "2"
+            },
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "3",
+                "secondary": true
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "4"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51398.0",
-                "band": "",
+                "time": "51398.37999999989",
+                "band": "C",
                 "abmag": "18",
-                "source": "1"
+                "source": "1,2"
             }
         ],
-        "discoveryear": "1999",
-        "discovermonth": "8",
-        "discoverday": "8"
+        "discoveryear": 1999,
+        "discoverday": 8,
+        "discovermonth": 8,
+        "host": "NGC 776",
+        "claimedtype": "Ib",
+        "hvel": "4921",
+        "galra": "015954",
+        "galdec": "+233840",
+        "snra": "01:59:54.86",
+        "sndec": "+23:38:22.7",
+        "discoverer": "Tim Puckett et al.",
+        "redshift": 0.016,
+        "maxyear": 1999,
+        "maxmonth": 8,
+        "maxday": 8,
+        "z": 0.0166
     }
 }

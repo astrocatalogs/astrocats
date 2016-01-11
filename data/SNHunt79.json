@@ -1,0 +1,39 @@
+{
+    "SNHunt79": {
+        "name": "SNHunt79",
+        "aliases": [
+            "SNHunt79"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://nesssi.cacr.caltech.edu/catalina/current.html'>SNHunt</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55833.5",
+                "band": "",
+                "abmag": "20.0",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "LBV?",
+        "host": "NGC 2445",
+        "snra": "07:46:54.30",
+        "sndec": "+39:01:22.0",
+        "discoverday": 29,
+        "discovermonth": 9,
+        "discoveryear": 2011,
+        "discoverer": "CRTS",
+        "maxyear": 2011,
+        "maxmonth": 9,
+        "maxday": 29
+    }
+}

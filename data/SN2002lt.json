@@ -2,25 +2,46 @@
     "SN2002lt": {
         "name": "SN2002lt",
         "aliases": [
-            "SN2002lt"
+            "SN2002lt",
+            "GRB 021211"
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iauc/08100/08197.html#Item2'>IAUC 8197</a>",
+                "alias": "2"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52648.0",
-                "band": "R",
+                "time": "52282.5",
+                "band": "",
                 "abmag": "24.5",
-                "source": "1"
+                "source": "2,1"
             }
         ],
-        "discoveryear": "2003",
-        "discovermonth": "1",
-        "discoverday": "9"
+        "discoveryear": 2002,
+        "discoverday": 8,
+        "discovermonth": 1,
+        "host": "A080859+0643",
+        "claimedtype": "Ic",
+        "redshift": "1.006",
+        "galra": "080859",
+        "galdec": "+064337",
+        "snra": "08:08:59.86",
+        "sndec": "+06:43:37.5",
+        "discoverer": "INAF",
+        "maxyear": 2002,
+        "maxmonth": 1,
+        "maxday": 8
     }
 }

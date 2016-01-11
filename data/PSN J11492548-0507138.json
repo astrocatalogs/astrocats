@@ -1,0 +1,41 @@
+{
+    "PSN J11492548-0507138": {
+        "name": "PSN J11492548-0507138",
+        "aliases": [
+            "PSN J11492548-0507138",
+            "MASTER OT J114925.48-050713.8"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.astronomerstelegram.org/?read=7732'>ATEL 7732</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "57223.5",
+                "band": "",
+                "abmag": "13.4",
+                "source": "2,1"
+            }
+        ],
+        "claimedtype": "Ia",
+        "host": "IC 2963",
+        "snra": "11:49:25.48",
+        "sndec": "-05:07:13.8",
+        "discoverday": 20,
+        "discovermonth": 7,
+        "discoveryear": 2015,
+        "redshift": 0.0056,
+        "discoverer": "MASTER",
+        "maxyear": 2015,
+        "maxmonth": 7,
+        "maxday": 20
+    }
+}

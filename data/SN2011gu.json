@@ -2,21 +2,44 @@
     "SN2011gu": {
         "name": "SN2011gu",
         "aliases": [
-            "SN2011gu"
+            "SN2011gu",
+            "PSN J23060280+3406367"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2011",
-        "discoverday": "14",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/002800/CBET002866.txt'>CBET 2866</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55852.5",
+                "band": "",
+                "abmag": "20.9",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2011,
+        "discoverday": 18,
         "discovermonth": 10,
         "host": "NGC 7485",
-        "claimedtype": "Ia pec",
+        "claimedtype": "Ia",
         "hvel": "5919",
         "galra": "230605",
         "galdec": "+340628",
-        "snra": "230602.80",
-        "sndec": "+340636.7",
-        "discoverer": "Martinelli, Mancini, Briganti",
+        "snra": "23:06:02.79",
+        "sndec": "+34:06:36.7",
+        "discoverer": "Italian Supernovae Search Project",
+        "redshift": 0.019,
+        "maxyear": 2011,
+        "maxmonth": 10,
+        "maxday": 18,
         "z": 0.0199
     }
 }

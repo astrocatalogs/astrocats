@@ -6,21 +6,72 @@
         ],
         "sources": [
             {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/cbet/000700/CBET000797.txt'>CBET 797</a>",
+                "alias": "2"
+            },
+            {
+                "name": "TON",
+                "alias": "3"
+            },
+            {
+                "name": "LLA",
+                "alias": "4"
+            },
+            {
                 "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
-                "alias": "1"
+                "alias": "5"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54105.0",
+                "time": "54104.5",
                 "band": "",
-                "abmag": "16.7",
-                "source": "1"
+                "abmag": "16.2",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54109.685",
+                "band": "CR",
+                "abmag": "15.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54109.738",
+                "band": "CR",
+                "abmag": "16.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "54117.743",
+                "band": "CR",
+                "abmag": "16.2",
+                "source": "4,1"
             }
         ],
-        "discoveryear": "2007",
-        "discovermonth": "1",
-        "discoverday": "5"
+        "discoveryear": 2007,
+        "discoverday": 4,
+        "discovermonth": 1,
+        "host": "NGC 7315",
+        "claimedtype": "Ia",
+        "hvel": "6098",
+        "galra": "223532",
+        "galdec": "+344811",
+        "snra": "22:35:31.10",
+        "sndec": "+34:48:06.6",
+        "discoverer": "Koichi Itagaki",
+        "redshift": 0.021,
+        "maxyear": 2007,
+        "maxmonth": 1,
+        "maxday": 9,
+        "z": 0.0206
     }
 }

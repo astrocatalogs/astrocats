@@ -2,7 +2,8 @@
     "SN2013ef": {
         "name": "SN2013ef",
         "aliases": [
-            "SN2013ef"
+            "SN2013ef",
+            "ASASSN-13bb"
         ],
         "sources": [
             {
@@ -11,33 +12,45 @@
                 "secondary": true
             },
             {
-                "name": "Pro ",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003500/CBET003599.txt'>CBET 3599</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Pro ",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56476.5",
+                "band": "",
+                "abmag": "16.1",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56541.117",
                 "band": "CR",
                 "abmag": "18.3",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
         "discoveryear": 2013,
-        "discoverday": 6,
-        "discovermonth": 9,
+        "discoverday": 3,
+        "discovermonth": 7,
         "host": "UGC 1395",
         "claimedtype": "Ia",
         "hvel": "5184",
         "galra": "015522",
         "galdec": "+063642",
-        "snra": "015520.71",
-        "sndec": "+063635.3",
-        "discoverer": "Stanek et al.",
+        "snra": "01:55:20.71",
+        "sndec": "+06:36:35.3",
+        "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
+        "redshift": 0.015,
         "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 6,
+        "maxmonth": 7,
+        "maxday": 3,
         "z": 0.0174
     }
 }

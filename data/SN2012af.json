@@ -2,21 +2,44 @@
     "SN2012af": {
         "name": "SN2012af",
         "aliases": [
-            "SN2012af"
+            "SN2012af",
+            "MASTER PGC1696336"
         ],
-        "sources": [],
-        "photometry": [],
-        "discoveryear": "2012",
-        "discoverday": "11",
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003000/CBET003026.txt'>CBET 3026</a>",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "55967.5",
+                "band": "",
+                "abmag": "16.5",
+                "source": "2,1"
+            }
+        ],
+        "discoveryear": 2012,
+        "discoverday": 10,
         "discovermonth": 2,
-        "host": "PGC1696336",
+        "host": "PGC 1696336",
         "claimedtype": "Ia",
         "hvel": "14230",
         "galra": "150030",
         "galdec": "+235546",
-        "snra": "150030.87",
-        "sndec": "+235545.1",
-        "discoverer": "Lipunov et al.",
+        "snra": "15:00:30.87",
+        "sndec": "+23:55:45.1",
+        "discoverer": "MASTER",
+        "redshift": 0.053,
+        "maxyear": 2012,
+        "maxmonth": 2,
+        "maxday": 10,
         "z": 0.0486
     }
 }

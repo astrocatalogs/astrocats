@@ -2,7 +2,8 @@
     "SN2013ht": {
         "name": "SN2013ht",
         "aliases": [
-            "SN2013ht"
+            "SN2013ht",
+            "PSN J10555095-0951424"
         ],
         "sources": [
             {
@@ -11,30 +12,42 @@
                 "secondary": true
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003773.txt'>CBET 3773</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
             {
                 "timeunit": "MJD",
+                "time": "56656.5",
+                "band": "",
+                "abmag": "18.9",
+                "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56658.41",
                 "band": "C",
                 "abmag": "17.9",
-                "source": "2,1"
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 1,
-        "discovermonth": 1,
-        "host": "M-02-28-21",
+        "discoveryear": 2013,
+        "discoverday": 30,
+        "discovermonth": 12,
+        "host": "MCG -2-28-21",
         "claimedtype": "II",
         "hvel": "8282",
         "galra": "105549",
         "galdec": "-095136",
-        "snra": "105550.95",
-        "sndec": "-095142.4",
-        "discoverer": "Howerton et al.",
+        "snra": "10:55:50.95",
+        "sndec": "-09:51:42.4",
+        "discoverer": "CRTS",
+        "redshift": 0.02775,
         "maxyear": 2014,
         "maxmonth": 1,
         "maxday": 1,
