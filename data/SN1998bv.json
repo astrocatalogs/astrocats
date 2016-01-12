@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 5,
-        "discovermonth": 4,
+        "discoveryear": "1998",
+        "discoverday": "5",
+        "discovermonth": "4",
         "host": "HS1035+4758",
         "claimedtype": "IIP",
         "hvel": "1500",
@@ -39,9 +39,10 @@
         "snra": "10:38:25.40",
         "sndec": "+47:42:32.8",
         "discoverer": "Kniazev et al.",
-        "maxyear": 1998,
-        "maxmonth": 4,
-        "maxday": 5,
-        "z": 0.00502
+        "maxyear": "1998",
+        "maxmonth": "4",
+        "maxday": "5",
+        "maxappmag": "17.1",
+        "z": "0.00502"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 17,
-        "discovermonth": 10,
+        "discoveryear": "2012",
+        "discoverday": "17",
+        "discovermonth": "10",
         "host": "NGC 3344",
         "claimedtype": "Ic",
         "hvel": "575",
@@ -36,10 +36,13 @@
         "snra": "10:43:34.05",
         "sndec": "+24:53:29.0",
         "discoverer": "Masaki Tsuboi",
-        "redshift": 0.001935,
-        "maxyear": 2012,
-        "maxmonth": 10,
-        "maxday": 17,
-        "z": 0.00192
+        "redshift": "0.001935",
+        "maxyear": "2012",
+        "maxmonth": "10",
+        "maxday": "17",
+        "maxappmag": "15.1",
+        "z": "0.00192",
+        "lumdist": "8.6",
+        "maxabsmag": "-15.0"
     }
 }

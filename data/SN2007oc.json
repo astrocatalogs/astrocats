@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 22,
-        "discovermonth": 10,
+        "discoveryear": "2007",
+        "discoverday": "22",
+        "discovermonth": "10",
         "host": "NGC 7418A",
         "claimedtype": "II",
         "hvel": "2103",
@@ -39,10 +39,13 @@
         "snra": "22:56:41.77",
         "sndec": "-36:46:22.3",
         "discoverer": "CHASE",
-        "redshift": 0.007,
-        "maxyear": 2007,
-        "maxmonth": 10,
-        "maxday": 22,
-        "z": 0.00704
+        "redshift": "0.007000",
+        "maxyear": "2007",
+        "maxmonth": "10",
+        "maxday": "22",
+        "maxappmag": "13.3",
+        "z": "0.00704",
+        "lumdist": "31.0",
+        "maxabsmag": "-19.0"
     }
 }

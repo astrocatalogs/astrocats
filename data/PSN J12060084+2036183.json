@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12060084+2036183.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,17 +35,46 @@
                 "band": "",
                 "abmag": "18.0",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57138.153",
+                "band": "U",
+                "abmag": "18.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57138.349",
+                "band": "C",
+                "abmag": "18.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57149.909",
+                "band": "V",
+                "abmag": "18.01",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57153.272",
+                "band": "U",
+                "abmag": "18.7",
+                "source": "3,1"
             }
         ],
         "host": "NGC 4098",
         "snra": "12:06:00.84",
         "sndec": "+20:36:18.3",
-        "discoverday": 6,
-        "discovermonth": 5,
-        "discoveryear": 2015,
+        "discoverday": "26",
+        "discovermonth": "4",
+        "discoveryear": "2015",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 5,
-        "maxday": 6
+        "maxyear": "2015",
+        "maxmonth": "5",
+        "maxday": "6",
+        "maxappmag": "18.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 30,
-        "discovermonth": 9,
+        "discoveryear": "1999",
+        "discoverday": "30",
+        "discovermonth": "9",
         "host": "MCG -1-8-8",
         "claimedtype": "II",
         "hvel": "7616",
@@ -39,9 +39,10 @@
         "snra": "02:47:06.88",
         "sndec": "-02:57:43.9",
         "discoverer": "Nearby Galaxy Supernova Search",
-        "maxyear": 1999,
-        "maxmonth": 9,
-        "maxday": 30,
-        "z": 0.0257
+        "maxyear": "1999",
+        "maxmonth": "9",
+        "maxday": "30",
+        "maxappmag": "20.4",
+        "z": "0.0257"
     }
 }

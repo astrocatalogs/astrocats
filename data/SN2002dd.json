@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 10,
-        "discovermonth": 5,
+        "discoveryear": "2002",
+        "discoverday": "10",
+        "discovermonth": "5",
         "host": "A123655+6212",
         "claimedtype": "Ia",
         "redshift": "0.95",
@@ -39,8 +39,11 @@
         "snra": "12:36:55.35",
         "sndec": "+62:12:46.1",
         "discoverer": "HST",
-        "maxyear": 2002,
-        "maxmonth": 5,
-        "maxday": 10
+        "maxyear": "2002",
+        "maxmonth": "5",
+        "maxday": "10",
+        "maxappmag": "24.0",
+        "lumdist": "6400.0",
+        "maxabsmag": "-20.0"
     }
 }

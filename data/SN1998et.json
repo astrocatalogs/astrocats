@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51141.16000000015",
+                "time": "51141.16",
                 "band": "C",
                 "abmag": "19",
                 "source": "1,2"
@@ -44,9 +44,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 16,
-        "discovermonth": 11,
+        "discoveryear": "1998",
+        "discoverday": "16",
+        "discovermonth": "11",
         "host": "A065918+5744",
         "claimedtype": "II",
         "hvel": "12100",
@@ -55,10 +55,13 @@
         "snra": "06:59:18.70",
         "sndec": "+57:44:41.0",
         "discoverer": "Jean Mueller",
-        "redshift": 0.04,
-        "maxyear": 1998,
-        "maxmonth": 11,
-        "maxday": 16,
-        "z": 0.0412
+        "redshift": "0.040000",
+        "maxyear": "1998",
+        "maxmonth": "11",
+        "maxday": "16",
+        "maxappmag": "18.0",
+        "z": "0.0412",
+        "lumdist": "180.0",
+        "maxabsmag": "-18.0"
     }
 }

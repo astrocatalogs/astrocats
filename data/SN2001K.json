@@ -31,49 +31,49 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51924.89999999991",
+                "time": "51924.9",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51925.200000000186",
+                "time": "51925.2",
                 "band": "C",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51926.39999999991",
+                "time": "51926.4",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51927.02000000002",
+                "time": "51927.02",
                 "band": "C",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51927.89999999991",
+                "time": "51927.9",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51930.049999999814",
+                "time": "51930.05",
                 "band": "R",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51951.83999999985",
+                "time": "51951.84",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
@@ -86,9 +86,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 15,
-        "discovermonth": 1,
+        "discoveryear": "2001",
+        "discoverday": "15",
+        "discovermonth": "1",
         "host": "IC 677",
         "claimedtype": "II",
         "hvel": "3272",
@@ -97,10 +97,13 @@
         "snra": "11:13:56.09",
         "sndec": "+12:18:06.6",
         "discoverer": "BAO",
-        "redshift": 0.011,
-        "maxyear": 2001,
-        "maxmonth": 1,
-        "maxday": 21,
-        "z": 0.011
+        "redshift": "0.011000",
+        "maxyear": "2001",
+        "maxmonth": "1",
+        "maxday": "21",
+        "maxappmag": "16",
+        "z": "0.011",
+        "lumdist": "49.0",
+        "maxabsmag": "-17.0"
     }
 }

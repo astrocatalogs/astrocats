@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51172.75999999978",
+                "time": "51172.76",
                 "band": "R",
                 "abmag": "17.3",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 25,
-        "discovermonth": 12,
+        "discoveryear": "1998",
+        "discoverday": "25",
+        "discovermonth": "12",
         "host": "NGC 337A",
         "claimedtype": "II",
         "hvel": "388",
@@ -44,9 +44,10 @@
         "snra": "01:01:27.08",
         "sndec": "-07:36:36.7",
         "discoverer": "BAO Supernova Survey",
-        "maxyear": 1998,
-        "maxmonth": 12,
-        "maxday": 25,
-        "z": 0.0013
+        "maxyear": "1998",
+        "maxmonth": "12",
+        "maxday": "25",
+        "maxappmag": "17.3",
+        "z": "0.0013"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 10,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "10",
+        "discovermonth": "11",
         "host": "A005703-2742",
         "claimedtype": "II",
-        "redshift": 0.16,
+        "redshift": "0.160000",
         "galra": "005703",
         "galdec": "-274232",
         "snra": "00:57:03.63",
         "sndec": "-27:42:32.9",
         "discoverer": "G. Altavilla, et. el.",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 10
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "10",
+        "maxappmag": "20.9",
+        "lumdist": "790.0",
+        "maxabsmag": "-19.0"
     }
 }

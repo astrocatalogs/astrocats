@@ -22,7 +22,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "57059.10900000017",
+                "time": "57059.109",
                 "band": "G",
                 "abmag": "17.52",
                 "instrument": "GAIA",
@@ -30,7 +30,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57059.183000000194",
+                "time": "57059.183",
                 "band": "G",
                 "abmag": "17.46",
                 "instrument": "GAIA",
@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57095.64600000018",
+                "time": "57095.646",
                 "band": "G",
                 "abmag": "19.15",
                 "instrument": "GAIA",
@@ -52,16 +52,19 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2015,
+        "discoveryear": "2015",
         "snra": "16:03:30.20",
         "sndec": "+52:15:38.5",
         "claimedtype": "Ia",
-        "discoverday": 5,
-        "discovermonth": 2,
-        "redshift": 0.046,
+        "discoverday": "5",
+        "discovermonth": "2",
+        "redshift": "0.046000",
         "discoverer": "Gaia Photometric Science Alerts programme",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 6
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "6",
+        "maxappmag": "17.46",
+        "lumdist": "210.0",
+        "maxabsmag": "-19.0"
     }
 }

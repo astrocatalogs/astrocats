@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1991,
-        "discoverday": 13,
-        "discovermonth": 2,
+        "discoveryear": "1991",
+        "discoverday": "13",
+        "discovermonth": "2",
         "host": "A052625-5213",
         "claimedtype": "II",
         "hvel": "10800",
@@ -39,9 +39,10 @@
         "snra": "05:26:25.62",
         "sndec": "-52:13:33.0",
         "discoverer": "Robert McNaught",
-        "maxyear": 1991,
-        "maxmonth": 2,
-        "maxday": 13,
-        "z": 0.0367
+        "maxyear": "1991",
+        "maxmonth": "2",
+        "maxday": "13",
+        "maxappmag": "18.5",
+        "z": "0.0367"
     }
 }

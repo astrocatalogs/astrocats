@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J20543194+0002368.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,17 +26,25 @@
                 "band": "",
                 "abmag": "18.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56543.315",
+                "band": "L",
+                "abmag": "19.2",
+                "source": "3,1"
             }
         ],
         "host": "CGCG 374-25",
         "snra": "20:54:31.94",
         "sndec": "+00:02:36.8",
-        "discoverday": 2,
-        "discovermonth": 9,
-        "discoveryear": 2013,
+        "discoverday": "2",
+        "discovermonth": "9",
+        "discoveryear": "2013",
         "discoverer": "Italian Supernovae Search Project",
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 2
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "2",
+        "maxappmag": "18.8"
     }
 }

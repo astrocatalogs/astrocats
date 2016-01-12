@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 21,
-        "discovermonth": 4,
+        "discoveryear": "2009",
+        "discoverday": "21",
+        "discovermonth": "4",
         "host": "A151059+0633",
         "claimedtype": "Ia",
         "hvel": "24900",
@@ -39,10 +39,13 @@
         "snra": "15:10:59.53",
         "sndec": "+06:33:10.0",
         "discoverer": "Canada-France-Hawaii Telescope",
-        "redshift": 0.083,
-        "maxyear": 2009,
-        "maxmonth": 4,
-        "maxday": 21,
-        "z": 0.0868
+        "redshift": "0.083000",
+        "maxyear": "2009",
+        "maxmonth": "4",
+        "maxday": "21",
+        "maxappmag": "19.0",
+        "z": "0.0868",
+        "lumdist": "390.0",
+        "maxabsmag": "-19.0"
     }
 }

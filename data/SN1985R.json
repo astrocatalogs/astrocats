@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1985,
-        "discoverday": 15,
-        "discovermonth": 11,
+        "discoveryear": "1985",
+        "discoverday": "15",
+        "discovermonth": "11",
         "host": "IC 1809",
         "claimedtype": "II",
         "hvel": "5576",
@@ -39,9 +39,10 @@
         "discoverer": "Peters",
         "snra": "02:31:38.5",
         "sndec": "+22:54:58.0",
-        "maxyear": 1985,
-        "maxmonth": 11,
-        "maxday": 15,
-        "z": 0.0188
+        "maxyear": "1985",
+        "maxmonth": "11",
+        "maxday": "15",
+        "maxappmag": "17.4",
+        "z": "0.0188"
     }
 }

@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51520.02000000002",
+                "time": "51520.02",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 8,
-        "discovermonth": 12,
+        "discoveryear": "1999",
+        "discoverday": "8",
+        "discovermonth": "12",
         "host": "MCG +7-8-11",
         "claimedtype": "II",
         "hvel": "4282",
@@ -44,10 +44,13 @@
         "snra": "03:27:58.84",
         "sndec": "+39:54:19.0",
         "discoverer": "Tom Boles",
-        "redshift": 0.015,
-        "maxyear": 1999,
-        "maxmonth": 12,
-        "maxday": 8,
-        "z": 0.0144
+        "redshift": "0.015000",
+        "maxyear": "1999",
+        "maxmonth": "12",
+        "maxday": "8",
+        "maxappmag": "17.8",
+        "z": "0.0144",
+        "lumdist": "67.0",
+        "maxabsmag": "-16.0"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 12,
-        "discovermonth": 5,
+        "discoveryear": "2011",
+        "discoverday": "12",
+        "discovermonth": "5",
         "host": "ESO 595-G8",
         "claimedtype": "II",
         "galra": "200220",
@@ -35,9 +35,12 @@
         "snra": "20:02:20.93",
         "sndec": "-20:13:13.3",
         "discoverer": "CRTS",
-        "redshift": 0.019,
-        "maxyear": 2011,
-        "maxmonth": 5,
-        "maxday": 12
+        "redshift": "0.019000",
+        "maxyear": "2011",
+        "maxmonth": "5",
+        "maxday": "12",
+        "maxappmag": "16.6",
+        "lumdist": "85.0",
+        "maxabsmag": "-18.0"
     }
 }

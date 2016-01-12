@@ -27,13 +27,16 @@
         "claimedtype": "Ia",
         "snra": "12:34:39.95",
         "sndec": "+16:42:39.9",
-        "discoverday": 30,
-        "discovermonth": 3,
-        "discoveryear": 2013,
-        "redshift": 0.12,
+        "discoverday": "30",
+        "discovermonth": "3",
+        "discoveryear": "2013",
+        "redshift": "0.120000",
         "discoverer": "PTF",
-        "maxyear": 2013,
-        "maxmonth": 3,
-        "maxday": 30
+        "maxyear": "2013",
+        "maxmonth": "3",
+        "maxday": "30",
+        "maxappmag": "19.7",
+        "lumdist": "580.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004059.txt'>CBET 4059</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
+            },
+            {
+                "name": "Giapiero Locatelli",
+                "alias": "4"
+            },
+            {
+                "name": "Adriano Valvasori",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,11 +35,32 @@
                 "band": "",
                 "abmag": "17.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57006.22",
+                "band": "R",
+                "abmag": "17.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57010.877",
+                "band": "U",
+                "abmag": "17.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57011.154",
+                "band": "C",
+                "abmag": "17.9",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 21,
-        "discovermonth": 12,
+        "discoveryear": "2014",
+        "discoverday": "15",
+        "discovermonth": "12",
         "host": "NGC 309",
         "claimedtype": "Ib",
         "hvel": "5649",
@@ -36,10 +69,13 @@
         "snra": "00:56:39.65",
         "sndec": "-09:54:02.8",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.02,
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 21,
-        "z": 0.019
+        "redshift": "0.020000",
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "21",
+        "maxappmag": "17.3",
+        "z": "0.019",
+        "lumdist": "90.0",
+        "maxabsmag": "-17.0"
     }
 }

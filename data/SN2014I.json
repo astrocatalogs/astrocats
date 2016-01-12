@@ -47,9 +47,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 19,
-        "discovermonth": 1,
+        "discoveryear": "2014",
+        "discoverday": "19",
+        "discovermonth": "1",
         "host": "ESO 487-G36",
         "claimedtype": "Ia",
         "hvel": "9030",
@@ -58,10 +58,13 @@
         "snra": "05:42:19.80",
         "sndec": "-25:32:39.9",
         "discoverer": "Stu Parker",
-        "redshift": 0.03,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 21,
-        "z": 0.0306
+        "redshift": "0.030000",
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "21",
+        "maxappmag": "16.3",
+        "z": "0.0306",
+        "lumdist": "140.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 2,
-        "discovermonth": 11,
+        "discoveryear": "1999",
+        "discoverday": "2",
+        "discovermonth": "11",
         "host": "A022811+0043",
         "claimedtype": "Ia",
-        "redshift": 0.78,
+        "redshift": "0.780000",
         "galra": "022811",
         "galdec": "+004339",
         "snra": "02:28:11.67",
         "sndec": "+00:43:39.3",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 1999,
-        "maxmonth": 11,
-        "maxday": 2
+        "maxyear": "1999",
+        "maxmonth": "11",
+        "maxday": "2",
+        "maxappmag": "24.1",
+        "lumdist": "5000.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,8 +28,8 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discovermonth": 1,
+        "discoveryear": "1988",
+        "discovermonth": "1",
         "host": "UGC 3933",
         "claimedtype": "Ia",
         "hvel": "5856",
@@ -38,11 +38,14 @@
         "discoverer": "Christian Pollas",
         "snra": "07:37:30.5",
         "sndec": "+41:56:23.0",
-        "discoverday": 20,
-        "redshift": 0.01967,
-        "maxyear": 1988,
-        "maxmonth": 1,
-        "maxday": 20,
-        "z": 0.0197
+        "discoverday": "20",
+        "redshift": "0.019670",
+        "maxyear": "1988",
+        "maxmonth": "1",
+        "maxday": "20",
+        "maxappmag": "17.0",
+        "z": "0.0197",
+        "lumdist": "88.0",
+        "maxabsmag": "-18.0"
     }
 }

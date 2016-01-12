@@ -27,25 +27,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51541.169999999925",
+                "time": "51541.17",
                 "band": "V",
                 "abmag": "22.1",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 29,
-        "discovermonth": 12,
+        "discoveryear": "1999",
+        "discoverday": "29",
+        "discovermonth": "12",
         "host": "A033210-2806",
         "claimedtype": "Ia",
-        "redshift": 0.274,
+        "redshift": "0.274000",
         "galra": "033210",
         "galdec": "-280616",
         "snra": "03:32:10.28",
         "sndec": "-28:06:16.0",
         "discoverer": "OaPd",
-        "maxyear": 1999,
-        "maxmonth": 12,
-        "maxday": 29
+        "maxyear": "1999",
+        "maxmonth": "12",
+        "maxday": "29",
+        "maxappmag": "22.1",
+        "lumdist": "1400.0",
+        "maxabsmag": "-19.0"
     }
 }

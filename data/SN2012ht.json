@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "maxday": 29,
-        "maxmonth": 12,
+        "discoveryear": "2012",
+        "maxday": "29",
+        "maxmonth": "12",
         "host": "NGC 3447",
         "claimedtype": "Ia",
         "hvel": "1048",
@@ -36,10 +36,13 @@
         "snra": "10:53:22.75",
         "sndec": "+16:46:34.9",
         "discoverer": "Koichi Nishiyama and Fujio Kabashima",
-        "discoverday": 29,
-        "discovermonth": 12,
-        "redshift": 0.003559,
-        "maxyear": 2012,
-        "z": 0.0035
+        "discoverday": "29",
+        "discovermonth": "12",
+        "redshift": "0.003559",
+        "maxyear": "2012",
+        "maxappmag": "12.8",
+        "z": "0.0035",
+        "lumdist": "16.0",
+        "maxabsmag": "-18.0"
     }
 }

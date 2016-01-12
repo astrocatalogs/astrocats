@@ -34,6 +34,14 @@
             {
                 "name": "Kunihiro Shima",
                 "alias": "7"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "8"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "9"
             }
         ],
         "photometry": [
@@ -81,15 +89,36 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "57105.7875",
+                "band": "U",
+                "abmag": "15.5",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57106.636",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57108.929",
+                "band": "V",
+                "abmag": "16.61",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57129.725",
                 "band": "U",
                 "abmag": "17.9",
                 "source": "7,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 22,
-        "discovermonth": 3,
+        "discoveryear": "2015",
+        "discoverday": "22",
+        "discovermonth": "3",
         "host": "NGC 6951",
         "claimedtype": "Ibn",
         "hvel": "1331",
@@ -98,10 +127,13 @@
         "snra": "20:37:25.58",
         "sndec": "+66:07:11.5",
         "discoverer": "Kunihiro Shima",
-        "redshift": 0.00475,
-        "maxyear": 2015,
-        "maxmonth": 3,
-        "maxday": 22,
-        "z": 0.00445
+        "redshift": "0.004750",
+        "maxyear": "2015",
+        "maxmonth": "3",
+        "maxday": "22",
+        "maxappmag": "15.5",
+        "z": "0.00445",
+        "lumdist": "21.0",
+        "maxabsmag": "-16.0"
     }
 }

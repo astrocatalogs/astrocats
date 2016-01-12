@@ -609,35 +609,35 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51915.39999999991",
+                "time": "51915.4",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51930.16000000015",
+                "time": "51930.16",
                 "band": "R",
                 "abmag": "16.05",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51930.60999999987",
+                "time": "51930.61",
                 "band": "R",
                 "abmag": "15.7",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51941.00999999978",
+                "time": "51941.01",
                 "band": "R",
                 "abmag": "15.6",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51958.52000000002",
+                "time": "51958.52",
                 "band": "R",
                 "abmag": "17.2",
                 "source": "2,3"
@@ -650,9 +650,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 5,
-        "discovermonth": 1,
+        "discoveryear": "2001",
+        "discoverday": "5",
+        "discovermonth": "1",
         "host": "NGC 3905",
         "claimedtype": "Ia",
         "hvel": "5731",
@@ -661,10 +661,13 @@
         "snra": "11:49:05.00",
         "sndec": "-09:44:10.9",
         "discoverer": "LOTOSS",
-        "redshift": 0.019,
-        "maxyear": 2001,
-        "maxmonth": 2,
-        "maxday": 1,
-        "z": 0.0193
+        "redshift": "0.019000",
+        "maxyear": "2001",
+        "maxmonth": "2",
+        "maxday": "1",
+        "maxappmag": "15.6",
+        "z": "0.0193",
+        "lumdist": "85.0",
+        "maxabsmag": "-19.0"
     }
 }

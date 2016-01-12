@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1990,
-        "discoverday": 17,
-        "discovermonth": 12,
+        "discoveryear": "1990",
+        "discoverday": "17",
+        "discovermonth": "12",
         "host": "NGC 1640",
         "claimedtype": "Ib",
         "hvel": "1602",
@@ -39,9 +39,10 @@
         "snra": "04:42:15.31",
         "sndec": "-20:25:18.0",
         "discoverer": "Robert McNaught",
-        "maxyear": 1990,
-        "maxmonth": 12,
-        "maxday": 17,
-        "z": 0.00536
+        "maxyear": "1990",
+        "maxmonth": "12",
+        "maxday": "17",
+        "maxappmag": "18.0",
+        "z": "0.00536"
     }
 }

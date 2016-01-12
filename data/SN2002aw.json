@@ -728,14 +728,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52320.39000000013",
+                "time": "52320.39",
                 "band": "C",
                 "abmag": "16.6",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52321.470000000205",
+                "time": "52321.47",
                 "band": "C",
                 "abmag": "16.6",
                 "source": "2,3"
@@ -755,9 +755,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 14,
-        "discovermonth": 2,
+        "discoveryear": "2002",
+        "discoverday": "14",
+        "discovermonth": "2",
         "host": "A163729+4052",
         "claimedtype": "Ia",
         "galra": "163729",
@@ -765,8 +765,9 @@
         "snra": "16:37:29.06",
         "sndec": "+40:52:49.0",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2002,
-        "maxmonth": 2,
-        "maxday": 16
+        "maxyear": "2002",
+        "maxmonth": "2",
+        "maxday": "16",
+        "maxappmag": "15.5"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 20,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "20",
+        "discovermonth": "11",
         "host": "A022641-0057",
         "claimedtype": "Ia",
-        "redshift": 0.208,
+        "redshift": "0.208000",
         "galra": "022641",
         "galdec": "-005731",
         "snra": "02:26:41.35",
         "sndec": "-00:57:31.7",
         "discoverer": "SDSS",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 20
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "20",
+        "maxappmag": "20.4",
+        "lumdist": "1100.0",
+        "maxabsmag": "-20.0"
     }
 }

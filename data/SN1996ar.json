@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1996,
-        "discoverday": 19,
-        "discovermonth": 8,
+        "discoveryear": "1996",
+        "discoverday": "19",
+        "discovermonth": "8",
         "host": "A013152-0213",
         "claimedtype": "Ia",
         "hvel": "18000",
@@ -39,9 +39,10 @@
         "snra": "01:31:52.40",
         "sndec": "-02:13:03.0",
         "discoverer": "Christian Pollas",
-        "maxyear": 1996,
-        "maxmonth": 8,
-        "maxday": 19,
-        "z": 0.062
+        "maxyear": "1996",
+        "maxmonth": "8",
+        "maxday": "19",
+        "maxappmag": "18.5",
+        "z": "0.062"
     }
 }

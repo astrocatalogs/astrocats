@@ -14,6 +14,34 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J10234760+3348477.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Robert Koff",
+                "alias": "5"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "6"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "7"
+            },
+            {
+                "name": "MDe",
+                "alias": "8"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "9"
             }
         ],
         "photometry": [
@@ -23,19 +51,92 @@
                 "band": "",
                 "abmag": "17.0",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57066.312",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57068.6484",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57070.1383",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57070.884",
+                "band": "V",
+                "abmag": "17.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57070.918",
+                "band": "Rc",
+                "abmag": "17.44",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57070.954",
+                "band": "CV",
+                "abmag": "17.6",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.902",
+                "band": "V",
+                "abmag": "17.6",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57089.861",
+                "band": "V",
+                "abmag": "19.06",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57099.927",
+                "band": "CV",
+                "abmag": "18.6",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57119.836",
+                "band": "CV",
+                "abmag": "18.7",
+                "source": "8,1"
             }
         ],
         "claimedtype": "IIb",
         "host": "UGC 5623",
         "snra": "10:23:47.60",
         "sndec": "+33:48:47.7",
-        "discoverday": 14,
-        "discovermonth": 2,
-        "discoveryear": 2015,
-        "redshift": 0.034,
+        "discoverday": "13",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.034000",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 14
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "14",
+        "maxappmag": "17.0",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

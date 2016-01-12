@@ -16,8 +16,12 @@
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -30,15 +34,22 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56543.477",
+                "band": "L",
+                "abmag": "18.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56569.506",
                 "band": "UV",
                 "abmag": "19.5",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 5,
-        "discovermonth": 9,
+        "discoveryear": "2013",
+        "discoverday": "5",
+        "discovermonth": "9",
         "host": "MCG +10-11-68",
         "claimedtype": "Ia",
         "hvel": "12727",
@@ -47,10 +58,13 @@
         "snra": "07:31:05.40",
         "sndec": "+57:56:10.8",
         "discoverer": "MASTER",
-        "redshift": 0.04245,
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 5,
-        "z": 0.0434
+        "redshift": "0.042450",
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "5",
+        "maxappmag": "16.7",
+        "z": "0.0434",
+        "lumdist": "190.0",
+        "maxabsmag": "-20.0"
     }
 }

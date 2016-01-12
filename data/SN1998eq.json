@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 14,
-        "discovermonth": 10,
+        "discoveryear": "1998",
+        "discoverday": "14",
+        "discovermonth": "10",
         "host": "A232027+1555",
         "claimedtype": "Ia",
         "redshift": "1.2",
@@ -39,8 +39,11 @@
         "snra": "23:20:27.47",
         "sndec": "+15:55:43.7",
         "discoverer": "EROS collaboration",
-        "maxyear": 1998,
-        "maxmonth": 10,
-        "maxday": 14
+        "maxyear": "1998",
+        "maxmonth": "10",
+        "maxday": "14",
+        "maxappmag": "24.8",
+        "lumdist": "8500.0",
+        "maxabsmag": "-20.0"
     }
 }

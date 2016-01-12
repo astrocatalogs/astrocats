@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 12,
-        "discovermonth": 3,
+        "discoveryear": "2013",
+        "discoverday": "12",
+        "discovermonth": "3",
         "host": "NGC 5604",
         "claimedtype": "IIP",
         "hvel": "2758",
@@ -36,10 +36,13 @@
         "snra": "14:24:42.57",
         "sndec": "-03:12:30.9",
         "discoverer": "Peter Aldous",
-        "redshift": 0.008,
-        "maxyear": 2013,
-        "maxmonth": 3,
-        "maxday": 12,
-        "z": 0.00924
+        "redshift": "0.008000",
+        "maxyear": "2013",
+        "maxmonth": "3",
+        "maxday": "12",
+        "maxappmag": "16.7",
+        "z": "0.00924",
+        "lumdist": "36.0",
+        "maxabsmag": "-16.0"
     }
 }

@@ -39,9 +39,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 3,
-        "discovermonth": 1,
+        "discoveryear": "2010",
+        "discoverday": "3",
+        "discovermonth": "1",
         "host": "PGC 1183175",
         "claimedtype": "Ia",
         "hvel": "7186",
@@ -50,9 +50,10 @@
         "snra": "03:40:43.47",
         "sndec": "+01:03:34.0",
         "discoverer": "LSSSS",
-        "maxyear": 2010,
-        "maxmonth": 1,
-        "maxday": 3,
-        "z": 0.0243
+        "maxyear": "2010",
+        "maxmonth": "1",
+        "maxday": "3",
+        "maxappmag": "17.0",
+        "z": "0.0243"
     }
 }

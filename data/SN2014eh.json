@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004165.txt'>CBET 4165</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,11 +27,18 @@
                 "band": "",
                 "abmag": "15.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56965.425",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 4,
-        "discovermonth": 11,
+        "discoveryear": "2014",
+        "discoverday": "4",
+        "discovermonth": "11",
         "host": "NGC 6907",
         "claimedtype": "Ic",
         "hvel": "3162",
@@ -36,10 +47,13 @@
         "snra": "20:25:03.86",
         "sndec": "-24:49:13.3",
         "discoverer": "LOSS",
-        "redshift": 0.010614,
-        "maxyear": 2014,
-        "maxmonth": 11,
-        "maxday": 4,
-        "z": 0.0106
+        "redshift": "0.010614",
+        "maxyear": "2014",
+        "maxmonth": "11",
+        "maxday": "4",
+        "maxappmag": "15.8",
+        "z": "0.0106",
+        "lumdist": "47.0",
+        "maxabsmag": "-18.0"
     }
 }

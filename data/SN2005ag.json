@@ -2273,19 +2273,22 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
+        "discoveryear": "2005",
         "redshift": "0.080020",
         "snra": "14:56:43.65",
         "sndec": "+09:19:42.5",
-        "discoverday": 9,
-        "discovermonth": 2,
+        "discoverday": "9",
+        "discovermonth": "2",
         "host": "A145643+0919",
         "claimedtype": "Ia",
         "galra": "145643",
         "galdec": "+091942",
         "discoverer": "LOSS",
-        "maxyear": 2005,
-        "maxmonth": 2,
-        "maxday": 9
+        "maxyear": "2005",
+        "maxmonth": "2",
+        "maxday": "9",
+        "maxappmag": "18.2",
+        "lumdist": "380.0",
+        "maxabsmag": "-20.0"
     }
 }

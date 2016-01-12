@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1976,
-        "discoverday": 23,
-        "discovermonth": 10,
+        "discoveryear": "1976",
+        "discoverday": "23",
+        "discovermonth": "10",
         "host": "IC 1801",
         "hvel": "4031",
         "galra": "022812",
@@ -38,9 +38,10 @@
         "discoverer": "Miklos Lovas",
         "snra": "02:28:12.6",
         "sndec": "+19:34:25.0",
-        "maxyear": 1976,
-        "maxmonth": 10,
-        "maxday": 23,
-        "z": 0.0135
+        "maxyear": "1976",
+        "maxmonth": "10",
+        "maxday": "23",
+        "maxappmag": "15.0",
+        "z": "0.0135"
     }
 }

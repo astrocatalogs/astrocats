@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1970,
-        "discoverday": 3,
-        "discovermonth": 6,
+        "discoveryear": "1970",
+        "discoverday": "3",
+        "discovermonth": "6",
         "host": "NGC 5230",
         "hvel": "6852",
         "galra": "133532",
@@ -38,9 +38,10 @@
         "discoverer": "Mnatskanian",
         "snra": "13:35:31.1",
         "sndec": "+13:39:55.0",
-        "maxyear": 1970,
-        "maxmonth": 6,
-        "maxday": 3,
-        "z": 0.0231
+        "maxyear": "1970",
+        "maxmonth": "6",
+        "maxday": "3",
+        "maxappmag": "17.2",
+        "z": "0.0231"
     }
 }

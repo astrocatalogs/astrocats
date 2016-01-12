@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 13,
-        "discovermonth": 11,
+        "discoveryear": "1998",
+        "discoverday": "13",
+        "discovermonth": "11",
         "host": "A005958+1418",
         "claimedtype": "Ia",
-        "redshift": 0.181,
+        "redshift": "0.181000",
         "galra": "005958",
         "galdec": "+141800",
         "snra": "00:59:58.66",
         "sndec": "+14:18:00.4",
         "discoverer": "Wise Observatory Optical Transients Search",
-        "maxyear": 1998,
-        "maxmonth": 11,
-        "maxday": 13
+        "maxyear": "1998",
+        "maxmonth": "11",
+        "maxday": "13",
+        "maxappmag": "19.7",
+        "lumdist": "910.0",
+        "maxabsmag": "-20.0"
     }
 }

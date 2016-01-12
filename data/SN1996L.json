@@ -31,84 +31,84 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50163.200000000186",
+                "time": "50163.2",
                 "band": "B",
                 "abmag": "18.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50163.200000000186",
+                "time": "50163.2",
                 "band": "R",
                 "abmag": "18.53",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50163.200000000186",
+                "time": "50163.2",
                 "band": "V",
                 "abmag": "18.62",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50189.299999999814",
+                "time": "50189.3",
                 "band": "B",
                 "abmag": "19.85",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50189.299999999814",
+                "time": "50189.3",
                 "band": "R",
                 "abmag": "19.01",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50189.299999999814",
+                "time": "50189.3",
                 "band": "V",
                 "abmag": "19.36",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50193.200000000186",
+                "time": "50193.2",
                 "band": "B",
                 "abmag": "20.53",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50193.200000000186",
+                "time": "50193.2",
                 "band": "I",
                 "abmag": "19.36",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50193.200000000186",
+                "time": "50193.2",
                 "band": "R",
                 "abmag": "19.59",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50193.200000000186",
+                "time": "50193.2",
                 "band": "V",
                 "abmag": "19.92",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50214.10000000009",
+                "time": "50214.1",
                 "band": "R",
                 "abmag": "20.15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50215.10000000009",
+                "time": "50215.1",
                 "band": "R",
                 "abmag": "20.2",
                 "source": "1,2"
@@ -157,35 +157,35 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "50405.299999999814",
+                "time": "50405.3",
                 "band": "R",
                 "abmag": "22.43",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50424.299999999814",
+                "time": "50424.3",
                 "band": "R",
                 "abmag": "22.54",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50424.299999999814",
+                "time": "50424.3",
                 "band": "V",
                 "abmag": "23.68",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50479.299999999814",
+                "time": "50479.3",
                 "band": "R",
                 "abmag": "23.22",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50485.299999999814",
+                "time": "50485.3",
                 "band": "R",
                 "abmag": "23.46",
                 "source": "1,2"
@@ -205,9 +205,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1996,
-        "maxday": 18,
-        "maxmonth": 3,
+        "discoveryear": "1996",
+        "maxday": "18",
+        "maxmonth": "3",
         "host": "ESO 266-G10",
         "claimedtype": "IIn",
         "hvel": "9900",
@@ -216,9 +216,10 @@
         "snra": "11:38:37.80",
         "sndec": "-43:25:13.8",
         "discoverer": "Robert McNaught",
-        "discoverday": 18,
-        "discovermonth": 3,
-        "maxyear": 1996,
-        "z": 0.0336
+        "discoverday": "18",
+        "discovermonth": "3",
+        "maxyear": "1996",
+        "maxappmag": "18.5",
+        "z": "0.0336"
     }
 }

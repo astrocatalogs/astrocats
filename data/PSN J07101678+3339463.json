@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J07101678+3339463.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,19 +31,36 @@
                 "band": "",
                 "abmag": "19.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57066.6875",
+                "band": "U",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57067.091",
+                "band": "U",
+                "abmag": "19.0",
+                "source": "4,1"
             }
         ],
         "claimedtype": "IIP",
         "host": "CGCG 176-24",
         "snra": "07:10:16.78",
         "sndec": "+33:39:46.3",
-        "discoverday": 11,
-        "discovermonth": 2,
-        "discoveryear": 2015,
-        "redshift": 0.02924,
+        "discoverday": "11",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.029240",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 11
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "13",
+        "maxappmag": "17.8",
+        "lumdist": "130.0",
+        "maxabsmag": "-18.0"
     }
 }

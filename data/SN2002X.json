@@ -38,56 +38,56 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52283.10000000009",
+                "time": "52283.1",
                 "band": "R",
                 "abmag": "23.88",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52287.91000000015",
+                "time": "52287.91",
                 "band": "R",
                 "abmag": "23.33",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52287.97999999998",
+                "time": "52287.98",
                 "band": "I",
                 "abmag": "21.94",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52288.919999999925",
+                "time": "52288.92",
                 "band": "I",
                 "abmag": "21.69",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52289.10000000009",
+                "time": "52289.1",
                 "band": "R",
                 "abmag": "23.28",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52323.04000000004",
+                "time": "52323.04",
                 "band": "R",
                 "abmag": "27.07",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52323.060000000056",
+                "time": "52323.06",
                 "band": "I",
                 "abmag": "24.23",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52368.810000000056",
+                "time": "52368.81",
                 "band": "I",
                 "abmag": "27.01",
                 "source": "1,2"
@@ -100,18 +100,21 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 8,
-        "discovermonth": 1,
+        "discoveryear": "2002",
+        "discoverday": "8",
+        "discovermonth": "1",
         "host": "A084830+4415",
-        "redshift": 0.856,
+        "redshift": "0.856000",
         "galra": "084830",
         "galdec": "+441535",
         "snra": "08:48:30.54",
         "sndec": "+44:15:35.3",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 2002,
-        "maxmonth": 1,
-        "maxday": 14
+        "maxyear": "2002",
+        "maxmonth": "1",
+        "maxday": "14",
+        "maxappmag": "21.69",
+        "lumdist": "5600.0",
+        "maxabsmag": "-22.0"
     }
 }

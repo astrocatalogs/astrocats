@@ -16,16 +16,20 @@
                 "alias": "2"
             },
             {
-                "name": "Massimiliano Martignoni ",
+                "name": "Thomas Langhans",
                 "alias": "3"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "LLA",
                 "alias": "4"
             },
             {
-                "name": "Manfred Mrotzek",
+                "name": "Massimiliano Martignoni ",
                 "alias": "5"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -38,36 +42,50 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56626.419",
+                "band": "UV",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56633.906",
+                "band": "CV",
+                "abmag": "17.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56628.995",
                 "band": "V",
                 "abmag": "17.4",
-                "source": "3,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56655.364",
                 "band": "UV",
                 "abmag": "17.7",
-                "source": "4,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56678.251",
                 "band": "UV",
                 "abmag": "17.9",
-                "source": "4,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56716.785",
                 "band": "U",
                 "abmag": "17.35",
-                "source": "5,1"
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 29,
-        "discovermonth": 11,
+        "discoveryear": "2013",
+        "discoverday": "29",
+        "discovermonth": "11",
         "host": "PGC 20784",
         "claimedtype": "Ia",
         "hvel": "11420",
@@ -76,10 +94,13 @@
         "snra": "07:21:31.65",
         "sndec": "+55:45:32.1",
         "discoverer": "Xing Gao et al.",
-        "redshift": 0.038126,
-        "maxyear": 2013,
-        "maxmonth": 11,
-        "maxday": 29,
-        "z": 0.0388
+        "redshift": "0.038126",
+        "maxyear": "2013",
+        "maxmonth": "11",
+        "maxday": "29",
+        "maxappmag": "17.2",
+        "z": "0.0388",
+        "lumdist": "170.0",
+        "maxabsmag": "-19.0"
     }
 }

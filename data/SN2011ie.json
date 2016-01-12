@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 16,
-        "discovermonth": 11,
+        "discoveryear": "2011",
+        "discoverday": "16",
+        "discovermonth": "11",
         "host": "A230054+1850",
         "claimedtype": "Ia",
         "hvel": "9300",
@@ -36,10 +36,13 @@
         "snra": "23:00:54.70",
         "sndec": "+18:50:32.2",
         "discoverer": "J. Vales",
-        "redshift": 0.031,
-        "maxyear": 2011,
-        "maxmonth": 11,
-        "maxday": 16,
-        "z": 0.0315
+        "redshift": "0.031000",
+        "maxyear": "2011",
+        "maxmonth": "11",
+        "maxday": "16",
+        "maxappmag": "17.0",
+        "z": "0.0315",
+        "lumdist": "140.0",
+        "maxabsmag": "-19.0"
     }
 }

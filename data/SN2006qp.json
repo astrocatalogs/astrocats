@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 24,
-        "discovermonth": 11,
+        "discoveryear": "2006",
+        "discoverday": "24",
+        "discovermonth": "11",
         "host": "NGC 5735",
         "claimedtype": "IIb",
         "hvel": "3748",
@@ -39,10 +39,13 @@
         "snra": "14:42:30.65",
         "sndec": "+28:43:25.9",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.012,
-        "maxyear": 2006,
-        "maxmonth": 11,
-        "maxday": 24,
-        "z": 0.0126
+        "redshift": "0.012000",
+        "maxyear": "2006",
+        "maxmonth": "11",
+        "maxday": "24",
+        "maxappmag": "17.5",
+        "z": "0.0126",
+        "lumdist": "54.0",
+        "maxabsmag": "-16.0"
     }
 }

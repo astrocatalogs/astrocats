@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 19,
-        "discovermonth": 11,
+        "discoveryear": "2011",
+        "discoverday": "19",
+        "discovermonth": "11",
         "host": "A011348-1241",
         "claimedtype": "Ic",
         "hvel": "14700",
@@ -36,10 +36,13 @@
         "snra": "01:13:47.59",
         "sndec": "-12:41:06.0",
         "discoverer": "Denis Denisenko",
-        "redshift": 0.049,
-        "maxyear": 2011,
-        "maxmonth": 11,
-        "maxday": 19,
-        "z": 0.0503
+        "redshift": "0.049000",
+        "maxyear": "2011",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "17.8",
+        "z": "0.0503",
+        "lumdist": "220.0",
+        "maxabsmag": "-19.0"
     }
 }

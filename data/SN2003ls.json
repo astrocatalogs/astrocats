@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 21,
-        "discovermonth": 12,
+        "discoveryear": "2003",
+        "discoverday": "21",
+        "discovermonth": "12",
         "host": "PGC 11402",
         "claimedtype": "Ia",
         "hvel": "13000",
@@ -39,9 +39,10 @@
         "snra": "03:01:00.37",
         "sndec": "-10:53:32.0",
         "discoverer": "LOSS",
-        "maxyear": 2003,
-        "maxmonth": 12,
-        "maxday": 21,
-        "z": 0.0443
+        "maxyear": "2003",
+        "maxmonth": "12",
+        "maxday": "21",
+        "maxappmag": "16.5",
+        "z": "0.0443"
     }
 }

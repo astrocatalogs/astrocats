@@ -930,15 +930,18 @@
         ],
         "snra": "02:52:58.0",
         "sndec": "+01:36:24.0",
-        "redshift": 0.032,
+        "redshift": "0.032000",
         "ebv": "0.059",
         "claimedtype": "Ia",
-        "discoverday": 30,
-        "discovermonth": 11,
-        "discoveryear": 2012,
+        "discoverday": "30",
+        "discovermonth": "11",
+        "discoveryear": "2012",
         "discoverer": "La Silla-QUEST",
-        "maxyear": 2012,
-        "maxmonth": 12,
-        "maxday": 18
+        "maxyear": "2012",
+        "maxmonth": "12",
+        "maxday": "18",
+        "maxappmag": "17.822",
+        "lumdist": "150.0",
+        "maxabsmag": "-18.0"
     }
 }

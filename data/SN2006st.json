@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 17,
-        "discovermonth": 12,
+        "discoveryear": "2006",
+        "discoverday": "17",
+        "discovermonth": "12",
         "host": "NGC 4017",
         "claimedtype": "II",
         "hvel": "3401",
@@ -39,10 +39,13 @@
         "snra": "11:58:40.97",
         "sndec": "+27:27:37.6",
         "discoverer": "LOSS",
-        "redshift": 0.016,
-        "maxyear": 2006,
-        "maxmonth": 12,
-        "maxday": 17,
-        "z": 0.0114
+        "redshift": "0.016000",
+        "maxyear": "2006",
+        "maxmonth": "12",
+        "maxday": "17",
+        "maxappmag": "18.3",
+        "z": "0.0114",
+        "lumdist": "72.0",
+        "maxabsmag": "-16.0"
     }
 }

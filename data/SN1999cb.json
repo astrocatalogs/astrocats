@@ -27,92 +27,92 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51272.10999999987",
+                "time": "51272.11",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51272.95999999996",
+                "time": "51272.96",
                 "band": "R",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51278.049999999814",
+                "time": "51278.05",
                 "band": "R",
                 "abmag": "15.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51293.060000000056",
+                "time": "51293.06",
                 "band": "R",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51299.060000000056",
+                "time": "51299.06",
                 "band": "R",
                 "abmag": "16.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51303.99000000022",
+                "time": "51303.99",
                 "band": "R",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51306.35000000009",
+                "time": "51306.35",
                 "band": "C",
                 "abmag": "18.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51307.87000000011",
+                "time": "51307.87",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51312.10999999987",
+                "time": "51312.11",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51314.970000000205",
+                "time": "51314.97",
                 "band": "R",
                 "abmag": "18.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51315.97999999998",
+                "time": "51315.98",
                 "band": "R",
                 "abmag": "18.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51333.029999999795",
+                "time": "51333.03",
                 "band": "C",
                 "abmag": "18.8",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 4,
-        "discovermonth": 4,
+        "discoveryear": "1999",
+        "discoverday": "4",
+        "discovermonth": "4",
         "host": "MRK 881",
         "claimedtype": "Ia",
         "hvel": "8671",
@@ -121,9 +121,10 @@
         "snra": "16:25:48.41",
         "sndec": "+40:20:32.49",
         "discoverer": "Odd Trondal",
-        "maxyear": 1999,
-        "maxmonth": 4,
-        "maxday": 10,
-        "z": 0.0294
+        "maxyear": "1999",
+        "maxmonth": "4",
+        "maxday": "10",
+        "maxappmag": "15.7",
+        "z": "0.0294"
     }
 }

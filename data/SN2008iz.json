@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 23,
-        "discovermonth": 3,
+        "discoveryear": "2008",
+        "discoverday": "23",
+        "discovermonth": "3",
         "host": "M82",
         "claimedtype": "II",
         "hvel": "300",
@@ -39,10 +39,13 @@
         "snra": "09:55:51.55",
         "sndec": "+69:40:45.8",
         "discoverer": "Very Large Array",
-        "redshift": 0.0008,
-        "maxyear": 2008,
-        "maxmonth": 3,
-        "maxday": 23,
-        "z": 0.001
+        "redshift": "0.000800",
+        "maxyear": "2008",
+        "maxmonth": "3",
+        "maxday": "23",
+        "maxappmag": "20.0",
+        "z": "0.001",
+        "lumdist": "3.5",
+        "maxabsmag": "-7.7"
     }
 }

@@ -59,28 +59,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "43055.049999999814",
+                "time": "43055.05",
                 "band": "B",
                 "abmag": "17.15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43055.049999999814",
+                "time": "43055.05",
                 "band": "V",
                 "abmag": "17.02",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43071.89999999991",
+                "time": "43071.9",
                 "band": "B",
                 "abmag": "17.62",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43071.89999999991",
+                "time": "43071.9",
                 "band": "V",
                 "abmag": "17.26",
                 "source": "1,2"
@@ -93,9 +93,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1976,
-        "maxday": 23,
-        "maxmonth": 9,
+        "discoveryear": "1976",
+        "maxday": "23",
+        "maxmonth": "9",
         "host": "UGC 2100",
         "claimedtype": "II",
         "hvel": "4370",
@@ -104,9 +104,10 @@
         "discoverer": "Kurochkin",
         "snra": "02:37:37.6",
         "sndec": "+33:39:46.0",
-        "discoverday": 23,
-        "discovermonth": 9,
-        "maxyear": 1976,
-        "z": 0.0147
+        "discoverday": "23",
+        "discovermonth": "9",
+        "maxyear": "1976",
+        "maxappmag": "16.5",
+        "z": "0.0147"
     }
 }

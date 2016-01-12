@@ -716,9 +716,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 16,
-        "discovermonth": 12,
+        "discoveryear": "2005",
+        "discoverday": "16",
+        "discovermonth": "12",
         "host": "UGC 7230",
         "claimedtype": "Ic",
         "hvel": "7102",
@@ -727,9 +727,10 @@
         "snra": "12:13:37.61",
         "sndec": "+16:07:16.2",
         "discoverer": "ROTSE",
-        "maxyear": 2005,
-        "maxmonth": 12,
-        "maxday": 16,
-        "z": 0.024
+        "maxyear": "2005",
+        "maxmonth": "12",
+        "maxday": "16",
+        "maxappmag": "17.2",
+        "z": "0.024"
     }
 }

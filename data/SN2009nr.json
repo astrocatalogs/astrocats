@@ -60,9 +60,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 30,
-        "discovermonth": 12,
+        "discoveryear": "2009",
+        "discoverday": "30",
+        "discovermonth": "12",
         "host": "UGC 8255",
         "claimedtype": "Ia",
         "hvel": "3399",
@@ -71,10 +71,13 @@
         "snra": "13:10:58.94",
         "sndec": "+11:29:29.6",
         "discoverer": "MASTER",
-        "redshift": 0.0112,
-        "maxyear": 2009,
-        "maxmonth": 12,
-        "maxday": 30,
-        "z": 0.0114
+        "redshift": "0.011200",
+        "maxyear": "2009",
+        "maxmonth": "12",
+        "maxday": "30",
+        "maxappmag": "13.1",
+        "z": "0.0114",
+        "lumdist": "50.0",
+        "maxabsmag": "-20.0"
     }
 }

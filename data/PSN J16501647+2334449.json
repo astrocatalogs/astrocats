@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J16501647+2334449.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,17 +35,53 @@
                 "band": "",
                 "abmag": "17.5",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57128.672",
+                "band": "U",
+                "abmag": "17.88",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57129.468",
+                "band": "U",
+                "abmag": "17.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57134.7806",
+                "band": "U",
+                "abmag": "17.8",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57137.124",
+                "band": "L",
+                "abmag": "18.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57153.13",
+                "band": "U",
+                "abmag": "20.7",
+                "source": "4,1"
             }
         ],
         "host": "NGC 6233",
         "snra": "16:50:16.47",
         "sndec": "+23:34:44.9",
-        "discoverday": 16,
-        "discovermonth": 4,
-        "discoveryear": 2015,
+        "discoverday": "16",
+        "discovermonth": "4",
+        "discoveryear": "2015",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 4,
-        "maxday": 16
+        "maxyear": "2015",
+        "maxmonth": "4",
+        "maxday": "16",
+        "maxappmag": "17.5"
     }
 }

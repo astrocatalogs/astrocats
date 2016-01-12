@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51552.99000000022",
+                "time": "51552.99",
                 "band": "C",
                 "abmag": "17.3",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 9,
-        "discovermonth": 1,
+        "discoveryear": "2000",
+        "discoverday": "9",
+        "discovermonth": "1",
         "host": "NGC 3251",
         "claimedtype": "Ia",
         "hvel": "5131",
@@ -44,10 +44,13 @@
         "snra": "10:29:19.20",
         "sndec": "+26:06:20.2",
         "discoverer": "Mark Armstrong",
-        "redshift": 0.018,
-        "maxyear": 2000,
-        "maxmonth": 1,
-        "maxday": 9,
-        "z": 0.0173
+        "redshift": "0.018000",
+        "maxyear": "2000",
+        "maxmonth": "1",
+        "maxday": "9",
+        "maxappmag": "17.3",
+        "z": "0.0173",
+        "lumdist": "81.0",
+        "maxabsmag": "-17.0"
     }
 }

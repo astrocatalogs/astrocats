@@ -81,14 +81,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "46580.799999999814",
+                "time": "46580.8",
                 "band": "B",
                 "abmag": "14.22",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "46581.799999999814",
+                "time": "46581.8",
                 "band": "V",
                 "abmag": "13.85",
                 "source": "1,3"
@@ -137,14 +137,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "46590.799999999814",
+                "time": "46590.8",
                 "band": "B",
                 "abmag": "15.12",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "46590.799999999814",
+                "time": "46590.8",
                 "band": "V",
                 "abmag": "14.05",
                 "source": "1,3"
@@ -465,9 +465,9 @@
                 "source": "6,5"
             }
         ],
-        "discoveryear": 1986,
-        "maxday": 31,
-        "maxmonth": 5,
+        "discoveryear": "1986",
+        "maxday": "31",
+        "maxmonth": "5",
         "host": "M99",
         "claimedtype": "II",
         "hvel": "2412",
@@ -476,9 +476,10 @@
         "snra": "12:18:52.08",
         "sndec": "+14:24:44.4",
         "discoverer": "Carlton Pennypacker",
-        "discoverday": 16,
-        "discovermonth": 5,
-        "maxyear": 1986,
-        "z": 0.00808
+        "discoverday": "16",
+        "discovermonth": "5",
+        "maxyear": "1986",
+        "maxappmag": "13.85",
+        "z": "0.00808"
     }
 }

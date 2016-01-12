@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1981,
-        "discoverday": 2,
-        "discovermonth": 11,
+        "discoveryear": "1981",
+        "discoverday": "2",
+        "discovermonth": "11",
         "host": "M106",
         "claimedtype": "II",
         "hvel": "449",
@@ -39,9 +39,10 @@
         "snra": "12:18:59.46",
         "sndec": "+47:19:31.1",
         "discoverer": "Paul Wild",
-        "maxyear": 1981,
-        "maxmonth": 11,
-        "maxday": 2,
-        "z": 0.0015
+        "maxyear": "1981",
+        "maxmonth": "11",
+        "maxday": "2",
+        "maxappmag": "17.0",
+        "z": "0.0015"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1986,
-        "discoverday": 6,
-        "discovermonth": 12,
+        "discoveryear": "1986",
+        "discoverday": "6",
+        "discovermonth": "12",
         "host": "NGC 7499",
         "claimedtype": "Ib",
         "hvel": "11749",
@@ -39,9 +39,10 @@
         "discoverer": "Cappellaro,",
         "snra": "23:10:24.4",
         "sndec": "+07:35:09.0",
-        "maxyear": 1986,
-        "maxmonth": 12,
-        "maxday": 6,
-        "z": 0.04
+        "maxyear": "1986",
+        "maxmonth": "12",
+        "maxday": "6",
+        "maxappmag": "16.5",
+        "z": "0.04"
     }
 }

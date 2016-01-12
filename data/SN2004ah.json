@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 25,
-        "discovermonth": 2,
+        "discoveryear": "2004",
+        "discoverday": "25",
+        "discovermonth": "2",
         "host": "A104547-0006",
         "claimedtype": "Ia",
-        "redshift": 0.48,
+        "redshift": "0.480000",
         "galra": "104547",
         "galdec": "-000658",
         "snra": "10:45:47.41",
         "sndec": "-00:06:58.1",
         "discoverer": "ESO",
-        "maxyear": 2004,
-        "maxmonth": 2,
-        "maxday": 25
+        "maxyear": "2004",
+        "maxmonth": "2",
+        "maxday": "25",
+        "maxappmag": "23.3",
+        "lumdist": "2800.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -172,9 +172,9 @@
                 "source": "4,2"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 15,
-        "discovermonth": 4,
+        "discoveryear": "2010",
+        "discoverday": "15",
+        "discovermonth": "4",
         "host": "NGC 5177",
         "hvel": "6464",
         "galra": "132924",
@@ -183,10 +183,13 @@
         "sndec": "+11:47:46.4",
         "discoverer": "PTF",
         "claimedtype": "Ia",
-        "redshift": 0.0216,
-        "maxyear": 2010,
-        "maxmonth": 4,
-        "maxday": 15,
-        "z": 0.0218
+        "redshift": "0.021600",
+        "maxyear": "2010",
+        "maxmonth": "4",
+        "maxday": "15",
+        "maxappmag": "15.7",
+        "z": "0.0218",
+        "lumdist": "97.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1963,
-        "maxday": 5,
-        "maxmonth": 12,
+        "discoveryear": "1963",
+        "maxday": "5",
+        "maxmonth": "12",
         "host": "CGCG 385-97",
         "hvel": "9700",
         "galra": "012338",
@@ -38,9 +38,10 @@
         "snra": "01:23:38.06",
         "sndec": "+01:33:43.8",
         "discoverer": "Chavira",
-        "discoverday": 5,
-        "discovermonth": 12,
-        "maxyear": 1963,
-        "z": 0.0329
+        "discoverday": "5",
+        "discovermonth": "12",
+        "maxyear": "1963",
+        "maxappmag": "15.0",
+        "z": "0.0329"
     }
 }

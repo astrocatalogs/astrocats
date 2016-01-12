@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 28,
-        "discovermonth": 11,
+        "discoveryear": "2008",
+        "discoverday": "28",
+        "discovermonth": "11",
         "host": "A073514+3916",
         "claimedtype": "Ia",
-        "redshift": 0.12,
+        "redshift": "0.120000",
         "galra": "073514",
         "galdec": "+391652",
         "snra": "07:35:14.03",
         "sndec": "+39:16:52.1",
         "discoverer": "SNLS",
-        "maxyear": 2008,
-        "maxmonth": 11,
-        "maxday": 28
+        "maxyear": "2008",
+        "maxmonth": "11",
+        "maxday": "28",
+        "maxappmag": "20.4",
+        "lumdist": "580.0",
+        "maxabsmag": "-18.0"
     }
 }

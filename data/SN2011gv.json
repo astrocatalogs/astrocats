@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 23,
-        "discovermonth": 10,
+        "discoveryear": "2011",
+        "discoverday": "23",
+        "discovermonth": "10",
         "host": "IC 4901",
         "claimedtype": "IIP",
         "hvel": "2148",
@@ -36,10 +36,13 @@
         "snra": "19:54:21.42",
         "sndec": "-58:42:39.0",
         "discoverer": "Greg Bock",
-        "redshift": 0.0071,
-        "maxyear": 2011,
-        "maxmonth": 10,
-        "maxday": 23,
-        "z": 0.00719
+        "redshift": "0.007100",
+        "maxyear": "2011",
+        "maxmonth": "10",
+        "maxday": "23",
+        "maxappmag": "14.1",
+        "z": "0.00719",
+        "lumdist": "32.0",
+        "maxabsmag": "-18.0"
     }
 }

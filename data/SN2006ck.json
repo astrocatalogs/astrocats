@@ -356,9 +356,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 19,
-        "discovermonth": 5,
+        "discoveryear": "2006",
+        "discoverday": "19",
+        "discovermonth": "5",
         "host": "UGC 8238",
         "claimedtype": "Ic",
         "hvel": "7313",
@@ -367,9 +367,10 @@
         "snra": "13:09:40.42",
         "sndec": "-01:02:57.2",
         "discoverer": "Mike Schwartz",
-        "maxyear": 2006,
-        "maxmonth": 5,
-        "maxday": 19,
-        "z": 0.0247
+        "maxyear": "2006",
+        "maxmonth": "5",
+        "maxday": "19",
+        "maxappmag": "17.5",
+        "z": "0.0247"
     }
 }

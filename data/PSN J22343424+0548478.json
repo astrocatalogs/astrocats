@@ -13,6 +13,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J22343424+0548478.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Zhijian Xu & Xing Gao",
+                "alias": "3"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -22,19 +34,43 @@
                 "band": "",
                 "abmag": "16.6",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57283.0",
+                "band": "U",
+                "abmag": "18.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57286.889",
+                "band": "V",
+                "abmag": "18.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57288.5715",
+                "band": "U",
+                "abmag": "18.5",
+                "source": "5,1"
             }
         ],
         "claimedtype": "II",
         "host": "NGC 7312",
         "snra": "22:34:34.24",
         "sndec": "+05:48:47.8",
-        "discoverday": 16,
-        "discovermonth": 9,
-        "discoveryear": 2015,
-        "redshift": 0.028,
+        "discoverday": "16",
+        "discovermonth": "9",
+        "discoveryear": "2015",
+        "redshift": "0.028000",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2015,
-        "maxmonth": 9,
-        "maxday": 16
+        "maxyear": "2015",
+        "maxmonth": "9",
+        "maxday": "16",
+        "maxappmag": "16.6",
+        "lumdist": "130.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51877.95999999996",
+                "time": "51877.96",
                 "band": "C",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51878.00999999978",
+                "time": "51878.01",
                 "band": "R",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51878.49000000022",
+                "time": "51878.49",
                 "band": "R",
                 "abmag": "15.9",
                 "source": "1,2"
@@ -59,14 +59,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51878.50999999978",
+                "time": "51878.51",
                 "band": "R",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51879.47999999998",
+                "time": "51879.48",
                 "band": "R",
                 "abmag": "15.8",
                 "source": "1,2"
@@ -87,56 +87,56 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51879.52000000002",
+                "time": "51879.52",
                 "band": "R",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51881.85000000009",
+                "time": "51881.85",
                 "band": "R",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51881.85999999987",
+                "time": "51881.86",
                 "band": "C",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51884.81999999983",
+                "time": "51884.82",
                 "band": "R",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51897.810000000056",
+                "time": "51897.81",
                 "band": "R",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51899.45999999996",
+                "time": "51899.46",
                 "band": "R",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51908.39999999991",
+                "time": "51908.4",
                 "band": "R",
                 "abmag": "16.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51923.39000000013",
+                "time": "51923.39",
                 "band": "R",
                 "abmag": "18.2",
                 "source": "1,2"
@@ -149,9 +149,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 29,
-        "discovermonth": 11,
+        "discoveryear": "2000",
+        "discoverday": "29",
+        "discovermonth": "11",
         "host": "ESO 205-G11",
         "hvel": "8600",
         "galra": "055741",
@@ -159,9 +159,10 @@
         "snra": "05:57:41.95",
         "sndec": "-51:57:48.0",
         "discoverer": "Robin Chassagne",
-        "maxyear": 2000,
-        "maxmonth": 11,
-        "maxday": 29,
-        "z": 0.0291
+        "maxyear": "2000",
+        "maxmonth": "11",
+        "maxday": "29",
+        "maxappmag": "15.8",
+        "z": "0.0291"
     }
 }

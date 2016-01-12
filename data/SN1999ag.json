@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 11,
-        "discovermonth": 2,
+        "discoveryear": "1999",
+        "discoverday": "11",
+        "discovermonth": "2",
         "host": "A121522-0518",
         "claimedtype": "II",
         "hvel": "29640",
@@ -39,10 +39,13 @@
         "snra": "12:15:22.81",
         "sndec": "-05:18:12.4",
         "discoverer": "EROS collaboration",
-        "redshift": 0.0988,
-        "maxyear": 1999,
-        "maxmonth": 2,
-        "maxday": 11,
-        "z": 0.104
+        "redshift": "0.098800",
+        "maxyear": "1999",
+        "maxmonth": "2",
+        "maxday": "11",
+        "maxappmag": "20.7",
+        "z": "0.104",
+        "lumdist": "470.0",
+        "maxabsmag": "-18.0"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 1,
-        "discovermonth": 6,
+        "discoveryear": "2013",
+        "discoverday": "1",
+        "discovermonth": "6",
         "host": "ESO 445-G56",
         "claimedtype": "Ia",
         "hvel": "5670",
@@ -36,10 +36,13 @@
         "snra": "13:50:52.85",
         "sndec": "-30:17:09.7",
         "discoverer": "E. Conseil",
-        "redshift": 0.022,
-        "maxyear": 2013,
-        "maxmonth": 6,
-        "maxday": 1,
-        "z": 0.0191
+        "redshift": "0.022000",
+        "maxyear": "2013",
+        "maxmonth": "6",
+        "maxday": "1",
+        "maxappmag": "16.1",
+        "z": "0.0191",
+        "lumdist": "99.0",
+        "maxabsmag": "-19.0"
     }
 }

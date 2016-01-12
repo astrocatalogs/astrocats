@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 5,
-        "discovermonth": 11,
+        "discoveryear": "1988",
+        "discoverday": "5",
+        "discovermonth": "11",
         "host": "PGC0072027",
         "claimedtype": "Ia",
         "hvel": "9667",
@@ -39,9 +39,10 @@
         "discoverer": "Candeo",
         "snra": "23:39:12.5",
         "sndec": "+26:44:44.0",
-        "maxyear": 1988,
-        "maxmonth": 11,
-        "maxday": 5,
-        "z": 0.0328
+        "maxyear": "1988",
+        "maxmonth": "11",
+        "maxday": "5",
+        "maxappmag": "16.5",
+        "z": "0.0328"
     }
 }

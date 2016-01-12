@@ -24,9 +24,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 2,
-        "discovermonth": 10,
+        "discoveryear": "2011",
+        "discoverday": "2",
+        "discovermonth": "10",
         "host": "A012946+1852",
         "claimedtype": "IIn-pec",
         "hvel": "17880",
@@ -35,10 +35,13 @@
         "snra": "01:29:45.8",
         "sndec": "+18:53:07.2",
         "discoverer": "ROTSE",
-        "redshift": 0.0596,
-        "maxyear": 2011,
-        "maxmonth": 10,
-        "maxday": 2,
-        "z": 0.0615
+        "redshift": "0.059600",
+        "maxyear": "2011",
+        "maxmonth": "10",
+        "maxday": "2",
+        "maxappmag": "17.7",
+        "z": "0.0615",
+        "lumdist": "280.0",
+        "maxabsmag": "-20.0"
     }
 }

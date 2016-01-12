@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 6,
-        "discovermonth": 11,
+        "discoveryear": "1988",
+        "discoverday": "6",
+        "discovermonth": "11",
         "host": "ESO 293-G34",
         "hvel": "1562",
         "galra": "000620",
@@ -38,9 +38,10 @@
         "snra": "00:06:21.74",
         "sndec": "-41:28:59.9",
         "discoverer": "Robert Evans",
-        "maxyear": 1988,
-        "maxmonth": 11,
-        "maxday": 6,
-        "z": 0.00522
+        "maxyear": "1988",
+        "maxmonth": "11",
+        "maxday": "6",
+        "maxappmag": "16.0",
+        "z": "0.00522"
     }
 }

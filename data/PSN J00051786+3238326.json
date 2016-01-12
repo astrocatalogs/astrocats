@@ -1,0 +1,35 @@
+{
+    "PSN J00051786+3238326": {
+        "name": "PSN J00051786+3238326",
+        "aliases": [
+            "PSN J00051786+3238326"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "LSSS-SSP",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56538.919",
+                "band": "U",
+                "abmag": "18.7",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "3",
+        "maxappmag": "18.7",
+        "discoveryear": "2013",
+        "discovermonth": "9",
+        "discoverday": "3"
+    }
+}

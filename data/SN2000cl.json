@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51690.66000000015",
+                "time": "51690.66",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51691.720000000205",
+                "time": "51691.72",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "1,2"
@@ -52,28 +52,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51694.79000000004",
+                "time": "51694.79",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51697.700000000186",
+                "time": "51697.7",
                 "band": "R",
                 "abmag": "15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51697.75999999978",
+                "time": "51697.76",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51700.75999999978",
+                "time": "51700.76",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "1,2"
@@ -86,9 +86,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 26,
-        "discovermonth": 5,
+        "discoveryear": "2000",
+        "discoverday": "26",
+        "discovermonth": "5",
         "host": "NGC 3318",
         "claimedtype": "IIn",
         "hvel": "2768",
@@ -97,9 +97,10 @@
         "snra": "10:37:16.07",
         "sndec": "-41:37:47.8",
         "discoverer": "Robin Chassagne",
-        "maxyear": 2000,
-        "maxmonth": 5,
-        "maxday": 28,
-        "z": 0.00928
+        "maxyear": "2000",
+        "maxmonth": "5",
+        "maxday": "28",
+        "maxappmag": "14.4",
+        "z": "0.00928"
     }
 }

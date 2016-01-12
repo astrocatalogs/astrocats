@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52693.54000000004",
+                "time": "52693.54",
                 "band": "C",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52707.35999999987",
+                "time": "52707.36",
                 "band": "C",
                 "abmag": "19.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52722.16000000015",
+                "time": "52722.16",
                 "band": "C",
                 "abmag": "20.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52724.14000000013",
+                "time": "52724.14",
                 "band": "C",
                 "abmag": "20.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52725.14000000013",
+                "time": "52725.14",
                 "band": "C",
                 "abmag": "19.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52730.220000000205",
+                "time": "52730.22",
                 "band": "C",
                 "abmag": "20.2",
                 "source": "1,2"
@@ -79,17 +79,18 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 23,
-        "discovermonth": 2,
+        "discoveryear": "2003",
+        "discoverday": "23",
+        "discovermonth": "2",
         "host": "A105302-0041",
         "galra": "105302",
         "galdec": "-004103",
         "snra": "10:53:02.668",
         "sndec": "-00:41:03.99",
         "discoverer": "Nearby Supernova Factory",
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 23
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "23",
+        "maxappmag": "19.2"
     }
 }

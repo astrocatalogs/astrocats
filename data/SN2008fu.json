@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 24,
-        "discovermonth": 9,
+        "discoveryear": "2008",
+        "discoverday": "24",
+        "discovermonth": "9",
         "host": "ESO 480-IG21",
         "claimedtype": "Ia",
         "hvel": "15711",
@@ -39,10 +39,13 @@
         "snra": "03:02:28.50",
         "sndec": "-24:27:21.5",
         "discoverer": "LOSS",
-        "redshift": 0.0524,
-        "maxyear": 2008,
-        "maxmonth": 9,
-        "maxday": 24,
-        "z": 0.0539
+        "redshift": "0.052400",
+        "maxyear": "2008",
+        "maxmonth": "9",
+        "maxday": "24",
+        "maxappmag": "17.6",
+        "z": "0.0539",
+        "lumdist": "240.0",
+        "maxabsmag": "-19.0"
     }
 }

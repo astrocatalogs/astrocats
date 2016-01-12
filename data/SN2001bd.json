@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 18,
-        "discovermonth": 4,
+        "discoveryear": "2001",
+        "discoverday": "18",
+        "discovermonth": "4",
         "host": "A191310-6417",
         "claimedtype": "II",
         "hvel": "28800",
@@ -39,10 +39,13 @@
         "snra": "19:13:10.97",
         "sndec": "-64:17:07.0",
         "discoverer": "ESO",
-        "redshift": 0.096,
-        "maxyear": 2001,
-        "maxmonth": 4,
-        "maxday": 18,
-        "z": 0.101
+        "redshift": "0.096000",
+        "maxyear": "2001",
+        "maxmonth": "4",
+        "maxday": "18",
+        "maxappmag": "22.6",
+        "z": "0.101",
+        "lumdist": "460.0",
+        "maxabsmag": "-16.0"
     }
 }

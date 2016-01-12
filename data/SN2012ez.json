@@ -24,19 +24,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 7,
-        "discovermonth": 9,
+        "discoveryear": "2012",
+        "discoverday": "7",
+        "discovermonth": "9",
         "host": "A033516-2729",
         "claimedtype": "Ia",
-        "redshift": 0.348,
+        "redshift": "0.348000",
         "galra": "033516",
         "galdec": "-272949",
         "snra": "03:35:16.368",
         "sndec": "-27:29:49.21",
         "discoverer": "SUDARE/VOICE collaboration",
-        "maxyear": 2012,
-        "maxmonth": 9,
-        "maxday": 7
+        "maxyear": "2012",
+        "maxmonth": "9",
+        "maxday": "7",
+        "maxappmag": "23.2",
+        "lumdist": "1900.0",
+        "maxabsmag": "-18.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 22,
-        "discovermonth": 11,
+        "discoveryear": "2004",
+        "discoverday": "22",
+        "discovermonth": "11",
         "host": "IC 701",
         "claimedtype": "IIb",
         "hvel": "6182",
@@ -39,9 +39,10 @@
         "snra": "11:30:59.63",
         "sndec": "+20:28:06.8",
         "discoverer": "LOSS",
-        "maxyear": 2004,
-        "maxmonth": 11,
-        "maxday": 22,
-        "z": 0.0208
+        "maxyear": "2004",
+        "maxmonth": "11",
+        "maxday": "22",
+        "maxappmag": "18.4",
+        "z": "0.0208"
     }
 }

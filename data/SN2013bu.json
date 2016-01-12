@@ -36,9 +36,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 23,
-        "discovermonth": 5,
+        "discoveryear": "2013",
+        "discoverday": "23",
+        "discovermonth": "5",
         "host": "NGC 7331",
         "claimedtype": "II",
         "hvel": "821",
@@ -47,10 +47,13 @@
         "snra": "22:37:02.17",
         "sndec": "+34:24:05.2",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.002722,
-        "maxyear": 2013,
-        "maxmonth": 5,
-        "maxday": 23,
-        "z": 0.00274
+        "redshift": "0.002722",
+        "maxyear": "2013",
+        "maxmonth": "5",
+        "maxday": "23",
+        "maxappmag": "15.9",
+        "z": "0.00274",
+        "lumdist": "12.0",
+        "maxabsmag": "-15.0"
     }
 }

@@ -16,12 +16,28 @@
                 "alias": "2"
             },
             {
-                "name": "Nor Schramm",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Riccardo Mancini",
                 "alias": "4"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "5"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "6"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "7"
+            },
+            {
+                "name": "Nor Schramm",
+                "alias": "8"
             }
         ],
         "photometry": [
@@ -34,36 +50,71 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56765.236",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56764.858",
+                "band": "U",
+                "abmag": "16.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56764.93",
+                "band": "V",
+                "abmag": "15.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56765.849",
+                "band": "R",
+                "abmag": "15.20",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.107",
+                "band": "U",
+                "abmag": "16.4",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56768.049",
                 "band": "U",
                 "abmag": "13.65",
-                "source": "3,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56769.05",
                 "band": "U",
                 "abmag": "13.64",
-                "source": "3,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56772.042",
                 "band": "U",
                 "abmag": "13.81",
-                "source": "3,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56780.124",
                 "band": "U",
                 "abmag": "17.4",
-                "source": "4,1"
+                "source": "7,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 17,
-        "discovermonth": 4,
+        "discoveryear": "2014",
+        "discoverday": "17",
+        "discovermonth": "4",
         "host": "NGC 2615",
         "claimedtype": "Ia",
         "hvel": "4097",
@@ -72,10 +123,13 @@
         "snra": "08:34:33.32",
         "sndec": "-02:32:36.1",
         "discoverer": "LOSS",
-        "redshift": 0.014,
-        "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 22,
-        "z": 0.0138
+        "redshift": "0.014000",
+        "maxyear": "2014",
+        "maxmonth": "4",
+        "maxday": "22",
+        "maxappmag": "13.64",
+        "z": "0.0138",
+        "lumdist": "63.0",
+        "maxabsmag": "-20.0"
     }
 }

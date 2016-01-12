@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 6,
-        "discovermonth": 4,
+        "discoveryear": "2002",
+        "discoverday": "6",
+        "discovermonth": "4",
         "host": "A135203-1143",
         "claimedtype": "II",
         "hvel": "26100",
@@ -39,10 +39,13 @@
         "snra": "13:52:03.67",
         "sndec": "-11:43:08.5",
         "discoverer": "G. Altavilla, et. el.",
-        "redshift": 0.087,
-        "maxyear": 2002,
-        "maxmonth": 4,
-        "maxday": 6,
-        "z": 0.0912
+        "redshift": "0.087000",
+        "maxyear": "2002",
+        "maxmonth": "4",
+        "maxday": "6",
+        "maxappmag": "22.3",
+        "z": "0.0912",
+        "lumdist": "410.0",
+        "maxabsmag": "-16.0"
     }
 }

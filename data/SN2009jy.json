@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 13,
-        "discovermonth": 10,
+        "discoveryear": "2009",
+        "discoverday": "13",
+        "discovermonth": "10",
         "host": "NGC 3208",
         "claimedtype": "Ic",
         "hvel": "3007",
@@ -39,10 +39,13 @@
         "snra": "10:19:39.25",
         "sndec": "-25:49:21.9",
         "discoverer": "Ralph Martin",
-        "redshift": 0.0097,
-        "maxyear": 2009,
-        "maxmonth": 10,
-        "maxday": 13,
-        "z": 0.0101
+        "redshift": "0.009700",
+        "maxyear": "2009",
+        "maxmonth": "10",
+        "maxday": "13",
+        "maxappmag": "17.2",
+        "z": "0.0101",
+        "lumdist": "43.0",
+        "maxabsmag": "-16.0"
     }
 }

@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51511.00999999978",
+                "time": "51511.01",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 29,
-        "discovermonth": 11,
+        "discoveryear": "1999",
+        "discoverday": "29",
+        "discovermonth": "11",
         "host": "UGC 5515",
         "claimedtype": "Ia",
         "hvel": "13438",
@@ -44,9 +44,10 @@
         "snra": "10:13:37.00",
         "sndec": "-00:56:09.6",
         "discoverer": "LOSS",
-        "maxyear": 1999,
-        "maxmonth": 11,
-        "maxday": 29,
-        "z": 0.0459
+        "maxyear": "1999",
+        "maxmonth": "11",
+        "maxday": "29",
+        "maxappmag": "17.5",
+        "z": "0.0459"
     }
 }

@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J08595594-0725103.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,19 +27,36 @@
                 "band": "",
                 "abmag": "17.4",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56658.415",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.266",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "3,1"
             }
         ],
         "claimedtype": "II",
         "host": "MCG -1-23-16",
         "snra": "08:59:55.94",
         "sndec": "-07:25:10.3",
-        "discoverday": 30,
-        "discovermonth": 12,
-        "discoveryear": 2013,
-        "redshift": 0.02,
+        "discoverday": "30",
+        "discovermonth": "12",
+        "discoveryear": "2013",
+        "redshift": "0.020000",
         "discoverer": "CRTS",
-        "maxyear": 2013,
-        "maxmonth": 12,
-        "maxday": 30
+        "maxyear": "2013",
+        "maxmonth": "12",
+        "maxday": "30",
+        "maxappmag": "17.4",
+        "lumdist": "90.0",
+        "maxabsmag": "-17.0"
     }
 }

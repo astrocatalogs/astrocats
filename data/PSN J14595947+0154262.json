@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J14595947+0154262.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,19 +31,57 @@
                 "band": "",
                 "abmag": "15.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56799.334",
+                "band": "C",
+                "abmag": "20.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56815.004",
+                "band": "L",
+                "abmag": "18.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56829.244",
+                "band": "U",
+                "abmag": "16.72",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56858.154",
+                "band": "V",
+                "abmag": "16.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56891.129",
+                "band": "U",
+                "abmag": "17.6",
+                "source": "4,1"
             }
         ],
         "claimedtype": "IIn-pec",
         "host": "NGC 5806",
         "snra": "14:59:59.47",
         "sndec": "+01:54:26.2",
-        "discoverday": 20,
-        "discovermonth": 6,
-        "discoveryear": 2014,
-        "redshift": 0.004533,
+        "discoverday": "22",
+        "discovermonth": "5",
+        "discoveryear": "2014",
+        "redshift": "0.004533",
         "discoverer": "CRTS",
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 20
+        "maxyear": "2014",
+        "maxmonth": "6",
+        "maxday": "20",
+        "maxappmag": "15.7",
+        "lumdist": "20.0",
+        "maxabsmag": "-16.0"
     }
 }

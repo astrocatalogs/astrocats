@@ -995,19 +995,22 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
+        "discoveryear": "2005",
         "snra": "02:33:54.13",
         "sndec": "+00:16:50.6",
-        "redshift": 0.36,
-        "discoverday": 3,
-        "discovermonth": 9,
+        "redshift": "0.360000",
+        "discoverday": "3",
+        "discovermonth": "9",
         "host": "A023354+0016",
         "claimedtype": "Ia",
         "galra": "023354",
         "galdec": "+001650",
         "discoverer": "Nearby Supernova Factory",
-        "maxyear": 2005,
-        "maxmonth": 10,
-        "maxday": 25
+        "maxyear": "2005",
+        "maxmonth": "10",
+        "maxday": "25",
+        "maxappmag": "20.726",
+        "lumdist": "2000.0",
+        "maxabsmag": "-21.0"
     }
 }

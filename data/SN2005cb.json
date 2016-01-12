@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 21,
-        "discovermonth": 5,
+        "discoveryear": "2005",
+        "discoverday": "21",
+        "discovermonth": "5",
         "host": "NGC 6753",
         "claimedtype": "Ic",
         "hvel": "3142",
@@ -39,9 +39,10 @@
         "snra": "19:11:21.95",
         "sndec": "-57:02:27.4",
         "discoverer": "Brazilian Supernovae Search",
-        "maxyear": 2005,
-        "maxmonth": 5,
-        "maxday": 21,
-        "z": 0.0105
+        "maxyear": "2005",
+        "maxmonth": "5",
+        "maxday": "21",
+        "maxappmag": "15.8",
+        "z": "0.0105"
     }
 }

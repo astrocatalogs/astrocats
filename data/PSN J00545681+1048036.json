@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J00545681+1048036.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,18 +31,35 @@
                 "band": "",
                 "abmag": "18.2",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57333.878",
+                "band": "CR",
+                "abmag": "18.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57341.6729",
+                "band": "U",
+                "abmag": "19.5",
+                "source": "4,1"
             }
         ],
         "claimedtype": "Ia",
         "snra": "00:54:56.81",
         "sndec": "+10:48:03.6",
-        "discoverday": 4,
-        "discovermonth": 11,
-        "discoveryear": 2015,
-        "redshift": 0.089,
+        "discoverday": "4",
+        "discovermonth": "11",
+        "discoveryear": "2015",
+        "redshift": "0.089000",
         "discoverer": "J. Vales",
-        "maxyear": 2015,
-        "maxmonth": 11,
-        "maxday": 4
+        "maxyear": "2015",
+        "maxmonth": "11",
+        "maxday": "4",
+        "maxappmag": "18.2",
+        "lumdist": "420.0",
+        "maxabsmag": "-20.0"
     }
 }

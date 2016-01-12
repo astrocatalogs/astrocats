@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1980,
-        "discoverday": 29,
-        "discovermonth": 10,
+        "discoveryear": "1980",
+        "discoverday": "29",
+        "discovermonth": "10",
         "host": "NGC 1255",
         "claimedtype": "II",
         "hvel": "1690",
@@ -39,9 +39,10 @@
         "discoverer": "Schuster",
         "snra": "03:13:27.0",
         "sndec": "-25:44:31.0",
-        "maxyear": 1980,
-        "maxmonth": 10,
-        "maxday": 29,
-        "z": 0.00565
+        "maxyear": "1980",
+        "maxmonth": "10",
+        "maxday": "29",
+        "maxappmag": "13.0",
+        "z": "0.00565"
     }
 }

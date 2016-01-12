@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52644.299999999814",
+                "time": "52644.3",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52646.299999999814",
+                "time": "52646.3",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 4,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "4",
+        "discovermonth": "1",
         "host": "MCG -4-12-4",
         "claimedtype": "II",
         "hvel": "4409",
@@ -62,9 +62,10 @@
         "snra": "04:39:10.888",
         "sndec": "-24:10:36.59",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 5,
-        "z": 0.0148
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "5",
+        "maxappmag": "17",
+        "z": "0.0148"
     }
 }

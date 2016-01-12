@@ -16,12 +16,16 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Kunihiro Shima",
                 "alias": "3"
             },
             {
-                "name": "Wim Cuppens",
+                "name": "Joseph Brimacombe",
                 "alias": "4"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,22 +38,29 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "57042.4958",
+                "band": "U",
+                "abmag": "15.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57042.49",
                 "band": "C",
                 "abmag": "18.2",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57046.47",
                 "band": "R",
                 "abmag": "17.0",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 17,
-        "discovermonth": 1,
+        "discoveryear": "2015",
+        "discoverday": "17",
+        "discovermonth": "1",
         "host": "NGC 5020",
         "claimedtype": "II",
         "hvel": "3360",
@@ -58,10 +69,13 @@
         "snra": "13:12:41.16",
         "sndec": "+12:36:01.8",
         "discoverer": "Xing Gao et al.",
-        "redshift": 0.011,
-        "maxyear": 2015,
-        "maxmonth": 1,
-        "maxday": 24,
-        "z": 0.0113
+        "redshift": "0.011000",
+        "maxyear": "2015",
+        "maxmonth": "1",
+        "maxday": "20",
+        "maxappmag": "15.9",
+        "z": "0.0113",
+        "lumdist": "49.0",
+        "maxabsmag": "-18.0"
     }
 }

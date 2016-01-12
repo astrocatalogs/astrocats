@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=7618'>ATEL 7618</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,19 +31,36 @@
                 "band": "",
                 "abmag": "18.6",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57185.564",
+                "band": "C",
+                "abmag": "19.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57186.841",
+                "band": "R",
+                "abmag": "19.1",
+                "source": "4,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "PGC 52589",
         "snra": "14:43:26.01",
         "sndec": "+57:25:41.2",
-        "discoverday": 8,
-        "discovermonth": 6,
-        "discoveryear": 2015,
-        "redshift": 0.06797,
+        "discoverday": "8",
+        "discovermonth": "6",
+        "discoveryear": "2015",
+        "redshift": "0.067970",
         "discoverer": "MASTER",
-        "maxyear": 2015,
-        "maxmonth": 6,
-        "maxday": 8
+        "maxyear": "2015",
+        "maxmonth": "6",
+        "maxday": "8",
+        "maxappmag": "18.6",
+        "lumdist": "320.0",
+        "maxabsmag": "-19.0"
     }
 }

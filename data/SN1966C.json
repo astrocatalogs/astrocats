@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1966,
-        "maxday": 20,
-        "maxmonth": 1,
+        "discoveryear": "1966",
+        "maxday": "20",
+        "maxmonth": "1",
         "host": "GIN 578",
         "hvel": "10344",
         "galra": "162909",
@@ -38,9 +38,10 @@
         "discoverer": "Rudnicki",
         "snra": "16:29:11.2",
         "sndec": "+40:59:34.0",
-        "discoverday": 20,
-        "discovermonth": 1,
-        "maxyear": 1966,
-        "z": 0.0351
+        "discoverday": "20",
+        "discovermonth": "1",
+        "maxyear": "1966",
+        "maxappmag": "16.8",
+        "z": "0.0351"
     }
 }

@@ -264,9 +264,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 24,
-        "discovermonth": 11,
+        "discoveryear": "2006",
+        "discoverday": "24",
+        "discovermonth": "11",
         "host": "UGC 6588",
         "claimedtype": "Ia",
         "hvel": "4038",
@@ -275,9 +275,10 @@
         "snra": "11:37:13.10",
         "sndec": "+15:26:07.3",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2006,
-        "maxmonth": 11,
-        "maxday": 24,
-        "z": 0.0136
+        "maxyear": "2006",
+        "maxmonth": "11",
+        "maxday": "24",
+        "maxappmag": "16.1",
+        "z": "0.0136"
     }
 }

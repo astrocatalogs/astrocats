@@ -43,49 +43,49 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "38141.89999999991",
+                "time": "38141.9",
                 "band": "B",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "38146.95999999996",
+                "time": "38146.96",
                 "band": "B",
                 "abmag": "14.3",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "38163.799999999814",
+                "time": "38163.8",
                 "band": "B",
                 "abmag": "14.03",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38165.799999999814",
+                "time": "38165.8",
                 "band": "B",
                 "abmag": "14.26",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38165.89999999991",
+                "time": "38165.9",
                 "band": "B",
                 "abmag": "14.32",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38167.799999999814",
+                "time": "38167.8",
                 "band": "B",
                 "abmag": "14.6",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38169.89999999991",
+                "time": "38169.9",
                 "band": "B",
                 "abmag": "14.3",
                 "source": "1,2"
@@ -106,49 +106,49 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "38170.799999999814",
+                "time": "38170.8",
                 "band": "B",
                 "abmag": "14.94",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38171.799999999814",
+                "time": "38171.8",
                 "band": "B",
                 "abmag": "15.08",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38172.89999999991",
+                "time": "38172.9",
                 "band": "B",
                 "abmag": "15.34",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38174.799999999814",
+                "time": "38174.8",
                 "band": "B",
                 "abmag": "15.48",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38175.799999999814",
+                "time": "38175.8",
                 "band": "B",
                 "abmag": "15.6",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38190.799999999814",
+                "time": "38190.8",
                 "band": "B",
                 "abmag": "16.3",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "38196.799999999814",
+                "time": "38196.8",
                 "band": "B",
                 "abmag": "16.3",
                 "source": "1,4"
@@ -161,9 +161,9 @@
                 "source": "7,6"
             }
         ],
-        "discoveryear": 1963,
-        "maxday": 21,
-        "maxmonth": 5,
+        "discoveryear": "1963",
+        "maxday": "21",
+        "maxmonth": "5",
         "host": "NGC 4178",
         "claimedtype": "Ia",
         "hvel": "376",
@@ -172,9 +172,10 @@
         "snra": "12:12:45.61",
         "sndec": "+10:51:30.8",
         "discoverer": "Zaytseva",
-        "discoverday": 22,
-        "discovermonth": 4,
-        "maxyear": 1963,
-        "z": 0.00125
+        "discoverday": "22",
+        "discovermonth": "4",
+        "maxyear": "1963",
+        "maxappmag": "13.93",
+        "z": "0.00125"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1989,
-        "discoverday": 6,
-        "discovermonth": 12,
+        "discoveryear": "1989",
+        "discoverday": "6",
+        "discovermonth": "12",
         "host": "UGC 5295",
         "claimedtype": "II",
         "hvel": "4786",
@@ -39,9 +39,10 @@
         "snra": "09:52:52.10",
         "sndec": "+42:51:30.0",
         "discoverer": "Jean Mueller",
-        "maxyear": 1989,
-        "maxmonth": 12,
-        "maxday": 6,
-        "z": 0.0161
+        "maxyear": "1989",
+        "maxmonth": "12",
+        "maxday": "6",
+        "maxappmag": "17.0",
+        "z": "0.0161"
     }
 }

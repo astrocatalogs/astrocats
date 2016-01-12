@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J09495513+3441474.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "5"
+            },
+            {
+                "name": "Xavier Bros",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,17 +39,53 @@
                 "band": "",
                 "abmag": "18.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56717.994",
+                "band": "CR",
+                "abmag": "18.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56720.425",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56723.942",
+                "band": "L",
+                "abmag": "18.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56724.0335",
+                "band": "CR",
+                "abmag": "17.62",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.25",
+                "band": "U",
+                "abmag": "19.9",
+                "source": "5,1"
             }
         ],
         "host": "NGC 3012",
         "snra": "09:49:55.13",
         "sndec": "+34:41:47.4",
-        "discoverday": 27,
-        "discovermonth": 2,
-        "discoveryear": 2014,
+        "discoverday": "27",
+        "discovermonth": "2",
+        "discoveryear": "2014",
         "discoverer": "CRTS",
-        "maxyear": 2014,
-        "maxmonth": 2,
-        "maxday": 27
+        "maxyear": "2014",
+        "maxmonth": "3",
+        "maxday": "8",
+        "maxappmag": "17.62"
     }
 }

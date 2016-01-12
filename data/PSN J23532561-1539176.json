@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=7905'>ATEL 7905</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,19 +27,29 @@
                 "band": "",
                 "abmag": "17.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57249.6625",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "3,1"
             }
         ],
         "claimedtype": "Ia-91T",
         "host": "PGC 908217",
         "snra": "23:53:25.61",
         "sndec": "-15:39:17.6",
-        "discoverday": 14,
-        "discovermonth": 8,
-        "discoveryear": 2015,
-        "redshift": 0.058,
+        "discoverday": "14",
+        "discovermonth": "8",
+        "discoveryear": "2015",
+        "redshift": "0.058000",
         "discoverer": "MASTER",
-        "maxyear": 2015,
-        "maxmonth": 8,
-        "maxday": 14
+        "maxyear": "2015",
+        "maxmonth": "8",
+        "maxday": "14",
+        "maxappmag": "17.1",
+        "lumdist": "270.0",
+        "maxabsmag": "-20.0"
     }
 }

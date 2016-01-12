@@ -1715,9 +1715,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 21,
-        "discovermonth": 9,
+        "discoveryear": "2006",
+        "discoverday": "21",
+        "discovermonth": "9",
         "host": "UGC 2019",
         "claimedtype": "Ic",
         "hvel": "6206",
@@ -1726,10 +1726,13 @@
         "snra": "02:32:38.89",
         "sndec": "+00:37:03.0",
         "discoverer": "SDSS Collaboration",
-        "redshift": 0.02,
-        "maxyear": 2006,
-        "maxmonth": 9,
-        "maxday": 21,
-        "z": 0.0209
+        "redshift": "0.020000",
+        "maxyear": "2006",
+        "maxmonth": "9",
+        "maxday": "21",
+        "maxappmag": "16.0",
+        "z": "0.0209",
+        "lumdist": "90.0",
+        "maxabsmag": "-19.0"
     }
 }

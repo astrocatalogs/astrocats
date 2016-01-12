@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51608.25999999978",
+                "time": "51608.26",
                 "band": "C",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51614.95999999996",
+                "time": "51614.96",
                 "band": "R",
                 "abmag": "17.5",
                 "source": "1,2"
@@ -52,14 +52,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51627.99000000022",
+                "time": "51627.99",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51631.799999999814",
+                "time": "51631.8",
                 "band": "C",
                 "abmag": "16.9",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 4,
-        "discovermonth": 3,
+        "discoveryear": "2000",
+        "discoverday": "4",
+        "discovermonth": "3",
         "host": "MCG +3-31-61",
         "claimedtype": "Ia",
         "hvel": "7042",
@@ -83,10 +83,13 @@
         "snra": "12:11:15.58",
         "sndec": "+17:53:32.2",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.023,
-        "maxyear": 2000,
-        "maxmonth": 3,
-        "maxday": 28,
-        "z": 0.0238
+        "redshift": "0.023000",
+        "maxyear": "2000",
+        "maxmonth": "3",
+        "maxday": "28",
+        "maxappmag": "16.9",
+        "z": "0.0238",
+        "lumdist": "100.0",
+        "maxabsmag": "-18.0"
     }
 }

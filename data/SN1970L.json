@@ -31,91 +31,91 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "40893.060000000056",
+                "time": "40893.06",
                 "band": "V",
                 "abmag": "14.95",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40895.16000000015",
+                "time": "40895.16",
                 "band": "B",
                 "abmag": "15.65",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40895.16000000015",
+                "time": "40895.16",
                 "band": "V",
                 "abmag": "14.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40916.02000000002",
+                "time": "40916.02",
                 "band": "B",
                 "abmag": "16.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40919.10999999987",
+                "time": "40919.11",
                 "band": "B",
                 "abmag": "16.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40919.10999999987",
+                "time": "40919.11",
                 "band": "V",
                 "abmag": "15.65",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40926.04000000004",
+                "time": "40926.04",
                 "band": "B",
                 "abmag": "16.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40926.10999999987",
+                "time": "40926.11",
                 "band": "B",
                 "abmag": "16.45",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40926.10999999987",
+                "time": "40926.11",
                 "band": "V",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40940.93000000017",
+                "time": "40940.93",
                 "band": "B",
                 "abmag": "16.75",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40955.10000000009",
+                "time": "40955.1",
                 "band": "B",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40980.02000000002",
+                "time": "40980.02",
                 "band": "B",
                 "abmag": "17.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "40980.02000000002",
+                "time": "40980.02",
                 "band": "V",
                 "abmag": "16.95",
                 "source": "1,2"
@@ -129,14 +129,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "41011.970000000205",
+                "time": "41011.97",
                 "band": "B",
                 "abmag": "17.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "41011.970000000205",
+                "time": "41011.97",
                 "band": "V",
                 "abmag": "17.35",
                 "source": "1,2"
@@ -149,9 +149,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1970,
-        "maxday": 30,
-        "maxmonth": 10,
+        "discoveryear": "1970",
+        "maxday": "30",
+        "maxmonth": "10",
         "host": "NGC 2968",
         "claimedtype": "I",
         "hvel": "1615",
@@ -160,9 +160,10 @@
         "discoverer": "Paul Wild",
         "snra": "09:43:20.7",
         "sndec": "+31:57:06.0",
-        "discoverday": 30,
-        "discovermonth": 10,
-        "maxyear": 1970,
-        "z": 0.0054
+        "discoverday": "30",
+        "discovermonth": "10",
+        "maxyear": "1970",
+        "maxappmag": "13.0",
+        "z": "0.0054"
     }
 }

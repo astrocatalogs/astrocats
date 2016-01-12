@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 14,
-        "discovermonth": 10,
+        "discoveryear": "2004",
+        "discoverday": "14",
+        "discovermonth": "10",
         "host": "NGC 182",
         "claimedtype": "IIb",
         "hvel": "5217",
@@ -39,9 +39,10 @@
         "snra": "00:38:10.19",
         "sndec": "+02:43:17.2",
         "discoverer": "Tenagara Observatory Supernova Search",
-        "maxyear": 2004,
-        "maxmonth": 10,
-        "maxday": 14,
-        "z": 0.0176
+        "maxyear": "2004",
+        "maxmonth": "10",
+        "maxday": "14",
+        "maxappmag": "17.4",
+        "z": "0.0176"
     }
 }

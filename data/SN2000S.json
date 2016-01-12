@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 27,
-        "discovermonth": 2,
+        "discoveryear": "2000",
+        "discoverday": "27",
+        "discovermonth": "2",
         "host": "MCG -1-27-20",
         "claimedtype": "Ic",
         "hvel": "6209",
@@ -39,10 +39,13 @@
         "snra": "10:34:55.89",
         "sndec": "-06:28:26.0",
         "discoverer": "EROS",
-        "redshift": 0.02,
-        "maxyear": 2000,
-        "maxmonth": 2,
-        "maxday": 27,
-        "z": 0.0209
+        "redshift": "0.020000",
+        "maxyear": "2000",
+        "maxmonth": "2",
+        "maxday": "27",
+        "maxappmag": "20.9",
+        "z": "0.0209",
+        "lumdist": "90.0",
+        "maxabsmag": "-14.0"
     }
 }

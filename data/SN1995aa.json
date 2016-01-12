@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 1,
-        "discovermonth": 9,
+        "discoveryear": "1995",
+        "discoverday": "1",
+        "discovermonth": "9",
         "host": "A225909-0430",
         "claimedtype": "IIn",
         "redshift": "0.19",
@@ -39,8 +39,11 @@
         "snra": "22:59:09.73",
         "sndec": "-04:30:57.3",
         "discoverer": "Christian Pollas",
-        "maxyear": 1995,
-        "maxmonth": 9,
-        "maxday": 1
+        "maxyear": "1995",
+        "maxmonth": "9",
+        "maxday": "1",
+        "maxappmag": "19.8",
+        "lumdist": "960.0",
+        "maxabsmag": "-20.0"
     }
 }

@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52247.10000000009",
+                "time": "52247.1",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52248.10000000009",
+                "time": "52248.1",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52249.049999999814",
+                "time": "52249.05",
                 "band": "I",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52249.049999999814",
+                "time": "52249.05",
                 "band": "R",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52254.939999999944",
+                "time": "52254.94",
                 "band": "R",
                 "abmag": "18.7",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 4,
-        "discovermonth": 12,
+        "discoveryear": "2001",
+        "discoverday": "4",
+        "discovermonth": "12",
         "host": "MCG -2-57-22",
         "claimedtype": "II",
         "hvel": "7497",
@@ -83,10 +83,13 @@
         "snra": "22:36:30.40",
         "sndec": "-12:34:08.0",
         "discoverer": "LOTOSS",
-        "redshift": 0.025,
-        "maxyear": 2001,
-        "maxmonth": 12,
-        "maxday": 4,
-        "z": 0.0253
+        "redshift": "0.025000",
+        "maxyear": "2001",
+        "maxmonth": "12",
+        "maxday": "4",
+        "maxappmag": "17.5",
+        "z": "0.0253",
+        "lumdist": "110.0",
+        "maxabsmag": "-18.0"
     }
 }

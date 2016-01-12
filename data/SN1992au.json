@@ -31,154 +31,154 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48843.43000000017",
+                "time": "48843.43",
                 "band": "V",
                 "abmag": "18.49",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48844.37999999989",
+                "time": "48844.38",
                 "band": "B",
                 "abmag": "19.51",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48844.37999999989",
+                "time": "48844.38",
                 "band": "V",
                 "abmag": "18.82",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48845.29000000004",
+                "time": "48845.29",
                 "band": "B",
                 "abmag": "19.55",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48845.29000000004",
+                "time": "48845.29",
                 "band": "I",
                 "abmag": "19.24",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48845.29000000004",
+                "time": "48845.29",
                 "band": "V",
                 "abmag": "18.87",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48846.35000000009",
+                "time": "48846.35",
                 "band": "B",
                 "abmag": "19.87",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48846.35000000009",
+                "time": "48846.35",
                 "band": "V",
                 "abmag": "18.95",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48847.279999999795",
+                "time": "48847.28",
                 "band": "B",
                 "abmag": "20",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48847.279999999795",
+                "time": "48847.28",
                 "band": "I",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48847.279999999795",
+                "time": "48847.28",
                 "band": "V",
                 "abmag": "19",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48848.25999999978",
+                "time": "48848.26",
                 "band": "B",
                 "abmag": "20",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48848.25999999978",
+                "time": "48848.26",
                 "band": "I",
                 "abmag": "19.14",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48848.25999999978",
+                "time": "48848.26",
                 "band": "V",
                 "abmag": "19.12",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48849.39000000013",
+                "time": "48849.39",
                 "band": "B",
                 "abmag": "20.26",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48849.39000000013",
+                "time": "48849.39",
                 "band": "V",
                 "abmag": "19.29",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48872.33999999985",
+                "time": "48872.34",
                 "band": "B",
                 "abmag": "21.76",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48872.33999999985",
+                "time": "48872.34",
                 "band": "I",
                 "abmag": "20.05",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48872.33999999985",
+                "time": "48872.34",
                 "band": "V",
                 "abmag": "20.48",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48885.33999999985",
+                "time": "48885.34",
                 "band": "B",
                 "abmag": "21.76",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48885.33999999985",
+                "time": "48885.34",
                 "band": "I",
                 "abmag": "20.72",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48885.33999999985",
+                "time": "48885.34",
                 "band": "V",
                 "abmag": "20.9",
                 "source": "1,2"
@@ -191,9 +191,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1992,
-        "maxday": 28,
-        "maxmonth": 7,
+        "discoveryear": "1992",
+        "maxday": "28",
+        "maxmonth": "7",
         "host": "A001040-4956",
         "claimedtype": "Ia",
         "hvel": "18420",
@@ -202,9 +202,10 @@
         "snra": "00:10:40.27",
         "sndec": "-49:56:43.3",
         "discoverer": "Roberto Antezana",
-        "discoverday": 28,
-        "discovermonth": 7,
-        "maxyear": 1992,
-        "z": 0.0635
+        "discoverday": "28",
+        "discovermonth": "7",
+        "maxyear": "1992",
+        "maxappmag": "17.0",
+        "z": "0.0635"
     }
 }

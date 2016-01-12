@@ -116,77 +116,77 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52237.81999999983",
+                "time": "52237.82",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52237.85000000009",
+                "time": "52237.85",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52238.20999999996",
+                "time": "52238.21",
                 "band": "C",
                 "abmag": "16.4",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52238.799999999814",
+                "time": "52238.8",
                 "band": "C",
                 "abmag": "16.2",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52239.20999999996",
+                "time": "52239.21",
                 "band": "C",
                 "abmag": "16.4",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52241.20999999996",
+                "time": "52241.21",
                 "band": "R",
                 "abmag": "16.2",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52244.200000000186",
+                "time": "52244.2",
                 "band": "R",
                 "abmag": "16.2",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52246.22999999998",
+                "time": "52246.23",
                 "band": "R",
                 "abmag": "16.1",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52255.12999999989",
+                "time": "52255.13",
                 "band": "C",
                 "abmag": "16.3",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52283.20999999996",
+                "time": "52283.21",
                 "band": "R",
                 "abmag": "16.8",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52287.20999999996",
+                "time": "52287.21",
                 "band": "R",
                 "abmag": "17",
                 "source": "2,3"
@@ -199,9 +199,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 24,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "24",
+        "discovermonth": "11",
         "host": "NGC 5033",
         "claimedtype": "IIb",
         "hvel": "877",
@@ -210,9 +210,10 @@
         "snra": "13:13:23.92",
         "sndec": "+36:38:18.2",
         "discoverer": "Koichi Itagaki",
-        "maxyear": 2001,
-        "maxmonth": 12,
-        "maxday": 3,
-        "z": 0.00293
+        "maxyear": "2001",
+        "maxmonth": "12",
+        "maxday": "3",
+        "maxappmag": "16.1",
+        "z": "0.00293"
     }
 }

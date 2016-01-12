@@ -14,6 +14,30 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004181.txt'>CBET 4181</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "3"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "6"
+            },
+            {
+                "name": "LLA",
+                "alias": "7"
+            },
+            {
+                "name": "MDe",
+                "alias": "8"
             }
         ],
         "photometry": [
@@ -23,11 +47,53 @@
                 "band": "",
                 "abmag": "15.9",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57243.011",
+                "band": "R",
+                "abmag": "16.20",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57242.106",
+                "band": "CV",
+                "abmag": "16.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57242.273",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57249.6653",
+                "band": "U",
+                "abmag": "16.1",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57255.136",
+                "band": "CV",
+                "abmag": "16.7",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57272.994",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "8,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 5,
-        "discovermonth": 8,
+        "discoveryear": "2015",
+        "discoverday": "5",
+        "discovermonth": "8",
         "host": "UGC 12295",
         "claimedtype": "IIb",
         "hvel": "4835",
@@ -36,10 +102,13 @@
         "snra": "23:00:24.63",
         "sndec": "+01:37:36.8",
         "discoverer": "MASTER",
-        "redshift": 0.016,
-        "maxyear": 2015,
-        "maxmonth": 8,
-        "maxday": 5,
-        "z": 0.0163
+        "redshift": "0.016000",
+        "maxyear": "2015",
+        "maxmonth": "8",
+        "maxday": "5",
+        "maxappmag": "15.9",
+        "z": "0.0163",
+        "lumdist": "72.0",
+        "maxabsmag": "-18.0"
     }
 }

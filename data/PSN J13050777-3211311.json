@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J13050777-3211311.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,17 +26,25 @@
                 "band": "",
                 "abmag": "17.5",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57230.504",
+                "band": "C",
+                "abmag": "17.5",
+                "source": "3,1"
             }
         ],
         "host": "ESO 443-G56",
         "snra": "13:05:07.77",
         "sndec": "-32:11:31.1",
-        "discoverday": 23,
-        "discovermonth": 7,
-        "discoveryear": 2015,
+        "discoverday": "23",
+        "discovermonth": "7",
+        "discoveryear": "2015",
         "discoverer": "Stu Parker",
-        "maxyear": 2015,
-        "maxmonth": 7,
-        "maxday": 23
+        "maxyear": "2015",
+        "maxmonth": "7",
+        "maxday": "23",
+        "maxappmag": "17.5"
     }
 }

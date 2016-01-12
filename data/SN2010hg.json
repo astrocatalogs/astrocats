@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 31,
-        "discovermonth": 8,
+        "discoveryear": "2010",
+        "discoverday": "31",
+        "discovermonth": "8",
         "host": "NGC 3001",
         "claimedtype": "Ia",
         "hvel": "2220",
@@ -39,10 +39,13 @@
         "snra": "09:46:13.7",
         "sndec": "-30:27:13.3",
         "discoverer": "Berto Monard",
-        "redshift": 0.0082,
-        "maxyear": 2010,
-        "maxmonth": 8,
-        "maxday": 31,
-        "z": 0.00743
+        "redshift": "0.008200",
+        "maxyear": "2010",
+        "maxmonth": "8",
+        "maxday": "31",
+        "maxappmag": "13.9",
+        "z": "0.00743",
+        "lumdist": "37.0",
+        "maxabsmag": "-19.0"
     }
 }

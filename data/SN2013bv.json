@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 8,
-        "discovermonth": 4,
+        "discoveryear": "2013",
+        "discoverday": "8",
+        "discovermonth": "4",
         "host": "A084121+5243",
         "claimedtype": "Ic",
         "hvel": "18000",
@@ -36,10 +36,13 @@
         "snra": "08:41:21.28",
         "sndec": "+52:43:30.3",
         "discoverer": "THU-NAOC Transient Survey (TNTS)",
-        "redshift": 0.06,
-        "maxyear": 2013,
-        "maxmonth": 4,
-        "maxday": 8,
-        "z": 0.062
+        "redshift": "0.060000",
+        "maxyear": "2013",
+        "maxmonth": "4",
+        "maxday": "8",
+        "maxappmag": "18.7",
+        "z": "0.062",
+        "lumdist": "280.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -42,9 +42,9 @@
                 "source": "1,2"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 12,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "12",
+        "discovermonth": "11",
         "host": "A022751+0037",
         "claimedtype": "Ia",
         "redshift": "0.13",
@@ -53,8 +53,11 @@
         "snra": "022751.76",
         "sndec": "+003720.9",
         "discoverer": "HZSST",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 12
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "12",
+        "maxappmag": "19.5",
+        "lumdist": "630.0",
+        "maxabsmag": "-19.0"
     }
 }

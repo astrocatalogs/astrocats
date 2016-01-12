@@ -881,7 +881,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "53999.72800000012",
+                "time": "53999.728",
                 "band": "B",
                 "abmag": "18.214",
                 "aberr": "0.027",
@@ -889,7 +889,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54006.61899999995",
+                "time": "54006.619",
                 "band": "V",
                 "abmag": "18.022",
                 "aberr": "0.025",
@@ -897,7 +897,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54006.621999999974",
+                "time": "54006.622",
                 "band": "B",
                 "abmag": "19.076",
                 "aberr": "0.067",
@@ -905,7 +905,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54010.632000000216",
+                "time": "54010.632",
                 "band": "V",
                 "abmag": "18.307",
                 "aberr": "0.044",
@@ -913,7 +913,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54010.63499999978",
+                "time": "54010.635",
                 "band": "B",
                 "abmag": "19.815",
                 "aberr": "0.182",
@@ -921,7 +921,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54011.6379999998",
+                "time": "54011.638",
                 "band": "V",
                 "abmag": "18.269",
                 "aberr": "0.049",
@@ -929,7 +929,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54015.69100000011",
+                "time": "54015.691",
                 "band": "V",
                 "abmag": "18.586",
                 "aberr": "0.064",
@@ -937,7 +937,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54015.70200000005",
+                "time": "54015.702",
                 "band": "V",
                 "abmag": "18.633",
                 "aberr": "0.072",
@@ -945,7 +945,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54018.67199999979",
+                "time": "54018.672",
                 "band": "V",
                 "abmag": "18.873",
                 "aberr": "0.043",
@@ -953,7 +953,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54018.683000000194",
+                "time": "54018.683",
                 "band": "V",
                 "abmag": "18.952",
                 "aberr": "0.056",
@@ -961,7 +961,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54020.62999999989",
+                "time": "54020.63",
                 "band": "V",
                 "abmag": "19.024",
                 "aberr": "0.044",
@@ -969,7 +969,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54040.72500000009",
+                "time": "54040.725",
                 "band": "V",
                 "abmag": "19.374",
                 "aberr": "0.142",
@@ -983,21 +983,24 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2006,
-        "redshift": 0.029,
+        "discoveryear": "2006",
+        "redshift": "0.029000",
         "snra": "21:30:59.26",
         "sndec": "+13:59:21.2",
-        "discoverday": 15,
-        "discovermonth": 9,
+        "discoverday": "15",
+        "discovermonth": "9",
         "host": "UGC 11758",
         "claimedtype": "Ia",
         "hvel": "8576",
         "galra": "213058",
         "galdec": "+135909",
         "discoverer": "Michel Ory",
-        "maxyear": 2006,
-        "maxmonth": 9,
-        "maxday": 18,
-        "z": 0.029
+        "maxyear": "2006",
+        "maxmonth": "9",
+        "maxday": "18",
+        "maxappmag": "16.6",
+        "z": "0.029",
+        "lumdist": "130.0",
+        "maxabsmag": "-19.0"
     }
 }

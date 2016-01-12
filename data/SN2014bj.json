@@ -30,6 +30,13 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56803.418",
+                "band": "UR",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56827.393",
                 "band": "UR",
                 "abmag": "18.3",
@@ -50,9 +57,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 21,
-        "discovermonth": 5,
+        "discoveryear": "2014",
+        "discoverday": "21",
+        "discovermonth": "5",
         "host": "A192239+4353",
         "claimedtype": "Ia",
         "galra": "192239",
@@ -60,9 +67,12 @@
         "snra": "19:22:39.15",
         "sndec": "+43:53:26.9",
         "discoverer": "LOSS",
-        "redshift": 0.045,
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 21
+        "redshift": "0.045000",
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "26",
+        "maxappmag": "17.2",
+        "lumdist": "210.0",
+        "maxabsmag": "-19.0"
     }
 }

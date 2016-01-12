@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1965,
-        "discoverday": 25,
-        "discovermonth": 3,
+        "discoveryear": "1965",
+        "discoverday": "25",
+        "discovermonth": "3",
         "host": "KUG 0947+346",
         "hvel": "6583",
         "galra": "095010",
@@ -38,9 +38,10 @@
         "snra": "09:50:07.07",
         "sndec": "+34:24:54.6",
         "discoverer": "Fritz Zwicky",
-        "maxyear": 1965,
-        "maxmonth": 3,
-        "maxday": 25,
-        "z": 0.0222
+        "maxyear": "1965",
+        "maxmonth": "3",
+        "maxday": "25",
+        "maxappmag": "16.4",
+        "z": "0.0222"
     }
 }

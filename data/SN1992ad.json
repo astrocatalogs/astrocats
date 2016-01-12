@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1992,
-        "discoverday": 30,
-        "discovermonth": 6,
+        "discoveryear": "1992",
+        "discoverday": "30",
+        "discovermonth": "6",
         "host": "NGC 4411",
         "claimedtype": "II",
         "hvel": "1270",
@@ -39,9 +39,10 @@
         "snra": "12:26:49.63",
         "sndec": "+08:52:38.4",
         "discoverer": "Robert Evans",
-        "maxyear": 1992,
-        "maxmonth": 6,
-        "maxday": 30,
-        "z": 0.00425
+        "maxyear": "1992",
+        "maxmonth": "6",
+        "maxday": "30",
+        "maxappmag": "13.5",
+        "z": "0.00425"
     }
 }

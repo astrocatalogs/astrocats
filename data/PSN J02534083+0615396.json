@@ -13,6 +13,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J02534083+0615396.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Seiichiro Kiytota",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -22,17 +30,32 @@
                 "band": "",
                 "abmag": "18.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56866.7709",
+                "band": "V",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56868.787",
+                "band": "L",
+                "abmag": "19.5",
+                "source": "4,1"
             }
         ],
         "host": "UGC 2367",
         "snra": "02:53:40.83",
         "sndec": "+06:15:39.6",
-        "discoverday": 26,
-        "discovermonth": 7,
-        "discoveryear": 2014,
+        "discoverday": "26",
+        "discovermonth": "7",
+        "discoveryear": "2014",
         "discoverer": "H. Sato",
-        "maxyear": 2014,
-        "maxmonth": 7,
-        "maxday": 26
+        "maxyear": "2014",
+        "maxmonth": "7",
+        "maxday": "26",
+        "maxappmag": "18.3"
     }
 }

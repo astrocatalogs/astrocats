@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 4,
-        "discovermonth": 12,
+        "discoveryear": "2010",
+        "discoverday": "4",
+        "discovermonth": "12",
         "host": "NGC 1954",
         "claimedtype": "Ia",
         "hvel": "3033",
@@ -39,10 +39,13 @@
         "snra": "05:32:49.44",
         "sndec": "-14:05:45.9",
         "discoverer": "Simone Leonini",
-        "redshift": 0.0104,
-        "maxyear": 2010,
-        "maxmonth": 12,
-        "maxday": 4,
-        "z": 0.0102
+        "redshift": "0.010400",
+        "maxyear": "2010",
+        "maxmonth": "12",
+        "maxday": "4",
+        "maxappmag": "15.4",
+        "z": "0.0102",
+        "lumdist": "46.0",
+        "maxabsmag": "-18.0"
     }
 }

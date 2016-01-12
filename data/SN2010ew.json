@@ -15,12 +15,16 @@
                 "alias": "2"
             },
             {
-                "name": "6 BVD CMC",
+                "name": "A.A.Sabadell",
                 "alias": "3"
             },
             {
-                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "name": "6 BVD CMC",
                 "alias": "4"
+            },
+            {
+                "name": "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -33,16 +37,23 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "55379.827",
+                "band": "R",
+                "abmag": "16.15",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "55388.047",
                 "band": "CR",
                 "abmag": "16.14",
                 "aberr": "0.02",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 19,
-        "discovermonth": 6,
+        "discoveryear": "2010",
+        "discoverday": "19",
+        "discovermonth": "6",
         "host": "CGCG 173-18",
         "claimedtype": "Ia",
         "galra": "183711",
@@ -50,8 +61,9 @@
         "snra": "18:37:11.88",
         "sndec": "+30:37:49.6",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2010,
-        "maxmonth": 7,
-        "maxday": 11
+        "maxyear": "2010",
+        "maxmonth": "7",
+        "maxday": "11",
+        "maxappmag": "16.14"
     }
 }

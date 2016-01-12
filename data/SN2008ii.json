@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 18,
-        "discovermonth": 12,
+        "discoveryear": "2008",
+        "discoverday": "18",
+        "discovermonth": "12",
         "host": "ESO 381-G50",
         "claimedtype": "Ia",
         "hvel": "9346",
@@ -39,10 +39,13 @@
         "snra": "13:02:08.93",
         "sndec": "-32:47:36.5",
         "discoverer": "Berto Monard",
-        "redshift": 0.0312,
-        "maxyear": 2008,
-        "maxmonth": 12,
-        "maxday": 18,
-        "z": 0.0317
+        "redshift": "0.031200",
+        "maxyear": "2008",
+        "maxmonth": "12",
+        "maxday": "18",
+        "maxappmag": "16.9",
+        "z": "0.0317",
+        "lumdist": "140.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 16,
-        "discovermonth": 2,
+        "discoveryear": "2006",
+        "discoverday": "16",
+        "discovermonth": "2",
         "host": "ESO 5-G9",
         "claimedtype": "II",
         "hvel": "7426",
@@ -39,10 +39,13 @@
         "snra": "07:29:52.16",
         "sndec": "-84:02:20.5",
         "discoverer": "Mike Schwartz",
-        "redshift": 0.0158,
-        "maxyear": 2006,
-        "maxmonth": 2,
-        "maxday": 16,
-        "z": 0.0251
+        "redshift": "0.015800",
+        "maxyear": "2006",
+        "maxmonth": "2",
+        "maxday": "16",
+        "maxappmag": "16.5",
+        "z": "0.0251",
+        "lumdist": "71.0",
+        "maxabsmag": "-18.0"
     }
 }

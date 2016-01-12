@@ -1436,9 +1436,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 31,
-        "discovermonth": 7,
+        "discoveryear": "2003",
+        "discoverday": "31",
+        "discovermonth": "7",
         "host": "NGC 6930",
         "claimedtype": "Ia",
         "hvel": "4182",
@@ -1447,9 +1447,10 @@
         "snra": "20:32:59.12",
         "sndec": "+09:52:19.3",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 8,
-        "maxday": 23,
-        "z": 0.014
+        "maxyear": "2003",
+        "maxmonth": "8",
+        "maxday": "23",
+        "maxappmag": "14.9",
+        "z": "0.014"
     }
 }

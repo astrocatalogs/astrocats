@@ -43,9 +43,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 1,
-        "discovermonth": 1,
+        "discoveryear": "2014",
+        "discoverday": "1",
+        "discovermonth": "1",
         "host": "NGC 4939",
         "claimedtype": "IIP",
         "hvel": "3109",
@@ -54,10 +54,13 @@
         "snra": "13:04:17.70",
         "sndec": "-10:20:01.2",
         "discoverer": "LOSS",
-        "redshift": 0.01037,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 1,
-        "z": 0.0104
+        "redshift": "0.010370",
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "1",
+        "maxappmag": "17.0",
+        "z": "0.0104",
+        "lumdist": "46.0",
+        "maxabsmag": "-16.0"
     }
 }

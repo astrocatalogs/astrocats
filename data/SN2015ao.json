@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004189.txt'>CBET 4189</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,11 +27,25 @@
                 "band": "",
                 "abmag": "16.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57303.6599",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57308.6382",
+                "band": "U",
+                "abmag": "16.1",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 12,
-        "discovermonth": 10,
+        "discoveryear": "2015",
+        "discoverday": "8",
+        "discovermonth": "10",
         "host": "ESO 354-G3",
         "claimedtype": "Ia-91bg",
         "hvel": "5742",
@@ -36,10 +54,13 @@
         "snra": "01:50:53.56",
         "sndec": "-36:00:30.8",
         "discoverer": "Greg Bock",
-        "redshift": 0.019,
-        "maxyear": 2015,
-        "maxmonth": 10,
-        "maxday": 12,
-        "z": 0.0193
+        "redshift": "0.019000",
+        "maxyear": "2015",
+        "maxmonth": "10",
+        "maxday": "12",
+        "maxappmag": "16.1",
+        "z": "0.0193",
+        "lumdist": "85.0",
+        "maxabsmag": "-19.0"
     }
 }

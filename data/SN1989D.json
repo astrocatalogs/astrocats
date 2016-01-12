@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "47565.89999999991",
+                "time": "47565.9",
                 "band": "B",
                 "abmag": "16.34",
                 "source": "1,2"
@@ -45,35 +45,35 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47585.799999999814",
+                "time": "47585.8",
                 "band": "B",
                 "abmag": "18.12",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47585.799999999814",
+                "time": "47585.8",
                 "band": "V",
                 "abmag": "17.48",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47587.799999999814",
+                "time": "47587.8",
                 "band": "B",
                 "abmag": "18.53",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47589.89999999991",
+                "time": "47589.9",
                 "band": "B",
                 "abmag": "18.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47591.799999999814",
+                "time": "47591.8",
                 "band": "B",
                 "abmag": "18.56",
                 "source": "1,2"
@@ -86,9 +86,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1989,
-        "discoverday": 2,
-        "discovermonth": 2,
+        "discoveryear": "1989",
+        "discoverday": "2",
+        "discovermonth": "2",
         "host": "NGC 2963",
         "claimedtype": "Ia",
         "hvel": "6553",
@@ -97,9 +97,10 @@
         "snra": "09:47:50.7",
         "sndec": "+72:58:15.0",
         "discoverer": "Paul Wild",
-        "maxyear": 1989,
-        "maxmonth": 2,
-        "maxday": 2,
-        "z": 0.0221
+        "maxyear": "1989",
+        "maxmonth": "2",
+        "maxday": "2",
+        "maxappmag": "16.0",
+        "z": "0.0221"
     }
 }

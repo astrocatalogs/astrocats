@@ -31,63 +31,63 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "42429.25999999978",
+                "time": "42429.26",
                 "band": "B",
                 "abmag": "14.85",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42429.25999999978",
+                "time": "42429.26",
                 "band": "U",
                 "abmag": "14.49",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42429.25999999978",
+                "time": "42429.26",
                 "band": "V",
                 "abmag": "14.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42430.279999999795",
+                "time": "42430.28",
                 "band": "B",
                 "abmag": "14.69",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42430.279999999795",
+                "time": "42430.28",
                 "band": "U",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42430.279999999795",
+                "time": "42430.28",
                 "band": "V",
                 "abmag": "14.72",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42432.279999999795",
+                "time": "42432.28",
                 "band": "B",
                 "abmag": "14.74",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42432.279999999795",
+                "time": "42432.28",
                 "band": "U",
                 "abmag": "14.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42432.279999999795",
+                "time": "42432.28",
                 "band": "V",
                 "abmag": "14.66",
                 "source": "1,2"
@@ -100,9 +100,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1975,
-        "maxday": 18,
-        "maxmonth": 1,
+        "discoveryear": "1975",
+        "maxday": "18",
+        "maxmonth": "1",
         "host": "NGC 2207",
         "claimedtype": "Ia",
         "hvel": "2747",
@@ -111,9 +111,10 @@
         "discoverer": "Dunlap",
         "snra": "06:16:26.3",
         "sndec": "-21:21:24.0",
-        "discoverday": 14,
-        "discovermonth": 1,
-        "maxyear": 1975,
-        "z": 0.00921
+        "discoverday": "14",
+        "discovermonth": "1",
+        "maxyear": "1975",
+        "maxappmag": "14.4",
+        "z": "0.00921"
     }
 }

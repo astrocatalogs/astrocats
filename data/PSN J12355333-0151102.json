@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12355333-0151102.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,17 +31,39 @@
                 "band": "",
                 "abmag": "17.5",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56991.527",
+                "band": "C",
+                "abmag": "18.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56998.59",
+                "band": "R",
+                "abmag": "18.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57046.46",
+                "band": "R",
+                "abmag": "19.8",
+                "source": "4,1"
             }
         ],
         "host": "UGC 7763",
         "snra": "12:35:53.33",
         "sndec": "-01:51:10.2",
-        "discoverday": 28,
-        "discovermonth": 11,
-        "discoveryear": 2014,
+        "discoverday": "28",
+        "discovermonth": "11",
+        "discoveryear": "2014",
         "discoverer": "CRTS",
-        "maxyear": 2014,
-        "maxmonth": 11,
-        "maxday": 28
+        "maxyear": "2014",
+        "maxmonth": "11",
+        "maxday": "28",
+        "maxappmag": "17.5"
     }
 }

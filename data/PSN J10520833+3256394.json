@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J10520833+3256394.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "MDe",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,19 +35,50 @@
                 "band": "",
                 "abmag": "16.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57303.174",
+                "band": "CV",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57303.7951",
+                "band": "U",
+                "abmag": "16.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57326.161",
+                "band": "CV",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57342.207",
+                "band": "CV",
+                "abmag": "17.8",
+                "source": "5,1"
             }
         ],
         "claimedtype": "IIb",
         "host": "NGC 3430",
         "snra": "10:52:08.33",
         "sndec": "+32:56:39.4",
-        "discoverday": 7,
-        "discovermonth": 10,
-        "discoveryear": 2015,
-        "redshift": 0.00529,
+        "discoverday": "7",
+        "discovermonth": "10",
+        "discoveryear": "2015",
+        "redshift": "0.005290",
         "discoverer": "Koichi Itagaki",
-        "maxyear": 2015,
-        "maxmonth": 10,
-        "maxday": 7
+        "maxyear": "2015",
+        "maxmonth": "10",
+        "maxday": "7",
+        "maxappmag": "16.7",
+        "lumdist": "24.0",
+        "maxabsmag": "-15.0"
     }
 }

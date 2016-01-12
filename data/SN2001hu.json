@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52224.97999999998",
+                "time": "52224.98",
                 "band": "I",
                 "abmag": "22.34",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52230.950000000186",
+                "time": "52230.95",
                 "band": "R",
                 "abmag": "25.01",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52230.970000000205",
+                "time": "52230.97",
                 "band": "I",
                 "abmag": "21.83",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52231.950000000186",
+                "time": "52231.95",
                 "band": "I",
                 "abmag": "21.93",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52251.919999999925",
+                "time": "52251.92",
                 "band": "I",
                 "abmag": "23.08",
                 "source": "1,2"
@@ -73,7 +73,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52368.75999999978",
+                "time": "52368.76",
                 "band": "I",
                 "abmag": "28.1",
                 "source": "1,2"
@@ -86,18 +86,21 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 11,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "11",
+        "discovermonth": "11",
         "host": "A075035+0958",
-        "redshift": 0.88,
+        "redshift": "0.880000",
         "galra": "075035",
         "galdec": "+095814",
         "snra": "07:50:35.90",
         "sndec": "+09:58:14.2",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 17
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "17",
+        "maxappmag": "21.83",
+        "lumdist": "5800.0",
+        "maxabsmag": "-22.0"
     }
 }

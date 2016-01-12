@@ -52,21 +52,21 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52621.700000000186",
+                "time": "52621.7",
                 "band": "C",
                 "abmag": "15.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52627.10000000009",
+                "time": "52627.1",
                 "band": "C",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52636.700000000186",
+                "time": "52636.7",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 18,
-        "discovermonth": 11,
+        "discoveryear": "2002",
+        "discoverday": "18",
+        "discovermonth": "11",
         "host": "A093041-1446",
         "claimedtype": "Ia",
         "galra": "093041",
@@ -89,8 +89,9 @@
         "snra": "09:30:41.64",
         "sndec": "-14:46:55.2",
         "discoverer": "B. F. Madore",
-        "maxyear": 2002,
-        "maxmonth": 11,
-        "maxday": 19
+        "maxyear": "2002",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "14.8"
     }
 }

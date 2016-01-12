@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52673.560000000056",
+                "time": "52673.56",
                 "band": "C",
                 "abmag": "15.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52673.56999999983",
+                "time": "52673.57",
                 "band": "C",
                 "abmag": "15.6",
                 "source": "1,2"
@@ -52,28 +52,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52702.89000000013",
+                "time": "52702.89",
                 "band": "R",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52708.89999999991",
+                "time": "52708.9",
                 "band": "R",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52722.830000000075",
+                "time": "52722.83",
                 "band": "R",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52723.04000000004",
+                "time": "52723.04",
                 "band": "R",
                 "abmag": "16.4",
                 "source": "1,2"
@@ -86,9 +86,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 18,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "18",
+        "discovermonth": "1",
         "host": "A111021+2324",
         "claimedtype": "Ia",
         "hvel": "6100",
@@ -97,10 +97,13 @@
         "snra": "11:10:21.698",
         "sndec": "+23:24:50.99",
         "discoverer": "Nearby Supernova Factory",
-        "redshift": 0.02,
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 3,
-        "z": 0.0206
+        "redshift": "0.020000",
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "3",
+        "maxappmag": "15.6",
+        "z": "0.0206",
+        "lumdist": "90.0",
+        "maxabsmag": "-19.0"
     }
 }

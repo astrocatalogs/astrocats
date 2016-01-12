@@ -896,9 +896,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 11,
-        "discovermonth": 3,
+        "discoveryear": "2004",
+        "discoverday": "11",
+        "discovermonth": "3",
         "host": "MCG +10-16-37",
         "claimedtype": "Ia",
         "hvel": "6696",
@@ -907,10 +907,13 @@
         "snra": "10:58:45.18",
         "sndec": "+59:29:12.0",
         "discoverer": "LOSS",
-        "redshift": 0.023,
-        "maxyear": 2004,
-        "maxmonth": 3,
-        "maxday": 28,
-        "z": 0.0226
+        "redshift": "0.023000",
+        "maxyear": "2004",
+        "maxmonth": "3",
+        "maxday": "28",
+        "maxappmag": "15.71400",
+        "z": "0.0226",
+        "lumdist": "100.0",
+        "maxabsmag": "-19.0"
     }
 }

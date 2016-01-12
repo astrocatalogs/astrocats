@@ -44,98 +44,98 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "48325.0",
+                "time": "48325.00",
                 "band": "B",
                 "abmag": "16.5100",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48329.799999999814",
+                "time": "48329.80",
                 "band": "B",
                 "abmag": "16.3800",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48330.0",
+                "time": "48330.00",
                 "band": "B",
                 "abmag": "16.5500",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48350.89999999991",
+                "time": "48350.90",
                 "band": "B",
                 "abmag": "16.4700",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48351.0",
+                "time": "48351.00",
                 "band": "B",
                 "abmag": "16.5400",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48360.89999999991",
+                "time": "48360.90",
                 "band": "B",
                 "abmag": "16.7000",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48364.89999999991",
+                "time": "48364.90",
                 "band": "B",
                 "abmag": "16.5400",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48386.0",
+                "time": "48386.00",
                 "band": "B",
                 "abmag": "17.4500",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48389.0",
+                "time": "48389.00",
                 "band": "B",
                 "abmag": "17.4500",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48389.89999999991",
+                "time": "48389.90",
                 "band": "B",
                 "abmag": "17.4000",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48390.0",
+                "time": "48390.00",
                 "band": "B",
                 "abmag": "17.2500",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48390.799999999814",
+                "time": "48390.80",
                 "band": "B",
                 "abmag": "17.4300",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48330.799999999814",
+                "time": "48330.80",
                 "band": "V",
                 "abmag": "15.4300",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48350.89999999991",
+                "time": "48350.90",
                 "band": "V",
                 "abmag": "15.3200",
                 "source": "1,2"
@@ -701,21 +701,24 @@
                 "source": "7,6"
             }
         ],
-        "discoveryear": 1991,
+        "discoveryear": "1991",
         "host": "NGC 4088",
         "redshift": "0.0024",
         "hvel": "723",
         "claimedtype": "II",
-        "maxday": 24,
-        "maxmonth": 2,
+        "maxday": "24",
+        "maxmonth": "2",
         "galra": "120535",
         "galdec": "+503223",
         "snra": "12:05:28.85",
         "sndec": "+50:32:11.7",
         "discoverer": "Jean Mueller",
-        "discoverday": 9,
-        "discovermonth": 2,
-        "maxyear": 1991,
-        "z": 0.00241
+        "discoverday": "9",
+        "discovermonth": "2",
+        "maxyear": "1991",
+        "maxappmag": "14.83",
+        "z": "0.00241",
+        "lumdist": "11.0",
+        "maxabsmag": "-15.0"
     }
 }

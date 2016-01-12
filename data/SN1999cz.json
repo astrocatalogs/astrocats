@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51350.529999999795",
+                "time": "51350.53",
                 "band": "C",
                 "abmag": "16",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 21,
-        "discovermonth": 6,
+        "discoveryear": "1999",
+        "discoverday": "21",
+        "discovermonth": "6",
         "host": "NGC 5078",
         "claimedtype": "Ic",
         "hvel": "2157",
@@ -44,9 +44,10 @@
         "snra": "13:19:48.53",
         "sndec": "-27:24:04.5",
         "discoverer": "Perth Astronomical Research Group",
-        "maxyear": 1999,
-        "maxmonth": 6,
-        "maxday": 21,
-        "z": 0.00722
+        "maxyear": "1999",
+        "maxmonth": "6",
+        "maxday": "21",
+        "maxappmag": "16",
+        "z": "0.00722"
     }
 }

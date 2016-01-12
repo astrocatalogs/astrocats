@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51875.200000000186",
+                "time": "51875.2",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51895.200000000186",
+                "time": "51895.2",
                 "band": "C",
                 "abmag": "18.8",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 18,
-        "discovermonth": 11,
+        "discoveryear": "2000",
+        "discoverday": "18",
+        "discovermonth": "11",
         "host": "NGC 2526",
         "claimedtype": "Ib",
         "hvel": "4669",
@@ -62,9 +62,10 @@
         "snra": "08:06:57.79",
         "sndec": "+08:00:19.3",
         "discoverer": "B. Holmes",
-        "maxyear": 2000,
-        "maxmonth": 11,
-        "maxday": 27,
-        "z": 0.0157
+        "maxyear": "2000",
+        "maxmonth": "11",
+        "maxday": "27",
+        "maxappmag": "18",
+        "z": "0.0157"
     }
 }

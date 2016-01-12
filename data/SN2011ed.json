@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 25,
-        "discovermonth": 3,
+        "discoveryear": "2011",
+        "discoverday": "25",
+        "discovermonth": "3",
         "host": "IC 4839",
         "claimedtype": "Ia",
         "hvel": "2715",
@@ -36,10 +36,13 @@
         "snra": "19:15:34.35",
         "sndec": "-54:37:39.6",
         "discoverer": "Perth Observatory",
-        "redshift": 0.0185,
-        "maxyear": 2011,
-        "maxmonth": 3,
-        "maxday": 25,
-        "z": 0.0091
+        "redshift": "0.018500",
+        "maxyear": "2011",
+        "maxmonth": "3",
+        "maxday": "25",
+        "maxappmag": "15.0",
+        "z": "0.0091",
+        "lumdist": "83.0",
+        "maxabsmag": "-20.0"
     }
 }

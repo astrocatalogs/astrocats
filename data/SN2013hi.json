@@ -36,9 +36,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 10,
-        "discovermonth": 11,
+        "discoveryear": "2013",
+        "discoverday": "10",
+        "discovermonth": "11",
         "host": "PGC 166460",
         "claimedtype": "Ia",
         "hvel": "7605",
@@ -47,10 +47,13 @@
         "snra": "03:14:24.73",
         "sndec": "+46:10:49.0",
         "discoverer": "MASTER",
-        "redshift": 0.025368,
-        "maxyear": 2013,
-        "maxmonth": 11,
-        "maxday": 10,
-        "z": 0.0257
+        "redshift": "0.025368",
+        "maxyear": "2013",
+        "maxmonth": "11",
+        "maxday": "10",
+        "maxappmag": "16.2",
+        "z": "0.0257",
+        "lumdist": "110.0",
+        "maxabsmag": "-19.0"
     }
 }

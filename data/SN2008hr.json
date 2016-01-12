@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 22,
-        "discovermonth": 11,
+        "discoveryear": "2008",
+        "discoverday": "22",
+        "discovermonth": "11",
         "host": "PGC1575852",
         "claimedtype": "Ia",
         "hvel": "22725",
@@ -39,10 +39,13 @@
         "snra": "09:18:52.44",
         "sndec": "+18:57:20.4",
         "discoverer": "Rafael Ferrando",
-        "redshift": 0.08,
-        "maxyear": 2008,
-        "maxmonth": 11,
-        "maxday": 22,
-        "z": 0.0789
+        "redshift": "0.080000",
+        "maxyear": "2008",
+        "maxmonth": "11",
+        "maxday": "22",
+        "maxappmag": "18.3",
+        "z": "0.0789",
+        "lumdist": "380.0",
+        "maxabsmag": "-20.0"
     }
 }

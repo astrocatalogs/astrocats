@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52407.689999999944",
+                "time": "52407.69",
                 "band": "V",
                 "abmag": "19",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52441.39999999991",
+                "time": "52441.4",
                 "band": "B",
                 "abmag": "20.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52441.39999999991",
+                "time": "52441.4",
                 "band": "R",
                 "abmag": "19.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52441.39999999991",
+                "time": "52441.4",
                 "band": "V",
                 "abmag": "19.6",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 3,
-        "discovermonth": 5,
+        "discoveryear": "2002",
+        "discoverday": "3",
+        "discovermonth": "5",
         "host": "IC 5017",
         "claimedtype": "Ia",
         "hvel": "7547",
@@ -76,9 +76,10 @@
         "snra": "20:32:07.3",
         "sndec": "-57:35:03.4",
         "discoverer": "Ella Sanders",
-        "maxyear": 2002,
-        "maxmonth": 5,
-        "maxday": 13,
-        "z": 0.0255
+        "maxyear": "2002",
+        "maxmonth": "5",
+        "maxday": "13",
+        "maxappmag": "19",
+        "z": "0.0255"
     }
 }

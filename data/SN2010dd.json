@@ -59,9 +59,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 22,
-        "discovermonth": 5,
+        "discoveryear": "2010",
+        "discoverday": "22",
+        "discovermonth": "5",
         "host": "UGC 10594",
         "claimedtype": "Ia",
         "hvel": "8865",
@@ -70,10 +70,13 @@
         "snra": "16:52:47.60",
         "sndec": "+51:03:45.7",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.0296,
-        "maxyear": 2010,
-        "maxmonth": 5,
-        "maxday": 31,
-        "z": 0.03
+        "redshift": "0.029600",
+        "maxyear": "2010",
+        "maxmonth": "5",
+        "maxday": "31",
+        "maxappmag": "15.75",
+        "z": "0.03",
+        "lumdist": "130.0",
+        "maxabsmag": "-20.0"
     }
 }

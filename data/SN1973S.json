@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1973,
-        "discoverday": 20,
-        "discovermonth": 12,
+        "discoveryear": "1973",
+        "discoverday": "20",
+        "discovermonth": "12",
         "host": "PGC0072292",
         "hvel": "28389",
         "galra": "234446",
@@ -38,9 +38,10 @@
         "discoverer": "Charles Kowal",
         "snra": "23:44:50.0",
         "sndec": "+25:43:43.0",
-        "maxyear": 1973,
-        "maxmonth": 12,
-        "maxday": 20,
-        "z": 0.0996
+        "maxyear": "1973",
+        "maxmonth": "12",
+        "maxday": "20",
+        "maxappmag": "18.5",
+        "z": "0.0996"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 9,
-        "discovermonth": 10,
+        "discoveryear": "2004",
+        "discoverday": "9",
+        "discovermonth": "10",
         "host": "ESO 153-G17",
         "claimedtype": "Ib",
         "hvel": "6529",
@@ -39,9 +39,10 @@
         "snra": "02:05:06.17",
         "sndec": "-55:06:31.6",
         "discoverer": "BRASS",
-        "maxyear": 2004,
-        "maxmonth": 10,
-        "maxday": 9,
-        "z": 0.022
+        "maxyear": "2004",
+        "maxmonth": "10",
+        "maxday": "9",
+        "maxappmag": "17.3",
+        "z": "0.022"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 1,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "1",
+        "discovermonth": "1",
         "host": "A020547-0452",
         "claimedtype": "Ia",
-        "redshift": 0.21,
+        "redshift": "0.210000",
         "galra": "020547",
         "galdec": "-045248",
         "snra": "02:05:47.558",
         "sndec": "-04:52:48.09",
         "discoverer": "NOAO",
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 1
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "1",
+        "maxappmag": "20.0",
+        "lumdist": "1100.0",
+        "maxabsmag": "-20.0"
     }
 }

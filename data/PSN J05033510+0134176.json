@@ -14,6 +14,26 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=5366'>ATEL 5366</a>",
                 "alias": "2"
+            },
+            {
+                "name": "K. Yoshimoto",
+                "alias": "3"
+            },
+            {
+                "name": "Fabio Martinelli",
+                "alias": "4"
+            },
+            {
+                "name": "T. Noguch",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
+            },
+            {
+                "name": "LLA",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -23,19 +43,113 @@
                 "band": "",
                 "abmag": "15.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56554.802",
+                "band": "V",
+                "abmag": "15.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56555.06",
+                "band": "C",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56555.649",
+                "band": "U",
+                "abmag": "15.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56562.535",
+                "band": "UR",
+                "abmag": "15.5",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56569.456",
+                "band": "UR",
+                "abmag": "15.9",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56575.148",
+                "band": "CV",
+                "abmag": "16.5",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56579.45",
+                "band": "UR",
+                "abmag": "16.2",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56595.443",
+                "band": "UR",
+                "abmag": "17.1",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56601.493",
+                "band": "UR",
+                "abmag": "17.4",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56626.385",
+                "band": "UR",
+                "abmag": "18.3",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56635.392",
+                "band": "UR",
+                "abmag": "18.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56655.272",
+                "band": "UR",
+                "abmag": "19.1",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56678.186",
+                "band": "UR",
+                "abmag": "19.7",
+                "source": "6,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "NGC 1762",
         "snra": "05:03:35.10",
         "sndec": "+01:34:17.6",
-        "discoverday": 17,
-        "discovermonth": 9,
-        "discoveryear": 2013,
-        "redshift": 0.015854,
+        "discoverday": "17",
+        "discovermonth": "9",
+        "discoveryear": "2013",
+        "redshift": "0.015854",
         "discoverer": "PTF",
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 17
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "17",
+        "maxappmag": "15.3",
+        "lumdist": "71.0",
+        "maxabsmag": "-19.0"
     }
 }

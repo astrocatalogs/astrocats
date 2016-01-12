@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 25,
-        "discovermonth": 10,
+        "discoveryear": "1997",
+        "discoverday": "25",
+        "discovermonth": "10",
         "host": "E294-G17",
         "claimedtype": "II P",
         "hvel": "8983",
@@ -39,9 +39,10 @@
         "snra": "00:30:12.83",
         "sndec": "-41:06:08.9",
         "discoverer": "EROS",
-        "maxyear": 1997,
-        "maxmonth": 10,
-        "maxday": 25,
-        "z": 0.0304
+        "maxyear": "1997",
+        "maxmonth": "10",
+        "maxday": "25",
+        "maxappmag": "20.3",
+        "z": "0.0304"
     }
 }

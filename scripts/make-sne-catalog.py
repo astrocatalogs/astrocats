@@ -1,4 +1,4 @@
-#!/usr/local/bin/python2.7
+#!/usr/local/bin/python3.5
 
 import csv
 import glob
@@ -8,11 +8,12 @@ import re
 import bz2
 import operator
 import json
-from colorpy.ciexyz import xyz_from_wavelength
-from colorpy.colormodels import irgb_string_from_xyz
+#from colorpy.ciexyz import xyz_from_wavelength
+#from colorpy.colormodels import irgb_string_from_xyz
+from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
-from bokeh.plotting import figure, show, save, ColumnDataSource
+from bokeh.plotting import Figure, show, save, ColumnDataSource
 from bokeh.models import HoverTool
 from bokeh.resources import CDN
 from bokeh.embed import file_html
@@ -27,10 +28,13 @@ columnkey = [
     "aliases",
     "discoverdate",
     "maxdate",
+    "maxappmag",
+    "maxabsmag",
     "host",
     "instruments",
     "redshift",
     "hvel",
+    "lumdist",
     "claimedtype",
     "data"
 ]
@@ -40,11 +44,14 @@ header = [
     "Name",
     "Aliases",
     "Discovery Date",
-    "Date of Maximum",
+    "Date of Max",
+    "Max App. Mag.",
+    "Max Abs. Mag.",
     "Host Name",
     "Instruments/Bands",
-    "<em>z</em>",
+    r"<em>z</em>",
     r"<em>v</em><sub>Helio</sub>",
+    r"<em>d</e><sub>L</sub>",
     "Claimed Type",
     "Data"
 ]
@@ -159,11 +166,11 @@ def event_filename(name):
     return(name.replace('/', '_'))
 
 # Replace bands with real colors, if possible.
-for b, code in enumerate(bandcodes):
-    if (code in bandwavelengths):
-        hexstr = irgb_string_from_xyz(xyz_from_wavelength(bandwavelengths[code]))
-        if (hexstr != "#000000"):
-            bandcolors[b] = hexstr
+#for b, code in enumerate(bandcodes):
+#    if (code in bandwavelengths):
+#        hexstr = irgb_string_from_xyz(xyz_from_wavelength(bandwavelengths[code]))
+#        if (hexstr != "#000000"):
+#            bandcolors[b] = hexstr
 
 bandcolordict = dict(list(zip(bandcodes,bandcolors)))
 
@@ -188,6 +195,9 @@ def bandwavef(code):
     if (code in bandwavelengths):
         return bandwavelengths[code]
     return 0.
+
+def utf8(x):
+    return str(x, 'utf-8')
 
 catalog = OrderedDict()
 for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.lower())):
@@ -234,26 +244,31 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
             catalog[entry]['instruments'] = ", ".join(bandlist)
 
     tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
-    hover = HoverTool(
-        tooltips=[
-            ("MJD", "@x{1.11}"),
-            ("Magnitude", "@y{1.111}"),
-            ("Error", "@err{1.111}"),
-            ("Instrument", "@instr"),
-            ("Band", "@desc"),
-            ("Source ID", "@src")
-        ]
-    )
 
     if plotavail:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
         photoAB = [float(catalog[entry]['photometry'][x]['abmag']) for x in prange]
         photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
+        photoband = [catalog[entry]['photometry'][x]['band'] for x in prange]
+        photoinstru = [catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else '' for x in prange]
+        photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
+        phototype = [bool(catalog[entry]['photometry'][x]['upperlimit']) if 'upperlimit' in catalog[entry]['photometry'][x] else False for x in prange]
 
         x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
         x_range = [-x_buffer + min(phototime), x_buffer + max(phototime)]
 
-        p1 = figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
+        tt = [  
+                ("Source ID", "@src"),
+                ("MJD", "@x{1.11}"),
+                ("Magnitude", "@y{1.111}"),
+                ("Error", "@err{1.111}"),
+                ("Band", "@desc")
+             ]
+        if len(list(filter(None, photoinstru))):
+            tt += [("Instrument", "@instr")]
+        hover = HoverTool(tooltips = tt)
+
+        p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
             y_axis_label='AB Magnitude', x_range = x_range, tools = tools,
             y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoerrs))])))
         p1.add_tools(hover)
@@ -265,10 +280,6 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
             err_xs.append((x, x))
             err_ys.append((y - yerr, y + yerr))
 
-        photoband = [catalog[entry]['photometry'][x]['band'] for x in prange]
-        photoinstru = [catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else '' for x in prange]
-        photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
-        phototype = [bool(catalog[entry]['photometry'][x]['upperlimit']) if 'upperlimit' in catalog[entry]['photometry'][x] else False for x in prange]
         bandset = set(photoband)
         bandset = [i for (j, i) in sorted(list(zip(list(map(bandaliasf, bandset)), bandset)))]
 
@@ -302,13 +313,15 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
 
         #save(p)
         html = file_html(p, CDN, eventname)
-        returnlink = r'    <a href="https://sne.space"><< Return to supernova catalog</a>';
+        returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>';
         #html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
         html = re.sub(r'(\<\/body\>)', r'    <a href="data/' + eventname + r'.json.bz2">Download datafile</a><br><br>\n        \1', html)
         if len(catalog[entry]['sources']):
-            html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th>ID</th><th>Source</th></tr>\n        \1', html)
+            html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n        \1', html)
             for source in catalog[entry]['sources']:
-                html = re.sub(r'(\<\/body\>)', r'<tr><td>' + source['alias'] + r'</td><td>'+source['name'].encode('ascii', 'xmlcharrefreplace')+r'</td></tr>\n        \1', html)
+                html = re.sub(r'(\<\/body\>)', r'<tr><td>' + source['alias'] +
+                r'</td><td>' + source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
+                r'</td></tr>\n        \1', html)
             html = re.sub(r'(\<\/body\>)', r'</table>\n    \1', html)
         html = re.sub(r'(\<\/body\>)', returnlink+r'\n    \1', html)
         print(outdir + eventname + ".html")
@@ -335,7 +348,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
     catalog[entry]['maxdate'] = maxdatestr
 
     #if fcnt > 100:
-    #    break
+    #    sys.exit()
 
 # Write it all out at the end
 if writecatalog:
@@ -344,14 +357,14 @@ if writecatalog:
     csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
     for entry in catalog:
         if 'plot' in catalog[entry]:
-            csvout.writerow([catalog[entry]['aliases'], 'https://sne.space/' + catalog[entry]['plot']])
+            csvout.writerow(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['plot']])
     f.close()
 
     f = open(outdir + 'sources.csv', 'w')
     sourcedict = dict()
     for entry in catalog:
         for sourcerow in catalog[entry]['sources']:
-            strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','replace'))
+            strippedname = re.sub('<[^<]+?>', '', str(sourcerow['name'].encode('ascii','replace')))
             if strippedname in sourcedict:
                 sourcedict[strippedname] += 1
             else:
@@ -401,13 +414,15 @@ if writecatalog:
     f.close()
 
     # Delete unneeded data from catalog, add blank entries when data missing.
+    catalogcopy = deepcopy(catalog) # Deep copy to avoid Python 3.5 issue.
     for entry in catalog:
         for col in catalog[entry]:
             if col not in columnkey:
-                del catalog[entry][col]
+                del catalogcopy[entry][col]
         for col in columnkey:
-            if col not in catalog[entry]:
-                catalog[entry][col] = None
+            if col not in catalogcopy[entry]:
+                catalogcopy[entry][col] = None
+    catalog = catalogcopy
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())

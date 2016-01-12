@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 2,
-        "discovermonth": 8,
+        "discoveryear": "2013",
+        "discoverday": "2",
+        "discovermonth": "8",
         "host": "CGCG 532-3",
         "claimedtype": "IIb",
         "hvel": "5063",
@@ -36,10 +36,13 @@
         "snra": "22:58:30.35",
         "sndec": "+40:25:44.5",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.016888,
-        "maxyear": 2013,
-        "maxmonth": 8,
-        "maxday": 2,
-        "z": 0.017
+        "redshift": "0.016888",
+        "maxyear": "2013",
+        "maxmonth": "8",
+        "maxday": "2",
+        "maxappmag": "17.5",
+        "z": "0.017",
+        "lumdist": "76.0",
+        "maxabsmag": "-17.0"
     }
 }

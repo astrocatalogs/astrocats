@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51670.39999999991",
+                "time": "51670.4",
                 "band": "C",
                 "abmag": "18.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51673.39999999991",
+                "time": "51673.4",
                 "band": "C",
                 "abmag": "19",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 5,
-        "discovermonth": 5,
+        "discoveryear": "2000",
+        "discoverday": "5",
+        "discovermonth": "5",
         "host": "UGC 10121",
         "claimedtype": "II",
         "hvel": "8961",
@@ -62,10 +62,13 @@
         "snra": "15:59:45.52",
         "sndec": "+18:48:13.0",
         "discoverer": "LOSS",
-        "redshift": 0.029,
-        "maxyear": 2000,
-        "maxmonth": 5,
-        "maxday": 6,
-        "z": 0.0304
+        "redshift": "0.029000",
+        "maxyear": "2000",
+        "maxmonth": "5",
+        "maxday": "6",
+        "maxappmag": "18.6",
+        "z": "0.0304",
+        "lumdist": "130.0",
+        "maxabsmag": "-17.0"
     }
 }

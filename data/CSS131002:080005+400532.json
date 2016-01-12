@@ -52,13 +52,16 @@
         "claimedtype": "Ia",
         "snra": "08:00:05.01",
         "sndec": "+40:05:31.8",
-        "discoverday": 1,
-        "discovermonth": 10,
-        "discoveryear": 2013,
-        "redshift": 0.07,
+        "discoverday": "1",
+        "discovermonth": "10",
+        "discoveryear": "2013",
+        "redshift": "0.070000",
         "discoverer": "CRTS",
-        "maxyear": 2013,
-        "maxmonth": 10,
-        "maxday": 1
+        "maxyear": "2013",
+        "maxmonth": "10",
+        "maxday": "1",
+        "maxappmag": "18.2",
+        "lumdist": "330.0",
+        "maxabsmag": "-19.0"
     }
 }

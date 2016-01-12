@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004200/CBET004229.txt'>CBET 4229</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "3"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "4"
+            },
+            {
+                "name": "Ron Arbour",
+                "alias": "5"
+            },
+            {
+                "name": "Andy Cason",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,19 +39,120 @@
                 "band": "",
                 "abmag": "15.4",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57065.579",
+                "band": "U",
+                "abmag": "20.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57067.107",
+                "band": "U",
+                "abmag": "19.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.268",
+                "band": "U",
+                "abmag": "19.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57131.137",
+                "band": "U",
+                "abmag": "18.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57137.137",
+                "band": "L",
+                "abmag": "18.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57153.237",
+                "band": "U",
+                "abmag": "19.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57158.885",
+                "band": "R",
+                "abmag": "15.71",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57158.92755",
+                "band": "U",
+                "abmag": "16.0",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57159.15",
+                "band": "V",
+                "abmag": "15.71",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57159.155",
+                "band": "Rc",
+                "abmag": "15.55",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57161.143",
+                "band": "V",
+                "abmag": "15.62",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57162.9004",
+                "band": "U",
+                "abmag": "15.4",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57163.913",
+                "band": "U",
+                "abmag": "15.36",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57167.166",
+                "band": "V",
+                "abmag": "15.83",
+                "source": "6,1"
             }
         ],
         "claimedtype": "IIn/LBV",
         "host": "NGC 2770",
         "snra": "09:09:34.96",
         "sndec": "+33:07:20.4",
-        "discoverday": 20,
-        "discovermonth": 5,
-        "discoveryear": 2015,
-        "redshift": 0.0064,
+        "discoverday": "12",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.006400",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 5,
-        "maxday": 20
+        "maxyear": "2015",
+        "maxmonth": "5",
+        "maxday": "21",
+        "maxappmag": "15.36",
+        "lumdist": "28.0",
+        "maxabsmag": "-17.0"
     }
 }

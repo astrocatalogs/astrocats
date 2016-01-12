@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52384.39999999991",
+                "time": "52384.4",
                 "band": "C",
                 "abmag": "17.1",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 18,
-        "discovermonth": 4,
+        "discoveryear": "2002",
+        "discoverday": "18",
+        "discovermonth": "4",
         "host": "UGC 10301",
         "claimedtype": "Ia",
         "hvel": "6664",
@@ -62,9 +62,10 @@
         "snra": "16:15:37.95",
         "sndec": "+31:19:17.4",
         "discoverer": "LOTOSS",
-        "maxyear": 2002,
-        "maxmonth": 4,
-        "maxday": 20,
-        "z": 0.0225
+        "maxyear": "2002",
+        "maxmonth": "4",
+        "maxday": "20",
+        "maxappmag": "17.1",
+        "z": "0.0225"
     }
 }

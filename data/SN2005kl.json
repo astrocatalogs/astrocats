@@ -1841,9 +1841,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 21,
-        "discovermonth": 11,
+        "discoveryear": "2005",
+        "discoverday": "21",
+        "discovermonth": "11",
         "host": "NGC 4369",
         "claimedtype": "Ic",
         "hvel": "988",
@@ -1852,9 +1852,10 @@
         "snra": "12:24:35.68",
         "sndec": "+39:23:03.5",
         "discoverer": "CROSS",
-        "maxyear": 2005,
-        "maxmonth": 11,
-        "maxday": 29,
-        "z": 0.0033
+        "maxyear": "2005",
+        "maxmonth": "11",
+        "maxday": "29",
+        "maxappmag": "12.905",
+        "z": "0.0033"
     }
 }

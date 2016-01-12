@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 17,
-        "discovermonth": 8,
+        "discoveryear": "1988",
+        "discoverday": "17",
+        "discovermonth": "8",
         "host": "MCG +9-23-9",
         "claimedtype": "Ia",
         "hvel": "7200",
@@ -39,9 +39,10 @@
         "discoverer": "Miklos Lovas",
         "snra": "13:48:15.6",
         "sndec": "+54:48:09.0",
-        "maxyear": 1988,
-        "maxmonth": 8,
-        "maxday": 17,
-        "z": 0.0243
+        "maxyear": "1988",
+        "maxmonth": "8",
+        "maxday": "17",
+        "maxappmag": "15.5",
+        "z": "0.0243"
     }
 }

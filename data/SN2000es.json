@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51875.35000000009",
+                "time": "51875.35",
                 "band": "B",
                 "abmag": "20.83",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51875.35000000009",
+                "time": "51875.35",
                 "band": "I",
                 "abmag": "18.77",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51875.35000000009",
+                "time": "51875.35",
                 "band": "R",
                 "abmag": "19.33",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51875.35000000009",
+                "time": "51875.35",
                 "band": "V",
                 "abmag": "19.84",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 15,
-        "discovermonth": 11,
+        "discoveryear": "2000",
+        "discoverday": "15",
+        "discovermonth": "11",
         "host": "A040617-0323",
         "claimedtype": "II",
         "hvel": "22200",
@@ -76,10 +76,13 @@
         "snra": "04:06:17.87",
         "sndec": "-03:23:18.2",
         "discoverer": "Nearby Galaxy Supernova Search",
-        "redshift": 0.074,
-        "maxyear": 2000,
-        "maxmonth": 11,
-        "maxday": 27,
-        "z": 0.077
+        "redshift": "0.074000",
+        "maxyear": "2000",
+        "maxmonth": "11",
+        "maxday": "27",
+        "maxappmag": "18.77",
+        "z": "0.077",
+        "lumdist": "350.0",
+        "maxabsmag": "-19.0"
     }
 }

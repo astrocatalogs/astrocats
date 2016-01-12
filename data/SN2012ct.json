@@ -24,9 +24,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 19,
-        "discovermonth": 6,
+        "discoveryear": "2012",
+        "discoverday": "19",
+        "discovermonth": "6",
         "host": "A163214+3839",
         "claimedtype": "II",
         "hvel": "11790",
@@ -35,10 +35,13 @@
         "snra": "16:32:13.92",
         "sndec": "+38:39:25.1",
         "discoverer": "Kiso Supernova Survey",
-        "redshift": 0.039,
-        "maxyear": 2012,
-        "maxmonth": 6,
-        "maxday": 19,
-        "z": 0.0401
+        "redshift": "0.039000",
+        "maxyear": "2012",
+        "maxmonth": "6",
+        "maxday": "19",
+        "maxappmag": "17.8",
+        "z": "0.0401",
+        "lumdist": "180.0",
+        "maxabsmag": "-18.0"
     }
 }

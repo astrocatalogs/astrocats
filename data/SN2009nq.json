@@ -272,9 +272,9 @@
                 "source": "6,2"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 27,
-        "discovermonth": 12,
+        "discoveryear": "2009",
+        "discoverday": "27",
+        "discovermonth": "12",
         "host": "NGC 7549",
         "claimedtype": "Ia",
         "hvel": "4688",
@@ -283,10 +283,13 @@
         "snra": "23:15:16.97",
         "sndec": "+19:01:22.5",
         "discoverer": "ROTSE",
-        "redshift": 0.0157,
-        "maxyear": 2009,
-        "maxmonth": 12,
-        "maxday": 27,
-        "z": 0.0158
+        "redshift": "0.015700",
+        "maxyear": "2009",
+        "maxmonth": "12",
+        "maxday": "27",
+        "maxappmag": "15.2",
+        "z": "0.0158",
+        "lumdist": "70.0",
+        "maxabsmag": "-19.0"
     }
 }

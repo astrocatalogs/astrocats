@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 15,
-        "discovermonth": 12,
+        "discoveryear": "1999",
+        "discoverday": "15",
+        "discovermonth": "12",
         "host": "UGC 4881",
         "hvel": "11777",
         "galra": "091555",
@@ -38,9 +38,10 @@
         "snra": "09:15:54.7",
         "sndec": "+44:19:55",
         "discoverer": "TNG",
-        "maxyear": 1999,
-        "maxmonth": 12,
-        "maxday": 15,
-        "z": 0.0401
+        "maxyear": "1999",
+        "maxmonth": "12",
+        "maxday": "15",
+        "maxappmag": "17.5",
+        "z": "0.0401"
     }
 }

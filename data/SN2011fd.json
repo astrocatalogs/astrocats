@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 20,
-        "discovermonth": 8,
+        "discoveryear": "2011",
+        "discoverday": "20",
+        "discovermonth": "8",
         "host": "NGC 2273B",
         "claimedtype": "IIP",
         "hvel": "2101",
@@ -36,10 +36,13 @@
         "snra": "06:46:39.84",
         "sndec": "+60:21:02.7",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.007,
-        "maxyear": 2011,
-        "maxmonth": 8,
-        "maxday": 20,
-        "z": 0.00703
+        "redshift": "0.007000",
+        "maxyear": "2011",
+        "maxmonth": "8",
+        "maxday": "20",
+        "maxappmag": "14.8",
+        "z": "0.00703",
+        "lumdist": "31.0",
+        "maxabsmag": "-18.0"
     }
 }

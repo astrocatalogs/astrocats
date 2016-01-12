@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 16,
-        "discovermonth": 9,
+        "discoveryear": "2010",
+        "discoverday": "16",
+        "discovermonth": "9",
         "host": "UGC 112",
         "claimedtype": "Ib/c-pec",
         "hvel": "5015",
@@ -39,10 +39,13 @@
         "snra": "00:12:07.48",
         "sndec": "+41:45:24.6",
         "discoverer": "David Grennan",
-        "redshift": 0.025,
-        "maxyear": 2010,
-        "maxmonth": 9,
-        "maxday": 16,
-        "z": 0.0169
+        "redshift": "0.025000",
+        "maxyear": "2010",
+        "maxmonth": "9",
+        "maxday": "16",
+        "maxappmag": "18.1",
+        "z": "0.0169",
+        "lumdist": "110.0",
+        "maxabsmag": "-17.0"
     }
 }

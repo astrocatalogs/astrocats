@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 25,
-        "discovermonth": 6,
+        "discoveryear": "2004",
+        "discoverday": "25",
+        "discovermonth": "6",
         "host": "ESO 407-G9",
         "claimedtype": "IIP",
         "hvel": "1571",
@@ -39,9 +39,10 @@
         "snra": "23:12:43.22",
         "sndec": "-37:12:58.7",
         "discoverer": "Brazilian Supernovae Search",
-        "maxyear": 2004,
-        "maxmonth": 6,
-        "maxday": 25,
-        "z": 0.00525
+        "maxyear": "2004",
+        "maxmonth": "6",
+        "maxday": "25",
+        "maxappmag": "15.0",
+        "z": "0.00525"
     }
 }

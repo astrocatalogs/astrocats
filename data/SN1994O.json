@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1994,
-        "discoverday": 5,
-        "discovermonth": 5,
+        "discoveryear": "1994",
+        "discoverday": "5",
+        "discovermonth": "5",
         "host": "Mkn 268",
         "claimedtype": "Ia",
         "hvel": "11950",
@@ -39,10 +39,13 @@
         "snra": "13:41:10.98",
         "sndec": "+30:22:43.6",
         "discoverer": "Christian Pollas",
-        "redshift": 0.04,
-        "maxyear": 1994,
-        "maxmonth": 5,
-        "maxday": 5,
-        "z": 0.0407
+        "redshift": "0.040000",
+        "maxyear": "1994",
+        "maxmonth": "5",
+        "maxday": "5",
+        "maxappmag": "18.5",
+        "z": "0.0407",
+        "lumdist": "180.0",
+        "maxabsmag": "-18.0"
     }
 }

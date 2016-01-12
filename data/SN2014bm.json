@@ -16,8 +16,12 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Federica Luppi and Luca Buzzi",
                 "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -30,15 +34,22 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56817.04296",
+                "band": "U",
+                "abmag": "18.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56829.348",
                 "band": "C",
                 "abmag": "20.3",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 5,
-        "discovermonth": 6,
+        "discoveryear": "2014",
+        "discoverday": "5",
+        "discovermonth": "6",
         "host": "NGC 6456",
         "claimedtype": "Ia",
         "hvel": "12371",
@@ -47,10 +58,13 @@
         "snra": "17:42:32.16",
         "sndec": "+67:35:41.8",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.041265,
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 5,
-        "z": 0.0422
+        "redshift": "0.041265",
+        "maxyear": "2014",
+        "maxmonth": "6",
+        "maxday": "5",
+        "maxappmag": "17.4",
+        "z": "0.0422",
+        "lumdist": "190.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -22,7 +22,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "56868.23199999984",
+                "time": "56868.232",
                 "band": "G",
                 "abmag": "20.05",
                 "instrument": "GAIA",
@@ -30,7 +30,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56868.305999999866",
+                "time": "56868.306",
                 "band": "G",
                 "abmag": "19.96",
                 "instrument": "GAIA",
@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56868.48199999984",
+                "time": "56868.482",
                 "band": "G",
                 "abmag": "20.03",
                 "instrument": "GAIA",
@@ -46,7 +46,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56868.555999999866",
+                "time": "56868.556",
                 "band": "G",
                 "abmag": "20.12",
                 "instrument": "GAIA",
@@ -54,7 +54,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56868.73199999984",
+                "time": "56868.732",
                 "band": "G",
                 "abmag": "20.06",
                 "instrument": "GAIA",
@@ -62,7 +62,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56868.80700000003",
+                "time": "56868.807",
                 "band": "G",
                 "abmag": "20.13",
                 "instrument": "GAIA",
@@ -70,7 +70,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56959.00999999978",
+                "time": "56959.010",
                 "band": "G",
                 "abmag": "18.60",
                 "instrument": "GAIA",
@@ -78,7 +78,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56959.18600000022",
+                "time": "56959.186",
                 "band": "G",
                 "abmag": "18.55",
                 "instrument": "GAIA",
@@ -86,7 +86,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56959.25999999978",
+                "time": "56959.260",
                 "band": "G",
                 "abmag": "18.60",
                 "instrument": "GAIA",
@@ -94,7 +94,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56973.191999999806",
+                "time": "56973.192",
                 "band": "G",
                 "abmag": "18.38",
                 "instrument": "GAIA",
@@ -102,7 +102,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56973.26599999983",
+                "time": "56973.266",
                 "band": "G",
                 "abmag": "18.40",
                 "instrument": "GAIA",
@@ -110,7 +110,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "56973.441999999806",
+                "time": "56973.442",
                 "band": "G",
                 "abmag": "18.39",
                 "instrument": "GAIA",
@@ -118,7 +118,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57046.887000000104",
+                "time": "57046.887",
                 "band": "G",
                 "abmag": "20.02",
                 "instrument": "GAIA",
@@ -126,7 +126,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57046.96100000013",
+                "time": "57046.961",
                 "band": "G",
                 "abmag": "19.94",
                 "instrument": "GAIA",
@@ -134,7 +134,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57047.137000000104",
+                "time": "57047.137",
                 "band": "G",
                 "abmag": "19.87",
                 "instrument": "GAIA",
@@ -142,7 +142,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57047.21100000013",
+                "time": "57047.211",
                 "band": "G",
                 "abmag": "19.97",
                 "instrument": "GAIA",
@@ -150,7 +150,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57052.96400000015",
+                "time": "57052.964",
                 "band": "G",
                 "abmag": "19.87",
                 "instrument": "GAIA",
@@ -158,7 +158,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57053.14099999983",
+                "time": "57053.141",
                 "band": "G",
                 "abmag": "20.00",
                 "instrument": "GAIA",
@@ -166,7 +166,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57053.21499999985",
+                "time": "57053.215",
                 "band": "G",
                 "abmag": "19.92",
                 "instrument": "GAIA",
@@ -174,7 +174,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57053.39099999983",
+                "time": "57053.391",
                 "band": "G",
                 "abmag": "20.08",
                 "instrument": "GAIA",
@@ -188,16 +188,19 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2014,
+        "discoveryear": "2014",
         "snra": "12:05:12.03",
         "sndec": "+21:50:18.1",
         "claimedtype": "Ia",
-        "discoverday": 30,
-        "discovermonth": 7,
-        "redshift": 0.06,
+        "discoverday": "30",
+        "discovermonth": "7",
+        "redshift": "0.060000",
         "discoverer": "Gaia Photometric Science Alerts programme",
-        "maxyear": 2014,
-        "maxmonth": 11,
-        "maxday": 12
+        "maxyear": "2014",
+        "maxmonth": "11",
+        "maxday": "12",
+        "maxappmag": "18.38",
+        "lumdist": "280.0",
+        "maxabsmag": "-19.0"
     }
 }

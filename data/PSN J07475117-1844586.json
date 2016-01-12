@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J07475117-1844586.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "CHASE",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,19 +26,29 @@
                 "band": "",
                 "abmag": "17.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56362.0",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "3,1"
             }
         ],
         "claimedtype": "LBV",
         "host": "ESO 560-G13",
         "snra": "07:47:51.17",
         "sndec": "-18:44:58.6",
-        "discoverday": 10,
-        "discovermonth": 3,
-        "discoveryear": 2013,
-        "redshift": 0.011,
+        "discoverday": "10",
+        "discovermonth": "3",
+        "discoveryear": "2013",
+        "redshift": "0.011000",
         "discoverer": "CHASE",
-        "maxyear": 2013,
-        "maxmonth": 3,
-        "maxday": 10
+        "maxyear": "2013",
+        "maxmonth": "3",
+        "maxday": "10",
+        "maxappmag": "17.8",
+        "lumdist": "49.0",
+        "maxabsmag": "-16.0"
     }
 }

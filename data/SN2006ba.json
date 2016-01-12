@@ -293,9 +293,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 18,
-        "discovermonth": 3,
+        "discoveryear": "2006",
+        "discoverday": "18",
+        "discovermonth": "3",
         "host": "NGC 2980",
         "claimedtype": "IIb",
         "hvel": "5736",
@@ -304,10 +304,13 @@
         "snra": "09:43:13.40",
         "sndec": "-09:36:53.0",
         "discoverer": "Berto Monard",
-        "redshift": 0.019,
-        "maxyear": 2006,
-        "maxmonth": 4,
-        "maxday": 4,
-        "z": 0.0193
+        "redshift": "0.019000",
+        "maxyear": "2006",
+        "maxmonth": "4",
+        "maxday": "4",
+        "maxappmag": "17.652",
+        "z": "0.0193",
+        "lumdist": "85.0",
+        "maxabsmag": "-17.0"
     }
 }

@@ -674,42 +674,42 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52063.299999999814",
+                "time": "52063.3",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52064.299999999814",
+                "time": "52064.3",
                 "band": "C",
                 "abmag": "16.8",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52067.95999999996",
+                "time": "52067.96",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52069.89999999991",
+                "time": "52069.9",
                 "band": "R",
                 "abmag": "16.1",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52073.89000000013",
+                "time": "52073.89",
                 "band": "C",
                 "abmag": "16.4",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52084.81999999983",
+                "time": "52084.82",
                 "band": "R",
                 "abmag": "16.5",
                 "source": "2,3"
@@ -722,9 +722,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 2,
-        "discovermonth": 6,
+        "discoveryear": "2001",
+        "discoverday": "2",
+        "discovermonth": "6",
         "host": "UGC 9425",
         "claimedtype": "Ia",
         "hvel": "10394",
@@ -733,10 +733,13 @@
         "snra": "14:37:50.08",
         "sndec": "+30:29:02.2",
         "discoverer": "LOTOSS",
-        "redshift": 0.035,
-        "maxyear": 2001,
-        "maxmonth": 6,
-        "maxday": 9,
-        "z": 0.0353
+        "redshift": "0.035000",
+        "maxyear": "2001",
+        "maxmonth": "6",
+        "maxday": "9",
+        "maxappmag": "16.1",
+        "z": "0.0353",
+        "lumdist": "160.0",
+        "maxabsmag": "-20.0"
     }
 }

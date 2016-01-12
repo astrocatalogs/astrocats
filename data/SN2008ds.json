@@ -216,9 +216,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 27,
-        "discovermonth": 6,
+        "discoveryear": "2008",
+        "discoverday": "27",
+        "discovermonth": "6",
         "host": "UGC 299",
         "claimedtype": "Ia-pec",
         "hvel": "6305",
@@ -227,10 +227,13 @@
         "snra": "00:29:50.83",
         "sndec": "+31:23:33.9",
         "discoverer": "LOSS",
-        "redshift": 0.021,
-        "maxyear": 2008,
-        "maxmonth": 6,
-        "maxday": 27,
-        "z": 0.0213
+        "redshift": "0.021000",
+        "maxyear": "2008",
+        "maxmonth": "6",
+        "maxday": "27",
+        "maxappmag": "15.4",
+        "z": "0.0213",
+        "lumdist": "94.0",
+        "maxabsmag": "-19.0"
     }
 }

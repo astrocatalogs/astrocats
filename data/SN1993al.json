@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1993,
-        "discoverday": 21,
-        "discovermonth": 12,
+        "discoveryear": "1993",
+        "discoverday": "21",
+        "discovermonth": "12",
         "host": "A122212-0108",
         "redshift": "0.18",
         "galra": "122212",
@@ -38,8 +38,11 @@
         "snra": "12:22:12.62",
         "sndec": "-01:08:24.5",
         "discoverer": "Supernova Cosmology Project",
-        "maxyear": 1993,
-        "maxmonth": 12,
-        "maxday": 21
+        "maxyear": "1993",
+        "maxmonth": "12",
+        "maxday": "21",
+        "maxappmag": "22.6",
+        "lumdist": "900.0",
+        "maxabsmag": "-17.0"
     }
 }

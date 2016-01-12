@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 19,
-        "discovermonth": 6,
+        "discoveryear": "2012",
+        "discoverday": "19",
+        "discovermonth": "6",
         "host": "PGC 59729",
         "claimedtype": "Ia",
         "hvel": "8296",
@@ -36,10 +36,13 @@
         "snra": "17:10:05.86",
         "sndec": "+42:22:23.5",
         "discoverer": "Ella Sanders, R. Kot and D. Coffin",
-        "redshift": 0.0277,
-        "maxyear": 2012,
-        "maxmonth": 6,
-        "maxday": 19,
-        "z": 0.0281
+        "redshift": "0.027700",
+        "maxyear": "2012",
+        "maxmonth": "6",
+        "maxday": "19",
+        "maxappmag": "15.3",
+        "z": "0.0281",
+        "lumdist": "130.0",
+        "maxabsmag": "-20.0"
     }
 }

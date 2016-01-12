@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J02331624+1915252.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "3"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,18 +39,49 @@
                 "band": "",
                 "abmag": "15.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57255.945",
+                "band": "R",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57256.631",
+                "band": "C",
+                "abmag": "15.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57257.812",
+                "band": "C",
+                "abmag": "15.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57271.485",
+                "band": "UR",
+                "abmag": "15.9",
+                "source": "6,1"
             }
         ],
         "claimedtype": "IIn",
         "snra": "02:33:16.24",
         "sndec": "+19:15:25.2",
-        "discoverday": 21,
-        "discovermonth": 8,
-        "discoveryear": 2015,
-        "redshift": 0.0135,
+        "discoverday": "21",
+        "discovermonth": "8",
+        "discoveryear": "2015",
+        "redshift": "0.013500",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2015,
-        "maxmonth": 8,
-        "maxday": 21
+        "maxyear": "2015",
+        "maxmonth": "8",
+        "maxday": "21",
+        "maxappmag": "15.7",
+        "lumdist": "60.0",
+        "maxabsmag": "-18.0"
     }
 }

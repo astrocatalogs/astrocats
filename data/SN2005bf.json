@@ -4747,9 +4747,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 2,
-        "discovermonth": 2,
+        "discoveryear": "1997",
+        "discoverday": "2",
+        "discovermonth": "2",
         "host": "MCG +0-27-5",
         "claimedtype": "Ib",
         "hvel": "5704",
@@ -4758,10 +4758,13 @@
         "snra": "10:23:57.27",
         "sndec": "-03:11:28.6",
         "discoverer": "Berto Monard",
-        "redshift": 0.019,
-        "maxyear": 1997,
-        "maxmonth": 2,
-        "maxday": 19,
-        "z": 0.0192
+        "redshift": "0.019000",
+        "maxyear": "1997",
+        "maxmonth": "2",
+        "maxday": "19",
+        "maxappmag": "15.357",
+        "z": "0.0192",
+        "lumdist": "85.0",
+        "maxabsmag": "-19.0"
     }
 }

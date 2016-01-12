@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 2,
-        "discovermonth": 8,
+        "discoveryear": "2009",
+        "discoverday": "2",
+        "discovermonth": "8",
         "host": "UGC 11499",
         "claimedtype": "II",
         "hvel": "7572",
@@ -39,10 +39,13 @@
         "snra": "19:56:50.61",
         "sndec": "+49:53:15.7",
         "discoverer": "LOSS",
-        "redshift": 0.0253,
-        "maxyear": 2009,
-        "maxmonth": 8,
-        "maxday": 2,
-        "z": 0.0256
+        "redshift": "0.025300",
+        "maxyear": "2009",
+        "maxmonth": "8",
+        "maxday": "2",
+        "maxappmag": "17.8",
+        "z": "0.0256",
+        "lumdist": "110.0",
+        "maxabsmag": "-17.0"
     }
 }

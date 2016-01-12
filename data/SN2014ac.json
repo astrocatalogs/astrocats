@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003830.txt'>CBET 3830</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "3"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,11 +35,32 @@
                 "band": "",
                 "abmag": "16.6",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56729.028",
+                "band": "V",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56729.069",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56733.301",
+                "band": "R",
+                "abmag": "17.1",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 8,
-        "discovermonth": 3,
+        "discoveryear": "2014",
+        "discoverday": "8",
+        "discovermonth": "3",
         "host": "NGC 5837",
         "claimedtype": "Ia",
         "hvel": "8675",
@@ -36,10 +69,13 @@
         "snra": "15:04:40.09",
         "sndec": "+12:37:54.0",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.03,
-        "maxyear": 2014,
-        "maxmonth": 3,
-        "maxday": 8,
-        "z": 0.0294
+        "redshift": "0.030000",
+        "maxyear": "2014",
+        "maxmonth": "3",
+        "maxday": "8",
+        "maxappmag": "16.6",
+        "z": "0.0294",
+        "lumdist": "140.0",
+        "maxabsmag": "-19.0"
     }
 }

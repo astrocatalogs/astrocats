@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 3,
-        "discovermonth": 10,
+        "discoveryear": "1999",
+        "discoverday": "3",
+        "discovermonth": "10",
         "host": "A030301+0012",
         "claimedtype": "II?",
         "galra": "030301",
@@ -38,8 +38,9 @@
         "snra": "03:03:01.40",
         "sndec": "+00:12:50.5",
         "discoverer": "Supernova Cosmology Project",
-        "maxyear": 1999,
-        "maxmonth": 10,
-        "maxday": 3
+        "maxyear": "1999",
+        "maxmonth": "10",
+        "maxday": "3",
+        "maxappmag": "25.0"
     }
 }

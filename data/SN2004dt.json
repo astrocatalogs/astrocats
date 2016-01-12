@@ -3906,21 +3906,24 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2004,
+        "discoveryear": "2004",
         "redshift": "0.018812",
         "snra": "02:02:12.77",
         "sndec": "-00:05:51.5",
-        "maxday": 25,
-        "maxmonth": 8,
+        "maxday": "25",
+        "maxmonth": "8",
         "host": "NGC 799",
         "claimedtype": "Ia",
         "hvel": "5831",
         "galra": "020212",
         "galdec": "-000603",
         "discoverer": "LOSS",
-        "discoverday": 10,
-        "discovermonth": 8,
-        "maxyear": 2004,
-        "z": 0.0196
+        "discoverday": "10",
+        "discovermonth": "8",
+        "maxyear": "2004",
+        "maxappmag": "15.18300",
+        "z": "0.0196",
+        "lumdist": "84.0",
+        "maxabsmag": "-19.0"
     }
 }

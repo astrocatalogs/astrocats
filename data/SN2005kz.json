@@ -302,9 +302,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "maxday": 30,
-        "maxmonth": 11,
+        "discoveryear": "2005",
+        "maxday": "30",
+        "maxmonth": "11",
         "host": "MCG +8-34-32",
         "claimedtype": "Ic",
         "hvel": "8077",
@@ -313,9 +313,10 @@
         "snra": "19:00:49.82",
         "sndec": "+50:53:01.8",
         "discoverer": "Tim Puckett et al.",
-        "discoverday": 30,
-        "discovermonth": 11,
-        "maxyear": 2005,
-        "z": 0.0273
+        "discoverday": "30",
+        "discovermonth": "11",
+        "maxyear": "2005",
+        "maxappmag": "18.2",
+        "z": "0.0273"
     }
 }

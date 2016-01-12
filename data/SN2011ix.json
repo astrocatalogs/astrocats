@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 31,
-        "discovermonth": 10,
+        "discoveryear": "2011",
+        "discoverday": "31",
+        "discovermonth": "10",
         "host": "MCG +5-4-59",
         "claimedtype": "II",
         "hvel": "13552",
@@ -36,10 +36,13 @@
         "snra": "01:26:34.68",
         "sndec": "+31:37:03.5",
         "discoverer": "Tom Boles",
-        "redshift": 0.0452,
-        "maxyear": 2011,
-        "maxmonth": 10,
-        "maxday": 31,
-        "z": 0.0463
+        "redshift": "0.045200",
+        "maxyear": "2011",
+        "maxmonth": "10",
+        "maxday": "31",
+        "maxappmag": "17.9",
+        "z": "0.0463",
+        "lumdist": "210.0",
+        "maxabsmag": "-19.0"
     }
 }

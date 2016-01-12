@@ -1301,21 +1301,24 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2007,
-        "redshift": 0.0176,
+        "discoveryear": "2007",
+        "redshift": "0.017600",
         "snra": "09:27:36.01",
         "sndec": "-80:10:39.2",
-        "discoverday": 12,
-        "discovermonth": 3,
+        "discoverday": "12",
+        "discovermonth": "3",
         "host": "ESO 18-G18",
         "claimedtype": "Ia",
         "hvel": "5125",
         "galra": "092742",
         "galdec": "-801046",
         "discoverer": "Mike Schwartz",
-        "maxyear": 2007,
-        "maxmonth": 3,
-        "maxday": 12,
-        "z": 0.0172
+        "maxyear": "2007",
+        "maxmonth": "3",
+        "maxday": "12",
+        "maxappmag": "15.8",
+        "z": "0.0172",
+        "lumdist": "79.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -45,7 +45,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47243.299999999814",
+                "time": "47243.3",
                 "band": "V",
                 "abmag": "16.15",
                 "source": "1,2"
@@ -73,35 +73,35 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47624.39999999991",
+                "time": "47624.4",
                 "band": "B",
                 "abmag": "22.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47624.39999999991",
+                "time": "47624.4",
                 "band": "R",
                 "abmag": "21.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47624.39999999991",
+                "time": "47624.4",
                 "band": "V",
                 "abmag": "21.55",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47644.10000000009",
+                "time": "47644.1",
                 "band": "R",
                 "abmag": "21.45",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47644.10000000009",
+                "time": "47644.1",
                 "band": "V",
                 "abmag": "21.9",
                 "source": "1,2"
@@ -114,9 +114,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1988,
-        "maxday": 2,
-        "maxmonth": 3,
+        "discoveryear": "1988",
+        "maxday": "2",
+        "maxmonth": "3",
         "host": "NGC 5878",
         "claimedtype": "II",
         "hvel": "1986",
@@ -125,9 +125,10 @@
         "discoverer": "Saul Perlmutter",
         "snra": "15:13:44.1",
         "sndec": "-14:15:21.0",
-        "discoverday": 2,
-        "discovermonth": 3,
-        "maxyear": 1988,
-        "z": 0.00665
+        "discoverday": "2",
+        "discovermonth": "3",
+        "maxyear": "1988",
+        "maxappmag": "15.5",
+        "z": "0.00665"
     }
 }

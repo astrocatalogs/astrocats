@@ -35,9 +35,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2008,
-        "maxday": 4,
-        "maxmonth": 2,
+        "discoveryear": "2008",
+        "maxday": "4",
+        "maxmonth": "2",
         "host": "NGC 6946",
         "claimedtype": "LBV",
         "hvel": "48",
@@ -46,10 +46,13 @@
         "snra": "20:34:45.35",
         "sndec": "+60:05:57.8",
         "discoverer": "Ron Arbour",
-        "discoverday": 4,
-        "discovermonth": 2,
-        "redshift": 0.00016,
-        "maxyear": 2008,
-        "z": 0.00016
+        "discoverday": "4",
+        "discovermonth": "2",
+        "redshift": "0.000160",
+        "maxyear": "2008",
+        "maxappmag": "16.5",
+        "z": "0.00016",
+        "lumdist": "0.71",
+        "maxabsmag": "-7.8"
     }
 }

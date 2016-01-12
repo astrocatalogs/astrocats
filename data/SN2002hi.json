@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 20,
-        "discovermonth": 10,
+        "discoveryear": "2002",
+        "discoverday": "20",
+        "discovermonth": "10",
         "host": "A071954+1758",
         "claimedtype": "IIn",
         "hvel": "18300",
@@ -62,10 +62,13 @@
         "snra": "07:19:54.08",
         "sndec": "+17:58:18.2",
         "discoverer": "LOTOSS",
-        "redshift": 0.061,
-        "maxyear": 2002,
-        "maxmonth": 10,
-        "maxday": 21,
-        "z": 0.063
+        "redshift": "0.061000",
+        "maxyear": "2002",
+        "maxmonth": "10",
+        "maxday": "21",
+        "maxappmag": "17.9",
+        "z": "0.063",
+        "lumdist": "280.0",
+        "maxabsmag": "-19.0"
     }
 }

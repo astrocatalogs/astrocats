@@ -368,9 +368,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 21,
-        "discovermonth": 3,
+        "discoveryear": "2008",
+        "discoverday": "21",
+        "discovermonth": "3",
         "host": "NGC 2618",
         "claimedtype": "Ia",
         "hvel": "4029",
@@ -379,10 +379,13 @@
         "snra": "08:35:53.39",
         "sndec": "+00:42:23.1",
         "discoverer": "CHASE",
-        "redshift": 0.0134,
-        "maxyear": 2008,
-        "maxmonth": 3,
-        "maxday": 21,
-        "z": 0.0135
+        "redshift": "0.013400",
+        "maxyear": "2008",
+        "maxmonth": "3",
+        "maxday": "21",
+        "maxappmag": "15.9",
+        "z": "0.0135",
+        "lumdist": "60.0",
+        "maxabsmag": "-18.0"
     }
 }

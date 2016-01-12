@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52659.39999999991",
+                "time": "52659.4",
                 "band": "C",
                 "abmag": "18.9",
                 "source": "1,2"
@@ -52,7 +52,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52673.39999999991",
+                "time": "52673.4",
                 "band": "C",
                 "abmag": "18.9",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 6,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "6",
+        "discovermonth": "1",
         "host": "IC 3203",
         "claimedtype": "II",
         "hvel": "6928",
@@ -76,9 +76,10 @@
         "snra": "12:21:47.358",
         "sndec": "+25:52:33.19",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 7,
-        "z": 0.0234
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "7",
+        "maxappmag": "18.9",
+        "z": "0.0234"
     }
 }

@@ -29,9 +29,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 3,
-        "discovermonth": 9,
+        "discoveryear": "2008",
+        "discoverday": "3",
+        "discovermonth": "9",
         "host": "UGC 12792",
         "claimedtype": "IIn",
         "hvel": "11557",
@@ -40,10 +40,13 @@
         "snra": "23:49:03.51",
         "sndec": "+26:47:39.3",
         "discoverer": "ROTSE",
-        "redshift": 0.0385,
-        "maxyear": 2008,
-        "maxmonth": 9,
-        "maxday": 3,
-        "z": 0.0393
+        "redshift": "0.038500",
+        "maxyear": "2008",
+        "maxmonth": "9",
+        "maxday": "3",
+        "maxappmag": "17.5",
+        "z": "0.0393",
+        "lumdist": "180.0",
+        "maxabsmag": "-19.0"
     }
 }

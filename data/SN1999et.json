@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51518.93000000017",
+                "time": "51518.93",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 3,
-        "discovermonth": 11,
+        "discoveryear": "1999",
+        "discoverday": "3",
+        "discovermonth": "11",
         "host": "NGC 1643",
         "claimedtype": "II",
         "hvel": "4873",
@@ -69,9 +69,10 @@
         "snra": "04:43:43.53",
         "sndec": "-05:19:19.8",
         "discoverer": "OaPd",
-        "maxyear": 1999,
-        "maxmonth": 11,
-        "maxday": 10,
-        "z": 0.0164
+        "maxyear": "1999",
+        "maxmonth": "11",
+        "maxday": "10",
+        "maxappmag": "17.1",
+        "z": "0.0164"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1996,
-        "discoverday": 13,
-        "discovermonth": 12,
+        "discoveryear": "1996",
+        "discoverday": "13",
+        "discovermonth": "12",
         "host": "UGC 3379",
         "claimedtype": "Ia",
         "hvel": "4114",
@@ -39,9 +39,10 @@
         "snra": "05:58:24.96",
         "sndec": "+68:27:12.1",
         "discoverer": "BAO Supernova Survey",
-        "maxyear": 1996,
-        "maxmonth": 12,
-        "maxday": 13,
-        "z": 0.0138
+        "maxyear": "1996",
+        "maxmonth": "12",
+        "maxday": "13",
+        "maxappmag": "16.5",
+        "z": "0.0138"
     }
 }

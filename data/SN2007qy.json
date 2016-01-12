@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 4,
-        "discovermonth": 11,
+        "discoveryear": "2007",
+        "discoverday": "4",
+        "discovermonth": "11",
         "host": "A015515+0038",
         "claimedtype": "Ia",
-        "redshift": 0.24,
+        "redshift": "0.240000",
         "galra": "015515",
         "galdec": "+003835",
         "snra": "01:55:15.28",
         "sndec": "+00:38:35.2",
         "discoverer": "SDSS Collaboration",
-        "maxyear": 2007,
-        "maxmonth": 11,
-        "maxday": 4
+        "maxyear": "2007",
+        "maxmonth": "11",
+        "maxday": "4",
+        "maxappmag": "22.1",
+        "lumdist": "1200.0",
+        "maxabsmag": "-18.0"
     }
 }

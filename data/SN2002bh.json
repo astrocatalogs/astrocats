@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52321.39999999991",
+                "time": "52321.4",
                 "band": "C",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52329.299999999814",
+                "time": "52329.3",
                 "band": "C",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52330.299999999814",
+                "time": "52330.3",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52335.080000000075",
+                "time": "52335.08",
                 "band": "C",
                 "abmag": "17.44",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52337.87000000011",
+                "time": "52337.87",
                 "band": "C",
                 "abmag": "17.47",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52340.080000000075",
+                "time": "52340.08",
                 "band": "C",
                 "abmag": "17.6",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 16,
-        "discovermonth": 2,
+        "discoveryear": "2002",
+        "discoverday": "16",
+        "discovermonth": "2",
         "host": "UGC 5286",
         "claimedtype": "II",
         "hvel": "5200",
@@ -90,10 +90,13 @@
         "snra": "09:51:06.56",
         "sndec": "+09:00:05.7",
         "discoverer": "LOTOSS",
-        "redshift": 0.017,
-        "maxyear": 2002,
-        "maxmonth": 2,
-        "maxday": 24,
-        "z": 0.0175
+        "redshift": "0.017000",
+        "maxyear": "2002",
+        "maxmonth": "2",
+        "maxday": "24",
+        "maxappmag": "17.1",
+        "z": "0.0175",
+        "lumdist": "76.0",
+        "maxabsmag": "-17.0"
     }
 }

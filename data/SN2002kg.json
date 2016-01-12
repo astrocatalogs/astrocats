@@ -103,9 +103,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 25,
-        "discovermonth": 10,
+        "discoveryear": "2002",
+        "discoverday": "25",
+        "discovermonth": "10",
         "host": "NGC 2403",
         "claimedtype": "IIn",
         "hvel": "130",
@@ -114,10 +114,13 @@
         "snra": "07:37:01.83",
         "sndec": "+65:34:29.3",
         "discoverer": "Mike Schwartz",
-        "redshift": 0.0008,
-        "maxyear": 2002,
-        "maxmonth": 10,
-        "maxday": 26,
-        "z": 0.000434
+        "redshift": "0.000800",
+        "maxyear": "2002",
+        "maxmonth": "10",
+        "maxday": "26",
+        "maxappmag": "19",
+        "z": "0.000434",
+        "lumdist": "3.5",
+        "maxabsmag": "-8.7"
     }
 }

@@ -313,13 +313,16 @@
         "host": "NGC 4666",
         "snra": "12:45:09.10",
         "sndec": "-00:27:32.5",
-        "discoverday": 12,
-        "discovermonth": 12,
-        "discoveryear": 2012,
-        "redshift": 0.005101,
+        "discoverday": "12",
+        "discovermonth": "12",
+        "discoveryear": "2012",
+        "redshift": "0.005101",
         "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 11
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "11",
+        "maxappmag": "11.0",
+        "lumdist": "23.0",
+        "maxabsmag": "-21.0"
     }
 }

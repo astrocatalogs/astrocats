@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 26,
-        "discovermonth": 8,
+        "discoveryear": "2006",
+        "discoverday": "26",
+        "discovermonth": "8",
         "host": "A002000-0037",
         "claimedtype": "IIP",
         "hvel": "21000",
@@ -39,10 +39,13 @@
         "snra": "00:20:00.81",
         "sndec": "-00:37:29.9",
         "discoverer": "SDSS Collaboration",
-        "redshift": 0.07,
-        "maxyear": 2006,
-        "maxmonth": 8,
-        "maxday": 26,
-        "z": 0.0727
+        "redshift": "0.070000",
+        "maxyear": "2006",
+        "maxmonth": "8",
+        "maxday": "26",
+        "maxappmag": "20.5",
+        "z": "0.0727",
+        "lumdist": "330.0",
+        "maxabsmag": "-17.0"
     }
 }

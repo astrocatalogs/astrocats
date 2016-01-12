@@ -61,9 +61,9 @@
                 "source": "5,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 2,
-        "discovermonth": 11,
+        "discoveryear": "2009",
+        "discoverday": "2",
+        "discovermonth": "11",
         "host": "NGC 6246",
         "claimedtype": "Ia",
         "hvel": "5214",
@@ -72,10 +72,13 @@
         "snra": "16:49:51.49",
         "sndec": "+55:32:35.8",
         "discoverer": "Tom Boles",
-        "redshift": 0.0178,
-        "maxyear": 2009,
-        "maxmonth": 11,
-        "maxday": 5,
-        "z": 0.0175
+        "redshift": "0.017800",
+        "maxyear": "2009",
+        "maxmonth": "11",
+        "maxday": "5",
+        "maxappmag": "14.86",
+        "z": "0.0175",
+        "lumdist": "80.0",
+        "maxabsmag": "-20.0"
     }
 }

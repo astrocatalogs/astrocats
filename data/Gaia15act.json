@@ -13,7 +13,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "57088.27799999993",
+                "time": "57088.278",
                 "band": "G",
                 "abmag": "18.18",
                 "instrument": "GAIA",
@@ -21,7 +21,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57088.351999999955",
+                "time": "57088.352",
                 "band": "G",
                 "abmag": "18.21",
                 "instrument": "GAIA",
@@ -29,21 +29,22 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57106.85300000012",
+                "time": "57106.853",
                 "band": "G",
                 "abmag": "19.02",
                 "instrument": "GAIA",
                 "source": "1"
             }
         ],
-        "discoveryear": 2015,
+        "discoveryear": "2015",
         "snra": "124.24897",
         "sndec": "51.20970",
         "claimedtype": "Ia",
-        "maxyear": 2015,
-        "maxmonth": 3,
-        "maxday": 7,
-        "discovermonth": 3,
-        "discoverday": 7
+        "maxyear": "2015",
+        "maxmonth": "3",
+        "maxday": "7",
+        "maxappmag": "18.18",
+        "discovermonth": "3",
+        "discoverday": "7"
     }
 }

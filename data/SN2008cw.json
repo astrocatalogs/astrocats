@@ -304,9 +304,9 @@
                 "source": "1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 5,
-        "discovermonth": 6,
+        "discoveryear": "2008",
+        "discoverday": "5",
+        "discovermonth": "6",
         "host": "A163238+4127",
         "claimedtype": "IIb",
         "hvel": "9724",
@@ -315,9 +315,10 @@
         "snra": "163238.27",
         "sndec": "+412733.2",
         "discoverer": "Yuan et al.",
-        "maxyear": 2008,
-        "maxmonth": 6,
-        "maxday": 5,
-        "z": 0.033
+        "maxyear": "2008",
+        "maxmonth": "6",
+        "maxday": "5",
+        "maxappmag": "18.301",
+        "z": "0.033"
     }
 }

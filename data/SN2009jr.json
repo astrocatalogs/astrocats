@@ -536,9 +536,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 7,
-        "discovermonth": 10,
+        "discoveryear": "2009",
+        "discoverday": "7",
+        "discovermonth": "10",
         "host": "IC 1320",
         "claimedtype": "Ia",
         "hvel": "4965",
@@ -547,10 +547,13 @@
         "snra": "20:26:26.03",
         "sndec": "+02:54:32.1",
         "discoverer": "Ron Arbour",
-        "redshift": 0.0165,
-        "maxyear": 2009,
-        "maxmonth": 10,
-        "maxday": 7,
-        "z": 0.0167
+        "redshift": "0.016500",
+        "maxyear": "2009",
+        "maxmonth": "10",
+        "maxday": "7",
+        "maxappmag": "16.0",
+        "z": "0.0167",
+        "lumdist": "74.0",
+        "maxabsmag": "-18.0"
     }
 }

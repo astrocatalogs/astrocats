@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 22,
-        "discovermonth": 1,
+        "discoveryear": "2010",
+        "discoverday": "22",
+        "discovermonth": "1",
         "host": "NGC 3690",
         "claimedtype": "IIb",
         "hvel": "3033",
@@ -39,10 +39,13 @@
         "snra": "11:28:31.38",
         "sndec": "+58:33:49.3",
         "discoverer": "S. Mattila and E. Kankare",
-        "redshift": 0.0104,
-        "maxyear": 2010,
-        "maxmonth": 1,
-        "maxday": 22,
-        "z": 0.0102
+        "redshift": "0.010400",
+        "maxyear": "2010",
+        "maxmonth": "1",
+        "maxday": "22",
+        "maxappmag": "15.9",
+        "z": "0.0102",
+        "lumdist": "46.0",
+        "maxabsmag": "-17.0"
     }
 }

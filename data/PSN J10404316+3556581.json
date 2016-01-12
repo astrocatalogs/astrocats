@@ -13,6 +13,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J10404316+3556581.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "5"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -22,17 +38,46 @@
                 "band": "",
                 "abmag": "17.0",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56740.2396",
+                "band": "R",
+                "abmag": "17.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56741.322",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.879",
+                "band": "V",
+                "abmag": "17.8",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.15",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "6,1"
             }
         ],
         "host": "PGC 2072488",
         "snra": "10:40:43.16",
         "sndec": "+35:56:58.1",
-        "discoverday": 21,
-        "discovermonth": 3,
-        "discoveryear": 2014,
+        "discoverday": "21",
+        "discovermonth": "3",
+        "discoveryear": "2014",
         "discoverer": "V. Nevski, V. Linkov and I. Molotov",
-        "maxyear": 2014,
-        "maxmonth": 3,
-        "maxday": 21
+        "maxyear": "2014",
+        "maxmonth": "3",
+        "maxday": "21",
+        "maxappmag": "17.0"
     }
 }

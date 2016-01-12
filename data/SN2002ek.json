@@ -31,63 +31,63 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52477.310000000056",
+                "time": "52477.31",
                 "band": "C",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52477.330000000075",
+                "time": "52477.33",
                 "band": "C",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52477.37000000011",
+                "time": "52477.37",
                 "band": "C",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52492.27000000002",
+                "time": "52492.27",
                 "band": "C",
                 "abmag": "19.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52492.29000000004",
+                "time": "52492.29",
                 "band": "C",
                 "abmag": "19.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52492.31999999983",
+                "time": "52492.32",
                 "band": "C",
                 "abmag": "19.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52493.310000000056",
+                "time": "52493.31",
                 "band": "C",
                 "abmag": "19.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52493.330000000075",
+                "time": "52493.33",
                 "band": "C",
                 "abmag": "19.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52493.35999999987",
+                "time": "52493.36",
                 "band": "C",
                 "abmag": "19.5",
                 "source": "1,2"
@@ -100,17 +100,18 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 21,
-        "discovermonth": 7,
+        "discoveryear": "2002",
+        "discoverday": "21",
+        "discovermonth": "7",
         "host": "A203208-1517",
         "galra": "203208",
         "galdec": "-151757",
         "snra": "20:32:08.50",
         "sndec": "-15:17:57.9",
         "discoverer": "Nearby Supernova Factory",
-        "maxyear": 2002,
-        "maxmonth": 7,
-        "maxday": 22
+        "maxyear": "2002",
+        "maxmonth": "7",
+        "maxday": "22",
+        "maxappmag": "19.2"
     }
 }

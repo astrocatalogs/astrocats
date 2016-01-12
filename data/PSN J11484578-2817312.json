@@ -13,6 +13,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J11484578-2817312.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "CHASE",
+                "alias": "3"
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -22,19 +30,36 @@
                 "band": "",
                 "abmag": "15.0",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56623.0",
+                "band": "C",
+                "abmag": "15.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56625.4829",
+                "band": "R",
+                "abmag": "16.2",
+                "source": "4,1"
             }
         ],
         "claimedtype": "Ic",
         "host": "ESO 440-G11",
         "snra": "11:48:45.78",
         "sndec": "-28:17:31.2",
-        "discoverday": 26,
-        "discovermonth": 11,
-        "discoveryear": 2013,
-        "redshift": 0.01,
+        "discoverday": "26",
+        "discovermonth": "11",
+        "discoveryear": "2013",
+        "redshift": "0.010000",
         "discoverer": "CHASE",
-        "maxyear": 2013,
-        "maxmonth": 11,
-        "maxday": 26
+        "maxyear": "2013",
+        "maxmonth": "11",
+        "maxday": "26",
+        "maxappmag": "15.0",
+        "lumdist": "45.0",
+        "maxabsmag": "-18.0"
     }
 }

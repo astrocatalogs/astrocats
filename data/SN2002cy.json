@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52402.689999999944",
+                "time": "52402.69",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52406.689999999944",
+                "time": "52406.69",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52407.68000000017",
+                "time": "52407.68",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52457.14999999991",
+                "time": "52457.15",
                 "band": "R",
                 "abmag": "18.5",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 7,
-        "discovermonth": 5,
+        "discoveryear": "2002",
+        "discoverday": "7",
+        "discovermonth": "5",
         "host": "NGC 1762",
         "hvel": "4633",
         "galra": "050337",
@@ -75,9 +75,10 @@
         "snra": "05:03:35.33",
         "sndec": "+01:34:29.5",
         "discoverer": "Berto Monard",
-        "maxyear": 2002,
-        "maxmonth": 5,
-        "maxday": 13,
-        "z": 0.0156
+        "maxyear": "2002",
+        "maxmonth": "5",
+        "maxday": "13",
+        "maxappmag": "16.1",
+        "z": "0.0156"
     }
 }

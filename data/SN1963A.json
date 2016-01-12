@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1963,
-        "discoverday": 21,
-        "discovermonth": 1,
+        "discoveryear": "1963",
+        "discoverday": "21",
+        "discovermonth": "1",
         "host": "MCG +5-36-32",
         "claimedtype": "I",
         "hvel": "10400",
@@ -39,9 +39,10 @@
         "snra": "15:27:00.00",
         "sndec": "+26:27:01.5",
         "discoverer": "Fritz Zwicky",
-        "maxyear": 1963,
-        "maxmonth": 1,
-        "maxday": 21,
-        "z": 0.0353
+        "maxyear": "1963",
+        "maxmonth": "1",
+        "maxday": "21",
+        "maxappmag": "18.1",
+        "z": "0.0353"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 10,
-        "discovermonth": 2,
+        "discoveryear": "2008",
+        "discoverday": "10",
+        "discovermonth": "2",
         "host": "CGCG 38-35",
         "claimedtype": "Ia",
         "hvel": "20519",
@@ -39,10 +39,13 @@
         "snra": "10:51:48.45",
         "sndec": "+03:46:35.7",
         "discoverer": "LOSS",
-        "redshift": 0.0684,
-        "maxyear": 2008,
-        "maxmonth": 2,
-        "maxday": 10,
-        "z": 0.071
+        "redshift": "0.068400",
+        "maxyear": "2008",
+        "maxmonth": "2",
+        "maxday": "10",
+        "maxappmag": "18.4",
+        "z": "0.071",
+        "lumdist": "320.0",
+        "maxabsmag": "-19.0"
     }
 }
