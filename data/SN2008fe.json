@@ -46,9 +46,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 27,
-        "discovermonth": 8,
+        "discoveryear": "2008",
+        "discoverday": "27",
+        "discovermonth": "8",
         "host": "UGC 9578",
         "claimedtype": "IIP",
         "hvel": "9280",
@@ -57,10 +57,13 @@
         "snra": "14:53:48.26",
         "sndec": "+20:06:45.5",
         "discoverer": "Stanislav Korotkiy et al.",
-        "redshift": 0.031,
-        "maxyear": 2008,
-        "maxmonth": 8,
-        "maxday": 29,
-        "z": 0.0314
+        "redshift": "0.031000",
+        "maxyear": "2008",
+        "maxmonth": "8",
+        "maxday": "29",
+        "maxappmag": "18.4",
+        "z": "0.0314",
+        "lumdist": "140.0",
+        "maxabsmag": "-17.0"
     }
 }

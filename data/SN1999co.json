@@ -34,22 +34,22 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51347.43000000017",
+                "time": "51347.43",
                 "band": "C",
                 "abmag": "17.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51347.470000000205",
+                "time": "51347.47",
                 "band": "C",
                 "abmag": "17.4",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 13,
-        "discovermonth": 6,
+        "discoveryear": "1999",
+        "discoverday": "13",
+        "discovermonth": "6",
         "host": "A210319-1432",
         "claimedtype": "II",
         "hvel": "9260",
@@ -58,10 +58,13 @@
         "snra": "21:03:19.12",
         "sndec": "-14:32:49.0",
         "discoverer": "LOSS",
-        "redshift": 0.031,
-        "maxyear": 1999,
-        "maxmonth": 6,
-        "maxday": 18,
-        "z": 0.0314
+        "redshift": "0.031000",
+        "maxyear": "1999",
+        "maxmonth": "6",
+        "maxday": "18",
+        "maxappmag": "17.4",
+        "z": "0.0314",
+        "lumdist": "140.0",
+        "maxabsmag": "-18.0"
     }
 }

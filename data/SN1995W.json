@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 4,
-        "discovermonth": 8,
+        "discoveryear": "1995",
+        "discoverday": "4",
+        "discovermonth": "8",
         "host": "NGC 7650",
         "claimedtype": "II",
         "hvel": "3379",
@@ -39,10 +39,13 @@
         "snra": "23:25:17.100",
         "sndec": "-57:48:00.0",
         "discoverer": "Williams, Martin",
-        "redshift": 0.011,
-        "maxyear": 1995,
-        "maxmonth": 8,
-        "maxday": 4,
-        "z": 0.0113
+        "redshift": "0.011000",
+        "maxyear": "1995",
+        "maxmonth": "8",
+        "maxday": "4",
+        "maxappmag": "16.0",
+        "z": "0.0113",
+        "lumdist": "49.0",
+        "maxabsmag": "-17.0"
     }
 }

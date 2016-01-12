@@ -16,8 +16,20 @@
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "L. Elenin and I. Molotov ",
                 "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -30,15 +42,36 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56665.5283",
+                "band": "R",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56666.367",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56666.693",
+                "band": "V",
+                "abmag": "16.3",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56712.469",
                 "band": "UV",
                 "abmag": "18.7",
-                "source": "3,1"
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 8,
-        "discovermonth": 1,
+        "discoveryear": "2014",
+        "discoverday": "8",
+        "discovermonth": "1",
         "host": "UGC 7034",
         "claimedtype": "Ia",
         "hvel": "5645",
@@ -47,10 +80,13 @@
         "snra": "12:03:31.24",
         "sndec": "+02:02:35.7",
         "discoverer": "CRTS",
-        "redshift": 0.018906,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 8,
-        "z": 0.019
+        "redshift": "0.018906",
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "8",
+        "maxappmag": "16.3",
+        "z": "0.019",
+        "lumdist": "85.0",
+        "maxabsmag": "-18.0"
     }
 }

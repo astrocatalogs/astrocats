@@ -31,56 +31,56 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51500.16000000015",
+                "time": "51500.16",
                 "band": "C",
                 "abmag": "15.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51500.169999999925",
+                "time": "51500.17",
                 "band": "V",
                 "abmag": "16.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51500.18000000017",
+                "time": "51500.18",
                 "band": "R",
                 "abmag": "15.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51501.79000000004",
+                "time": "51501.79",
                 "band": "C",
                 "abmag": "15.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51503.169999999925",
+                "time": "51503.17",
                 "band": "C",
                 "abmag": "15.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51503.18000000017",
+                "time": "51503.18",
                 "band": "R",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51506.220000000205",
+                "time": "51506.22",
                 "band": "C",
                 "abmag": "15.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51507.20999999996",
+                "time": "51507.21",
                 "band": "C",
                 "abmag": "16",
                 "source": "1,2"
@@ -94,35 +94,35 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51518.799999999814",
+                "time": "51518.8",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51526.220000000205",
+                "time": "51526.22",
                 "band": "R",
                 "abmag": "16.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51543.200000000186",
+                "time": "51543.2",
                 "band": "R",
                 "abmag": "18.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51553.169999999925",
+                "time": "51553.17",
                 "band": "R",
                 "abmag": "16.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51571.080000000075",
+                "time": "51571.08",
                 "band": "R",
                 "abmag": "17",
                 "source": "1,2"
@@ -135,9 +135,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 18,
-        "discovermonth": 11,
+        "discoveryear": "1999",
+        "discoverday": "18",
+        "discovermonth": "11",
         "host": "NGC 4274",
         "claimedtype": "II",
         "hvel": "927",
@@ -146,9 +146,10 @@
         "snra": "12:19:48.31",
         "sndec": "+29:37:20.4",
         "discoverer": "Tom Boles",
-        "maxyear": 1999,
-        "maxmonth": 11,
-        "maxday": 19,
-        "z": 0.0031
+        "maxyear": "1999",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "15.2",
+        "z": "0.0031"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1937,
-        "maxday": 15,
-        "maxmonth": 2,
+        "discoveryear": "1937",
+        "maxday": "15",
+        "maxmonth": "2",
         "host": "NGC 4157",
         "claimedtype": "II P",
         "hvel": "775",
@@ -39,9 +39,10 @@
         "discoverer": "Fritz Zwicky",
         "snra": "12:11:08.1",
         "sndec": "+50:29:43.0",
-        "discoverday": 15,
-        "discovermonth": 2,
-        "maxyear": 1937,
-        "z": 0.00259
+        "discoverday": "15",
+        "discovermonth": "2",
+        "maxyear": "1937",
+        "maxappmag": "16.2",
+        "z": "0.00259"
     }
 }

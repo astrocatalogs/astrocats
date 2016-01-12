@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 6,
-        "discovermonth": 5,
+        "discoveryear": "2011",
+        "discoverday": "6",
+        "discovermonth": "5",
         "host": "A164225+1649",
         "claimedtype": "IIP",
         "hvel": "9000",
@@ -36,10 +36,13 @@
         "snra": "16:42:25.12",
         "sndec": "+16:49:28.1",
         "discoverer": "CRTS",
-        "redshift": 0.03,
-        "maxyear": 2011,
-        "maxmonth": 5,
-        "maxday": 6,
-        "z": 0.0305
+        "redshift": "0.030000",
+        "maxyear": "2011",
+        "maxmonth": "5",
+        "maxday": "6",
+        "maxappmag": "17.5",
+        "z": "0.0305",
+        "lumdist": "140.0",
+        "maxabsmag": "-18.0"
     }
 }

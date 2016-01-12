@@ -13,6 +13,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J17520838+1314252.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "A. Mantero",
+                "alias": "3"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -22,18 +34,42 @@
                 "band": "",
                 "abmag": "17.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57210.872",
+                "band": "V",
+                "abmag": "17.94",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57212.915",
+                "band": "CV",
+                "abmag": "17.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57221.5458",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "5,1"
             }
         ],
         "claimedtype": "Ia",
         "snra": "17:52:08.38",
         "sndec": "+13:14:25.2",
-        "discoverday": 17,
-        "discovermonth": 7,
-        "discoveryear": 2015,
-        "redshift": 0.033,
+        "discoverday": "7",
+        "discovermonth": "7",
+        "discoveryear": "2015",
+        "redshift": "0.033000",
         "discoverer": "S. Maticic",
-        "maxyear": 2015,
-        "maxmonth": 7,
-        "maxday": 17
+        "maxyear": "2015",
+        "maxmonth": "7",
+        "maxday": "17",
+        "maxappmag": "17.1",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

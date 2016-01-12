@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 5,
-        "discovermonth": 1,
+        "discoveryear": "1997",
+        "discoverday": "5",
+        "discovermonth": "1",
         "host": "A105651-0358",
         "claimedtype": "Ia",
         "redshift": "0.43",
@@ -39,8 +39,11 @@
         "snra": "10:56:51.48",
         "sndec": "-03:58:36.9",
         "discoverer": "Supernova Cosmology Project",
-        "maxyear": 1997,
-        "maxmonth": 1,
-        "maxday": 5
+        "maxyear": "1997",
+        "maxmonth": "1",
+        "maxday": "5",
+        "maxappmag": "22.5",
+        "lumdist": "2400.0",
+        "maxabsmag": "-19.0"
     }
 }

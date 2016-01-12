@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 5,
-        "discovermonth": 11,
+        "discoveryear": "2010",
+        "discoverday": "5",
+        "discovermonth": "11",
         "host": "ESO 348-G2",
         "hvel": "15900",
         "galra": "234339",
@@ -38,10 +38,13 @@
         "snra": "23:43:41.24",
         "sndec": "-41:18:46.9",
         "discoverer": "CRTS",
-        "redshift": 0.053,
-        "maxyear": 2010,
-        "maxmonth": 11,
-        "maxday": 5,
-        "z": 0.0545
+        "redshift": "0.053000",
+        "maxyear": "2010",
+        "maxmonth": "11",
+        "maxday": "5",
+        "maxappmag": "19.0",
+        "z": "0.0545",
+        "lumdist": "240.0",
+        "maxabsmag": "-18.0"
     }
 }

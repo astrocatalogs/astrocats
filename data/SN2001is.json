@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52265.560000000056",
+                "time": "52265.56",
                 "band": "C",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52266.72999999998",
+                "time": "52266.73",
                 "band": "C",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52267.299999999814",
+                "time": "52267.3",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52269.39999999991",
+                "time": "52269.4",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52269.529999999795",
+                "time": "52269.53",
                 "band": "C",
                 "abmag": "17.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52273.97999999998",
+                "time": "52273.98",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 21,
-        "discovermonth": 12,
+        "discoveryear": "2001",
+        "discoverday": "21",
+        "discovermonth": "12",
         "host": "NGC 1961",
         "claimedtype": "Ib",
         "hvel": "3983",
@@ -90,9 +90,10 @@
         "snra": "05:42:09.16",
         "sndec": "+69:21:54.8",
         "discoverer": "BAO",
-        "maxyear": 2001,
-        "maxmonth": 12,
-        "maxday": 30,
-        "z": 0.0134
+        "maxyear": "2001",
+        "maxmonth": "12",
+        "maxday": "30",
+        "maxappmag": "17",
+        "z": "0.0134"
     }
 }

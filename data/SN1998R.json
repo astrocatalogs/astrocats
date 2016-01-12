@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 22,
-        "discovermonth": 2,
+        "discoveryear": "1998",
+        "discoverday": "22",
+        "discovermonth": "2",
         "host": "UGC 6271",
         "claimedtype": "II",
         "hvel": "2022",
@@ -39,10 +39,13 @@
         "snra": "11:14:37.03",
         "sndec": "+30:18:51.7",
         "discoverer": "CfA Supernova group",
-        "redshift": 0.0668,
-        "maxyear": 1998,
-        "maxmonth": 2,
-        "maxday": 22,
-        "z": 0.00677
+        "redshift": "0.066800",
+        "maxyear": "1998",
+        "maxmonth": "2",
+        "maxday": "22",
+        "maxappmag": "16.0",
+        "z": "0.00677",
+        "lumdist": "310.0",
+        "maxabsmag": "-21.0"
     }
 }

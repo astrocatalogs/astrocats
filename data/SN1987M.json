@@ -205,9 +205,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1987,
-        "maxday": 2,
-        "maxmonth": 10,
+        "discoveryear": "1987",
+        "maxday": "2",
+        "maxmonth": "10",
         "host": "NGC 2715",
         "claimedtype": "Ib",
         "hvel": "1321",
@@ -216,9 +216,10 @@
         "discoverer": "Miklos Lovas",
         "snra": "09:08:06.7",
         "sndec": "+78:05:25.0",
-        "discoverday": 20,
-        "discovermonth": 9,
-        "maxyear": 1987,
-        "z": 0.00442
+        "discoverday": "20",
+        "discovermonth": "9",
+        "maxyear": "1987",
+        "maxappmag": "14.63",
+        "z": "0.00442"
     }
 }

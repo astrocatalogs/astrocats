@@ -1148,9 +1148,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2003,
-        "maxday": 2,
-        "maxmonth": 8,
+        "discoveryear": "2003",
+        "maxday": "2",
+        "maxmonth": "8",
         "host": "NGC 936",
         "claimedtype": "Ia",
         "hvel": "1400",
@@ -1159,9 +1159,10 @@
         "snra": "02:27:38.36",
         "sndec": "-01:09:35.4",
         "discoverer": "Robert Evans",
-        "discoverday": 29,
-        "discovermonth": 7,
-        "maxyear": 2003,
-        "z": 0.00468
+        "discoverday": "29",
+        "discovermonth": "7",
+        "maxyear": "2003",
+        "maxappmag": "13.32400",
+        "z": "0.00468"
     }
 }

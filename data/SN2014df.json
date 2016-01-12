@@ -18,6 +18,14 @@
             {
                 "name": "Maciel B. Sparrenberger",
                 "alias": "3"
+            },
+            {
+                "name": "Raymond Kneip",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,11 +42,25 @@
                 "band": "U",
                 "abmag": "15.4",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56812.811",
+                "band": "V",
+                "abmag": "14.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56814.819",
+                "band": "L",
+                "abmag": "14.7",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 2,
-        "discovermonth": 6,
+        "discoveryear": "2014",
+        "discoverday": "2",
+        "discovermonth": "6",
         "host": "NGC 1448",
         "claimedtype": "Ib",
         "hvel": "1167",
@@ -47,10 +69,13 @@
         "snra": "03:44:23.99",
         "sndec": "-44:40:08.1",
         "discoverer": "Berto Monard",
-        "redshift": 0.003,
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 2,
-        "z": 0.0039
+        "redshift": "0.003000",
+        "maxyear": "2014",
+        "maxmonth": "6",
+        "maxday": "2",
+        "maxappmag": "14.0",
+        "z": "0.0039",
+        "lumdist": "13.0",
+        "maxabsmag": "-17.0"
     }
 }

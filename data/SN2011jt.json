@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 4,
-        "discovermonth": 1,
+        "discoveryear": "2012",
+        "discoverday": "4",
+        "discovermonth": "1",
         "host": "PGC0053208",
         "claimedtype": "Ia",
         "hvel": "8323",
@@ -36,10 +36,13 @@
         "snra": "14:53:23.01",
         "sndec": "+02:57:43.0",
         "discoverer": "CRTS",
-        "redshift": 0.0278,
-        "maxyear": 2012,
-        "maxmonth": 1,
-        "maxday": 4,
-        "z": 0.0282
+        "redshift": "0.027800",
+        "maxyear": "2012",
+        "maxmonth": "1",
+        "maxday": "4",
+        "maxappmag": "16.4",
+        "z": "0.0282",
+        "lumdist": "130.0",
+        "maxabsmag": "-19.0"
     }
 }

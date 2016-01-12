@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 6,
-        "discovermonth": 4,
+        "discoveryear": "2004",
+        "discoverday": "6",
+        "discovermonth": "4",
         "host": "ESO 499-G34",
         "claimedtype": "II",
         "hvel": "2282",
@@ -39,10 +39,13 @@
         "snra": "10:00:19.47",
         "sndec": "-24:48:13.0",
         "discoverer": "LOSS",
-        "redshift": 0.0076,
-        "maxyear": 2004,
-        "maxmonth": 4,
-        "maxday": 6,
-        "z": 0.00764
+        "redshift": "0.007600",
+        "maxyear": "2004",
+        "maxmonth": "4",
+        "maxday": "6",
+        "maxappmag": "16.7",
+        "z": "0.00764",
+        "lumdist": "34.0",
+        "maxabsmag": "-16.0"
     }
 }

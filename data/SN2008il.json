@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 26,
-        "discovermonth": 12,
+        "discoveryear": "2008",
+        "discoverday": "26",
+        "discovermonth": "12",
         "host": "ESO 355-G4",
         "claimedtype": "II",
         "hvel": "6314",
@@ -39,10 +39,13 @@
         "snra": "02:17:53.07",
         "sndec": "-34:47:53.4",
         "discoverer": "CHASE",
-        "redshift": 0.0208,
-        "maxyear": 2008,
-        "maxmonth": 12,
-        "maxday": 26,
-        "z": 0.0213
+        "redshift": "0.020800",
+        "maxyear": "2008",
+        "maxmonth": "12",
+        "maxday": "26",
+        "maxappmag": "16.5",
+        "z": "0.0213",
+        "lumdist": "94.0",
+        "maxabsmag": "-18.0"
     }
 }

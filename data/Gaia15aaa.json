@@ -23,7 +23,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "56943.70200000005",
+                "time": "56943.702",
                 "band": "G",
                 "abmag": "19.95",
                 "instrument": "GAIA",
@@ -31,7 +31,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57018.893999999855",
+                "time": "57018.894",
                 "band": "G",
                 "abmag": "17.91",
                 "instrument": "GAIA",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57018.96799999988",
+                "time": "57018.968",
                 "band": "G",
                 "abmag": "17.91",
                 "instrument": "GAIA",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57031.89999999991",
+                "time": "57031.900",
                 "band": "G",
                 "abmag": "17.96",
                 "instrument": "GAIA",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57031.97399999993",
+                "time": "57031.974",
                 "band": "G",
                 "abmag": "17.93",
                 "instrument": "GAIA",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57032.14999999991",
+                "time": "57032.150",
                 "band": "G",
                 "abmag": "18.12",
                 "instrument": "GAIA",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57032.22399999993",
+                "time": "57032.224",
                 "band": "G",
                 "abmag": "18.14",
                 "instrument": "GAIA",
@@ -79,7 +79,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57068.37999999989",
+                "time": "57068.380",
                 "band": "G",
                 "abmag": "19.14",
                 "instrument": "GAIA",
@@ -93,15 +93,16 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2014,
+        "discoveryear": "2014",
         "snra": "16:05:29.10",
         "sndec": "+08:05:23.8",
         "claimedtype": "Ia",
-        "discoverday": 13,
-        "discovermonth": 10,
+        "discoverday": "13",
+        "discovermonth": "10",
         "discoverer": "Gaia Photometric Science Alerts programme",
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 26
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "26",
+        "maxappmag": "17.8"
     }
 }

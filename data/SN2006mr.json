@@ -2084,21 +2084,24 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "redshift": 0.0059,
+        "discoveryear": "2006",
+        "redshift": "0.005900",
         "snra": "03:22:42.84",
         "sndec": "-37:12:28.5",
-        "discoverday": 4,
-        "discovermonth": 11,
+        "discoverday": "4",
+        "discovermonth": "11",
         "host": "NGC 1316",
         "claimedtype": "Ia",
         "hvel": "1806",
         "galra": "032242",
         "galdec": "-371227",
         "discoverer": "Berto Monard",
-        "maxyear": 2006,
-        "maxmonth": 11,
-        "maxday": 14,
-        "z": 0.00604
+        "maxyear": "2006",
+        "maxmonth": "11",
+        "maxday": "14",
+        "maxappmag": "13.901",
+        "z": "0.00604",
+        "lumdist": "26.0",
+        "maxabsmag": "-18.0"
     }
 }

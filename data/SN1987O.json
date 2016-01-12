@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1987,
-        "discoverday": 19,
-        "discovermonth": 12,
+        "discoveryear": "1987",
+        "discoverday": "19",
+        "discovermonth": "12",
         "host": "UGC 4060",
         "claimedtype": "Ia",
         "hvel": "4678",
@@ -39,9 +39,10 @@
         "discoverer": "Christian Pollas",
         "snra": "07:51:28.5",
         "sndec": "+14:01:19.0",
-        "maxyear": 1987,
-        "maxmonth": 12,
-        "maxday": 19,
-        "z": 0.0157
+        "maxyear": "1987",
+        "maxmonth": "12",
+        "maxday": "19",
+        "maxappmag": "17.0",
+        "z": "0.0157"
     }
 }

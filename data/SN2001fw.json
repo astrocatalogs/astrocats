@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52224.14999999991",
+                "time": "52224.15",
                 "band": "C",
                 "abmag": "18.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52231.00999999978",
+                "time": "52231.01",
                 "band": "R",
                 "abmag": "17.7",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 10,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "10",
+        "discovermonth": "11",
         "host": "UGC 2116",
         "claimedtype": "Ib",
         "hvel": "8853",
@@ -62,9 +62,10 @@
         "snra": "02:38:10.45",
         "sndec": "+30:50:54.6",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 18,
-        "z": 0.03
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "18",
+        "maxappmag": "17.7",
+        "z": "0.03"
     }
 }

@@ -22,7 +22,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "57041.373999999836",
+                "time": "57041.374",
                 "band": "G",
                 "abmag": "18.17",
                 "instrument": "GAIA",
@@ -30,7 +30,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57041.44799999986",
+                "time": "57041.448",
                 "band": "G",
                 "abmag": "18.15",
                 "instrument": "GAIA",
@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57053.95200000005",
+                "time": "57053.952",
                 "band": "G",
                 "abmag": "18.32",
                 "instrument": "GAIA",
@@ -46,7 +46,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57054.128000000026",
+                "time": "57054.128",
                 "band": "G",
                 "abmag": "18.38",
                 "instrument": "GAIA",
@@ -54,7 +54,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57150.325000000186",
+                "time": "57150.325",
                 "band": "G",
                 "abmag": "20.38",
                 "instrument": "GAIA",
@@ -62,7 +62,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57173.49800000014",
+                "time": "57173.498",
                 "band": "G",
                 "abmag": "20.44",
                 "instrument": "GAIA",
@@ -76,16 +76,19 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2015,
+        "discoveryear": "2015",
         "snra": "12:33:25.83",
         "sndec": "+40:44:35.5",
         "claimedtype": "II",
-        "discoverday": 18,
-        "discovermonth": 1,
-        "redshift": 0.03,
+        "discoverday": "18",
+        "discovermonth": "1",
+        "redshift": "0.030000",
         "discoverer": "Gaia Photometric Science Alerts programme",
-        "maxyear": 2015,
-        "maxmonth": 1,
-        "maxday": 18
+        "maxyear": "2015",
+        "maxmonth": "1",
+        "maxday": "18",
+        "maxappmag": "18.1",
+        "lumdist": "140.0",
+        "maxabsmag": "-18.0"
     }
 }

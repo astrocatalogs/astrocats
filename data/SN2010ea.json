@@ -39,9 +39,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 28,
-        "discovermonth": 5,
+        "discoveryear": "2010",
+        "discoverday": "28",
+        "discovermonth": "5",
         "host": "PGC 43005",
         "hvel": "9000",
         "galra": "124530",
@@ -49,9 +49,10 @@
         "snra": "12:45:29.52",
         "sndec": "+53:51:49.2",
         "discoverer": "MASTER",
-        "maxyear": 2010,
-        "maxmonth": 5,
-        "maxday": 28,
-        "z": 0.0305
+        "maxyear": "2010",
+        "maxmonth": "5",
+        "maxday": "28",
+        "maxappmag": "18.1",
+        "z": "0.0305"
     }
 }

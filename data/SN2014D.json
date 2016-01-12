@@ -16,8 +16,16 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Stan Howerton",
                 "alias": "3"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -30,15 +38,43 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56660.42",
+                "band": "L",
+                "abmag": "16.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56663.127",
+                "band": "U",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56664.493",
+                "band": "L",
+                "abmag": "16.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56669.741",
+                "band": "V",
+                "abmag": "16.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56678.395",
                 "band": "C",
                 "abmag": "16.6",
-                "source": "3,1"
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 5,
-        "discovermonth": 1,
+        "discoveryear": "2014",
+        "discoverday": "3",
+        "discovermonth": "1",
         "host": "UGC 7170",
         "claimedtype": "Ia",
         "hvel": "2464",
@@ -47,10 +83,13 @@
         "snra": "12:10:36.76",
         "sndec": "+18:49:35.4",
         "discoverer": "CRTS",
-        "redshift": 0.008179,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 5,
-        "z": 0.00825
+        "redshift": "0.008179",
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "5",
+        "maxappmag": "15.8",
+        "z": "0.00825",
+        "lumdist": "36.0",
+        "maxabsmag": "-17.0"
     }
 }

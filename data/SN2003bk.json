@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52700.299999999814",
+                "time": "52700.3",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 27,
-        "discovermonth": 2,
+        "discoveryear": "2003",
+        "discoverday": "27",
+        "discovermonth": "2",
         "host": "NGC 4316",
         "claimedtype": "II",
         "hvel": "1262",
@@ -62,10 +62,13 @@
         "snra": "12:22:42.148",
         "sndec": "+09:20:01.29",
         "discoverer": "LOTOSS",
-        "redshift": 0.0042,
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 28,
-        "z": 0.00422
+        "redshift": "0.004200",
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "28",
+        "maxappmag": "17",
+        "z": "0.00422",
+        "lumdist": "19.0",
+        "maxabsmag": "-14.0"
     }
 }

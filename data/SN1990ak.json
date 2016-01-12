@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1990,
-        "discoverday": 30,
-        "discovermonth": 4,
+        "discoveryear": "1990",
+        "discoverday": "30",
+        "discovermonth": "4",
         "host": "PGC0097745",
         "hvel": "12236",
         "galra": "132455",
@@ -38,9 +38,10 @@
         "snra": "13:24:54.92",
         "sndec": "-32:25:25.9",
         "discoverer": "Robert McNaught",
-        "maxyear": 1990,
-        "maxmonth": 4,
-        "maxday": 30,
-        "z": 0.0417
+        "maxyear": "1990",
+        "maxmonth": "4",
+        "maxday": "30",
+        "maxappmag": "18.0",
+        "z": "0.0417"
     }
 }

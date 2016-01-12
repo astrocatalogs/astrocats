@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51979.799999999814",
+                "time": "51979.8",
                 "band": "C",
                 "abmag": "17.4",
                 "source": "1,2"
@@ -45,14 +45,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51987.060000000056",
+                "time": "51987.06",
                 "band": "R",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51987.14999999991",
+                "time": "51987.15",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 10,
-        "discovermonth": 3,
+        "discoveryear": "2001",
+        "discoverday": "10",
+        "discovermonth": "3",
         "host": "NGC 6373",
         "claimedtype": "IIn",
         "hvel": "3315",
@@ -76,10 +76,13 @@
         "snra": "17:24:02.40",
         "sndec": "+58:59:52.0",
         "discoverer": "BAO",
-        "redshift": 0.011,
-        "maxyear": 2001,
-        "maxmonth": 3,
-        "maxday": 19,
-        "z": 0.0111
+        "redshift": "0.011000",
+        "maxyear": "2001",
+        "maxmonth": "3",
+        "maxday": "19",
+        "maxappmag": "17",
+        "z": "0.0111",
+        "lumdist": "49.0",
+        "maxabsmag": "-16.0"
     }
 }

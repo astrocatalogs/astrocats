@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 22,
-        "discovermonth": 12,
+        "discoveryear": "1997",
+        "discoverday": "22",
+        "discovermonth": "12",
         "host": "A123644+6212",
         "claimedtype": "Ia",
         "redshift": "1.755",
@@ -39,8 +39,11 @@
         "snra": "12:36:44.00",
         "sndec": "+62:12:44.7",
         "discoverer": "Gilliland, Phillips",
-        "maxyear": 1997,
-        "maxmonth": 12,
-        "maxday": 22
+        "maxyear": "1997",
+        "maxmonth": "12",
+        "maxday": "22",
+        "maxappmag": "26.8",
+        "lumdist": "14000.0",
+        "maxabsmag": "-19.0"
     }
 }

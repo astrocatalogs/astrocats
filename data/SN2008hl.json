@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 19,
-        "discovermonth": 11,
+        "discoveryear": "2008",
+        "discoverday": "19",
+        "discovermonth": "11",
         "host": "NGC 7451",
         "hvel": "6697",
         "galra": "230041",
@@ -38,10 +38,13 @@
         "snra": "23:00:40.35",
         "sndec": "+08:27:55.5",
         "discoverer": "LOSS",
-        "redshift": 0.0222,
-        "maxyear": 2008,
-        "maxmonth": 11,
-        "maxday": 19,
-        "z": 0.0226
+        "redshift": "0.022200",
+        "maxyear": "2008",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "18.8",
+        "z": "0.0226",
+        "lumdist": "100.0",
+        "maxabsmag": "-16.0"
     }
 }

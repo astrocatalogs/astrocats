@@ -758,9 +758,9 @@
                 "source": "8,3"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 25,
-        "discovermonth": 1,
+        "discoveryear": "2008",
+        "discoverday": "25",
+        "discovermonth": "1",
         "host": "NGC 524",
         "claimedtype": "Ia",
         "hvel": "2421",
@@ -769,10 +769,13 @@
         "snra": "01:24:57.23",
         "sndec": "+09:33:01.5",
         "discoverer": "Giancarlo Cortini",
-        "redshift": 0.0079,
-        "maxyear": 2008,
-        "maxmonth": 2,
-        "maxday": 9,
-        "z": 0.00811
+        "redshift": "0.007900",
+        "maxyear": "2008",
+        "maxmonth": "2",
+        "maxday": "9",
+        "maxappmag": "13.4",
+        "z": "0.00811",
+        "lumdist": "35.0",
+        "maxabsmag": "-19.0"
     }
 }

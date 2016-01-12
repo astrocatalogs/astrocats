@@ -42,35 +42,35 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "49710.85999999987",
+                "time": "49710.86",
                 "band": "V",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49711.779999999795",
+                "time": "49711.78",
                 "band": "V",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49713.75999999978",
+                "time": "49713.76",
                 "band": "V",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49714.58999999985",
+                "time": "49714.59",
                 "band": "V",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49715.62000000011",
+                "time": "49715.62",
                 "band": "V",
                 "abmag": "16",
                 "source": "1,2"
@@ -84,28 +84,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "49717.62000000011",
+                "time": "49717.62",
                 "band": "V",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49718.64000000013",
+                "time": "49718.64",
                 "band": "V",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49719.60000000009",
+                "time": "49719.6",
                 "band": "V",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49720.439999999944",
+                "time": "49720.44",
                 "band": "V",
                 "abmag": "18",
                 "source": "1,2"
@@ -118,9 +118,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 1994,
-        "discoverday": 17,
-        "discovermonth": 12,
+        "discoveryear": "1994",
+        "discoverday": "17",
+        "discovermonth": "12",
         "host": "NGC 2782",
         "claimedtype": "IIn",
         "hvel": "2560",
@@ -129,9 +129,10 @@
         "snra": "09:14:01.47",
         "sndec": "+40:06:21.5",
         "discoverer": "Reiki Kushida",
-        "maxyear": 1994,
-        "maxmonth": 12,
-        "maxday": 25,
-        "z": 0.00858
+        "maxyear": "1994",
+        "maxmonth": "12",
+        "maxday": "25",
+        "maxappmag": "15.9",
+        "z": "0.00858"
     }
 }

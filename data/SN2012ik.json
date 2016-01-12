@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 22,
-        "discovermonth": 12,
+        "discoveryear": "2012",
+        "discoverday": "22",
+        "discovermonth": "12",
         "host": "PGC2401776",
         "claimedtype": "Ia",
         "hvel": "19200",
@@ -36,10 +36,13 @@
         "snra": "07:35:26.91",
         "sndec": "+51:52:50.4",
         "discoverer": "THU-NAOC Transient Survey (TNTS)",
-        "redshift": 0.064,
-        "maxyear": 2012,
-        "maxmonth": 12,
-        "maxday": 22,
-        "z": 0.0662
+        "redshift": "0.064000",
+        "maxyear": "2012",
+        "maxmonth": "12",
+        "maxday": "22",
+        "maxappmag": "19.4",
+        "z": "0.0662",
+        "lumdist": "300.0",
+        "maxabsmag": "-18.0"
     }
 }

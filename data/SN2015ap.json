@@ -18,6 +18,22 @@
             {
                 "name": "MDe",
                 "alias": "3"
+            },
+            {
+                "name": "Zhijian Xu & Xing Gao",
+                "alias": "4"
+            },
+            {
+                "name": "Jaroslaw Grzegorzek",
+                "alias": "5"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "6"
+            },
+            {
+                "name": "LLA",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -34,11 +50,53 @@
                 "band": "CV",
                 "abmag": "17.0",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57283.0",
+                "band": "U",
+                "abmag": "15.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57289.119",
+                "band": "U",
+                "abmag": "15.4",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57306.6741",
+                "band": "U",
+                "abmag": "15.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57312.077",
+                "band": "CV",
+                "abmag": "16.7",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57327.952",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57344.896",
+                "band": "CV",
+                "abmag": "17.6",
+                "source": "7,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 17,
-        "discovermonth": 9,
+        "discoveryear": "2015",
+        "discoverday": "17",
+        "discovermonth": "9",
         "host": "IC 1776",
         "claimedtype": "Ib",
         "hvel": "3405",
@@ -47,10 +105,13 @@
         "snra": "02:05:13.32",
         "sndec": "+06:06:08.4",
         "discoverer": "LOSS",
-        "redshift": 0.01138,
-        "maxyear": 2015,
-        "maxmonth": 9,
-        "maxday": 17,
-        "z": 0.0114
+        "redshift": "0.011380",
+        "maxyear": "2015",
+        "maxmonth": "9",
+        "maxday": "17",
+        "maxappmag": "15.2",
+        "z": "0.0114",
+        "lumdist": "51.0",
+        "maxabsmag": "-18.0"
     }
 }

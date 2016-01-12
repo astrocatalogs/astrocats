@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 30,
-        "discovermonth": 11,
+        "discoveryear": "2004",
+        "discoverday": "30",
+        "discovermonth": "11",
         "host": "NGC 4527",
         "claimedtype": "Ic",
         "hvel": "1732",
@@ -39,9 +39,10 @@
         "snra": "12:34:12.10",
         "sndec": "+02:39:34.4",
         "discoverer": "LOSS",
-        "maxyear": 2004,
-        "maxmonth": 11,
-        "maxday": 30,
-        "z": 0.00579
+        "maxyear": "2004",
+        "maxmonth": "11",
+        "maxday": "30",
+        "maxappmag": "16.6",
+        "z": "0.00579"
     }
 }

@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52728.85999999987",
+                "time": "52728.86",
                 "band": "C",
                 "abmag": "16.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52729.779999999795",
+                "time": "52729.78",
                 "band": "C",
                 "abmag": "16.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52730.85999999987",
+                "time": "52730.86",
                 "band": "C",
                 "abmag": "16.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52731.85000000009",
+                "time": "52731.85",
                 "band": "C",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52733.83999999985",
+                "time": "52733.84",
                 "band": "C",
                 "abmag": "16.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52733.919999999925",
+                "time": "52733.92",
                 "band": "C",
                 "abmag": "16.6",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 29,
-        "discovermonth": 3,
+        "discoveryear": "2003",
+        "discoverday": "29",
+        "discovermonth": "3",
         "host": "MCG +10-12-78",
         "claimedtype": "Ia",
         "hvel": "5927",
@@ -90,9 +90,10 @@
         "snra": "08:09:11.138",
         "sndec": "+57:41:14.09",
         "discoverer": "Mark Armstrong",
-        "maxyear": 2003,
-        "maxmonth": 3,
-        "maxday": 30,
-        "z": 0.02
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "30",
+        "maxappmag": "16.2",
+        "z": "0.02"
     }
 }

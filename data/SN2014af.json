@@ -47,9 +47,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 6,
-        "discovermonth": 2,
+        "discoveryear": "2014",
+        "discoverday": "6",
+        "discovermonth": "2",
         "host": "A084721+7313",
         "claimedtype": "IIP",
         "galra": "084721",
@@ -57,9 +57,12 @@
         "snra": "08:47:21.16",
         "sndec": "+73:13:13.7",
         "discoverer": "MASTER",
-        "redshift": 0.019,
-        "maxyear": 2014,
-        "maxmonth": 2,
-        "maxday": 6
+        "redshift": "0.019000",
+        "maxyear": "2014",
+        "maxmonth": "2",
+        "maxday": "6",
+        "maxappmag": "15.9",
+        "lumdist": "85.0",
+        "maxabsmag": "-19.0"
     }
 }

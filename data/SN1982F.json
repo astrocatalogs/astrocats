@@ -91,56 +91,56 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "45111.799999999814",
+                "time": "45111.8",
                 "band": "B",
                 "abmag": "16.82",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45113.89999999991",
+                "time": "45113.9",
                 "band": "V",
                 "abmag": "15.18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45114.89999999991",
+                "time": "45114.9",
                 "band": "V",
                 "abmag": "15.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45116.89999999991",
+                "time": "45116.9",
                 "band": "B",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45116.89999999991",
+                "time": "45116.9",
                 "band": "V",
                 "abmag": "15.23",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45119.89999999991",
+                "time": "45119.9",
                 "band": "V",
                 "abmag": "15.32",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45121.89999999991",
+                "time": "45121.9",
                 "band": "V",
                 "abmag": "15.33",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "45122.89999999991",
+                "time": "45122.9",
                 "band": "V",
                 "abmag": "15.38",
                 "source": "1,2"
@@ -153,9 +153,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 1982,
-        "discoverday": 25,
-        "discovermonth": 2,
+        "discoveryear": "1982",
+        "discoverday": "25",
+        "discovermonth": "2",
         "host": "NGC 4490",
         "claimedtype": "II P",
         "hvel": "579",
@@ -164,9 +164,10 @@
         "discoverer": "Paul Wild",
         "snra": "12:30:38.7",
         "sndec": "+41:38:00.0",
-        "maxyear": 1982,
-        "maxmonth": 4,
-        "maxday": 26,
-        "z": 0.00193
+        "maxyear": "1982",
+        "maxmonth": "4",
+        "maxday": "26",
+        "maxappmag": "15",
+        "z": "0.00193"
     }
 }

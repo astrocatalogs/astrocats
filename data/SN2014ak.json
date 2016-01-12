@@ -24,16 +24,32 @@
                 "alias": "4"
             },
             {
-                "name": "Diego Rodriguez",
+                "name": "Joseph Brimacombe",
                 "alias": "5"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Federica Luppi and Luca Buzzi",
                 "alias": "6"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Massimiliano Martignoni ",
                 "alias": "7"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "8"
+            },
+            {
+                "name": "Zhijian Xu and Xing Gao",
+                "alias": "9"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "10"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "11"
             }
         ],
         "photometry": [
@@ -88,24 +104,94 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56743.129",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.07472",
+                "band": "U",
+                "abmag": "17.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.867",
+                "band": "V",
+                "abmag": "17.5",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.115",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56745.141",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56746.15",
+                "band": "C",
+                "abmag": "17.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56748.623",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56748.623",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56749.13",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56751.141",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56753.873",
                 "band": "V",
                 "abmag": "16.30",
-                "source": "5,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56753.926",
                 "band": "CV",
                 "abmag": "16.08",
-                "source": "6,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56766.113",
                 "band": "U",
                 "abmag": "16.8",
-                "source": "7,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
@@ -115,9 +201,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 31,
-        "discovermonth": 3,
+        "discoveryear": "2014",
+        "discoverday": "27",
+        "discovermonth": "3",
         "host": "NGC 2446",
         "claimedtype": "Ia",
         "hvel": "5575",
@@ -126,10 +212,13 @@
         "snra": "07:48:44.10",
         "sndec": "+54:36:40.5",
         "discoverer": "Xing Gao et al.",
-        "redshift": 0.018906,
-        "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 6,
-        "z": 0.0188
+        "redshift": "0.018906",
+        "maxyear": "2014",
+        "maxmonth": "4",
+        "maxday": "6",
+        "maxappmag": "16.08",
+        "z": "0.0188",
+        "lumdist": "85.0",
+        "maxabsmag": "-19.0"
     }
 }

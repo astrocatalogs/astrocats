@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1960,
-        "discoverday": 12,
-        "discovermonth": 12,
+        "discoveryear": "1960",
+        "discoverday": "12",
+        "discovermonth": "12",
         "host": "PGC0005935",
         "hvel": "15744",
         "galra": "013555",
@@ -38,9 +38,10 @@
         "snra": "01:35:54.96",
         "sndec": "-05:29:54.0",
         "discoverer": "Milton Humason",
-        "maxyear": 1960,
-        "maxmonth": 12,
-        "maxday": 12,
-        "z": 0.054
+        "maxyear": "1960",
+        "maxmonth": "12",
+        "maxday": "12",
+        "maxappmag": "17.5",
+        "z": "0.054"
     }
 }

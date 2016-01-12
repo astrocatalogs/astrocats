@@ -16,8 +16,12 @@
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Kunihiro Shima",
                 "alias": "3"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -30,29 +34,36 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56780.7757",
+                "band": "U",
+                "abmag": "16.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56837.474",
                 "band": "UV",
                 "abmag": "17.4",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56863.456",
                 "band": "UV",
                 "abmag": "17.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56913.328",
                 "band": "UV",
                 "abmag": "19.1",
-                "source": "3,1"
+                "source": "4,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 29,
-        "discovermonth": 4,
+        "discoveryear": "2014",
+        "discoverday": "29",
+        "discovermonth": "4",
         "host": "NGC 7691",
         "claimedtype": "IIP",
         "hvel": "4061",
@@ -61,10 +72,13 @@
         "snra": "23:32:22.84",
         "sndec": "+15:51:10.6",
         "discoverer": "Stu Parker",
-        "redshift": 0.013479,
-        "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 29,
-        "z": 0.0136
+        "redshift": "0.013479",
+        "maxyear": "2014",
+        "maxmonth": "4",
+        "maxday": "29",
+        "maxappmag": "16.3",
+        "z": "0.0136",
+        "lumdist": "60.0",
+        "maxabsmag": "-18.0"
     }
 }

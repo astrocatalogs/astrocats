@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1994,
-        "discoverday": 12,
-        "discovermonth": 10,
+        "discoveryear": "1994",
+        "discoverday": "12",
+        "discovermonth": "10",
         "host": "ESO 356-G19",
         "claimedtype": "Ia",
         "hvel": "6495",
@@ -39,9 +39,10 @@
         "snra": "02:56:37.75",
         "sndec": "-33:54:43.6",
         "discoverer": "Robert McNaught",
-        "maxyear": 1994,
-        "maxmonth": 10,
-        "maxday": 12,
-        "z": 0.0219
+        "maxyear": "1994",
+        "maxmonth": "10",
+        "maxday": "12",
+        "maxappmag": "18.0",
+        "z": "0.0219"
     }
 }

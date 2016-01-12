@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52645.700000000186",
+                "time": "52645.7",
                 "band": "C",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52651.14000000013",
+                "time": "52651.14",
                 "band": "C",
                 "abmag": "16.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52652.49000000022",
+                "time": "52652.49",
                 "band": "C",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52652.549999999814",
+                "time": "52652.55",
                 "band": "C",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52672.029999999795",
+                "time": "52672.03",
                 "band": "R",
                 "abmag": "15.2",
                 "source": "1,2"
@@ -73,14 +73,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52697.89999999991",
+                "time": "52697.9",
                 "band": "R",
                 "abmag": "15.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52730.91000000015",
+                "time": "52730.91",
                 "band": "R",
                 "abmag": "15.7",
                 "source": "1,2"
@@ -93,9 +93,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 6,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "6",
+        "discovermonth": "1",
         "host": "NGC 3506",
         "claimedtype": "Ib/c-pec",
         "hvel": "6373",
@@ -104,10 +104,13 @@
         "snra": "11:03:12.328",
         "sndec": "+11:04:38.09",
         "discoverer": "Tom Boles",
-        "redshift": 0.022,
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 6,
-        "z": 0.0215
+        "redshift": "0.022000",
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "6",
+        "maxappmag": "15",
+        "z": "0.0215",
+        "lumdist": "99.0",
+        "maxabsmag": "-20.0"
     }
 }

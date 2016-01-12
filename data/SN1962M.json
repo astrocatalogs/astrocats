@@ -163,9 +163,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1962,
-        "maxday": 7,
-        "maxmonth": 12,
+        "discoveryear": "1962",
+        "maxday": "7",
+        "maxmonth": "12",
         "host": "NGC 1313",
         "claimedtype": "II",
         "hvel": "461",
@@ -174,9 +174,10 @@
         "discoverer": "Sersic",
         "snra": "03:18:12.2",
         "sndec": "-66:31:38.0",
-        "discoverday": 25,
-        "discovermonth": 11,
-        "maxyear": 1962,
-        "z": 0.00154
+        "discoverday": "25",
+        "discovermonth": "11",
+        "maxyear": "1962",
+        "maxappmag": "11.4",
+        "z": "0.00154"
     }
 }

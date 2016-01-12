@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 28,
-        "discovermonth": 5,
+        "discoveryear": "2006",
+        "discoverday": "28",
+        "discovermonth": "5",
         "host": "UGC 9530",
         "claimedtype": "IIn",
         "hvel": "8570",
@@ -39,10 +39,13 @@
         "snra": "14:47:43.31",
         "sndec": "+09:39:33.9",
         "discoverer": "Nearby Supernova Factory",
-        "redshift": 0.0286,
-        "maxyear": 2006,
-        "maxmonth": 5,
-        "maxday": 28,
-        "z": 0.029
+        "redshift": "0.028600",
+        "maxyear": "2006",
+        "maxmonth": "5",
+        "maxday": "28",
+        "maxappmag": "17.8",
+        "z": "0.029",
+        "lumdist": "130.0",
+        "maxabsmag": "-18.0"
     }
 }

@@ -13,6 +13,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J15024996+4847062.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Massimiliano Martignoni",
+                "alias": "4"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "5"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -22,19 +38,71 @@
                 "band": "",
                 "abmag": "16.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56791.345",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56793.235",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56794.416",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56795.245",
+                "band": "C",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56800.91",
+                "band": "V",
+                "abmag": "16.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56802.869",
+                "band": "CR",
+                "abmag": "16.1",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56803.035",
+                "band": "CV",
+                "abmag": "16.25",
+                "source": "6,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "PGC 2325560",
         "snra": "15:02:49.96",
         "sndec": "+48:47:06.2",
-        "discoverday": 22,
-        "discovermonth": 5,
-        "discoveryear": 2014,
-        "redshift": 0.026138,
+        "discoverday": "14",
+        "discovermonth": "5",
+        "discoveryear": "2014",
+        "redshift": "0.026138",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 22
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "22",
+        "maxappmag": "16.1",
+        "lumdist": "120.0",
+        "maxabsmag": "-19.0"
     }
 }

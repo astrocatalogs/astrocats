@@ -437,9 +437,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 23,
-        "discovermonth": 9,
+        "discoveryear": "2005",
+        "discoverday": "23",
+        "discovermonth": "9",
         "host": "UGC 2526",
         "claimedtype": "Ic",
         "hvel": "4996",
@@ -448,9 +448,10 @@
         "snra": "03:05:48.96",
         "sndec": "+36:46:10.6",
         "discoverer": "LOSS",
-        "maxyear": 2005,
-        "maxmonth": 9,
-        "maxday": 28,
-        "z": 0.0168
+        "maxyear": "2005",
+        "maxmonth": "9",
+        "maxday": "28",
+        "maxappmag": "16.251",
+        "z": "0.0168"
     }
 }

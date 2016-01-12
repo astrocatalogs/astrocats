@@ -13,6 +13,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J03104563-1047421.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "CHASE",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -22,17 +30,39 @@
                 "band": "",
                 "abmag": "17.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56543.0",
+                "band": "C",
+                "abmag": "17.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56545.644",
+                "band": "IR",
+                "abmag": "18.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "89422.755",
+                "band": "IR",
+                "abmag": "18.7",
+                "source": "4,1"
             }
         ],
         "host": "IC 1897",
         "snra": "03:10:45.63",
         "sndec": "-10:47:42.1",
-        "discoverday": 7,
-        "discovermonth": 9,
-        "discoveryear": 2013,
+        "discoverday": "7",
+        "discovermonth": "9",
+        "discoveryear": "2013",
         "discoverer": "CHASE",
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 7
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "7",
+        "maxappmag": "17.1"
     }
 }

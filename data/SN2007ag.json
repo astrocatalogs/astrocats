@@ -365,9 +365,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 6,
-        "discovermonth": 3,
+        "discoveryear": "2007",
+        "discoverday": "6",
+        "discovermonth": "3",
         "host": "UGC 5392",
         "claimedtype": "Ib",
         "hvel": "6211",
@@ -376,10 +376,13 @@
         "snra": "10:01:35.99",
         "sndec": "+21:36:42.0",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.0207,
-        "maxyear": 2007,
-        "maxmonth": 3,
-        "maxday": 6,
-        "z": 0.0209
+        "redshift": "0.020700",
+        "maxyear": "2007",
+        "maxmonth": "3",
+        "maxday": "6",
+        "maxappmag": "17.5",
+        "z": "0.0209",
+        "lumdist": "93.0",
+        "maxabsmag": "-17.0"
     }
 }

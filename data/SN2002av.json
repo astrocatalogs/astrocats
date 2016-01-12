@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52313.200000000186",
+                "time": "52313.2",
                 "band": "C",
                 "abmag": "17.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52314.200000000186",
+                "time": "52314.2",
                 "band": "C",
                 "abmag": "17.7",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 31,
-        "discovermonth": 1,
+        "discoveryear": "2002",
+        "discoverday": "31",
+        "discovermonth": "1",
         "host": "ESO 489-G7",
         "claimedtype": "Ia?",
         "galra": "060806",
@@ -61,8 +61,9 @@
         "snra": "06:08:06.34",
         "sndec": "-23:59:13.2",
         "discoverer": "LOTOSS",
-        "maxyear": 2002,
-        "maxmonth": 2,
-        "maxday": 8
+        "maxyear": "2002",
+        "maxmonth": "2",
+        "maxday": "8",
+        "maxappmag": "17.7"
     }
 }

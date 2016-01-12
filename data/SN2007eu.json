@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 25,
-        "discovermonth": 6,
+        "discoveryear": "2007",
+        "discoverday": "25",
+        "discovermonth": "6",
         "host": "A003619+0603",
         "claimedtype": "II",
         "hvel": "12000",
@@ -39,10 +39,13 @@
         "snra": "00:36:19.65",
         "sndec": "+06:03:40.4",
         "discoverer": "Nearby Supernova Factory",
-        "redshift": 0.04,
-        "maxyear": 2007,
-        "maxmonth": 6,
-        "maxday": 25,
-        "z": 0.0409
+        "redshift": "0.040000",
+        "maxyear": "2007",
+        "maxmonth": "6",
+        "maxday": "25",
+        "maxappmag": "19.8",
+        "z": "0.0409",
+        "lumdist": "180.0",
+        "maxabsmag": "-17.0"
     }
 }

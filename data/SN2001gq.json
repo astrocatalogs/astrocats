@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 14,
-        "discovermonth": 4,
+        "discoveryear": "2001",
+        "discoverday": "14",
+        "discovermonth": "4",
         "host": "A140151+0453",
         "claimedtype": "Ia",
-        "redshift": 0.671,
+        "redshift": "0.671000",
         "galra": "140151",
         "galdec": "+045312",
         "snra": "14:01:51.38",
         "sndec": "+04:53:12.4",
         "discoverer": "Supernova Cosmology Project",
-        "maxyear": 2001,
-        "maxmonth": 4,
-        "maxday": 14
+        "maxyear": "2001",
+        "maxmonth": "4",
+        "maxday": "14",
+        "maxappmag": "23.9",
+        "lumdist": "4200.0",
+        "maxabsmag": "-19.0"
     }
 }

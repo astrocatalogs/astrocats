@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1987,
-        "maxday": 27,
-        "maxmonth": 7,
+        "discoveryear": "1987",
+        "maxday": "27",
+        "maxmonth": "7",
         "host": "NGC 4651",
         "claimedtype": "II",
         "hvel": "805",
@@ -39,9 +39,10 @@
         "snra": "12:43:41.17",
         "sndec": "+16:23:44.9",
         "discoverer": "Carlton Pennypacker",
-        "discoverday": 27,
-        "discovermonth": 7,
-        "maxyear": 1987,
-        "z": 0.00269
+        "discoverday": "27",
+        "discovermonth": "7",
+        "maxyear": "1987",
+        "maxappmag": "15.0",
+        "z": "0.00269"
     }
 }

@@ -32,36 +32,64 @@
                 "alias": "6"
             },
             {
-                "name": "Gregor Krannich",
+                "name": "Seiichirob Kiyota",
                 "alias": "7"
             },
             {
-                "name": "Enrique Díez",
+                "name": "Yasuo Sano and Nayoro Hokkaido",
                 "alias": "8"
             },
             {
-                "name": "Paolo Campaner",
+                "name": "T. Yusa, Y. Suzuki, and K. Kato",
                 "alias": "9"
             },
             {
-                "name": "Juan-Luis Glez. Carballo",
+                "name": "T. Noguchi",
                 "alias": "10"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Nick James",
                 "alias": "11"
             },
             {
-                "name": "Esteban Aguilar",
+                "name": "Denis Buczynski",
                 "alias": "12"
             },
             {
-                "name": "Felipe Peña",
+                "name": "Giancarlo Cortini",
                 "alias": "13"
             },
             {
-                "name": "Jose Carrillo",
+                "name": "Gregor Krannich",
                 "alias": "14"
+            },
+            {
+                "name": "Enrique Díez",
+                "alias": "15"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "16"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "17"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "18"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "19"
+            },
+            {
+                "name": "Felipe Peña",
+                "alias": "20"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "21"
             }
         ],
         "photometry": [
@@ -144,31 +172,94 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56911.9484",
+                "band": "V",
+                "abmag": "15.86",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56912.0",
+                "band": "U",
+                "abmag": "15.1",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56912.53459",
+                "band": "U",
+                "abmag": "15.4",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56912.549",
+                "band": "U",
+                "abmag": "15.1",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56913.453",
+                "band": "U",
+                "abmag": "14.9",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56913.86",
+                "band": "V",
+                "abmag": "15.2",
+                "source": "11,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56913.887",
+                "band": "CV",
+                "abmag": "15.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56914.902",
+                "band": "RC",
+                "abmag": "14.6",
+                "source": "12,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56914.92",
+                "band": "C",
+                "abmag": "15.0",
+                "source": "13,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56916.817",
                 "band": "V",
                 "abmag": "14.3",
-                "source": "7,1"
+                "source": "14,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56918.993",
                 "band": "",
                 "abmag": "14.40",
-                "source": "8,1"
+                "source": "15,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56923.042",
                 "band": "U",
                 "abmag": "14.3",
-                "source": "9,1"
+                "source": "16,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56929.92322",
                 "band": "V",
                 "abmag": "13.92",
-                "source": "10,1"
+                "source": "17,1"
             },
             {
                 "timeunit": "MJD",
@@ -182,28 +273,28 @@
                 "time": "56948.07307",
                 "band": "CV",
                 "abmag": "14.53",
-                "source": "11,1"
+                "source": "18,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56955.848",
                 "band": "CR",
                 "abmag": "14.9",
-                "source": "12,1"
+                "source": "19,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56976.864",
                 "band": "CR",
                 "abmag": "15.5",
-                "source": "13,1"
+                "source": "20,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57008.878",
                 "band": "C",
                 "abmag": "16.88",
-                "source": "14,1"
+                "source": "21,1"
             },
             {
                 "timeunit": "MJD",
@@ -213,9 +304,9 @@
                 "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 16,
-        "discovermonth": 9,
+        "discoveryear": "2014",
+        "discoverday": "11",
+        "discovermonth": "9",
         "host": "UGC 2855",
         "claimedtype": "Ia",
         "hvel": "1200",
@@ -224,10 +315,13 @@
         "snra": "03:48:19.78",
         "sndec": "+70:07:54.5",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.004,
-        "maxyear": 2014,
-        "maxmonth": 9,
-        "maxday": 28,
-        "z": 0.00401
+        "redshift": "0.004000",
+        "maxyear": "2014",
+        "maxmonth": "9",
+        "maxday": "28",
+        "maxappmag": "13.9",
+        "z": "0.00401",
+        "lumdist": "18.0",
+        "maxabsmag": "-17.0"
     }
 }

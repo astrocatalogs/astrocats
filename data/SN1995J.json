@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49869.93000000017",
+                "time": "49869.93",
                 "band": "B",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49872.919999999925",
+                "time": "49872.92",
                 "band": "B",
                 "abmag": "17.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49872.97999999998",
+                "time": "49872.98",
                 "band": "B",
                 "abmag": "17.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49873.97999999998",
+                "time": "49873.98",
                 "band": "B",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49876.97999999998",
+                "time": "49876.98",
                 "band": "B",
                 "abmag": "17.5",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 3,
-        "discovermonth": 4,
+        "discoveryear": "1995",
+        "discoverday": "3",
+        "discovermonth": "4",
         "host": "NGC 4512",
         "claimedtype": "II",
         "hvel": "2972",
@@ -83,9 +83,10 @@
         "snra": "12:32:38.34",
         "sndec": "+63:53:09.2",
         "discoverer": "Johnson",
-        "maxyear": 1995,
-        "maxmonth": 4,
-        "maxday": 3,
-        "z": 0.00996
+        "maxyear": "1995",
+        "maxmonth": "4",
+        "maxday": "3",
+        "maxappmag": "16.5",
+        "z": "0.00996"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 20,
-        "discovermonth": 12,
+        "discoveryear": "2000",
+        "discoverday": "20",
+        "discovermonth": "12",
         "host": "A092337+2952",
         "claimedtype": "Ia",
-        "redshift": 0.7,
+        "redshift": "0.700000",
         "galra": "092337",
         "galdec": "+295226",
         "snra": "09:23:37.68",
         "sndec": "+29:52:26.0",
         "discoverer": "Wittman et. el.",
-        "maxyear": 2000,
-        "maxmonth": 12,
-        "maxday": 20
+        "maxyear": "2000",
+        "maxmonth": "12",
+        "maxday": "20",
+        "maxappmag": "23.8",
+        "lumdist": "4400.0",
+        "maxabsmag": "-19.0"
     }
 }

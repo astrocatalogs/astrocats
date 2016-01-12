@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 23,
-        "discovermonth": 9,
+        "discoveryear": "2000",
+        "discoverday": "23",
+        "discovermonth": "9",
         "host": "NGC 7469",
         "hvel": "4846",
         "galra": "230315",
@@ -39,9 +39,10 @@
         "sndec": "+08:52:26.5",
         "discoverer": "CSIC",
         "claimedtype": "Radio",
-        "maxyear": 2000,
-        "maxmonth": 9,
-        "maxday": 23,
-        "z": 0.0163
+        "maxyear": "2000",
+        "maxmonth": "9",
+        "maxday": "23",
+        "maxappmag": "14.9",
+        "z": "0.0163"
     }
 }

@@ -28,13 +28,16 @@
         "host": "IC 4040",
         "snra": "13:00:38.06",
         "sndec": "+28:03:24.2",
-        "discoverday": 3,
-        "discovermonth": 8,
-        "discoveryear": 2011,
-        "redshift": 0.026151,
+        "discoverday": "3",
+        "discovermonth": "8",
+        "discoveryear": "2011",
+        "redshift": "0.026151",
         "discoverer": "PTF",
-        "maxyear": 2011,
-        "maxmonth": 8,
-        "maxday": 3
+        "maxyear": "2011",
+        "maxmonth": "8",
+        "maxday": "3",
+        "maxappmag": "16.0",
+        "lumdist": "120.0",
+        "maxabsmag": "-19.0"
     }
 }

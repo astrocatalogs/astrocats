@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52194.299999999814",
+                "time": "52194.3",
                 "band": "C",
                 "abmag": "18.8",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 10,
-        "discovermonth": 10,
+        "discoveryear": "2001",
+        "discoverday": "10",
+        "discovermonth": "10",
         "host": "UGC 2653",
         "claimedtype": "II",
         "hvel": "6939",
@@ -62,10 +62,13 @@
         "snra": "03:18:39.04",
         "sndec": "+37:36:31.8",
         "discoverer": "LOTOSS",
-        "redshift": 0.023,
-        "maxyear": 2001,
-        "maxmonth": 10,
-        "maxday": 11,
-        "z": 0.0234
+        "redshift": "0.023000",
+        "maxyear": "2001",
+        "maxmonth": "10",
+        "maxday": "11",
+        "maxappmag": "18.8",
+        "z": "0.0234",
+        "lumdist": "100.0",
+        "maxabsmag": "-16.0"
     }
 }

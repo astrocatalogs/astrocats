@@ -1258,21 +1258,24 @@
                 "source": "4,2"
             }
         ],
-        "discoveryear": 2008,
-        "redshift": 0.022,
+        "discoveryear": "2008",
+        "redshift": "0.022000",
         "snra": "08:50:35.15",
         "sndec": "-61:16:40.6",
-        "discoverday": 6,
-        "discovermonth": 12,
+        "discoverday": "6",
+        "discovermonth": "12",
         "host": "ESO 125-G6",
         "claimedtype": "Ia",
         "hvel": "6600",
         "galra": "085035",
         "galdec": "-611641",
         "discoverer": "CHASE",
-        "maxyear": 2008,
-        "maxmonth": 12,
-        "maxday": 6,
-        "z": 0.0223
+        "maxyear": "2008",
+        "maxmonth": "12",
+        "maxday": "6",
+        "maxappmag": "15.8",
+        "z": "0.0223",
+        "lumdist": "99.0",
+        "maxabsmag": "-19.0"
     }
 }

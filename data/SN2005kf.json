@@ -401,9 +401,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 19,
-        "discovermonth": 10,
+        "discoveryear": "2005",
+        "discoverday": "19",
+        "discovermonth": "10",
         "host": "A074726+2655",
         "claimedtype": "Ic",
         "galra": "074726",
@@ -411,8 +411,9 @@
         "snra": "07:47:26.51",
         "sndec": "+26:55:32.4",
         "discoverer": "LOSS",
-        "maxyear": 2005,
-        "maxmonth": 10,
-        "maxday": 19
+        "maxyear": "2005",
+        "maxmonth": "10",
+        "maxday": "19",
+        "maxappmag": "16.5"
     }
 }

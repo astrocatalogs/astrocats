@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1954,
-        "discoverday": 6,
-        "discovermonth": 9,
+        "discoveryear": "1954",
+        "discoverday": "6",
+        "discovermonth": "9",
         "host": "A003542-0830",
         "hvel": "17050",
         "galra": "003542",
@@ -38,9 +38,10 @@
         "discoverer": "Fritz Zwicky",
         "snra": "00:35:44.1",
         "sndec": "-08:30:35.0",
-        "maxyear": 1954,
-        "maxmonth": 9,
-        "maxday": 6,
-        "z": 0.0586
+        "maxyear": "1954",
+        "maxmonth": "9",
+        "maxday": "6",
+        "maxappmag": "17.4",
+        "z": "0.0586"
     }
 }

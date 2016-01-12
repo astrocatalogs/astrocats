@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=7919'>ATEL 7919</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,19 +27,29 @@
                 "band": "",
                 "abmag": "16.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57252.546",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "3,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "ESO 240-G10",
         "snra": "23:37:43.22",
         "sndec": "-47:30:39.3",
-        "discoverday": 16,
-        "discovermonth": 8,
-        "discoveryear": 2015,
-        "redshift": 0.01,
+        "discoverday": "16",
+        "discovermonth": "8",
+        "discoveryear": "2015",
+        "redshift": "0.010000",
         "discoverer": "MASTER",
-        "maxyear": 2015,
-        "maxmonth": 8,
-        "maxday": 16
+        "maxyear": "2015",
+        "maxmonth": "8",
+        "maxday": "16",
+        "maxappmag": "16.3",
+        "lumdist": "45.0",
+        "maxabsmag": "-17.0"
     }
 }

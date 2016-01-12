@@ -1465,9 +1465,9 @@
                 "source": "4,2"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 2,
-        "discovermonth": 4,
+        "discoveryear": "2008",
+        "discoverday": "2",
+        "discovermonth": "4",
         "host": "NGC 6643",
         "claimedtype": "Ib",
         "hvel": "1454",
@@ -1476,10 +1476,13 @@
         "snra": "18:19:54.34",
         "sndec": "+74:34:20.9",
         "discoverer": "Veli-Pekka Hentunen and Markku Nissinen",
-        "redshift": 0.005,
-        "maxyear": 2008,
-        "maxmonth": 4,
-        "maxday": 15,
-        "z": 0.00486
+        "redshift": "0.005000",
+        "maxyear": "2008",
+        "maxmonth": "4",
+        "maxday": "15",
+        "maxappmag": "15.4",
+        "z": "0.00486",
+        "lumdist": "22.0",
+        "maxabsmag": "-16.0"
     }
 }

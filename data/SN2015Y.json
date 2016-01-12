@@ -14,6 +14,26 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004170.txt'>CBET 4170</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Jaroslaw Grzegorzek prediscovery",
+                "alias": "3"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "4"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "5"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "6"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -23,11 +43,46 @@
                 "band": "",
                 "abmag": "15.9",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57122.864",
+                "band": "U",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57123.802",
+                "band": "V",
+                "abmag": "16.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57123.812",
+                "band": "m",
+                "abmag": "17.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57130.5569",
+                "band": "U",
+                "abmag": "15.9",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57134.91",
+                "band": "U",
+                "abmag": "16.0",
+                "source": "7,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 17,
-        "discovermonth": 4,
+        "discoveryear": "2015",
+        "discoverday": "10",
+        "discovermonth": "4",
         "host": "NGC 2735",
         "claimedtype": "IIb",
         "hvel": "2450",
@@ -36,10 +91,13 @@
         "snra": "09:02:37.87",
         "sndec": "+25:56:04.2",
         "discoverer": "LOSS",
-        "redshift": 0.008,
-        "maxyear": 2015,
-        "maxmonth": 4,
-        "maxday": 17,
-        "z": 0.00821
+        "redshift": "0.008000",
+        "maxyear": "2015",
+        "maxmonth": "4",
+        "maxday": "17",
+        "maxappmag": "15.9",
+        "z": "0.00821",
+        "lumdist": "36.0",
+        "maxabsmag": "-17.0"
     }
 }

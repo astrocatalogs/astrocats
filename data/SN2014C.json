@@ -16,19 +16,19 @@
                 "alias": "2"
             },
             {
-                "name": "LLA",
+                "name": "Raymond Kneip",
                 "alias": "3"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "LLA",
                 "alias": "4"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Joseph Brimacombe",
                 "alias": "5"
             },
             {
-                "name": "Raymond Kneip",
+                "name": "Stan Howerton",
                 "alias": "6"
             },
             {
@@ -62,38 +62,45 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56664.088",
+                "band": "L",
+                "abmag": "15.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56309.776",
                 "band": "CV",
                 "abmag": "15.0",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56663.144",
                 "band": "C",
                 "abmag": "16.2",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56666.117",
                 "band": "C",
                 "abmag": "15.5",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56669.167",
                 "band": "V",
                 "abmag": "15.0",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56672.009",
                 "band": "V",
                 "abmag": "14.9",
-                "source": "6,1"
+                "source": "3,1"
             },
             {
                 "timeunit": "MJD",
@@ -107,14 +114,14 @@
                 "time": "56678.043",
                 "band": "V",
                 "abmag": "15.2",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56678.774",
                 "band": "CV",
                 "abmag": "15.0",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
@@ -166,9 +173,9 @@
                 "source": "11,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 17,
-        "discovermonth": 1,
+        "discoveryear": "2013",
+        "discoverday": "17",
+        "discovermonth": "1",
         "host": "NGC 7331",
         "claimedtype": "Ib",
         "hvel": "821",
@@ -177,10 +184,13 @@
         "snra": "22:37:05.60",
         "sndec": "+34:24:31.9",
         "discoverer": "LOSS",
-        "redshift": 0.002722,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 16,
-        "z": 0.00274
+        "redshift": "0.002722",
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "16",
+        "maxappmag": "14.03",
+        "z": "0.00274",
+        "lumdist": "12.0",
+        "maxabsmag": "-16.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 8,
-        "discovermonth": 10,
+        "discoveryear": "2009",
+        "discoverday": "8",
+        "discovermonth": "10",
         "host": "A231742+1357",
         "claimedtype": "Ia",
         "hvel": "16510",
@@ -39,10 +39,13 @@
         "snra": "23:17:42.71",
         "sndec": "+13:57:24.7",
         "discoverer": "G. Sostero,",
-        "redshift": 0.055,
-        "maxyear": 2009,
-        "maxmonth": 10,
-        "maxday": 8,
-        "z": 0.0567
+        "redshift": "0.055000",
+        "maxyear": "2009",
+        "maxmonth": "10",
+        "maxday": "8",
+        "maxappmag": "17.6",
+        "z": "0.0567",
+        "lumdist": "250.0",
+        "maxabsmag": "-19.0"
     }
 }

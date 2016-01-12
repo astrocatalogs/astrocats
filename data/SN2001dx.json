@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52147.299999999814",
+                "time": "52147.3",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52148.299999999814",
+                "time": "52148.3",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 25,
-        "discovermonth": 8,
+        "discoveryear": "2001",
+        "discoverday": "25",
+        "discovermonth": "8",
         "host": "PGC 63222",
         "claimedtype": "II",
         "hvel": "5673",
@@ -62,9 +62,10 @@
         "snra": "19:27:16.83",
         "sndec": "+65:18:58.8",
         "discoverer": "LOTOSS",
-        "maxyear": 2001,
-        "maxmonth": 8,
-        "maxday": 26,
-        "z": 0.0191
+        "maxyear": "2001",
+        "maxmonth": "8",
+        "maxday": "26",
+        "maxappmag": "17.2",
+        "z": "0.0191"
     }
 }

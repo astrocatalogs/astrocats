@@ -24,9 +24,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 22,
-        "discovermonth": 11,
+        "discoveryear": "2008",
+        "discoverday": "22",
+        "discovermonth": "11",
         "host": "ESO 302-G14",
         "claimedtype": "II",
         "hvel": "881",
@@ -35,10 +35,13 @@
         "snra": "03:51:44.66",
         "sndec": "-38:27:00.1",
         "discoverer": "J. L. Prieto, A. J. Drake, et el.",
-        "redshift": 0.0029,
-        "maxyear": 2008,
-        "maxmonth": 11,
-        "maxday": 22,
-        "z": 0.00294
+        "redshift": "0.002900",
+        "maxyear": "2008",
+        "maxmonth": "11",
+        "maxday": "22",
+        "maxappmag": "13.6",
+        "z": "0.00294",
+        "lumdist": "13.0",
+        "maxabsmag": "-17.0"
     }
 }

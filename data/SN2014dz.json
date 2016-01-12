@@ -18,6 +18,14 @@
             {
                 "name": "Wim Cuppens",
                 "alias": "3"
+            },
+            {
+                "name": "Andrea Mantero ",
+                "alias": "4"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,11 +42,32 @@
                 "band": "R",
                 "abmag": "18.3",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57012.9",
+                "band": "V",
+                "abmag": "16.99",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57013.2",
+                "band": "R",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57013.836",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 26,
-        "discovermonth": 12,
+        "discoveryear": "2014",
+        "discoverday": "21",
+        "discovermonth": "12",
         "host": "PGC 213221",
         "claimedtype": "Ia",
         "hvel": "5283",
@@ -47,10 +76,13 @@
         "snra": "03:28:14.19",
         "sndec": "+38:01:11.1",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.0176,
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 26,
-        "z": 0.0178
+        "redshift": "0.017600",
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "26",
+        "maxappmag": "16.7",
+        "z": "0.0178",
+        "lumdist": "79.0",
+        "maxabsmag": "-18.0"
     }
 }

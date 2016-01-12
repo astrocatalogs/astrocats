@@ -2140,21 +2140,24 @@
                 "source": "4,2"
             }
         ],
-        "discoveryear": 2008,
-        "redshift": 0.0057,
+        "discoveryear": "2008",
+        "redshift": "0.005700",
         "snra": "07:16:32.6",
         "sndec": "-29:19:31.7",
-        "discoverday": 10,
-        "discovermonth": 9,
+        "discoverday": "10",
+        "discovermonth": "9",
         "host": "ESO 428-G14",
         "claimedtype": "Ia",
         "hvel": "1630",
         "galra": "071631",
         "galdec": "-291929",
         "discoverer": "CHASE",
-        "maxyear": 2008,
-        "maxmonth": 9,
-        "maxday": 18,
-        "z": 0.00545
+        "maxyear": "2008",
+        "maxmonth": "9",
+        "maxday": "18",
+        "maxappmag": "13.392",
+        "z": "0.00545",
+        "lumdist": "25.0",
+        "maxabsmag": "-19.0"
     }
 }

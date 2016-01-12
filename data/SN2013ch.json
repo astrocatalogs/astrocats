@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 18,
-        "discovermonth": 5,
+        "discoveryear": "2013",
+        "discoverday": "18",
+        "discovermonth": "5",
         "host": "ESO 7-G6",
         "claimedtype": "IIb",
         "hvel": "2303",
@@ -36,10 +36,13 @@
         "snra": "12:41:43.41",
         "sndec": "-84:27:52.4",
         "discoverer": "Peter Marples",
-        "redshift": 0.0073,
-        "maxyear": 2013,
-        "maxmonth": 5,
-        "maxday": 18,
-        "z": 0.00771
+        "redshift": "0.007300",
+        "maxyear": "2013",
+        "maxmonth": "5",
+        "maxday": "18",
+        "maxappmag": "15.2",
+        "z": "0.00771",
+        "lumdist": "32.0",
+        "maxabsmag": "-17.0"
     }
 }

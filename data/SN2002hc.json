@@ -45,14 +45,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52582.919999999925",
+                "time": "52582.92",
                 "band": "R",
                 "abmag": "14.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52621.08999999985",
+                "time": "52621.09",
                 "band": "R",
                 "abmag": "16.8",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 14,
-        "discovermonth": 10,
+        "discoveryear": "2002",
+        "discoverday": "14",
+        "discovermonth": "10",
         "host": "NGC 2559",
         "claimedtype": "II",
         "hvel": "1542",
@@ -76,9 +76,10 @@
         "snra": "08:17:06.15",
         "sndec": "-27:27:27.8",
         "discoverer": "LOTOSS",
-        "maxyear": 2002,
-        "maxmonth": 11,
-        "maxday": 4,
-        "z": 0.00516
+        "maxyear": "2002",
+        "maxmonth": "11",
+        "maxday": "4",
+        "maxappmag": "14.5",
+        "z": "0.00516"
     }
 }

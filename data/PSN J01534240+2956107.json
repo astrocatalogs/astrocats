@@ -13,6 +13,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J01534240+2956107.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "3"
+            },
+            {
+                "name": "Andre Mantero",
+                "alias": "4"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "5"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -22,17 +38,46 @@
                 "band": "",
                 "abmag": "17.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57383.93637",
+                "band": "U",
+                "abmag": "17.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57383.93637",
+                "band": "V",
+                "abmag": "17.4",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57386.162",
+                "band": "UV",
+                "abmag": "16.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57386.503",
+                "band": "R",
+                "abmag": "17.7",
+                "source": "6,1"
             }
         ],
         "host": "UGC 1359",
         "snra": "01:53:42.40",
         "sndec": "+29:56:10.7",
-        "discoverday": 29,
-        "discovermonth": 12,
-        "discoveryear": 2015,
+        "discoverday": "27",
+        "discovermonth": "12",
+        "discoveryear": "2015",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2015,
-        "maxmonth": 12,
-        "maxday": 29
+        "maxyear": "2015",
+        "maxmonth": "12",
+        "maxday": "30",
+        "maxappmag": "16.5"
     }
 }

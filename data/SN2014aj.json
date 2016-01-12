@@ -20,12 +20,44 @@
                 "alias": "3"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "T. Noguchi",
                 "alias": "4"
             },
             {
-                "name": "Marco Russiani",
+                "name": "Giancarlo Cortini",
                 "alias": "5"
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "6"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "7"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "8"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "9"
+            },
+            {
+                "name": "T. Yusa, Y. Suzuki, K. Kato",
+                "alias": "10"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "11"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "12"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "13"
             }
         ],
         "photometry": [
@@ -94,22 +126,85 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56740.465",
+                "band": "U",
+                "abmag": "17.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56740.93",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56741.1163",
+                "band": "R",
+                "abmag": "17.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56741.216",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.06728",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.088",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.5503",
+                "band": "R",
+                "abmag": "17.5",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56744.856",
+                "band": "V",
+                "abmag": "17.0",
+                "source": "11,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56746.895",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "12,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56753.884",
                 "band": "CV",
                 "abmag": "16.18",
-                "source": "4,1"
+                "source": "13,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.915",
                 "band": "U",
                 "abmag": "16.3",
-                "source": "5,1"
+                "source": "12,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 5,
-        "discovermonth": 4,
+        "discoveryear": "2014",
+        "discoverday": "24",
+        "discovermonth": "3",
         "host": "UGC 3252",
         "claimedtype": "Ia",
         "hvel": "6121",
@@ -118,10 +213,13 @@
         "snra": "05:11:43.96",
         "sndec": "+67:29:29.4",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.020397,
-        "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 5,
-        "z": 0.0206
+        "redshift": "0.020397",
+        "maxyear": "2014",
+        "maxmonth": "4",
+        "maxday": "5",
+        "maxappmag": "16.0",
+        "z": "0.0206",
+        "lumdist": "92.0",
+        "maxabsmag": "-19.0"
     }
 }

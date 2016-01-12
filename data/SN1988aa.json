@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 13,
-        "discovermonth": 12,
+        "discoveryear": "1988",
+        "discoverday": "13",
+        "discovermonth": "12",
         "host": "KUG 0010-003",
         "hvel": "11760",
         "galra": "001240",
@@ -38,9 +38,10 @@
         "snra": "00:12:39.9",
         "sndec": "-00:01:54.0",
         "discoverer": "Comte",
-        "maxyear": 1988,
-        "maxmonth": 12,
-        "maxday": 13,
-        "z": 0.04
+        "maxyear": "1988",
+        "maxmonth": "12",
+        "maxday": "13",
+        "maxappmag": "19.6",
+        "z": "0.04"
     }
 }

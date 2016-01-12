@@ -27,22 +27,22 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51314.89999999991",
+                "time": "51314.9",
                 "band": "C",
                 "abmag": "16.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51331.91000000015",
+                "time": "51331.91",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 16,
-        "discovermonth": 5,
+        "discoveryear": "1999",
+        "discoverday": "16",
+        "discovermonth": "5",
         "host": "NGC 3646",
         "claimedtype": "II",
         "hvel": "4249",
@@ -51,10 +51,13 @@
         "snra": "11:21:42.89",
         "sndec": "+20:09:24.1",
         "discoverer": "LOSS",
-        "redshift": 0.0142,
-        "maxyear": 1999,
-        "maxmonth": 5,
-        "maxday": 16,
-        "z": 0.0143
+        "redshift": "0.014200",
+        "maxyear": "1999",
+        "maxmonth": "5",
+        "maxday": "16",
+        "maxappmag": "16.8",
+        "z": "0.0143",
+        "lumdist": "64.0",
+        "maxabsmag": "-17.0"
     }
 }

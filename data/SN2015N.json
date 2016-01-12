@@ -32,8 +32,20 @@
                 "alias": "6"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joseph Brimacombe",
                 "alias": "7"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "8"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "9"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "10"
             }
         ],
         "photometry": [
@@ -67,6 +79,41 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "57210.963",
+                "band": "CV",
+                "abmag": "17.9",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57212.655",
+                "band": "C",
+                "abmag": "17.4",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57212.949",
+                "band": "CV",
+                "abmag": "17.3",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57213.933",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57214.081",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "57224.881",
                 "band": "CV",
                 "abmag": "16.5",
@@ -84,7 +131,7 @@
                 "time": "57231.29",
                 "band": "UV",
                 "abmag": "16.8",
-                "source": "7,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
@@ -98,19 +145,19 @@
                 "time": "57271.249",
                 "band": "UV",
                 "abmag": "18.5",
-                "source": "7,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "57316.203",
                 "band": "UV",
                 "abmag": "19.7",
-                "source": "7,1"
+                "source": "10,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 20,
-        "discovermonth": 7,
+        "discoveryear": "2015",
+        "discoverday": "7",
+        "discovermonth": "7",
         "host": "UGC 11797",
         "claimedtype": "Ia",
         "hvel": "3747",
@@ -119,10 +166,13 @@
         "snra": "21:43:16.89",
         "sndec": "+43:34:47.6",
         "discoverer": "LOSS",
-        "redshift": 0.019,
-        "maxyear": 2015,
-        "maxmonth": 7,
-        "maxday": 20,
-        "z": 0.0126
+        "redshift": "0.019000",
+        "maxyear": "2015",
+        "maxmonth": "7",
+        "maxday": "20",
+        "maxappmag": "16.5",
+        "z": "0.0126",
+        "lumdist": "85.0",
+        "maxabsmag": "-18.0"
     }
 }

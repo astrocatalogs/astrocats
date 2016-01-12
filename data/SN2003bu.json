@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 10,
-        "discovermonth": 3,
+        "discoveryear": "2003",
+        "discoverday": "10",
+        "discovermonth": "3",
         "host": "NGC 5393",
         "claimedtype": "Ic",
         "hvel": "5980",
@@ -62,9 +62,10 @@
         "snra": "14:00:31.458",
         "sndec": "-28:52:32.79",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 3,
-        "maxday": 12,
-        "z": 0.0202
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "12",
+        "maxappmag": "17.2",
+        "z": "0.0202"
     }
 }

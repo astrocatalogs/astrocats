@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 30,
-        "discovermonth": 3,
+        "discoveryear": "1997",
+        "discoverday": "30",
+        "discovermonth": "3",
         "host": "A110615-1136",
         "claimedtype": "II",
         "hvel": "19440",
@@ -39,10 +39,13 @@
         "snra": "11:06:15.10",
         "sndec": "-11:36:25.0",
         "discoverer": "Hardin",
-        "redshift": 0.06,
-        "maxyear": 1997,
-        "maxmonth": 3,
-        "maxday": 30,
-        "z": 0.0671
+        "redshift": "0.060000",
+        "maxyear": "1997",
+        "maxmonth": "3",
+        "maxday": "30",
+        "maxappmag": "19.5",
+        "z": "0.0671",
+        "lumdist": "280.0",
+        "maxabsmag": "-18.0"
     }
 }

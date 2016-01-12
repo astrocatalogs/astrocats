@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004055.txt'>CBET 4055</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "4"
+            },
+            {
+                "name": "Massimo Caimmi",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,11 +35,32 @@
                 "band": "",
                 "abmag": "16.9",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57003.44",
+                "band": "R",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57003.9714",
+                "band": "CR",
+                "abmag": "16.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57004.02991",
+                "band": "V",
+                "abmag": "17.9",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 11,
-        "discovermonth": 12,
+        "discoveryear": "2014",
+        "discoverday": "11",
+        "discovermonth": "12",
         "host": "UGC 5295",
         "claimedtype": "II",
         "hvel": "4786",
@@ -36,10 +69,13 @@
         "snra": "09:52:55.58",
         "sndec": "+42:50:51.1",
         "discoverer": "Lou Cox, Dick Post,",
-        "redshift": 0.016,
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 11,
-        "z": 0.0161
+        "redshift": "0.016000",
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "11",
+        "maxappmag": "16.9",
+        "z": "0.0161",
+        "lumdist": "72.0",
+        "maxabsmag": "-17.0"
     }
 }

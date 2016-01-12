@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52563.39999999991",
+                "time": "52563.4",
                 "band": "C",
                 "abmag": "17.6",
                 "source": "1,2"
@@ -44,9 +44,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 15,
-        "discovermonth": 10,
+        "discoveryear": "2002",
+        "discoverday": "15",
+        "discovermonth": "10",
         "host": "UGC 2701",
         "claimedtype": "Ib/c",
         "hvel": "7292",
@@ -55,9 +55,10 @@
         "snra": "03:22:36.45",
         "sndec": "+09:28:22.0",
         "discoverer": "LOTOSS",
-        "maxyear": 2002,
-        "maxmonth": 10,
-        "maxday": 16,
-        "z": 0.0246
+        "maxyear": "2002",
+        "maxmonth": "10",
+        "maxday": "16",
+        "maxappmag": "17.6",
+        "z": "0.0246"
     }
 }

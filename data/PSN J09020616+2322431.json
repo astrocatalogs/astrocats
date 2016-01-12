@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J09020616+2322431.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,17 +31,32 @@
                 "band": "",
                 "abmag": "18.5",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56987.7424",
+                "band": "U",
+                "abmag": "18.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56998.43",
+                "band": "R",
+                "abmag": "19.3",
+                "source": "4,1"
             }
         ],
         "host": "UGC 4740",
         "snra": "09:02:06.16",
         "sndec": "+23:22:43.1",
-        "discoverday": 30,
-        "discovermonth": 11,
-        "discoveryear": 2014,
+        "discoverday": "26",
+        "discovermonth": "11",
+        "discoveryear": "2014",
         "discoverer": "CRTS",
-        "maxyear": 2014,
-        "maxmonth": 11,
-        "maxday": 30
+        "maxyear": "2014",
+        "maxmonth": "11",
+        "maxday": "30",
+        "maxappmag": "18.5"
     }
 }

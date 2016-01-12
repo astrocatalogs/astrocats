@@ -28,18 +28,21 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 10,
-        "discovermonth": 9,
+        "discoveryear": "2001",
+        "discoverday": "10",
+        "discovermonth": "9",
         "host": "A022900+0042",
-        "redshift": 0.186,
+        "redshift": "0.186000",
         "galra": "022900",
         "galdec": "+004221",
         "snra": "02:29:00.47",
         "sndec": "+00:42:21.8",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 2001,
-        "maxmonth": 9,
-        "maxday": 10
+        "maxyear": "2001",
+        "maxmonth": "9",
+        "maxday": "10",
+        "maxappmag": "22.9",
+        "lumdist": "930.0",
+        "maxabsmag": "-17.0"
     }
 }

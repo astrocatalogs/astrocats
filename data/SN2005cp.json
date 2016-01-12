@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 20,
-        "discovermonth": 6,
+        "discoveryear": "2005",
+        "discoverday": "20",
+        "discovermonth": "6",
         "host": "UGC 12886",
         "claimedtype": "IIn",
         "hvel": "6630",
@@ -39,10 +39,13 @@
         "snra": "23:59:30.88",
         "sndec": "+18:12:09.6",
         "discoverer": "LOSS",
-        "redshift": 0.022,
-        "maxyear": 2005,
-        "maxmonth": 6,
-        "maxday": 20,
-        "z": 0.0224
+        "redshift": "0.022000",
+        "maxyear": "2005",
+        "maxmonth": "6",
+        "maxday": "20",
+        "maxappmag": "17.3",
+        "z": "0.0224",
+        "lumdist": "99.0",
+        "maxabsmag": "-18.0"
     }
 }

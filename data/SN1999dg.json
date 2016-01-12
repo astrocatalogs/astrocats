@@ -391,29 +391,29 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51382.200000000186",
+                "time": "51382.2",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51383.200000000186",
+                "time": "51383.2",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51388.20999999996",
+                "time": "51388.21",
                 "band": "C",
                 "abmag": "15.8",
                 "source": "2,3"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 23,
-        "discovermonth": 7,
+        "discoveryear": "1999",
+        "discoverday": "23",
+        "discovermonth": "7",
         "host": "UGC 9758",
         "claimedtype": "Ia",
         "hvel": "6582",
@@ -422,9 +422,10 @@
         "snra": "15:11:28.41",
         "sndec": "+13:29:05.7",
         "discoverer": "LOSS",
-        "maxyear": 1999,
-        "maxmonth": 7,
-        "maxday": 29,
-        "z": 0.0222
+        "maxyear": "1999",
+        "maxmonth": "7",
+        "maxday": "29",
+        "maxappmag": "15.8",
+        "z": "0.0222"
     }
 }

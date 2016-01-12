@@ -95,154 +95,154 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51199.049999999814",
+                "time": "51199.05",
                 "band": "I",
                 "abmag": "16.93",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51199.049999999814",
+                "time": "51199.05",
                 "band": "R",
                 "abmag": "16.89",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51199.049999999814",
+                "time": "51199.05",
                 "band": "V",
                 "abmag": "16.9",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51221.06999999983",
+                "time": "51221.07",
                 "band": "R",
                 "abmag": "17.06",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51221.06999999983",
+                "time": "51221.07",
                 "band": "V",
                 "abmag": "17.32",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51226.85999999987",
+                "time": "51226.86",
                 "band": "R",
                 "abmag": "17.17",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51226.85999999987",
+                "time": "51226.86",
                 "band": "V",
                 "abmag": "17.61",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51246.04000000004",
+                "time": "51246.04",
                 "band": "R",
                 "abmag": "17.06",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51246.04000000004",
+                "time": "51246.04",
                 "band": "V",
                 "abmag": "17.11",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51251.970000000205",
+                "time": "51251.97",
                 "band": "R",
                 "abmag": "16.83",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51251.970000000205",
+                "time": "51251.97",
                 "band": "V",
                 "abmag": "17.54",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51257.799999999814",
+                "time": "51257.8",
                 "band": "I",
                 "abmag": "16.79",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51257.799999999814",
+                "time": "51257.8",
                 "band": "R",
                 "abmag": "16.9",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51257.799999999814",
+                "time": "51257.8",
                 "band": "V",
                 "abmag": "17.3",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51265.93000000017",
+                "time": "51265.93",
                 "band": "I",
                 "abmag": "16.66",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51265.93000000017",
+                "time": "51265.93",
                 "band": "R",
                 "abmag": "16.93",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51265.93000000017",
+                "time": "51265.93",
                 "band": "V",
                 "abmag": "17.32",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51267.95999999996",
+                "time": "51267.96",
                 "band": "R",
                 "abmag": "17.05",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51267.95999999996",
+                "time": "51267.96",
                 "band": "V",
                 "abmag": "17.41",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51270.00999999978",
+                "time": "51270.01",
                 "band": "R",
                 "abmag": "17.11",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51270.00999999978",
+                "time": "51270.01",
                 "band": "V",
                 "abmag": "17.27",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "51294.85999999987",
+                "time": "51294.86",
                 "band": "R",
                 "abmag": "17.35",
                 "source": "2,3"
@@ -250,9 +250,9 @@
         ],
         "redshift": "0.0104",
         "ebv": "0.0166",
-        "discoveryear": 1999,
-        "discoverday": 21,
-        "discovermonth": 1,
+        "discoveryear": "1999",
+        "discoverday": "21",
+        "discovermonth": "1",
         "host": "NGC 3690",
         "claimedtype": "II",
         "hvel": "3033",
@@ -261,9 +261,12 @@
         "snra": "11:28:28.42",
         "sndec": "+58:33:38.7",
         "discoverer": "BAO Supernova Survey",
-        "maxyear": 1999,
-        "maxmonth": 3,
-        "maxday": 28,
-        "z": 0.0102
+        "maxyear": "1999",
+        "maxmonth": "3",
+        "maxday": "28",
+        "maxappmag": "16.66",
+        "z": "0.0102",
+        "lumdist": "46.0",
+        "maxabsmag": "-17.0"
     }
 }

@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51837.60000000009",
+                "time": "51837.6",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 16,
-        "discovermonth": 10,
+        "discoveryear": "2000",
+        "discoverday": "16",
+        "discovermonth": "10",
         "host": "UGC 11955",
         "claimedtype": "II",
         "hvel": "5341",
@@ -62,9 +62,10 @@
         "snra": "22:13:49.06",
         "sndec": "+39:14:15.1",
         "discoverer": "BAO",
-        "maxyear": 2000,
-        "maxmonth": 10,
-        "maxday": 17,
-        "z": 0.018
+        "maxyear": "2000",
+        "maxmonth": "10",
+        "maxday": "17",
+        "maxappmag": "17.5",
+        "z": "0.018"
     }
 }

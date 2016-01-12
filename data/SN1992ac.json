@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1992,
-        "discoverday": 29,
-        "discovermonth": 5,
+        "discoveryear": "1992",
+        "discoverday": "29",
+        "discovermonth": "5",
         "host": "MCG +10-24-7",
         "claimedtype": "Ia",
         "hvel": "15687",
@@ -39,10 +39,13 @@
         "discoverer": "Gomez, Lopez, Rey, Catchpole",
         "snra": "16:37:09.4",
         "sndec": "+58:10:01.0",
-        "redshift": 0.05,
-        "maxyear": 1992,
-        "maxmonth": 5,
-        "maxday": 29,
-        "z": 0.0538
+        "redshift": "0.050000",
+        "maxyear": "1992",
+        "maxmonth": "5",
+        "maxday": "29",
+        "maxappmag": "17.0",
+        "z": "0.0538",
+        "lumdist": "230.0",
+        "maxabsmag": "-20.0"
     }
 }

@@ -2907,9 +2907,9 @@
                 "source": "6,2"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 30,
-        "discovermonth": 12,
+        "discoveryear": "2007",
+        "discoverday": "30",
+        "discovermonth": "12",
         "host": "NGC 2770",
         "claimedtype": "Ib",
         "hvel": "1955",
@@ -2918,10 +2918,13 @@
         "snra": "09:09:35.40",
         "sndec": "+33:07:09.9",
         "discoverer": "Yoji Hirose",
-        "redshift": 0.0065,
-        "maxyear": 2008,
-        "maxmonth": 2,
-        "maxday": 1,
-        "z": 0.00654
+        "redshift": "0.006500",
+        "maxyear": "2008",
+        "maxmonth": "2",
+        "maxday": "1",
+        "maxappmag": "14.417",
+        "z": "0.00654",
+        "lumdist": "29.0",
+        "maxabsmag": "-18.0"
     }
 }

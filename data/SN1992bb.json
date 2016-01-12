@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1992,
-        "discoverday": 29,
-        "discovermonth": 9,
+        "discoveryear": "1992",
+        "discoverday": "29",
+        "discovermonth": "9",
         "host": "IRAS 21156-0747",
         "claimedtype": "Ia",
         "hvel": "8669",
@@ -39,9 +39,10 @@
         "snra": "21:18:14.86",
         "sndec": "-07:35:03.5",
         "discoverer": "Robert McNaught",
-        "maxyear": 1992,
-        "maxmonth": 9,
-        "maxday": 29,
-        "z": 0.0293
+        "maxyear": "1992",
+        "maxmonth": "9",
+        "maxday": "29",
+        "maxappmag": "17.5",
+        "z": "0.0293"
     }
 }

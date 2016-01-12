@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52364.02000000002",
+                "time": "52364.02",
                 "band": "C",
                 "abmag": "14.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52397.75999999978",
+                "time": "52397.76",
                 "band": "V",
                 "abmag": "15.7",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 30,
-        "discovermonth": 3,
+        "discoveryear": "2002",
+        "discoverday": "30",
+        "discovermonth": "3",
         "host": "ESO 139-G34",
         "claimedtype": "Ia",
         "hvel": "3733",
@@ -62,9 +62,10 @@
         "snra": "17:50:18.58",
         "sndec": "-59:33:51.6",
         "discoverer": "Robin Chassagne",
-        "maxyear": 2002,
-        "maxmonth": 3,
-        "maxday": 31,
-        "z": 0.0125
+        "maxyear": "2002",
+        "maxmonth": "3",
+        "maxday": "31",
+        "maxappmag": "14.5",
+        "z": "0.0125"
     }
 }

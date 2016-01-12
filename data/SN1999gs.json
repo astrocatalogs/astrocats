@@ -34,7 +34,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51553.080000000075",
+                "time": "51553.08",
                 "band": "R",
                 "abmag": "19.22",
                 "source": "1,2"
@@ -47,9 +47,9 @@
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 28,
-        "discovermonth": 12,
+        "discoveryear": "1999",
+        "discoverday": "28",
+        "discovermonth": "12",
         "host": "NGC 4725",
         "hvel": "1206",
         "galra": "125027",
@@ -57,9 +57,10 @@
         "snra": "12:50:26.28",
         "sndec": "+25:28:16.5",
         "discoverer": "LOSS",
-        "maxyear": 2000,
-        "maxmonth": 1,
-        "maxday": 10,
-        "z": 0.00403
+        "maxyear": "2000",
+        "maxmonth": "1",
+        "maxday": "10",
+        "maxappmag": "19.22",
+        "z": "0.00403"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 21,
-        "discovermonth": 5,
+        "discoveryear": "2010",
+        "discoverday": "21",
+        "discovermonth": "5",
         "host": "IC 4854",
         "claimedtype": "Ib/c",
         "hvel": "4101",
@@ -39,10 +39,13 @@
         "snra": "19:27:17.72",
         "sndec": "-59:18:44.9",
         "discoverer": "Brendan Downs",
-        "redshift": 0.0137,
-        "maxyear": 2010,
-        "maxmonth": 5,
-        "maxday": 21,
-        "z": 0.0138
+        "redshift": "0.013700",
+        "maxyear": "2010",
+        "maxmonth": "5",
+        "maxday": "21",
+        "maxappmag": "17.3",
+        "z": "0.0138",
+        "lumdist": "61.0",
+        "maxabsmag": "-17.0"
     }
 }

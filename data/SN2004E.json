@@ -644,9 +644,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 15,
-        "discovermonth": 1,
+        "discoveryear": "2004",
+        "discoverday": "15",
+        "discovermonth": "1",
         "host": "CGCG 160-177",
         "claimedtype": "Ia",
         "hvel": "8959",
@@ -655,9 +655,10 @@
         "snra": "13:16:51.40",
         "sndec": "+31:35:11.8",
         "discoverer": "LOSS",
-        "maxyear": 2004,
-        "maxmonth": 1,
-        "maxday": 15,
-        "z": 0.0303
+        "maxyear": "2004",
+        "maxmonth": "1",
+        "maxday": "15",
+        "maxappmag": "16.1",
+        "z": "0.0303"
     }
 }

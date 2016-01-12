@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1962,
-        "maxday": 5,
-        "maxmonth": 1,
+        "discoveryear": "1962",
+        "maxday": "5",
+        "maxmonth": "1",
         "host": "KUG 1304+281",
         "claimedtype": "I",
         "hvel": "6137",
@@ -39,9 +39,10 @@
         "snra": "13:06:35.55",
         "sndec": "+27:52:29.7",
         "discoverer": "Fritz Zwicky",
-        "discoverday": 5,
-        "discovermonth": 1,
-        "maxyear": 1962,
-        "z": 0.0207
+        "discoverday": "5",
+        "discovermonth": "1",
+        "maxyear": "1962",
+        "maxappmag": "15.6",
+        "z": "0.0207"
     }
 }

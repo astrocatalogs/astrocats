@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54006.6640300001",
+                "time": "54006.66403",
                 "band": "V",
                 "abmag": "18.767",
                 "aberr": "0.068",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54006.667739999946",
+                "time": "54006.66774",
                 "band": "B",
                 "abmag": "20.076",
                 "aberr": "0.138",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54010.68394999998",
+                "time": "54010.68395",
                 "band": "V",
                 "abmag": "18.66",
                 "aberr": "0.064",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54011.70428999979",
+                "time": "54011.70429",
                 "band": "V",
                 "abmag": "18.545",
                 "aberr": "0.067",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54020.721559999976",
+                "time": "54020.72156",
                 "band": "V",
                 "abmag": "18.866",
                 "aberr": "0.077",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54020.7252799999",
+                "time": "54020.72528",
                 "band": "B",
                 "abmag": "20.248",
                 "aberr": "0.126",
@@ -85,9 +85,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 26,
-        "discovermonth": 9,
+        "discoveryear": "2006",
+        "discoverday": "26",
+        "discovermonth": "9",
         "host": "IC 1461",
         "claimedtype": "Ia",
         "hvel": "9190",
@@ -96,9 +96,10 @@
         "snra": "22:58:34.30",
         "sndec": "+15:10:25.8",
         "discoverer": "LOSS",
-        "maxyear": 2006,
-        "maxmonth": 9,
-        "maxday": 26,
-        "z": 0.0311
+        "maxyear": "2006",
+        "maxmonth": "9",
+        "maxday": "26",
+        "maxappmag": "18.4",
+        "z": "0.0311"
     }
 }

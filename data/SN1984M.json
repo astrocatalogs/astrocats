@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1984,
-        "discoverday": 28,
-        "discovermonth": 8,
+        "discoveryear": "1984",
+        "discoverday": "28",
+        "discovermonth": "8",
         "host": "IC 121",
         "hvel": "9024",
         "galra": "012822",
@@ -38,9 +38,10 @@
         "snra": "01:28:21.52",
         "sndec": "+02:31:00.7",
         "discoverer": "Miklos Lovas",
-        "maxyear": 1984,
-        "maxmonth": 8,
-        "maxday": 28,
-        "z": 0.0306
+        "maxyear": "1984",
+        "maxmonth": "8",
+        "maxday": "28",
+        "maxappmag": "14.0",
+        "z": "0.0306"
     }
 }

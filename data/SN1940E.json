@@ -28,8 +28,8 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1940,
-        "maxmonth": 11,
+        "discoveryear": "1940",
+        "maxmonth": "11",
         "host": "NGC 253",
         "claimedtype": "I",
         "hvel": "248",
@@ -38,10 +38,11 @@
         "discoverer": "Fritz Zwicky",
         "snra": "00:47:31.4",
         "sndec": "-25:17:37.0",
-        "discoverday": 21,
-        "discovermonth": 11,
-        "maxyear": 1940,
-        "maxday": 21,
-        "z": 0.000828
+        "discoverday": "21",
+        "discovermonth": "11",
+        "maxyear": "1940",
+        "maxday": "21",
+        "maxappmag": "14.0",
+        "z": "0.000828"
     }
 }

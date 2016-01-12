@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52680.39999999991",
+                "time": "52680.4",
                 "band": "C",
                 "abmag": "17.7",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 8,
-        "discovermonth": 2,
+        "discoveryear": "2003",
+        "discoverday": "8",
+        "discovermonth": "2",
         "host": "ESO 576-G40",
         "claimedtype": "II",
         "hvel": "2069",
@@ -62,9 +62,10 @@
         "snra": "13:20:43.578",
         "sndec": "-22:02:53.59",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 10,
-        "z": 0.00693
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "10",
+        "maxappmag": "17.7",
+        "z": "0.00693"
     }
 }

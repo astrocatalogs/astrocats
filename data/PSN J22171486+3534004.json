@@ -18,6 +18,14 @@
             {
                 "name": "Kunihiro Shima",
                 "alias": "3"
+            },
+            {
+                "name": "Z. Jin",
+                "alias": "4"
+            },
+            {
+                "name": "X. Gao",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,17 +42,32 @@
                 "band": "U",
                 "abmag": "16.3",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57081.9848",
+                "band": "V",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57119.976",
+                "band": "V",
+                "abmag": "15.8",
+                "source": "5,1"
             }
         ],
         "host": "UGC 11975",
         "snra": "22:17:14.86",
         "sndec": "+35:34:00.4",
-        "discoverday": 6,
-        "discovermonth": 3,
-        "discoveryear": 2015,
+        "discoverday": "28",
+        "discovermonth": "2",
+        "discoveryear": "2015",
         "discoverer": "Xing Gao et al.",
-        "maxyear": 2015,
-        "maxmonth": 3,
-        "maxday": 6
+        "maxyear": "2015",
+        "maxmonth": "3",
+        "maxday": "6",
+        "maxappmag": "15.8"
     }
 }

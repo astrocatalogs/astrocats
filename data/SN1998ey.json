@@ -27,29 +27,29 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51151.64999999991",
+                "time": "51151.65",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51152.810000000056",
+                "time": "51152.81",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51155.10000000009",
+                "time": "51155.1",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 4,
-        "discovermonth": 12,
+        "discoveryear": "1998",
+        "discoverday": "4",
+        "discovermonth": "12",
         "host": "NGC 7080",
         "claimedtype": "Ic-pec",
         "hvel": "4806",
@@ -58,9 +58,10 @@
         "snra": "21:30:00.67",
         "sndec": "+26:43:21.4",
         "discoverer": "Ron Arbour",
-        "maxyear": 1998,
-        "maxmonth": 12,
-        "maxday": 8,
-        "z": 0.0162
+        "maxyear": "1998",
+        "maxmonth": "12",
+        "maxday": "8",
+        "maxappmag": "16.5",
+        "z": "0.0162"
     }
 }

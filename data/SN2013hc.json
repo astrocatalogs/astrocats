@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003700/CBET003747.txt'>CBET 3747</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Doug Rich",
+                "alias": "3"
+            },
+            {
+                "name": "Xavier Bros",
+                "alias": "4"
+            },
+            {
+                "name": "Xavier Bros ",
+                "alias": "5"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,11 +39,39 @@
                 "band": "",
                 "abmag": "17.6",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56596.095",
+                "band": "R",
+                "abmag": "17.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56596.9053",
+                "band": "CR",
+                "abmag": "17.00",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56596.9053",
+                "band": "CR",
+                "abmag": "17.00",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56598.116",
+                "band": "C",
+                "abmag": "18.8",
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 30,
-        "discovermonth": 10,
+        "discoveryear": "2013",
+        "discoverday": "30",
+        "discovermonth": "10",
         "host": "CGCG 340-33",
         "claimedtype": "II-pec",
         "hvel": "13280",
@@ -36,10 +80,13 @@
         "snra": "18:03:24.59",
         "sndec": "+70:13:30.6",
         "discoverer": "D. Lane, N. Gray, and P. Gray",
-        "redshift": 0.0443,
-        "maxyear": 2013,
-        "maxmonth": 10,
-        "maxday": 30,
-        "z": 0.0453
+        "redshift": "0.044300",
+        "maxyear": "2013",
+        "maxmonth": "10",
+        "maxday": "31",
+        "maxappmag": "17.00",
+        "z": "0.0453",
+        "lumdist": "200.0",
+        "maxabsmag": "-20.0"
     }
 }

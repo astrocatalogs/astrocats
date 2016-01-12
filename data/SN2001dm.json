@@ -45,7 +45,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52140.60000000009",
+                "time": "52140.6",
                 "band": "R",
                 "abmag": "15.7",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 7,
-        "discovermonth": 8,
+        "discoveryear": "2001",
+        "discoverday": "7",
+        "discovermonth": "8",
         "host": "NGC 749",
         "claimedtype": "Ia",
         "hvel": "4394",
@@ -69,9 +69,10 @@
         "snra": "01:55:40.55",
         "sndec": "-29:55:20.7",
         "discoverer": "LOTOSS",
-        "maxyear": 2001,
-        "maxmonth": 8,
-        "maxday": 7,
-        "z": 0.0148
+        "maxyear": "2001",
+        "maxmonth": "8",
+        "maxday": "7",
+        "maxappmag": "15.4",
+        "z": "0.0148"
     }
 }

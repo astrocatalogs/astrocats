@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 19,
-        "discovermonth": 9,
+        "discoveryear": "2011",
+        "discoverday": "19",
+        "discovermonth": "9",
         "host": "UGC 11501",
         "claimedtype": "Ia",
         "hvel": "7543",
@@ -36,10 +36,13 @@
         "snra": "19:58:35.52",
         "sndec": "+02:36:16.2",
         "discoverer": "Simone Leonini",
-        "redshift": 0.0252,
-        "maxyear": 2011,
-        "maxmonth": 9,
-        "maxday": 19,
-        "z": 0.0255
+        "redshift": "0.025200",
+        "maxyear": "2011",
+        "maxmonth": "9",
+        "maxday": "19",
+        "maxappmag": "15.5",
+        "z": "0.0255",
+        "lumdist": "110.0",
+        "maxabsmag": "-20.0"
     }
 }

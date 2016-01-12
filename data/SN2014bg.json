@@ -16,8 +16,24 @@
                 "alias": "2"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
+            },
+            {
+                "name": "Giancarlo Cortini",
+                "alias": "4"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "5"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "6"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -30,15 +46,50 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56817.301",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56813.96",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56814.176",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56815.028",
+                "band": "V",
+                "abmag": "16.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56816.894",
+                "band": "R",
+                "abmag": "16.10",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56829.208",
                 "band": "V",
                 "abmag": "17.4",
-                "source": "3,1"
+                "source": "7,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 7,
-        "discovermonth": 6,
+        "discoveryear": "2014",
+        "discoverday": "5",
+        "discovermonth": "6",
         "host": "UGC 9396",
         "claimedtype": "Ia",
         "hvel": "10820",
@@ -47,10 +98,13 @@
         "snra": "14:35:45.90",
         "sndec": "+24:43:17.9",
         "discoverer": "Mirco Villi, Mario Bombardini, Alessandro Benazzi",
-        "redshift": 0.03604,
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 7,
-        "z": 0.0368
+        "redshift": "0.036040",
+        "maxyear": "2014",
+        "maxmonth": "6",
+        "maxday": "7",
+        "maxappmag": "16.1",
+        "z": "0.0368",
+        "lumdist": "160.0",
+        "maxabsmag": "-20.0"
     }
 }

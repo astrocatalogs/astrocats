@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 21,
-        "discovermonth": 2,
+        "discoveryear": "2014",
+        "discoverday": "21",
+        "discovermonth": "2",
         "host": "A143605+0220",
         "claimedtype": "IIn",
         "hvel": "27000",
@@ -36,10 +36,13 @@
         "snra": "14:36:04.98",
         "sndec": "+02:20:34.2",
         "discoverer": "Kiso Supernova Survey (KISS) collaboration",
-        "redshift": 0.09,
-        "maxyear": 2014,
-        "maxmonth": 2,
-        "maxday": 21,
-        "z": 0.0945
+        "redshift": "0.090000",
+        "maxyear": "2014",
+        "maxmonth": "2",
+        "maxday": "21",
+        "maxappmag": "18.7",
+        "z": "0.0945",
+        "lumdist": "420.0",
+        "maxabsmag": "-19.0"
     }
 }

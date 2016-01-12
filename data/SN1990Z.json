@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1990,
-        "discoverday": 20,
-        "discovermonth": 8,
+        "discoveryear": "1990",
+        "discoverday": "20",
+        "discovermonth": "8",
         "host": "UGC 12133",
         "claimedtype": "II",
         "hvel": "7391",
@@ -39,9 +39,10 @@
         "discoverer": "Jean Mueller",
         "snra": "22:39:30.00",
         "sndec": "+08:38:00.0",
-        "maxyear": 1990,
-        "maxmonth": 8,
-        "maxday": 20,
-        "z": 0.025
+        "maxyear": "1990",
+        "maxmonth": "8",
+        "maxday": "20",
+        "maxappmag": "19.0",
+        "z": "0.025"
     }
 }

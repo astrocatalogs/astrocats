@@ -45,28 +45,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52409.200000000186",
+                "time": "52409.2",
                 "band": "I",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52409.200000000186",
+                "time": "52409.2",
                 "band": "R",
                 "abmag": "19",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52409.22999999998",
+                "time": "52409.23",
                 "band": "I",
                 "abmag": "17.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52409.22999999998",
+                "time": "52409.23",
                 "band": "R",
                 "abmag": "20.3",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "maxday": 15,
-        "maxmonth": 5,
+        "discoveryear": "2002",
+        "maxday": "15",
+        "maxmonth": "5",
         "host": "NGC 3190",
         "claimedtype": "Ia-pec",
         "hvel": "1289",
@@ -90,9 +90,10 @@
         "snra": "10:18:03.68",
         "sndec": "+21:50:06.2",
         "discoverer": "Campo Imperatore Observatory",
-        "discoverday": 8,
-        "discovermonth": 5,
-        "maxyear": 2002,
-        "z": 0.00431
+        "discoverday": "8",
+        "discovermonth": "5",
+        "maxyear": "2002",
+        "maxappmag": "16.6",
+        "z": "0.00431"
     }
 }

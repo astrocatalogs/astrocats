@@ -13,7 +13,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "57026.0839999998",
+                "time": "57026.084",
                 "band": "G",
                 "abmag": "17.13",
                 "instrument": "GAIA",
@@ -21,7 +21,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57026.25999999978",
+                "time": "57026.260",
                 "band": "G",
                 "abmag": "17.13",
                 "instrument": "GAIA",
@@ -29,7 +29,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57026.3339999998",
+                "time": "57026.334",
                 "band": "G",
                 "abmag": "17.02",
                 "instrument": "GAIA",
@@ -37,7 +37,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57026.50999999978",
+                "time": "57026.510",
                 "band": "G",
                 "abmag": "17.07",
                 "instrument": "GAIA",
@@ -45,7 +45,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57066.992000000086",
+                "time": "57066.992",
                 "band": "G",
                 "abmag": "18.30",
                 "instrument": "GAIA",
@@ -53,21 +53,22 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "57100.04300000006",
+                "time": "57100.043",
                 "band": "G",
                 "abmag": "19.72",
                 "instrument": "GAIA",
                 "source": "1"
             }
         ],
-        "discoveryear": 2015,
+        "discoveryear": "2015",
         "snra": "74.45677",
         "sndec": "-21.59282",
         "claimedtype": "Ia",
-        "maxyear": 2015,
-        "maxmonth": 1,
-        "maxday": 4,
-        "discovermonth": 1,
-        "discoverday": 4
+        "maxyear": "2015",
+        "maxmonth": "1",
+        "maxday": "4",
+        "maxappmag": "17.02",
+        "discovermonth": "1",
+        "discoverday": "4"
     }
 }

@@ -28,20 +28,36 @@
                 "alias": "5"
             },
             {
-                "name": "Jose Carrillo",
+                "name": "K. Itagaki",
                 "alias": "6"
             },
             {
-                "name": "Z. Jin, X. Gao",
+                "name": "Seiichiro Kiyota",
                 "alias": "7"
             },
             {
-                "name": "Stan Howerton",
+                "name": "T. Yusa",
                 "alias": "8"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Joseph Brimacombe",
                 "alias": "9"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "10"
+            },
+            {
+                "name": "Z. Jin, X. Gao",
+                "alias": "11"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "12"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "13"
             }
         ],
         "photometry": [
@@ -82,43 +98,71 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56739.449",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56739.5717",
+                "band": "U",
+                "abmag": "17.23",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56740.218",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56740.254",
+                "band": "C",
+                "abmag": "16.8",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56732.855",
                 "band": "R",
                 "abmag": "16.07",
-                "source": "6,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56736.781",
                 "band": "V",
                 "abmag": "17.2",
-                "source": "7,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56745.12",
                 "band": "U",
                 "abmag": "16.3",
-                "source": "8,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.004",
                 "band": "CV",
                 "abmag": "16.70",
-                "source": "9,1"
+                "source": "13,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56766.121",
                 "band": "U",
                 "abmag": "17.4",
-                "source": "8,1"
+                "source": "12,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 16,
-        "discovermonth": 3,
+        "discoveryear": "2014",
+        "discoverday": "16",
+        "discovermonth": "3",
         "host": "NGC 2832",
         "claimedtype": "Ia",
         "hvel": "6869",
@@ -127,10 +171,13 @@
         "snra": "09:19:44.17",
         "sndec": "+33:45:49.6",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.023176,
-        "maxyear": 2014,
-        "maxmonth": 3,
-        "maxday": 24,
-        "z": 0.0232
+        "redshift": "0.023176",
+        "maxyear": "2014",
+        "maxmonth": "3",
+        "maxday": "24",
+        "maxappmag": "14.6",
+        "z": "0.0232",
+        "lumdist": "100.0",
+        "maxabsmag": "-20.0"
     }
 }

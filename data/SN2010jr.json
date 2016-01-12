@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 11,
-        "discovermonth": 11,
+        "discoveryear": "2010",
+        "discoverday": "11",
+        "discovermonth": "11",
         "host": "ESO 362-G18",
         "claimedtype": "IIb",
         "hvel": "3773",
@@ -39,10 +39,13 @@
         "snra": "05:19:34.47",
         "sndec": "-32:39:14.6",
         "discoverer": "CHASE",
-        "redshift": 0.0124,
-        "maxyear": 2010,
-        "maxmonth": 11,
-        "maxday": 11,
-        "z": 0.0127
+        "redshift": "0.012400",
+        "maxyear": "2010",
+        "maxmonth": "11",
+        "maxday": "11",
+        "maxappmag": "15.0",
+        "z": "0.0127",
+        "lumdist": "55.0",
+        "maxabsmag": "-19.0"
     }
 }

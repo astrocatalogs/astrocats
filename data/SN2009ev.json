@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 28,
-        "discovermonth": 5,
+        "discoveryear": "2009",
+        "discoverday": "28",
+        "discovermonth": "5",
         "host": "NGC 5026",
         "claimedtype": "Ia",
         "hvel": "3549",
@@ -39,10 +39,13 @@
         "snra": "13:14:17.58",
         "sndec": "-42:58:48.8",
         "discoverer": "BRASS",
-        "redshift": 0.0118,
-        "maxyear": 2009,
-        "maxmonth": 5,
-        "maxday": 28,
-        "z": 0.0119
+        "redshift": "0.011800",
+        "maxyear": "2009",
+        "maxmonth": "5",
+        "maxday": "28",
+        "maxappmag": "14.2",
+        "z": "0.0119",
+        "lumdist": "53.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -630,9 +630,9 @@
                 "source": "5,3"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 29,
-        "discovermonth": 6,
+        "discoveryear": "2008",
+        "discoverday": "29",
+        "discovermonth": "6",
         "host": "NGC 6261",
         "claimedtype": "Ia",
         "hvel": "10270",
@@ -641,10 +641,13 @@
         "snra": "16:56:30.56",
         "sndec": "+27:58:33.2",
         "discoverer": "LOSS",
-        "redshift": 0.0354,
-        "maxyear": 2008,
-        "maxmonth": 7,
-        "maxday": 4,
-        "z": 0.0349
+        "redshift": "0.035400",
+        "maxyear": "2008",
+        "maxmonth": "7",
+        "maxday": "4",
+        "maxappmag": "16.5",
+        "z": "0.0349",
+        "lumdist": "160.0",
+        "maxabsmag": "-20.0"
     }
 }

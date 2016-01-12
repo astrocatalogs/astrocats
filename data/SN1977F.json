@@ -31,56 +31,56 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "43156.95999999996",
+                "time": "43156.96",
                 "band": "B",
                 "abmag": "16.37",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43158.93000000017",
+                "time": "43158.93",
                 "band": "B",
                 "abmag": "16.46",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43182.919999999925",
+                "time": "43182.92",
                 "band": "B",
                 "abmag": "18.11",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43188.87999999989",
+                "time": "43188.88",
                 "band": "B",
                 "abmag": "18.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43197.99000000022",
+                "time": "43197.99",
                 "band": "B",
                 "abmag": "18.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43199.87000000011",
+                "time": "43199.87",
                 "band": "B",
                 "abmag": "18.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43200.029999999795",
+                "time": "43200.03",
                 "band": "B",
                 "abmag": "18.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43225.91000000015",
+                "time": "43225.91",
                 "band": "B",
                 "abmag": "18.35",
                 "source": "1,2"
@@ -93,9 +93,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1977,
-        "maxday": 14,
-        "maxmonth": 1,
+        "discoveryear": "1977",
+        "maxday": "14",
+        "maxmonth": "1",
         "host": "UGC 5912",
         "claimedtype": "I",
         "hvel": "6295",
@@ -104,9 +104,10 @@
         "discoverer": "Leonida Rosino",
         "snra": "10:48:26.9",
         "sndec": "+26:34:39.0",
-        "discoverday": 13,
-        "discovermonth": 1,
-        "maxyear": 1977,
-        "z": 0.0212
+        "discoverday": "13",
+        "discovermonth": "1",
+        "maxyear": "1977",
+        "maxappmag": "15.8",
+        "z": "0.0212"
     }
 }

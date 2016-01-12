@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 21,
-        "discovermonth": 1,
+        "discoveryear": "2013",
+        "discoverday": "21",
+        "discovermonth": "1",
         "host": "ESO 216-G39",
         "claimedtype": "IIn",
         "hvel": "5090",
@@ -36,10 +36,13 @@
         "snra": "11:45:29.55",
         "sndec": "-50:35:53.1",
         "discoverer": "Berto Monard",
-        "redshift": 0.017,
-        "maxyear": 2013,
-        "maxmonth": 1,
-        "maxday": 21,
-        "z": 0.0171
+        "redshift": "0.017000",
+        "maxyear": "2013",
+        "maxmonth": "1",
+        "maxday": "21",
+        "maxappmag": "15.6",
+        "z": "0.0171",
+        "lumdist": "76.0",
+        "maxabsmag": "-19.0"
     }
 }

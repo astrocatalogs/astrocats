@@ -203,7 +203,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52247.439999999944",
+                "time": "52247.44",
                 "band": "C",
                 "abmag": "17.4",
                 "source": "2,3"
@@ -218,9 +218,9 @@
         ],
         "redshift": "0.0086",
         "ebv": "0.0351",
-        "discoveryear": 2001,
-        "discoverday": 3,
-        "discovermonth": 12,
+        "discoveryear": "2001",
+        "discoverday": "3",
+        "discovermonth": "12",
         "host": "NGC 4162",
         "claimedtype": "II",
         "hvel": "2569",
@@ -229,9 +229,12 @@
         "snra": "12:11:53.18",
         "sndec": "+24:06:49.4",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2002,
-        "maxmonth": 1,
-        "maxday": 25,
-        "z": 0.00861
+        "maxyear": "2002",
+        "maxmonth": "1",
+        "maxday": "25",
+        "maxappmag": "16.192",
+        "z": "0.00861",
+        "lumdist": "38.0",
+        "maxabsmag": "-17.0"
     }
 }

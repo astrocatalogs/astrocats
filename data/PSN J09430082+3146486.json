@@ -13,6 +13,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J09430082+3146486.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -22,19 +30,43 @@
                 "band": "",
                 "abmag": "17.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56780.274",
+                "band": "C",
+                "abmag": "17.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56781.177",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56781.94068",
+                "band": "U",
+                "abmag": "17.8",
+                "source": "4,1"
             }
         ],
         "claimedtype": "IIb",
         "host": "PGC 2832069",
         "snra": "09:43:00.82",
         "sndec": "+31:46:48.6",
-        "discoverday": 3,
-        "discovermonth": 5,
-        "discoveryear": 2014,
-        "redshift": 0.022,
+        "discoverday": "3",
+        "discovermonth": "5",
+        "discoveryear": "2014",
+        "redshift": "0.022000",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 3
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "3",
+        "maxappmag": "17.8",
+        "lumdist": "99.0",
+        "maxabsmag": "-17.0"
     }
 }

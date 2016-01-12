@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 4,
-        "discovermonth": 9,
+        "discoveryear": "2007",
+        "discoverday": "4",
+        "discovermonth": "9",
         "host": "A200818-0039",
         "claimedtype": "II",
         "hvel": "24000",
@@ -39,10 +39,13 @@
         "snra": "20:08:18.00",
         "sndec": "-00:39:44.7",
         "discoverer": "SDSS Collaboration",
-        "redshift": 0.08,
-        "maxyear": 2007,
-        "maxmonth": 9,
-        "maxday": 4,
-        "z": 0.0835
+        "redshift": "0.080000",
+        "maxyear": "2007",
+        "maxmonth": "9",
+        "maxday": "4",
+        "maxappmag": "21.3",
+        "z": "0.0835",
+        "lumdist": "380.0",
+        "maxabsmag": "-17.0"
     }
 }

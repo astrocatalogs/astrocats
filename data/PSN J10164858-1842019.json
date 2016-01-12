@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J10164858-1842019.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,17 +26,25 @@
                 "band": "",
                 "abmag": "16.9",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56660.371",
+                "band": "C",
+                "abmag": "18.8",
+                "source": "3,1"
             }
         ],
         "host": "ESO 567-G34",
         "snra": "10:16:48.58",
         "sndec": "-18:42:01.9",
-        "discoverday": 31,
-        "discovermonth": 12,
-        "discoveryear": 2013,
+        "discoverday": "31",
+        "discovermonth": "12",
+        "discoveryear": "2013",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2013,
-        "maxmonth": 12,
-        "maxday": 31
+        "maxyear": "2013",
+        "maxmonth": "12",
+        "maxday": "31",
+        "maxappmag": "16.9"
     }
 }

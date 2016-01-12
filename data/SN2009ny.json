@@ -29,9 +29,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 19,
-        "discovermonth": 10,
+        "discoveryear": "2009",
+        "discoverday": "19",
+        "discovermonth": "10",
         "host": "A221123-0912",
         "claimedtype": "Ib",
         "hvel": "17100",
@@ -40,9 +40,10 @@
         "snra": "22:11:23.59",
         "sndec": "-09:12:44.4",
         "discoverer": "CRTS",
-        "maxyear": 2009,
-        "maxmonth": 10,
-        "maxday": 19,
-        "z": 0.0588
+        "maxyear": "2009",
+        "maxmonth": "10",
+        "maxday": "19",
+        "maxappmag": "18.2",
+        "z": "0.0588"
     }
 }

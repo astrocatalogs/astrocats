@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 3,
-        "discovermonth": 9,
+        "discoveryear": "2012",
+        "discoverday": "3",
+        "discovermonth": "9",
         "host": "NGC 5611",
         "claimedtype": "Ia",
         "hvel": "1924",
@@ -36,10 +36,13 @@
         "snra": "14:24:05.71",
         "sndec": "+33:02:56.5",
         "discoverer": "Yoji Hirose",
-        "redshift": 0.006721,
-        "maxyear": 2012,
-        "maxmonth": 9,
-        "maxday": 3,
-        "z": 0.00644
+        "redshift": "0.006721",
+        "maxyear": "2012",
+        "maxmonth": "9",
+        "maxday": "3",
+        "maxappmag": "13.2",
+        "z": "0.00644",
+        "lumdist": "30.0",
+        "maxabsmag": "-19.0"
     }
 }

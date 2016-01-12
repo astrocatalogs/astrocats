@@ -218,9 +218,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 19,
-        "discovermonth": 11,
+        "discoveryear": "2011",
+        "discoverday": "19",
+        "discovermonth": "11",
         "host": "A222614+3412",
         "claimedtype": "IIn/Ibn",
         "hvel": "6900",
@@ -229,10 +229,13 @@
         "snra": "22:26:14.53",
         "sndec": "+34:12:59.0",
         "discoverer": "B. Dintinjana and H. Mikuz",
-        "redshift": 0.023,
-        "maxyear": 2011,
-        "maxmonth": 11,
-        "maxday": 19,
-        "z": 0.0233
+        "redshift": "0.023000",
+        "maxyear": "2011",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "15.5",
+        "z": "0.0233",
+        "lumdist": "100.0",
+        "maxabsmag": "-20.0"
     }
 }

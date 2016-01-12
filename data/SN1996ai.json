@@ -448,14 +448,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "50250.85999999987",
+                "time": "50250.86",
                 "band": "V",
                 "abmag": "14.5",
                 "source": "3,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "50250.87999999989",
+                "time": "50250.88",
                 "band": "V",
                 "abmag": "14.5",
                 "source": "3,4"
@@ -490,22 +490,22 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "50254.299999999814",
+                "time": "50254.3",
                 "band": "V",
                 "abmag": "15.2",
                 "source": "3,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "50254.91000000015",
+                "time": "50254.91",
                 "band": "V",
                 "abmag": "13.8",
                 "source": "3,4"
             }
         ],
-        "discoveryear": 1996,
-        "maxday": 20,
-        "maxmonth": 6,
+        "discoveryear": "1996",
+        "maxday": "20",
+        "maxmonth": "6",
         "host": "NGC 5005",
         "claimedtype": "Ia",
         "hvel": "992",
@@ -514,9 +514,10 @@
         "snra": "13:10:58.13",
         "sndec": "+37:03:35.4",
         "discoverer": "Claudio Bottari",
-        "discoverday": 16,
-        "discovermonth": 6,
-        "maxyear": 1996,
-        "z": 0.00331
+        "discoverday": "16",
+        "discovermonth": "6",
+        "maxyear": "1996",
+        "maxappmag": "13.5",
+        "z": "0.00331"
     }
 }

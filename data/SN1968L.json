@@ -387,9 +387,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1968,
-        "maxday": 25,
-        "maxmonth": 7,
+        "discoveryear": "1968",
+        "maxday": "25",
+        "maxmonth": "7",
         "host": "M83",
         "claimedtype": "II",
         "hvel": "513",
@@ -398,9 +398,10 @@
         "snra": "13:37:00.51",
         "sndec": "-29:51:59.0",
         "discoverer": "Bennett",
-        "discoverday": 16,
-        "discovermonth": 7,
-        "maxyear": 1968,
-        "z": 0.00171
+        "discoverday": "16",
+        "discovermonth": "7",
+        "maxyear": "1968",
+        "maxappmag": "11.73",
+        "z": "0.00171"
     }
 }

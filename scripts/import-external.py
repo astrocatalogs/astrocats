@@ -14,6 +14,7 @@ import numpy
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astropy.time import Time as astrotime
+from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
 from math import log10, floor, sqrt, isnan
 from bs4 import BeautifulSoup, SoupStrainer
@@ -148,12 +149,13 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
 
 def get_max_light(name):
     if not events[name]['photometry']:
-        return None
+        return (None, None)
 
-    eventphoto = [events[name]['photometry'][x]['abmag'] for x in range(len(events[name]['photometry']))]
-    mlindex = eventphoto.index(min(eventphoto))
+    eventphoto = [Decimal(events[name]['photometry'][x]['abmag']) for x in range(len(events[name]['photometry']))]
+    mlmag = min(eventphoto)
+    mlindex = eventphoto.index(mlmag)
     mlmjd = float(events[name]['photometry'][mlindex]['time'])
-    return astrotime(mlmjd, format='mjd').datetime
+    return (astrotime(mlmjd, format='mjd').datetime, mlmag)
 
 def get_first_light(name):
     if not events[name]['photometry']:
@@ -165,26 +167,27 @@ def get_first_light(name):
     return astrotime(flmjd, format='mjd').datetime
 
 def set_first_max_light(name):
-    mldt = get_max_light(name)
+    (mldt, mlmag) = get_max_light(name)
     if mldt:
-        events[name]['maxyear'] = mldt.year
-        events[name]['maxmonth'] = mldt.month
-        events[name]['maxday'] = mldt.day
+        events[name]['maxyear'] = str(mldt.year)
+        events[name]['maxmonth'] = str(mldt.month)
+        events[name]['maxday'] = str(mldt.day)
+        events[name]['maxappmag'] = str(mlmag)
 
     fldt = get_first_light(name)
     if fldt:
-        events[name]['discoveryear'] = fldt.year
-        events[name]['discovermonth'] = fldt.month
-        events[name]['discoverday'] = fldt.day
+        events[name]['discoveryear'] = str(fldt.year)
+        events[name]['discovermonth'] = str(fldt.month)
+        events[name]['discoverday'] = str(fldt.day)
 
 def jd_to_mjd(jd):
-    return jd - 2400000.5
+    return jd - Decimal(2400000.5)
 
 def utf8(x):
     return str(x, 'utf-8')
 
 def convert_aq_output(row):
-    return OrderedDict([(x, '%g'%float(row[x]) if is_number(row[x]) else utf8(row[x])) for x in row.colnames])
+    return OrderedDict([(x, '%g'%Decimal(float(row[x])) if is_number(row[x]) else utf8(row[x])) for x in row.colnames])
 
 # Import primary data sources from Vizier
 if dovizier:
@@ -261,7 +264,7 @@ if dovizier:
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
         source = get_source(name, reference)
-        add_photometry(name, time = str(jd_to_mjd(float(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
+        add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
 
 # Suspect catalog
 if dosuspect:
@@ -316,7 +319,7 @@ if dosuspect:
                             if r == 0:
                                 continue
                             col = row.findAll('td')
-                            mjd = str(jd_to_mjd(float(col[0].contents[0])))
+                            mjd = str(jd_to_mjd(Decimal(col[0].contents[0])))
                             mag = col[3].contents[0]
                             if mag.isspace():
                                 mag = ''
@@ -359,16 +362,16 @@ if docfa:
         eventbands = list(eventparts[1])
 
         tu = 'MJD'
-        jdoffset = 0.
+        jdoffset = Decimal(0.)
         for rc, row in enumerate(csv_data):
             if len(row) > 0 and row[0][0] == "#":
                 if len(row[0]) > 2 and row[0][:3] == "#JD":
                     tu = 'JD'
                     rowparts = row[0].split('-')
-                    jdoffset = float(rowparts[1])
+                    jdoffset = Decimal(rowparts[1])
                 elif len(row[0]) > 6 and row[0][:7] == "#Julian":
                     tu = 'JD'
-                    jdoffset = 0.
+                    jdoffset = Decimal(0.)
                 elif len(row) > 1 and row[1].lower() == "photometry":
                     for ci, col in enumerate(row[2:]):
                         if col[0] == "(":
@@ -390,10 +393,10 @@ if docfa:
                 for v, val in enumerate(row):
                     if v == 0:
                         if tu == 'JD':
-                            mjd = str(jd_to_mjd(float(val) + jdoffset))
+                            mjd = str(jd_to_mjd(Decimal(val) + jdoffset))
                             tuout = 'MJD'
                         elif tu == 'HJD':
-                            mjd = str(jd_to_mjd(float(val)))
+                            mjd = str(jd_to_mjd(Decimal(val)))
                             tuout = 'MJD'
                         else:
                             mjd = val
@@ -545,7 +548,7 @@ if dogaia:
         photodata = str(photsoup.contents[0]).split('\n')[2:-1]
         for ph in photodata:
             photo = ph.split(',')
-            mjd = str(jd_to_mjd(float(photo[1].strip())))
+            mjd = str(jd_to_mjd(Decimal(photo[1].strip())))
             abmag = photo[2].strip()
             aberr = 0.
             instrument = 'GAIA'
@@ -600,7 +603,7 @@ if doitep:
         if r <= 1 or len(row) < 7:
             continue
         name = 'SN' + row[0].strip()
-        mjd = str(jd_to_mjd(float(row[1].strip())))
+        mjd = str(jd_to_mjd(Decimal(row[1].strip())))
         band = row[2].strip()
         abmag = row[3].strip()
         aberr = row[4].strip()
@@ -738,7 +741,7 @@ if dorochester:
             if float(str(cols[8].contents[0]).strip()) <= 90.0:
                 add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = ','.join([source, secondarysource]))
         if cols[11].contents[0] != 'n/a':
-            events[name]['redshift'] = float(str(cols[11].contents[0]).strip())
+            events[name]['redshift'] = str(cols[11].contents[0]).strip()
         events[name]['discoverer'] = str(cols[13].contents[0]).strip()
         if cols[14].contents:
             add_alias(name, str(cols[14].contents[0]).strip())
@@ -754,7 +757,7 @@ if dorochester:
             if name[:4].isdigit():
                 name = 'SN' + name
             if name[:4] == 'PSNJ':
-                name = 'PSN ' + name[4:]
+                name = 'PSN J' + name[4:]
             name = add_event(name)
             if not is_number(row[1]):
                 continue
@@ -856,8 +859,14 @@ if writeevents:
         elif 'hvel' in events[name] and 'z' not in events[name]:
             voc = float(events[name]['hvel'])*1.e5/clight
             events[name]['z'] = str(round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3))
+        if 'redshift' in events[name] and float(events[name]['redshift']) > 0.0:
+            dl = cosmo.luminosity_distance(float(events[name]['redshift']))
+            if 'lumdist' not in events[name]:
+                events[name]['lumdist'] = str(round_sig(dl.value))
+            if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+                events[name]['maxabsmag'] = str(round_sig(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0)))
         if 'hvel' in events[name]:
-            events[name]['hvel'] = '%g'%(float(events[name]['hvel']))
+            events[name]['hvel'] = '%g'%(Decimal(events[name]['hvel']))
         if 'host' in events[name]:
             events[name]['host'] = events[name]['host'].replace("NGC", "NGC ")
             events[name]['host'] = events[name]['host'].replace("UGC", "UGC ")

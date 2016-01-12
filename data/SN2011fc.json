@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 25,
-        "discovermonth": 8,
+        "discoveryear": "2011",
+        "discoverday": "25",
+        "discovermonth": "8",
         "host": "A230136+3220",
         "claimedtype": "Ia",
         "hvel": "15000",
@@ -36,10 +36,13 @@
         "snra": "23:01:36.38",
         "sndec": "+32:20:06.9",
         "discoverer": "Blaz Mikuz",
-        "redshift": 0.05,
-        "maxyear": 2011,
-        "maxmonth": 8,
-        "maxday": 25,
-        "z": 0.0514
+        "redshift": "0.050000",
+        "maxyear": "2011",
+        "maxmonth": "8",
+        "maxday": "25",
+        "maxappmag": "17.8",
+        "z": "0.0514",
+        "lumdist": "230.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53220.169999999925",
+                "time": "53220.17",
                 "band": "B",
                 "abmag": "17.79",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "53220.169999999925",
+                "time": "53220.17",
                 "band": "R",
                 "abmag": "16.79",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "53220.169999999925",
+                "time": "53220.17",
                 "band": "V",
                 "abmag": "17.18",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2004,
-        "maxday": 14,
-        "maxmonth": 8,
+        "discoveryear": "2004",
+        "maxday": "14",
+        "maxmonth": "8",
         "host": "NGC 6118",
         "claimedtype": "Ib",
         "hvel": "1586",
@@ -69,9 +69,10 @@
         "snra": "16:21:48.93",
         "sndec": "-02:16:17.3",
         "discoverer": "LOSS",
-        "discoverday": 3,
-        "discovermonth": 8,
-        "maxyear": 2004,
-        "z": 0.0053
+        "discoverday": "3",
+        "discovermonth": "8",
+        "maxyear": "2004",
+        "maxappmag": "14.6",
+        "z": "0.0053"
     }
 }

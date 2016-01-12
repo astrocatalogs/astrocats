@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 23,
-        "discovermonth": 4,
+        "discoveryear": "2003",
+        "discoverday": "23",
+        "discovermonth": "4",
         "host": "A142135+5231",
         "claimedtype": "Ia",
-        "redshift": 0.249,
+        "redshift": "0.249000",
         "galra": "142135",
         "galdec": "+523137",
         "snra": "14:21:35.898",
         "sndec": "+52:31:37.79",
         "discoverer": "Legacy Survey Supernova Project",
-        "maxyear": 2003,
-        "maxmonth": 4,
-        "maxday": 23
+        "maxyear": "2003",
+        "maxmonth": "4",
+        "maxday": "23",
+        "maxappmag": "23.2",
+        "lumdist": "1300.0",
+        "maxabsmag": "-17.0"
     }
 }

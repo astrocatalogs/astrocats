@@ -725,9 +725,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 21,
-        "discovermonth": 7,
+        "discoveryear": "2003",
+        "discoverday": "21",
+        "discovermonth": "7",
         "host": "CGCG 452-024",
         "claimedtype": "Ia",
         "hvel": "10356",
@@ -736,10 +736,13 @@
         "snra": "22:33:51.688",
         "sndec": "+20:48:08.59",
         "discoverer": "LOTOSS",
-        "redshift": 0.034,
-        "maxyear": 2003,
-        "maxmonth": 8,
-        "maxday": 4,
-        "z": 0.0352
+        "redshift": "0.034000",
+        "maxyear": "2003",
+        "maxmonth": "8",
+        "maxday": "4",
+        "maxappmag": "17.24200",
+        "z": "0.0352",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

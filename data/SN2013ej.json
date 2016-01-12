@@ -360,9 +360,9 @@
                 "source": "21,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 5,
-        "discovermonth": 2,
+        "discoveryear": "2013",
+        "discoverday": "5",
+        "discovermonth": "2",
         "host": "M74",
         "claimedtype": "IIP",
         "hvel": "632",
@@ -371,10 +371,13 @@
         "snra": "01:36:48.16",
         "sndec": "+15:45:31.0",
         "discoverer": "LOSS",
-        "redshift": 0.002192,
-        "maxyear": 2013,
-        "maxmonth": 8,
-        "maxday": 3,
-        "z": 0.00211
+        "redshift": "0.002192",
+        "maxyear": "2013",
+        "maxmonth": "8",
+        "maxday": "3",
+        "maxappmag": "12.4",
+        "z": "0.00211",
+        "lumdist": "9.7",
+        "maxabsmag": "-18.0"
     }
 }

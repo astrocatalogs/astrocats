@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52103.95999999996",
+                "time": "52103.96",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52105.939999999944",
+                "time": "52105.94",
                 "band": "C",
                 "abmag": "17.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52113.95999999996",
+                "time": "52113.96",
                 "band": "R",
                 "abmag": "16.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52117.279999999795",
+                "time": "52117.28",
                 "band": "R",
                 "abmag": "17.2",
                 "source": "1,2"
@@ -66,21 +66,21 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52122.31999999983",
+                "time": "52122.32",
                 "band": "R",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52122.970000000205",
+                "time": "52122.97",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52149.95999999996",
+                "time": "52149.96",
                 "band": "R",
                 "abmag": "18",
                 "source": "1,2"
@@ -93,9 +93,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 13,
-        "discovermonth": 7,
+        "discoveryear": "2001",
+        "discoverday": "13",
+        "discovermonth": "7",
         "host": "UGC 12089",
         "claimedtype": "Ia",
         "hvel": "9313",
@@ -104,10 +104,13 @@
         "snra": "22:34:18.06",
         "sndec": "+50:24:54.7",
         "discoverer": "Mark Armstrong",
-        "redshift": 0.031,
-        "maxyear": 2001,
-        "maxmonth": 7,
-        "maxday": 23,
-        "z": 0.0316
+        "redshift": "0.031000",
+        "maxyear": "2001",
+        "maxmonth": "7",
+        "maxday": "23",
+        "maxappmag": "16.5",
+        "z": "0.0316",
+        "lumdist": "140.0",
+        "maxabsmag": "-19.0"
     }
 }

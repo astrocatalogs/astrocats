@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "42018.299999999814",
+                "time": "42018.3",
                 "band": "V",
                 "abmag": "21.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52018.299999999814",
+                "time": "52018.3",
                 "band": "R",
                 "abmag": "20.5",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1973,
-        "discoverday": 2,
-        "discovermonth": 12,
+        "discoveryear": "1973",
+        "discoverday": "2",
+        "discovermonth": "12",
         "host": "MCG -2-38-17",
         "claimedtype": "IIn",
         "hvel": "1856",
@@ -62,9 +62,10 @@
         "snra": "14:49:28.27",
         "sndec": "-10:10:15.4",
         "discoverer": "Christian Pollas",
-        "maxyear": 1995,
-        "maxmonth": 5,
-        "maxday": 4,
-        "z": 0.00621
+        "maxyear": "1995",
+        "maxmonth": "5",
+        "maxday": "4",
+        "maxappmag": "17.5",
+        "z": "0.00621"
     }
 }

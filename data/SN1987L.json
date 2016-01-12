@@ -44,9 +44,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1987,
-        "maxday": 15,
-        "maxmonth": 8,
+        "discoveryear": "1987",
+        "maxday": "15",
+        "maxmonth": "8",
         "host": "NGC 2336",
         "claimedtype": "II",
         "hvel": "2200",
@@ -55,9 +55,10 @@
         "snra": "07:27:26.36",
         "sndec": "+80:09:30.6",
         "discoverer": "Patchick",
-        "discoverday": 15,
-        "discovermonth": 8,
-        "maxyear": 1987,
-        "z": 0.00737
+        "discoverday": "15",
+        "discovermonth": "8",
+        "maxyear": "1987",
+        "maxappmag": "14.2",
+        "z": "0.00737"
     }
 }

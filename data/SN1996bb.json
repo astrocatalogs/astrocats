@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1996,
-        "discoverday": 7,
-        "discovermonth": 10,
+        "discoveryear": "1996",
+        "discoverday": "7",
+        "discovermonth": "10",
         "host": "A025706-0242",
         "claimedtype": "Ia?",
         "redshift": "0.56",
@@ -39,8 +39,11 @@
         "snra": "02:57:06.06",
         "sndec": "-02:42:17.4",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 1996,
-        "maxmonth": 10,
-        "maxday": 7
+        "maxyear": "1996",
+        "maxmonth": "10",
+        "maxday": "7",
+        "maxappmag": "23.6",
+        "lumdist": "3300.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 18,
-        "discovermonth": 11,
+        "discoveryear": "1995",
+        "discoverday": "18",
+        "discovermonth": "11",
         "host": "A010120+0418",
         "claimedtype": "I",
         "redshift": "0.465",
@@ -39,8 +39,11 @@
         "snra": "01:01:20.41",
         "sndec": "+04:18:33.8",
         "discoverer": "Supernova Cosmology Project",
-        "maxyear": 1995,
-        "maxmonth": 11,
-        "maxday": 18
+        "maxyear": "1995",
+        "maxmonth": "11",
+        "maxday": "18",
+        "maxappmag": "23.1",
+        "lumdist": "2700.0",
+        "maxabsmag": "-19.0"
     }
 }

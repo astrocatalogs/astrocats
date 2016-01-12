@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 15,
-        "discovermonth": 11,
+        "discoveryear": "2000",
+        "discoverday": "15",
+        "discovermonth": "11",
         "host": "A090013-0535",
         "claimedtype": "Ia",
         "galra": "090013",
@@ -38,8 +38,9 @@
         "snra": "09:00:13.00",
         "sndec": "-05:35:04.2",
         "discoverer": "Nearby Galaxy Supernova Search",
-        "maxyear": 2000,
-        "maxmonth": 11,
-        "maxday": 15
+        "maxyear": "2000",
+        "maxmonth": "11",
+        "maxday": "15",
+        "maxappmag": "18.7"
     }
 }

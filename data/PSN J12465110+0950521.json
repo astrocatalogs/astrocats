@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J12465110+0950521.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,16 +26,24 @@
                 "band": "",
                 "abmag": "18.0",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57103.7389",
+                "band": "U",
+                "abmag": "18.0",
+                "source": "3,1"
             }
         ],
         "snra": "12:46:51.10",
         "sndec": "+09:50:52.1",
-        "discoverday": 21,
-        "discovermonth": 3,
-        "discoveryear": 2015,
+        "discoverday": "21",
+        "discovermonth": "3",
+        "discoveryear": "2015",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 3,
-        "maxday": 21
+        "maxyear": "2015",
+        "maxmonth": "3",
+        "maxday": "21",
+        "maxappmag": "18.0"
     }
 }

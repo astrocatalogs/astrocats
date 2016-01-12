@@ -734,9 +734,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 6,
-        "discovermonth": 4,
+        "discoveryear": "2004",
+        "discoverday": "6",
+        "discovermonth": "4",
         "host": "NGC 3786",
         "claimedtype": "Ia",
         "hvel": "2722",
@@ -745,9 +745,10 @@
         "snra": "11:39:42.18",
         "sndec": "+31:54:31.8",
         "discoverer": "Mark Armstrong",
-        "maxyear": 2004,
-        "maxmonth": 4,
-        "maxday": 6,
-        "z": 0.00912
+        "maxyear": "2004",
+        "maxmonth": "4",
+        "maxday": "6",
+        "maxappmag": "14.3",
+        "z": "0.00912"
     }
 }

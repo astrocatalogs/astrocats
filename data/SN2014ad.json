@@ -20,16 +20,20 @@
                 "alias": "3"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Federica Luppi and Luca Buzzi",
                 "alias": "4"
             },
             {
-                "name": "LLA",
+                "name": "Stan Howerton",
                 "alias": "5"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "LLA",
                 "alias": "6"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -56,57 +60,71 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56730.111",
+                "band": "U",
+                "abmag": "15.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56733.259",
+                "band": "V",
+                "abmag": "14.0",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56738.207",
                 "band": "V",
                 "abmag": "13.6",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56746.586",
                 "band": "V",
                 "abmag": "14.06",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56752.042",
                 "band": "CV",
                 "abmag": "14.5",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.058",
                 "band": "CV",
                 "abmag": "14.46",
-                "source": "6,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56757.971",
                 "band": "CV",
                 "abmag": "14.8",
-                "source": "5,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56766.129",
                 "band": "U",
                 "abmag": "15.0",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56780.116",
                 "band": "U",
                 "abmag": "15.5",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 14,
-        "discovermonth": 3,
+        "discoveryear": "2014",
+        "discoverday": "14",
+        "discovermonth": "3",
         "host": "PGC 37625",
         "claimedtype": "Ic",
         "hvel": "1589",
@@ -115,10 +133,13 @@
         "snra": "11:57:44.44",
         "sndec": "-10:10:15.7",
         "discoverer": "CRTS",
-        "redshift": 0.0057,
-        "maxyear": 2014,
-        "maxmonth": 3,
-        "maxday": 21,
-        "z": 0.00531
+        "redshift": "0.005700",
+        "maxyear": "2014",
+        "maxmonth": "3",
+        "maxday": "21",
+        "maxappmag": "13.6",
+        "z": "0.00531",
+        "lumdist": "25.0",
+        "maxabsmag": "-18.0"
     }
 }

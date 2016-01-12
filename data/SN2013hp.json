@@ -16,8 +16,16 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Massimiliano Martignoni ",
                 "alias": "3"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -30,22 +38,36 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56639.856",
+                "band": "V",
+                "abmag": "17.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56641.83207",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56642.204",
                 "band": "C",
                 "abmag": "16.8",
-                "source": "3,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56643.097",
                 "band": "C",
                 "abmag": "16.7",
-                "source": "3,1"
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 16,
-        "discovermonth": 12,
+        "discoveryear": "2013",
+        "discoverday": "13",
+        "discovermonth": "12",
         "host": "UGC 12432",
         "claimedtype": "Ia",
         "hvel": "8375",
@@ -54,10 +76,13 @@
         "snra": "23:13:59.72",
         "sndec": "+24:53:38.9",
         "discoverer": "THU-NAOC Transient Survey (TNTS)",
-        "redshift": 0.027963,
-        "maxyear": 2013,
-        "maxmonth": 12,
-        "maxday": 16,
-        "z": 0.0283
+        "redshift": "0.027963",
+        "maxyear": "2013",
+        "maxmonth": "12",
+        "maxday": "16",
+        "maxappmag": "16.7",
+        "z": "0.0283",
+        "lumdist": "130.0",
+        "maxabsmag": "-19.0"
     }
 }

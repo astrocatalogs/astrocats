@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 27,
-        "discovermonth": 5,
+        "discoveryear": "2005",
+        "discoverday": "27",
+        "discovermonth": "5",
         "host": "IC 5233",
         "claimedtype": "Ib/c",
         "hvel": "7375",
@@ -39,10 +39,13 @@
         "snra": "22:36:32.96",
         "sndec": "+25:45:35.0",
         "discoverer": "LOSS",
-        "redshift": 0.025,
-        "maxyear": 2005,
-        "maxmonth": 5,
-        "maxday": 27,
-        "z": 0.0249
+        "redshift": "0.025000",
+        "maxyear": "2005",
+        "maxmonth": "5",
+        "maxday": "27",
+        "maxappmag": "18.6",
+        "z": "0.0249",
+        "lumdist": "110.0",
+        "maxabsmag": "-17.0"
     }
 }

@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 8,
-        "discovermonth": 6,
+        "discoveryear": "2001",
+        "discoverday": "8",
+        "discovermonth": "6",
         "host": "UGC 12266",
         "claimedtype": "II",
         "hvel": "4834",
@@ -62,10 +62,13 @@
         "snra": "22:58:00.28",
         "sndec": "+06:03:48.4",
         "discoverer": "LOTOSS",
-        "redshift": 0.016,
-        "maxyear": 2001,
-        "maxmonth": 6,
-        "maxday": 9,
-        "z": 0.0163
+        "redshift": "0.016000",
+        "maxyear": "2001",
+        "maxmonth": "6",
+        "maxday": "9",
+        "maxappmag": "17.8",
+        "z": "0.0163",
+        "lumdist": "72.0",
+        "maxabsmag": "-16.0"
     }
 }

@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003976.txt'>CBET 3976</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,11 +27,18 @@
                 "band": "",
                 "abmag": "17.2",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56902.704",
+                "band": "C",
+                "abmag": "18.3",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 27,
-        "discovermonth": 8,
+        "discoveryear": "2014",
+        "discoverday": "27",
+        "discovermonth": "8",
         "host": "PGC 1457807",
         "claimedtype": "Ia",
         "hvel": "15000",
@@ -36,10 +47,13 @@
         "snra": "03:08:31.74",
         "sndec": "+14:25:30.3",
         "discoverer": "MASTER",
-        "redshift": 0.05,
-        "maxyear": 2014,
-        "maxmonth": 8,
-        "maxday": 27,
-        "z": 0.0514
+        "redshift": "0.050000",
+        "maxyear": "2014",
+        "maxmonth": "8",
+        "maxday": "27",
+        "maxappmag": "17.2",
+        "z": "0.0514",
+        "lumdist": "230.0",
+        "maxabsmag": "-20.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 2,
-        "discovermonth": 5,
+        "discoveryear": "1995",
+        "discoverday": "2",
+        "discovermonth": "5",
         "host": "A163556+6611",
         "claimedtype": "Ia",
         "redshift": "0.175",
@@ -39,8 +39,11 @@
         "snra": "16:35:56.12",
         "sndec": "+66:11:44.0",
         "discoverer": "Le Borgne, Sanahuja, Maddox",
-        "maxyear": 1995,
-        "maxmonth": 5,
-        "maxday": 2
+        "maxyear": "1995",
+        "maxmonth": "5",
+        "maxday": "2",
+        "maxappmag": "22.0",
+        "lumdist": "870.0",
+        "maxabsmag": "-18.0"
     }
 }

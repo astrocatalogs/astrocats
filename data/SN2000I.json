@@ -31,56 +31,56 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51578.169999999925",
+                "time": "51578.17",
                 "band": "C",
                 "abmag": "18.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51584.31999999983",
+                "time": "51584.32",
                 "band": "B",
                 "abmag": "18.69",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51584.31999999983",
+                "time": "51584.32",
                 "band": "V",
                 "abmag": "17.85",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51590.080000000075",
+                "time": "51590.08",
                 "band": "C",
                 "abmag": "16.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51599.24000000022",
+                "time": "51599.24",
                 "band": "R",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51602.89000000013",
+                "time": "51602.89",
                 "band": "C",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51611.89999999991",
+                "time": "51611.9",
                 "band": "R",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51618.91000000015",
+                "time": "51618.91",
                 "band": "C",
                 "abmag": "18.2",
                 "source": "1,2"
@@ -93,9 +93,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 4,
-        "discovermonth": 2,
+        "discoveryear": "2000",
+        "discoverday": "4",
+        "discovermonth": "2",
         "host": "NGC 2958",
         "claimedtype": "II",
         "hvel": "6639",
@@ -104,10 +104,13 @@
         "snra": "09:40:41.54",
         "sndec": "+11:53:08.5",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.021,
-        "maxyear": 2000,
-        "maxmonth": 2,
-        "maxday": 16,
-        "z": 0.0224
+        "redshift": "0.021000",
+        "maxyear": "2000",
+        "maxmonth": "2",
+        "maxday": "16",
+        "maxappmag": "16.8",
+        "z": "0.0224",
+        "lumdist": "94.0",
+        "maxabsmag": "-18.0"
     }
 }

@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J08351668+4819011.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,18 +26,28 @@
                 "band": "",
                 "abmag": "18.4",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57018.7465",
+                "band": "U",
+                "abmag": "17.9",
+                "source": "3,1"
             }
         ],
         "claimedtype": "Ia",
         "snra": "08:35:16.68",
         "sndec": "+48:19:01.1",
-        "discoverday": 26,
-        "discovermonth": 12,
-        "discoveryear": 2014,
-        "redshift": 0.043,
+        "discoverday": "26",
+        "discovermonth": "12",
+        "discoveryear": "2014",
+        "redshift": "0.043000",
         "discoverer": "THU-NAOC Transient Survey (TNTS)",
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 26
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "27",
+        "maxappmag": "17.9",
+        "lumdist": "200.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1966,
-        "maxday": 15,
-        "maxmonth": 10,
+        "discoveryear": "1966",
+        "maxday": "15",
+        "maxmonth": "10",
         "host": "M-01-12-37",
         "claimedtype": "I",
         "hvel": "4713",
@@ -39,9 +39,10 @@
         "discoverer": "Leonida Rosino",
         "snra": "04:36:49.6",
         "sndec": "-02:59:42.0",
-        "discoverday": 15,
-        "discovermonth": 10,
-        "maxyear": 1966,
-        "z": 0.0158
+        "discoverday": "15",
+        "discovermonth": "10",
+        "maxyear": "1966",
+        "maxappmag": "15.0",
+        "z": "0.0158"
     }
 }

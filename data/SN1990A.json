@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1989,
-        "discoverday": 31,
-        "discovermonth": 12,
+        "discoveryear": "1989",
+        "discoverday": "31",
+        "discovermonth": "12",
         "host": "NGC 500",
         "hvel": "12313",
         "galra": "012239",
@@ -38,9 +38,10 @@
         "snra": "01:22:40.02",
         "sndec": "+05:23:20.8",
         "discoverer": "Christian Pollas",
-        "maxyear": 1989,
-        "maxmonth": 12,
-        "maxday": 31,
-        "z": 0.042
+        "maxyear": "1989",
+        "maxmonth": "12",
+        "maxday": "31",
+        "maxappmag": "19.0",
+        "z": "0.042"
     }
 }

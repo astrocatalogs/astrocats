@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1986,
-        "discoverday": 31,
-        "discovermonth": 8,
+        "discoveryear": "1986",
+        "discoverday": "31",
+        "discovermonth": "8",
         "host": "NGC 298",
         "claimedtype": "II",
         "hvel": "1757",
@@ -39,9 +39,10 @@
         "snra": "00:55:05.38",
         "sndec": "-07:20:02.5",
         "discoverer": "Schildknecht",
-        "maxyear": 1986,
-        "maxmonth": 8,
-        "maxday": 31,
-        "z": 0.00588
+        "maxyear": "1986",
+        "maxmonth": "8",
+        "maxday": "31",
+        "maxappmag": "16.5",
+        "z": "0.00588"
     }
 }

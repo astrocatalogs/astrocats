@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1996,
-        "discoverday": 11,
-        "discovermonth": 1,
+        "discoveryear": "1996",
+        "discoverday": "11",
+        "discovermonth": "1",
         "host": "A051047-0300",
         "claimedtype": "II",
         "hvel": "9900",
@@ -39,9 +39,10 @@
         "snra": "05:10:47.10",
         "sndec": "-03:00:25.0",
         "discoverer": "Robert Evans",
-        "maxyear": 1996,
-        "maxmonth": 1,
-        "maxday": 11,
-        "z": 0.0336
+        "maxyear": "1996",
+        "maxmonth": "1",
+        "maxday": "11",
+        "maxappmag": "18.0",
+        "z": "0.0336"
     }
 }

@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J01584281+0820378.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,19 +31,36 @@
                 "band": "",
                 "abmag": "16.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56540.68",
+                "band": "L",
+                "abmag": "17.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56541.302",
+                "band": "L",
+                "abmag": "17.1",
+                "source": "4,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "NGC 766",
         "snra": "01:58:42.81",
         "sndec": "+08:20:37.8",
-        "discoverday": 5,
-        "discovermonth": 9,
-        "discoveryear": 2013,
-        "redshift": 0.027032,
+        "discoverday": "5",
+        "discovermonth": "9",
+        "discoveryear": "2013",
+        "redshift": "0.027032",
         "discoverer": "CRTS",
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 5
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "5",
+        "maxappmag": "16.8",
+        "lumdist": "120.0",
+        "maxabsmag": "-19.0"
     }
 }

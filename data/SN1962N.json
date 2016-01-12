@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1962,
-        "discoverday": 2,
-        "discovermonth": 12,
+        "discoveryear": "1962",
+        "discoverday": "2",
+        "discovermonth": "12",
         "host": "CGCG 165-38",
         "hvel": "10472",
         "galra": "152111",
@@ -38,9 +38,10 @@
         "snra": "15:21:11.33",
         "sndec": "+26:19:56.3",
         "discoverer": "Fritz Zwicky",
-        "maxyear": 1962,
-        "maxmonth": 12,
-        "maxday": 2,
-        "z": 0.0356
+        "maxyear": "1962",
+        "maxmonth": "12",
+        "maxday": "2",
+        "maxappmag": "17.0",
+        "z": "0.0356"
     }
 }

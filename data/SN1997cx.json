@@ -31,120 +31,120 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50641.330000000075",
+                "time": "50641.33",
                 "band": "C",
                 "abmag": "15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50643.200000000186",
+                "time": "50643.2",
                 "band": "R",
                 "abmag": "15.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50657.95999999996",
+                "time": "50657.96",
                 "band": "C",
                 "abmag": "15.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50659.89999999991",
+                "time": "50659.9",
                 "band": "B",
                 "abmag": "17.37",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50660.939999999944",
+                "time": "50660.94",
                 "band": "B",
                 "abmag": "17.52",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50662.93000000017",
+                "time": "50662.93",
                 "band": "B",
                 "abmag": "17.65",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50666.91000000015",
+                "time": "50666.91",
                 "band": "B",
                 "abmag": "17.61",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50667.89999999991",
+                "time": "50667.9",
                 "band": "B",
                 "abmag": "17.78",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50671.89999999991",
+                "time": "50671.9",
                 "band": "B",
                 "abmag": "17.68",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50689.89999999991",
+                "time": "50689.9",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50751.049999999814",
+                "time": "50751.05",
                 "band": "B",
                 "abmag": "18.6",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50753.049999999814",
+                "time": "50753.05",
                 "band": "B",
                 "abmag": "19.1",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50761.049999999814",
+                "time": "50761.05",
                 "band": "B",
                 "abmag": "19.2",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50867.93000000017",
+                "time": "50867.93",
                 "band": "R",
                 "abmag": "18.89",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50873.950000000186",
+                "time": "50873.95",
                 "band": "R",
                 "abmag": "18.78",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50873.950000000186",
+                "time": "50873.95",
                 "band": "V",
                 "abmag": "19.45",
                 "source": "1,3"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 12,
-        "discovermonth": 7,
+        "discoveryear": "1997",
+        "discoverday": "12",
+        "discovermonth": "7",
         "host": "NGC 3057",
         "claimedtype": "II",
         "hvel": "1529",
@@ -153,9 +153,10 @@
         "snra": "10:05:37.43",
         "sndec": "+80:17:27.6",
         "discoverer": "Mike Schwartz",
-        "maxyear": 1997,
-        "maxmonth": 7,
-        "maxday": 12,
-        "z": 0.00511
+        "maxyear": "1997",
+        "maxmonth": "7",
+        "maxday": "12",
+        "maxappmag": "15",
+        "z": "0.00511"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1992,
-        "discoverday": 19,
-        "discovermonth": 9,
+        "discoveryear": "1992",
+        "discoverday": "19",
+        "discovermonth": "9",
         "host": "A043019-4624",
         "claimedtype": "IIP",
         "hvel": "18600",
@@ -39,9 +39,10 @@
         "snra": "04:30:19.10",
         "sndec": "-46:24:07.0",
         "discoverer": "Roberto Antezana",
-        "maxyear": 1992,
-        "maxmonth": 9,
-        "maxday": 19,
-        "z": 0.0641
+        "maxyear": "1992",
+        "maxmonth": "9",
+        "maxday": "19",
+        "maxappmag": "18.5",
+        "z": "0.0641"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1991,
-        "discoverday": 9,
-        "discovermonth": 4,
+        "discoveryear": "1991",
+        "discoverday": "9",
+        "discovermonth": "4",
         "host": "A131804-1518",
         "claimedtype": "II",
         "hvel": "11100",
@@ -39,9 +39,10 @@
         "snra": "13:18:06.00",
         "sndec": "-15:18:00.0",
         "discoverer": "Raychaudhury, Williger",
-        "maxyear": 1991,
-        "maxmonth": 4,
-        "maxday": 9,
-        "z": 0.0377
+        "maxyear": "1991",
+        "maxmonth": "4",
+        "maxday": "9",
+        "maxappmag": "20.0",
+        "z": "0.0377"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 2,
-        "discovermonth": 10,
+        "discoveryear": "1999",
+        "discoverday": "2",
+        "discovermonth": "10",
         "host": "A011529-0430",
         "claimedtype": "Ia",
-        "redshift": 0.16,
+        "redshift": "0.160000",
         "galra": "011529",
         "galdec": "-043048",
         "snra": "01:15:29.70",
         "sndec": "-04:30:48.2",
         "discoverer": "Nearby Galaxy Supernova Search",
-        "maxyear": 1999,
-        "maxmonth": 10,
-        "maxday": 2
+        "maxyear": "1999",
+        "maxmonth": "10",
+        "maxday": "2",
+        "maxappmag": "19.0",
+        "lumdist": "790.0",
+        "maxabsmag": "-20.0"
     }
 }

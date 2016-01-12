@@ -20,8 +20,16 @@
                 "alias": "3"
             },
             {
-                "name": "Maurice Audejean",
+                "name": "Esteban Aguilar",
                 "alias": "4"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "5"
+            },
+            {
+                "name": "Maurice Audejean",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -41,15 +49,29 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56592.868",
+                "band": "CR",
+                "abmag": "16.6",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56621.912",
+                "band": "CR",
+                "abmag": "16.96",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56626.887",
                 "band": "CV",
                 "abmag": "17.2",
-                "source": "4,1"
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 27,
-        "discovermonth": 10,
+        "discoveryear": "2013",
+        "discoverday": "27",
+        "discovermonth": "10",
         "host": "A015046+3306",
         "claimedtype": "Ia",
         "hvel": "10500",
@@ -58,10 +80,13 @@
         "snra": "01:50:46.32",
         "sndec": "+33:06:35.6",
         "discoverer": "CRTS",
-        "redshift": 0.035,
-        "maxyear": 2013,
-        "maxmonth": 10,
-        "maxday": 27,
-        "z": 0.0357
+        "redshift": "0.035000",
+        "maxyear": "2013",
+        "maxmonth": "10",
+        "maxday": "27",
+        "maxappmag": "15.5",
+        "z": "0.0357",
+        "lumdist": "160.0",
+        "maxabsmag": "-21.0"
     }
 }

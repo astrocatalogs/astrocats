@@ -31,49 +31,49 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52657.95999999996",
+                "time": "52657.96",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52659.14999999991",
+                "time": "52659.15",
                 "band": "C",
                 "abmag": "16.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52662.77000000002",
+                "time": "52662.77",
                 "band": "R",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52663.85999999987",
+                "time": "52663.86",
                 "band": "R",
                 "abmag": "17.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52663.85999999987",
+                "time": "52663.86",
                 "band": "V",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52668.029999999795",
+                "time": "52668.03",
                 "band": "C",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52676.79000000004",
+                "time": "52676.79",
                 "band": "R",
                 "abmag": "17.9",
                 "source": "1,2"
@@ -86,9 +86,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 18,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "18",
+        "discovermonth": "1",
         "host": "UGC 2798",
         "claimedtype": "II",
         "hvel": "4930",
@@ -97,10 +97,13 @@
         "snra": "03:38:09.138",
         "sndec": "+40:58:38.09",
         "discoverer": "Doug Rich",
-        "redshift": 0.016,
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 20,
-        "z": 0.0166
+        "redshift": "0.016000",
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "20",
+        "maxappmag": "16.9",
+        "z": "0.0166",
+        "lumdist": "72.0",
+        "maxabsmag": "-17.0"
     }
 }

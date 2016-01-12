@@ -1791,21 +1791,24 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2007,
-        "redshift": 0.07,
+        "discoveryear": "2007",
+        "redshift": "0.070000",
         "snra": "01:10:51.37",
         "sndec": "+15:27:39.9",
-        "discoverday": 18,
-        "discovermonth": 8,
+        "discoverday": "18",
+        "discovermonth": "8",
         "host": "A011051+1527",
         "claimedtype": "Ia-pec",
         "hvel": "19800",
         "galra": "011051",
         "galdec": "+152739",
         "discoverer": "Nearby Supernova Factory",
-        "maxyear": 2007,
-        "maxmonth": 9,
-        "maxday": 13,
-        "z": 0.0684
+        "maxyear": "2007",
+        "maxmonth": "9",
+        "maxday": "13",
+        "maxappmag": "17.4799",
+        "z": "0.0684",
+        "lumdist": "330.0",
+        "maxabsmag": "-20.0"
     }
 }

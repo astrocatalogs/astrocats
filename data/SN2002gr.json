@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 9,
-        "discovermonth": 10,
+        "discoveryear": "2002",
+        "discoverday": "9",
+        "discovermonth": "10",
         "host": "A022713+0053",
         "claimedtype": "Ia",
         "hvel": "27000",
@@ -39,10 +39,13 @@
         "snra": "02:27:13.22",
         "sndec": "+00:53:57.8",
         "discoverer": "HST GOODS team",
-        "redshift": 0.09,
-        "maxyear": 2002,
-        "maxmonth": 10,
-        "maxday": 9,
-        "z": 0.0945
+        "redshift": "0.090000",
+        "maxyear": "2002",
+        "maxmonth": "10",
+        "maxday": "9",
+        "maxappmag": "21.8",
+        "z": "0.0945",
+        "lumdist": "420.0",
+        "maxabsmag": "-16.0"
     }
 }

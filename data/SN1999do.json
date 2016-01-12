@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51421.95999999996",
+                "time": "51421.96",
                 "band": "R",
                 "abmag": "14.9",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 31,
-        "discovermonth": 8,
+        "discoveryear": "1999",
+        "discoverday": "31",
+        "discovermonth": "8",
         "host": "MRK 922",
         "claimedtype": "Ia",
         "hvel": "6405",
@@ -44,10 +44,13 @@
         "snra": "22:53:29.87",
         "sndec": "+31:38:42.9",
         "discoverer": "LOSS",
-        "redshift": 0.0213,
-        "maxyear": 1999,
-        "maxmonth": 8,
-        "maxday": 31,
-        "z": 0.0216
+        "redshift": "0.021300",
+        "maxyear": "1999",
+        "maxmonth": "8",
+        "maxday": "31",
+        "maxappmag": "14.9",
+        "z": "0.0216",
+        "lumdist": "96.0",
+        "maxabsmag": "-20.0"
     }
 }

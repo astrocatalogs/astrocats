@@ -11,7 +11,7 @@
                 "secondary": true
             },
             {
-                "name": "La Ca=F1ada Observatory",
+                "name": "La Cañada Observatory",
                 "alias": "2"
             }
         ],
@@ -24,11 +24,12 @@
                 "source": "2,1"
             }
         ],
-        "maxyear": 2007,
-        "maxmonth": 10,
-        "maxday": 19,
-        "discoveryear": 2007,
-        "discovermonth": 10,
-        "discoverday": 19
+        "maxyear": "2007",
+        "maxmonth": "10",
+        "maxday": "19",
+        "maxappmag": "13.90",
+        "discoveryear": "2007",
+        "discovermonth": "10",
+        "discoverday": "19"
     }
 }

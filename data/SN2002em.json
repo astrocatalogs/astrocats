@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52502.06999999983",
+                "time": "52502.07",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52502.950000000186",
+                "time": "52502.95",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 15,
-        "discovermonth": 8,
+        "discoveryear": "2002",
+        "discoverday": "15",
+        "discovermonth": "8",
         "host": "UGC 3430",
         "claimedtype": "II",
         "hvel": "4059",
@@ -62,9 +62,10 @@
         "snra": "06:15:52.30",
         "sndec": "+64:25:49.1",
         "discoverer": "Mark Armstrong",
-        "maxyear": 2002,
-        "maxmonth": 8,
-        "maxday": 16,
-        "z": 0.0136
+        "maxyear": "2002",
+        "maxmonth": "8",
+        "maxday": "16",
+        "maxappmag": "18",
+        "z": "0.0136"
     }
 }

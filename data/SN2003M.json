@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 23,
-        "discovermonth": 12,
+        "discoveryear": "2002",
+        "discoverday": "23",
+        "discovermonth": "12",
         "host": "UGC 7224",
         "claimedtype": "Ia-pec",
         "hvel": "7267",
@@ -62,9 +62,10 @@
         "snra": "12:13:21.008",
         "sndec": "+21:38:48.49",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 13,
-        "z": 0.0245
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "13",
+        "maxappmag": "17.3",
+        "z": "0.0245"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 1,
-        "discovermonth": 5,
+        "discoveryear": "2012",
+        "discoverday": "1",
+        "discovermonth": "5",
         "host": "UGC 3302",
         "claimedtype": "II",
         "hvel": "4173",
@@ -36,10 +36,13 @@
         "snra": "05:28:17.95",
         "sndec": "+76:39:55.9",
         "discoverer": "Giancarlo Cortini",
-        "redshift": 0.013923,
-        "maxyear": 2012,
-        "maxmonth": 5,
-        "maxday": 1,
-        "z": 0.014
+        "redshift": "0.013923",
+        "maxyear": "2012",
+        "maxmonth": "5",
+        "maxday": "1",
+        "maxappmag": "17.1",
+        "z": "0.014",
+        "lumdist": "62.0",
+        "maxabsmag": "-17.0"
     }
 }

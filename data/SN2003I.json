@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52647.60000000009",
+                "time": "52647.6",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
@@ -44,9 +44,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 7,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "7",
+        "discovermonth": "1",
         "host": "IC 2481",
         "claimedtype": "Ib",
         "hvel": "5329",
@@ -55,9 +55,10 @@
         "snra": "09:27:29.488",
         "sndec": "+03:55:45.69",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 7,
-        "z": 0.0179
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "7",
+        "maxappmag": "17.6",
+        "z": "0.0179"
     }
 }

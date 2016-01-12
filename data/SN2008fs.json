@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 13,
-        "discovermonth": 9,
+        "discoveryear": "2008",
+        "discoverday": "13",
+        "discovermonth": "9",
         "host": "LEDA 1466339",
         "claimedtype": "Ib/c",
         "hvel": "11580",
@@ -39,10 +39,13 @@
         "snra": "01:09:05.75",
         "sndec": "+14:45:16.9",
         "discoverer": "ROTSE",
-        "redshift": 0.039,
-        "maxyear": 2008,
-        "maxmonth": 9,
-        "maxday": 13,
-        "z": 0.0394
+        "redshift": "0.039000",
+        "maxyear": "2008",
+        "maxmonth": "9",
+        "maxday": "13",
+        "maxappmag": "18.2",
+        "z": "0.0394",
+        "lumdist": "180.0",
+        "maxabsmag": "-18.0"
     }
 }

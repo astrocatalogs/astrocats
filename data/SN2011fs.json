@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 17,
-        "discovermonth": 11,
+        "discoveryear": "2011",
+        "discoverday": "17",
+        "discovermonth": "11",
         "host": "UGC 11975",
         "claimedtype": "Ia",
         "hvel": "6220",
@@ -36,10 +36,13 @@
         "snra": "22:17:19.52",
         "sndec": "+35:34:50.0",
         "discoverer": "Xing Gao et al.",
-        "redshift": 0.0209,
-        "maxyear": 2011,
-        "maxmonth": 11,
-        "maxday": 17,
-        "z": 0.021
+        "redshift": "0.020900",
+        "maxyear": "2011",
+        "maxmonth": "11",
+        "maxday": "17",
+        "maxappmag": "15.7",
+        "z": "0.021",
+        "lumdist": "94.0",
+        "maxabsmag": "-19.0"
     }
 }

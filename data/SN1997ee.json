@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 22,
-        "discovermonth": 11,
+        "discoveryear": "1997",
+        "discoverday": "22",
+        "discovermonth": "11",
         "host": "A030724-0310",
         "claimedtype": "Ia",
         "redshift": "0.166",
@@ -39,8 +39,11 @@
         "snra": "03:07:24.82",
         "sndec": "-03:10:26.7",
         "discoverer": "EROS",
-        "maxyear": 1997,
-        "maxmonth": 11,
-        "maxday": 22
+        "maxyear": "1997",
+        "maxmonth": "11",
+        "maxday": "22",
+        "maxappmag": "20.5",
+        "lumdist": "820.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 23,
-        "discovermonth": 5,
+        "discoveryear": "2004",
+        "discoverday": "23",
+        "discovermonth": "5",
         "host": "UGC 9882",
         "claimedtype": "Ia",
         "hvel": "6600",
@@ -39,10 +39,13 @@
         "snra": "15:31:19.76",
         "sndec": "+40:16:52.1",
         "discoverer": "SDSS",
-        "redshift": 0.022,
-        "maxyear": 2004,
-        "maxmonth": 5,
-        "maxday": 23,
-        "z": 0.0223
+        "redshift": "0.022000",
+        "maxyear": "2004",
+        "maxmonth": "5",
+        "maxday": "23",
+        "maxappmag": "17.5",
+        "z": "0.0223",
+        "lumdist": "99.0",
+        "maxabsmag": "-17.0"
     }
 }

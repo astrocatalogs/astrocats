@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 22,
-        "discovermonth": 1,
+        "discoveryear": "2001",
+        "discoverday": "22",
+        "discovermonth": "1",
         "host": "A103336+0012",
         "claimedtype": "Ia",
         "hvel": "26100",
@@ -39,9 +39,10 @@
         "discoverer": "Anglo-Australian Observatory",
         "snra": "10:33:36.36",
         "sndec": "+00:12:01.2",
-        "maxyear": 2001,
-        "maxmonth": 1,
-        "maxday": 22,
-        "z": 0.0912
+        "maxyear": "2001",
+        "maxmonth": "1",
+        "maxday": "22",
+        "maxappmag": "18.7",
+        "z": "0.0912"
     }
 }

@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "48381.39999999991",
+                "time": "48381.4",
                 "band": "V",
                 "abmag": "13.7",
                 "source": "1,2"
@@ -52,21 +52,21 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "48381.529999999795",
+                "time": "48381.53",
                 "band": "V",
                 "abmag": "13.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48381.580000000075",
+                "time": "48381.58",
                 "band": "V",
                 "abmag": "14.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48381.89999999991",
+                "time": "48381.9",
                 "band": "V",
                 "abmag": "14",
                 "source": "1,2"
@@ -80,7 +80,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "48382.970000000205",
+                "time": "48382.97",
                 "band": "V",
                 "abmag": "14",
                 "source": "1,2"
@@ -94,14 +94,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "48388.52000000002",
+                "time": "48388.52",
                 "band": "V",
                 "abmag": "14.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "48415.220000000205",
+                "time": "48415.22",
                 "band": "V",
                 "abmag": "14.15",
                 "source": "1,2"
@@ -114,9 +114,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1991,
-        "discoverday": 20,
-        "discovermonth": 4,
+        "discoveryear": "1991",
+        "discoverday": "20",
+        "discovermonth": "4",
         "host": "NGC 4902",
         "claimedtype": "Ia",
         "hvel": "2626",
@@ -125,9 +125,10 @@
         "snra": "13:01:00.73",
         "sndec": "-14:30:38.1",
         "discoverer": "Robert Evans",
-        "maxyear": 1991,
-        "maxmonth": 5,
-        "maxday": 10,
-        "z": 0.0088
+        "maxyear": "1991",
+        "maxmonth": "5",
+        "maxday": "10",
+        "maxappmag": "13",
+        "z": "0.0088"
     }
 }

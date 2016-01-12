@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1989,
-        "discoverday": 31,
-        "discovermonth": 5,
+        "discoveryear": "1989",
+        "discoverday": "31",
+        "discovermonth": "5",
         "host": "NGC 7339",
         "claimedtype": "IIn",
         "hvel": "1338",
@@ -39,9 +39,10 @@
         "snra": "22:37:49.4",
         "sndec": "+23:47:08.0",
         "discoverer": "Saul Perlmutter",
-        "maxyear": 1989,
-        "maxmonth": 5,
-        "maxday": 31,
-        "z": 0.00447
+        "maxyear": "1989",
+        "maxmonth": "5",
+        "maxday": "31",
+        "maxappmag": "16.0",
+        "z": "0.00447"
     }
 }

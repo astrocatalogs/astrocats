@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 12,
-        "discovermonth": 1,
+        "discoveryear": "2013",
+        "discoverday": "12",
+        "discovermonth": "1",
         "host": "PGC 33561",
         "claimedtype": "Ia",
         "hvel": "7182",
@@ -36,10 +36,13 @@
         "snra": "11:05:55.22",
         "sndec": "+72:31:20.3",
         "discoverer": "Masaki Tsuboi",
-        "redshift": 0.023957,
-        "maxyear": 2013,
-        "maxmonth": 1,
-        "maxday": 12,
-        "z": 0.0243
+        "redshift": "0.023957",
+        "maxyear": "2013",
+        "maxmonth": "1",
+        "maxday": "12",
+        "maxappmag": "16.1",
+        "z": "0.0243",
+        "lumdist": "110.0",
+        "maxabsmag": "-19.0"
     }
 }

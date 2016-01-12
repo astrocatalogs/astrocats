@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1940,
-        "maxday": 15,
-        "maxmonth": 2,
+        "discoveryear": "1940",
+        "maxday": "15",
+        "maxmonth": "2",
         "host": "NGC 5907",
         "claimedtype": "II",
         "hvel": "666",
@@ -39,9 +39,10 @@
         "discoverer": "Johnson",
         "snra": "15:16:11.1",
         "sndec": "+56:14:15.0",
-        "discoverday": 15,
-        "discovermonth": 2,
-        "maxyear": 1940,
-        "z": 0.00222
+        "discoverday": "15",
+        "discovermonth": "2",
+        "maxyear": "1940",
+        "maxappmag": "14.3",
+        "z": "0.00222"
     }
 }

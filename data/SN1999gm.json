@@ -27,15 +27,15 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51544.029999999795",
+                "time": "51544.03",
                 "band": "C",
                 "abmag": "18.5",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 1,
-        "discovermonth": 1,
+        "discoveryear": "2000",
+        "discoverday": "1",
+        "discovermonth": "1",
         "host": "PGC 24106",
         "claimedtype": "Ia",
         "galra": "083511",
@@ -43,8 +43,9 @@
         "snra": "08:35:11.73",
         "sndec": "-08:23:15.4",
         "discoverer": "LOSS",
-        "maxyear": 2000,
-        "maxmonth": 1,
-        "maxday": 1
+        "maxyear": "2000",
+        "maxmonth": "1",
+        "maxday": "1",
+        "maxappmag": "18.5"
     }
 }

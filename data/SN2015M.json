@@ -14,6 +14,42 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004123.txt'>CBET 4123</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Zhijian Xu, Xing Gao prediscovery",
+                "alias": "3"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "4"
+            },
+            {
+                "name": "Nick James",
+                "alias": "5"
+            },
+            {
+                "name": "Seiichiro Kiyota",
+                "alias": "6"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "7"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "8"
+            },
+            {
+                "name": "Paolo Corelli",
+                "alias": "9"
+            },
+            {
+                "name": "J. Camarasa",
+                "alias": "10"
+            },
+            {
+                "name": "LLA",
+                "alias": "11"
             }
         ],
         "photometry": [
@@ -23,11 +59,74 @@
                 "band": "",
                 "abmag": "15.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57152.7559",
+                "band": "V",
+                "abmag": "17.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57155.875",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57155.92858",
+                "band": "R",
+                "abmag": "16.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57156.1257",
+                "band": "V",
+                "abmag": "16.97",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57156.922",
+                "band": "R",
+                "abmag": "16.2",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57158.505",
+                "band": "C",
+                "abmag": "15.5",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57158.769",
+                "band": "V",
+                "abmag": "16.2",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57158.868",
+                "band": "R",
+                "abmag": "15.9",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57197.925",
+                "band": "CV",
+                "abmag": "16.9",
+                "source": "11,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 20,
-        "discovermonth": 5,
+        "discoveryear": "2015",
+        "discoverday": "10",
+        "discovermonth": "5",
         "host": "A130032+2758",
         "claimedtype": "Ia-91T",
         "hvel": "6900",
@@ -36,10 +135,13 @@
         "snra": "13:00:32.30",
         "sndec": "+27:58:41.1",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.023,
-        "maxyear": 2015,
-        "maxmonth": 5,
-        "maxday": 20,
-        "z": 0.0233
+        "redshift": "0.023000",
+        "maxyear": "2015",
+        "maxmonth": "5",
+        "maxday": "16",
+        "maxappmag": "15.5",
+        "z": "0.0233",
+        "lumdist": "100.0",
+        "maxabsmag": "-20.0"
     }
 }
