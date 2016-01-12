@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 25,
-        "discovermonth": 6,
+        "discoveryear": "2012",
+        "discoverday": "25",
+        "discovermonth": "6",
         "host": "ESO 443-G80",
         "claimedtype": "IIP",
         "hvel": "2164",
@@ -36,10 +36,13 @@
         "snra": "13:11:09.04",
         "sndec": "-28:00:33.1",
         "discoverer": "CHASE",
-        "redshift": 0.0071,
-        "maxyear": 2012,
-        "maxmonth": 6,
-        "maxday": 25,
-        "z": 0.00724
+        "redshift": "0.007100",
+        "maxyear": "2012",
+        "maxmonth": "6",
+        "maxday": "25",
+        "maxappmag": "13.5",
+        "z": "0.00724",
+        "lumdist": "32.0",
+        "maxabsmag": "-19.0"
     }
 }

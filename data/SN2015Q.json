@@ -14,6 +14,30 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004128.txt'>CBET 4128</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Gianluca Masi",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Giancarlo Cortini",
+                "alias": "5"
+            },
+            {
+                "name": "LLA",
+                "alias": "6"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "7"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "8"
             }
         ],
         "photometry": [
@@ -23,11 +47,67 @@
                 "band": "",
                 "abmag": "16.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57191.896",
+                "band": "R",
+                "abmag": "16.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57192.235",
+                "band": "C",
+                "abmag": "17.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57193.89",
+                "band": "U",
+                "abmag": "16.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57194.882",
+                "band": "V",
+                "abmag": "16.5",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57199.885",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57224.4625",
+                "band": "U",
+                "abmag": "16.0",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57226.875",
+                "band": "CV",
+                "abmag": "16.4",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57253.841",
+                "band": "CV",
+                "abmag": "16.8",
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 19,
-        "discovermonth": 6,
+        "discoveryear": "2015",
+        "discoverday": "18",
+        "discovermonth": "6",
         "host": "NGC 3888",
         "claimedtype": "Ib",
         "hvel": "2386",
@@ -36,10 +116,13 @@
         "snra": "11:47:35.08",
         "sndec": "+55:58:14.7",
         "discoverer": "Patrick Wiggins",
-        "redshift": 0.008,
-        "maxyear": 2015,
-        "maxmonth": 6,
-        "maxday": 19,
-        "z": 0.00799
+        "redshift": "0.008000",
+        "maxyear": "2015",
+        "maxmonth": "7",
+        "maxday": "21",
+        "maxappmag": "16.0",
+        "z": "0.00799",
+        "lumdist": "36.0",
+        "maxabsmag": "-17.0"
     }
 }

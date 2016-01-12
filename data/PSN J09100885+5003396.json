@@ -13,6 +13,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J09100885+5003396.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "ISSP",
+                "alias": "3"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "5"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -22,19 +38,50 @@
                 "band": "",
                 "abmag": "16.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57335.12",
+                "band": "U",
+                "abmag": "18.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57337.006",
+                "band": "CV",
+                "abmag": "17.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57338.8188",
+                "band": "U",
+                "abmag": "16.8",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57350.19",
+                "band": "U",
+                "abmag": "16.7",
+                "source": "6,1"
             }
         ],
         "claimedtype": "Ia-pec",
         "host": "UGC 4812",
         "snra": "09:10:08.85",
         "sndec": "+50:03:39.6",
-        "discoverday": 23,
-        "discovermonth": 11,
-        "discoveryear": 2015,
-        "redshift": 0.026,
+        "discoverday": "9",
+        "discovermonth": "11",
+        "discoveryear": "2015",
+        "redshift": "0.026000",
         "discoverer": "Italian Supernovae Search Project",
-        "maxyear": 2015,
-        "maxmonth": 11,
-        "maxday": 23
+        "maxyear": "2015",
+        "maxmonth": "11",
+        "maxday": "23",
+        "maxappmag": "16.7",
+        "lumdist": "120.0",
+        "maxabsmag": "-19.0"
     }
 }

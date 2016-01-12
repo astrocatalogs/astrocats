@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 17,
-        "discovermonth": 11,
+        "discoveryear": "1995",
+        "discoverday": "17",
+        "discovermonth": "11",
         "host": "A031228+0041",
         "claimedtype": "Ia",
         "redshift": "0.3",
@@ -39,8 +39,11 @@
         "snra": "03:12:28.13",
         "sndec": "+00:41:43.4",
         "discoverer": "High-Z Supernova Search Team",
-        "maxyear": 1995,
-        "maxmonth": 11,
-        "maxday": 17
+        "maxyear": "1995",
+        "maxmonth": "11",
+        "maxday": "17",
+        "maxappmag": "21.5",
+        "lumdist": "1600.0",
+        "maxabsmag": "-20.0"
     }
 }

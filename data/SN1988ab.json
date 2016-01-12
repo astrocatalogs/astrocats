@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 3,
-        "discovermonth": 12,
+        "discoveryear": "1988",
+        "discoverday": "3",
+        "discovermonth": "12",
         "host": "NGC 762",
         "hvel": "4903",
         "galra": "015658",
@@ -38,10 +38,13 @@
         "discoverer": "Mike Richmond",
         "snra": "01:56:56.5",
         "sndec": "-05:23:54.0",
-        "redshift": 0.016341,
-        "maxyear": 1988,
-        "maxmonth": 12,
-        "maxday": 3,
-        "z": 0.0165
+        "redshift": "0.016341",
+        "maxyear": "1988",
+        "maxmonth": "12",
+        "maxday": "3",
+        "maxappmag": "15.6",
+        "z": "0.0165",
+        "lumdist": "73.0",
+        "maxabsmag": "-19.0"
     }
 }

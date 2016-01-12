@@ -24,9 +24,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 29,
-        "discovermonth": 5,
+        "discoveryear": "2012",
+        "discoverday": "29",
+        "discovermonth": "5",
         "host": "A091005+2012",
         "claimedtype": "Ia",
         "hvel": "8460",
@@ -35,9 +35,10 @@
         "snra": "09:10:05.45",
         "sndec": "+20:12:45.1",
         "discoverer": "Kiso Supernova Survey",
-        "maxyear": 2012,
-        "maxmonth": 5,
-        "maxday": 29,
-        "z": 0.0286
+        "maxyear": "2012",
+        "maxmonth": "5",
+        "maxday": "29",
+        "maxappmag": "16.4",
+        "z": "0.0286"
     }
 }

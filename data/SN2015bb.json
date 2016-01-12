@@ -48,19 +48,29 @@
                 "band": "U",
                 "abmag": "17.9",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57342.8167",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "3,1"
             }
         ],
         "claimedtype": "Ic",
         "host": "NGC 5772",
         "snra": "14:51:37.00",
         "sndec": "+40:35:51.0",
-        "discoverday": 18,
-        "discovermonth": 11,
-        "discoveryear": 2015,
-        "redshift": 0.016345,
+        "discoverday": "16",
+        "discovermonth": "11",
+        "discoveryear": "2015",
+        "redshift": "0.016345",
         "discoverer": "Kunihiro Shima",
-        "maxyear": 2015,
-        "maxmonth": 11,
-        "maxday": 18
+        "maxyear": "2015",
+        "maxmonth": "11",
+        "maxday": "18",
+        "maxappmag": "16.0",
+        "lumdist": "73.0",
+        "maxabsmag": "-18.0"
     }
 }

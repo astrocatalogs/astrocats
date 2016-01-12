@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 8,
-        "discovermonth": 1,
+        "discoveryear": "2001",
+        "discoverday": "8",
+        "discovermonth": "1",
         "host": "NGC 3256",
         "claimedtype": "II",
         "hvel": "2781",
@@ -39,9 +39,10 @@
         "snra": "10:27:50.4",
         "sndec": "-43:54:21",
         "discoverer": "ESO",
-        "maxyear": 2001,
-        "maxmonth": 1,
-        "maxday": 8,
-        "z": 0.00932
+        "maxyear": "2001",
+        "maxmonth": "1",
+        "maxday": "8",
+        "maxappmag": "16.3",
+        "z": "0.00932"
     }
 }

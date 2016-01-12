@@ -48,15 +48,15 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51048.00999999978",
+                "time": "51048.01",
                 "band": "C",
                 "abmag": "16.77",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 2,
-        "discovermonth": 8,
+        "discoveryear": "1998",
+        "discoverday": "2",
+        "discovermonth": "8",
         "host": "NGC 1084",
         "claimedtype": "II",
         "hvel": "1414",
@@ -65,9 +65,10 @@
         "snra": "02:46:01.477",
         "sndec": "-07:34:25.10",
         "discoverer": "LOSS",
-        "maxyear": 1998,
-        "maxmonth": 8,
-        "maxday": 9,
-        "z": 0.00473
+        "maxyear": "1998",
+        "maxmonth": "8",
+        "maxday": "9",
+        "maxappmag": "15.9",
+        "z": "0.00473"
     }
 }

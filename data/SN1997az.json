@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 7,
-        "discovermonth": 3,
+        "discoveryear": "1997",
+        "discoverday": "7",
+        "discovermonth": "3",
         "host": "A112305-0015",
         "claimedtype": "II",
         "hvel": "12000",
@@ -39,9 +39,10 @@
         "snra": "11:23:05.57",
         "sndec": "-00:15:55.6",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 1997,
-        "maxmonth": 3,
-        "maxday": 7,
-        "z": 0.0409
+        "maxyear": "1997",
+        "maxmonth": "3",
+        "maxday": "7",
+        "maxappmag": "19.0",
+        "z": "0.0409"
     }
 }

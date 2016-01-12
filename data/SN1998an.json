@@ -27,36 +27,36 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50911.83999999985",
+                "time": "50911.84",
                 "band": "C",
                 "abmag": "15.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50914.87999999989",
+                "time": "50914.88",
                 "band": "C",
                 "abmag": "14.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50918.87999999989",
+                "time": "50918.88",
                 "band": "C",
                 "abmag": "15.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50920.83999999985",
+                "time": "50920.84",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 8,
-        "discovermonth": 4,
+        "discoveryear": "1998",
+        "discoverday": "8",
+        "discovermonth": "4",
         "host": "UGC 3683",
         "claimedtype": "Ia",
         "hvel": "5623",
@@ -65,10 +65,13 @@
         "snra": "07:08:17.13",
         "sndec": "+46:06:54.31",
         "discoverer": "Ron Arbour",
-        "redshift": 0.019,
-        "maxyear": 1998,
-        "maxmonth": 4,
-        "maxday": 11,
-        "z": 0.0189
+        "redshift": "0.019000",
+        "maxyear": "1998",
+        "maxmonth": "4",
+        "maxday": "11",
+        "maxappmag": "14.6",
+        "z": "0.0189",
+        "lumdist": "85.0",
+        "maxabsmag": "-20.0"
     }
 }

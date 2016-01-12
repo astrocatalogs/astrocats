@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 29,
-        "discovermonth": 8,
+        "discoveryear": "2004",
+        "discoverday": "29",
+        "discovermonth": "8",
         "host": "MCG -5-48-5",
         "claimedtype": "Ia",
         "galra": "202235",
@@ -38,9 +38,12 @@
         "snra": "20:22:35.00",
         "sndec": "-29:49:20.7",
         "discoverer": "Lulin Observatory",
-        "redshift": 0.017,
-        "maxyear": 2004,
-        "maxmonth": 8,
-        "maxday": 29
+        "redshift": "0.017000",
+        "maxyear": "2004",
+        "maxmonth": "8",
+        "maxday": "29",
+        "maxappmag": "16.8",
+        "lumdist": "76.0",
+        "maxabsmag": "-18.0"
     }
 }

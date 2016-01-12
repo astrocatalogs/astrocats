@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 10,
-        "discovermonth": 8,
+        "discoveryear": "2009",
+        "discoverday": "10",
+        "discovermonth": "8",
         "host": "ESO 282-G32",
         "claimedtype": "II",
         "hvel": "5326",
@@ -39,10 +39,13 @@
         "snra": "19:16:34.25",
         "sndec": "-46:41:20.3",
         "discoverer": "Berto Monard",
-        "redshift": 0.0177,
-        "maxyear": 2009,
-        "maxmonth": 8,
-        "maxday": 10,
-        "z": 0.0179
+        "redshift": "0.017700",
+        "maxyear": "2009",
+        "maxmonth": "8",
+        "maxday": "10",
+        "maxappmag": "16.6",
+        "z": "0.0179",
+        "lumdist": "79.0",
+        "maxabsmag": "-18.0"
     }
 }

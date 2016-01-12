@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 8,
-        "discovermonth": 6,
+        "discoveryear": "2015",
+        "discoverday": "8",
+        "discovermonth": "6",
         "host": "A073505-6907",
         "claimedtype": "IIn",
         "hvel": "1620",
@@ -36,10 +36,13 @@
         "snra": "07:35:05.18",
         "sndec": "-69:07:53.1",
         "discoverer": "SkyMapper",
-        "redshift": 0.0054,
-        "maxyear": 2015,
-        "maxmonth": 6,
-        "maxday": 8,
-        "z": 0.00542
+        "redshift": "0.005400",
+        "maxyear": "2015",
+        "maxmonth": "6",
+        "maxday": "8",
+        "maxappmag": "16.0",
+        "z": "0.00542",
+        "lumdist": "24.0",
+        "maxabsmag": "-16.0"
     }
 }

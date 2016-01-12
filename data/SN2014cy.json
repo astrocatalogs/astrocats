@@ -20,28 +20,44 @@
                 "alias": "3"
             },
             {
-                "name": "Paolo Campaner",
+                "name": "Seiichiro Kiyota",
                 "alias": "4"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Andrea Mantero",
                 "alias": "5"
             },
             {
-                "name": "Marco Russiani",
+                "name": "Joseph Brimacombe",
                 "alias": "6"
             },
             {
-                "name": "Juan-Luis Glez. Carballo",
+                "name": "T. Yusa",
                 "alias": "7"
             },
             {
-                "name": "Jose Carrillo",
+                "name": "Paolo Campaner",
                 "alias": "8"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Rafael Benavides",
                 "alias": "9"
+            },
+            {
+                "name": "Marco Russiani",
+                "alias": "10"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "11"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "12"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "13"
             }
         ],
         "photometry": [
@@ -61,57 +77,85 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56901.1532",
+                "band": "V",
+                "abmag": "15.78",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56901.946",
+                "band": "U",
+                "abmag": "15.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56902.427",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56903.0248",
+                "band": "U",
+                "abmag": "16.1",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56906.926",
                 "band": "U",
                 "abmag": "15.8",
-                "source": "4,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56915.9689",
                 "band": "CV",
                 "abmag": "16.03",
-                "source": "5,1"
+                "source": "9,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56927.86",
                 "band": "U",
                 "abmag": "15.4",
-                "source": "6,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56929.83481",
                 "band": "V",
                 "abmag": "16.15",
-                "source": "7,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56947.923",
                 "band": "C",
                 "abmag": "15.74",
-                "source": "8,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56950.97899",
                 "band": "CV",
                 "abmag": "15.01",
-                "source": "5,1"
+                "source": "9,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56959.038",
                 "band": "U",
                 "abmag": "16.2",
-                "source": "9,1"
+                "source": "13,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 6,
-        "discovermonth": 9,
+        "discoveryear": "2014",
+        "discoverday": "1",
+        "discovermonth": "9",
         "host": "NGC 7742",
         "claimedtype": "IIP",
         "hvel": "1661",
@@ -120,10 +164,13 @@
         "snra": "23:44:16.03",
         "sndec": "+10:46:12.5",
         "discoverer": "Ken'ichi Nishimura",
-        "redshift": 0.005547,
-        "maxyear": 2014,
-        "maxmonth": 10,
-        "maxday": 19,
-        "z": 0.00556
+        "redshift": "0.005547",
+        "maxyear": "2014",
+        "maxmonth": "10",
+        "maxday": "19",
+        "maxappmag": "15.0",
+        "z": "0.00556",
+        "lumdist": "25.0",
+        "maxabsmag": "-17.0"
     }
 }

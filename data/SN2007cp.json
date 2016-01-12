@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54264.69681000011",
+                "time": "54264.69681",
                 "band": "B",
                 "abmag": "17.564",
                 "aberr": "0.029",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54264.69999000011",
+                "time": "54264.69999",
                 "band": "V",
                 "abmag": "17.617",
                 "aberr": "0.028",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54269.67790000001",
+                "time": "54269.6779",
                 "band": "V",
                 "abmag": "17.324",
                 "aberr": "0.028",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54269.68091000011",
+                "time": "54269.68091",
                 "band": "B",
                 "abmag": "17.291",
                 "aberr": "0.025",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54278.667929999996",
+                "time": "54278.66793",
                 "band": "V",
                 "abmag": "17.754",
                 "aberr": "0.038",
@@ -77,9 +77,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 12,
-        "discovermonth": 6,
+        "discoveryear": "2007",
+        "discoverday": "12",
+        "discovermonth": "6",
         "host": "IC 807",
         "claimedtype": "Ia",
         "hvel": "10971",
@@ -88,10 +88,13 @@
         "snra": "12:42:12.72",
         "sndec": "-17:24:07.7",
         "discoverer": "LOSS",
-        "redshift": 0.0366,
-        "maxyear": 2007,
-        "maxmonth": 6,
-        "maxday": 18,
-        "z": 0.0373
+        "redshift": "0.036600",
+        "maxyear": "2007",
+        "maxmonth": "6",
+        "maxday": "18",
+        "maxappmag": "17.291",
+        "z": "0.0373",
+        "lumdist": "170.0",
+        "maxabsmag": "-19.0"
     }
 }

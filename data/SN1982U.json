@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1982,
-        "discoverday": 10,
-        "discovermonth": 11,
+        "discoveryear": "1982",
+        "discoverday": "10",
+        "discovermonth": "11",
         "host": "ESO 308-G16",
         "hvel": "6962",
         "galra": "063539",
@@ -38,9 +38,10 @@
         "discoverer": "Marina Wischnjewsky",
         "snra": "06:35:38.9",
         "sndec": "-39:15:41.0",
-        "maxyear": 1982,
-        "maxmonth": 11,
-        "maxday": 10,
-        "z": 0.0235
+        "maxyear": "1982",
+        "maxmonth": "11",
+        "maxday": "10",
+        "maxappmag": "16.0",
+        "z": "0.0235"
     }
 }

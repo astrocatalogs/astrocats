@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J13471211-2422171.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,19 +26,29 @@
                 "band": "",
                 "abmag": "15.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.7563",
+                "band": "U",
+                "abmag": "15.1",
+                "source": "3,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "ESO 509-G108",
         "snra": "13:47:12.11",
         "sndec": "-24:22:17.1",
-        "discoverday": 18,
-        "discovermonth": 2,
-        "discoveryear": 2015,
-        "redshift": 0.01991,
+        "discoverday": "18",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.019910",
         "discoverer": "Stu Parker",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 18
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "18",
+        "maxappmag": "15.1",
+        "lumdist": "89.0",
+        "maxabsmag": "-20.0"
     }
 }

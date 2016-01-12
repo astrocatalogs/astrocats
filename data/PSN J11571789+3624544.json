@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J11571789+3624544.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,17 +27,39 @@
                 "band": "",
                 "abmag": "18.2",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57112.1",
+                "band": "L",
+                "abmag": "19.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57122.0",
+                "band": "CV",
+                "abmag": "18.25",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57137.151",
+                "band": "L",
+                "abmag": "18.6",
+                "source": "3,1"
             }
         ],
         "host": "UGC 6929",
         "snra": "11:57:17.89",
         "sndec": "+36:24:54.4",
-        "discoverday": 9,
-        "discovermonth": 4,
-        "discoveryear": 2015,
+        "discoverday": "31",
+        "discovermonth": "3",
+        "discoveryear": "2015",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 4,
-        "maxday": 9
+        "maxyear": "2015",
+        "maxmonth": "4",
+        "maxday": "9",
+        "maxappmag": "18.2"
     }
 }

@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 20,
-        "discovermonth": 3,
+        "discoveryear": "2009",
+        "discoverday": "20",
+        "discovermonth": "3",
         "host": "A110306+5009",
         "claimedtype": "Ia",
-        "redshift": 0.2,
+        "redshift": "0.200000",
         "galra": "110306",
         "galdec": "+500936",
         "snra": "11:03:06.64",
         "sndec": "+50:09:36.3",
         "discoverer": "PTF",
-        "maxyear": 2009,
-        "maxmonth": 3,
-        "maxday": 20
+        "maxyear": "2009",
+        "maxmonth": "3",
+        "maxday": "20",
+        "maxappmag": "19.8",
+        "lumdist": "1000.0",
+        "maxabsmag": "-20.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1963,
-        "maxday": 16,
-        "maxmonth": 8,
+        "discoveryear": "1963",
+        "maxday": "16",
+        "maxmonth": "8",
         "host": "NGC 5905",
         "claimedtype": "I",
         "hvel": "3390",
@@ -39,9 +39,10 @@
         "snra": "15:15:16.03",
         "sndec": "+55:30:52.9",
         "discoverer": "Paul Wild",
-        "discoverday": 16,
-        "discovermonth": 8,
-        "maxyear": 1963,
-        "z": 0.0114
+        "discoverday": "16",
+        "discovermonth": "8",
+        "maxyear": "1963",
+        "maxappmag": "16.0",
+        "z": "0.0114"
     }
 }

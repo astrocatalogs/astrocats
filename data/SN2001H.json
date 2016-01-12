@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51919.10000000009",
+                "time": "51919.1",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51922.00999999978",
+                "time": "51922.01",
                 "band": "C",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51929.89999999991",
+                "time": "51929.9",
                 "band": "R",
                 "abmag": "16.63",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51933.87999999989",
+                "time": "51933.88",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 9,
-        "discovermonth": 1,
+        "discoveryear": "2001",
+        "discoverday": "9",
+        "discovermonth": "1",
         "host": "MCG -1-10-19",
         "claimedtype": "II",
         "hvel": "5251",
@@ -76,9 +76,10 @@
         "snra": "03:40:43.05",
         "sndec": "-06:24:59.1",
         "discoverer": "B. Holmes",
-        "maxyear": 2001,
-        "maxmonth": 1,
-        "maxday": 20,
-        "z": 0.0177
+        "maxyear": "2001",
+        "maxmonth": "1",
+        "maxday": "20",
+        "maxappmag": "16.63",
+        "z": "0.0177"
     }
 }

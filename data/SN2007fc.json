@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 7,
-        "discovermonth": 7,
+        "discoveryear": "2007",
+        "discoverday": "7",
+        "discovermonth": "7",
         "host": "ESO 538-G8",
         "claimedtype": "Ia",
         "hvel": "10116",
@@ -39,10 +39,13 @@
         "snra": "23:57:33.89",
         "sndec": "-21:59:53.0",
         "discoverer": "LOSS",
-        "redshift": 0.0337,
-        "maxyear": 2007,
-        "maxmonth": 7,
-        "maxday": 7,
-        "z": 0.0343
+        "redshift": "0.033700",
+        "maxyear": "2007",
+        "maxmonth": "7",
+        "maxday": "7",
+        "maxappmag": "16.9",
+        "z": "0.0343",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

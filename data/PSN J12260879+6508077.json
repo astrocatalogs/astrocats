@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=5833'>ATEL 5833</a>",
                 "alias": "2"
+            },
+            {
+                "name": "MASTER",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,16 +31,38 @@
                 "band": "",
                 "abmag": "16.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56687.551",
+                "band": "U",
+                "abmag": "16.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56693.267",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56695.329",
+                "band": "C",
+                "abmag": "17.3",
+                "source": "4,1"
             }
         ],
         "snra": "12:26:08.79",
         "sndec": "+65:08:07.7",
-        "discoverday": 23,
-        "discovermonth": 1,
-        "discoveryear": 2014,
+        "discoverday": "23",
+        "discovermonth": "1",
+        "discoveryear": "2014",
         "discoverer": "MASTER",
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 23
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "30",
+        "maxappmag": "16.2"
     }
 }

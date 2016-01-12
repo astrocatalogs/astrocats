@@ -704,9 +704,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 19,
-        "discovermonth": 12,
+        "discoveryear": "2007",
+        "discoverday": "19",
+        "discovermonth": "12",
         "host": "NGC 4617",
         "claimedtype": "Ia",
         "hvel": "4624",
@@ -715,10 +715,13 @@
         "snra": "12:41:06.07",
         "sndec": "+50:23:28.7",
         "discoverer": "Yoshimi Ichimura",
-        "redshift": 0.0155,
-        "maxyear": 2007,
-        "maxmonth": 12,
-        "maxday": 22,
-        "z": 0.0155
+        "redshift": "0.015500",
+        "maxyear": "2007",
+        "maxmonth": "12",
+        "maxday": "22",
+        "maxappmag": "15.9423",
+        "z": "0.0155",
+        "lumdist": "69.0",
+        "maxabsmag": "-18.0"
     }
 }

@@ -31,105 +31,105 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "43095.87999999989",
+                "time": "43095.88",
                 "band": "B",
                 "abmag": "17.15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43095.87999999989",
+                "time": "43095.88",
                 "band": "U",
                 "abmag": "17.99",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43095.87999999989",
+                "time": "43095.88",
                 "band": "V",
                 "abmag": "16.03",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43096.87000000011",
+                "time": "43096.87",
                 "band": "B",
                 "abmag": "17.11",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43096.87000000011",
+                "time": "43096.87",
                 "band": "U",
                 "abmag": "18.37",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43096.87000000011",
+                "time": "43096.87",
                 "band": "V",
                 "abmag": "16.04",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43099.85999999987",
+                "time": "43099.86",
                 "band": "B",
                 "abmag": "17.25",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43099.85999999987",
+                "time": "43099.86",
                 "band": "U",
                 "abmag": "18.36",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43099.85999999987",
+                "time": "43099.86",
                 "band": "V",
                 "abmag": "16.12",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43099.87999999989",
+                "time": "43099.88",
                 "band": "B",
                 "abmag": "17.35",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43099.87999999989",
+                "time": "43099.88",
                 "band": "V",
                 "abmag": "15.92",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43102.87000000011",
+                "time": "43102.87",
                 "band": "B",
                 "abmag": "17.38",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43102.87000000011",
+                "time": "43102.87",
                 "band": "V",
                 "abmag": "16.18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43103.87000000011",
+                "time": "43103.87",
                 "band": "B",
                 "abmag": "17.37",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "43103.87000000011",
+                "time": "43103.87",
                 "band": "V",
                 "abmag": "16.15",
                 "source": "1,2"
@@ -142,9 +142,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1976,
-        "maxday": 20,
-        "maxmonth": 10,
+        "discoveryear": "1976",
+        "maxday": "20",
+        "maxmonth": "10",
         "host": "NGC 488",
         "hvel": "2270",
         "galra": "012147",
@@ -152,9 +152,10 @@
         "discoverer": "Miklos Lovas,",
         "snra": "01:21:46.6",
         "sndec": "+05:13:38.0",
-        "discoverday": 20,
-        "discovermonth": 10,
-        "maxyear": 1976,
-        "z": 0.0076
+        "discoverday": "20",
+        "discovermonth": "10",
+        "maxyear": "1976",
+        "maxappmag": "15.0",
+        "z": "0.0076"
     }
 }

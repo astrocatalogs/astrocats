@@ -31,70 +31,70 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "42750.93000000017",
+                "time": "42750.93",
                 "band": "B",
                 "abmag": "16.48",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42750.93000000017",
+                "time": "42750.93",
                 "band": "V",
                 "abmag": "15.25",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42751.97999999998",
+                "time": "42751.98",
                 "band": "B",
                 "abmag": "16.82",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42751.97999999998",
+                "time": "42751.98",
                 "band": "V",
                 "abmag": "15.41",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42779.970000000205",
+                "time": "42779.97",
                 "band": "B",
                 "abmag": "18.05",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42784.08999999985",
+                "time": "42784.09",
                 "band": "B",
                 "abmag": "18.05",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42784.08999999985",
+                "time": "42784.09",
                 "band": "V",
                 "abmag": "16.99",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42805.97999999998",
+                "time": "42805.98",
                 "band": "B",
                 "abmag": "18.25",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42805.97999999998",
+                "time": "42805.98",
                 "band": "V",
                 "abmag": "17.21",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "42829.939999999944",
+                "time": "42829.94",
                 "band": "B",
                 "abmag": "18.76",
                 "source": "1,2"
@@ -107,9 +107,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1975,
-        "maxday": 30,
-        "maxmonth": 11,
+        "discoveryear": "1975",
+        "maxday": "30",
+        "maxmonth": "11",
         "host": "NGC 3583",
         "claimedtype": "I",
         "hvel": "2135",
@@ -118,9 +118,10 @@
         "discoverer": "Charles Kowal",
         "snra": "11:14:18.1",
         "sndec": "+48:18:26.0",
-        "discoverday": 30,
-        "discovermonth": 11,
-        "maxyear": 1975,
-        "z": 0.00715
+        "discoverday": "30",
+        "discovermonth": "11",
+        "maxyear": "1975",
+        "maxappmag": "15.0",
+        "z": "0.00715"
     }
 }

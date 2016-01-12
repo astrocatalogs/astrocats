@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51140.02000000002",
+                "time": "51140.02",
                 "band": "B",
                 "abmag": "14",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51144.049999999814",
+                "time": "51144.05",
                 "band": "R",
                 "abmag": "14.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51144.049999999814",
+                "time": "51144.05",
                 "band": "V",
                 "abmag": "15.2",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 22,
-        "discovermonth": 11,
+        "discoveryear": "1998",
+        "discoverday": "22",
+        "discovermonth": "11",
         "host": "NGC 6943",
         "claimedtype": "II",
         "hvel": "3095",
@@ -69,10 +69,13 @@
         "snra": "20:44:32.17",
         "sndec": "-68:43:373",
         "discoverer": "Roberto Antezana",
-        "redshift": 0.01,
-        "maxyear": 1998,
-        "maxmonth": 11,
-        "maxday": 23,
-        "z": 0.0104
+        "redshift": "0.010000",
+        "maxyear": "1998",
+        "maxmonth": "11",
+        "maxday": "23",
+        "maxappmag": "14",
+        "z": "0.0104",
+        "lumdist": "45.0",
+        "maxabsmag": "-19.0"
     }
 }

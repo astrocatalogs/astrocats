@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1986,
-        "maxday": 10,
-        "maxmonth": 12,
+        "discoveryear": "1986",
+        "maxday": "10",
+        "maxmonth": "12",
         "host": "NGC 1667",
         "claimedtype": "Ia",
         "hvel": "4551",
@@ -39,9 +39,10 @@
         "snra": "04:48:36.24",
         "sndec": "-06:19:21.5",
         "discoverer": "Carlton Pennypacker",
-        "discoverday": 10,
-        "discovermonth": 12,
-        "maxyear": 1986,
-        "z": 0.0153
+        "discoverday": "10",
+        "discovermonth": "12",
+        "maxyear": "1986",
+        "maxappmag": "15.0",
+        "z": "0.0153"
     }
 }

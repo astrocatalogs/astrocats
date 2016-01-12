@@ -16,11 +16,11 @@
                 "alias": "2"
             },
             {
-                "name": "Joel Nicolas",
+                "name": "Seiichiro Kiyota",
                 "alias": "3"
             },
             {
-                "name": "Enrique Díez",
+                "name": "Joseph Brimacombe",
                 "alias": "4"
             },
             {
@@ -28,12 +28,20 @@
                 "alias": "5"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Joel Nicolas",
                 "alias": "6"
             },
             {
-                "name": "Enrico Prosperi ",
+                "name": "Enrique Díez",
                 "alias": "7"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "8"
+            },
+            {
+                "name": "Enrico Prosperi ",
+                "alias": "9"
             }
         ],
         "photometry": [
@@ -46,17 +54,52 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56652.1794",
+                "band": "V",
+                "abmag": "15.57",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56652.218",
+                "band": "C",
+                "abmag": "15.6",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56652.282",
+                "band": "V",
+                "abmag": "15.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56654.197",
+                "band": "C",
+                "abmag": "15.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56654.468",
+                "band": "V",
+                "abmag": "15.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56672.745",
                 "band": "CV",
                 "abmag": "16.5",
-                "source": "3,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56673.89",
                 "band": "",
                 "abmag": "15.87",
-                "source": "4,1"
+                "source": "7,1"
             },
             {
                 "timeunit": "MJD",
@@ -70,26 +113,26 @@
                 "time": "56681.864",
                 "band": "CV",
                 "abmag": "16.4",
-                "source": "3,1"
+                "source": "6,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56682.864",
                 "band": "CV",
                 "abmag": "16.43",
-                "source": "6,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56700.788",
                 "band": "CR",
                 "abmag": "17.1",
-                "source": "7,1"
+                "source": "9,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 6,
-        "discovermonth": 1,
+        "discoveryear": "2013",
+        "discoverday": "26",
+        "discovermonth": "12",
         "host": "UGC 1461",
         "claimedtype": "Ia",
         "hvel": "5868",
@@ -98,10 +141,13 @@
         "snra": "01:58:53.69",
         "sndec": "+05:35:25.4",
         "discoverer": "CRTS",
-        "redshift": 0.01945,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 6,
-        "z": 0.0198
+        "redshift": "0.019450",
+        "maxyear": "2013",
+        "maxmonth": "12",
+        "maxday": "26",
+        "maxappmag": "15.2",
+        "z": "0.0198",
+        "lumdist": "87.0",
+        "maxabsmag": "-20.0"
     }
 }

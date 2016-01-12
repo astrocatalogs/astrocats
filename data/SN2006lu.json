@@ -1238,21 +1238,24 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "redshift": 0.053,
+        "discoveryear": "2006",
+        "redshift": "0.053000",
         "snra": "09:15:17.63",
         "sndec": "-25:36:00.3",
-        "discoverday": 29,
-        "discovermonth": 10,
+        "discoverday": "29",
+        "discovermonth": "10",
         "host": "A091517-2536",
         "claimedtype": "Ia",
         "hvel": "15900",
         "galra": "091517",
         "galdec": "-253600",
         "discoverer": "LOSS",
-        "maxyear": 2006,
-        "maxmonth": 10,
-        "maxday": 29,
-        "z": 0.0545
+        "maxyear": "2006",
+        "maxmonth": "10",
+        "maxday": "29",
+        "maxappmag": "17.6",
+        "z": "0.0545",
+        "lumdist": "240.0",
+        "maxabsmag": "-19.0"
     }
 }

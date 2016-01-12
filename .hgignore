@@ -2,6 +2,6 @@ syntax: glob
 
 *.csv
 *.html
-*.swp
+*.sw*
 /*.json
 data/*.bz2

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1972,
-        "discoverday": 7,
-        "discovermonth": 10,
+        "discoveryear": "1972",
+        "discoverday": "7",
+        "discovermonth": "10",
         "host": "UGC 279",
         "hvel": "6371",
         "galra": "002815",
@@ -38,9 +38,10 @@
         "discoverer": "Charles Kowal",
         "snra": "00:28:17.2",
         "sndec": "+30:48:57.0",
-        "maxyear": 1972,
-        "maxmonth": 10,
-        "maxday": 7,
-        "z": 0.0215
+        "maxyear": "1972",
+        "maxmonth": "10",
+        "maxday": "7",
+        "maxappmag": "17.0",
+        "z": "0.0215"
     }
 }

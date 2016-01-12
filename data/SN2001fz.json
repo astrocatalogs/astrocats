@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52228.799999999814",
+                "time": "52228.8",
                 "band": "C",
                 "abmag": "17.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52229.700000000186",
+                "time": "52229.7",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52231.299999999814",
+                "time": "52231.3",
                 "band": "R",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52237.080000000075",
+                "time": "52237.08",
                 "band": "R",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52286.919999999925",
+                "time": "52286.92",
                 "band": "R",
                 "abmag": "17.3",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 15,
-        "discovermonth": 11,
+        "discoveryear": "2001",
+        "discoverday": "15",
+        "discovermonth": "11",
         "host": "NGC 2280",
         "claimedtype": "II",
         "hvel": "1963",
@@ -83,9 +83,10 @@
         "snra": "06:44:50.26",
         "sndec": "-27:37:12.7",
         "discoverer": "BAO",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 16,
-        "z": 0.00657
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "16",
+        "maxappmag": "17",
+        "z": "0.00657"
     }
 }

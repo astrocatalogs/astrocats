@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003873.txt'>CBET 3873</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stu Parker",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,11 +27,18 @@
                 "band": "",
                 "abmag": "14.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56787.0",
+                "band": "R",
+                "abmag": "15.3",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 6,
-        "discovermonth": 5,
+        "discoveryear": "2014",
+        "discoverday": "6",
+        "discovermonth": "5",
         "host": "NGC 7410",
         "claimedtype": "Ia-91bg",
         "hvel": "1751",
@@ -36,10 +47,13 @@
         "snra": "22:55:01.97",
         "sndec": "-39:39:34.5",
         "discoverer": "Stu Parker",
-        "redshift": 0.0058,
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 6,
-        "z": 0.00586
+        "redshift": "0.005800",
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "6",
+        "maxappmag": "14.7",
+        "z": "0.00586",
+        "lumdist": "26.0",
+        "maxabsmag": "-17.0"
     }
 }

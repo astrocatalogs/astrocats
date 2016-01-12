@@ -16,12 +16,16 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Thomas Langhans",
                 "alias": "3"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Giancarlo Cortini",
                 "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,22 +38,36 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56724.402",
+                "band": "UV",
+                "abmag": "15.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56725.02",
+                "band": "C",
+                "abmag": "15.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56726.385",
                 "band": "C",
                 "abmag": "15.4",
-                "source": "3,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56754.275",
                 "band": "UV",
                 "abmag": "16.2",
-                "source": "4,1"
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 8,
-        "discovermonth": 3,
+        "discoveryear": "2014",
+        "discoverday": "8",
+        "discovermonth": "3",
         "host": "NGC 3861",
         "claimedtype": "Ia",
         "hvel": "5068",
@@ -58,10 +76,13 @@
         "snra": "11:45:03.58",
         "sndec": "+19:58:25.4",
         "discoverer": "Ron Arbour",
-        "redshift": 0.016982,
-        "maxyear": 2014,
-        "maxmonth": 3,
-        "maxday": 8,
-        "z": 0.0171
+        "redshift": "0.016982",
+        "maxyear": "2014",
+        "maxmonth": "3",
+        "maxday": "8",
+        "maxappmag": "15.2",
+        "z": "0.0171",
+        "lumdist": "76.0",
+        "maxabsmag": "-19.0"
     }
 }

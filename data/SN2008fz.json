@@ -40,19 +40,22 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 21,
-        "discovermonth": 9,
+        "discoveryear": "2008",
+        "discoverday": "21",
+        "discovermonth": "9",
         "host": "A231616+1142",
         "claimedtype": "II",
-        "redshift": 0.133,
+        "redshift": "0.133000",
         "galra": "231616",
         "galdec": "+114247",
         "snra": "23:16:16.60",
         "sndec": "+11:42:47.5",
         "discoverer": "CRTS",
-        "maxyear": 2008,
-        "maxmonth": 9,
-        "maxday": 21
+        "maxyear": "2008",
+        "maxmonth": "9",
+        "maxday": "21",
+        "maxappmag": "16.5",
+        "lumdist": "650.0",
+        "maxabsmag": "-23.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1995,
-        "discoverday": 23,
-        "discovermonth": 2,
+        "discoveryear": "1995",
+        "discoverday": "23",
+        "discovermonth": "2",
         "host": "NGC 3526",
         "claimedtype": "II",
         "hvel": "1419",
@@ -39,10 +39,13 @@
         "snra": "11:06:55.42",
         "sndec": "+07:10:19.6",
         "discoverer": "Jean Mueller",
-        "redshift": 0.0048,
-        "maxyear": 1995,
-        "maxmonth": 2,
-        "maxday": 23,
-        "z": 0.00474
+        "redshift": "0.004800",
+        "maxyear": "1995",
+        "maxmonth": "2",
+        "maxday": "23",
+        "maxappmag": "16.0",
+        "z": "0.00474",
+        "lumdist": "21.0",
+        "maxabsmag": "-16.0"
     }
 }

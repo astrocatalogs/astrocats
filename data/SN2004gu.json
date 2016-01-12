@@ -1553,21 +1553,24 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2004,
-        "redshift": 0.045,
+        "discoveryear": "2004",
+        "redshift": "0.045000",
         "snra": "12:46:24.72",
         "sndec": "+11:56:56.1",
-        "discoverday": 12,
-        "discovermonth": 12,
+        "discoverday": "12",
+        "discovermonth": "12",
         "host": "FGC 175A",
         "claimedtype": "Ia",
         "hvel": "13600",
         "galra": "124625",
         "galdec": "+115658",
         "discoverer": "ROTSE",
-        "maxyear": 2004,
-        "maxmonth": 12,
-        "maxday": 24,
-        "z": 0.0464
+        "maxyear": "2004",
+        "maxmonth": "12",
+        "maxday": "24",
+        "maxappmag": "17.340",
+        "z": "0.0464",
+        "lumdist": "210.0",
+        "maxabsmag": "-19.0"
     }
 }

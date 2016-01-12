@@ -50,9 +50,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 22,
-        "discovermonth": 1,
+        "discoveryear": "2008",
+        "discoverday": "22",
+        "discovermonth": "1",
         "host": "NGC 2550A",
         "claimedtype": "II",
         "hvel": "3641",
@@ -61,10 +61,13 @@
         "snra": "08:28:39.18",
         "sndec": "+73:45:02.9",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.0121,
-        "maxyear": 2008,
-        "maxmonth": 1,
-        "maxday": 22,
-        "z": 0.0122
+        "redshift": "0.012100",
+        "maxyear": "2008",
+        "maxmonth": "1",
+        "maxday": "22",
+        "maxappmag": "16.1",
+        "z": "0.0122",
+        "lumdist": "54.0",
+        "maxabsmag": "-18.0"
     }
 }

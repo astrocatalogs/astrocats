@@ -18,6 +18,10 @@
             {
                 "name": "Paolo Campaner",
                 "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -34,11 +38,18 @@
                 "band": "U",
                 "abmag": "17.3",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56636.518",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "4,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 8,
-        "discovermonth": 12,
+        "discoveryear": "2013",
+        "discoverday": "8",
+        "discovermonth": "12",
         "host": "NGC 4774",
         "claimedtype": "II",
         "hvel": "8341",
@@ -47,10 +58,13 @@
         "snra": "12:53:06.27",
         "sndec": "+36:49:00.1",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.027823,
-        "maxyear": 2013,
-        "maxmonth": 12,
-        "maxday": 8,
-        "z": 0.0282
+        "redshift": "0.027823",
+        "maxyear": "2013",
+        "maxmonth": "12",
+        "maxday": "8",
+        "maxappmag": "16.5",
+        "z": "0.0282",
+        "lumdist": "130.0",
+        "maxabsmag": "-19.0"
     }
 }

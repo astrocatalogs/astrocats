@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 25,
-        "discovermonth": 3,
+        "discoveryear": "2003",
+        "discoverday": "25",
+        "discovermonth": "3",
         "host": "A163547+6613",
         "claimedtype": "Ia",
-        "redshift": 0.175,
+        "redshift": "0.175000",
         "galra": "163547",
         "galdec": "+661326",
         "snra": "16:35:47.518",
         "sndec": "+66:13:26.99",
         "discoverer": "Nordic Optical Telescope",
-        "maxyear": 2003,
-        "maxmonth": 3,
-        "maxday": 25
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "25",
+        "maxappmag": "25.0",
+        "lumdist": "870.0",
+        "maxabsmag": "-15.0"
     }
 }

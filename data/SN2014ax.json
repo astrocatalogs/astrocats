@@ -50,9 +50,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 2,
-        "discovermonth": 5,
+        "discoveryear": "2014",
+        "discoverday": "2",
+        "discovermonth": "5",
         "host": "UGC 10318",
         "claimedtype": "IIP",
         "hvel": "9727",
@@ -61,10 +61,13 @@
         "snra": "16:16:18.16",
         "sndec": "+64:06:06.3",
         "discoverer": "Tom Boles",
-        "redshift": 0.0324,
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 2,
-        "z": 0.033
+        "redshift": "0.032400",
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "2",
+        "maxappmag": "17.6",
+        "z": "0.033",
+        "lumdist": "150.0",
+        "maxabsmag": "-18.0"
     }
 }

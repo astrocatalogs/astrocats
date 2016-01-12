@@ -16,12 +16,20 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Seiichiro Kiyota",
                 "alias": "3"
             },
             {
-                "name": "LLA",
+                "name": "T. Noguchi",
                 "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
+            },
+            {
+                "name": "LLA",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -34,22 +42,36 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56928.5801",
+                "band": "V",
+                "abmag": "16.55",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56928.586",
+                "band": "U",
+                "abmag": "16.8",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56931.798",
                 "band": "C",
                 "abmag": "17.3",
-                "source": "3,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56934.163",
                 "band": "CV",
                 "abmag": "16.9",
-                "source": "4,1"
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 26,
-        "discovermonth": 9,
+        "discoveryear": "2014",
+        "discoverday": "26",
+        "discovermonth": "9",
         "host": "NGC 1524",
         "claimedtype": "Ia",
         "hvel": "9934",
@@ -58,10 +80,13 @@
         "snra": "04:08:07.13",
         "sndec": "-08:49:37.2",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.033,
-        "maxyear": 2014,
-        "maxmonth": 9,
-        "maxday": 26,
-        "z": 0.0337
+        "redshift": "0.033000",
+        "maxyear": "2014",
+        "maxmonth": "9",
+        "maxday": "26",
+        "maxappmag": "16.5",
+        "z": "0.0337",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

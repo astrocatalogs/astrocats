@@ -2714,9 +2714,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "maxday": 15,
-        "maxmonth": 11,
+        "discoveryear": "2005",
+        "maxday": "15",
+        "maxmonth": "11",
         "host": "UGC 1394",
         "claimedtype": "Ib",
         "hvel": "6388",
@@ -2725,9 +2725,10 @@
         "snra": "01:55:41.87",
         "sndec": "+46:47:47.4",
         "discoverer": "LOSS",
-        "discoverday": 24,
-        "discovermonth": 10,
-        "maxyear": 2005,
-        "z": 0.0215
+        "discoverday": "24",
+        "discovermonth": "10",
+        "maxyear": "2005",
+        "maxappmag": "16.262",
+        "z": "0.0215"
     }
 }

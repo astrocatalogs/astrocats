@@ -16,12 +16,16 @@
                 "alias": "2"
             },
             {
-                "name": "Thomas Langhans",
+                "name": "Joseph Brimacombe",
                 "alias": "3"
             },
             {
-                "name": "Manfred Mrotzek",
+                "name": "Thomas Langhans",
                 "alias": "4"
+            },
+            {
+                "name": "Manfred Mrotzek",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,22 +38,29 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56670.496",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56705.554",
                 "band": "UV",
                 "abmag": "17.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56725.167",
                 "band": "U",
                 "abmag": "17.7",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 11,
-        "discovermonth": 1,
+        "discoveryear": "2014",
+        "discoverday": "11",
+        "discovermonth": "1",
         "host": "NGC 6667",
         "claimedtype": "II",
         "hvel": "2582",
@@ -58,10 +69,13 @@
         "snra": "18:30:31.79",
         "sndec": "+67:59:29.7",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.008613,
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 11,
-        "z": 0.00865
+        "redshift": "0.008613",
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "11",
+        "maxappmag": "16.7",
+        "z": "0.00865",
+        "lumdist": "38.0",
+        "maxabsmag": "-16.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 8,
-        "discovermonth": 8,
+        "discoveryear": "1988",
+        "discoverday": "8",
+        "discovermonth": "8",
         "host": "A001418-3025",
         "redshift": "0.31",
         "galra": "001418",
@@ -38,8 +38,11 @@
         "discoverer": "Noergaard-Nielsen, Joergensen, Hansen",
         "snra": "00:14:24.3",
         "sndec": "-30:25:43.0",
-        "maxyear": 1988,
-        "maxmonth": 8,
-        "maxday": 8
+        "maxyear": "1988",
+        "maxmonth": "8",
+        "maxday": "8",
+        "maxappmag": "22.0",
+        "lumdist": "1700.0",
+        "maxabsmag": "-19.0"
     }
 }

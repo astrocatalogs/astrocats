@@ -737,9 +737,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1990,
-        "discoverday": 26,
-        "discovermonth": 4,
+        "discoveryear": "1990",
+        "discoverday": "26",
+        "discovermonth": "4",
         "host": "NGC 4650",
         "claimedtype": "Ib",
         "hvel": "2909",
@@ -748,9 +748,10 @@
         "snra": "12:44:50.29",
         "sndec": "-40:43:36.8",
         "discoverer": "Pizarro, Miranda, Pasquini, Leibundgut",
-        "maxyear": 1990,
-        "maxmonth": 5,
-        "maxday": 2,
-        "z": 0.00975
+        "maxyear": "1990",
+        "maxmonth": "5",
+        "maxday": "2",
+        "maxappmag": "15.28",
+        "z": "0.00975"
     }
 }

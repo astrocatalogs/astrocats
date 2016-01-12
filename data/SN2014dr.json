@@ -80,9 +80,9 @@
                 "source": "7,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 13,
-        "discovermonth": 10,
+        "discoveryear": "2014",
+        "discoverday": "13",
+        "discovermonth": "10",
         "host": "UGC 2705",
         "claimedtype": "II",
         "hvel": "6867",
@@ -91,10 +91,13 @@
         "snra": "03:22:46.39",
         "sndec": "+00:09:20.7",
         "discoverer": "CRTS",
-        "redshift": 0.023,
-        "maxyear": 2014,
-        "maxmonth": 10,
-        "maxday": 27,
-        "z": 0.0232
+        "redshift": "0.023000",
+        "maxyear": "2014",
+        "maxmonth": "10",
+        "maxday": "27",
+        "maxappmag": "16.2",
+        "z": "0.0232",
+        "lumdist": "100.0",
+        "maxabsmag": "-19.0"
     }
 }

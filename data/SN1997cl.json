@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 1,
-        "discovermonth": 5,
+        "discoveryear": "1997",
+        "discoverday": "1",
+        "discovermonth": "5",
         "host": "A135418-2744",
         "claimedtype": "IIn",
         "hvel": "14100",
@@ -39,10 +39,13 @@
         "snra": "13:54:18.71",
         "sndec": "-27:44:27.9",
         "discoverer": "Mount Stromlo",
-        "redshift": 0.047,
-        "maxyear": 1997,
-        "maxmonth": 5,
-        "maxday": 1,
-        "z": 0.0482
+        "redshift": "0.047000",
+        "maxyear": "1997",
+        "maxmonth": "5",
+        "maxday": "1",
+        "maxappmag": "18.3",
+        "z": "0.0482",
+        "lumdist": "220.0",
+        "maxabsmag": "-18.0"
     }
 }

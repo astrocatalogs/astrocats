@@ -13,6 +13,26 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J14002117+3854517.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "M. Caimmi",
+                "alias": "3"
+            },
+            {
+                "name": "Massimo Caimmi",
+                "alias": "4"
+            },
+            {
+                "name": "M.Caimmi",
+                "alias": "5"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "6"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -22,19 +42,71 @@
                 "band": "",
                 "abmag": "18.2",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.079",
+                "band": "U",
+                "abmag": "18.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.0796",
+                "band": "V",
+                "abmag": "18.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.0542",
+                "band": "U",
+                "abmag": "18.7",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.0542",
+                "band": "U",
+                "abmag": "18.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.05423",
+                "band": "V",
+                "abmag": "18.7",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.7257",
+                "band": "U",
+                "abmag": "18.4",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57073.628",
+                "band": "C",
+                "abmag": "19.1",
+                "source": "7,1"
             }
         ],
         "claimedtype": "II",
         "host": "NGC 5406",
         "snra": "14:00:21.17",
         "sndec": "+38:54:51.7",
-        "discoverday": 17,
-        "discovermonth": 2,
-        "discoveryear": 2015,
-        "redshift": 0.01735,
+        "discoverday": "17",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.017350",
         "discoverer": "Italian Supernovae Search Project",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 17
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "17",
+        "maxappmag": "18.2",
+        "lumdist": "78.0",
+        "maxabsmag": "-16.0"
     }
 }

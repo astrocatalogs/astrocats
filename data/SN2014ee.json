@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004000/CBET004048.txt'>CBET 4048</a>",
                 "alias": "2"
+            },
+            {
+                "name": "MDe",
+                "alias": "3"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "4"
+            },
+            {
+                "name": "Andre Mantero",
+                "alias": "5"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,11 +39,39 @@
                 "band": "",
                 "abmag": "16.5",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56981.073",
+                "band": "CV",
+                "abmag": "16.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56982.045",
+                "band": "U",
+                "abmag": "17.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57003.931",
+                "band": "V",
+                "abmag": "16.86",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57003.943",
+                "band": "U",
+                "abmag": "17.9",
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 19,
-        "discovermonth": 11,
+        "discoveryear": "2014",
+        "discoverday": "19",
+        "discovermonth": "11",
         "host": "UGC 4132",
         "claimedtype": "IIn",
         "hvel": "5210",
@@ -36,10 +80,13 @@
         "snra": "07:59:10.99",
         "sndec": "+32:54:39.2",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.0174,
-        "maxyear": 2014,
-        "maxmonth": 11,
-        "maxday": 19,
-        "z": 0.0175
+        "redshift": "0.017400",
+        "maxyear": "2014",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "16.5",
+        "z": "0.0175",
+        "lumdist": "78.0",
+        "maxabsmag": "-18.0"
     }
 }

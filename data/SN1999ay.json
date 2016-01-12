@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 20,
-        "discovermonth": 3,
+        "discoveryear": "1999",
+        "discoverday": "20",
+        "discovermonth": "3",
         "host": "A144443+5855",
         "claimedtype": "II",
         "hvel": "12000",
@@ -39,10 +39,13 @@
         "snra": "14:44:43.86",
         "sndec": "+58:55:42.3",
         "discoverer": "Wise Observatory",
-        "redshift": 0.151,
-        "maxyear": 1999,
-        "maxmonth": 3,
-        "maxday": 20,
-        "z": 0.0409
+        "redshift": "0.151000",
+        "maxyear": "1999",
+        "maxmonth": "3",
+        "maxday": "20",
+        "maxappmag": "18.0",
+        "z": "0.0409",
+        "lumdist": "740.0",
+        "maxabsmag": "-21.0"
     }
 }

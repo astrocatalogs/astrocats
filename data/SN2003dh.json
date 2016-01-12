@@ -29,9 +29,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 27,
-        "discovermonth": 3,
+        "discoveryear": "2003",
+        "discoverday": "27",
+        "discovermonth": "3",
         "host": "A104450+2131",
         "claimedtype": "Ic",
         "galra": "104450",
@@ -39,9 +39,12 @@
         "snra": "10:44:50.018",
         "sndec": "+21:31:17.89",
         "discoverer": "HETE Science team",
-        "redshift": 0.169,
-        "maxyear": 2003,
-        "maxmonth": 3,
-        "maxday": 27
+        "redshift": "0.169000",
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "27",
+        "maxappmag": "16.2",
+        "lumdist": "840.0",
+        "maxabsmag": "-23.0"
     }
 }

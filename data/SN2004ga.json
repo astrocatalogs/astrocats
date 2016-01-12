@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 10,
-        "discovermonth": 9,
+        "discoveryear": "2004",
+        "discoverday": "10",
+        "discovermonth": "9",
         "host": "A055811-7137",
         "claimedtype": "II",
-        "redshift": 0.11,
+        "redshift": "0.110000",
         "galra": "055811",
         "galdec": "-713700",
         "snra": "05:58:11.5",
         "sndec": "-71:37:00.3",
         "discoverer": "superMACHO project",
-        "maxyear": 2004,
-        "maxmonth": 9,
-        "maxday": 10
+        "maxyear": "2004",
+        "maxmonth": "9",
+        "maxday": "10",
+        "maxappmag": "19.7",
+        "lumdist": "530.0",
+        "maxabsmag": "-19.0"
     }
 }

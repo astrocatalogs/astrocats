@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52583.12999999989",
+                "time": "52583.13",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52585.52000000002",
+                "time": "52585.52",
                 "band": "C",
                 "abmag": "16.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52589.75999999978",
+                "time": "52589.76",
                 "band": "R",
                 "abmag": "16.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52595.220000000205",
+                "time": "52595.22",
                 "band": "R",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52604.16000000015",
+                "time": "52604.16",
                 "band": "R",
                 "abmag": "17.6",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 5,
-        "discovermonth": 11,
+        "discoveryear": "2002",
+        "discoverday": "5",
+        "discovermonth": "11",
         "host": "NGC 4210",
         "claimedtype": "Ic",
         "hvel": "2527",
@@ -83,9 +83,10 @@
         "snra": "12:15:18.01",
         "sndec": "+65:58:54.8",
         "discoverer": "Tom Boles",
-        "maxyear": 2002,
-        "maxmonth": 11,
-        "maxday": 7,
-        "z": 0.00846
+        "maxyear": "2002",
+        "maxmonth": "11",
+        "maxday": "7",
+        "maxappmag": "16.8",
+        "z": "0.00846"
     }
 }

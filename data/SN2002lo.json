@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 5,
-        "discovermonth": 6,
+        "discoveryear": "2002",
+        "discoverday": "5",
+        "discovermonth": "6",
         "host": "A163956+4219",
         "claimedtype": "Ia",
         "redshift": "0.14",
@@ -39,8 +39,11 @@
         "snra": "16:39:56.42",
         "sndec": "+42:19:20.5",
         "discoverer": "Omega and Lambda from Supernovae, and the Physics of Supernova Explosions",
-        "maxyear": 2002,
-        "maxmonth": 6,
-        "maxday": 5
+        "maxyear": "2002",
+        "maxmonth": "6",
+        "maxday": "5",
+        "maxappmag": "21.9",
+        "lumdist": "680.0",
+        "maxabsmag": "-17.0"
     }
 }

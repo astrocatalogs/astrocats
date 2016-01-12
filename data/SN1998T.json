@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50879.700000000186",
+                "time": "50879.7",
                 "band": "C",
                 "abmag": "14.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50881.87999999989",
+                "time": "50881.88",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50887.81999999983",
+                "time": "50887.82",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50889.79000000004",
+                "time": "50889.79",
                 "band": "C",
                 "abmag": "14.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50890.79000000004",
+                "time": "50890.79",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50891.79000000004",
+                "time": "50891.79",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
@@ -80,63 +80,63 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "50893.810000000056",
+                "time": "50893.81",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50894.220000000205",
+                "time": "50894.22",
                 "band": "C",
                 "abmag": "13.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50894.62000000011",
+                "time": "50894.62",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50895.79000000004",
+                "time": "50895.79",
                 "band": "C",
                 "abmag": "14.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50895.81999999983",
+                "time": "50895.82",
                 "band": "C",
                 "abmag": "15.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50895.83999999985",
+                "time": "50895.84",
                 "band": "C",
                 "abmag": "14.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50896.810000000056",
+                "time": "50896.81",
                 "band": "C",
                 "abmag": "14.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50897.14000000013",
+                "time": "50897.14",
                 "band": "C",
                 "abmag": "13.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50900.54000000004",
+                "time": "50900.54",
                 "band": "C",
                 "abmag": "14.5",
                 "source": "1,2"
@@ -149,9 +149,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 4,
-        "discovermonth": 3,
+        "discoveryear": "1998",
+        "discoverday": "4",
+        "discovermonth": "3",
         "host": "NGC 3690",
         "claimedtype": "Ib",
         "hvel": "3033",
@@ -160,9 +160,10 @@
         "snra": "11:28:33.16",
         "sndec": "+58:33:43.7",
         "discoverer": "BAO Supernova Survey",
-        "maxyear": 1998,
-        "maxmonth": 3,
-        "maxday": 21,
-        "z": 0.0102
+        "maxyear": "1998",
+        "maxmonth": "3",
+        "maxday": "21",
+        "maxappmag": "13",
+        "z": "0.0102"
     }
 }

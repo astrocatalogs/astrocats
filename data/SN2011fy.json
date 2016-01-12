@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 25,
-        "discovermonth": 9,
+        "discoveryear": "2011",
+        "discoverday": "25",
+        "discovermonth": "9",
         "host": "PGC 2159464",
         "claimedtype": "IIP",
         "galra": "183953",
@@ -35,9 +35,12 @@
         "snra": "18:39:53.93",
         "sndec": "+40:01:43.7",
         "discoverer": "Ron Arbour",
-        "redshift": 0.024,
-        "maxyear": 2011,
-        "maxmonth": 9,
-        "maxday": 25
+        "redshift": "0.024000",
+        "maxyear": "2011",
+        "maxmonth": "9",
+        "maxday": "25",
+        "maxappmag": "17.6",
+        "lumdist": "110.0",
+        "maxabsmag": "-18.0"
     }
 }

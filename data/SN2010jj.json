@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 2,
-        "discovermonth": 11,
+        "discoveryear": "2010",
+        "discoverday": "2",
+        "discovermonth": "11",
         "host": "NGC 812",
         "claimedtype": "IIn",
         "hvel": "5285",
@@ -39,10 +39,13 @@
         "snra": "02:06:52.23",
         "sndec": "+44:34:17.5",
         "discoverer": "Doug Rich",
-        "redshift": 0.0172,
-        "maxyear": 2010,
-        "maxmonth": 11,
-        "maxday": 2,
-        "z": 0.0178
+        "redshift": "0.017200",
+        "maxyear": "2010",
+        "maxmonth": "11",
+        "maxday": "2",
+        "maxappmag": "17.4",
+        "z": "0.0178",
+        "lumdist": "77.0",
+        "maxabsmag": "-17.0"
     }
 }

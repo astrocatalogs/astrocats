@@ -29,9 +29,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 30,
-        "discovermonth": 6,
+        "discoveryear": "2008",
+        "discoverday": "30",
+        "discovermonth": "6",
         "host": "A234412+0752",
         "claimedtype": "IIn",
         "hvel": "20700",
@@ -40,9 +40,10 @@
         "snra": "23:44:12.82",
         "sndec": "+07:52:23.6",
         "discoverer": "CRTS",
-        "maxyear": 2008,
-        "maxmonth": 6,
-        "maxday": 30,
-        "z": 0.0716
+        "maxyear": "2008",
+        "maxmonth": "6",
+        "maxday": "30",
+        "maxappmag": "18.5",
+        "z": "0.0716"
     }
 }

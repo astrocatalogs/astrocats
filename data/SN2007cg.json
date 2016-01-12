@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54233.71432999987",
+                "time": "54233.71433",
                 "band": "V",
                 "abmag": "17.914",
                 "aberr": "0.034",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54233.717339999974",
+                "time": "54233.71734",
                 "band": "B",
                 "abmag": "18.856",
                 "aberr": "0.052",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54235.72465999983",
+                "time": "54235.72466",
                 "band": "V",
                 "abmag": "18.033",
                 "aberr": "0.032",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54235.727669999935",
+                "time": "54235.72767",
                 "band": "B",
                 "abmag": "19.014",
                 "aberr": "0.052",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54236.72758999979",
+                "time": "54236.72759",
                 "band": "V",
                 "abmag": "18.019",
                 "aberr": "0.033",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54236.73060999997",
+                "time": "54236.73061",
                 "band": "B",
                 "abmag": "19.003",
                 "aberr": "0.057",
@@ -79,7 +79,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54237.673369999975",
+                "time": "54237.67337",
                 "band": "V",
                 "abmag": "18.001",
                 "aberr": "0.031",
@@ -87,7 +87,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54237.67707999982",
+                "time": "54237.67708",
                 "band": "B",
                 "abmag": "19.285",
                 "aberr": "0.08",
@@ -95,7 +95,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54239.72323000012",
+                "time": "54239.72323",
                 "band": "V",
                 "abmag": "18.165",
                 "aberr": "0.038",
@@ -103,7 +103,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54239.72696000012",
+                "time": "54239.72696",
                 "band": "B",
                 "abmag": "19.311",
                 "aberr": "0.065",
@@ -111,7 +111,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54240.68549000006",
+                "time": "54240.68549",
                 "band": "V",
                 "abmag": "18.256",
                 "aberr": "0.04",
@@ -119,7 +119,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54240.689199999906",
+                "time": "54240.6892",
                 "band": "B",
                 "abmag": "19.496",
                 "aberr": "0.07",
@@ -127,7 +127,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54255.733229999896",
+                "time": "54255.73323",
                 "band": "V",
                 "abmag": "18.928",
                 "aberr": "0.081",
@@ -141,9 +141,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 10,
-        "discovermonth": 5,
+        "discoveryear": "2007",
+        "discoverday": "10",
+        "discovermonth": "5",
         "host": "ESO 508-G75",
         "claimedtype": "Ia",
         "hvel": "9967",
@@ -152,10 +152,13 @@
         "snra": "13:25:33.58",
         "sndec": "-24:39:08.1",
         "discoverer": "LOSS",
-        "redshift": 0.0332,
-        "maxyear": 2007,
-        "maxmonth": 5,
-        "maxday": 10,
-        "z": 0.0338
+        "redshift": "0.033200",
+        "maxyear": "2007",
+        "maxmonth": "5",
+        "maxday": "10",
+        "maxappmag": "17.6",
+        "z": "0.0338",
+        "lumdist": "150.0",
+        "maxabsmag": "-18.0"
     }
 }

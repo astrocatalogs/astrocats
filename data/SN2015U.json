@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004164.txt'>CBET 4164</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "3"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "4"
+            },
+            {
+                "name": "Gregor Krannich",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,11 +35,39 @@
                 "band": "",
                 "abmag": "14.9",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57068.5684",
+                "band": "U",
+                "abmag": "15.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57070.861",
+                "band": "Rc",
+                "abmag": "15.27",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.5691",
+                "band": "U",
+                "abmag": "15.0",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57072.947",
+                "band": "V",
+                "abmag": "15.0",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 21,
-        "discovermonth": 2,
+        "discoveryear": "2015",
+        "discoverday": "15",
+        "discovermonth": "2",
         "host": "NGC 2388",
         "claimedtype": "Ibn",
         "hvel": "4133",
@@ -36,10 +76,13 @@
         "snra": "07:28:53.87",
         "sndec": "+33:49:10.6",
         "discoverer": "LOSS",
-        "redshift": 0.01379,
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 21,
-        "z": 0.0139
+        "redshift": "0.013790",
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "21",
+        "maxappmag": "14.9",
+        "z": "0.0139",
+        "lumdist": "62.0",
+        "maxabsmag": "-19.0"
     }
 }

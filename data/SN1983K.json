@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "45491.200000000186",
+                "time": "45491.2",
                 "band": "B",
                 "abmag": "17.2",
                 "source": "1,2"
@@ -191,9 +191,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1983,
-        "maxday": 28,
-        "maxmonth": 6,
+        "discoveryear": "1983",
+        "maxday": "28",
+        "maxmonth": "6",
         "host": "NGC 4699",
         "claimedtype": "II",
         "hvel": "1446",
@@ -202,9 +202,10 @@
         "snra": "12:49:12.25",
         "sndec": "-08:37:42.2",
         "discoverer": "Marina Wischnjewsky",
-        "discoverday": 5,
-        "discovermonth": 6,
-        "maxyear": 1983,
-        "z": 0.00484
+        "discoverday": "5",
+        "discovermonth": "6",
+        "maxyear": "1983",
+        "maxappmag": "12.52",
+        "z": "0.00484"
     }
 }

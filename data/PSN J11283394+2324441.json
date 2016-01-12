@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J11283394+2324441.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Wim Cuppens",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,17 +27,25 @@
                 "band": "",
                 "abmag": "18.9",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57008.59",
+                "band": "R",
+                "abmag": "18.9",
+                "source": "3,1"
             }
         ],
         "host": "UGC 6476",
         "snra": "11:28:33.94",
         "sndec": "+23:24:44.1",
-        "discoverday": 16,
-        "discovermonth": 12,
-        "discoveryear": 2014,
+        "discoverday": "16",
+        "discovermonth": "12",
+        "discoveryear": "2014",
         "discoverer": "CRTS",
-        "maxyear": 2014,
-        "maxmonth": 12,
-        "maxday": 16
+        "maxyear": "2014",
+        "maxmonth": "12",
+        "maxday": "16",
+        "maxappmag": "18.9"
     }
 }

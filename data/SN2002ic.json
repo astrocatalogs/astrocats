@@ -63,14 +63,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52598.830000000075",
+                "time": "52598.83",
                 "band": "C",
                 "abmag": "18.11",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52627.60000000009",
+                "time": "52627.6",
                 "band": "C",
                 "abmag": "18.12",
                 "source": "1,2"
@@ -132,9 +132,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 12,
-        "discovermonth": 11,
+        "discoveryear": "2002",
+        "discoverday": "12",
+        "discovermonth": "11",
         "host": "A013002+2153",
         "claimedtype": "IIn",
         "hvel": "19800",
@@ -143,10 +143,13 @@
         "snra": "01:30:02.55",
         "sndec": "+21:53:06.9",
         "discoverer": "Nearby Supernova Factory",
-        "redshift": 0.066,
-        "maxyear": 2002,
-        "maxmonth": 11,
-        "maxday": 20,
-        "z": 0.0684
+        "redshift": "0.066000",
+        "maxyear": "2002",
+        "maxmonth": "11",
+        "maxday": "20",
+        "maxappmag": "17.8",
+        "z": "0.0684",
+        "lumdist": "310.0",
+        "maxabsmag": "-20.0"
     }
 }

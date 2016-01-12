@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=6130'>ATEL 6130</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
+            },
+            {
+                "name": "Massimiliano Martignoni ",
+                "alias": "4"
+            },
+            {
+                "name": "Esteban Aguilar",
+                "alias": "5"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,19 +39,50 @@
                 "band": "",
                 "abmag": "17.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56787.36",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56800.922",
+                "band": "V",
+                "abmag": "17.5",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56802.88",
+                "band": "CR",
+                "abmag": "17.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56803.383",
+                "band": "UV",
+                "abmag": "18.2",
+                "source": "6,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "PGC 2732472",
         "snra": "17:21:45.92",
         "sndec": "+69:49:14.1",
-        "discoverday": 7,
-        "discovermonth": 5,
-        "discoveryear": 2014,
-        "redshift": 0.041,
+        "discoverday": "7",
+        "discovermonth": "5",
+        "discoveryear": "2014",
+        "redshift": "0.041000",
         "discoverer": "MASTER",
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 7
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "7",
+        "maxappmag": "17.3",
+        "lumdist": "190.0",
+        "maxabsmag": "-19.0"
     }
 }

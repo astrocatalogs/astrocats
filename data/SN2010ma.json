@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 19,
-        "discovermonth": 12,
+        "discoveryear": "2010",
+        "discoverday": "19",
+        "discovermonth": "12",
         "host": "A004855-3433",
         "claimedtype": "Ic",
-        "redshift": 0.55,
+        "redshift": "0.550000",
         "galra": "004855",
         "galdec": "-343359",
         "snra": "00:48:55.35",
         "sndec": "-34:33:59.5",
         "discoverer": "XSHOOTER GTO program",
-        "maxyear": 2010,
-        "maxmonth": 12,
-        "maxday": 19
+        "maxyear": "2010",
+        "maxmonth": "12",
+        "maxday": "19",
+        "maxappmag": "17.8",
+        "lumdist": "3300.0",
+        "maxabsmag": "-25.0"
     }
 }

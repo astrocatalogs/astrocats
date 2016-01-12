@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1963,
-        "discoverday": 15,
-        "discovermonth": 12,
+        "discoveryear": "1963",
+        "discoverday": "15",
+        "discovermonth": "12",
         "host": "KUG 0950+363",
         "claimedtype": "Pec",
         "hvel": "5482",
@@ -39,9 +39,10 @@
         "snra": "09:53:18.11",
         "sndec": "+36:05:20.0",
         "discoverer": "Charles Kowal",
-        "maxyear": 1963,
-        "maxmonth": 12,
-        "maxday": 15,
-        "z": 0.0185
+        "maxyear": "1963",
+        "maxmonth": "12",
+        "maxday": "15",
+        "maxappmag": "15.0",
+        "z": "0.0185"
     }
 }

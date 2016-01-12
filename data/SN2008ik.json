@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 16,
-        "discovermonth": 12,
+        "discoveryear": "2008",
+        "discoverday": "16",
+        "discovermonth": "12",
         "host": "A033609-3513",
         "claimedtype": "Ic",
         "hvel": "19390",
@@ -39,10 +39,13 @@
         "snra": "03:36:09.54",
         "sndec": "-35:13:00.7",
         "discoverer": "CHASE",
-        "redshift": 0.0646,
-        "maxyear": 2008,
-        "maxmonth": 12,
-        "maxday": 16,
-        "z": 0.0669
+        "redshift": "0.064600",
+        "maxyear": "2008",
+        "maxmonth": "12",
+        "maxday": "16",
+        "maxappmag": "17.6",
+        "z": "0.0669",
+        "lumdist": "300.0",
+        "maxabsmag": "-20.0"
     }
 }

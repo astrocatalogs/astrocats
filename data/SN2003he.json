@@ -1130,9 +1130,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 10,
-        "discovermonth": 8,
+        "discoveryear": "2003",
+        "discoverday": "10",
+        "discovermonth": "8",
         "host": "MCG -1-1-10",
         "claimedtype": "Ia",
         "hvel": "7649",
@@ -1141,9 +1141,10 @@
         "snra": "23:58:57.058",
         "sndec": "-02:14:53.19",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 8,
-        "maxday": 27,
-        "z": 0.0258
+        "maxyear": "2003",
+        "maxmonth": "8",
+        "maxday": "27",
+        "maxappmag": "16.09700",
+        "z": "0.0258"
     }
 }

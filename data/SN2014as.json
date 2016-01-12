@@ -16,8 +16,24 @@
                 "alias": "2"
             },
             {
-                "name": "Stan Howerton",
+                "name": "David Grennan",
                 "alias": "3"
+            },
+            {
+                "name": "Denis Buczynski",
+                "alias": "4"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "5"
+            },
+            {
+                "name": "Z. Jin and X. Gao",
+                "alias": "6"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -30,15 +46,50 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56765.9208",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.0776",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56766.893",
+                "band": "RC",
+                "abmag": "15.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56768.276",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56771.876",
+                "band": "V",
+                "abmag": "16.3",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56780.242",
                 "band": "U",
                 "abmag": "17.0",
-                "source": "3,1"
+                "source": "7,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 23,
-        "discovermonth": 4,
+        "discoveryear": "2014",
+        "discoverday": "18",
+        "discovermonth": "4",
         "host": "NGC 5410",
         "claimedtype": "Ic",
         "hvel": "3738",
@@ -47,10 +98,13 @@
         "snra": "14:00:54.49",
         "sndec": "+40:58:59.6",
         "discoverer": "David Grennan",
-        "redshift": 0.012469,
-        "maxyear": 2014,
-        "maxmonth": 4,
-        "maxday": 23,
-        "z": 0.0125
+        "redshift": "0.012469",
+        "maxyear": "2014",
+        "maxmonth": "4",
+        "maxday": "19",
+        "maxappmag": "15.9",
+        "z": "0.0125",
+        "lumdist": "56.0",
+        "maxabsmag": "-18.0"
     }
 }

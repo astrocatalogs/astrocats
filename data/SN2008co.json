@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 25,
-        "discovermonth": 5,
+        "discoveryear": "2008",
+        "discoverday": "25",
+        "discovermonth": "5",
         "host": "IC 2522",
         "hvel": "3014",
         "galra": "095509",
@@ -38,10 +38,13 @@
         "snra": "09:55:08.97",
         "sndec": "-33:08:05.7",
         "discoverer": "Berto Monard",
-        "redshift": 0.0101,
-        "maxyear": 2008,
-        "maxmonth": 5,
-        "maxday": 25,
-        "z": 0.0101
+        "redshift": "0.010100",
+        "maxyear": "2008",
+        "maxmonth": "5",
+        "maxday": "25",
+        "maxappmag": "17.0",
+        "z": "0.0101",
+        "lumdist": "45.0",
+        "maxabsmag": "-16.0"
     }
 }

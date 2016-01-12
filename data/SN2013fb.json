@@ -141,9 +141,9 @@
                 "source": "6,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 30,
-        "discovermonth": 8,
+        "discoveryear": "2013",
+        "discoverday": "30",
+        "discovermonth": "8",
         "host": "IC 221",
         "claimedtype": "Ia",
         "hvel": "4988",
@@ -152,10 +152,13 @@
         "snra": "02:22:42.07",
         "sndec": "+28:16:01.2",
         "discoverer": "Masaki Tsuboi",
-        "redshift": 0.017,
-        "maxyear": 2013,
-        "maxmonth": 8,
-        "maxday": 30,
-        "z": 0.0168
+        "redshift": "0.017000",
+        "maxyear": "2013",
+        "maxmonth": "8",
+        "maxday": "30",
+        "maxappmag": "15.4",
+        "z": "0.0168",
+        "lumdist": "76.0",
+        "maxabsmag": "-19.0"
     }
 }

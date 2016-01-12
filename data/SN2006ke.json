@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54030.961749999784",
+                "time": "54030.96175",
                 "band": "V",
                 "abmag": "18.9",
                 "aberr": "0.046",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54030.96476999996",
+                "time": "54030.96477",
                 "band": "B",
                 "abmag": "20.188",
                 "aberr": "0.089",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54038.969140000176",
+                "time": "54038.96914",
                 "band": "V",
                 "abmag": "19.401",
                 "aberr": "0.219",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54039.871199999936",
+                "time": "54039.8712",
                 "band": "V",
                 "abmag": "19.432",
                 "aberr": "0.089",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54039.87419999996",
+                "time": "54039.8742",
                 "band": "B",
                 "abmag": "21.046",
                 "aberr": "0.194",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54040.9161700001",
+                "time": "54040.91617",
                 "band": "V",
                 "abmag": "19.472",
                 "aberr": "0.086",
@@ -79,7 +79,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54043.88525999989",
+                "time": "54043.88526",
                 "band": "V",
                 "abmag": "19.643",
                 "aberr": "0.089",
@@ -87,7 +87,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54050.991330000106",
+                "time": "54050.99133",
                 "band": "V",
                 "abmag": "20.227",
                 "aberr": "0.257",
@@ -95,7 +95,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54069.857780000195",
+                "time": "54069.85778",
                 "band": "V",
                 "abmag": "20.419",
                 "aberr": "0.195",
@@ -109,9 +109,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 18,
-        "discovermonth": 10,
+        "discoveryear": "2006",
+        "discoverday": "18",
+        "discovermonth": "10",
         "host": "UGC 3365",
         "claimedtype": "Ia",
         "hvel": "5151",
@@ -120,10 +120,13 @@
         "snra": "05:52:37.38",
         "sndec": "+66:49:00.5",
         "discoverer": "LOSS",
-        "redshift": 0.017,
-        "maxyear": 2006,
-        "maxmonth": 10,
-        "maxday": 18,
-        "z": 0.0173
+        "redshift": "0.017000",
+        "maxyear": "2006",
+        "maxmonth": "10",
+        "maxday": "18",
+        "maxappmag": "18.3",
+        "z": "0.0173",
+        "lumdist": "76.0",
+        "maxabsmag": "-16.0"
     }
 }

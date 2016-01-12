@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52695.700000000186",
+                "time": "52695.7",
                 "band": "C",
                 "abmag": "15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52696.60000000009",
+                "time": "52696.6",
                 "band": "C",
                 "abmag": "15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52700.720000000205",
+                "time": "52700.72",
                 "band": "R",
                 "abmag": "15.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52740.700000000186",
+                "time": "52740.7",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "maxday": 11,
-        "maxmonth": 4,
+        "discoveryear": "2003",
+        "maxday": "11",
+        "maxmonth": "4",
         "host": "MCG -5-10-15",
         "claimedtype": "Ic",
         "hvel": "1320",
@@ -76,9 +76,10 @@
         "snra": "04:10:59.428",
         "sndec": "-31:24:50.39",
         "discoverer": "Robin Chassagne",
-        "discoverday": 24,
-        "discovermonth": 2,
-        "maxyear": 2003,
-        "z": 0.00441
+        "discoverday": "24",
+        "discovermonth": "2",
+        "maxyear": "2003",
+        "maxappmag": "14.8",
+        "z": "0.00441"
     }
 }

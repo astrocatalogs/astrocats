@@ -32,49 +32,49 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "18358.97999999998",
+                "time": "18358.98",
                 "band": "B",
                 "abmag": "13.56",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "18379.970000000205",
+                "time": "18379.97",
                 "band": "B",
                 "abmag": "13.47",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "18404.850000000093",
+                "time": "18404.85",
                 "band": "B",
                 "abmag": "13.58",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "18435.919999999925",
+                "time": "18435.92",
                 "band": "B",
                 "abmag": "14.32",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "18525.91000000015",
+                "time": "18525.91",
                 "band": "B",
                 "abmag": "15.12",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "18738.899999999907",
+                "time": "18738.9",
                 "band": "B",
                 "abmag": "17.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "18741.799999999814",
+                "time": "18741.8",
                 "band": "B",
                 "abmag": "17.78",
                 "source": "1,2"
@@ -87,9 +87,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1909,
-        "maxday": 25,
-        "maxmonth": 1,
+        "discoveryear": "1909",
+        "maxday": "25",
+        "maxmonth": "1",
         "host": "M101",
         "claimedtype": "II P",
         "hvel": "240",
@@ -98,9 +98,10 @@
         "snra": "14:02:02.6",
         "sndec": "+54:27:57.0",
         "discoverer": "Wolf",
-        "discoverday": 25,
-        "discovermonth": 1,
-        "maxyear": 1909,
-        "z": 0.000801
+        "discoverday": "25",
+        "discovermonth": "1",
+        "maxyear": "1909",
+        "maxappmag": "12.1",
+        "z": "0.000801"
     }
 }

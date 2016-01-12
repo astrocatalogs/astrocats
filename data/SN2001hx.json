@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52204.10999999987",
+                "time": "52204.11",
                 "band": "I",
                 "abmag": "28.17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52225.060000000056",
+                "time": "52225.06",
                 "band": "I",
                 "abmag": "22.21",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52231.08999999985",
+                "time": "52231.09",
                 "band": "R",
                 "abmag": "24.33",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52231.12999999989",
+                "time": "52231.13",
                 "band": "I",
                 "abmag": "21.74",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52232.02000000002",
+                "time": "52232.02",
                 "band": "I",
                 "abmag": "21.65",
                 "source": "1,2"
@@ -73,42 +73,42 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52236.06999999983",
+                "time": "52236.07",
                 "band": "R",
                 "abmag": "24.33",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52252.029999999795",
+                "time": "52252.03",
                 "band": "I",
                 "abmag": "23.03",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52252.06999999983",
+                "time": "52252.07",
                 "band": "R",
                 "abmag": "27.11",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52263.00999999978",
+                "time": "52263.01",
                 "band": "I",
                 "abmag": "24.09",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52287.970000000205",
+                "time": "52287.97",
                 "band": "I",
                 "abmag": "27.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52377.74000000022",
+                "time": "52377.74",
                 "band": "R",
                 "abmag": "29.18",
                 "source": "1,2"
@@ -121,18 +121,21 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 22,
-        "discovermonth": 10,
+        "discoveryear": "2001",
+        "discoverday": "22",
+        "discovermonth": "10",
         "host": "A084924+4402",
-        "redshift": 0.8,
+        "redshift": "0.800000",
         "galra": "084924",
         "galdec": "+440222",
         "snra": "08:49:24.61",
         "sndec": "+44:02:22.4",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 2001,
-        "maxmonth": 11,
-        "maxday": 19
+        "maxyear": "2001",
+        "maxmonth": "11",
+        "maxday": "19",
+        "maxappmag": "21.65",
+        "lumdist": "5200.0",
+        "maxabsmag": "-22.0"
     }
 }

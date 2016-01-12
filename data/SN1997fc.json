@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 30,
-        "discovermonth": 12,
+        "discoveryear": "1997",
+        "discoverday": "30",
+        "discovermonth": "12",
         "host": "A045958-3855",
         "claimedtype": "Ia pec",
         "hvel": "16200",
@@ -39,9 +39,10 @@
         "snra": "04:59:58.81",
         "sndec": "-38:55:04.3",
         "discoverer": "Mount Stromlo",
-        "maxyear": 1997,
-        "maxmonth": 12,
-        "maxday": 30,
-        "z": 0.0556
+        "maxyear": "1997",
+        "maxmonth": "12",
+        "maxday": "30",
+        "maxappmag": "20.5",
+        "z": "0.0556"
     }
 }

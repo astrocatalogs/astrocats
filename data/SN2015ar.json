@@ -565,9 +565,9 @@
                 "source": "11,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 12,
-        "discovermonth": 8,
+        "discoveryear": "2015",
+        "discoverday": "12",
+        "discovermonth": "8",
         "host": "NGC 383",
         "claimedtype": "Ia",
         "hvel": "5057",
@@ -576,10 +576,13 @@
         "snra": "01:07:20.38",
         "sndec": "+32:23:59.8",
         "discoverer": "E. Conseil and G. Arlic",
-        "redshift": 0.017,
-        "maxyear": 2015,
-        "maxmonth": 11,
-        "maxday": 27,
-        "z": 0.017
+        "redshift": "0.017000",
+        "maxyear": "2015",
+        "maxmonth": "11",
+        "maxday": "27",
+        "maxappmag": "15.30",
+        "z": "0.017",
+        "lumdist": "76.0",
+        "maxabsmag": "-19.0"
     }
 }

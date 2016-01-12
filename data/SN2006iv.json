@@ -39,9 +39,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 4,
-        "discovermonth": 10,
+        "discoveryear": "2006",
+        "discoverday": "4",
+        "discovermonth": "10",
         "host": "UGC 6774",
         "claimedtype": "IIb",
         "hvel": "2407",
@@ -50,10 +50,13 @@
         "snra": "11:48:12.35",
         "sndec": "+54:59:14.6",
         "discoverer": "Grzegorz Duszanowicz",
-        "redshift": 0.008,
-        "maxyear": 2006,
-        "maxmonth": 10,
-        "maxday": 4,
-        "z": 0.00806
+        "redshift": "0.008000",
+        "maxyear": "2006",
+        "maxmonth": "10",
+        "maxday": "4",
+        "maxappmag": "15.9",
+        "z": "0.00806",
+        "lumdist": "36.0",
+        "maxabsmag": "-17.0"
     }
 }

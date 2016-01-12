@@ -383,9 +383,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2006,
-        "maxday": 10,
-        "maxmonth": 1,
+        "discoveryear": "2006",
+        "maxday": "10",
+        "maxmonth": "1",
         "host": "NGC 935",
         "claimedtype": "Ib",
         "hvel": "4212",
@@ -394,10 +394,13 @@
         "snra": "02:28:11.37",
         "sndec": "+19:36:13.5",
         "discoverer": "Mirko Villi",
-        "discoverday": 10,
-        "discovermonth": 1,
-        "redshift": 0.0138,
-        "maxyear": 2006,
-        "z": 0.0141
+        "discoverday": "10",
+        "discovermonth": "1",
+        "redshift": "0.013800",
+        "maxyear": "2006",
+        "maxappmag": "17.1",
+        "z": "0.0141",
+        "lumdist": "62.0",
+        "maxabsmag": "-17.0"
     }
 }

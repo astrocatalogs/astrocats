@@ -46,9 +46,9 @@
                 "source": "1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 9,
-        "discovermonth": 8,
+        "discoveryear": "2008",
+        "discoverday": "9",
+        "discovermonth": "8",
         "host": "IC 1236",
         "claimedtype": "Ic",
         "hvel": "6080",
@@ -57,9 +57,10 @@
         "snra": "16:58:28.92",
         "sndec": "+20:02:38.0",
         "discoverer": "LOSS",
-        "maxyear": 2008,
-        "maxmonth": 8,
-        "maxday": 19,
-        "z": 0.0205
+        "maxyear": "2008",
+        "maxmonth": "8",
+        "maxday": "19",
+        "maxappmag": "16.50",
+        "z": "0.0205"
     }
 }

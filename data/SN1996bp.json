@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1996,
-        "discoverday": 10,
-        "discovermonth": 8,
+        "discoveryear": "1996",
+        "discoverday": "10",
+        "discovermonth": "8",
         "host": "MCG -6-4-53",
         "hvel": "10495",
         "galra": "013521",
@@ -39,9 +39,10 @@
         "sndec": "-32:46:51.0",
         "discoverer": "Robert McNaught",
         "claimedtype": "IIP",
-        "maxyear": 1996,
-        "maxmonth": 8,
-        "maxday": 10,
-        "z": 0.0356
+        "maxyear": "1996",
+        "maxmonth": "8",
+        "maxday": "10",
+        "maxappmag": "18.0",
+        "z": "0.0356"
     }
 }

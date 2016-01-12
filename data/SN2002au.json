@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52306.299999999814",
+                "time": "52306.3",
                 "band": "C",
                 "abmag": "20",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52313.299999999814",
+                "time": "52313.3",
                 "band": "C",
                 "abmag": "17.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52314.220000000205",
+                "time": "52314.22",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52315.14000000013",
+                "time": "52315.14",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52315.299999999814",
+                "time": "52315.3",
                 "band": "C",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52335.08999999985",
+                "time": "52335.09",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 31,
-        "discovermonth": 1,
+        "discoveryear": "2002",
+        "discoverday": "31",
+        "discovermonth": "1",
         "host": "UGC 5100",
         "claimedtype": "Ia",
         "hvel": "5514",
@@ -90,9 +90,10 @@
         "snra": "09:34:37.60",
         "sndec": "+05:50:15.7",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2002,
-        "maxmonth": 3,
-        "maxday": 2,
-        "z": 0.0186
+        "maxyear": "2002",
+        "maxmonth": "3",
+        "maxday": "2",
+        "maxappmag": "17.2",
+        "z": "0.0186"
     }
 }

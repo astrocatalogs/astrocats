@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1973,
-        "discoverday": 20,
-        "discovermonth": 5,
+        "discoveryear": "1973",
+        "discoverday": "20",
+        "discovermonth": "5",
         "host": "NGC 4939",
         "hvel": "3109",
         "galra": "130415",
@@ -38,9 +38,10 @@
         "discoverer": "Paul Wild",
         "snra": "13:04:15.9",
         "sndec": "-10:20:35.0",
-        "maxyear": 1973,
-        "maxmonth": 5,
-        "maxday": 20,
-        "z": 0.0104
+        "maxyear": "1973",
+        "maxmonth": "5",
+        "maxday": "20",
+        "maxappmag": "16.0",
+        "z": "0.0104"
     }
 }

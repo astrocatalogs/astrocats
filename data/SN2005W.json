@@ -1067,21 +1067,24 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "redshift": 0.009,
+        "discoveryear": "2005",
+        "redshift": "0.009000",
         "snra": "01:50:45.77",
         "sndec": "+21:45:35.4",
-        "discoverday": 3,
-        "discovermonth": 2,
+        "discoverday": "3",
+        "discovermonth": "2",
         "host": "NGC 691",
         "claimedtype": "Ia",
         "hvel": "2604",
         "galra": "015042",
         "galdec": "+214535",
         "discoverer": "Yoji Hirose",
-        "maxyear": 2005,
-        "maxmonth": 2,
-        "maxday": 11,
-        "z": 0.00872
+        "maxyear": "2005",
+        "maxmonth": "2",
+        "maxday": "11",
+        "maxappmag": "14.0",
+        "z": "0.00872",
+        "lumdist": "40.0",
+        "maxabsmag": "-19.0"
     }
 }

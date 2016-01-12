@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 2,
-        "discovermonth": 5,
+        "discoveryear": "2007",
+        "discoverday": "2",
+        "discovermonth": "5",
         "host": "IC 2531",
         "claimedtype": "Ia",
         "hvel": "2500",
@@ -39,10 +39,13 @@
         "snra": "09:59:55.76",
         "sndec": "-29:37:03.3",
         "discoverer": "Lulin Observatory",
-        "redshift": 0.0082,
-        "maxyear": 2007,
-        "maxmonth": 5,
-        "maxday": 2,
-        "z": 0.00837
+        "redshift": "0.008200",
+        "maxyear": "2007",
+        "maxmonth": "5",
+        "maxday": "2",
+        "maxappmag": "15.7",
+        "z": "0.00837",
+        "lumdist": "37.0",
+        "maxabsmag": "-17.0"
     }
 }

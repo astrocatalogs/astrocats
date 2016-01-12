@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 20,
-        "discovermonth": 11,
+        "discoveryear": "2003",
+        "discoverday": "20",
+        "discovermonth": "11",
         "host": "M82",
         "claimedtype": "II",
         "hvel": "300",
@@ -39,9 +39,10 @@
         "snra": "09:55:46.61",
         "sndec": "+69:40:38.1",
         "discoverer": "LOSS",
-        "maxyear": 2003,
-        "maxmonth": 11,
-        "maxday": 20,
-        "z": 0.001
+        "maxyear": "2003",
+        "maxmonth": "11",
+        "maxday": "20",
+        "maxappmag": "16.0",
+        "z": "0.001"
     }
 }

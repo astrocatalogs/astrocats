@@ -24,20 +24,40 @@
                 "alias": "4"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Robert Koff",
                 "alias": "5"
             },
             {
-                "name": "Diego Rodriguez",
+                "name": "Zhangwei Jin",
                 "alias": "6"
             },
             {
-                "name": "Joel Nicolas",
+                "name": "Joseph Brimacombe",
                 "alias": "7"
             },
             {
-                "name": "Maurice Audejean",
+                "name": "Manfred Mrotzek",
                 "alias": "8"
+            },
+            {
+                "name": "Giancarlo Cortini",
+                "alias": "9"
+            },
+            {
+                "name": "Rafael Benavides",
+                "alias": "10"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "11"
+            },
+            {
+                "name": "Joel Nicolas",
+                "alias": "12"
+            },
+            {
+                "name": "Maurice Audejean",
+                "alias": "13"
             }
         ],
         "photometry": [
@@ -64,17 +84,52 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56588.2443",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56588.578",
+                "band": "V",
+                "abmag": "16.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56589.08",
+                "band": "C",
+                "abmag": "16.6",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56589.896",
+                "band": "L",
+                "abmag": "16.4",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56591.83",
+                "band": "L",
+                "abmag": "16.1",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56595.937",
                 "band": "CR",
                 "abmag": "15.11",
-                "source": "5,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56599.851",
                 "band": "CR",
                 "abmag": "14.80",
-                "source": "6,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
@@ -88,14 +143,14 @@
                 "time": "56603.734",
                 "band": "CV",
                 "abmag": "15.4",
-                "source": "7,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56627.771",
                 "band": "CV",
                 "abmag": "16.3",
-                "source": "8,1"
+                "source": "13,1"
             },
             {
                 "timeunit": "MJD",
@@ -112,9 +167,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 30,
-        "discovermonth": 10,
+        "discoveryear": "2013",
+        "discoverday": "23",
+        "discovermonth": "10",
         "host": "NGC 7042",
         "claimedtype": "Ia-HV",
         "hvel": "5180",
@@ -123,10 +178,13 @@
         "snra": "21:13:44.81",
         "sndec": "+13:34:33.5",
         "discoverer": "Xing Gao et al.",
-        "redshift": 0.016952,
-        "maxyear": 2013,
-        "maxmonth": 11,
-        "maxday": 3,
-        "z": 0.0174
+        "redshift": "0.016952",
+        "maxyear": "2013",
+        "maxmonth": "11",
+        "maxday": "3",
+        "maxappmag": "14.80",
+        "z": "0.0174",
+        "lumdist": "76.0",
+        "maxabsmag": "-20.0"
     }
 }

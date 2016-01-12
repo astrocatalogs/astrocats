@@ -314,14 +314,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52169.12000000011",
+                "time": "52169.12",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52170.14000000013",
+                "time": "52170.14",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "2,3"
@@ -355,9 +355,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 16,
-        "discovermonth": 9,
+        "discoveryear": "2001",
+        "discoverday": "16",
+        "discovermonth": "9",
         "host": "UGC 3829",
         "claimedtype": "Ic",
         "hvel": "4028",
@@ -366,9 +366,10 @@
         "snra": "07:23:43.23",
         "sndec": "+33:26:38.0",
         "discoverer": "CROSS",
-        "maxyear": 2001,
-        "maxmonth": 10,
-        "maxday": 6,
-        "z": 0.0135
+        "maxyear": "2001",
+        "maxmonth": "10",
+        "maxday": "6",
+        "maxappmag": "16.472",
+        "z": "0.0135"
     }
 }

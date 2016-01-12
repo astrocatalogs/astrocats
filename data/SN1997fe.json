@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 30,
-        "discovermonth": 12,
+        "discoveryear": "1997",
+        "discoverday": "30",
+        "discovermonth": "12",
         "host": "A043307-6126",
         "hvel": "17700",
         "galra": "043307",
@@ -38,9 +38,10 @@
         "snra": "04:33:07.64",
         "sndec": "-61:26:19.3",
         "discoverer": "Mount Stromlo",
-        "maxyear": 1997,
-        "maxmonth": 12,
-        "maxday": 30,
-        "z": 0.0609
+        "maxyear": "1997",
+        "maxmonth": "12",
+        "maxday": "30",
+        "maxappmag": "19.5",
+        "z": "0.0609"
     }
 }

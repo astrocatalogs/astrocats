@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52451.299999999814",
+                "time": "52451.3",
                 "band": "C",
                 "abmag": "18.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52452.299999999814",
+                "time": "52452.3",
                 "band": "C",
                 "abmag": "18.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52456.18000000017",
+                "time": "52456.18",
                 "band": "R",
                 "abmag": "17.1",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 25,
-        "discovermonth": 6,
+        "discoveryear": "2002",
+        "discoverday": "25",
+        "discovermonth": "6",
         "host": "ESO 516-G5",
         "hvel": "7487",
         "galra": "160346",
@@ -68,10 +68,13 @@
         "snra": "16:03:47.30",
         "sndec": "-22:44:19.5",
         "discoverer": "LOTOSS",
-        "redshift": 0.025,
-        "maxyear": 2002,
-        "maxmonth": 7,
-        "maxday": 1,
-        "z": 0.0253
+        "redshift": "0.025000",
+        "maxyear": "2002",
+        "maxmonth": "7",
+        "maxday": "1",
+        "maxappmag": "17.1",
+        "z": "0.0253",
+        "lumdist": "110.0",
+        "maxabsmag": "-18.0"
     }
 }

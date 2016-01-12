@@ -1247,19 +1247,22 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2004,
-        "redshift": 0.032,
+        "discoveryear": "2004",
+        "redshift": "0.032000",
         "snra": "05:21:49.95",
         "sndec": "+06:40:33.7",
-        "discoverday": 17,
-        "discovermonth": 11,
+        "discoverday": "17",
+        "discovermonth": "11",
         "host": "PGC 17176",
         "claimedtype": "Ia",
         "galra": "052147",
         "galdec": "+064033",
         "discoverer": "A. del Olmo et. el.",
-        "maxyear": 2004,
-        "maxmonth": 11,
-        "maxday": 17
+        "maxyear": "2004",
+        "maxmonth": "11",
+        "maxday": "17",
+        "maxappmag": "17.0",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52650.31999999983",
+                "time": "52650.32",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52650.85000000009",
+                "time": "52650.85",
                 "band": "C",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52651.66000000015",
+                "time": "52651.66",
                 "band": "C",
                 "abmag": "16.3",
                 "source": "1,2"
@@ -66,21 +66,21 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52675.22999999998",
+                "time": "52675.23",
                 "band": "R",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52676.89000000013",
+                "time": "52676.89",
                 "band": "R",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52691.970000000205",
+                "time": "52691.97",
                 "band": "R",
                 "abmag": "17.5",
                 "source": "1,2"
@@ -93,9 +93,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 10,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "10",
+        "discovermonth": "1",
         "host": "NGC 4157",
         "claimedtype": "II",
         "hvel": "775",
@@ -104,9 +104,10 @@
         "snra": "12:10:57.728",
         "sndec": "+50:28:31.89",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 5,
-        "z": 0.00259
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "5",
+        "maxappmag": "16",
+        "z": "0.00259"
     }
 }

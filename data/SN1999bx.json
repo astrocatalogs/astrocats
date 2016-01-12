@@ -34,29 +34,29 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51297.580000000075",
+                "time": "51297.58",
                 "band": "C",
                 "abmag": "15.78",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51300.62999999989",
+                "time": "51300.63",
                 "band": "C",
                 "abmag": "15.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51305.700000000186",
+                "time": "51305.7",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 26,
-        "discovermonth": 4,
+        "discoveryear": "1999",
+        "discoverday": "26",
+        "discovermonth": "4",
         "host": "NGC 6745",
         "claimedtype": "II",
         "hvel": "4545",
@@ -65,10 +65,13 @@
         "snra": "19:01:41.44",
         "sndec": "+40:44:52.3",
         "discoverer": "LOSS",
-        "redshift": 0.0157,
-        "maxyear": 1999,
-        "maxmonth": 5,
-        "maxday": 2,
-        "z": 0.0153
+        "redshift": "0.015700",
+        "maxyear": "1999",
+        "maxmonth": "5",
+        "maxday": "2",
+        "maxappmag": "15.7",
+        "z": "0.0153",
+        "lumdist": "70.0",
+        "maxabsmag": "-19.0"
     }
 }

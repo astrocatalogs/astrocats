@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003900/CBET003935.txt'>CBET 3935</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,11 +27,18 @@
                 "band": "",
                 "abmag": "17.3",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56814.722",
+                "band": "L",
+                "abmag": "17.4",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 9,
-        "discovermonth": 5,
+        "discoveryear": "2014",
+        "discoverday": "9",
+        "discovermonth": "5",
         "host": "A165320-7230",
         "claimedtype": "II",
         "hvel": "5850",
@@ -36,10 +47,13 @@
         "snra": "16:53:20.94",
         "sndec": "-72:30:52.0",
         "discoverer": "Stu Parker",
-        "redshift": 0.021,
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 9,
-        "z": 0.0197
+        "redshift": "0.021000",
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "9",
+        "maxappmag": "17.3",
+        "z": "0.0197",
+        "lumdist": "94.0",
+        "maxabsmag": "-18.0"
     }
 }

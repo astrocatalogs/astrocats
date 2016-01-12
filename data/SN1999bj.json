@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 10,
-        "discovermonth": 3,
+        "discoveryear": "1999",
+        "discoverday": "10",
+        "discovermonth": "3",
         "host": "A115138-1229",
         "claimedtype": "Ia",
-        "redshift": 0.16,
+        "redshift": "0.160000",
         "galra": "115138",
         "galdec": "-122908",
         "snra": "11:51:38.39",
         "sndec": "-12:29:08.3",
         "discoverer": "Supernova Cosmology Project",
-        "maxyear": 1999,
-        "maxmonth": 3,
-        "maxday": 10
+        "maxyear": "1999",
+        "maxmonth": "3",
+        "maxday": "10",
+        "maxappmag": "20.8",
+        "lumdist": "790.0",
+        "maxabsmag": "-19.0"
     }
 }

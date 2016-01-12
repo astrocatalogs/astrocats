@@ -28,18 +28,21 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 2,
-        "discovermonth": 11,
+        "discoveryear": "2002",
+        "discoverday": "2",
+        "discovermonth": "11",
         "host": "A021734-0500",
-        "redshift": 1.181,
+        "redshift": "1.181000",
         "galra": "021734",
         "galdec": "-050015",
         "snra": "02:17:34.53",
         "sndec": "-05:00:15.4",
         "discoverer": "Subaru high-redshift supernova",
-        "maxyear": 2002,
-        "maxmonth": 11,
-        "maxday": 2
+        "maxyear": "2002",
+        "maxmonth": "11",
+        "maxday": "2",
+        "maxappmag": "25.2",
+        "lumdist": "8300.0",
+        "maxabsmag": "-19.0"
     }
 }

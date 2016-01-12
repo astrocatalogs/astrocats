@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52403.189999999944",
+                "time": "52403.19",
                 "band": "C",
                 "abmag": "18.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52411.299999999814",
+                "time": "52411.3",
                 "band": "C",
                 "abmag": "18.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52412.799999999814",
+                "time": "52412.8",
                 "band": "C",
                 "abmag": "18.6",
                 "source": "1,2"
@@ -58,17 +58,18 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 8,
-        "discovermonth": 5,
+        "discoveryear": "2002",
+        "discoverday": "8",
+        "discovermonth": "5",
         "host": "A133402-1449",
         "galra": "133402",
         "galdec": "-144919",
         "snra": "13:34:02.59",
         "sndec": "-14:49:19.7",
         "discoverer": "Nearby Supernova Factory",
-        "maxyear": 2002,
-        "maxmonth": 5,
-        "maxday": 17
+        "maxyear": "2002",
+        "maxmonth": "5",
+        "maxday": "17",
+        "maxappmag": "18.6"
     }
 }

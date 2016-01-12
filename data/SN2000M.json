@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51601.169999999925",
+                "time": "51601.17",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "1,2"
@@ -45,14 +45,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51605.200000000186",
+                "time": "51605.2",
                 "band": "R",
                 "abmag": "17.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51606.200000000186",
+                "time": "51606.2",
                 "band": "C",
                 "abmag": "16",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 26,
-        "discovermonth": 2,
+        "discoveryear": "2000",
+        "discoverday": "26",
+        "discovermonth": "2",
         "host": "NGC 6389",
         "claimedtype": "II",
         "hvel": "3081",
@@ -83,10 +83,13 @@
         "snra": "17:32:39.61",
         "sndec": "+16:23:54.9",
         "discoverer": "Marco Migliardi",
-        "redshift": 0.011,
-        "maxyear": 2000,
-        "maxmonth": 3,
-        "maxday": 3,
-        "z": 0.0103
+        "redshift": "0.011000",
+        "maxyear": "2000",
+        "maxmonth": "3",
+        "maxday": "3",
+        "maxappmag": "16",
+        "z": "0.0103",
+        "lumdist": "49.0",
+        "maxabsmag": "-17.0"
     }
 }

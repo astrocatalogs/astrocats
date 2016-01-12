@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "47234.89999999991",
+                "time": "47234.9",
                 "band": "B",
                 "abmag": "17.66",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47236.89999999991",
+                "time": "47236.9",
                 "band": "B",
                 "abmag": "17.75",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47237.89999999991",
+                "time": "47237.9",
                 "band": "B",
                 "abmag": "17.65",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47256.799999999814",
+                "time": "47256.8",
                 "band": "B",
                 "abmag": "18.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47258.799999999814",
+                "time": "47258.8",
                 "band": "B",
                 "abmag": "18.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47259.799999999814",
+                "time": "47259.8",
                 "band": "B",
                 "abmag": "18.46",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 13,
-        "discovermonth": 3,
+        "discoveryear": "1988",
+        "discoverday": "13",
+        "discovermonth": "3",
         "host": "A114406+6012",
         "claimedtype": "Ia",
         "galra": "114406",
@@ -89,8 +89,9 @@
         "discoverer": "Kimeridze",
         "snra": "11:44:06.4",
         "sndec": "+60:12:13.0",
-        "maxyear": 1988,
-        "maxmonth": 3,
-        "maxday": 13
+        "maxyear": "1988",
+        "maxmonth": "3",
+        "maxday": "13",
+        "maxappmag": "17.0"
     }
 }

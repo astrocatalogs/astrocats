@@ -39,21 +39,21 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "51506.950000000186",
+                "time": "51506.95",
                 "band": "C",
                 "abmag": "16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51510.95999999996",
+                "time": "51510.96",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51516.89999999991",
+                "time": "51516.9",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "1,2"
@@ -66,9 +66,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 23,
-        "discovermonth": 11,
+        "discoveryear": "1999",
+        "discoverday": "23",
+        "discovermonth": "11",
         "host": "NGC 2442",
         "claimedtype": "II",
         "hvel": "1399",
@@ -77,9 +77,10 @@
         "snra": "07:36:23.9",
         "sndec": "-69:31:48.0",
         "discoverer": "Perth Astronomical Research Group",
-        "maxyear": 1999,
-        "maxmonth": 11,
-        "maxday": 24,
-        "z": 0.00468
+        "maxyear": "1999",
+        "maxmonth": "11",
+        "maxday": "24",
+        "maxappmag": "15.6",
+        "z": "0.00468"
     }
 }

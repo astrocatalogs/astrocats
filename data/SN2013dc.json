@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 10,
-        "discovermonth": 4,
+        "discoveryear": "2013",
+        "discoverday": "10",
+        "discovermonth": "4",
         "host": "NGC 6240",
         "claimedtype": "IIP",
         "hvel": "7351",
@@ -36,10 +36,13 @@
         "snra": "16:52:58.97",
         "sndec": "+02:24:25.5",
         "discoverer": "Adam Block",
-        "redshift": 0.0245,
-        "maxyear": 2013,
-        "maxmonth": 4,
-        "maxday": 10,
-        "z": 0.0248
+        "redshift": "0.024500",
+        "maxyear": "2013",
+        "maxmonth": "4",
+        "maxday": "10",
+        "maxappmag": "18.1",
+        "z": "0.0248",
+        "lumdist": "110.0",
+        "maxabsmag": "-17.0"
     }
 }

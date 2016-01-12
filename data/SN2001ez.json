@@ -45,7 +45,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52203.14999999991",
+                "time": "52203.15",
                 "band": "C",
                 "abmag": "16.5",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 17,
-        "discovermonth": 10,
+        "discoveryear": "2001",
+        "discoverday": "17",
+        "discovermonth": "10",
         "host": "PGC 17642",
         "claimedtype": "II",
         "hvel": "3895",
@@ -69,10 +69,13 @@
         "snra": "05:42:37.64",
         "sndec": "+69:14:14.6",
         "discoverer": "LOTOSS",
-        "redshift": 0.013,
-        "maxyear": 2001,
-        "maxmonth": 10,
-        "maxday": 21,
-        "z": 0.0131
+        "redshift": "0.013000",
+        "maxyear": "2001",
+        "maxmonth": "10",
+        "maxday": "21",
+        "maxappmag": "16.5",
+        "z": "0.0131",
+        "lumdist": "58.0",
+        "maxabsmag": "-17.0"
     }
 }

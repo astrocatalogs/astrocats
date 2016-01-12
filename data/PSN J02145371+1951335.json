@@ -18,6 +18,10 @@
             {
                 "name": "Thomas Langhans",
                 "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -34,18 +38,56 @@
                 "band": "UV",
                 "abmag": "17.8",
                 "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56549.786",
+                "band": "IR",
+                "abmag": "17.6",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56553.436",
+                "band": "UV",
+                "abmag": "17.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56562.453",
+                "band": "UV",
+                "abmag": "18.1",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56579.319",
+                "band": "UV",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56601.339",
+                "band": "UV",
+                "abmag": "18.4",
+                "source": "3,1"
             }
         ],
         "claimedtype": "II",
         "snra": "02:14:53.71",
         "sndec": "+19:51:33.5",
-        "discoverday": 3,
-        "discovermonth": 9,
-        "discoveryear": 2013,
-        "redshift": 0.02,
+        "discoverday": "3",
+        "discovermonth": "9",
+        "discoveryear": "2013",
+        "redshift": "0.020000",
         "discoverer": "CRTS",
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 3
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "3",
+        "maxappmag": "17.4",
+        "lumdist": "90.0",
+        "maxabsmag": "-17.0"
     }
 }

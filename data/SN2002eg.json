@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52479.299999999814",
+                "time": "52479.3",
                 "band": "C",
                 "abmag": "19",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52481.33999999985",
+                "time": "52481.34",
                 "band": "R",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52484.299999999814",
+                "time": "52484.3",
                 "band": "C",
                 "abmag": "18.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52487.299999999814",
+                "time": "52487.3",
                 "band": "C",
                 "abmag": "17.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52498.189999999944",
+                "time": "52498.19",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
@@ -73,21 +73,21 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52519.02000000002",
+                "time": "52519.02",
                 "band": "R",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52519.939999999944",
+                "time": "52519.94",
                 "band": "R",
                 "abmag": "17.5",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52522.060000000056",
+                "time": "52522.06",
                 "band": "C",
                 "abmag": "19.05",
                 "source": "1,2"
@@ -100,9 +100,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 24,
-        "discovermonth": 7,
+        "discoveryear": "2002",
+        "discoverday": "24",
+        "discovermonth": "7",
         "host": "UGC 11486",
         "claimedtype": "IIb",
         "hvel": "7901",
@@ -111,9 +111,10 @@
         "snra": "19:49:47.25",
         "sndec": "+50:41:53.6",
         "discoverer": "Ella Sanders",
-        "maxyear": 2002,
-        "maxmonth": 8,
-        "maxday": 12,
-        "z": 0.0267
+        "maxyear": "2002",
+        "maxmonth": "8",
+        "maxday": "12",
+        "maxappmag": "17.2",
+        "z": "0.0267"
     }
 }

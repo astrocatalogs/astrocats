@@ -599,9 +599,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 25,
-        "discovermonth": 8,
+        "discoveryear": "2005",
+        "discoverday": "25",
+        "discovermonth": "8",
         "host": "IC 219",
         "claimedtype": "Ia",
         "hvel": "5048",
@@ -610,9 +610,10 @@
         "snra": "02:18:39.25",
         "sndec": "-06:54:10.8",
         "discoverer": "LOSS",
-        "maxyear": 2005,
-        "maxmonth": 8,
-        "maxday": 31,
-        "z": 0.017
+        "maxyear": "2005",
+        "maxmonth": "8",
+        "maxday": "31",
+        "maxappmag": "16.77300",
+        "z": "0.017"
     }
 }

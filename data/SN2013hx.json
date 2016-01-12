@@ -25,19 +25,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 25,
-        "discovermonth": 1,
+        "discoveryear": "2014",
+        "discoverday": "25",
+        "discovermonth": "1",
         "host": "A013533-5757",
         "claimedtype": "Ic",
-        "redshift": 0.135,
+        "redshift": "0.135000",
         "galra": "013533",
         "galdec": "-575750",
         "snra": "01:35:33.28",
         "sndec": "-57:57:50.6",
         "discoverer": "SkyMapper Supernova search",
-        "maxyear": 2014,
-        "maxmonth": 1,
-        "maxday": 25
+        "maxyear": "2014",
+        "maxmonth": "1",
+        "maxday": "25",
+        "maxappmag": "16.9",
+        "lumdist": "660.0",
+        "maxabsmag": "-22.0"
     }
 }

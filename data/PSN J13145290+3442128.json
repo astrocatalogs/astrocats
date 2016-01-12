@@ -14,6 +14,26 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J13145290+3442128.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Kunihiro Shima ",
+                "alias": "5"
+            },
+            {
+                "name": "MasanoriM izutani",
+                "alias": "6"
+            },
+            {
+                "name": "Paolo Corelli",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -23,19 +43,57 @@
                 "band": "",
                 "abmag": "17.5",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57135.888",
+                "band": "V",
+                "abmag": "17.8",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57136.609",
+                "band": "C",
+                "abmag": "18.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57136.7479",
+                "band": "U",
+                "abmag": "17.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57137.632",
+                "band": "C",
+                "abmag": "17.8",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57158.912",
+                "band": "V",
+                "abmag": "19.2",
+                "source": "7,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "MCG +6-29-66",
         "snra": "13:14:52.90",
         "sndec": "+34:42:12.8",
-        "discoverday": 22,
-        "discovermonth": 4,
-        "discoveryear": 2015,
-        "redshift": 0.05285,
+        "discoverday": "22",
+        "discovermonth": "4",
+        "discoveryear": "2015",
+        "redshift": "0.052850",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 4,
-        "maxday": 22
+        "maxyear": "2015",
+        "maxmonth": "4",
+        "maxday": "22",
+        "maxappmag": "17.5",
+        "lumdist": "240.0",
+        "maxabsmag": "-19.0"
     }
 }

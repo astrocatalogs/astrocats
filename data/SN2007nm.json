@@ -29,9 +29,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 30,
-        "discovermonth": 9,
+        "discoveryear": "2007",
+        "discoverday": "30",
+        "discovermonth": "9",
         "host": "A224527+1039",
         "claimedtype": "Ia",
         "hvel": "13800",
@@ -40,10 +40,13 @@
         "snra": "22:45:27.42",
         "sndec": "+10:39:32.7",
         "discoverer": "Palomar-Quest",
-        "redshift": 0.046,
-        "maxyear": 2007,
-        "maxmonth": 9,
-        "maxday": 30,
-        "z": 0.0471
+        "redshift": "0.046000",
+        "maxyear": "2007",
+        "maxmonth": "9",
+        "maxday": "30",
+        "maxappmag": "19.1",
+        "z": "0.0471",
+        "lumdist": "210.0",
+        "maxabsmag": "-18.0"
     }
 }

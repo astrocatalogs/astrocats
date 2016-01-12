@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 12,
-        "discovermonth": 2,
+        "discoveryear": "2010",
+        "discoverday": "12",
+        "discovermonth": "2",
         "host": "IC 4352",
         "claimedtype": "Ic",
         "hvel": "5133",
@@ -39,10 +39,13 @@
         "snra": "13:58:24.35",
         "sndec": "-34:30:55.4",
         "discoverer": "CHASE",
-        "redshift": 0.0169,
-        "maxyear": 2010,
-        "maxmonth": 2,
-        "maxday": 12,
-        "z": 0.0173
+        "redshift": "0.016900",
+        "maxyear": "2010",
+        "maxmonth": "2",
+        "maxday": "12",
+        "maxappmag": "16.6",
+        "z": "0.0173",
+        "lumdist": "76.0",
+        "maxabsmag": "-18.0"
     }
 }

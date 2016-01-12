@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 28,
-        "discovermonth": 10,
+        "discoveryear": "2008",
+        "discoverday": "28",
+        "discovermonth": "10",
         "host": "IC 1579",
         "claimedtype": "IIP",
         "hvel": "6831",
@@ -39,10 +39,13 @@
         "snra": "00:45:32.28",
         "sndec": "-26:34:20.2",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.0228,
-        "maxyear": 2008,
-        "maxmonth": 10,
-        "maxday": 28,
-        "z": 0.0231
+        "redshift": "0.022800",
+        "maxyear": "2008",
+        "maxmonth": "10",
+        "maxday": "28",
+        "maxappmag": "17.2",
+        "z": "0.0231",
+        "lumdist": "100.0",
+        "maxabsmag": "-18.0"
     }
 }

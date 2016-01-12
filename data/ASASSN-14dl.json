@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.astronomerstelegram.org/?read=6283'>ATEL 6283</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stu Parker",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,19 +27,29 @@
                 "band": "",
                 "abmag": "16.6",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56845.371",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "3,1"
             }
         ],
         "claimedtype": "II",
         "host": "ESO 506-G4",
         "snra": "12:21:51.38",
         "sndec": "-24:09:54.0",
-        "discoverday": 29,
-        "discovermonth": 6,
-        "discoveryear": 2014,
-        "redshift": 0.013416,
+        "discoverday": "29",
+        "discovermonth": "6",
+        "discoveryear": "2014",
+        "redshift": "0.013416",
         "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 29
+        "maxyear": "2014",
+        "maxmonth": "7",
+        "maxday": "7",
+        "maxappmag": "16.3",
+        "lumdist": "60.0",
+        "maxabsmag": "-18.0"
     }
 }

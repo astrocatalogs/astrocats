@@ -31,35 +31,35 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52698.299999999814",
+                "time": "52698.3",
                 "band": "C",
                 "abmag": "18.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52704.10000000009",
+                "time": "52704.1",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52704.200000000186",
+                "time": "52704.2",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52705.200000000186",
+                "time": "52705.2",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52706.970000000205",
+                "time": "52706.97",
                 "band": "R",
                 "abmag": "17",
                 "source": "1,2"
@@ -72,9 +72,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 28,
-        "discovermonth": 2,
+        "discoveryear": "2003",
+        "discoverday": "28",
+        "discovermonth": "2",
         "host": "NGC 2596",
         "claimedtype": "Ib",
         "hvel": "5934",
@@ -83,9 +83,10 @@
         "snra": "08:27:27.828",
         "sndec": "+17:17:14.59",
         "discoverer": "LOTOSS",
-        "maxyear": 2003,
-        "maxmonth": 3,
-        "maxday": 8,
-        "z": 0.02
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "8",
+        "maxappmag": "17",
+        "z": "0.02"
     }
 }

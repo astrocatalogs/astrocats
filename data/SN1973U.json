@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1973,
-        "discoverday": 23,
-        "discovermonth": 12,
+        "discoveryear": "1973",
+        "discoverday": "23",
+        "discovermonth": "12",
         "host": "IC 43",
         "claimedtype": "II",
         "hvel": "4858",
@@ -39,9 +39,10 @@
         "discoverer": "Charles Kowal",
         "snra": "00:42:16.6",
         "sndec": "+29:39:26.0",
-        "maxyear": 1973,
-        "maxmonth": 12,
-        "maxday": 23,
-        "z": 0.0163
+        "maxyear": "1973",
+        "maxmonth": "12",
+        "maxday": "23",
+        "maxappmag": "16.5",
+        "z": "0.0163"
     }
 }

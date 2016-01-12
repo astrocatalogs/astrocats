@@ -13,6 +13,66 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J20435314+1230304.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Diego Rodriguez",
+                "alias": "3"
+            },
+            {
+                "name": "Juan-Luis Glez. Carballo",
+                "alias": "4"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "5"
+            },
+            {
+                "name": "Gianlucca Masi",
+                "alias": "6"
+            },
+            {
+                "name": "Andrea Mantero",
+                "alias": "7"
+            },
+            {
+                "name": "Gianpiero Locatelli",
+                "alias": "8"
+            },
+            {
+                "name": "M. Caimmi",
+                "alias": "9"
+            },
+            {
+                "name": "Jose Carrillo",
+                "alias": "10"
+            },
+            {
+                "name": "Massimo Caimmi",
+                "alias": "11"
+            },
+            {
+                "name": "Masnori Mizutani",
+                "alias": "12"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "13"
+            },
+            {
+                "name": "MDe",
+                "alias": "14"
+            },
+            {
+                "name": "Rodrigo Losada",
+                "alias": "15"
+            },
+            {
+                "name": "Jaroslaw Grzegorzek",
+                "alias": "16"
+            },
+            {
+                "name": "Thomas Langhans",
+                "alias": "17"
             }
         ],
         "photometry": [
@@ -22,19 +82,169 @@
                 "band": "",
                 "abmag": "15.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57217.92",
+                "band": "CV",
+                "abmag": "16.59",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57215.09927",
+                "band": "CV",
+                "abmag": "16.90",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56854.933",
+                "band": "C",
+                "abmag": "16.3",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57214.0",
+                "band": "R",
+                "abmag": "17.7",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57214.91",
+                "band": "C",
+                "abmag": "18.0",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57214.962",
+                "band": "Rc",
+                "abmag": "17.9",
+                "source": "8,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57215.024",
+                "band": "C",
+                "abmag": "17.6",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57215.87098",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57216.006",
+                "band": "C",
+                "abmag": "17.39",
+                "source": "10,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57216.947",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57217.875",
+                "band": "V",
+                "abmag": "16.9",
+                "source": "11,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57217.932",
+                "band": "C",
+                "abmag": "16.7",
+                "source": "12,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57221.6868",
+                "band": "U",
+                "abmag": "16.3",
+                "source": "13,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57221.973",
+                "band": "C",
+                "abmag": "16.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57222.041",
+                "band": "CV",
+                "abmag": "16.0",
+                "source": "14,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57222.86008",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "9,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57222.958",
+                "band": "CR",
+                "abmag": "16.5",
+                "source": "15,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57224.9349",
+                "band": "C",
+                "abmag": "15.8",
+                "source": "11,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57225.028",
+                "band": "U",
+                "abmag": "16.0",
+                "source": "16,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57227.968",
+                "band": "C",
+                "abmag": "15.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57231.356",
+                "band": "UV",
+                "abmag": "15.8",
+                "source": "17,1"
             }
         ],
         "claimedtype": "Ia",
         "host": "NGC 6956",
         "snra": "20:43:53.14",
         "sndec": "+12:30:30.4",
-        "discoverday": 27,
-        "discovermonth": 7,
-        "discoveryear": 2015,
-        "redshift": 0.0155,
+        "discoverday": "16",
+        "discovermonth": "7",
+        "discoveryear": "2014",
+        "redshift": "0.015500",
         "discoverer": "Italian Supernovae Search Project",
-        "maxyear": 2015,
-        "maxmonth": 7,
-        "maxday": 27
+        "maxyear": "2015",
+        "maxmonth": "7",
+        "maxday": "27",
+        "maxappmag": "15.8",
+        "lumdist": "69.0",
+        "maxabsmag": "-18.0"
     }
 }

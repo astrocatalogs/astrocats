@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52707.299999999814",
+                "time": "52707.3",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52708.299999999814",
+                "time": "52708.3",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 8,
-        "discovermonth": 3,
+        "discoveryear": "2003",
+        "discoverday": "8",
+        "discovermonth": "3",
         "host": "MCG -1-28-6",
         "claimedtype": "Ia",
         "galra": "105522",
@@ -61,8 +61,9 @@
         "snra": "10:55:22.488",
         "sndec": "-07:39:12.39",
         "discoverer": "Mike Schwartz",
-        "maxyear": 2003,
-        "maxmonth": 3,
-        "maxday": 9
+        "maxyear": "2003",
+        "maxmonth": "3",
+        "maxday": "9",
+        "maxappmag": "16.7"
     }
 }

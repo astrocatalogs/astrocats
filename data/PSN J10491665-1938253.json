@@ -14,6 +14,26 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J10491665-1938253.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Kunihiro",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "Kunihiro. Shima",
+                "alias": "5"
+            },
+            {
+                "name": "Seiichiro Kiyota",
+                "alias": "6"
+            },
+            {
+                "name": "T. Yusa",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -23,19 +43,57 @@
                 "band": "",
                 "abmag": "16.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57073.7472",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57073.7472",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57073.7472",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57074.2842",
+                "band": "V",
+                "abmag": "16.83",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57074.3291",
+                "band": "U",
+                "abmag": "17.2",
+                "source": "7,1"
             }
         ],
         "claimedtype": "IIP",
         "host": "ESO 569-G12",
         "snra": "10:49:16.65",
         "sndec": "-19:38:25.3",
-        "discoverday": 19,
-        "discovermonth": 2,
-        "discoveryear": 2015,
-        "redshift": 0.01,
+        "discoverday": "19",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.010000",
         "discoverer": "Koichi Itagaki",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 19
+        "maxyear": "2015",
+        "maxmonth": "2",
+        "maxday": "19",
+        "maxappmag": "16.8",
+        "lumdist": "45.0",
+        "maxabsmag": "-16.0"
     }
 }

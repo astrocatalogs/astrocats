@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 20,
-        "discovermonth": 9,
+        "discoveryear": "2003",
+        "discoverday": "20",
+        "discovermonth": "9",
         "host": "NGC 895",
         "claimedtype": "Ic-pec",
         "hvel": "2344",
@@ -39,10 +39,13 @@
         "snra": "02:21:35.70",
         "sndec": "-05:31:51.0",
         "discoverer": "LOTOSS",
-        "redshift": 0.008,
-        "maxyear": 2003,
-        "maxmonth": 9,
-        "maxday": 20,
-        "z": 0.00785
+        "redshift": "0.008000",
+        "maxyear": "2003",
+        "maxmonth": "9",
+        "maxday": "20",
+        "maxappmag": "16.3",
+        "z": "0.00785",
+        "lumdist": "36.0",
+        "maxabsmag": "-16.0"
     }
 }

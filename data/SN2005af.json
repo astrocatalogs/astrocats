@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 11,
-        "discovermonth": 2,
+        "discoveryear": "2005",
+        "discoverday": "11",
+        "discovermonth": "2",
         "host": "NGC 4945",
         "claimedtype": "II",
         "hvel": "581",
@@ -39,9 +39,10 @@
         "snra": "13:04:44.06",
         "sndec": "-49:33:59.8",
         "discoverer": "CEAMIG/REA Supernovae Search",
-        "maxyear": 2005,
-        "maxmonth": 2,
-        "maxday": 11,
-        "z": 0.00194
+        "maxyear": "2005",
+        "maxmonth": "2",
+        "maxday": "11",
+        "maxappmag": "12.5",
+        "z": "0.00194"
     }
 }

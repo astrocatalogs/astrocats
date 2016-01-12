@@ -47,9 +47,9 @@
                 "source": "4,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 30,
-        "discovermonth": 7,
+        "discoveryear": "2013",
+        "discoverday": "30",
+        "discovermonth": "7",
         "host": "PGC 214897",
         "claimedtype": "Ia",
         "hvel": "6597",
@@ -58,10 +58,13 @@
         "snra": "23:02:26.62",
         "sndec": "+32:31:31.2",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.022,
-        "maxyear": 2013,
-        "maxmonth": 7,
-        "maxday": 30,
-        "z": 0.0223
+        "redshift": "0.022000",
+        "maxyear": "2013",
+        "maxmonth": "7",
+        "maxday": "30",
+        "maxappmag": "15.7",
+        "z": "0.0223",
+        "lumdist": "99.0",
+        "maxabsmag": "-19.0"
     }
 }

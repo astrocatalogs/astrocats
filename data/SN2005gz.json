@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 10,
-        "discovermonth": 10,
+        "discoveryear": "2005",
+        "discoverday": "10",
+        "discovermonth": "10",
         "host": "MCG -1-53-22",
         "claimedtype": "II",
         "hvel": "8518",
@@ -39,9 +39,10 @@
         "snra": "21:05:20.69",
         "sndec": "-07:50:47.5",
         "discoverer": "LOSS",
-        "maxyear": 2005,
-        "maxmonth": 10,
-        "maxday": 10,
-        "z": 0.0288
+        "maxyear": "2005",
+        "maxmonth": "10",
+        "maxday": "10",
+        "maxappmag": "17.9",
+        "z": "0.0288"
     }
 }

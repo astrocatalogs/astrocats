@@ -38,7 +38,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47237.10000000009",
+                "time": "47237.1",
                 "band": "V",
                 "abmag": "17.8",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1988,
-        "maxday": 19,
-        "maxmonth": 2,
+        "discoveryear": "1988",
+        "maxday": "19",
+        "maxmonth": "2",
         "host": "UGC 9288",
         "claimedtype": "Ia",
         "hvel": "5274",
@@ -62,10 +62,13 @@
         "discoverer": "Jean Mueller",
         "snra": "14:28:57.9",
         "sndec": "+13:51:16.0",
-        "discoverday": 19,
-        "discovermonth": 2,
-        "redshift": 0.017619,
-        "maxyear": 1988,
-        "z": 0.0177
+        "discoverday": "19",
+        "discovermonth": "2",
+        "redshift": "0.017619",
+        "maxyear": "1988",
+        "maxappmag": "16.0",
+        "z": "0.0177",
+        "lumdist": "79.0",
+        "maxabsmag": "-18.0"
     }
 }

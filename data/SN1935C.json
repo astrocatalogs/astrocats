@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1935,
-        "maxday": 15,
-        "maxmonth": 8,
+        "discoveryear": "1935",
+        "maxday": "15",
+        "maxmonth": "8",
         "host": "NGC 1511",
         "hvel": "1342",
         "galra": "035936",
@@ -38,9 +38,10 @@
         "discoverer": "Boyce",
         "snra": "03:59:44.6",
         "sndec": "-67:38:15.0",
-        "discoverday": 15,
-        "discovermonth": 8,
-        "maxyear": 1935,
-        "z": 0.00449
+        "discoverday": "15",
+        "discovermonth": "8",
+        "maxyear": "1935",
+        "maxappmag": "12.5",
+        "z": "0.00449"
     }
 }

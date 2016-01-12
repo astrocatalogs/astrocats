@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54054.67815000005",
+                "time": "54054.67815",
                 "band": "V",
                 "abmag": "18.172",
                 "aberr": "0.028",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54054.68116000015",
+                "time": "54054.68116",
                 "band": "B",
                 "abmag": "18.35",
                 "aberr": "0.027",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54055.82510000002",
+                "time": "54055.8251",
                 "band": "V",
                 "abmag": "18.051",
                 "aberr": "0.028",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54055.828120000195",
+                "time": "54055.82812",
                 "band": "B",
                 "abmag": "18.324",
                 "aberr": "0.034",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54063.69274999993",
+                "time": "54063.69275",
                 "band": "V",
                 "abmag": "18.067",
                 "aberr": "0.038",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54063.695780000184",
+                "time": "54063.69578",
                 "band": "B",
                 "abmag": "18.898",
                 "aberr": "0.036",
@@ -79,7 +79,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54065.720830000006",
+                "time": "54065.72083",
                 "band": "B",
                 "abmag": "19.262",
                 "aberr": "0.06",
@@ -101,9 +101,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 7,
-        "discovermonth": 11,
+        "discoveryear": "2006",
+        "discoverday": "7",
+        "discovermonth": "11",
         "host": "A005629-0113",
         "claimedtype": "Ia",
         "hvel": "11360",
@@ -112,10 +112,13 @@
         "snra": "00:56:29.21",
         "sndec": "-01:13:36.1",
         "discoverer": "SDSS Collaboration",
-        "redshift": 0.04,
-        "maxyear": 2006,
-        "maxmonth": 11,
-        "maxday": 16,
-        "z": 0.0386
+        "redshift": "0.040000",
+        "maxyear": "2006",
+        "maxmonth": "11",
+        "maxday": "16",
+        "maxappmag": "18.051",
+        "z": "0.0386",
+        "lumdist": "180.0",
+        "maxabsmag": "-18.0"
     }
 }

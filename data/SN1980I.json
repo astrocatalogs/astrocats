@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1980,
-        "maxday": 12,
-        "maxmonth": 6,
+        "discoveryear": "1980",
+        "maxday": "12",
+        "maxmonth": "6",
         "host": "M84",
         "claimedtype": "Ia-pec",
         "hvel": "913",
@@ -39,9 +39,10 @@
         "snra": "12:25:38.1",
         "sndec": "+12:53:24.0",
         "discoverer": "Rosker",
-        "discoverday": 12,
-        "discovermonth": 6,
-        "maxyear": 1980,
-        "z": 0.00305
+        "discoverday": "12",
+        "discovermonth": "6",
+        "maxyear": "1980",
+        "maxappmag": "14.0",
+        "z": "0.00305"
     }
 }

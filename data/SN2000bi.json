@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51625.89999999991",
+                "time": "51625.9",
                 "band": "R",
                 "abmag": "18.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51641.919999999925",
+                "time": "51641.92",
                 "band": "R",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51642.85000000009",
+                "time": "51642.85",
                 "band": "R",
                 "abmag": "19.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51654.830000000075",
+                "time": "51654.83",
                 "band": "R",
                 "abmag": "19.3",
                 "source": "1,2"
@@ -65,17 +65,18 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 21,
-        "discovermonth": 3,
+        "discoveryear": "2000",
+        "discoverday": "21",
+        "discovermonth": "3",
         "host": "PGC 20784",
         "galra": "072133",
         "galdec": "+554530",
         "snra": "07:21:33.52",
         "sndec": "+55:45:30.8",
         "discoverer": "Monte Agliale Supernovae Search",
-        "maxyear": 2000,
-        "maxmonth": 3,
-        "maxday": 22
+        "maxyear": "2000",
+        "maxmonth": "3",
+        "maxday": "22",
+        "maxappmag": "18.4"
     }
 }

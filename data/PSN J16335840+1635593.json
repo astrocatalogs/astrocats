@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J16335840+1635593.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,16 +26,24 @@
                 "band": "",
                 "abmag": "18.7",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56837.197",
+                "band": "C",
+                "abmag": "18.7",
+                "source": "3,1"
             }
         ],
         "snra": "16:33:58.40",
         "sndec": "+16:35:59.3",
-        "discoverday": 28,
-        "discovermonth": 6,
-        "discoveryear": 2014,
+        "discoverday": "28",
+        "discovermonth": "6",
+        "discoveryear": "2014",
         "discoverer": "THU-NAOC Transient Survey (TNTS)",
-        "maxyear": 2014,
-        "maxmonth": 6,
-        "maxday": 28
+        "maxyear": "2014",
+        "maxmonth": "6",
+        "maxday": "28",
+        "maxappmag": "18.7"
     }
 }

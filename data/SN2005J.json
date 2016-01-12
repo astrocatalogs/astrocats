@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 4,
-        "discovermonth": 2,
+        "discoveryear": "2005",
+        "discoverday": "4",
+        "discovermonth": "2",
         "host": "NGC 4012",
         "claimedtype": "II",
         "hvel": "4188",
@@ -39,10 +39,13 @@
         "snra": "11:58:28.54",
         "sndec": "+10:01:09.2",
         "discoverer": "Mike Schwartz",
-        "redshift": 0.014,
-        "maxyear": 2005,
-        "maxmonth": 2,
-        "maxday": 4,
-        "z": 0.0141
+        "redshift": "0.014000",
+        "maxyear": "2005",
+        "maxmonth": "2",
+        "maxday": "4",
+        "maxappmag": "15.9",
+        "z": "0.0141",
+        "lumdist": "63.0",
+        "maxabsmag": "-18.0"
     }
 }

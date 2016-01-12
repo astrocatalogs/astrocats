@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1960,
-        "discoverday": 17,
-        "discovermonth": 6,
+        "discoveryear": "1960",
+        "discoverday": "17",
+        "discovermonth": "6",
         "host": "NGC 4096",
         "claimedtype": "Ia-pec",
         "hvel": "558",
@@ -39,9 +39,10 @@
         "snra": "12:06:07.52",
         "sndec": "+47:30:38.2",
         "discoverer": "Paul Wild",
-        "maxyear": 1960,
-        "maxmonth": 6,
-        "maxday": 17,
-        "z": 0.00186
+        "maxyear": "1960",
+        "maxmonth": "6",
+        "maxday": "17",
+        "maxappmag": "14.5",
+        "z": "0.00186"
     }
 }

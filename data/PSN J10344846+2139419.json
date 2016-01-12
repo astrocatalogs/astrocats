@@ -1,0 +1,35 @@
+{
+    "PSN J10344846+2139419": {
+        "name": "PSN J10344846+2139419",
+        "aliases": [
+            "PSN J10344846+2139419"
+        ],
+        "sources": [
+            {
+                "name": "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>",
+                "alias": "1",
+                "secondary": true
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "2"
+            }
+        ],
+        "photometry": [
+            {
+                "timeunit": "MJD",
+                "time": "56605.489",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "2,1"
+            }
+        ],
+        "maxyear": "2013",
+        "maxmonth": "11",
+        "maxday": "9",
+        "maxappmag": "16.9",
+        "discoveryear": "2013",
+        "discovermonth": "11",
+        "discoverday": "9"
+    }
+}

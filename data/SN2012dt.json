@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 19,
-        "discovermonth": 7,
+        "discoveryear": "2012",
+        "discoverday": "19",
+        "discovermonth": "7",
         "host": "NGC 309",
         "claimedtype": "IIP",
         "hvel": "5649",
@@ -36,10 +36,13 @@
         "snra": "00:56:38.88",
         "sndec": "-09:54:09.1",
         "discoverer": "Stu Parker",
-        "redshift": 0.0189,
-        "maxyear": 2012,
-        "maxmonth": 7,
-        "maxday": 19,
-        "z": 0.019
+        "redshift": "0.018900",
+        "maxyear": "2012",
+        "maxmonth": "7",
+        "maxday": "19",
+        "maxappmag": "18.0",
+        "z": "0.019",
+        "lumdist": "85.0",
+        "maxabsmag": "-17.0"
     }
 }

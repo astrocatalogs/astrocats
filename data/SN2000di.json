@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51779.700000000186",
+                "time": "51779.7",
                 "band": "C",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51780.70999999996",
+                "time": "51780.71",
                 "band": "C",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51795.029999999795",
+                "time": "51795.03",
                 "band": "C",
                 "abmag": "17.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51810.00999999978",
+                "time": "51810.01",
                 "band": "C",
                 "abmag": "18",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 23,
-        "discovermonth": 8,
+        "discoveryear": "2000",
+        "discoverday": "23",
+        "discovermonth": "8",
         "host": "IC 1637",
         "claimedtype": "II",
         "hvel": "6002",
@@ -76,9 +76,10 @@
         "snra": "01:11:02.01",
         "sndec": "-30:26:31.2",
         "discoverer": "Masakatsu Aoki",
-        "maxyear": 2000,
-        "maxmonth": 9,
-        "maxday": 8,
-        "z": 0.0202
+        "maxyear": "2000",
+        "maxmonth": "9",
+        "maxday": "8",
+        "maxappmag": "17.2",
+        "z": "0.0202"
     }
 }

@@ -13,6 +13,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J09432886+0925230.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Massimo Caimmi",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -22,17 +26,25 @@
                 "band": "",
                 "abmag": "19.1",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57378.0265",
+                "band": "U",
+                "abmag": "19.7",
+                "source": "3,1"
             }
         ],
         "host": "PGC 27823",
         "snra": "09:43:28.86",
         "sndec": "+09:25:23.0",
-        "discoverday": 17,
-        "discovermonth": 12,
-        "discoveryear": 2015,
+        "discoverday": "17",
+        "discovermonth": "12",
+        "discoveryear": "2015",
         "discoverer": "Italian Supernovae Search Project",
-        "maxyear": 2015,
-        "maxmonth": 12,
-        "maxday": 17
+        "maxyear": "2015",
+        "maxmonth": "12",
+        "maxday": "17",
+        "maxappmag": "19.1"
     }
 }

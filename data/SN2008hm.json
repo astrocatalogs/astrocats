@@ -800,9 +800,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 24,
-        "discovermonth": 11,
+        "discoveryear": "2008",
+        "discoverday": "24",
+        "discovermonth": "11",
         "host": "PGC 213215",
         "claimedtype": "Ia",
         "hvel": "5899",
@@ -811,10 +811,13 @@
         "snra": "03:27:10.90",
         "sndec": "+46:56:39.6",
         "discoverer": "LOSS",
-        "redshift": 0.0197,
-        "maxyear": 2008,
-        "maxmonth": 12,
-        "maxday": 8,
-        "z": 0.0199
+        "redshift": "0.019700",
+        "maxyear": "2008",
+        "maxmonth": "12",
+        "maxday": "8",
+        "maxappmag": "16.7161",
+        "z": "0.0199",
+        "lumdist": "88.0",
+        "maxabsmag": "-18.0"
     }
 }

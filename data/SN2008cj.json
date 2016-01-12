@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 9,
-        "discovermonth": 5,
+        "discoveryear": "2008",
+        "discoverday": "9",
+        "discovermonth": "5",
         "host": "A123150+1401",
         "claimedtype": "Ia",
-        "redshift": 0.238,
+        "redshift": "0.238000",
         "galra": "123150",
         "galdec": "+140113",
         "snra": "12:31:50.71",
         "sndec": "+14:01:13.61",
         "discoverer": "Coma and Virgo Exploration for Transients",
-        "maxyear": 2008,
-        "maxmonth": 5,
-        "maxday": 9
+        "maxyear": "2008",
+        "maxmonth": "5",
+        "maxday": "9",
+        "maxappmag": "21.3",
+        "lumdist": "1200.0",
+        "maxabsmag": "-19.0"
     }
 }

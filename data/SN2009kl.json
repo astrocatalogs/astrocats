@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 22,
-        "discovermonth": 10,
+        "discoveryear": "2009",
+        "discoverday": "22",
+        "discovermonth": "10",
         "host": "IC 2548",
         "claimedtype": "IIP",
         "hvel": "4425",
@@ -39,10 +39,13 @@
         "snra": "10:07:56.75",
         "sndec": "-35:13:59.3",
         "discoverer": "Stu Parker",
-        "redshift": 0.0147,
-        "maxyear": 2009,
-        "maxmonth": 10,
-        "maxday": 22,
-        "z": 0.0149
+        "redshift": "0.014700",
+        "maxyear": "2009",
+        "maxmonth": "10",
+        "maxday": "22",
+        "maxappmag": "16.8",
+        "z": "0.0149",
+        "lumdist": "66.0",
+        "maxabsmag": "-17.0"
     }
 }

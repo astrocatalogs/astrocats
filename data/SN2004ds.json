@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 10,
-        "discovermonth": 8,
+        "discoveryear": "2004",
+        "discoverday": "10",
+        "discovermonth": "8",
         "host": "NGC 808",
         "claimedtype": "IIP",
         "hvel": "4944",
@@ -39,9 +39,10 @@
         "snra": "02:03:56.51",
         "sndec": "-23:18:50.6",
         "discoverer": "LOSS",
-        "maxyear": 2004,
-        "maxmonth": 8,
-        "maxday": 10,
-        "z": 0.0166
+        "maxyear": "2004",
+        "maxmonth": "8",
+        "maxday": "10",
+        "maxappmag": "16.8",
+        "z": "0.0166"
     }
 }

@@ -14,6 +14,22 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/unconf/followups/J14095513+1731556.html'>CBAT TOCP</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "3"
+            },
+            {
+                "name": "Kunihiro Shima",
+                "alias": "4"
+            },
+            {
+                "name": "MDe",
+                "alias": "5"
+            },
+            {
+                "name": "Led",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -23,19 +39,78 @@
                 "band": "",
                 "abmag": "16.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57068.53",
+                "band": "U",
+                "abmag": "17.5",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57068.8104",
+                "band": "U",
+                "abmag": "17.1",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57069.576",
+                "band": "V",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57071.174",
+                "band": "CV",
+                "abmag": "16.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57100.08",
+                "band": "CV",
+                "abmag": "18.2",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57110.015",
+                "band": "CV",
+                "abmag": "18.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57110.077",
+                "band": "CV",
+                "abmag": "14.0",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57130.61",
+                "band": "R",
+                "abmag": "21.3",
+                "source": "6,1"
             }
         ],
         "claimedtype": "Ia-91bg",
         "host": "NGC 5490",
         "snra": "14:09:55.13",
         "sndec": "+17:31:55.6",
-        "discoverday": 17,
-        "discovermonth": 2,
-        "discoveryear": 2015,
-        "redshift": 0.016,
+        "discoverday": "15",
+        "discovermonth": "2",
+        "discoveryear": "2015",
+        "redshift": "0.016000",
         "discoverer": "CRTS",
-        "maxyear": 2015,
-        "maxmonth": 2,
-        "maxday": 17
+        "maxyear": "2015",
+        "maxmonth": "3",
+        "maxday": "29",
+        "maxappmag": "14.0",
+        "lumdist": "72.0",
+        "maxabsmag": "-20.0"
     }
 }

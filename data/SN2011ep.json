@@ -25,19 +25,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 8,
-        "discovermonth": 7,
+        "discoveryear": "2011",
+        "discoverday": "8",
+        "discovermonth": "7",
         "host": "A170341+3245",
         "claimedtype": "Ic",
-        "redshift": 0.28,
+        "redshift": "0.280000",
         "galra": "170341",
         "galdec": "+324552",
         "snra": "17:03:41.78",
         "sndec": "+32:45:52.6",
         "discoverer": "CRTS",
-        "maxyear": 2011,
-        "maxmonth": 7,
-        "maxday": 8
+        "maxyear": "2011",
+        "maxmonth": "7",
+        "maxday": "8",
+        "maxappmag": "19.0",
+        "lumdist": "1500.0",
+        "maxabsmag": "-22.0"
     }
 }

@@ -45,49 +45,49 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52063.10999999987",
+                "time": "52063.11",
                 "band": "R",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52079.060000000056",
+                "time": "52079.06",
                 "band": "R",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52112.95999999996",
+                "time": "52112.96",
                 "band": "R",
                 "abmag": "16.7",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52116.99000000022",
+                "time": "52116.99",
                 "band": "R",
                 "abmag": "16.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52134.10999999987",
+                "time": "52134.11",
                 "band": "R",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52134.10999999987",
+                "time": "52134.11",
                 "band": "R",
                 "abmag": "17.2",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52135.06999999983",
+                "time": "52135.07",
                 "band": "R",
                 "abmag": "17.2",
                 "source": "1,2"
@@ -100,9 +100,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 28,
-        "discovermonth": 5,
+        "discoveryear": "2001",
+        "discoverday": "28",
+        "discovermonth": "5",
         "host": "MCG -1-54-16",
         "claimedtype": "Ia",
         "hvel": "2931",
@@ -111,10 +111,13 @@
         "snra": "21:25:59.19",
         "sndec": "-03:48:46.8",
         "discoverer": "LOTOSS",
-        "redshift": 0.0098,
-        "maxyear": 2001,
-        "maxmonth": 5,
-        "maxday": 28,
-        "z": 0.00983
+        "redshift": "0.009800",
+        "maxyear": "2001",
+        "maxmonth": "5",
+        "maxday": "28",
+        "maxappmag": "16.7",
+        "z": "0.00983",
+        "lumdist": "44.0",
+        "maxabsmag": "-17.0"
     }
 }

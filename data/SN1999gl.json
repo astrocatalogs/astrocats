@@ -31,21 +31,21 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51532.950000000186",
+                "time": "51532.95",
                 "band": "R",
                 "abmag": "17.41",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51543.79000000004",
+                "time": "51543.79",
                 "band": "C",
                 "abmag": "17.8",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51571.77000000002",
+                "time": "51571.77",
                 "band": "R",
                 "abmag": "17.9",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 20,
-        "discovermonth": 12,
+        "discoveryear": "1999",
+        "discoverday": "20",
+        "discovermonth": "12",
         "host": "NGC 317B",
         "claimedtype": "II",
         "hvel": "5083",
@@ -69,10 +69,13 @@
         "snra": "00:57:40.07",
         "sndec": "+43:47:35.6",
         "discoverer": "Tom Boles",
-        "redshift": 0.018,
-        "maxyear": 1999,
-        "maxmonth": 12,
-        "maxday": 20,
-        "z": 0.0171
+        "redshift": "0.018000",
+        "maxyear": "1999",
+        "maxmonth": "12",
+        "maxday": "20",
+        "maxappmag": "16.2",
+        "z": "0.0171",
+        "lumdist": "81.0",
+        "maxabsmag": "-18.0"
     }
 }

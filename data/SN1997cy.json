@@ -32,77 +32,77 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50670.299999999814",
+                "time": "50670.3",
                 "band": "B",
                 "abmag": "18.01",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50670.299999999814",
+                "time": "50670.3",
                 "band": "I",
                 "abmag": "16.91",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50670.299999999814",
+                "time": "50670.3",
                 "band": "R",
                 "abmag": "17.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50670.299999999814",
+                "time": "50670.3",
                 "band": "V",
                 "abmag": "17.38",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50698.29000000004",
+                "time": "50698.29",
                 "band": "B",
                 "abmag": "18.21",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50698.29000000004",
+                "time": "50698.29",
                 "band": "R",
                 "abmag": "17.32",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50698.29000000004",
+                "time": "50698.29",
                 "band": "V",
                 "abmag": "17.59",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50805.16000000015",
+                "time": "50805.16",
                 "band": "B",
                 "abmag": "18.76",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50805.16000000015",
+                "time": "50805.16",
                 "band": "I",
                 "abmag": "17.92",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50805.16000000015",
+                "time": "50805.16",
                 "band": "R",
                 "abmag": "17.95",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50805.16000000015",
+                "time": "50805.16",
                 "band": "V",
                 "abmag": "18.19",
                 "source": "1,2"
@@ -115,9 +115,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 15,
-        "discovermonth": 7,
+        "discoveryear": "1997",
+        "discoverday": "15",
+        "discovermonth": "7",
         "host": "A043254-6142",
         "claimedtype": "II",
         "hvel": "19260",
@@ -126,10 +126,13 @@
         "snra": "04:32:54.86",
         "sndec": "-61:42:57.5",
         "discoverer": "Mount Stromlo",
-        "redshift": 0.0642,
-        "maxyear": 1997,
-        "maxmonth": 8,
-        "maxday": 10,
-        "z": 0.0664
+        "redshift": "0.064200",
+        "maxyear": "1997",
+        "maxmonth": "8",
+        "maxday": "10",
+        "maxappmag": "16.91",
+        "z": "0.0664",
+        "lumdist": "300.0",
+        "maxabsmag": "-20.0"
     }
 }

@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50809.799999999814",
+                "time": "50809.8",
                 "band": "V",
                 "abmag": "16.33",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50813.79000000004",
+                "time": "50813.79",
                 "band": "V",
                 "abmag": "16.33",
                 "source": "1,2"
@@ -59,50 +59,50 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "50868.10000000009",
+                "time": "50868.1",
                 "band": "R",
                 "abmag": "18.42",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50868.10000000009",
+                "time": "50868.1",
                 "band": "V",
                 "abmag": "19",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50868.87999999989",
+                "time": "50868.88",
                 "band": "R",
                 "abmag": "18.21",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50868.87999999989",
+                "time": "50868.88",
                 "band": "V",
                 "abmag": "18.61",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50873.08999999985",
+                "time": "50873.09",
                 "band": "R",
                 "abmag": "18.24",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "50873.08999999985",
+                "time": "50873.09",
                 "band": "V",
                 "abmag": "18.8",
                 "source": "1,3"
             }
         ],
-        "discoveryear": 1997,
-        "discoverday": 27,
-        "discovermonth": 12,
+        "discoveryear": "1997",
+        "discoverday": "27",
+        "discovermonth": "12",
         "host": "NGC 3963",
         "claimedtype": "Ic",
         "hvel": "3204",
@@ -111,10 +111,13 @@
         "snra": "11:54:59.98",
         "sndec": "+58:29:26.42",
         "discoverer": "Masakatsu Aoki",
-        "redshift": 0.011,
-        "maxyear": 1997,
-        "maxmonth": 12,
-        "maxday": 27,
-        "z": 0.0107
+        "redshift": "0.011000",
+        "maxyear": "1997",
+        "maxmonth": "12",
+        "maxday": "27",
+        "maxappmag": "16.33",
+        "z": "0.0107",
+        "lumdist": "49.0",
+        "maxabsmag": "-17.0"
     }
 }

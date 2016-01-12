@@ -2867,21 +2867,24 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2007,
-        "redshift": 0.0065,
+        "discoveryear": "2007",
+        "redshift": "0.006500",
         "snra": "03:38:50.9",
         "sndec": "-35:34:30",
-        "discoverday": 6,
-        "discovermonth": 11,
+        "discoverday": "6",
+        "discovermonth": "11",
         "host": "NGC 1404",
         "claimedtype": "Ia",
         "hvel": "1929",
         "galra": "033852",
         "galdec": "-353539",
         "discoverer": "TAROT collaboration",
-        "maxyear": 2007,
-        "maxmonth": 11,
-        "maxday": 17,
-        "z": 0.00646
+        "maxyear": "2007",
+        "maxmonth": "11",
+        "maxday": "17",
+        "maxappmag": "12.954",
+        "z": "0.00646",
+        "lumdist": "29.0",
+        "maxabsmag": "-19.0"
     }
 }

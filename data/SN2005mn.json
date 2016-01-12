@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 22,
-        "discovermonth": 11,
+        "discoveryear": "2005",
+        "discoverday": "22",
+        "discovermonth": "11",
         "host": "A034918-0041",
         "claimedtype": "Ia",
         "hvel": "15000",
@@ -39,10 +39,13 @@
         "snra": "03:49:18.44",
         "sndec": "-00:41:31.4",
         "discoverer": "SDSS",
-        "redshift": 0.05,
-        "maxyear": 2005,
-        "maxmonth": 11,
-        "maxday": 22,
-        "z": 0.0514
+        "redshift": "0.050000",
+        "maxyear": "2005",
+        "maxmonth": "11",
+        "maxday": "22",
+        "maxappmag": "21.2",
+        "z": "0.0514",
+        "lumdist": "230.0",
+        "maxabsmag": "-16.0"
     }
 }

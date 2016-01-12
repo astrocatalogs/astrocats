@@ -14,6 +14,14 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/004100/CBET004187.txt'>CBET 4187</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Paolo Campaner",
+                "alias": "3"
+            },
+            {
+                "name": "Masanori Mizutani",
+                "alias": "4"
             }
         ],
         "photometry": [
@@ -23,11 +31,32 @@
                 "band": "",
                 "abmag": "18.0",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57248.11",
+                "band": "U",
+                "abmag": "18.6",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57250.022",
+                "band": "C",
+                "abmag": "18.0",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "57256.09",
+                "band": "U",
+                "abmag": "18.6",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 15,
-        "discovermonth": 8,
+        "discoveryear": "2015",
+        "discoverday": "14",
+        "discovermonth": "8",
         "host": "UGC 1641",
         "claimedtype": "II",
         "hvel": "5007",
@@ -36,10 +65,13 @@
         "snra": "02:09:09.90",
         "sndec": "+31:59:51.5",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.0167,
-        "maxyear": 2015,
-        "maxmonth": 8,
-        "maxday": 15,
-        "z": 0.0168
+        "redshift": "0.016700",
+        "maxyear": "2015",
+        "maxmonth": "8",
+        "maxday": "15",
+        "maxappmag": "18.0",
+        "z": "0.0168",
+        "lumdist": "75.0",
+        "maxabsmag": "-16.0"
     }
 }

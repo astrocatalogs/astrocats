@@ -35,42 +35,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "49298.87000000011",
+                "time": "49298.87",
                 "band": "B",
                 "abmag": "18",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49301.10000000009",
+                "time": "49301.1",
                 "band": "B",
                 "abmag": "16.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49301.10000000009",
+                "time": "49301.1",
                 "band": "R",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49301.10000000009",
+                "time": "49301.1",
                 "band": "V",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "49305.74000000022",
+                "time": "49305.74",
                 "band": "B",
                 "abmag": "16.24",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "49306.75999999978",
+                "time": "49306.76",
                 "band": "B",
                 "abmag": "16.26",
                 "source": "1,3"
@@ -84,7 +84,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "49309.830000000075",
+                "time": "49309.83",
                 "band": "B",
                 "abmag": "16.37",
                 "source": "1,3"
@@ -97,9 +97,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 1993,
-        "discoverday": 6,
-        "discovermonth": 11,
+        "discoveryear": "1993",
+        "discoverday": "6",
+        "discovermonth": "11",
         "host": "IC 1501",
         "claimedtype": "II",
         "hvel": "5167",
@@ -108,9 +108,10 @@
         "snra": "23:34:40.97",
         "sndec": "-03:09:33.1",
         "discoverer": "Christian Pollas",
-        "maxyear": 1993,
-        "maxmonth": 11,
-        "maxday": 14,
-        "z": 0.0174
+        "maxyear": "1993",
+        "maxmonth": "11",
+        "maxday": "14",
+        "maxappmag": "16.24",
+        "z": "0.0174"
     }
 }

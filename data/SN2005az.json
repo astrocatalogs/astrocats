@@ -1112,9 +1112,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2005,
-        "maxday": 1,
-        "maxmonth": 5,
+        "discoveryear": "2005",
+        "maxday": "1",
+        "maxmonth": "5",
         "host": "NGC 4961",
         "claimedtype": "Ic",
         "hvel": "2572",
@@ -1123,9 +1123,10 @@
         "snra": "13:05:46.97",
         "sndec": "+27:44:08.4",
         "discoverer": "ROTSE",
-        "discoverday": 5,
-        "discovermonth": 4,
-        "maxyear": 2005,
-        "z": 0.00862
+        "discoverday": "5",
+        "discovermonth": "4",
+        "maxyear": "2005",
+        "maxappmag": "15.0",
+        "z": "0.00862"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1987,
-        "discoverday": 29,
-        "discovermonth": 11,
+        "discoveryear": "1987",
+        "discoverday": "29",
+        "discovermonth": "11",
         "host": "UGC 3845",
         "hvel": "3032",
         "galra": "072644",
@@ -38,9 +38,10 @@
         "discoverer": "Jean Mueller",
         "snra": "07:26:41.1",
         "sndec": "+47:04:48.0",
-        "maxyear": 1987,
-        "maxmonth": 11,
-        "maxday": 29,
-        "z": 0.0102
+        "maxyear": "1987",
+        "maxmonth": "11",
+        "maxday": "29",
+        "maxappmag": "16.0",
+        "z": "0.0102"
     }
 }

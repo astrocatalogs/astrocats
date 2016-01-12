@@ -39,9 +39,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 23,
-        "discovermonth": 8,
+        "discoveryear": "2008",
+        "discoverday": "23",
+        "discovermonth": "8",
         "host": "UGC 2813",
         "claimedtype": "II",
         "hvel": "1392",
@@ -50,10 +50,13 @@
         "snra": "03:42:36.69",
         "sndec": "+71:18:36.5",
         "discoverer": "Taurus Hill Observatory",
-        "redshift": 0.0046,
-        "maxyear": 2008,
-        "maxmonth": 8,
-        "maxday": 23,
-        "z": 0.00465
+        "redshift": "0.004600",
+        "maxyear": "2008",
+        "maxmonth": "8",
+        "maxday": "23",
+        "maxappmag": "16.9",
+        "z": "0.00465",
+        "lumdist": "20.0",
+        "maxabsmag": "-15.0"
     }
 }

@@ -38,14 +38,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52669.16000000015",
+                "time": "52669.16",
                 "band": "C",
                 "abmag": "17",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52669.52000000002",
+                "time": "52669.52",
                 "band": "C",
                 "abmag": "16.7",
                 "source": "1,2"
@@ -58,9 +58,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 27,
-        "discovermonth": 1,
+        "discoveryear": "2003",
+        "discoverday": "27",
+        "discovermonth": "1",
         "host": "UGC 11151",
         "claimedtype": "Ia",
         "hvel": "7017",
@@ -69,9 +69,10 @@
         "snra": "18:12:05.678",
         "sndec": "+29:09:17.39",
         "discoverer": "Tom Boles",
-        "maxyear": 2003,
-        "maxmonth": 1,
-        "maxday": 30,
-        "z": 0.0237
+        "maxyear": "2003",
+        "maxmonth": "1",
+        "maxday": "30",
+        "maxappmag": "16.7",
+        "z": "0.0237"
     }
 }

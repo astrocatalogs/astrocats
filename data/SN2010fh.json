@@ -29,19 +29,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 5,
-        "discovermonth": 6,
+        "discoveryear": "2010",
+        "discoverday": "5",
+        "discovermonth": "6",
         "host": "A141718+5358",
         "claimedtype": "Ia",
-        "redshift": 0.387,
+        "redshift": "0.387000",
         "galra": "141718",
         "galdec": "+535841",
         "snra": "14:17:18.587",
         "sndec": "+53:58:41.89",
         "discoverer": "PS1",
-        "maxyear": 2010,
-        "maxmonth": 6,
-        "maxday": 5
+        "maxyear": "2010",
+        "maxmonth": "6",
+        "maxday": "5",
+        "maxappmag": "22.3",
+        "lumdist": "2200.0",
+        "maxabsmag": "-19.0"
     }
 }

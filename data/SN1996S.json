@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1996,
-        "discoverday": 14,
-        "discovermonth": 3,
+        "discoveryear": "1996",
+        "discoverday": "14",
+        "discovermonth": "3",
         "host": "A112511-3526",
         "claimedtype": "II",
         "redshift": "0.11",
@@ -39,8 +39,11 @@
         "snra": "11:25:11.16",
         "sndec": "-35:26:29.1",
         "discoverer": "High Z Supernova Search",
-        "maxyear": 1996,
-        "maxmonth": 3,
-        "maxday": 14
+        "maxyear": "1996",
+        "maxmonth": "3",
+        "maxday": "14",
+        "maxappmag": "22.5",
+        "lumdist": "530.0",
+        "maxabsmag": "-16.0"
     }
 }

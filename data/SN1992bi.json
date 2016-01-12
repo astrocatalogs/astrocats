@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1992,
-        "discoverday": 20,
-        "discovermonth": 4,
+        "discoveryear": "1992",
+        "discoverday": "20",
+        "discovermonth": "4",
         "host": "A161012+3947",
         "claimedtype": "Ia",
         "redshift": "0.458",
@@ -39,8 +39,11 @@
         "snra": "16:10:12.80",
         "sndec": "+39:47:12.6",
         "discoverer": "Saul Perlmutter",
-        "maxyear": 1992,
-        "maxmonth": 4,
-        "maxday": 20
+        "maxyear": "1992",
+        "maxmonth": "4",
+        "maxday": "20",
+        "maxappmag": "22.0",
+        "lumdist": "2600.0",
+        "maxabsmag": "-20.0"
     }
 }

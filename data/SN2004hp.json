@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 8,
-        "discovermonth": 12,
+        "discoveryear": "2004",
+        "discoverday": "8",
+        "discovermonth": "12",
         "host": "A020935-0346",
         "claimedtype": "Ia",
-        "redshift": 0.5,
+        "redshift": "0.500000",
         "galra": "020935",
         "galdec": "-034623",
         "snra": "02:09:35.52",
         "sndec": "-03:46:23.5",
         "discoverer": "ESSENCE project",
-        "maxyear": 2004,
-        "maxmonth": 12,
-        "maxday": 8
+        "maxyear": "2004",
+        "maxmonth": "12",
+        "maxday": "8",
+        "maxappmag": "22.0",
+        "lumdist": "2900.0",
+        "maxabsmag": "-20.0"
     }
 }

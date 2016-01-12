@@ -1195,9 +1195,9 @@
                 "source": "5,4"
             }
         ],
-        "discoveryear": 2006,
-        "maxday": 27,
-        "maxmonth": 2,
+        "discoveryear": "2006",
+        "maxday": "27",
+        "maxmonth": "2",
         "host": "A032139+1652",
         "claimedtype": "Ib/c",
         "hvel": "9900",
@@ -1206,10 +1206,13 @@
         "snra": "03:21:39.71",
         "sndec": "+16:52:02.6",
         "discoverer": "SWIFT",
-        "discoverday": 22,
-        "discovermonth": 2,
-        "redshift": 0.033,
-        "maxyear": 2006,
-        "z": 0.0336
+        "discoverday": "22",
+        "discovermonth": "2",
+        "redshift": "0.033000",
+        "maxyear": "2006",
+        "maxappmag": "16.393",
+        "z": "0.0336",
+        "lumdist": "150.0",
+        "maxabsmag": "-19.0"
     }
 }

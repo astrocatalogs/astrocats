@@ -16,8 +16,24 @@
                 "alias": "2"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Massimiliano Martignoni ",
                 "alias": "3"
+            },
+            {
+                "name": "T. Yusa",
+                "alias": "4"
+            },
+            {
+                "name": "T. Noguchi",
+                "alias": "5"
+            },
+            {
+                "name": "Federica Luppi and Luca Buzzi",
+                "alias": "6"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "7"
             }
         ],
         "photometry": [
@@ -30,15 +46,43 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56640.17",
+                "band": "V",
+                "abmag": "16.9",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56640.39939",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56640.639",
+                "band": "U",
+                "abmag": "16.9",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56642.1915",
+                "band": "U",
+                "abmag": "16.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56641.418",
                 "band": "C",
                 "abmag": "17.2",
-                "source": "3,1"
+                "source": "7,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 12,
-        "discovermonth": 12,
+        "discoveryear": "2013",
+        "discoverday": "12",
+        "discovermonth": "12",
         "host": "NGC 3910",
         "claimedtype": "Ia",
         "hvel": "7833",
@@ -47,10 +91,13 @@
         "snra": "11:50:00.16",
         "sndec": "+21:20:16.6",
         "discoverer": "Koichi Itagaki",
-        "redshift": 0.026248,
-        "maxyear": 2013,
-        "maxmonth": 12,
-        "maxday": 12,
-        "z": 0.0265
+        "redshift": "0.026248",
+        "maxyear": "2013",
+        "maxmonth": "12",
+        "maxday": "16",
+        "maxappmag": "16.6",
+        "z": "0.0265",
+        "lumdist": "120.0",
+        "maxabsmag": "-19.0"
     }
 }

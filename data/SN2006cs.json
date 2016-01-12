@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "53893.85700999992",
+                "time": "53893.85701",
                 "band": "B",
                 "abmag": "18.867",
                 "aberr": "0.077",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "53896.656200000085",
+                "time": "53896.6562",
                 "band": "V",
                 "abmag": "17.812",
                 "aberr": "0.029",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "53900.77477000002",
+                "time": "53900.77477",
                 "band": "V",
                 "abmag": "18.384",
                 "aberr": "0.092",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "53900.7777900002",
+                "time": "53900.77779",
                 "band": "B",
                 "abmag": "20.163",
                 "aberr": "0.061",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "53927.701820000075",
+                "time": "53927.70182",
                 "band": "V",
                 "abmag": "20.52",
                 "aberr": "0.141",
@@ -85,9 +85,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2006,
-        "discoverday": 4,
-        "discovermonth": 6,
+        "discoveryear": "2006",
+        "discoverday": "4",
+        "discovermonth": "6",
         "host": "MCG +6-30-79",
         "claimedtype": "Ia",
         "hvel": "7098",
@@ -96,10 +96,13 @@
         "snra": "13:45:33.89",
         "sndec": "+35:36:36.6",
         "discoverer": "LOSS",
-        "redshift": 0.023,
-        "maxyear": 2006,
-        "maxmonth": 6,
-        "maxday": 4,
-        "z": 0.024
+        "redshift": "0.023000",
+        "maxyear": "2006",
+        "maxmonth": "6",
+        "maxday": "4",
+        "maxappmag": "17.5",
+        "z": "0.024",
+        "lumdist": "100.0",
+        "maxabsmag": "-18.0"
     }
 }

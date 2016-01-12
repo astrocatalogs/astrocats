@@ -20,11 +20,11 @@
                 "alias": "3"
             },
             {
-                "name": "Giancarlo Cortini",
+                "name": "Nick James",
                 "alias": "4"
             },
             {
-                "name": "Riccardo Mancini",
+                "name": "Andrea Mantero",
                 "alias": "5"
             },
             {
@@ -32,28 +32,36 @@
                 "alias": "6"
             },
             {
-                "name": "Rodrigo Losada",
+                "name": "Joseph Brimacombe",
                 "alias": "7"
             },
             {
-                "name": "Rafael Benavides",
+                "name": "Giancarlo Cortini",
                 "alias": "8"
             },
             {
-                "name": "Juan-Luis Glez. Carballo",
+                "name": "Riccardo Mancini",
                 "alias": "9"
             },
             {
-                "name": "Andrea Mantero",
+                "name": "Rodrigo Losada",
                 "alias": "10"
             },
             {
-                "name": "Gerhard Dangl",
+                "name": "Rafael Benavides",
                 "alias": "11"
             },
             {
-                "name": "Garhard Dangl",
+                "name": "Juan-Luis Glez. Carballo",
                 "alias": "12"
+            },
+            {
+                "name": "Gerhard Dangl",
+                "alias": "13"
+            },
+            {
+                "name": "Garhard Dangl",
+                "alias": "14"
             }
         ],
         "photometry": [
@@ -87,17 +95,59 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56826.93746",
+                "band": "V",
+                "abmag": "16.26",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56826.949",
+                "band": "V",
+                "abmag": "16.5",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56826.954",
+                "band": "V",
+                "abmag": "16.6",
+                "source": "6,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56827.229",
+                "band": "C",
+                "abmag": "16.9",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56828.209",
+                "band": "C",
+                "abmag": "16.4",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56829.237",
+                "band": "C",
+                "abmag": "16.1",
+                "source": "7,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56828.87",
                 "band": "U",
                 "abmag": "15.3",
-                "source": "4,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56828.902",
                 "band": "U",
                 "abmag": "15.2",
-                "source": "5,1"
+                "source": "9,1"
             },
             {
                 "timeunit": "MJD",
@@ -111,28 +161,28 @@
                 "time": "56832.9",
                 "band": "C",
                 "abmag": "14.2",
-                "source": "4,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56835.95",
                 "band": "C",
                 "abmag": "13.9",
-                "source": "4,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56836.896",
                 "band": "CR",
                 "abmag": "14.1",
-                "source": "7,1"
+                "source": "10,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56837.927",
                 "band": "CV",
                 "abmag": "13.93",
-                "source": "8,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
@@ -146,49 +196,49 @@
                 "time": "56842.91213",
                 "band": "CV",
                 "abmag": "14.149",
-                "source": "8,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56842.99",
                 "band": "CV",
                 "abmag": "14.05",
-                "source": "9,1"
+                "source": "12,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56843.99",
                 "band": "C",
                 "abmag": "13.9",
-                "source": "4,1"
+                "source": "8,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56845.875",
                 "band": "U",
                 "abmag": "13.7",
-                "source": "10,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56855.875",
                 "band": "C",
                 "abmag": "15.0",
-                "source": "11,1"
+                "source": "13,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56858.9465",
                 "band": "CV",
                 "abmag": "15.17",
-                "source": "8,1"
+                "source": "11,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56862.903",
                 "band": "C",
                 "abmag": "15.7",
-                "source": "12,1"
+                "source": "14,1"
             },
             {
                 "timeunit": "MJD",
@@ -212,9 +262,9 @@
                 "source": "6,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 20,
-        "discovermonth": 6,
+        "discoveryear": "2014",
+        "discoverday": "18",
+        "discovermonth": "6",
         "host": "NGC 4386",
         "claimedtype": "Ia",
         "hvel": "1677",
@@ -223,10 +273,13 @@
         "snra": "12:24:30.98",
         "sndec": "+75:32:08.6",
         "discoverer": "Giancarlo Cortini",
-        "redshift": 0.005594,
-        "maxyear": 2014,
-        "maxmonth": 7,
-        "maxday": 7,
-        "z": 0.00561
+        "redshift": "0.005594",
+        "maxyear": "2014",
+        "maxmonth": "7",
+        "maxday": "7",
+        "maxappmag": "13.7",
+        "z": "0.00561",
+        "lumdist": "25.0",
+        "maxabsmag": "-18.0"
     }
 }

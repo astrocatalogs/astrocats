@@ -124,9 +124,9 @@
                 "source": "11,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 19,
-        "discovermonth": 8,
+        "discoveryear": "2013",
+        "discoverday": "19",
+        "discovermonth": "8",
         "host": "IC 1296",
         "claimedtype": "II",
         "hvel": "5118",
@@ -135,10 +135,13 @@
         "snra": "18:53:18.45",
         "sndec": "+33:03:52.7",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.017,
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 11,
-        "z": 0.0172
+        "redshift": "0.017000",
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "11",
+        "maxappmag": "16.53",
+        "z": "0.0172",
+        "lumdist": "76.0",
+        "maxabsmag": "-18.0"
     }
 }

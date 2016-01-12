@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 20,
-        "discovermonth": 6,
+        "discoveryear": "2003",
+        "discoverday": "20",
+        "discovermonth": "6",
         "host": "NGC 6122",
         "claimedtype": "Ia",
         "hvel": "10088",
@@ -39,9 +39,10 @@
         "snra": "16:20:08.758",
         "sndec": "+37:47:53.79",
         "discoverer": "Tim Puckett et al.",
-        "maxyear": 2003,
-        "maxmonth": 6,
-        "maxday": 20,
-        "z": 0.0342
+        "maxyear": "2003",
+        "maxmonth": "6",
+        "maxday": "20",
+        "maxappmag": "17.8",
+        "z": "0.0342"
     }
 }

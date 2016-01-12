@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2005,
-        "discoverday": 19,
-        "discovermonth": 1,
+        "discoveryear": "2005",
+        "discoverday": "19",
+        "discovermonth": "1",
         "host": "NGC 3340",
         "claimedtype": "Ib",
         "hvel": "5646",
@@ -39,9 +39,10 @@
         "snra": "10:42:18.32",
         "sndec": "-00:22:41.2",
         "discoverer": "Lulin Observatory",
-        "maxyear": 2005,
-        "maxmonth": 1,
-        "maxday": 19,
-        "z": 0.019
+        "maxyear": "2005",
+        "maxmonth": "1",
+        "maxday": "19",
+        "maxappmag": "15.2",
+        "z": "0.019"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 24,
-        "discovermonth": 12,
+        "discoveryear": "2011",
+        "discoverday": "24",
+        "discovermonth": "12",
         "host": "PGC 67911",
         "claimedtype": "Ic",
         "hvel": "4765",
@@ -36,10 +36,13 @@
         "snra": "22:02:44.45",
         "sndec": "+31:41:49.0",
         "discoverer": "Italian Supernovae Search Project",
-        "redshift": 0.0159,
-        "maxyear": 2011,
-        "maxmonth": 12,
-        "maxday": 24,
-        "z": 0.016
+        "redshift": "0.015900",
+        "maxyear": "2011",
+        "maxmonth": "12",
+        "maxday": "24",
+        "maxappmag": "16.5",
+        "z": "0.016",
+        "lumdist": "71.0",
+        "maxabsmag": "-18.0"
     }
 }

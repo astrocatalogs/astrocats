@@ -95,9 +95,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 12,
-        "discovermonth": 12,
+        "discoveryear": "2004",
+        "discoverday": "12",
+        "discovermonth": "12",
         "host": "NGC 856",
         "claimedtype": "Ib",
         "hvel": "5995",
@@ -106,9 +106,10 @@
         "snra": "02:13:37.42",
         "sndec": "-00:43:05.8",
         "discoverer": "Lulin Observatory",
-        "maxyear": 2005,
-        "maxmonth": 1,
-        "maxday": 11,
-        "z": 0.0202
+        "maxyear": "2005",
+        "maxmonth": "1",
+        "maxday": "11",
+        "maxappmag": "17.355",
+        "z": "0.0202"
     }
 }

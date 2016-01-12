@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2004,
-        "discoverday": 15,
-        "discovermonth": 5,
+        "discoveryear": "2004",
+        "discoverday": "15",
+        "discovermonth": "5",
         "host": "NGC 3323",
         "claimedtype": "Ib",
         "hvel": "5164",
@@ -39,10 +39,13 @@
         "snra": "10:39:39.30",
         "sndec": "+25:19:19.9",
         "discoverer": "Mark Armstrong",
-        "redshift": 0.017,
-        "maxyear": 2004,
-        "maxmonth": 5,
-        "maxday": 15,
-        "z": 0.0174
+        "redshift": "0.017000",
+        "maxyear": "2004",
+        "maxmonth": "5",
+        "maxday": "15",
+        "maxappmag": "17.0",
+        "z": "0.0174",
+        "lumdist": "76.0",
+        "maxabsmag": "-17.0"
     }
 }

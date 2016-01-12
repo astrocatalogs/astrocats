@@ -39,9 +39,9 @@
                 "source": "3,1"
             }
         ],
-        "discoveryear": 2008,
-        "discoverday": 28,
-        "discovermonth": 8,
+        "discoveryear": "2008",
+        "discoverday": "28",
+        "discovermonth": "8",
         "host": "ESO 284-G32",
         "claimedtype": "Ia",
         "hvel": "5748",
@@ -50,10 +50,13 @@
         "snra": "20:13:59.96",
         "sndec": "-44:21:07.8",
         "discoverer": "T. G. Tan",
-        "redshift": 0.0192,
-        "maxyear": 2008,
-        "maxmonth": 8,
-        "maxday": 28,
-        "z": 0.0194
+        "redshift": "0.019200",
+        "maxyear": "2008",
+        "maxmonth": "8",
+        "maxday": "28",
+        "maxappmag": "15.5",
+        "z": "0.0194",
+        "lumdist": "86.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2001,
-        "discoverday": 24,
-        "discovermonth": 5,
+        "discoveryear": "2001",
+        "discoverday": "24",
+        "discovermonth": "5",
         "host": "NGC 4622",
         "hvel": "4367",
         "galra": "124238",
@@ -38,9 +38,10 @@
         "snra": "12:42:40.04",
         "sndec": "-40:43:12.5",
         "discoverer": "HST",
-        "maxyear": 2001,
-        "maxmonth": 5,
-        "maxday": 24,
-        "z": 0.0147
+        "maxyear": "2001",
+        "maxmonth": "5",
+        "maxday": "24",
+        "maxappmag": "17.5",
+        "z": "0.0147"
     }
 }

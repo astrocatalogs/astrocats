@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2011,
-        "discoverday": 20,
-        "discovermonth": 11,
+        "discoveryear": "2011",
+        "discoverday": "20",
+        "discovermonth": "11",
         "host": "NGC 5409",
         "claimedtype": "Ia",
         "hvel": "6218",
@@ -36,10 +36,13 @@
         "snra": "14:01:47.20",
         "sndec": "+09:29:45.36",
         "discoverer": "Marco Migliardi",
-        "redshift": 0.0209,
-        "maxyear": 2011,
-        "maxmonth": 11,
-        "maxday": 20,
-        "z": 0.021
+        "redshift": "0.020900",
+        "maxyear": "2011",
+        "maxmonth": "11",
+        "maxday": "20",
+        "maxappmag": "16.0",
+        "z": "0.021",
+        "lumdist": "94.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2013,
-        "maxday": 23,
-        "maxmonth": 6,
+        "discoveryear": "2013",
+        "maxday": "23",
+        "maxmonth": "6",
         "host": "PGC 4701",
         "claimedtype": "Ia",
         "hvel": "5322",
@@ -36,10 +36,13 @@
         "snra": "01:18:41.76",
         "sndec": "-07:26:39.7",
         "discoverer": "All Sky Automated Survey for SuperNovae (ASAS-SN)",
-        "discoverday": 23,
-        "discovermonth": 6,
-        "redshift": 0.0178,
-        "maxyear": 2013,
-        "z": 0.0179
+        "discoverday": "23",
+        "discovermonth": "6",
+        "redshift": "0.017800",
+        "maxyear": "2013",
+        "maxappmag": "14.5",
+        "z": "0.0179",
+        "lumdist": "80.0",
+        "maxabsmag": "-20.0"
     }
 }

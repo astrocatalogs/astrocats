@@ -259,105 +259,105 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "52039.299999999814",
+                "time": "52039.3",
                 "band": "C",
                 "abmag": "16",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52041.560000000056",
+                "time": "52041.56",
                 "band": "C",
                 "abmag": "16",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52043.299999999814",
+                "time": "52043.3",
                 "band": "C",
                 "abmag": "15.3",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52046.580000000075",
+                "time": "52046.58",
                 "band": "C",
                 "abmag": "15.9",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52047.560000000056",
+                "time": "52047.56",
                 "band": "C",
                 "abmag": "16",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52049.25999999978",
+                "time": "52049.26",
                 "band": "R",
                 "abmag": "15.5",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52051.830000000075",
+                "time": "52051.83",
                 "band": "C",
                 "abmag": "16.1",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52051.970000000205",
+                "time": "52051.97",
                 "band": "R",
                 "abmag": "15",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52054.939999999944",
+                "time": "52054.94",
                 "band": "R",
                 "abmag": "14.9",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52055.29000000004",
+                "time": "52055.29",
                 "band": "R",
                 "abmag": "15.6",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52055.93000000017",
+                "time": "52055.93",
                 "band": "R",
                 "abmag": "15.2",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52058.06999999983",
+                "time": "52058.07",
                 "band": "C",
                 "abmag": "15.6",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52064.950000000186",
+                "time": "52064.95",
                 "band": "R",
                 "abmag": "14.9",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52070.16000000015",
+                "time": "52070.16",
                 "band": "C",
                 "abmag": "15.4",
                 "source": "2,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "52073.939999999944",
+                "time": "52073.94",
                 "band": "R",
                 "abmag": "14.8",
                 "source": "2,3"
@@ -370,11 +370,11 @@
                 "source": "5,4"
             }
         ],
-        "redshift": 0.009,
+        "redshift": "0.009000",
         "ebv": "0.0441",
-        "discoveryear": 2001,
-        "discoverday": 10,
-        "discovermonth": 5,
+        "discoveryear": "2001",
+        "discoverday": "10",
+        "discovermonth": "5",
         "host": "NGC 5534",
         "claimedtype": "II",
         "hvel": "2585",
@@ -383,9 +383,12 @@
         "snra": "14:17:42.14",
         "sndec": "-07:25:00.7",
         "discoverer": "Koichi Itagaki",
-        "maxyear": 2001,
-        "maxmonth": 6,
-        "maxday": 13,
-        "z": 0.00866
+        "maxyear": "2001",
+        "maxmonth": "6",
+        "maxday": "13",
+        "maxappmag": "14.8",
+        "z": "0.00866",
+        "lumdist": "40.0",
+        "maxabsmag": "-18.0"
     }
 }

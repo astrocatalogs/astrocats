@@ -29,9 +29,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2010,
-        "discoverday": 5,
-        "discovermonth": 10,
+        "discoveryear": "2010",
+        "discoverday": "5",
+        "discovermonth": "10",
         "host": "PGC0715978",
         "hvel": "10673",
         "galra": "011614",
@@ -39,9 +39,10 @@
         "snra": "01:16:14.62",
         "sndec": "-30:32:45.4",
         "discoverer": "CRTS",
-        "maxyear": 2010,
-        "maxmonth": 10,
-        "maxday": 5,
-        "z": 0.0363
+        "maxyear": "2010",
+        "maxmonth": "10",
+        "maxday": "5",
+        "maxappmag": "17.8",
+        "z": "0.0363"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1960,
-        "discoverday": 25,
-        "discovermonth": 10,
+        "discoveryear": "1960",
+        "discoverday": "25",
+        "discovermonth": "10",
         "host": "NGC 2565",
         "claimedtype": "I",
         "hvel": "3588",
@@ -39,9 +39,10 @@
         "snra": "08:19:47.44",
         "sndec": "+22:02:28.7",
         "discoverer": "Gomes",
-        "maxyear": 1960,
-        "maxmonth": 10,
-        "maxday": 25,
-        "z": 0.012
+        "maxyear": "1960",
+        "maxmonth": "10",
+        "maxday": "25",
+        "maxappmag": "15.7",
+        "z": "0.012"
     }
 }

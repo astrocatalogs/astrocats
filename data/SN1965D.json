@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1965,
-        "discoverday": 25,
-        "discovermonth": 2,
+        "discoveryear": "1965",
+        "discoverday": "25",
+        "discovermonth": "2",
         "host": "ESO 437-G32",
         "hvel": "3208",
         "galra": "103925",
@@ -38,9 +38,10 @@
         "snra": "10:39:26.31",
         "sndec": "-27:54:16.7",
         "discoverer": "Fritz Zwicky",
-        "maxyear": 1965,
-        "maxmonth": 2,
-        "maxday": 25,
-        "z": 0.0108
+        "maxyear": "1965",
+        "maxmonth": "2",
+        "maxday": "25",
+        "maxappmag": "14.0",
+        "z": "0.0108"
     }
 }

@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 20,
-        "discovermonth": 2,
+        "discoveryear": "2003",
+        "discoverday": "20",
+        "discovermonth": "2",
         "host": "A123725+6213",
         "claimedtype": "Ia",
         "redshift": "0.67",
@@ -39,8 +39,11 @@
         "snra": "12:37:25.068",
         "sndec": "+62:13:17.59",
         "discoverer": "HST GOODS team",
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 20
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "20",
+        "maxappmag": "23.2",
+        "lumdist": "4200.0",
+        "maxabsmag": "-20.0"
     }
 }

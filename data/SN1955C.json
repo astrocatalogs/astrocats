@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1955,
-        "discoverday": 22,
-        "discovermonth": 10,
+        "discoveryear": "1955",
+        "discoverday": "22",
+        "discovermonth": "10",
         "host": "NGC 23",
         "hvel": "4565",
         "galra": "000954",
@@ -38,9 +38,10 @@
         "discoverer": "Sandage",
         "snra": "00:09:54.3",
         "sndec": "+25:55:39.0",
-        "maxyear": 1955,
-        "maxmonth": 10,
-        "maxday": 22,
-        "z": 0.0153
+        "maxyear": "1955",
+        "maxmonth": "10",
+        "maxday": "22",
+        "maxappmag": "16.0",
+        "z": "0.0153"
     }
 }

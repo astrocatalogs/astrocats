@@ -16,12 +16,16 @@
                 "alias": "2"
             },
             {
-                "name": "Giancarlo Cortini",
+                "name": "Paolo Campaner LBV",
                 "alias": "3"
             },
             {
-                "name": "Stan Howerton",
+                "name": "Giancarlo Cortini",
                 "alias": "4"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -34,36 +38,44 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "57367.0771",
+                "band": "C",
+                "abmag": "18.4",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56797.89",
                 "band": "U",
                 "abmag": "17.8",
-                "source": "3,1"
+                "source": "4,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56979.046",
                 "band": "L",
                 "abmag": "18.2",
-                "source": "4,1"
+                "source": "5,1"
             },
             {
                 "timeunit": "MJD",
                 "time": "56991.396",
                 "band": "L",
                 "abmag": "18.5",
-                "source": "4,1"
+                "source": "5,1"
             }
         ],
         "claimedtype": "LBV",
         "host": "NGC 2403",
         "snra": "07:37:04.20",
         "sndec": "+65:35:46.0",
-        "discoverday": 19,
-        "discovermonth": 5,
-        "discoveryear": 2013,
+        "discoverday": "19",
+        "discovermonth": "5",
+        "discoveryear": "2013",
         "discoverer": "CRTS",
-        "maxyear": 2013,
-        "maxmonth": 5,
-        "maxday": 19
+        "maxyear": "2013",
+        "maxmonth": "5",
+        "maxday": "19",
+        "maxappmag": "17.8"
     }
 }

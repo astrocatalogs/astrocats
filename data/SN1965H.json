@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1965,
-        "maxday": 22,
-        "maxmonth": 5,
+        "discoveryear": "1965",
+        "maxday": "22",
+        "maxmonth": "5",
         "host": "NGC 4666",
         "claimedtype": "II",
         "hvel": "1519",
@@ -39,9 +39,10 @@
         "discoverer": "Chavira",
         "snra": "12:45:07.1",
         "sndec": "-00:28:05.0",
-        "discoverday": 22,
-        "discovermonth": 5,
-        "maxyear": 1965,
-        "z": 0.00508
+        "discoverday": "22",
+        "discovermonth": "5",
+        "maxyear": "1965",
+        "maxappmag": "14.0",
+        "z": "0.00508"
     }
 }

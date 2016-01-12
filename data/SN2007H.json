@@ -31,7 +31,7 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "54116.87337999977",
+                "time": "54116.87338",
                 "band": "V",
                 "abmag": "18.222",
                 "aberr": "0.027",
@@ -39,7 +39,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54116.8763799998",
+                "time": "54116.87638",
                 "band": "B",
                 "abmag": "18.918",
                 "aberr": "0.039",
@@ -47,7 +47,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54126.69798999978",
+                "time": "54126.69799",
                 "band": "V",
                 "abmag": "18.811",
                 "aberr": "0.07",
@@ -55,7 +55,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54126.70100999996",
+                "time": "54126.70101",
                 "band": "B",
                 "abmag": "19.922",
                 "aberr": "0.222",
@@ -63,7 +63,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54127.72393999994",
+                "time": "54127.72394",
                 "band": "V",
                 "abmag": "18.926",
                 "aberr": "0.051",
@@ -71,7 +71,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54127.72696000012",
+                "time": "54127.72696",
                 "band": "B",
                 "abmag": "20.033",
                 "aberr": "0.125",
@@ -79,7 +79,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54128.93667999981",
+                "time": "54128.93668",
                 "band": "V",
                 "abmag": "19.212",
                 "aberr": "0.08",
@@ -87,7 +87,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54128.93968999991",
+                "time": "54128.93969",
                 "band": "B",
                 "abmag": "19.929",
                 "aberr": "0.143",
@@ -95,7 +95,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54137.7083800002",
+                "time": "54137.70838",
                 "band": "V",
                 "abmag": "19.539",
                 "aberr": "0.099",
@@ -103,7 +103,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54137.71138999984",
+                "time": "54137.71139",
                 "band": "B",
                 "abmag": "20.919",
                 "aberr": "0.218",
@@ -111,7 +111,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54139.80299000023",
+                "time": "54139.80299",
                 "band": "V",
                 "abmag": "19.551",
                 "aberr": "0.072",
@@ -119,7 +119,7 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "54140.79685000004",
+                "time": "54140.79685",
                 "band": "V",
                 "abmag": "19.548",
                 "aberr": "0.066",
@@ -133,9 +133,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2007,
-        "discoverday": 9,
-        "discovermonth": 1,
+        "discoveryear": "2007",
+        "discoverday": "9",
+        "discovermonth": "1",
         "host": "LEDA 3081460",
         "claimedtype": "Ia",
         "hvel": "12784",
@@ -144,10 +144,13 @@
         "snra": "08:35:01.98",
         "sndec": "-08:20:15.3",
         "discoverer": "LOSS",
-        "redshift": 0.043,
-        "maxyear": 2007,
-        "maxmonth": 1,
-        "maxday": 9,
-        "z": 0.0436
+        "redshift": "0.043000",
+        "maxyear": "2007",
+        "maxmonth": "1",
+        "maxday": "9",
+        "maxappmag": "17.9",
+        "z": "0.0436",
+        "lumdist": "200.0",
+        "maxabsmag": "-19.0"
     }
 }

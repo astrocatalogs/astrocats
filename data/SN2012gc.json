@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 4,
-        "discovermonth": 11,
+        "discoveryear": "2012",
+        "discoverday": "4",
+        "discovermonth": "11",
         "host": "NGC 7298",
         "claimedtype": "II",
         "hvel": "5053",
@@ -36,10 +36,13 @@
         "snra": "22:30:50.42",
         "sndec": "-14:11:16.3",
         "discoverer": "Greg Bock",
-        "redshift": 0.01679,
-        "maxyear": 2012,
-        "maxmonth": 11,
-        "maxday": 4,
-        "z": 0.017
+        "redshift": "0.016790",
+        "maxyear": "2012",
+        "maxmonth": "11",
+        "maxday": "4",
+        "maxappmag": "17.4",
+        "z": "0.017",
+        "lumdist": "75.0",
+        "maxabsmag": "-17.0"
     }
 }

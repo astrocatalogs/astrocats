@@ -31,14 +31,14 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52697.799999999814",
+                "time": "52697.8",
                 "band": "C",
                 "abmag": "15.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52699.810000000056",
+                "time": "52699.81",
                 "band": "C",
                 "abmag": "15.1",
                 "source": "1,2"
@@ -51,9 +51,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2003,
-        "discoverday": 26,
-        "discovermonth": 2,
+        "discoveryear": "2003",
+        "discoverday": "26",
+        "discovermonth": "2",
         "host": "IC 4219",
         "claimedtype": "II",
         "hvel": "3647",
@@ -62,9 +62,10 @@
         "snra": "13:18:29.108",
         "sndec": "-31:37:37.79",
         "discoverer": "Robin Chassagne",
-        "maxyear": 2003,
-        "maxmonth": 2,
-        "maxday": 27,
-        "z": 0.0122
+        "maxyear": "2003",
+        "maxmonth": "2",
+        "maxday": "27",
+        "maxappmag": "15.1",
+        "z": "0.0122"
     }
 }

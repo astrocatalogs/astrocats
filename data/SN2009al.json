@@ -697,9 +697,9 @@
                 "source": "3,2"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 25,
-        "discovermonth": 2,
+        "discoveryear": "2009",
+        "discoverday": "25",
+        "discovermonth": "2",
         "host": "NGC 3425",
         "claimedtype": "Ia",
         "hvel": "6627",
@@ -708,9 +708,10 @@
         "snra": "10:51:22.04",
         "sndec": "+08:34:42.2",
         "discoverer": "CRTS",
-        "maxyear": 2009,
-        "maxmonth": 3,
-        "maxday": 6,
-        "z": 0.0224
+        "maxyear": "2009",
+        "maxmonth": "3",
+        "maxday": "6",
+        "maxappmag": "16.2063",
+        "z": "0.0224"
     }
 }

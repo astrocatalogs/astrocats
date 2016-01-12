@@ -24,8 +24,12 @@
                 "alias": "4"
             },
             {
-                "name": "Joseph Brimacombe",
+                "name": "Stan Howerton",
                 "alias": "5"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "6"
             }
         ],
         "photometry": [
@@ -52,15 +56,22 @@
             },
             {
                 "timeunit": "MJD",
+                "time": "56560.106",
+                "band": "V",
+                "abmag": "17.7",
+                "source": "5,1"
+            },
+            {
+                "timeunit": "MJD",
                 "time": "56566.175",
                 "band": "C",
                 "abmag": "17.7",
-                "source": "5,1"
+                "source": "6,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 21,
-        "discovermonth": 9,
+        "discoveryear": "2013",
+        "discoverday": "21",
+        "discovermonth": "9",
         "host": "UGC 10908",
         "claimedtype": "IIP",
         "hvel": "5818",
@@ -69,10 +80,13 @@
         "snra": "17:33:39.55",
         "sndec": "+50:22:25.5",
         "discoverer": "Tom Boles",
-        "redshift": 0.019407,
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 29,
-        "z": 0.0196
+        "redshift": "0.019407",
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "29",
+        "maxappmag": "17.4",
+        "z": "0.0196",
+        "lumdist": "87.0",
+        "maxabsmag": "-17.0"
     }
 }

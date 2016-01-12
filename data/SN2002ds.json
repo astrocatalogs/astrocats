@@ -31,42 +31,42 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "52450.299999999814",
+                "time": "52450.3",
                 "band": "C",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52451.299999999814",
+                "time": "52451.3",
                 "band": "C",
                 "abmag": "15.9",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52455.12000000011",
+                "time": "52455.12",
                 "band": "C",
                 "abmag": "17.15",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52456.16000000015",
+                "time": "52456.16",
                 "band": "R",
                 "abmag": "15.98",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52459.89000000013",
+                "time": "52459.89",
                 "band": "R",
                 "abmag": "16.4",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "52465.89000000013",
+                "time": "52465.89",
                 "band": "R",
                 "abmag": "16.2",
                 "source": "1,2"
@@ -79,9 +79,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 2002,
-        "discoverday": 25,
-        "discovermonth": 6,
+        "discoveryear": "2002",
+        "discoverday": "25",
+        "discovermonth": "6",
         "host": "ESO 581-G25",
         "claimedtype": "II",
         "hvel": "2306",
@@ -90,9 +90,10 @@
         "snra": "15:13:35.73",
         "sndec": "-20:40:38.5",
         "discoverer": "LOTOSS",
-        "maxyear": 2002,
-        "maxmonth": 6,
-        "maxday": 25,
-        "z": 0.00772
+        "maxyear": "2002",
+        "maxmonth": "6",
+        "maxday": "25",
+        "maxappmag": "15.9",
+        "z": "0.00772"
     }
 }

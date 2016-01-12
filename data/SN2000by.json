@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2000,
-        "discoverday": 6,
-        "discovermonth": 4,
+        "discoveryear": "2000",
+        "discoverday": "6",
+        "discovermonth": "4",
         "host": "A113954-0422",
         "claimedtype": "Ia",
-        "redshift": 0.1,
+        "redshift": "0.100000",
         "galra": "113954",
         "galdec": "-042216",
         "snra": "11:39:54.91",
         "sndec": "-04:22:16.4",
         "discoverer": "EROS",
-        "maxyear": 2000,
-        "maxmonth": 4,
-        "maxday": 6
+        "maxyear": "2000",
+        "maxmonth": "4",
+        "maxday": "6",
+        "maxappmag": "19.3",
+        "lumdist": "480.0",
+        "maxabsmag": "-19.0"
     }
 }

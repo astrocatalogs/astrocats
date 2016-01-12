@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1965,
-        "discoverday": 5,
-        "discovermonth": 3,
+        "discoveryear": "1965",
+        "discoverday": "5",
+        "discovermonth": "3",
         "host": "NGC 2599",
         "hvel": "4746",
         "galra": "083211",
@@ -38,9 +38,10 @@
         "discoverer": "Gates",
         "snra": "08:32:12.1",
         "sndec": "+22:33:34.0",
-        "maxyear": 1965,
-        "maxmonth": 3,
-        "maxday": 5,
-        "z": 0.016
+        "maxyear": "1965",
+        "maxmonth": "3",
+        "maxday": "5",
+        "maxappmag": "15.7",
+        "z": "0.016"
     }
 }

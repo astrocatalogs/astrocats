@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2009,
-        "discoverday": 8,
-        "discovermonth": 4,
+        "discoveryear": "2009",
+        "discoverday": "8",
+        "discovermonth": "4",
         "host": "MCG +7-24-16",
         "claimedtype": "II",
         "hvel": "7312",
@@ -39,10 +39,13 @@
         "snra": "11:30:20.14",
         "sndec": "+44:09:49.2",
         "discoverer": "Tim Puckett et al.",
-        "redshift": 0.024,
-        "maxyear": 2009,
-        "maxmonth": 4,
-        "maxday": 8,
-        "z": 0.0247
+        "redshift": "0.024000",
+        "maxyear": "2009",
+        "maxmonth": "4",
+        "maxday": "8",
+        "maxappmag": "17.5",
+        "z": "0.0247",
+        "lumdist": "110.0",
+        "maxabsmag": "-18.0"
     }
 }

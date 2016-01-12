@@ -28,19 +28,22 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 3,
-        "discovermonth": 9,
+        "discoveryear": "1999",
+        "discoverday": "3",
+        "discovermonth": "9",
         "host": "A004542+0003",
         "claimedtype": "Ia",
-        "redshift": 0.439,
+        "redshift": "0.439000",
         "galra": "004542",
         "galdec": "+000322",
         "snra": "00:45:42.29",
         "sndec": "+00:03:22.2",
         "discoverer": "European Supernova Cosmology Consortium",
-        "maxyear": 1999,
-        "maxmonth": 9,
-        "maxday": 3
+        "maxyear": "1999",
+        "maxmonth": "9",
+        "maxday": "3",
+        "maxappmag": "23.5",
+        "lumdist": "2500.0",
+        "maxabsmag": "-18.0"
     }
 }

@@ -65,14 +65,14 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47509.12999999989",
+                "time": "47509.13",
                 "band": "B",
                 "abmag": "16.6",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "47509.220000000205",
+                "time": "47509.22",
                 "band": "V",
                 "abmag": "17.4",
                 "source": "1,4"
@@ -135,28 +135,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47530.72999999998",
+                "time": "47530.73",
                 "band": "B",
                 "abmag": "16.92",
                 "source": "1,5"
             },
             {
                 "timeunit": "MJD",
-                "time": "47530.72999999998",
+                "time": "47530.73",
                 "band": "I",
                 "abmag": "16.01",
                 "source": "1,5"
             },
             {
                 "timeunit": "MJD",
-                "time": "47530.72999999998",
+                "time": "47530.73",
                 "band": "R",
                 "abmag": "16.16",
                 "source": "1,5"
             },
             {
                 "timeunit": "MJD",
-                "time": "47530.72999999998",
+                "time": "47530.73",
                 "band": "V",
                 "abmag": "16.62",
                 "source": "1,5"
@@ -191,28 +191,28 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "47564.10000000009",
+                "time": "47564.1",
                 "band": "R",
                 "abmag": "16.47",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "47564.10000000009",
+                "time": "47564.1",
                 "band": "V",
                 "abmag": "16.84",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "47566.080000000075",
+                "time": "47566.08",
                 "band": "R",
                 "abmag": "16.49",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "47566.080000000075",
+                "time": "47566.08",
                 "band": "V",
                 "abmag": "16.98",
                 "source": "1,4"
@@ -603,9 +603,9 @@
                 "source": "9,8"
             }
         ],
-        "discoveryear": 1988,
-        "discoverday": 11,
-        "discovermonth": 12,
+        "discoveryear": "1988",
+        "discoverday": "11",
+        "discovermonth": "12",
         "host": "MCG +3-28-22",
         "claimedtype": "IIn",
         "hvel": "6670",
@@ -614,9 +614,10 @@
         "snra": "10:51:50.10",
         "sndec": "+16:00:01.0",
         "discoverer": "Candeo, Christian Pollas",
-        "maxyear": 1989,
-        "maxmonth": 1,
-        "maxday": 4,
-        "z": 0.0225
+        "maxyear": "1989",
+        "maxmonth": "1",
+        "maxday": "4",
+        "maxappmag": "16.01",
+        "z": "0.0225"
     }
 }

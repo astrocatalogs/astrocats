@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2015,
-        "discoverday": 21,
-        "discovermonth": 6,
+        "discoveryear": "2015",
+        "discoverday": "21",
+        "discovermonth": "6",
         "host": "PGC 1426131",
         "claimedtype": "II",
         "hvel": "16800",
@@ -36,10 +36,13 @@
         "snra": "18:13:49.23",
         "sndec": "+13:14:15.9",
         "discoverer": "LOSS",
-        "redshift": 0.056,
-        "maxyear": 2015,
-        "maxmonth": 6,
-        "maxday": 21,
-        "z": 0.0577
+        "redshift": "0.056000",
+        "maxyear": "2015",
+        "maxmonth": "6",
+        "maxday": "21",
+        "maxappmag": "18.3",
+        "z": "0.0577",
+        "lumdist": "260.0",
+        "maxabsmag": "-19.0"
     }
 }

@@ -25,9 +25,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 24,
-        "discovermonth": 8,
+        "discoveryear": "2012",
+        "discoverday": "24",
+        "discovermonth": "8",
         "host": "NGC 1213",
         "claimedtype": "IIP",
         "hvel": "3427",
@@ -36,10 +36,13 @@
         "snra": "03:09:16.97",
         "sndec": "+38:38:20.7",
         "discoverer": "Tom Boles",
-        "redshift": 0.0114,
-        "maxyear": 2012,
-        "maxmonth": 8,
-        "maxday": 24,
-        "z": 0.0115
+        "redshift": "0.011400",
+        "maxyear": "2012",
+        "maxmonth": "8",
+        "maxday": "24",
+        "maxappmag": "16.8",
+        "z": "0.0115",
+        "lumdist": "51.0",
+        "maxabsmag": "-17.0"
     }
 }

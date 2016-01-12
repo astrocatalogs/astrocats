@@ -27,36 +27,36 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "51238.12000000011",
+                "time": "51238.12",
                 "band": "B",
                 "abmag": "18.97",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51238.12000000011",
+                "time": "51238.12",
                 "band": "I",
                 "abmag": "16.98",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51238.12000000011",
+                "time": "51238.12",
                 "band": "R",
                 "abmag": "17.3",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "51238.12000000011",
+                "time": "51238.12",
                 "band": "V",
                 "abmag": "17.73",
                 "source": "1,2"
             }
         ],
-        "discoveryear": 1999,
-        "discoverday": 1,
-        "discovermonth": 3,
+        "discoveryear": "1999",
+        "discoverday": "1",
+        "discovermonth": "3",
         "host": "UGC 7189",
         "claimedtype": "II",
         "hvel": "1683",
@@ -65,10 +65,13 @@
         "snra": "12:11:16.11",
         "sndec": "+74:48:06.9",
         "discoverer": "Mike Schwartz",
-        "redshift": 0.006,
-        "maxyear": 1999,
-        "maxmonth": 3,
-        "maxday": 1,
-        "z": 0.00563
+        "redshift": "0.006000",
+        "maxyear": "1999",
+        "maxmonth": "3",
+        "maxday": "1",
+        "maxappmag": "16.98",
+        "z": "0.00563",
+        "lumdist": "27.0",
+        "maxabsmag": "-15.0"
     }
 }

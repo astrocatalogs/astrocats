@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 1950,
-        "maxday": 19,
-        "maxmonth": 3,
+        "discoveryear": "1950",
+        "maxday": "19",
+        "maxmonth": "3",
         "host": "IC 4051",
         "claimedtype": "I",
         "hvel": "4933",
@@ -39,9 +39,10 @@
         "discoverer": "Milton Humason",
         "snra": "13:00:53.1",
         "sndec": "+28:00:35.0",
-        "discoverday": 19,
-        "discovermonth": 3,
-        "maxyear": 1950,
-        "z": 0.0166
+        "discoverday": "19",
+        "discovermonth": "3",
+        "maxyear": "1950",
+        "maxappmag": "17.7",
+        "z": "0.0166"
     }
 }

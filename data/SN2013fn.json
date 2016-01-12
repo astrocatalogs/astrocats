@@ -14,6 +14,18 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003600/CBET003662.txt'>CBET 3662</a>",
                 "alias": "2"
+            },
+            {
+                "name": "L. Elenin and I. Molotov",
+                "alias": "3"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "4"
+            },
+            {
+                "name": "Stan Howerton",
+                "alias": "5"
             }
         ],
         "photometry": [
@@ -23,11 +35,32 @@
                 "band": "",
                 "abmag": "16.8",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56561.2172",
+                "band": "U",
+                "abmag": "17.3",
+                "source": "3,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56561.507",
+                "band": "IR",
+                "abmag": "17.9",
+                "source": "4,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56561.52",
+                "band": "CV",
+                "abmag": "17.1",
+                "source": "5,1"
             }
         ],
-        "discoveryear": 2013,
-        "discoverday": 24,
-        "discovermonth": 9,
+        "discoveryear": "2013",
+        "discoverday": "24",
+        "discovermonth": "9",
         "host": "IC 1342",
         "claimedtype": "Ia",
         "hvel": "8134",
@@ -36,10 +69,13 @@
         "snra": "21:00:23.76",
         "sndec": "-14:29:52.2",
         "discoverer": "CRTS",
-        "redshift": 0.026975,
-        "maxyear": 2013,
-        "maxmonth": 9,
-        "maxday": 24,
-        "z": 0.0275
+        "redshift": "0.026975",
+        "maxyear": "2013",
+        "maxmonth": "9",
+        "maxday": "24",
+        "maxappmag": "16.8",
+        "z": "0.0275",
+        "lumdist": "120.0",
+        "maxabsmag": "-19.0"
     }
 }

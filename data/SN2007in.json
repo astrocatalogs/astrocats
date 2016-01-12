@@ -28,9 +28,9 @@
                 "source": "2,1"
             }
         ],
-        "discoveryear": 2012,
-        "discoverday": 8,
-        "discovermonth": 9,
+        "discoveryear": "2012",
+        "discoverday": "8",
+        "discovermonth": "9",
         "host": "A010813+1844",
         "claimedtype": "Ia",
         "hvel": "18000",
@@ -39,10 +39,13 @@
         "snra": "01:08:03.68",
         "sndec": "+18:44:27.0",
         "discoverer": "Nearby Supernova Factory",
-        "redshift": 0.06,
-        "maxyear": 2012,
-        "maxmonth": 9,
-        "maxday": 8,
-        "z": 0.062
+        "redshift": "0.060000",
+        "maxyear": "2012",
+        "maxmonth": "9",
+        "maxday": "8",
+        "maxappmag": "19.4",
+        "z": "0.062",
+        "lumdist": "280.0",
+        "maxabsmag": "-18.0"
     }
 }

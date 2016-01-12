@@ -31,28 +31,28 @@
         "photometry": [
             {
                 "timeunit": "MJD",
-                "time": "50948.299999999814",
+                "time": "50948.3",
                 "band": "C",
                 "abmag": "18.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50949.299999999814",
+                "time": "50949.3",
                 "band": "C",
                 "abmag": "18.1",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50951.91000000015",
+                "time": "50951.91",
                 "band": "C",
                 "abmag": "17.16",
                 "source": "1,2"
             },
             {
                 "timeunit": "MJD",
-                "time": "50960.14000000013",
+                "time": "50960.14",
                 "band": "C",
                 "abmag": "15.3",
                 "source": "1,2"
@@ -65,9 +65,9 @@
                 "source": "4,3"
             }
         ],
-        "discoveryear": 1998,
-        "discoverday": 15,
-        "discovermonth": 5,
+        "discoveryear": "1998",
+        "discoverday": "15",
+        "discovermonth": "5",
         "host": "NGC 5172",
         "claimedtype": "Ib",
         "hvel": "4337",
@@ -76,10 +76,13 @@
         "snra": "13:29:19.31",
         "sndec": "+17:02:42.4",
         "discoverer": "LOSS",
-        "redshift": 0.0136,
-        "maxyear": 1998,
-        "maxmonth": 5,
-        "maxday": 27,
-        "z": 0.0146
+        "redshift": "0.013600",
+        "maxyear": "1998",
+        "maxmonth": "5",
+        "maxday": "27",
+        "maxappmag": "15.3",
+        "z": "0.0146",
+        "lumdist": "61.0",
+        "maxabsmag": "-19.0"
     }
 }

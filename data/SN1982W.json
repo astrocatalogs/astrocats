@@ -46,70 +46,70 @@
             },
             {
                 "timeunit": "MJD",
-                "time": "45326.08999999985",
+                "time": "45326.09",
                 "band": "B",
                 "abmag": "17.1",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45326.08999999985",
+                "time": "45326.09",
                 "band": "V",
                 "abmag": "16.7",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45346.04000000004",
+                "time": "45346.04",
                 "band": "B",
                 "abmag": "17.6",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45346.04000000004",
+                "time": "45346.04",
                 "band": "V",
                 "abmag": "17.05",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45350.060000000056",
+                "time": "45350.06",
                 "band": "B",
                 "abmag": "17.75",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45367.89999999991",
+                "time": "45367.9",
                 "band": "V",
                 "abmag": "17.5",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "45370.00999999978",
+                "time": "45370.01",
                 "band": "B",
                 "abmag": "17.75",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45370.00999999978",
+                "time": "45370.01",
                 "band": "V",
                 "abmag": "17.35",
                 "source": "1,3"
             },
             {
                 "timeunit": "MJD",
-                "time": "45372.10000000009",
+                "time": "45372.1",
                 "band": "B",
                 "abmag": "17.8",
                 "source": "1,4"
             },
             {
                 "timeunit": "MJD",
-                "time": "45375.89999999991",
+                "time": "45375.9",
                 "band": "V",
                 "abmag": "17.6",
                 "source": "1,4"
@@ -136,9 +136,9 @@
                 "source": "6,5"
             }
         ],
-        "discoveryear": 1982,
-        "maxday": 15,
-        "maxmonth": 12,
+        "discoveryear": "1982",
+        "maxday": "15",
+        "maxmonth": "12",
         "host": "NGC 5485",
         "claimedtype": "I",
         "hvel": "1405",
@@ -147,9 +147,10 @@
         "snra": "14:07:08.9",
         "sndec": "+55:01:07.0",
         "discoverer": "Miklos Lovas",
-        "discoverday": 13,
-        "discovermonth": 12,
-        "maxyear": 1982,
-        "z": 0.0047
+        "discoverday": "13",
+        "discovermonth": "12",
+        "maxyear": "1982",
+        "maxappmag": "15",
+        "z": "0.0047"
     }
 }

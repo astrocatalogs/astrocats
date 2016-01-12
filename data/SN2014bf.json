@@ -14,6 +14,10 @@
             {
                 "name": "<a href='http://www.cbat.eps.harvard.edu/iau/cbet/003800/CBET003889.txt'>CBET 3889</a>",
                 "alias": "2"
+            },
+            {
+                "name": "Joseph Brimacombe",
+                "alias": "3"
             }
         ],
         "photometry": [
@@ -23,11 +27,18 @@
                 "band": "",
                 "abmag": "17.2",
                 "source": "2,1"
+            },
+            {
+                "timeunit": "MJD",
+                "time": "56802.424",
+                "band": "C",
+                "abmag": "17.2",
+                "source": "3,1"
             }
         ],
-        "discoveryear": 2014,
-        "discoverday": 24,
-        "discovermonth": 5,
+        "discoveryear": "2014",
+        "discoverday": "24",
+        "discovermonth": "5",
         "host": "CGCG 108-18",
         "claimedtype": "IIP",
         "hvel": "9410",
@@ -36,10 +47,13 @@
         "snra": "15:57:35.23",
         "sndec": "+18:01:47.6",
         "discoverer": "THU-NAOC Transient Survey (TNTS)",
-        "redshift": 0.013,
-        "maxyear": 2014,
-        "maxmonth": 5,
-        "maxday": 24,
-        "z": 0.0319
+        "redshift": "0.013000",
+        "maxyear": "2014",
+        "maxmonth": "5",
+        "maxday": "24",
+        "maxappmag": "17.2",
+        "z": "0.0319",
+        "lumdist": "58.0",
+        "maxabsmag": "-17.0"
     }
 }
