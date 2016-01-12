@@ -91,7 +91,7 @@
         "discovermonth": "2",
         "host": "NGC 2963",
         "claimedtype": "Ia",
-        "hvel": "6553",
+        "hvel": "6550",
         "galra": "094750",
         "galdec": "+725756",
         "snra": "09:47:50.7",
@@ -101,6 +101,8 @@
         "maxmonth": "2",
         "maxday": "2",
         "maxappmag": "16.0",
-        "z": "0.0221"
+        "redshift": "0.0221",
+        "lumdist": "99.5",
+        "maxabsmag": "-19"
     }
 }
