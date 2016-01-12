@@ -81,10 +81,13 @@ def snname(string):
 
     return newstring
 
-def round_sig(x, sig=2):
+def round_sig(x, sig=3):
     if x == 0.0:
         return 0.0
     return round(x, sig-int(floor(log10(abs(x))))-1)
+
+def pretty_num(x, sig=3):
+    return str('%g'%(round_sig(x, sig)))
 
 def is_number(s):
     try:
@@ -852,21 +855,23 @@ if writeevents:
     for name in events:
         if 'claimedtype' in events[name] and events[name]['claimedtype'] == '?':
             del events[name]['claimedtype']
-        if 'z' in events[name] and 'hvel' not in events[name]:
+        if 'redshift' in events[name] and 'hvel' not in events[name]:
             z = float(events[name]['redshift'])
-            events[name]['hvel'] = str(round(round_sig(clight/1.e5*((z + 1.)**2. - 1.)/
-                ((z + 1.)**2. + 1.), sig = 3)))
+            events[name]['hvel'] = pretty_num(clight/1.e5*((z + 1.)**2. - 1.)/
+                ((z + 1.)**2. + 1.))
         elif 'hvel' in events[name] and 'z' not in events[name]:
             voc = float(events[name]['hvel'])*1.e5/clight
-            events[name]['z'] = str(round_sig(sqrt((1. + voc)/(1. - voc)) - 1., sig = 3))
+            events[name]['redshift'] = pretty_num(sqrt((1. + voc)/(1. - voc)) - 1.)
         if 'redshift' in events[name] and float(events[name]['redshift']) > 0.0:
             dl = cosmo.luminosity_distance(float(events[name]['redshift']))
             if 'lumdist' not in events[name]:
-                events[name]['lumdist'] = str(round_sig(dl.value))
+                events[name]['lumdist'] = pretty_num(dl.value)
             if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                events[name]['maxabsmag'] = str(round_sig(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0)))
+                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0))
+        if 'redshift' in events[name]:
+            events[name]['redshift'] = pretty_num(Decimal(events[name]['redshift']))
         if 'hvel' in events[name]:
-            events[name]['hvel'] = '%g'%(Decimal(events[name]['hvel']))
+            events[name]['hvel'] = pretty_num(Decimal(events[name]['hvel']))
         if 'host' in events[name]:
             events[name]['host'] = events[name]['host'].replace("NGC", "NGC ")
             events[name]['host'] = events[name]['host'].replace("UGC", "UGC ")

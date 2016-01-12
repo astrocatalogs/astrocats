@@ -449,7 +449,7 @@
         "discovermonth": "2",
         "host": "NGC 5440",
         "claimedtype": "Ia",
-        "hvel": "3754",
+        "hvel": "3750",
         "galra": "140301",
         "galdec": "+344529",
         "snra": "14:02:59.28",
@@ -459,6 +459,8 @@
         "maxmonth": "2",
         "maxday": "22",
         "maxappmag": "15.85",
-        "z": "0.0126"
+        "redshift": "0.0126",
+        "lumdist": "56.3",
+        "maxabsmag": "-17.9"
     }
 }
