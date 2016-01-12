@@ -36,7 +36,8 @@ columnkey = [
     "hvel",
     "lumdist",
     "claimedtype",
-    "data"
+    "data",
+    "responsive"
 ]
 
 header = [
@@ -45,15 +46,16 @@ header = [
     "Aliases",
     "Discovery Date",
     "Date of Max",
-    "Max App. Mag.",
-    "Max Abs. Mag.",
+    r"<em>m</em><sub>max</sub>",
+    r"<em>M</em><sub>max</sub>",
     "Host Name",
     "Instruments/Bands",
     r"<em>z</em>",
-    r"<em>v</em><sub>Helio</sub>",
-    r"<em>d</e><sub>L</sub>",
+    r"<em>v</em><sub>&#9737;</sub> (km/s)",
+    r"<em>d</e><sub>L</sub> (Mpc)",
     "Claimed Type",
-    "Data"
+    "Data",
+    ""
 ]
 
 photokeys = [
@@ -364,7 +366,7 @@ if writecatalog:
     sourcedict = dict()
     for entry in catalog:
         for sourcerow in catalog[entry]['sources']:
-            strippedname = re.sub('<[^<]+?>', '', str(sourcerow['name'].encode('ascii','replace')))
+            strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','xmlcharrefreplace').decode("utf-8"))
             if strippedname in sourcedict:
                 sourcedict[strippedname] += 1
             else:
@@ -394,11 +396,11 @@ if writecatalog:
 
     ctypedict = dict()
     for entry in catalog:
-        if 'claimedtype' not in catalog[entry]:
-            continue
-        cleanedtype = catalog[entry]['claimedtype'].strip('?* ')
-        cleanedtype = cleanedtype.replace('Ibc', 'Ib/c')
-        cleanedtype = cleanedtype.replace('IIP', 'II P')
+        cleanedtype = ''
+        if 'claimedtype' in catalog[entry]:
+            cleanedtype = catalog[entry]['claimedtype'].strip('?* ')
+            cleanedtype = cleanedtype.replace('Ibc', 'Ib/c')
+            cleanedtype = cleanedtype.replace('IIP', 'II P')
         if not cleanedtype:
             cleanedtype = 'Unknown'
         if cleanedtype in ctypedict:
