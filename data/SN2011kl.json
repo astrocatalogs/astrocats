@@ -25,20 +25,23 @@
                 "source": "2,1"
             }
         ],
-        "claimedtype": "SLSN-Ic",
-        "snra": "00:57:22.64",
-        "sndec": "-46:48:03.6",
+        "discoveryear": "2011",
         "discoverday": "8",
         "discovermonth": "12",
-        "discoveryear": "2011",
+        "host": "A005722-4648",
+        "claimedtype": "SLSN-Ic",
         "redshift": "0.677",
+        "galra": "005722",
+        "galdec": "-464803",
+        "snra": "00:57:22.64",
+        "sndec": "-46:48:03.6",
         "discoverer": "SWIFT",
         "maxyear": "2011",
         "maxmonth": "12",
         "maxday": "8",
-        "maxappmag": "20.0",
-        "hvel": "143000",
-        "lumdist": "4210",
-        "maxabsmag": "-23.1"
+        "maxappmag": "20",
+        "hvel": "142500",
+        "lumdist": "4209",
+        "maxabsmag": "-23.12"
     }
 }

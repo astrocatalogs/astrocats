@@ -3,5 +3,5 @@ syntax: glob
 *.csv
 *.html
 *.sw*
-/*.json
+^*\.json$
 data/*.bz2
