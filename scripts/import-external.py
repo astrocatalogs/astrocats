@@ -81,12 +81,12 @@ def snname(string):
 
     return newstring
 
-def round_sig(x, sig=3):
+def round_sig(x, sig=4):
     if x == 0.0:
         return 0.0
     return round(x, sig-int(floor(log10(abs(x))))-1)
 
-def pretty_num(x, sig=3):
+def pretty_num(x, sig=4):
     return str('%g'%(round_sig(x, sig)))
 
 def is_number(s):
@@ -172,16 +172,16 @@ def get_first_light(name):
 def set_first_max_light(name):
     (mldt, mlmag) = get_max_light(name)
     if mldt:
-        events[name]['maxyear'] = str(mldt.year)
-        events[name]['maxmonth'] = str(mldt.month)
-        events[name]['maxday'] = str(mldt.day)
-        events[name]['maxappmag'] = str(mlmag)
+        events[name]['maxyear'] = pretty_num(mldt.year)
+        events[name]['maxmonth'] = pretty_num(mldt.month)
+        events[name]['maxday'] = pretty_num(mldt.day)
+        events[name]['maxappmag'] = pretty_num(mlmag)
 
     fldt = get_first_light(name)
     if fldt:
-        events[name]['discoveryear'] = str(fldt.year)
-        events[name]['discovermonth'] = str(fldt.month)
-        events[name]['discoverday'] = str(fldt.day)
+        events[name]['discoveryear'] = pretty_num(fldt.year)
+        events[name]['discovermonth'] = pretty_num(fldt.month)
+        events[name]['discoverday'] = pretty_num(fldt.day)
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
