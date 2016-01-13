@@ -47,21 +47,23 @@
                 "source": "4,1"
             }
         ],
-        "claimedtype": "Ia",
-        "host": "PGC 10563",
-        "snra": "02:47:34.51",
-        "sndec": "+34:54:33.6",
+        "discoveryear": "2015",
         "discoverday": "15",
         "discovermonth": "12",
-        "discoveryear": "2015",
-        "redshift": "0.056",
+        "host": "PGC 10563",
+        "claimedtype": "Ia",
+        "hvel": "16800",
+        "galra": "024733",
+        "galdec": "+345432",
+        "snra": "02:47:34.51",
+        "sndec": "+34:54:33.6",
         "discoverer": "S. Maticic",
+        "redshift": "0.0577",
         "maxyear": "2015",
         "maxmonth": "12",
         "maxday": "19",
         "maxappmag": "17.6",
-        "hvel": "16300",
-        "lumdist": "258",
-        "maxabsmag": "-19.5"
+        "lumdist": "266.4",
+        "maxabsmag": "-19.53"
     }
 }
