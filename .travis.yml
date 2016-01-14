@@ -1,11 +1,26 @@
 language: python
 python:
-    - "3.2"
     - "3.3"
     - "3.4"
     - "3.5"
     - "nightly"
-install: "pip install -r scripts/requirements.txt"
+notifications:
+    email: false
+
+# Setup anaconda
+before_install:
+    - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+    - chmod +x miniconda.sh
+    - ./miniconda.sh -b
+    - export PATH=/home/travis/miniconda/bin:$PATH
+    - conda update --yes conda
+# Install packages
+install:
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
+    - python setup.py install
+    - pip install -r scripts/requirements.txt
+
+# Run test
 script:
     - cd scripts && python import-external.py
     - cd scripts && python make-sne-catalog.py
