@@ -19,7 +19,7 @@ from bokeh.resources import CDN
 from bokeh.embed import file_html
 
 writecatalog = True
-indir = "../data/"
+indir = "../individual-sne/"
 outdir = "../"
 
 columnkey = [

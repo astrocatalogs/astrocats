@@ -23,7 +23,7 @@ from string import ascii_letters
 
 clight = 29979245800.
 
-outdir = '../data/'
+outdir = '../individual-sne/'
 
 eventnames = []
 
@@ -912,12 +912,6 @@ if writeevents:
         #    csvout.writerow(row)
 
         #outfile.close()
-
-# Compress the output
-if compressevents:
-    print('Compressing output...')
-    print('bzip2 -k -f ' + outdir + '*.json')
-    os.system('bzip2 -k -f ' + outdir + '*.json')
 
 # Print some useful facts
 if printextra:
