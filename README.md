@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/astrotransients/sne.svg?branch=master)](https://travis-ci.org/astrotransients/sne)
-
 # Open Supernova Catalog #
+
+[![Build Status](https://travis-ci.org/astrotransients/sne.svg?branch=master)](https://travis-ci.org/astrotransients/sne)
 
 This is a repository of supernova light curves, currently maintained by James Guillochon. The catalog is displayed in tabular form on [sne.space](https://sne.space). Individual event data can be downloaded by click the "Source" link on the left and downloading the .dat file associated with a given event; however it's probably easier to use the search function on the table displayed on [sne.space](https://sne.space) to find the event you're looking for.
 
