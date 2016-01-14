@@ -215,7 +215,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
     eventname = entry
 
     catalog[entry]['data'] = "<span class='ics'>"
-    catalog[entry]['data'] += "<a class='dci' href='sne/data/" + eventname + ".json'></a>"
+    catalog[entry]['data'] += "<a class='dci' href='sne/individual-sne/" + eventname + ".json'></a>"
     plotavail = True if len(catalog[entry]['photometry']) else False
     catalog[entry]['numphoto'] = len(catalog[entry]['photometry'])
     if plotavail:
@@ -316,7 +316,7 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
         html = file_html(p, CDN, eventname)
         returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>';
         #html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-        html = re.sub(r'(\<\/body\>)', r'    <a href="data/' + eventname + r'.json">Download datafile</a><br><br>\n        \1', html)
+        html = re.sub(r'(\<\/body\>)', r'    <a href="individual-sne/' + eventname + r'.json">Download datafile</a><br><br>\n        \1', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n        \1', html)
             for source in catalog[entry]['sources']:
