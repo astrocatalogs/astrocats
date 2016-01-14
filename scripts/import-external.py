@@ -512,7 +512,8 @@ if dosdss:
 #Import GAIA
 if dogaia:
     #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
-    response = urllib.request.urlopen('file:///var/www/html/sne/sne/external/selected-gaia-science-alerts')
+    path = os.path.abspath('../external/selected-gaia-science-alerts')
+    response = urllib.request.urlopen('file://' + path)
     html = response.read()
 
     soup = BeautifulSoup(html, "html5lib")
@@ -708,7 +709,8 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if dorochester:
-    response = urllib.request.urlopen('file:///var/www/html/sne/sne/external/snredshiftall.html')
+    path = os.path.abspath('../external/snredshiftall.html')
+    response = urllib.request.urlopen('file://' + path)
     #response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
     html = response.read()
 
