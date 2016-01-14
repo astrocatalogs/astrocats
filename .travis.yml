@@ -18,6 +18,7 @@ before_install:
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
     - pip install -r scripts/requirements.txt
+    - git clone git@github.com:astrotransients/sne-external-spectra.git
 
 # Run test
 script:
