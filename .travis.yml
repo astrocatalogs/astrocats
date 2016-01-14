@@ -18,7 +18,6 @@ before_install:
     - conda update -q conda
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
-    - python setup.py install
     - pip install -r scripts/requirements.txt
 
 # Run test
