@@ -1,6 +1,7 @@
 # Open Supernova Catalog #
 
 [![Build Status](https://travis-ci.org/astrotransients/sne.svg?branch=master)](https://travis-ci.org/astrotransients/sne)
+[![Python Version](https://img.shields.io/badge/python-3.5-blue.svg)](https://www.python.org)
 
 This repository is a collection of supernova data, including metadata, light curves, and spectra. The catalog is displayed in tabular form on [sne.space](https://sne.space). Individual event data can be downloaded by navigating to the individual-sne folder and downloading the .json file associated with a given event; however it might be easier to use the search function on the table displayed on [sne.space](https://sne.space) to find the event you're looking for.
 
