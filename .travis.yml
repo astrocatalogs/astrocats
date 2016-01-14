@@ -21,5 +21,6 @@ install:
 
 # Run test
 script:
-    - cd scripts && python import-external.py
-    - cd scripts && python make-sne-catalog.py
+    - cd scripts
+    - python import-external.py
+    - python make-sne-catalog.py
