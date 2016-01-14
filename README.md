@@ -1,4 +1,4 @@
-# Supernova Light Curve Catalog #
+# Open Supernova Catalog #
 
 This is a repository of supernova light curves, currently maintained by James Guillochon. The catalog is displayed in tabular form on [sne.space](https://sne.space). Individual event data can be downloaded by click the "Source" link on the left and downloading the .dat file associated with a given event; however it's probably easier to use the search function on the table displayed on [sne.space](https://sne.space) to find the event you're looking for.
 
@@ -10,8 +10,7 @@ If you have a historical archive of data that likely won't be updated, feel free
 
 The data files are in JSON format. Below is an example datafile for 2002ap:
 
-```
-#!JSON
+```json
 {
     "SN2002ap": {
         "name": "SN2002ap",
@@ -31,8 +30,7 @@ The data files are in JSON format. Below is an example datafile for 2002ap:
             {
                 "name": "<a href='http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2002MNRAS.332L..73G&amp;db_key=AST'>2002MNRAS.332L..73G</a>",
                 "alias": "3"
-            },
-            ...
+            }
         ],
         "photometry": [
             {
@@ -58,8 +56,7 @@ The data files are in JSON format. Below is an example datafile for 2002ap:
                 "abmag": "13.0190",
                 "aberr": "0.0290",
                 "source": "1,2"
-            },
-            ...
+            }
         ],
         "discoveryear": 2002,
         "host": "NGC 628",
