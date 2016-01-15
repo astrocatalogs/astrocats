@@ -20,6 +20,7 @@ from bokeh.resources import CDN
 from bokeh.embed import file_html
 
 writecatalog = True
+writehtml = True
 outdir = "../"
 
 columnkey = [
@@ -323,7 +324,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             if t1 < t2:
                 dohtml = False
 
-    if photoavail and dohtml:
+    if photoavail and dohtml and writehtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
         photoAB = [float(catalog[entry]['photometry'][x]['abmag']) for x in prange]
         photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
@@ -387,7 +388,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
                 color=bandcolorf(band), legend=upplimlegend, size=7)
 
-    if spectraavail and dohtml:
+    if spectraavail and dohtml and writehtml:
         spectrumwave = []
         spectrumflux = []
         spectrumerrs = []
@@ -422,7 +423,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         for i in range(len(spectrumwave)):
             p2.line(x = spectrumwave[i], y = spectrumflux[i])
 
-    if (photoavail or spectraavail) and dohtml:
+    if (photoavail or spectraavail) and dohtml and writehtml:
         if photoavail and spectraavail:
             p = gridplot([[p1, p2]])
         elif photoavail:
@@ -464,7 +465,6 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         nophoto.append(catalog[entry]['numphoto'] < 3)
 
         # Delete unneeded data from catalog, add blank entries when data missing.
-        print
         catalogcopy[entry] = OrderedDict()
         for col in columnkey:
             if col in catalog[entry]:
