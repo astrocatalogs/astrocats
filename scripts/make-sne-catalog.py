@@ -44,7 +44,9 @@ columnkey = [
     "hvel",
     "lumdist",
     "claimedtype",
-    "data",
+    "photolink",
+    "spectralink",
+    "download",
     "responsive"
 ]
 
@@ -52,17 +54,19 @@ header = [
     "",
     "Name",
     "Aliases",
-    "Discovery Date",
-    "Date of Max",
+    "Disc. Date",
+    "Max Date",
     r"<em>m</em><sub>max</sub>",
     r"<em>M</em><sub>max</sub>",
     "Host Name",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
-    r"<em>d</e><sub>L</sub> (Mpc)",
+    r"<em>d</em><sub>L</sub> (Mpc)",
     "Claimed Type",
-    "Data",
+    "Phot.",
+    "Spec.",
+    "",
     ""
 ]
 
@@ -98,7 +102,7 @@ if len(columnkey) != len(header):
     print('Error: Header not same length as key list.')
     sys.exit(0)
 
-dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>";
+dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
 
 header = OrderedDict(list(zip(columnkey,header)))
 
@@ -243,6 +247,7 @@ catalogcopy = OrderedDict()
 snepages = []
 sourcedict = dict()
 nophoto = []
+nospectra = []
 
 files = []
 for rep in repfolders:
@@ -261,28 +266,22 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
     eventname = entry
 
-    catalog[entry]['data'] = "<span class='ics'>"
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['data'] += "<a class='dci' href='https://raw.githubusercontent.com/astrotransients/" + repfolder + "/" + eventname + ".json' download></a>"
-    photoavail = True if len(catalog[entry]['photometry']) else False
-    catalog[entry]['numphoto'] = len(catalog[entry]['photometry'])
+    catalog[entry]['download'] = "<a class='dci' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
+    photoavail = 'photometry' in catalog[entry]
+    catalog[entry]['numphoto'] = len(catalog[entry]['photometry']) if photoavail else 0
     if photoavail:
-        plotlink = "sne/" + eventname + ".html";
+        plotlink = "sne/" + eventname + ".html"
         catalog[entry]['photoplot'] = plotlink
-        plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a>";
-        catalog[entry]['data'] += plotlink
-    spectraavail = True if len(catalog[entry]['spectra']) else False
-    catalog[entry]['numspectra'] = len(catalog[entry]['spectra'])
+        plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a> "
+        catalog[entry]['photolink'] = plotlink + str(len(catalog[entry]['photometry']))
+    spectraavail = 'spectra' in catalog[entry]
+    catalog[entry]['numspectra'] = len(catalog[entry]['spectra']) if spectraavail else 0
     if spectraavail:
-        plotlink = "sne/" + eventname + ".html";
+        plotlink = "sne/" + eventname + ".html"
         catalog[entry]['spectraplot'] = plotlink
-        plotlink = "<a class='sci' href='" + plotlink + "' target='_blank'></a>";
-        catalog[entry]['data'] += plotlink
-    if photoavail:
-        catalog[entry]['data'] += " " + str(len(catalog[entry]['photometry']))
-    if spectraavail:
-        catalog[entry]['data'] += " (" + str(len(catalog[entry]['spectra'])) + ")"
-    catalog[entry]['data'] += "</span>"
+        plotlink = "<a class='sci' href='" + plotlink + "' target='_blank'></a> "
+        catalog[entry]['spectralink'] = plotlink + str(len(catalog[entry]['spectra']))
     
     prange = list(range(catalog[entry]['numphoto']))
     instrulist = sorted([_f for _f in list({catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else None for x in prange}) if _f])
@@ -405,14 +404,14 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             specrange = range(len(spectrum['data']))
             spectrumwave.append([float(spectrum['data'][x][0]) for x in specrange])
             spectrumflux.append([float(spectrum['data'][x][1]) for x in specrange])
-            if spectrum['errorunit']:
+            if 'errorunit' in spectrum:
                 spectrumerrs.append([float(spectrum['data'][x][2]) for x in specrange])
         
         y_height = 0.
         for i in range(len(spectrumwave)):
             ydiff = 0.8*max(spectrumflux[i]) - min(spectrumflux[i])
             spectrumflux[i] = [j + y_height for j in spectrumflux[i]]
-            y_height += ydiff
+            y_height -= ydiff
 
         maxsw = max(map(max, spectrumwave))
         minsw = min(map(min, spectrumwave))
@@ -441,9 +440,9 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             p = p2
 
         html = file_html(p, CDN, eventname)
-        returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>';
+        returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
-        html = re.sub(r'(\<\/body\>)', r'    <a href="https://raw.githubusercontent.com/astrotransients/' + repfolder + '/' + eventname + r'.json" download>Download datafile</a><br><br>\n        \1', html)
+        html = re.sub(r'(\<\/body\>)', r'    <a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>Download datafile</a><br><br>\n        \1', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n        \1', html)
             for source in catalog[entry]['sources']:
@@ -472,6 +471,8 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                 sourcedict[strippedname] = 1
 
         nophoto.append(catalog[entry]['numphoto'] < 3)
+
+        nospectra.append(catalog[entry]['numspectra'] == 0)
 
         # Delete unneeded data from catalog, add blank entries when data missing.
         catalogcopy[entry] = OrderedDict()
@@ -509,9 +510,24 @@ if args.writecatalog:
     csvout.writerow(['Has light curve', hasphoto])
     csvout.writerow(['No light curve', nophoto])
     f.close()
+
+    nospectra = sum(nospectra)
+    hasspectra = len(catalog) - nospectra
+    f = open(outdir + 'spectra-pie.csv' + testsuffix, 'w')
+    csvout = csv.writer(f)
+    csvout.writerow(['Category','Number'])
+    csvout.writerow(['Has spectra', hasspectra])
+    csvout.writerow(['No spectra', nospectra])
+    f.close()
+
     f = open(outdir + 'hasphoto.html' + testsuffix, 'w')
     f.write(str(hasphoto))
     f.close()
+
+    f = open(outdir + 'hasspectra.html' + testsuffix, 'w')
+    f.write(str(hasspectra))
+    f.close()
+
     f = open(outdir + 'snecount.html' + testsuffix, 'w')
     f.write(str(len(catalog)))
     f.close()
@@ -520,9 +536,12 @@ if args.writecatalog:
     for entry in catalog:
         cleanedtype = ''
         if 'claimedtype' in catalog[entry]:
-            cleanedtype = catalog[entry]['claimedtype'].strip('?* ')
-            cleanedtype = cleanedtype.replace('Ibc', 'Ib/c')
-            cleanedtype = cleanedtype.replace('IIP', 'II P')
+            maxsources = 0
+            for ct in catalog[entry]['claimedtype']:
+                sourcecount = len(ct['source'].split(','))
+                if sourcecount > maxsources:
+                    maxsources = sourcecount
+                    cleanedtype = ct['type'].strip('?* ')
         if not cleanedtype:
             cleanedtype = 'Unknown'
         if cleanedtype in ctypedict:
@@ -542,10 +561,7 @@ if args.writecatalog:
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
 
-    jsonobj = dict.fromkeys(['data'])
-    jsonobj['data'] = catalog
-    #jsonstring = json.dumps(jsonobj, indent=4, separators=(',', ': '))
-    jsonstring = json.dumps(jsonobj, separators=(',',':'))
+    jsonstring = json.dumps(catalog, separators=(',',':'))
     f = open(outdir + 'sne-catalog.json' + testsuffix, 'w')
     f.write(jsonstring)
     f.close()
@@ -561,7 +577,7 @@ if args.writecatalog:
     f.write('\t<tfoot>\n')
     f.write('\t\t<tr>\n')
     for h in header:
-        f.write('\t\t\t<th>' + header[h] + '</th>\n')
+        f.write('\t\t\t<th class="' + h + '">' + header[h] + '</th>\n')
     f.write('\t\t</tr>\n')
     f.write('\t</thead>\n')
     f.write('</table>\n')
