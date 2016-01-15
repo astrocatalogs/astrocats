@@ -7,6 +7,7 @@ import os
 import re
 import operator
 import json
+import argparse
 from datetime import datetime
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
@@ -19,9 +20,15 @@ from bokeh.models import HoverTool
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
-writecatalog = True
-writehtml = True
+parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
+parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='write catalog file',    default=True,  action='store_false')
+parser.add_argument('--no-write-html', '-wh',    dest='writehtml',    help='write html plot files', default=True,  action='store_false')
+parser.add_argument('--test', '-t',              dest='test',         help='test this script',      default=False, action='store_true')
+args = parser.parse_args()
+
 outdir = "../"
+
+testsuffix = '.test' if args.test else ''
 
 columnkey = [
     "check",
@@ -213,12 +220,14 @@ def bandwavef(code):
 def utf8(x):
     return str(x, 'utf-8')
 
-def get_rep_folder(year):
-    if not is_number(year):
+def get_rep_folder(entry):
+    if 'discoveryear' not in entry:
+        return repfolders[0]
+    if not is_number(entry['discoveryear']):
         print ('Error, discovery year is not a number!')
         sys.exit()
     for r, repyear in enumerate(repyears):
-        if int(year) <= repyear:
+        if int(entry['discoveryear']) <= repyear:
             return repfolders[r]
     return repfolders[0]
 
@@ -253,7 +262,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     eventname = entry
 
     catalog[entry]['data'] = "<span class='ics'>"
-    repfolder = get_rep_folder(catalog[entry]['discoveryear'])
+    repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['data'] += "<a class='dci' href='https://raw.githubusercontent.com/astrotransients/" + repfolder + "/" + eventname + ".json' download></a>"
     photoavail = True if len(catalog[entry]['photometry']) else False
     catalog[entry]['numphoto'] = len(catalog[entry]['photometry'])
@@ -324,7 +333,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             if t1 < t2:
                 dohtml = False
 
-    if photoavail and dohtml and writehtml:
+    if photoavail and dohtml and args.writehtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
         photoAB = [float(catalog[entry]['photometry'][x]['abmag']) for x in prange]
         photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
@@ -388,7 +397,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
                 color=bandcolorf(band), legend=upplimlegend, size=7)
 
-    if spectraavail and dohtml and writehtml:
+    if spectraavail and dohtml and args.writehtml:
         spectrumwave = []
         spectrumflux = []
         spectrumerrs = []
@@ -423,7 +432,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         for i in range(len(spectrumwave)):
             p2.line(x = spectrumwave[i], y = spectrumflux[i])
 
-    if (photoavail or spectraavail) and dohtml and writehtml:
+    if (photoavail or spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
             p = gridplot([[p1, p2]])
         elif photoavail:
@@ -433,7 +442,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
         html = file_html(p, CDN, eventname)
         returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>';
-        repfolder = get_rep_folder(catalog[entry]['discoveryear'])
+        repfolder = get_rep_folder(catalog[entry])
         html = re.sub(r'(\<\/body\>)', r'    <a href="https://raw.githubusercontent.com/astrotransients/' + repfolder + '/' + eventname + r'.json" download>Download datafile</a><br><br>\n        \1', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n        \1', html)
@@ -451,7 +460,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     #    sys.exit()
 
     # Save this stuff because next line will delete it.
-    if writecatalog:
+    if args.writecatalog:
         if 'photoplot' in catalog[entry]:
             snepages.append(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['photoplot']])
 
@@ -472,16 +481,19 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             else:
                 catalogcopy[entry][col] = None
 
+    if args.test and spectraavail and photoavail:
+        break
+
 # Write it all out at the end
-if writecatalog:
+if args.writecatalog:
     # Make a few small files for generating charts
-    f = open(outdir + 'snepages.csv', 'w')
+    f = open(outdir + 'snepages.csv' + testsuffix, 'w')
     csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
     for row in snepages:
         csvout.writerow(row)
     f.close()
 
-    f = open(outdir + 'sources.csv', 'w')
+    f = open(outdir + 'sources.csv' + testsuffix, 'w')
     sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
     csvout = csv.writer(f)
     csvout.writerow(['Source','Number'])
@@ -491,16 +503,16 @@ if writecatalog:
 
     nophoto = sum(nophoto)
     hasphoto = len(catalog) - nophoto
-    f = open(outdir + 'pie.csv', 'w')
+    f = open(outdir + 'pie.csv' + testsuffix, 'w')
     csvout = csv.writer(f)
     csvout.writerow(['Category','Number'])
     csvout.writerow(['Has light curve', hasphoto])
     csvout.writerow(['No light curve', nophoto])
     f.close()
-    f = open(outdir + 'hasphoto.html', 'w')
+    f = open(outdir + 'hasphoto.html' + testsuffix, 'w')
     f.write(str(hasphoto))
     f.close()
-    f = open(outdir + 'snecount.html', 'w')
+    f = open(outdir + 'snecount.html' + testsuffix, 'w')
     f.write(str(len(catalog)))
     f.close()
 
@@ -518,7 +530,7 @@ if writecatalog:
         else:
             ctypedict[cleanedtype] = 1
     sortedctypes = sorted(list(ctypedict.items()), key=operator.itemgetter(1), reverse=True)
-    f = open(outdir + 'types.csv', 'w')
+    f = open(outdir + 'types.csv' + testsuffix, 'w')
     csvout = csv.writer(f)
     csvout.writerow(['Type','Number'])
     for ctype in sortedctypes:
@@ -534,11 +546,11 @@ if writecatalog:
     jsonobj['data'] = catalog
     #jsonstring = json.dumps(jsonobj, indent=4, separators=(',', ': '))
     jsonstring = json.dumps(jsonobj, separators=(',',':'))
-    f = open(outdir + 'sne-catalog.json', 'w')
+    f = open(outdir + 'sne-catalog.json' + testsuffix, 'w')
     f.write(jsonstring)
     f.close()
 
-    f = open(outdir + 'catalog.html', 'w')
+    f = open(outdir + 'catalog.html' + testsuffix, 'w')
     f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
     f.write('\t<thead>\n')
     f.write('\t\t<tr>\n')

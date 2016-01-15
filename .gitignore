@@ -1,11 +1,11 @@
 .DS_Store
 *.csv
-!sne-catalog.csv
 *.html
 !catalog.html
 *.sw*
 *.json
 !/external/*
+!/sne-catalog.json
 sne-external-spectra
 sne-pre-1990
 sne-1990-1999
