@@ -25,21 +25,22 @@ clight = 29979245800.
 
 eventnames = []
 
-dovizier =       True
-dosuspect =      True
-docfa =          True
-doucb =          True
-dosdss =         True
-dogaia =         True
-docsp =          True
-doitep =         True
-doasiago =       True
-dorochester =    True
-dofirstmax =     True
-dolennarz =      True
-docfaiaspectra = True
-writeevents =    True
-printextra =     False
+dovizier =        True
+dosuspect =       True
+docfa =           True
+doucb =           True
+dosdss =          True
+dogaia =          True
+docsp =           True
+doitep =          True
+doasiago =        True
+dorochester =     True
+dofirstmax =      True
+dolennarz =       True
+docfaiaspectra =  True
+docfaibcspectra = True
+writeevents =     True
+printextra =      False
 
 events = OrderedDict()
 
@@ -164,11 +165,12 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, 
     spectrumentry = OrderedDict()
     spectrumentry['deredshifted'] = deredshifted
     spectrumentry['dereddened'] = dereddened
+    spectrumentry['instrument'] = instrument
     spectrumentry['timeunit'] = timeunit
     spectrumentry['time'] = time
     spectrumentry['waveunit'] = waveunit
     spectrumentry['fluxunit'] = fluxunit
-    if errors:
+    if errors and max([float(x) for x in errors]) > 0.:
         if not errorunit:
             'Warning: No error unit specified, not adding spectrum.'
             return
@@ -218,6 +220,14 @@ def jd_to_mjd(jd):
 def utf8(x):
     return str(x, 'utf-8')
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+catalog = OrderedDict()
 def convert_aq_output(row):
     return OrderedDict([(x, '%g'%Decimal(float(row[x])) if is_number(row[x]) else utf8(row[x])) for x in row.colnames])
 
@@ -893,12 +903,12 @@ if docfaiaspectra:
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
-                instrument = fileparts[2]
+                instrument = fileparts[2].split('.')[0]
             else:
                 year = fileparts[2][:4]
                 month = fileparts[2][4:6]
                 day = fileparts[2][6:]
-                instrument = fileparts[3]
+                instrument = fileparts[3].split('.')[0]
             time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
             f = open(file,'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -908,6 +918,32 @@ if docfaiaspectra:
             errors = data[2]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, errorunit = "ergs/s/cm^2/Angstrom", errors = errors)
+
+if docfaibcspectra:
+    for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
+        fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
+        if name[:2] == 'sn' and is_number(name[2:6]):
+            name = 'SN' + name[2:]
+        name = add_event(name)
+        for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
+            if os.path.basename(file) == 'sn1993J-19941128.flm':
+                print ('Warning: Need to fix sn1993J-19941128.flm!')
+                continue
+            fileparts = os.path.basename(file).split('-')
+            instrument = ''
+            year = fileparts[1][:4]
+            month = fileparts[1][4:6]
+            day = fileparts[1][6:].split('.')[0]
+            if len(fileparts) > 2:
+                instrument = fileparts[-1].split('.')[0]
+            time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+            f = open(file,'r')
+            data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+            data = [list(i) for i in zip(*data)]
+            wavelengths = data[0]
+            fluxes = data[1]
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
