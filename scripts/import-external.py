@@ -23,8 +23,6 @@ from string import ascii_letters
 
 clight = 29979245800.
 
-outdir = '../individual-sne/'
-
 eventnames = []
 
 dovizier =       True
@@ -39,11 +37,22 @@ doasiago =       True
 dorochester =    True
 dofirstmax =     True
 dolennarz =      True
+docfaiaspectra = True
 writeevents =    True
-compressevents = True
 printextra =     False
 
 events = OrderedDict()
+
+repfolders = [
+    'sne-pre-1990',
+    'sne-1990-1999',
+    'sne-2000-2004',
+    'sne-2005-2009',
+    'sne-2010-2014',
+    'sne-2015-2019'
+]
+
+repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
 def add_event(name):
     if name not in events:
@@ -56,6 +65,7 @@ def add_event(name):
         add_alias(name, name)
         events[name]['sources'] = []
         events[name]['photometry'] = []
+        events[name]['spectra'] = []
         return name
     else:
         return name
@@ -88,13 +98,6 @@ def round_sig(x, sig=4):
 
 def pretty_num(x, sig=4):
     return str('%g'%(round_sig(x, sig)))
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
 
 def get_source(name, reference, secondary = ''):
     nsources = len(events[name]['sources'])
@@ -149,6 +152,32 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     if source:
         photoentry['source'] = source
     events[name]['photometry'].append(photoentry)
+
+def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, instrument = "",
+    deredshifted = False, dereddened = False, errorunit = "", errors = ""):
+    if not waveunit:
+        'Warning: No error unit specified, not adding spectrum.'
+        return
+    if not fluxunit:
+        'Warning: No flux unit specified, not adding spectrum.'
+        return
+    spectrumentry = OrderedDict()
+    spectrumentry['deredshifted'] = deredshifted
+    spectrumentry['dereddened'] = dereddened
+    spectrumentry['timeunit'] = timeunit
+    spectrumentry['time'] = time
+    spectrumentry['waveunit'] = waveunit
+    spectrumentry['fluxunit'] = fluxunit
+    if errors:
+        if not errorunit:
+            'Warning: No error unit specified, not adding spectrum.'
+            return
+        spectrumentry['errorunit'] = errorunit
+        data = [wavelengths, fluxes, errors]
+    else:
+        data = [wavelengths, fluxes]
+    spectrumentry['data'] = [list(i) for i in zip(*data)]
+    events[name]['spectra'].append(spectrumentry)
 
 def get_max_light(name):
     if not events[name]['photometry']:
@@ -852,6 +881,34 @@ if dolennarz:
                 if len(dateparts) == 3:
                     events[name]['maxday'] = str(astrot.datetime.day)
 
+if docfaiaspectra:
+    for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
+        fullpath = "../sne-external-spectra/CfA_SNIa/" + name
+        if name[:2] == 'sn' and is_number(name[2:6]):
+            name = 'SN' + name[2:]
+        name = add_event(name)
+        for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
+            fileparts = os.path.basename(file).split('-')
+            if name[:2] == "SN":
+                year = fileparts[1][:4]
+                month = fileparts[1][4:6]
+                day = fileparts[1][6:]
+                instrument = fileparts[2]
+            else:
+                year = fileparts[2][:4]
+                month = fileparts[2][4:6]
+                day = fileparts[2][6:]
+                instrument = fileparts[3]
+            time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+            f = open(file,'r')
+            data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+            data = [list(i) for i in zip(*data)]
+            wavelengths = data[0]
+            fluxes = data[1]
+            errors = data[2]
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, errorunit = "ergs/s/cm^2/Angstrom", errors = errors)
+
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
@@ -888,7 +945,17 @@ if writeevents:
         events[name]['sources'] = events[name]['sources']
         events[name]['photometry'] = events[name]['photometry']
         jsonstring = json.dumps({name:events[name]}, indent=4, separators=(',', ': '), ensure_ascii=False)
-        f = codecs.open(outdir + filename + '.json', 'w', encoding='utf8')
+
+        outdir = '../'
+        if 'discoveryear' in events[name]:
+            for r, year in enumerate(repyears):
+                if int(events[name]['discoveryear']) <= year:
+                    outdir += repfolders[r]
+                    break
+        else:
+            outdir += str(repfolders[0])
+
+        f = codecs.open(outdir + '/' + filename + '.json', 'w', encoding='utf8')
         f.write(jsonstring)
         f.close()
 

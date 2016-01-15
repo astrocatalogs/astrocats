@@ -7,18 +7,19 @@ import os
 import re
 import operator
 import json
+from datetime import datetime
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
 from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
+from bokeh.io import hplot, vplot, gridplot
 from bokeh.plotting import Figure, show, save, ColumnDataSource
 from bokeh.models import HoverTool
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
 writecatalog = True
-indir = "../individual-sne/"
 outdir = "../"
 
 columnkey = [
@@ -73,6 +74,17 @@ sourcekeys = [
     'alias',
     'secondary'
 ]
+
+repfolders = [
+    'sne-pre-1990',
+    'sne-1990-1999',
+    'sne-2000-2004',
+    'sne-2005-2009',
+    'sne-2010-2014',
+    'sne-2015-2019'
+]
+
+repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
 if len(columnkey) != len(header):
     print('Error: Header not same length as key list.')
@@ -200,8 +212,33 @@ def bandwavef(code):
 def utf8(x):
     return str(x, 'utf-8')
 
+def get_rep_folder(year):
+    if not is_number(year):
+        print ('Error, discovery year is not a number!')
+        sys.exit()
+    for r, repyear in enumerate(repyears):
+        if int(year) <= repyear:
+            return repfolders[r]
+    return repfolders[0]
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 catalog = OrderedDict()
-for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.lower())):
+catalogcopy = OrderedDict()
+snepages = []
+sourcedict = dict()
+nophoto = []
+
+files = []
+for rep in repfolders:
+    files += glob.glob('../' + rep + "/*.json")
+
+for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     print(file)
     filehead, ext = os.path.splitext(file)
 
@@ -215,14 +252,26 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
     eventname = entry
 
     catalog[entry]['data'] = "<span class='ics'>"
-    catalog[entry]['data'] += "<a class='dci' href='sne/individual-sne/" + eventname + ".json'></a>"
-    plotavail = True if len(catalog[entry]['photometry']) else False
+    repfolder = get_rep_folder(catalog[entry]['discoveryear'])
+    catalog[entry]['data'] += "<a class='dci' href='https://raw.githubusercontent.com/astrotransients/" + repfolder + "/" + eventname + ".json' download></a>"
+    photoavail = True if len(catalog[entry]['photometry']) else False
     catalog[entry]['numphoto'] = len(catalog[entry]['photometry'])
-    if plotavail:
+    if photoavail:
         plotlink = "sne/" + eventname + ".html";
-        catalog[entry]['plot'] = plotlink
+        catalog[entry]['photoplot'] = plotlink
         plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a>";
-        catalog[entry]['data'] += plotlink + " " + str(len(catalog[entry]['photometry']))
+        catalog[entry]['data'] += plotlink
+    spectraavail = True if len(catalog[entry]['spectra']) else False
+    catalog[entry]['numspectra'] = len(catalog[entry]['spectra'])
+    if spectraavail:
+        plotlink = "sne/" + eventname + ".html";
+        catalog[entry]['spectraplot'] = plotlink
+        plotlink = "<a class='sci' href='" + plotlink + "' target='_blank'></a>";
+        catalog[entry]['data'] += plotlink
+    if photoavail:
+        catalog[entry]['data'] += " " + str(len(catalog[entry]['photometry']))
+    if spectraavail:
+        catalog[entry]['data'] += " (" + str(len(catalog[entry]['spectra'])) + ")"
     catalog[entry]['data'] += "</span>"
     
     prange = list(range(catalog[entry]['numphoto']))
@@ -246,7 +295,35 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
 
     tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
-    if plotavail:
+    # Construct the date
+    discoverdatestr = ''
+    if 'discoveryear' in catalog[entry]:
+        discoverdatestr += str(catalog[entry]['discoveryear'])
+        if 'discovermonth' in catalog[entry]:
+            discoverdatestr += '-' + str(catalog[entry]['discovermonth']).zfill(2)
+            if 'discoverday' in catalog[entry]:
+                discoverdatestr += '-' + str(catalog[entry]['discoverday']).zfill(2)
+    catalog[entry]['discoverdate'] = discoverdatestr
+
+    maxdatestr = ''
+    if 'maxyear' in catalog[entry]:
+        maxdatestr += str(catalog[entry]['maxyear'])
+        if 'maxmonth' in catalog[entry]:
+            maxdatestr += '-' + str(catalog[entry]['maxmonth']).zfill(2)
+            if 'maxday' in catalog[entry]:
+                maxdatestr += '-' + str(catalog[entry]['maxday']).zfill(2)
+
+    catalog[entry]['maxdate'] = maxdatestr
+
+    # Check file modification times before constructing .html files, which is expensive
+    dohtml = True
+    if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
+            t1 = datetime.fromtimestamp(os.path.getmtime(filehead + ".json"))
+            t2 = datetime.fromtimestamp(os.path.getmtime(outdir + eventname + ".html"))
+            if t1 < t2:
+                dohtml = False
+
+    if photoavail and dohtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
         photoAB = [float(catalog[entry]['photometry'][x]['abmag']) for x in prange]
         photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
@@ -310,13 +387,53 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
             p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
                 color=bandcolorf(band), legend=upplimlegend, size=7)
 
-        p = p1
+    if spectraavail and dohtml:
+        spectrumwave = []
+        spectrumflux = []
+        spectrumerrs = []
+        for spectrum in catalog[entry]['spectra']:
+            specrange = range(len(spectrum['data']))
+            spectrumwave.append([float(spectrum['data'][x][0]) for x in specrange])
+            spectrumflux.append([float(spectrum['data'][x][1]) for x in specrange])
+            if spectrum['errorunit']:
+                spectrumerrs.append([float(spectrum['data'][x][2]) for x in specrange])
+        
+        y_height = 0.
+        for i in range(len(spectrumwave)):
+            ydiff = 0.8*max(spectrumflux[i]) - min(spectrumflux[i])
+            spectrumflux[i] = [j + y_height for j in spectrumflux[i]]
+            y_height += ydiff
 
-        #save(p)
+        maxsw = max(map(max, spectrumwave))
+        minsw = min(map(min, spectrumwave))
+        maxfl = max(map(max, spectrumflux))
+        minfl = min(map(min, spectrumflux))
+        maxfldiff = max(map(operator.sub, list(map(max, spectrumflux)), list(map(min, spectrumflux))))
+        x_buffer = 0.0 #0.1*(maxsw - minsw)
+        x_range = [-x_buffer + minsw, x_buffer + maxsw]
+        y_buffer = 0.1*maxfldiff
+        y_range = [-y_buffer + minfl, y_buffer + maxfl]
+
+        p2 = Figure(title='Spectra for ' + eventname, x_axis_label='Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')',
+            y_axis_label='Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + ' + offset'
+            if (len(catalog[entry]['spectra']) > 1) else '', x_range = x_range, tools = tools,
+            y_range = y_range)
+
+        for i in range(len(spectrumwave)):
+            p2.line(x = spectrumwave[i], y = spectrumflux[i])
+
+    if (photoavail or spectraavail) and dohtml:
+        if photoavail and spectraavail:
+            p = gridplot([[p1, p2]])
+        elif photoavail:
+            p = p1
+        else:
+            p = p2
+
         html = file_html(p, CDN, eventname)
         returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>';
-        #html = re.sub(r'(\<body\>)', r'\1\n    '+returnlink, html)
-        html = re.sub(r'(\<\/body\>)', r'    <a href="individual-sne/' + eventname + r'.json">Download datafile</a><br><br>\n        \1', html)
+        repfolder = get_rep_folder(catalog[entry]['discoveryear'])
+        html = re.sub(r'(\<\/body\>)', r'    <a href="https://raw.githubusercontent.com/astrotransients/' + repfolder + '/' + eventname + r'.json" download>Download datafile</a><br><br>\n        \1', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n        \1', html)
             for source in catalog[entry]['sources']:
@@ -329,41 +446,14 @@ for fcnt, file in enumerate(sorted(glob.glob(indir + "*.json"), key=lambda s: s.
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
 
-    # Construct the date
-    discoverdatestr = ''
-    if 'discoveryear' in catalog[entry]:
-        discoverdatestr += str(catalog[entry]['discoveryear'])
-        if 'discovermonth' in catalog[entry]:
-            discoverdatestr += '-' + str(catalog[entry]['discovermonth']).zfill(2)
-            if 'discoverday' in catalog[entry]:
-                discoverdatestr += '-' + str(catalog[entry]['discoverday']).zfill(2)
-    catalog[entry]['discoverdate'] = discoverdatestr
-
-    maxdatestr = ''
-    if 'maxyear' in catalog[entry]:
-        maxdatestr += str(catalog[entry]['maxyear'])
-        if 'maxmonth' in catalog[entry]:
-            maxdatestr += '-' + str(catalog[entry]['maxmonth']).zfill(2)
-            if 'maxday' in catalog[entry]:
-                maxdatestr += '-' + str(catalog[entry]['maxday']).zfill(2)
-    catalog[entry]['maxdate'] = maxdatestr
-
     #if fcnt > 100:
     #    sys.exit()
 
-# Write it all out at the end
-if writecatalog:
-    # Make a few small files for generating charts
-    f = open(outdir + 'snepages.csv', 'w')
-    csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
-    for entry in catalog:
-        if 'plot' in catalog[entry]:
-            csvout.writerow(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['plot']])
-    f.close()
+    # Save this stuff because next line will delete it.
+    if writecatalog:
+        if 'photoplot' in catalog[entry]:
+            snepages.append(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['photoplot']])
 
-    f = open(outdir + 'sources.csv', 'w')
-    sourcedict = dict()
-    for entry in catalog:
         for sourcerow in catalog[entry]['sources']:
             strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','xmlcharrefreplace').decode("utf-8"))
             if strippedname in sourcedict:
@@ -371,6 +461,27 @@ if writecatalog:
             else:
                 sourcedict[strippedname] = 1
 
+        nophoto.append(catalog[entry]['numphoto'] < 3)
+
+        # Delete unneeded data from catalog, add blank entries when data missing.
+        print
+        catalogcopy[entry] = OrderedDict()
+        for col in columnkey:
+            if col in catalog[entry]:
+                catalogcopy[entry][col] = catalog[entry][col]
+            else:
+                catalogcopy[entry][col] = None
+
+# Write it all out at the end
+if writecatalog:
+    # Make a few small files for generating charts
+    f = open(outdir + 'snepages.csv', 'w')
+    csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
+    for row in snepages:
+        csvout.writerow(row)
+    f.close()
+
+    f = open(outdir + 'sources.csv', 'w')
     sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
     csvout = csv.writer(f)
     csvout.writerow(['Source','Number'])
@@ -378,7 +489,7 @@ if writecatalog:
         csvout.writerow(source)
     f.close()
 
-    nophoto = sum(i < 3 for i in [catalog[entry]['numphoto'] for entry in catalog])
+    nophoto = sum(nophoto)
     hasphoto = len(catalog) - nophoto
     f = open(outdir + 'pie.csv', 'w')
     csvout = csv.writer(f)
@@ -414,15 +525,6 @@ if writecatalog:
         csvout.writerow(ctype)
     f.close()
 
-    # Delete unneeded data from catalog, add blank entries when data missing.
-    catalogcopy = deepcopy(catalog) # Deep copy to avoid Python 3.5 issue.
-    for entry in catalog:
-        for col in catalog[entry]:
-            if col not in columnkey:
-                del catalogcopy[entry][col]
-        for col in columnkey:
-            if col not in catalogcopy[entry]:
-                catalogcopy[entry][col] = None
     catalog = catalogcopy
 
     # Convert to array since that's what datatables expects
