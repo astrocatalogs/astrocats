@@ -55,6 +55,25 @@ repfolders = [
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
+typereps = {
+    'II P':  ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec'],
+    'Ib/c':  ['Ibc'],
+    'Ia P':  ['Ia pec', 'Ia-pec'],
+    'Ic P':  ['Ic pec', 'Ic-pec'],
+    'IIn P': ['IIn pec', 'IIn-pec']
+}
+
+def event_attr_priority(attr):
+    if attr == 'photometry' or attr == 'spectra':
+        return 'zzzzzzzz'
+    if attr == 'name':
+        return 'aaaaaaaa'
+    if attr == 'aliases':
+        return 'aaaaaaab'
+    if attr == 'sources':
+        return 'aaaaaaac'
+    return attr
+
 def add_event(name):
     if name not in events:
         for event in events:
@@ -65,8 +84,6 @@ def add_event(name):
         events[name]['name'] = name
         add_alias(name, name)
         events[name]['sources'] = []
-        events[name]['photometry'] = []
-        events[name]['spectra'] = []
         return name
     else:
         return name
@@ -77,7 +94,7 @@ def event_filename(name):
 def add_alias(name, alias):
     if 'aliases' in events[name]:
         if alias not in events[name]['aliases']:
-            events[name]['aliases'].append(alias)
+            events[name].setdefault('aliases',[]).append(alias)
     else:
         events[name]['aliases'] = [alias]
 
@@ -109,7 +126,7 @@ def get_source(name, reference, secondary = ''):
         newsource['alias'] =  source
         if secondary:
             newsource['secondary'] = True
-        events[name]['sources'].append(newsource)
+        events[name].setdefault('sources',[]).append(newsource)
     else:
         sourcexs = range(nsources)
         source = [events[name]['sources'][x]['alias'] for x in sourcexs][
@@ -133,13 +150,14 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         return
 
     # Look for duplicate data and don't add if duplicate
-    for photo in events[name]['photometry']:
-        if (photo['timeunit'] == timeunit and photo['band'] == band and
-            Decimal(photo['time']) == Decimal(time) and
-            Decimal(photo['abmag']) == Decimal(abmag) and
-            (('aberr' not in photo and not aberr) or ('aberr' in photo and aberr and Decimal(photo['aberr']) == Decimal(aberr)) or
-            ('aberr' in photo and not aberr))):
-            return
+    if 'photometry' in events[name]:
+        for photo in events[name]['photometry']:
+            if (photo['timeunit'] == timeunit and photo['band'] == band and
+                Decimal(photo['time']) == Decimal(time) and
+                Decimal(photo['abmag']) == Decimal(abmag) and
+                (('aberr' not in photo and not aberr) or ('aberr' in photo and aberr and Decimal(photo['aberr']) == Decimal(aberr)) or
+                ('aberr' in photo and not aberr))):
+                return
 
     photoentry = OrderedDict()
     photoentry['timeunit'] = timeunit
@@ -152,10 +170,10 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         photoentry['aberr'] = str(aberr)
     if source:
         photoentry['source'] = source
-    events[name]['photometry'].append(photoentry)
+    events[name].setdefault('photometry',[]).append(photoentry)
 
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, instrument = "",
-    deredshifted = False, dereddened = False, errorunit = "", errors = ""):
+    deredshifted = False, dereddened = False, errorunit = "", errors = "", source = ""):
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
         return
@@ -179,10 +197,32 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, 
     else:
         data = [wavelengths, fluxes]
     spectrumentry['data'] = [list(i) for i in zip(*data)]
-    events[name]['spectra'].append(spectrumentry)
+    if source:
+        spectrumentry['source'] = source
+    events[name].setdefault('spectra',[]).append(spectrumentry)
+
+def add_claimed_type(name, inputtype, source = ""):
+    claimedtype = inputtype
+    for rep in typereps:
+        if inputtype in typereps[rep]:
+            claimedtype = rep
+            break
+
+    if 'claimedtype' in events[name]:
+        for i, ct in enumerate(events[name]['claimedtype']):
+            if ct['type'] == claimedtype:
+                if source:
+                    events[name]['claimedtype'][i]['source'] += ',' + source
+                return
+
+    claimedtypeentry = OrderedDict()
+    claimedtypeentry['type'] = claimedtype
+    if source:
+        claimedtypeentry['source'] = source
+    events[name].setdefault('claimedtype',[]).append(claimedtypeentry)
 
 def get_max_light(name):
-    if not events[name]['photometry']:
+    if 'photometry' not in events[name]:
         return (None, None)
 
     eventphoto = [Decimal(events[name]['photometry'][x]['abmag']) for x in range(len(events[name]['photometry']))]
@@ -192,7 +232,7 @@ def get_max_light(name):
     return (astrotime(mlmjd, format='mjd').datetime, mlmag)
 
 def get_first_light(name):
-    if not events[name]['photometry']:
+    if 'photometry' not in events[name]:
         return None
 
     eventtime = [events[name]['photometry'][x]['time'] for x in range(len(events[name]['photometry']))]
@@ -343,19 +383,20 @@ if dosuspect:
                             if hvels:
                                 events[name]['hvel'] = hvels[0].split(':')[1].strip().split(' ')[0]
                             types = bandsoup.body.findAll(text=re.compile("Type"))
-                            events[name]['claimedtype'] = types[0].split(':')[1].strip().split(' ')[0]
+
+                            reference = ''
+                            for link in bandsoup.body.findAll('a'):
+                                if 'adsabs' in link['href']:
+                                    reference = str(link).replace('"', "'")
+                            source = get_source(name, reference)
+
+                            add_claimed_type(name, types[0].split(':')[1].strip().split(' ')[0], source)
 
                         bands = bandsoup.body.findAll(text=re.compile("^Band"))
                         band = bands[0].split(':')[1].strip()
 
                         secondaryreference = "<a href='https://www.nhn.ou.edu/~suspect/'>SUSPECT</a>"
                         secondarysource = get_source(name, secondaryreference, 1)
-
-                        reference = ''
-                        for link in bandsoup.body.findAll('a'):
-                            if 'adsabs' in link['href']:
-                                reference = str(link).replace('"', "'")
-                        source = get_source(name, reference)
 
                         for r, row in enumerate(bandtable.findAll('tr')):
                             if r == 0:
@@ -583,7 +624,7 @@ if dogaia:
 
         events[name]['snra'] = col[2].contents[0].strip()
         events[name]['sndec'] = col[3].contents[0].strip()
-        events[name]['claimedtype'] = classname.replace('SN', '').strip()
+        add_claimed_type(name, classname.replace('SN', '').strip(), source)
 
         photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
         photresp = urllib.request.urlopen(photlink)
@@ -690,6 +731,9 @@ if doasiago:
             name = snname("SN" + record[1]).strip('?')
             name = add_event(name)
 
+            reference = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
+            source = get_source(name, reference, secondary = True)
+
             year = re.findall(r'\d+', name)[0]
             events[name]['discoveryear'] = year
 
@@ -731,7 +775,7 @@ if doasiago:
             if (hostname != ''):
                 events[name]['host'] = hostname
             if (claimedtype != ''):
-                events[name]['claimedtype'] = claimedtype
+                add_claimed_type(name, claimedtype, source)
             if (redshift != ''):
                 events[name]['redshift'] = redshift
             if (hvel != ''):
@@ -769,7 +813,7 @@ if dorochester:
 
         secondarysource = get_source(name, secondaryreference, secondary = 1)
         if str(cols[1].contents[0]).strip() != 'unk':
-            events[name]['claimedtype'] = str(cols[1].contents[0]).strip()
+            add_claimed_type(name, str(cols[1].contents[0]).strip(), secondarysource)
         if str(cols[2].contents[0]).strip() != 'anonymous':
             events[name]['host'] = str(cols[2].contents[0]).strip()
         events[name]['snra'] = str(cols[3].contents[0]).strip()
@@ -861,7 +905,7 @@ if dolennarz:
             else:
                 astrot = astrotime(row['Ddate'] + '-01-01', scale='utc')
 
-            if not events[name]['photometry']:
+            if 'photometry' not in events[name]:
                 if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
                     mjd = str(astrot.mjd)
                     add_photometry(name, time = mjd, band = row['Dband'], abmag = row['Dmag'], source = source)
@@ -880,7 +924,7 @@ if dolennarz:
             else:
                 astrot = astrotime(row['Mdate'] + '-01-01', scale='utc')
 
-            if not events[name]['photometry']:
+            if 'photometry' not in events[name]:
                 if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
                     mjd = str(astrot.mjd)
                     add_photometry(name, time = mjd, band = row['Mband'], abmag = row['Mmag'], source = source)
@@ -897,6 +941,8 @@ if docfaiaspectra:
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = add_event(name)
+        reference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
+        source = get_source(name, reference, secondary = True)
         for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
             fileparts = os.path.basename(file).split('-')
             if name[:2] == "SN":
@@ -916,8 +962,9 @@ if docfaiaspectra:
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
-            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, errorunit = "ergs/s/cm^2/Angstrom", errors = errors)
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
+                wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
+                errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source)
 
 if docfaibcspectra:
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
@@ -925,6 +972,8 @@ if docfaibcspectra:
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = add_event(name)
+        reference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
+        source = get_source(name, reference, secondary = True)
         for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
             if os.path.basename(file) == 'sn1993J-19941128.flm':
                 print ('Warning: Need to fix sn1993J-19941128.flm!')
@@ -943,13 +992,13 @@ if docfaibcspectra:
             wavelengths = data[0]
             fluxes = data[1]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument)
+                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
-        if 'claimedtype' in events[name] and events[name]['claimedtype'] == '?':
-            del events[name]['claimedtype']
+        if 'claimedtype' in events[name]:
+            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if ct != '?' and ct != '-']
         if 'redshift' in events[name] and 'hvel' not in events[name]:
             z = float(events[name]['redshift'])
             events[name]['hvel'] = pretty_num(clight/1.e5*((z + 1.)**2. - 1.)/
@@ -972,14 +1021,17 @@ if writeevents:
             events[name]['host'] = events[name]['host'].replace("UGC", "UGC ")
             events[name]['host'] = events[name]['host'].replace("IC", "IC ")
             events[name]['host'] = ' '.join(events[name]['host'].split())
+        if 'photometry' in events[name]:
+            events[name]['photometry'].sort(key=lambda x: float(x['time']))
+        if 'spectra' in events[name]:
+            events[name]['spectra'].sort(key=lambda x: float(x['time']))
+        events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
     # Write it all out!
     for name in events:
         print('Writing ' + name)
         filename = event_filename(name)
 
-        events[name]['sources'] = events[name]['sources']
-        events[name]['photometry'] = events[name]['photometry']
         jsonstring = json.dumps({name:events[name]}, indent=4, separators=(',', ': '), ensure_ascii=False)
 
         outdir = '../'
@@ -995,30 +1047,9 @@ if writeevents:
         f.write(jsonstring)
         f.close()
 
-        #outfile = open(outdir + filename + '.dat', 'wb')
-        #csvout = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_ALL, delimiter="\t")
-        #
-        #csvout.writerow(['name', name])
-
-        #for row in events[name]['sources']:
-        #    csvout.writerow(row)
-        #
-        #for key in events[name]:
-        #    if events[name][key]:
-        #        if isinstance(events[name][key], list) and not isinstance(events[name][key], basestring):
-        #            events[name][key] = ",".join(events[name][key])
-        #        csvout.writerow([key, events[name][key]])
-
-        #sortedphotometry = sorted(events[name]['photometry'], key=itemgetter('time'))
-        #for entry in sortedphotometry:
-        #    row = ['photometry'] + list(sum(((k, v) for k, v in entry.items() if v), ()))
-        #    csvout.writerow(row)
-
-        #outfile.close()
-
 # Print some useful facts
 if printextra:
     print('Printing events without any photometry:')
     for name in events:
-        if not events[name]['photometry']:
+        if 'photometry' not in events[name]:
             print(name)
