@@ -1001,17 +1001,20 @@ if writeevents:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if ct != '?' and ct != '-']
         if 'redshift' in events[name] and 'hvel' not in events[name]:
             z = float(events[name]['redshift'])
+            sigdigits = len(events[name]['redshift'].strip('0').strip('.'))
             events[name]['hvel'] = pretty_num(clight/1.e5*((z + 1.)**2. - 1.)/
-                ((z + 1.)**2. + 1.))
+                ((z + 1.)**2. + 1.), sig = sigdigits)
         elif 'hvel' in events[name] and 'z' not in events[name]:
             voc = float(events[name]['hvel'])*1.e5/clight
-            events[name]['redshift'] = pretty_num(sqrt((1. + voc)/(1. - voc)) - 1.)
+            sigdigits = len(events[name]['hvel'].strip('0').strip('.'))
+            events[name]['redshift'] = pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = sigdigits)
         if 'redshift' in events[name] and float(events[name]['redshift']) > 0.0:
             dl = cosmo.luminosity_distance(float(events[name]['redshift']))
+            sigdigits = len(events[name]['redshift'].strip('0').strip('.'))
             if 'lumdist' not in events[name]:
-                events[name]['lumdist'] = pretty_num(dl.value)
+                events[name]['lumdist'] = pretty_num(dl.value, sig = sigdigits)
             if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0))
+                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = sigdigits)
         if 'redshift' in events[name]:
             events[name]['redshift'] = pretty_num(Decimal(events[name]['redshift']))
         if 'hvel' in events[name]:

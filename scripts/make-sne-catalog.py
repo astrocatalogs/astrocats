@@ -14,15 +14,16 @@ from datetime import datetime
 from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
-from bokeh.io import hplot, vplot, gridplot
-from bokeh.plotting import Figure, show, save, ColumnDataSource
-from bokeh.models import HoverTool
+from bokeh.io import hplot, vplot, gridplot, vform
+from bokeh.plotting import Figure, show, save
+from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox
 from bokeh.resources import CDN
 from bokeh.embed import file_html
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='write catalog file',    default=True,  action='store_false')
 parser.add_argument('--no-write-html', '-wh',    dest='writehtml',    help='write html plot files', default=True,  action='store_false')
+parser.add_argument('--force-html', '-fh',       dest='forcehtml',    help='force html plot files', default=False, action='store_true')
 parser.add_argument('--test', '-t',              dest='test',         help='test this script',      default=False, action='store_true')
 args = parser.parse_args()
 
@@ -326,11 +327,12 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
     # Check file modification times before constructing .html files, which is expensive
     dohtml = True
-    if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
-            t1 = datetime.fromtimestamp(os.path.getmtime(filehead + ".json"))
-            t2 = datetime.fromtimestamp(os.path.getmtime(outdir + eventname + ".html"))
-            if t1 < t2:
-                dohtml = False
+    if not args.forcehtml:
+        if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
+                t1 = datetime.fromtimestamp(os.path.getmtime(filehead + ".json"))
+                t2 = datetime.fromtimestamp(os.path.getmtime(outdir + eventname + ".html"))
+                if t1 < t2:
+                    dohtml = False
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
@@ -428,32 +430,77 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             if (len(catalog[entry]['spectra']) > 1) else '', x_range = x_range, tools = tools,
             y_range = y_range)
 
+        sources = []
         for i in range(len(spectrumwave)):
-            p2.line(x = spectrumwave[i], y = spectrumflux[i])
+            sources.append(ColumnDataSource(
+                data = dict(
+                    x0 = spectrumwave[i],
+                    y0 = spectrumflux[i],
+                    x = spectrumwave[i],
+                    y = spectrumflux[i]
+                )
+            ))
+            p2.line('x', 'y', source=sources[i])
+
+        sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
+        callback = CustomJS(args=sdicts, code="""
+            for (s = 0; s < """ + str(len(sources)) + """; s++) {
+                var data = eval('s'+s).get('data');
+                var f = cb_obj.get('value');
+                var x0 = data['x0'];
+                var y0 = data['y0'];
+                data['x'] = [x0[0]];
+                data['y'] = [y0[0]];
+                var xaccum = 0.;
+                var yaccum = 0.;
+                for (i = 0; i < x0.length; i++) {
+                    var dx;
+                    if (i == 0) {
+                        dx = x0[i+1] - x0[i];
+                    } else {
+                        dx = x0[i] - x0[i-1];
+                    }
+                    xaccum += dx;
+                    yaccum += y0[i];
+                    if (xaccum >= f) {
+                        data['x'].push(data['x'][data['x'].length-1] + xaccum);
+                        data['y'].push(yaccum/xaccum);
+                        xaccum = 0.;
+                        yaccum = 0.;
+                    }
+                }
+                eval('s'+s).trigger('change');
+            }
+        """)
+
+        slider = Slider(start=1, end=20, value=1, step=0.5, title="Bin size (Angstroms)", callback=callback)
 
     if (photoavail or spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
-            p = gridplot([[p1, p2]])
+            p = HBox([p1,p2,slider])
         elif photoavail:
             p = p1
         else:
             p = p2
 
         html = file_html(p, CDN, eventname)
-        returnlink = r'    <br><a href="https://sne.space"><< Return to supernova catalog</a>'
+        returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
-        html = re.sub(r'(\<\/body\>)', r'    <a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>Download datafile</a><br><br>\n        \1', html)
+        html = re.sub(r'(\<\/body\>)', r'<a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>Download datafile</a><br><br>\n\1', html)
         if len(catalog[entry]['sources']):
-            html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n        \1', html)
+            html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n\1', html)
             for source in catalog[entry]['sources']:
                 html = re.sub(r'(\<\/body\>)', r'<tr><td>' + source['alias'] +
                 r'</td><td>' + source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
-                r'</td></tr>\n        \1', html)
-            html = re.sub(r'(\<\/body\>)', r'</table>\n    \1', html)
-        html = re.sub(r'(\<\/body\>)', returnlink+r'\n    \1', html)
+                r'</td></tr>\n\1', html)
+            html = re.sub(r'(\<\/body\>)', r'</table>\n\1', html)
+        html = re.sub(r'(\<\/body\>)', returnlink+r'\n\1', html)
         print(outdir + eventname + ".html")
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
+
+    if spectraavail and dohtml:
+        sys.exit()
 
     #if fcnt > 100:
     #    sys.exit()
