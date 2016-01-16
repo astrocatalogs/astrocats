@@ -246,6 +246,7 @@ def is_number(s):
 
 def label_format(label):
     newlabel = label.replace('Angstrom', 'Å')
+    newlabel = newlabel.replace('^2', '²')
     return newlabel
 
 catalog = OrderedDict()
@@ -436,9 +437,10 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             spectrumflux[f] = [x - y_offsets[f] for x in flux]
 
         tt = [  
-                ("λ", "@x"),
+                ("λ", "@x{1.1}"),
                 ("Flux", "@y0"),
                 ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}"),
+                ("Source", "@src")
              ]
         hover = HoverTool(tooltips = tt)
 
@@ -461,6 +463,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                     yoff = [y_offsets[i]],
                     binsize = [1.0],
                     spacing = [1.0],
+                    src = [catalog[entry]['spectra'][i]['source'] for j in spectrumflux[i]],
                     epoch = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
                 )
             ))
@@ -479,8 +482,9 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                 var space = data['spacing'][0]
                 var x0 = data['x0'];
                 var y0 = data['y0'];
+                var dx0 = x0[1] - x0[0];
                 var yoff = space*data['yoff'][0];
-                data['x'] = [x0[0]];
+                data['x'] = [x0[0] - 0.5*Math.max(0., f - dx0)];
                 data['y'] = [y0[0] + yoff];
                 var xaccum = 0.;
                 var yaccum = 0.;
@@ -494,7 +498,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                     xaccum += dx;
                     yaccum += y0[i]*dx;
                     if (xaccum >= f) {
-                        data['x'].push(data['x'][data['x'].length-1] + xaccum) - Math.max(0., f - dx);
+                        data['x'].push(data['x'][data['x'].length-1] + xaccum);
                         data['y'].push(yaccum/xaccum + yoff);
                         xaccum = 0.;
                         yaccum = 0.;
