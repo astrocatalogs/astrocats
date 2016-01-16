@@ -22,10 +22,11 @@ from bokeh.embed import file_html
 from bokeh.palettes import brewer
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='write catalog file',    default=True,  action='store_false')
-parser.add_argument('--no-write-html', '-wh',    dest='writehtml',    help='write html plot files', default=True,  action='store_false')
-parser.add_argument('--force-html', '-fh',       dest='forcehtml',    help='force html plot files', default=False, action='store_true')
-parser.add_argument('--test', '-t',              dest='test',         help='test this script',      default=False, action='store_true')
+parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
+parser.add_argument('--no-write-html', '-wh',    dest='writehtml',    help='Don\'t write html plot files', default=True, action='store_false')
+parser.add_argument('--force-html', '-fh',       dest='forcehtml',    help='Force write html plot files',  default=False, action='store_true')
+parser.add_argument('--event-list', '-el',       dest='eventlist',    help='Process a list of events',     default=[], type=str, nargs='+')
+parser.add_argument('--test', '-t',              dest='test',         help='Test this script',             default=False, action='store_true')
 args = parser.parse_args()
 
 outdir = "../"
@@ -261,8 +262,10 @@ for rep in repfolders:
     files += glob.glob('../' + rep + "/*.json")
 
 for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
-    print(file)
     filehead, ext = os.path.splitext(file)
+
+    if args.eventlist and os.path.splitext(os.path.basename(file))[0] not in args.eventlist:
+        continue
 
     f = open(file, 'r')
     filetext = f.read()
@@ -272,6 +275,11 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     entry = next(reversed(catalog))
 
     eventname = entry
+
+    if args.eventlist and eventname not in args.eventlist:
+        continue
+
+    print(file)
 
     repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['download'] = "<a class='dci' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
@@ -436,19 +444,19 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         for f, flux in enumerate(spectrumflux):
             spectrumflux[f] = [x - y_offsets[f] for x in flux]
 
-        tt = [  
+        tt2 = [  
                 ("λ", "@x{1.1}"),
                 ("Flux", "@y0"),
                 ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}"),
                 ("Source", "@src")
              ]
-        hover = HoverTool(tooltips = tt)
+        hover2 = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')'),
             y_axis_label=label_format('Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + ' + offset'
             if (len(catalog[entry]['spectra']) > 1) else ''), x_range = x_range, tools = tools, 
             y_range = y_range)
-        p2.add_tools(hover)
+        p2.add_tools(hover2)
 
         colors = brewer["Spectral"]
         colors = colors[min(max(min(colors.keys()),len(spectrumwave)),max(colors.keys()))]
@@ -467,7 +475,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                     epoch = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
                 )
             ))
-            p2.line('x', 'y', source=sources[i], color=colors[i % len(colors)], line_width=2)
+            p2.line('x', 'y', source=sources[i], line_color=str(colors[i % len(colors)]), line_width=2)
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
@@ -511,7 +519,8 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
         spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
 
-    if (photoavail or spectraavail) and dohtml and args.writehtml:
+    #if (photoavail or spectraavail) and dohtml and args.writehtml:
+    if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
             p = HBox(vplot(hplot(p1,p2,vform(binslider,spacingslider))))
         elif photoavail:
@@ -569,7 +578,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         break
 
 # Write it all out at the end
-if args.writecatalog:
+if args.writecatalog and not args.eventlist:
     # Make a few small files for generating charts
     f = open(outdir + 'snepages.csv' + testsuffix, 'w')
     csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)

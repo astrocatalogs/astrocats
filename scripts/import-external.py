@@ -58,9 +58,12 @@ repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 typereps = {
     'II P':  ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec'],
     'Ib/c':  ['Ibc'],
-    'Ia P':  ['Ia pec', 'Ia-pec'],
+    'Ia P':  ['Ia pec', 'Ia-pec', 'Iapec'],
     'Ic P':  ['Ic pec', 'Ic-pec'],
-    'IIn P': ['IIn pec', 'IIn-pec']
+    'IIn P': ['IIn pec', 'IIn-pec'],
+    'II L':  ['IIL'],
+    'I P':   ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
+    'Ib P':  ['Ib pec', 'Ib-pec']
 }
 
 def event_attr_priority(attr):
@@ -202,7 +205,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, 
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
 def add_claimed_type(name, inputtype, source = ""):
-    claimedtype = inputtype
+    claimedtype = inputtype.strip()
     for rep in typereps:
         if inputtype in typereps[rep]:
             claimedtype = rep
@@ -998,7 +1001,7 @@ if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
         if 'claimedtype' in events[name]:
-            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if ct != '?' and ct != '-']
+            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct != '?' and ct != '-')]
         if 'redshift' in events[name] and 'hvel' not in events[name]:
             z = float(events[name]['redshift'])
             sigdigits = len(events[name]['redshift'].strip('0').strip('.'))
