@@ -15,11 +15,11 @@ from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
 from bokeh.io import hplot, vplot, gridplot, vform
-from bokeh.plotting import Figure, show, save
+from bokeh.plotting import Figure, show, save, reset_output
 from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, VBoxForm
 from bokeh.resources import CDN
 from bokeh.embed import file_html
-from bokeh.palettes import brewer
+from palettable import cubehelix
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
@@ -32,6 +32,8 @@ args = parser.parse_args()
 outdir = "../"
 
 testsuffix = '.test' if args.test else ''
+
+mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 
 columnkey = [
     "check",
@@ -187,7 +189,8 @@ bandwavelengths = {
 wavedict = dict(list(zip(bandcodes,bandwavelengths)))
 
 seed(101)
-bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
+#bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
+bandcolors = cubehelix.cubehelix1_16.hex_colors[2:14] + cubehelix.cubehelix2_16.hex_colors[2:14] + cubehelix.cubehelix3_16.hex_colors[2:14]
 shuffle(bandcolors)
 
 def event_filename(name):
@@ -453,13 +456,11 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         hover2 = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')'),
-            y_axis_label=label_format('Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + ' + offset'
-            if (len(catalog[entry]['spectra']) > 1) else ''), x_range = x_range, tools = tools, 
+            y_axis_label=label_format('Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + (' + offset'
+            if (len(catalog[entry]['spectra']) > 1) else '')), x_range = x_range, tools = tools, 
             y_range = y_range)
         p2.add_tools(hover2)
 
-        colors = brewer["Spectral"]
-        colors = colors[min(max(min(colors.keys()),len(spectrumwave)),max(colors.keys()))]
         sources = []
         for i in range(len(spectrumwave)):
             sources.append(ColumnDataSource(
@@ -475,7 +476,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                     epoch = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
                 )
             ))
-            p2.line('x', 'y', source=sources[i], line_color=str(colors[i % len(colors)]), line_width=2)
+            p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2)
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
@@ -519,10 +520,10 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
         spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
 
-    #if (photoavail or spectraavail) and dohtml and args.writehtml:
-    if (photoavail and spectraavail) and dohtml and args.writehtml:
+    if (photoavail or spectraavail) and dohtml and args.writehtml:
+    #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
-            p = HBox(vplot(hplot(p1,p2,vform(binslider,spacingslider))))
+            p = vplot(hplot(p1),hplot(p2,vform(binslider,spacingslider)), width=900)
         elif photoavail:
             p = p1
         else:
@@ -541,8 +542,11 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             html = re.sub(r'(\<\/body\>)', r'</table>\n\1', html)
         html = re.sub(r'(\<\/body\>)', returnlink+r'\n\1', html)
         print(outdir + eventname + ".html")
-        with open(outdir + eventname + ".html", "w") as f:
-            f.write(html)
+        with open(outdir + eventname + ".html", "w") as fff:
+            fff.write(html)
+
+    # Necessary to clear Bokeh state
+    reset_output()
 
     #if spectraavail and dohtml:
     #    sys.exit()
