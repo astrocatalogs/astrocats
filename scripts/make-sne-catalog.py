@@ -16,9 +16,10 @@ from random import shuffle, seed
 from collections import OrderedDict
 from bokeh.io import hplot, vplot, gridplot, vform
 from bokeh.plotting import Figure, show, save
-from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox
+from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, VBoxForm
 from bokeh.resources import CDN
 from bokeh.embed import file_html
+from bokeh.palettes import brewer
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='write catalog file',    default=True,  action='store_false')
@@ -243,6 +244,10 @@ def is_number(s):
     except ValueError:
         return False
 
+def label_format(label):
+    newlabel = label.replace('Angstrom', 'Å')
+    return newlabel
+
 catalog = OrderedDict()
 catalogcopy = OrderedDict()
 snepages = []
@@ -348,7 +353,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
         tt = [  
                 ("Source ID", "@src"),
-                ("MJD", "@x{1.11}"),
+                ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")", "@x{1.11}"),
                 ("Magnitude", "@y{1.111}"),
                 ("Error", "@err{1.111}"),
                 ("Band", "@desc")
@@ -358,7 +363,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         hover = HoverTool(tooltips = tt)
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='AB Magnitude', x_range = x_range, tools = tools,
+            y_axis_label='AB Magnitude', x_range = x_range, tools = tools, 
             y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoerrs))])))
         p1.add_tools(hover)
 
@@ -410,10 +415,12 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                 spectrumerrs.append([float(spectrum['data'][x][2]) for x in specrange])
         
         y_height = 0.
-        for i in range(len(spectrumwave)):
-            ydiff = 0.8*max(spectrumflux[i]) - min(spectrumflux[i])
+        y_offsets = [0. for x in range(len(spectrumwave))]
+        for i in reversed(range(len(spectrumwave))):
+            y_offsets[i] = y_height
+            ydiff = max(spectrumflux[i]) - min(spectrumflux[i])
             spectrumflux[i] = [j + y_height for j in spectrumflux[i]]
-            y_height -= ydiff
+            y_height += ydiff
 
         maxsw = max(map(max, spectrumwave))
         minsw = min(map(min, spectrumwave))
@@ -425,11 +432,24 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         y_buffer = 0.1*maxfldiff
         y_range = [-y_buffer + minfl, y_buffer + maxfl]
 
-        p2 = Figure(title='Spectra for ' + eventname, x_axis_label='Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')',
-            y_axis_label='Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + ' + offset'
-            if (len(catalog[entry]['spectra']) > 1) else '', x_range = x_range, tools = tools,
-            y_range = y_range)
+        for f, flux in enumerate(spectrumflux):
+            spectrumflux[f] = [x - y_offsets[f] for x in flux]
 
+        tt = [  
+                ("λ", "@x"),
+                ("Flux", "@y0"),
+                ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}"),
+             ]
+        hover = HoverTool(tooltips = tt)
+
+        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')'),
+            y_axis_label=label_format('Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + ' + offset'
+            if (len(catalog[entry]['spectra']) > 1) else ''), x_range = x_range, tools = tools, 
+            y_range = y_range)
+        p2.add_tools(hover)
+
+        colors = brewer["Spectral"]
+        colors = colors[min(max(min(colors.keys()),len(spectrumwave)),max(colors.keys()))]
         sources = []
         for i in range(len(spectrumwave)):
             sources.append(ColumnDataSource(
@@ -437,20 +457,31 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                     x0 = spectrumwave[i],
                     y0 = spectrumflux[i],
                     x = spectrumwave[i],
-                    y = spectrumflux[i]
+                    y = [y_offsets[i] + j for j in spectrumflux[i]],
+                    yoff = [y_offsets[i]],
+                    binsize = [1.0],
+                    spacing = [1.0],
+                    epoch = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
                 )
             ))
-            p2.line('x', 'y', source=sources[i])
+            p2.line('x', 'y', source=sources[i], color=colors[i % len(colors)], line_width=2)
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
             for (s = 0; s < """ + str(len(sources)) + """; s++) {
                 var data = eval('s'+s).get('data');
-                var f = cb_obj.get('value');
+                if (cb_obj.get('title') == 'Spacing') {
+                    data['spacing'][0] = cb_obj.get('value');
+                } else {
+                    data['binsize'][0] = cb_obj.get('value');
+                }
+                var f = data['binsize'][0]
+                var space = data['spacing'][0]
                 var x0 = data['x0'];
                 var y0 = data['y0'];
+                var yoff = space*data['yoff'][0];
                 data['x'] = [x0[0]];
-                data['y'] = [y0[0]];
+                data['y'] = [y0[0] + yoff];
                 var xaccum = 0.;
                 var yaccum = 0.;
                 for (i = 0; i < x0.length; i++) {
@@ -461,10 +492,10 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
                         dx = x0[i] - x0[i-1];
                     }
                     xaccum += dx;
-                    yaccum += y0[i];
+                    yaccum += y0[i]*dx;
                     if (xaccum >= f) {
-                        data['x'].push(data['x'][data['x'].length-1] + xaccum);
-                        data['y'].push(yaccum/xaccum);
+                        data['x'].push(data['x'][data['x'].length-1] + xaccum) - Math.max(0., f - dx);
+                        data['y'].push(yaccum/xaccum + yoff);
                         xaccum = 0.;
                         yaccum = 0.;
                     }
@@ -473,11 +504,12 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
             }
         """)
 
-        slider = Slider(start=1, end=20, value=1, step=0.5, title="Bin size (Angstroms)", callback=callback)
+        binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
+        spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
 
     if (photoavail or spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
-            p = HBox([p1,p2,slider])
+            p = HBox(vplot(hplot(p1,p2,vform(binslider,spacingslider))))
         elif photoavail:
             p = p1
         else:
@@ -499,8 +531,8 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
         with open(outdir + eventname + ".html", "w") as f:
             f.write(html)
 
-    if spectraavail and dohtml:
-        sys.exit()
+    #if spectraavail and dohtml:
+    #    sys.exit()
 
     #if fcnt > 100:
     #    sys.exit()
