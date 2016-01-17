@@ -11,6 +11,7 @@ import subprocess
 import json
 import codecs
 import numpy
+import resource
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astropy.time import Time as astrotime
@@ -285,13 +286,14 @@ def is_number(s):
 
 catalog = OrderedDict()
 def convert_aq_output(row):
-    return OrderedDict([(x, '%g'%Decimal(float(row[x])) if is_number(row[x]) else utf8(row[x])) for x in row.colnames])
+    return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
 # Import primary data sources from Vizier
 if dovizier:
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs("VII/272/snrs")
     table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
 
     for row in table:
         row = convert_aq_output(row)
@@ -322,6 +324,7 @@ if dovizier:
 
     result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
     table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
     for row in table:
         row = convert_aq_output(row)
         name = 'SN' + row['SN']
@@ -331,6 +334,7 @@ if dovizier:
 
     result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
     table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
     for row in table:
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
@@ -346,6 +350,7 @@ if dovizier:
 
     result = Vizier.get_catalogs("J/ApJS/219/13/table3")
     table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
     for row in table:
         row = convert_aq_output(row)
         name = u'LSQ' + str(row['LSQ'])
@@ -356,6 +361,7 @@ if dovizier:
         events[name]['ebv'] = row['E_B-V_']
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
     table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
     for row in table:
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
@@ -364,14 +370,11 @@ if dovizier:
 
 # Suspect catalog
 if dosuspect:
-    f = open('../external/suspectreferences.csv','r')
-    tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
-    suspectrefdict = {}
-    for row in tsvin:
-        suspectrefdict[row[0]] = row[1]
-
-    print(suspectrefdict)
-    f.close()
+    with open('../external/suspectreferences.csv','r') as f:
+        tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+        suspectrefdict = {}
+        for row in tsvin:
+            suspectrefdict[row[0]] = row[1]
 
     response = urllib.request.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
 
@@ -706,7 +709,6 @@ if doitep:
     needsbib = []
     with open("../external/itep-refs.txt",'r') as f:
         refrep = f.read().splitlines()
-    print(refrep)
     refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
     f = open("../external/itep-lc-cat-28dec2015.txt",'r')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
@@ -929,6 +931,7 @@ if dolennarz:
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs("J/A+A/538/A120/usc")
     table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
 
     bibcode = "2012A&A...538A.120L"
     for row in table:
@@ -1040,8 +1043,9 @@ if dosnlsspectra:
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
         name = add_event(name)
-        bibcode = "2009A&A...507...85B"
-        source = get_source(name, bibcode = bibcode)
+        events[name]['discoveryear'] = '20' + fileparts[1][:2]
+
+        source = get_source(name, bibcode = "2009A&A...507...85B")
 
         f = open(file,'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -1130,6 +1134,12 @@ if writeevents:
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
+    # Delete all old event JSON files
+    for folder in repfolders:
+        filelist = glob.glob("../" + folder + "/*.json")
+        for f in filelist:
+            os.remove(f)
+
     # Write it all out!
     for name in events:
         print('Writing ' + name)
@@ -1149,6 +1159,8 @@ if writeevents:
         f = codecs.open(outdir + '/' + filename + '.json', 'w', encoding='utf8')
         f.write(jsonstring)
         f.close()
+
+print(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.)
 
 # Print some useful facts
 if printextra:
