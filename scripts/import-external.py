@@ -39,6 +39,7 @@ dofirstmax =      True
 dolennarz =       True
 docfaiaspectra =  True
 docfaibcspectra = True
+dosnlsspectra =   True
 writeevents =     True
 printextra =      False
 
@@ -112,6 +113,9 @@ def snname(string):
 
     return newstring
 
+def get_sig_digits(x):
+    return len(x.strip('0').strip('.'))
+
 def round_sig(x, sig=4):
     if x == 0.0:
         return 0.0
@@ -175,7 +179,7 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         photoentry['source'] = source
     events[name].setdefault('photometry',[]).append(photoentry)
 
-def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, instrument = "",
+def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
     deredshifted = False, dereddened = False, errorunit = "", errors = "", source = ""):
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
@@ -186,9 +190,12 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit, time, 
     spectrumentry = OrderedDict()
     spectrumentry['deredshifted'] = deredshifted
     spectrumentry['dereddened'] = dereddened
-    spectrumentry['instrument'] = instrument
-    spectrumentry['timeunit'] = timeunit
-    spectrumentry['time'] = time
+    if instrument:
+        spectrumentry['instrument'] = instrument
+    if timeunit:
+        spectrumentry['timeunit'] = timeunit
+    if time:
+        spectrumentry['time'] = time
     spectrumentry['waveunit'] = waveunit
     spectrumentry['fluxunit'] = fluxunit
     if errors and max([float(x) for x in errors]) > 0.:
@@ -978,9 +985,6 @@ if docfaibcspectra:
         reference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
         source = get_source(name, reference, secondary = True)
         for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
-            if os.path.basename(file) == 'sn1993J-19941128.flm':
-                print ('Warning: Need to fix sn1993J-19941128.flm!')
-                continue
             fileparts = os.path.basename(file).split('-')
             instrument = ''
             year = fileparts[1][:4]
@@ -996,6 +1000,34 @@ if docfaibcspectra:
             fluxes = data[1]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source)
+
+if dosnlsspectra:
+    for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
+        fileparts = os.path.basename(file).split('_')
+        name = 'SNLS-' + fileparts[1]
+        name = add_event(name)
+        reference = "<a href='http://adsabs.harvard.edu/abs/2009A%26A...507...85B'>2009A%26A...507...85B</a>"
+        source = get_source(name, reference, secondary = True)
+
+        f = open(file,'r')
+        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        specdata = []
+        for r, row in enumerate(data):
+            if row[0] == '@TELESCOPE':
+                instrument = row[1].strip()
+            elif row[0] == '@REDSHIFT':
+                events[name]['redshift'] = row[1].strip()
+            if r < 14:
+                continue
+            specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
+        specdata = [list(i) for i in zip(*specdata)]
+        wavelengths = specdata[1]
+        
+        fluxes = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[2]]
+        errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
+
+        add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+            fluxes = fluxes, instrument = instrument, source = source)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
@@ -1029,7 +1061,7 @@ if writeevents:
             events[name]['host'] = ' '.join(events[name]['host'].split())
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: float(x['time']))
-        if 'spectra' in events[name]:
+        if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
