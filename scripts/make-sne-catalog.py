@@ -8,6 +8,7 @@ import re
 import operator
 import json
 import argparse
+import hashlib
 from datetime import datetime
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
@@ -264,7 +265,11 @@ files = []
 for rep in repfolders:
     files += glob.glob('../' + rep + "/*.json")
 
+md5s = []
+md5 = hashlib.md5
 for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
+    checksum = md5(open(file, 'rb').read()).hexdigest()
+    md5s.append([file, checksum])
     filehead, ext = os.path.splitext(file)
 
     if args.eventlist and os.path.splitext(os.path.basename(file))[0] not in args.eventlist:
@@ -282,7 +287,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
-    print(file)
+    print(file + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['download'] = "<a class='dci' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
@@ -346,10 +351,10 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     dohtml = True
     if not args.forcehtml:
         if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
-                t1 = datetime.fromtimestamp(os.path.getmtime(filehead + ".json"))
-                t2 = datetime.fromtimestamp(os.path.getmtime(outdir + eventname + ".html"))
-                if t1 < t2:
-                    dohtml = False
+            t1 = datetime.fromtimestamp(os.path.getmtime(filehead + ".json"))
+            t2 = datetime.fromtimestamp(os.path.getmtime(outdir + eventname + ".html"))
+            if t1 < t2:
+                dohtml = False
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
@@ -449,10 +454,11 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
         tt2 = [  
                 ("λ", "@x{1.1}"),
-                ("Flux", "@y0"),
-                ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}"),
-                ("Source", "@src")
-             ]
+                ("Flux", "@y0")
+              ]
+        if 'timeunit' in spectrum and 'time' in spectrum:
+            tt2 += [ ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}") ]
+        tt2 += [ ("Source", "@src") ]
         hover2 = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')'),
@@ -463,19 +469,19 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
         sources = []
         for i in range(len(spectrumwave)):
-            sources.append(ColumnDataSource(
-                data = dict(
-                    x0 = spectrumwave[i],
-                    y0 = spectrumflux[i],
-                    x = spectrumwave[i],
-                    y = [y_offsets[i] + j for j in spectrumflux[i]],
-                    yoff = [y_offsets[i]],
-                    binsize = [1.0],
-                    spacing = [1.0],
-                    src = [catalog[entry]['spectra'][i]['source'] for j in spectrumflux[i]],
-                    epoch = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
-                )
-            ))
+            data = dict(
+                x0 = spectrumwave[i],
+                y0 = spectrumflux[i],
+                x = spectrumwave[i],
+                y = [y_offsets[i] + j for j in spectrumflux[i]],
+                yoff = [y_offsets[i]],
+                binsize = [1.0],
+                spacing = [1.0],
+                src = [catalog[entry]['spectra'][i]['source'] for j in spectrumflux[i]]
+            )
+            if 'timeunit' in spectrum and 'time' in spectrum:
+                data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
+            sources.append(ColumnDataSource(data))
             p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2)
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
@@ -583,6 +589,12 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
 
 # Write it all out at the end
 if args.writecatalog and not args.eventlist:
+    #Write the MD5 checksums
+    jsonstring = json.dumps(md5s, separators=(',',':'))
+    f = open(outdir + 'md5s.json' + testsuffix, 'w')
+    f.write(jsonstring)
+    f.close()
+
     # Make a few small files for generating charts
     f = open(outdir + 'snepages.csv' + testsuffix, 'w')
     csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
