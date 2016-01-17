@@ -40,19 +40,14 @@ dolennarz =       True
 docfaiaspectra =  True
 docfaibcspectra = True
 dosnlsspectra =   True
+docspspectra =    True
 writeevents =     True
 printextra =      False
 
 events = OrderedDict()
 
-repfolders = [
-    'sne-pre-1990',
-    'sne-1990-1999',
-    'sne-2000-2004',
-    'sne-2005-2009',
-    'sne-2010-2014',
-    'sne-2015-2019'
-]
+with open('rep-folders.txt') as f:
+    repfolders = f.readlines()
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
@@ -87,7 +82,6 @@ def add_event(name):
         events[name] = OrderedDict()
         events[name]['name'] = name
         add_alias(name, name)
-        events[name]['sources'] = []
         return name
     else:
         return name
@@ -124,12 +118,24 @@ def round_sig(x, sig=4):
 def pretty_num(x, sig=4):
     return str('%g'%(round_sig(x, sig)))
 
-def get_source(name, reference, secondary = ''):
-    nsources = len(events[name]['sources'])
-    if len(events[name]['sources']) == 0 or reference not in [events[name]['sources'][x]['name'] for x in range(nsources)]:
+def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
+    nsources = len(events[name]['sources']) if 'sources' in events[name] else 0
+    if not reference:
+        if not bibcode:
+            raise(ValueError('Bibcode must be specified if name is not.'))
+        else:
+            if url:
+                print('Warning: Reference URL ignored if bibcode specified')
+        reference = bibcode
+        url = "http://adsabs.harvard.edu/abs/" + bibcode
+    if 'sources' not in events[name] or reference not in [events[name]['sources'][x]['name'] for x in range(nsources)]:
         source = str(nsources + 1)
         newsource = OrderedDict()
         newsource['name'] = reference
+        if url:
+            newsource['url'] = url
+        if bibcode:
+            newsource['bibcode'] = bibcode
         newsource['alias'] =  source
         if secondary:
             newsource['secondary'] = True
@@ -314,7 +320,6 @@ if dovizier:
         events[name]['snra'] = row['RAJ2000']
         events[name]['sndec'] = row['DEJ2000']
 
-    reference = "<a href='http://adsabs.harvard.edu/abs/2014MNRAS.442..844F'>2014MNRAS.442..844F</a>"
     result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
     table = result[list(result.keys())[0]]
     for row in table:
@@ -329,7 +334,7 @@ if dovizier:
     for row in table:
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
-        source = get_source(name, reference)
+        source = get_source(name, bibcode = "2014MNRAS.442..844F")
         if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
             add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = source)
         if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
@@ -339,7 +344,6 @@ if dovizier:
         if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
             add_photometry(name, time = row['MJD'], band = 'I', abmag = row['Imag'], aberr = row['e_Imag'], source = source)
 
-    reference = "<a href='http://adsabs.harvard.edu/abs/2015ApJS..219...13W'>2015ApJS..219...13W</a>"
     result = Vizier.get_catalogs("J/ApJS/219/13/table3")
     table = result[list(result.keys())[0]]
     for row in table:
@@ -355,11 +359,20 @@ if dovizier:
     for row in table:
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
-        source = get_source(name, reference)
+        source = get_source(name, bibcode = "2015ApJS..219...13W")
         add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
 
 # Suspect catalog
 if dosuspect:
+    f = open('../external/suspectreferences.csv','r')
+    tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+    suspectrefdict = {}
+    for row in tsvin:
+        suspectrefdict[row[0]] = row[1]
+
+    print(suspectrefdict)
+    f.close()
+
     response = urllib.request.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
 
     soup = BeautifulSoup(response.read(), "html5lib")
@@ -398,15 +411,18 @@ if dosuspect:
                             for link in bandsoup.body.findAll('a'):
                                 if 'adsabs' in link['href']:
                                     reference = str(link).replace('"', "'")
-                            source = get_source(name, reference)
+
+                            bibcode = suspectrefdict[reference]
+                            source = get_source(name, bibcode = bibcode)
 
                             add_claimed_type(name, types[0].split(':')[1].strip().split(' ')[0], source)
 
                         bands = bandsoup.body.findAll(text=re.compile("^Band"))
                         band = bands[0].split(':')[1].strip()
 
-                        secondaryreference = "<a href='https://www.nhn.ou.edu/~suspect/'>SUSPECT</a>"
-                        secondarysource = get_source(name, secondaryreference, 1)
+                        secondaryreference = "SUSPECT"
+                        secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
+                        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
 
                         for r, row in enumerate(bandtable.findAll('tr')):
                             if r == 0:
@@ -471,11 +487,10 @@ if docfa:
                             refstr = ' '.join(row[2+ci:])
                             refstr = refstr.replace('(','').replace(')','')
                             bibcode = refstr
-                            print(bibcode)
-                            secondaryreference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
-                            secondarysource = get_source(name, secondaryreference, 1)
-                            reference = "<a href='http://adsabs.harvard.edu/abs/" + bibcode + "'>" + refstr + "</a>"
-                            source = get_source(name, reference)
+                            secondaryname = 'CfA Supernova Archive'
+                            secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+                            secondarysource = get_source(name, reference = secondaryname, url = secondaryurl, secondary = True)
+                            source = get_source(name, bibcode = bibcode)
 
                 elif len(row) > 1 and row[1] == "HJD":
                     tu = "HJD"
@@ -513,8 +528,7 @@ if docfa:
 
         name = add_event(name)
 
-        reference = "<a href='http://adsabs.harvard.edu/abs/2012ApJS..200...12H'>Hicken et al. 2012</a>"
-        source = get_source(name, reference)
+        source = get_source(name, bibcode = '2012ApJS..200...12H')
         add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
             abmag = row[6].strip(), aberr = row[7].strip(), source = source)
     
@@ -525,8 +539,7 @@ if docfa:
         name = 'SN' + row[0]
         name = add_event(name)
 
-        reference = "<a href='http://adsabs.harvard.edu/abs/2014ApJS..213...19B'>Bianco et al. 2014</a>"
-        source = get_source(name, reference)
+        source = get_source(name, bibcode = '2014ApJS..213...19B')
         add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = source)
     f.close()
 
@@ -546,8 +559,9 @@ if doucb:
         year = re.findall(r'\d+', name)[0]
         events[name]['discoveryear'] = year
 
-        reference = "<a href='http://heracles.astro.berkeley.edu/sndb/info'>UCB Filippenko Group's Supernova Database (SNDB)</a>"
-        source = get_source(name, reference)
+        reference = "UCB Filippenko Group's Supernova Database (SNDB)"
+        refurl = "http://heracles.astro.berkeley.edu/sndb/info"
+        source = get_source(name, reference = reference, url = refurl, secondary = True)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
@@ -582,8 +596,9 @@ if dosdss:
                 events[name]['snra'] = row[-4]
                 events[name]['sndec'] = row[-2]
 
-                reference = "<a href='http://classic.sdss.org/supernova/lightcurves.html'>SDSS Supernova Survey</a>"
-                source = get_source(name, reference)
+                reference = "SDSS Supernova Survey"
+                refurl = "http://classic.sdss.org/supernova/lightcurves.html"
+                source = get_source(name, reference = reference, url = refurl)
             if r == 1:
                 events[name]['redshift'] = row[2]
             if r >= 19:
@@ -629,8 +644,9 @@ if dogaia:
         year = '20' + re.findall(r'\d+', name)[0]
         events[name]['discoveryear'] = year
 
-        reference = "<a href='https://gaia.ac.uk/selected-gaia-science-alerts'>Gaia Photometric Science Alerts</a>"
-        source = get_source(name, reference)
+        reference = "Gaia Photometric Science Alerts"
+        refurl = "https://gaia.ac.uk/selected-gaia-science-alerts"
+        source = get_source(name, reference = reference, url = refurl)
 
         events[name]['snra'] = col[2].contents[0].strip()
         events[name]['sndec'] = col[3].contents[0].strip()
@@ -666,8 +682,9 @@ if docsp:
         year = re.findall(r'\d+', name)[0]
         events[name]['discoveryear'] = year
 
-        reference = "<a href='http://csp.obs.carnegiescience.edu/data'>Carnegie Supernova Project</a>"
-        source = get_source(name, reference)
+        reference = "Carnegie Supernova Project"
+        refurl = "http://csp.obs.carnegiescience.edu/data"
+        source = get_source(name, reference = reference, url = refurl)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
@@ -702,18 +719,22 @@ if doitep:
         abmag = row[3].strip()
         aberr = row[4].strip()
         reference = row[6].strip().strip(',')
-        if reference in refrepf:
-            reference = refrepf[reference]
+
         if curname != name:
             curname = name
             name = add_event(name)
             year = re.findall(r'\d+', name)[0]
             events[name]['discoveryear'] = year
 
-            secondaryreference = "<a href='http://dau.itep.ru/sn/node/72'>Sternberg Astronomical Institute Supernova Light Curve Catalogue</a>"
-            secondarysource = get_source(name, secondaryreference, 1)
+            secondaryreference = "Sternberg Astronomical Institute Supernova Light Curve Catalogue"
+            secondaryrefurl = "http://dau.itep.ru/sn/node/72"
+            secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
 
-        source = get_source(name, reference) if reference else ''
+        if reference in refrepf:
+            bibcode = refrepf[reference]
+            source = get_source(name, bibcode = bibcode)
+        else:
+            source = get_source(name, reference = reference) if reference else ''
 
         add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondarysource + ',' + source)
     f.close()
@@ -741,8 +762,9 @@ if doasiago:
             name = snname("SN" + record[1]).strip('?')
             name = add_event(name)
 
-            reference = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
-            source = get_source(name, reference, secondary = True)
+            reference = 'Asiago Supernova Catalogue'
+            refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
+            source = get_source(name, reference = reference, url = refurl, secondary = True)
 
             year = re.findall(r'\d+', name)[0]
             events[name]['discoveryear'] = year
@@ -809,7 +831,8 @@ if dorochester:
 
     soup = BeautifulSoup(html, "html5lib")
     rows = soup.findAll('tr')
-    secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
+    secondaryreference = "Latest Supernovae"
+    secondaryrefurl = "http://www.rochesterastronomy.org/snimages/snredshiftall.html"
     for r, row in enumerate(rows):
         if r == 0:
             continue
@@ -821,7 +844,7 @@ if dorochester:
             name = 'SN' + name
         name = add_event(name)
 
-        secondarysource = get_source(name, secondaryreference, secondary = 1)
+        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
         if str(cols[1].contents[0]).strip() != 'unk':
             add_claimed_type(name, str(cols[1].contents[0]).strip(), secondarysource)
         if str(cols[2].contents[0]).strip() != 'anonymous':
@@ -835,7 +858,7 @@ if dorochester:
             events[name]['discoveryear'] = str(astrot.datetime.year)
         if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
             astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-            source = get_source(name, str(cols[12].contents[0]).strip().replace('"', "'"))
+            source = get_source(name, reference = str(cols[12].contents[0]).strip().replace('"', "'"))
             if float(str(cols[8].contents[0]).strip()) <= 90.0:
                 add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = ','.join([source, secondarysource]))
         if cols[11].contents[0] != 'n/a':
@@ -871,8 +894,7 @@ if dorochester:
             if abmag.isdigit():
                 if int(abmag) > 100:
                     abmag = abmag[:2] + '.' + abmag[2:]
-            secondaryreference = "<a href='http://www.rochesterastronomy.org/snimages/snredshiftall.html'>Latest Supernovae</a>"
-            secondarysource = get_source(name, secondaryreference, secondary = 1)
+            secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             band = row[2].lstrip('1234567890.')
             if len(row) >= 4:
                 if is_number(row[3]):
@@ -881,9 +903,13 @@ if dorochester:
                 else:
                     aberr = ''
                     refind = 3
-                reference = ' '.join(row[refind:])
-                source = get_source(name, reference)
-                sources = ','.join([source,secondarysource])
+
+                if refind >= len(row):
+                    sources = secondarysource
+                else:
+                    reference = ' '.join(row[refind:])
+                    source = get_source(name, reference = reference)
+                    sources = ','.join([source,secondarysource])
             else:
                 sources = secondarysource
             add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = sources)
@@ -898,13 +924,13 @@ if dolennarz:
     result = Vizier.get_catalogs("J/A+A/538/A120/usc")
     table = result[list(result.keys())[0]]
 
-    reference = "<a href='http://adsabs.harvard.edu/abs/2012A%26A...538A.120L'>2012A&A...538A.120L</a>"
+    bibcode = "2012A&A...538A.120L"
     for row in table:
         row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = add_event(name)
 
-        source = get_source(name, reference)
+        source = get_source(name, bibcode = bibcode)
 
         if row['Ddate']:
             dateparts = row['Ddate'].split('-')
@@ -951,8 +977,9 @@ if docfaiaspectra:
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = add_event(name)
-        reference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
-        source = get_source(name, reference, secondary = True)
+        reference = 'CfA Supernova Archive'
+        refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+        source = get_source(name, reference = reference, url = refurl, secondary = True)
         for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
             fileparts = os.path.basename(file).split('-')
             if name[:2] == "SN":
@@ -982,8 +1009,9 @@ if docfaibcspectra:
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = add_event(name)
-        reference = "<a href='https://www.cfa.harvard.edu/supernova/SNarchive.html'>CfA Supernova Archive</a>"
-        source = get_source(name, reference, secondary = True)
+        reference = 'CfA Supernova Archive'
+        refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+        source = get_source(name, reference = reference, url = refurl, secondary = True)
         for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
             fileparts = os.path.basename(file).split('-')
             instrument = ''
@@ -1006,8 +1034,8 @@ if dosnlsspectra:
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
         name = add_event(name)
-        reference = "<a href='http://adsabs.harvard.edu/abs/2009A%26A...507...85B'>2009A%26A...507...85B</a>"
-        source = get_source(name, reference, secondary = True)
+        bibcode = "2009A&A...507...85B"
+        source = get_source(name, bibcode = bibcode)
 
         f = open(file,'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -1028,6 +1056,37 @@ if dosnlsspectra:
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source)
+
+if docspspectra:
+    for file in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
+        sfile = os.path.basename(file).split('.')
+        if sfile[1] == 'txt':
+            continue
+        sfile = sfile[0]
+        fileparts = sfile.split('_')
+        name = 'SN20' + fileparts[0][2:]
+        name = add_event(name)
+        instrument = ': '.join(fileparts[-2:])
+        source = get_source(name, bibcode = "2013ApJ...773...53F")
+
+        f = open(file,'r')
+        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        specdata = []
+        for r, row in enumerate(data):
+            if row[0] == '#JDate_of_observation:':
+                jd = row[1].strip()
+                time = str(jd_to_mjd(Decimal(jd)))
+            elif row[0] == '#Redshift:':
+                events[name]['redshift'] = row[1].strip()
+            if r < 7:
+                continue
+            specdata.append(list(filter(None, [x.strip(' ') for x in row])))
+        specdata = [list(i) for i in zip(*specdata)]
+        wavelengths = specdata[0]
+        fluxes = specdata[1]
+
+        add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+            fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
