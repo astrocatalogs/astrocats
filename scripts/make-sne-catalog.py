@@ -93,14 +93,8 @@ sourcekeys = [
     'secondary'
 ]
 
-repfolders = [
-    'sne-pre-1990',
-    'sne-1990-1999',
-    'sne-2000-2004',
-    'sne-2005-2009',
-    'sne-2010-2014',
-    'sne-2015-2019'
-]
+with open('rep-folders.txt') as f:
+    repfolders = f.readlines()
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
@@ -267,15 +261,21 @@ for rep in repfolders:
 
 md5s = []
 md5 = hashlib.md5
-for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
-    checksum = md5(open(file, 'rb').read()).hexdigest()
-    md5s.append([file, checksum])
-    filehead, ext = os.path.splitext(file)
+if os.path.isfile(outdir + 'ms5s.json'):
+    oldmd5s = [list(i) for i in zip(*(json.loads(outdir + 'md5s.json')))]
+    md5dict = dict(list(zip(oldmd5s[0], oldmd5s[1])))
+else:
+    md5dict = {}
 
-    if args.eventlist and os.path.splitext(os.path.basename(file))[0] not in args.eventlist:
+for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+    checksum = md5(open(eventfile, 'rb').read()).hexdigest()
+    md5s.append([eventfile, checksum])
+    filehead, ext = os.path.splitext(eventfile)
+
+    if args.eventlist and os.path.splitext(os.path.basename(eventfile))[0] not in args.eventlist:
         continue
 
-    f = open(file, 'r')
+    f = open(eventfile, 'r')
     filetext = f.read()
     f.close()
 
@@ -287,7 +287,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
-    print(file + ' [' + checksum + ']')
+    print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['download'] = "<a class='dci' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
@@ -351,9 +351,7 @@ for fcnt, file in enumerate(sorted(files, key=lambda s: s.lower())):
     dohtml = True
     if not args.forcehtml:
         if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
-            t1 = datetime.fromtimestamp(os.path.getmtime(filehead + ".json"))
-            t2 = datetime.fromtimestamp(os.path.getmtime(outdir + eventname + ".html"))
-            if t1 < t2:
+            if eventfile in md5dict and checksum == md5dict[eventfile]:
                 dohtml = False
 
     if photoavail and dohtml and args.writehtml:
