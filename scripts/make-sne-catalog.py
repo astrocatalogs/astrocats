@@ -93,8 +93,8 @@ sourcekeys = [
     'secondary'
 ]
 
-with open('rep-folders.txt') as f:
-    repfolders = f.readlines()
+with open('rep-folders.txt', 'r') as f:
+    repfolders = f.read().splitlines()
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
@@ -261,8 +261,11 @@ for rep in repfolders:
 
 md5s = []
 md5 = hashlib.md5
-if os.path.isfile(outdir + 'ms5s.json'):
-    oldmd5s = [list(i) for i in zip(*(json.loads(outdir + 'md5s.json')))]
+if os.path.isfile(outdir + 'md5s.json'):
+    with open(outdir + 'md5s.json', 'r') as f:
+        filetext = f.read()
+    oldmd5s = json.loads(filetext)
+    oldmd5s = [list(i) for i in zip(*oldmd5s)]
     md5dict = dict(list(zip(oldmd5s[0], oldmd5s[1])))
 else:
     md5dict = {}
@@ -541,8 +544,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n\1', html)
             for source in catalog[entry]['sources']:
                 html = re.sub(r'(\<\/body\>)', r'<tr><td>' + source['alias'] +
-                r'</td><td>' + source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
-                r'</td></tr>\n\1', html)
+                    r'</td><td>' + (('<a href="' + source['url'] + '">') if 'url' in source else '') +
+                    source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
+                    (r'</a>' if 'url' in source else '') +
+                    r'</td></tr>\n\1', html)
             html = re.sub(r'(\<\/body\>)', r'</table>\n\1', html)
         html = re.sub(r'(\<\/body\>)', returnlink+r'\n\1', html)
         print(outdir + eventname + ".html")
@@ -563,12 +568,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         if 'photoplot' in catalog[entry]:
             snepages.append(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['photoplot']])
 
-        for sourcerow in catalog[entry]['sources']:
-            strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','xmlcharrefreplace').decode("utf-8"))
-            if strippedname in sourcedict:
-                sourcedict[strippedname] += 1
-            else:
-                sourcedict[strippedname] = 1
+        if 'sources' in catalog[entry]:
+            for sourcerow in catalog[entry]['sources']:
+                strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','xmlcharrefreplace').decode("utf-8"))
+                if strippedname in sourcedict:
+                    sourcedict[strippedname] += 1
+                else:
+                    sourcedict[strippedname] = 1
 
         nophoto.append(catalog[entry]['numphoto'] < 3)
 
