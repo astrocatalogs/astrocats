@@ -46,8 +46,8 @@ printextra =      False
 
 events = OrderedDict()
 
-with open('rep-folders.txt') as f:
-    repfolders = f.readlines()
+with open('rep-folders.txt', 'r') as f:
+    repfolders = f.read().splitlines()
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
@@ -703,9 +703,10 @@ if docsp:
 
 # Import ITEP
 if doitep:
-    f = open("../external/itep-refs.txt",'r')
-    refrep = f.read().splitlines()
-    f.close()
+    needsbib = []
+    with open("../external/itep-refs.txt",'r') as f:
+        refrep = f.read().splitlines()
+    print(refrep)
     refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
     f = open("../external/itep-lc-cat-28dec2015.txt",'r')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
@@ -734,11 +735,16 @@ if doitep:
             bibcode = refrepf[reference]
             source = get_source(name, bibcode = bibcode)
         else:
+            needsbib.append(reference)
             source = get_source(name, reference = reference) if reference else ''
 
         add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondarysource + ',' + source)
     f.close()
-
+    
+    # Write out references that could use a bibcode
+    needsbib = list(OrderedDict.fromkeys(needsbib))
+    with open('../itep-needsbib.txt', 'w') as f:
+        f.writelines(["%s\n" % i for i in needsbib])
 
 # Now import the Asiago catalog
 if doasiago:
