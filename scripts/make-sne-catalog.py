@@ -254,6 +254,8 @@ snepages = []
 sourcedict = dict()
 nophoto = []
 nospectra = []
+totalphoto = 0
+totalspectra = 0
 
 files = []
 for rep in repfolders:
@@ -580,6 +582,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         nospectra.append(catalog[entry]['numspectra'] == 0)
 
+        totalphoto += catalog[entry]['numphoto']
+        totalspectra += catalog[entry]['numspectra']
+
         # Delete unneeded data from catalog, add blank entries when data missing.
         catalogcopy[entry] = OrderedDict()
         for col in columnkey:
@@ -636,17 +641,16 @@ if args.writecatalog and not args.eventlist:
     csvout.writerow(['No spectra', nospectra])
     f.close()
 
-    f = open(outdir + 'hasphoto.html' + testsuffix, 'w')
-    f.write(str(hasphoto))
-    f.close()
-
-    f = open(outdir + 'hasspectra.html' + testsuffix, 'w')
-    f.write(str(hasspectra))
-    f.close()
-
-    f = open(outdir + 'snecount.html' + testsuffix, 'w')
-    f.write(str(len(catalog)))
-    f.close()
+    with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
+        f.write("{:,}".format(hasphoto))
+    with open(outdir + 'hasspectra.html' + testsuffix, 'w') as f:
+        f.write("{:,}".format(hasspectra))
+    with open(outdir + 'snecount.html' + testsuffix, 'w') as f:
+        f.write("{:,}".format(len(catalog)))
+    with open(outdir + 'photocount.html' + testsuffix, 'w') as f:
+        f.write("{:,}".format(totalphoto))
+    with open(outdir + 'spectracount.html' + testsuffix, 'w') as f:
+        f.write("{:,}".format(totalspectra))
 
     ctypedict = dict()
     for entry in catalog:
