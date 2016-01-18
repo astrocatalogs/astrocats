@@ -534,7 +534,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         elif photoavail:
             p = p1
         else:
-            p = p2
+            p = vplot(hplot(p2,vform(binslider,spacingslider)), width=900)
 
         html = file_html(p, CDN, eventname)
         returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
