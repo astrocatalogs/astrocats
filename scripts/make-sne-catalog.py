@@ -653,7 +653,7 @@ if args.writecatalog and not args.eventlist:
                 sourcecount = len(ct['source'].split(','))
                 if sourcecount > maxsources:
                     maxsources = sourcecount
-                    cleanedtype = ct['type'].strip('?* ')
+                    cleanedtype = ct['value'].strip('?* ')
         if not cleanedtype:
             cleanedtype = 'Unknown'
         if cleanedtype in ctypedict:
