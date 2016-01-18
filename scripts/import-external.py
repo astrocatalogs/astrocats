@@ -1125,7 +1125,10 @@ if doucbspectra:
             elif d == 4:
                 filename = td.contents[0].strip()
                 name = filename.split('-')[0]
-                name = name[:2].upper() + name[2:]
+                if name[:2].upper() == 'SN':
+                    name = name[:2].upper() + name[2:]
+                    if len(name) == 7:
+                        name = name[:6] + name[6].upper()
             elif d == 5:
                 epoch = td.contents[0].strip()
                 year = epoch[:4]
