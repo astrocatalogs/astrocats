@@ -116,7 +116,7 @@ def snname(string):
     return newstring
 
 def get_sig_digits(x):
-    return len(x.strip('0.'))
+    return len((''.join(x.split('.'))).strip('0'))
 
 def round_sig(x, sig=4):
     if x == 0.0:
@@ -194,7 +194,7 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     events[name].setdefault('photometry',[]).append(photoentry)
 
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
-    deredshifted = False, dereddened = False, errorunit = "", errors = "", source = "", snr = "",
+    deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "",
     observer = "", reducer = ""):
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
@@ -203,8 +203,10 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         'Warning: No flux unit specified, not adding spectrum.'
         return
     spectrumentry = OrderedDict()
-    spectrumentry['deredshifted'] = deredshifted
-    spectrumentry['dereddened'] = dereddened
+    if deredshifted != '':
+        spectrumentry['deredshifted'] = deredshifted
+    if dereddened != '':
+        spectrumentry['dereddened'] = dereddened
     if instrument:
         spectrumentry['instrument'] = instrument
     if timeunit:
@@ -254,6 +256,9 @@ def add_quanta(name, quanta, value, source, forcereplacebetter = False):
             if svalue in typereps[rep]:
                 svalue = rep
                 break
+
+    if is_number(value):
+        svalue = '%g' % Decimal(svalue)
 
     if quanta in events[name]:
         for i, ct in enumerate(events[name][quanta]):
@@ -1073,7 +1078,7 @@ if docfaiaspectra:
             errors = data[2]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
-                errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source)
+                errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
 
 if docfaibcspectra:
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
@@ -1099,7 +1104,8 @@ if docfaibcspectra:
             wavelengths = data[0]
             fluxes = data[1]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source)
+                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
+                dereddened = False, deredshifted = False)
 
 if dosnlsspectra:
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
@@ -1211,7 +1217,7 @@ if doucbspectra:
             specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
             startrow = 0
             for row in specdata:
-                if row[0] == '#':
+                if row[0][0] == '#':
                     startrow += 1
                 else:
                     break
@@ -1230,7 +1236,8 @@ if doucbspectra:
                 errors = ''
 
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                fluxes = fluxes, errors = errors, instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer)
+                fluxes = fluxes, errors = errors, instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
+                deredshifted = True)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
