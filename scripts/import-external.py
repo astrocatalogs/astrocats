@@ -42,6 +42,7 @@ docfaiaspectra =  True
 docfaibcspectra = True
 dosnlsspectra =   True
 docspspectra =    True
+doucbspectra =    True
 writeevents =     True
 printextra =      False
 
@@ -187,7 +188,8 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     events[name].setdefault('photometry',[]).append(photoentry)
 
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
-    deredshifted = False, dereddened = False, errorunit = "", errors = "", source = ""):
+    deredshifted = False, dereddened = False, errorunit = "", errors = "", source = "", snr = "",
+    observer = "", reducer = ""):
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
         return
@@ -203,6 +205,13 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['timeunit'] = timeunit
     if time:
         spectrumentry['time'] = time
+    if snr:
+        spectrumentry['snr'] = snr
+    if observer:
+        spectrumentry['observer'] = observer
+    if reducer:
+        spectrumentry['reducer'] = reducer
+
     spectrumentry['waveunit'] = waveunit
     spectrumentry['fluxunit'] = fluxunit
     if errors and max([float(x) for x in errors]) > 0.:
@@ -1035,7 +1044,7 @@ if docfaibcspectra:
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
-            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source)
 
 if dosnlsspectra:
@@ -1097,6 +1106,74 @@ if docspspectra:
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
+
+if doucbspectra:
+    secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
+    secondaryrefurl = "http://heracles.astro.berkeley.edu/sndb/info"
+
+    path = os.path.abspath('../sne-external-spectra/UCB/sndb.html')
+    response = urllib.request.urlopen('file://' + path)
+
+    soup = BeautifulSoup(response.read(), "html5lib")
+    i = 0
+    for t, tr in enumerate(soup.findAll('tr')):
+        if t == 0:
+            continue
+        for d, td in enumerate(tr.findAll('td')):
+            if d == 2:
+                claimedtype = td.contents[0].strip()
+            elif d == 4:
+                filename = td.contents[0].strip()
+                name = filename.split('-')[0]
+                name = name[:2].upper() + name[2:]
+            elif d == 5:
+                epoch = td.contents[0].strip()
+                year = epoch[:4]
+                month = epoch[4:6]
+                day = epoch[6:]
+                sig = get_sig_digits(day) + 5
+                mjd = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
+            elif d == 7:
+                instrument = '' if td.contents[0].strip() == 'None' else td.contents[0].strip()
+            elif d == 9:
+                snr = td.contents[0].strip()
+            elif d == 10:
+                observerreducer = td.contents[0].strip().split('|')
+                observer = '' if observerreducer[0].strip() == 'None' else observerreducer[0].strip()
+                reducer = '' if observerreducer[1].strip() == 'None' else observerreducer[1].strip()
+            elif d == 11:
+                bibcode = td.findAll('a')[0].contents[0]
+
+        name = add_event(name)
+        source = get_source(name, bibcode = bibcode)
+        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+        sources = ','.join([source, secondarysource])
+        add_claimed_type(name, claimedtype, sources)
+
+        with open('../sne-external-spectra/UCB/' + filename) as f:
+            specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
+            startrow = 0
+            for row in specdata:
+                if row[0] == '#':
+                    startrow += 1
+                else:
+                    break
+            specdata = specdata[startrow:]
+
+            haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+            specdata = [list(i) for i in zip(*specdata)]
+
+            wavelengths = specdata[0]
+            fluxes = specdata[1]
+            errors = ''
+            if haserrors:
+                errors = specdata[2]
+
+            if not list(filter(None, errors)):
+                errors = ''
+
+            add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
+                fluxes = fluxes, errors = errors, instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
