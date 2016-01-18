@@ -588,11 +588,15 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             else:
                 catalogcopy[entry][col] = None
 
+        del catalog[entry]
+
     if args.test and spectraavail and photoavail:
         break
 
 # Write it all out at the end
 if args.writecatalog and not args.eventlist:
+    catalog = catalogcopy
+
     #Write the MD5 checksums
     jsonstring = json.dumps(md5s, separators=(',',':'))
     f = open(outdir + 'md5s.json' + testsuffix, 'w')
@@ -647,7 +651,7 @@ if args.writecatalog and not args.eventlist:
     ctypedict = dict()
     for entry in catalog:
         cleanedtype = ''
-        if 'claimedtype' in catalog[entry]:
+        if 'claimedtype' in catalog[entry] and catalog[entry]['claimedtype']:
             maxsources = 0
             for ct in catalog[entry]['claimedtype']:
                 sourcecount = len(ct['source'].split(','))
@@ -667,8 +671,6 @@ if args.writecatalog and not args.eventlist:
     for ctype in sortedctypes:
         csvout.writerow(ctype)
     f.close()
-
-    catalog = catalogcopy
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
