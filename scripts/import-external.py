@@ -54,14 +54,16 @@ with open('rep-folders.txt', 'r') as f:
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 
 typereps = {
-    'II P':  ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec'],
-    'Ib/c':  ['Ibc'],
-    'Ia P':  ['Ia pec', 'Ia-pec', 'Iapec'],
-    'Ic P':  ['Ic pec', 'Ic-pec'],
-    'IIn P': ['IIn pec', 'IIn-pec'],
-    'II L':  ['IIL'],
-    'I P':   ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ib P':  ['Ib pec', 'Ib-pec']
+    'I P':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
+    'Ia P':   ['Ia pec', 'Ia-pec', 'Iapec'],
+    'Ib P':   ['Ib pec', 'Ib-pec'],
+    'Ic P':   ['Ic pec', 'Ic-pec'],
+    'Ib/c':   ['Ibc'],
+    'Ib/c P': ['Ib/c-pec'],
+    'II P':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
+    'II L':   ['IIL'],
+    'IIn P':  ['IIn pec', 'IIn-pec'],
+    'IIb P':  ['IIb-pec', 'IIb: pec']
 }
 
 repbetterquanta = {
@@ -235,12 +237,15 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quanta(name, quanta, value, source, forcereplacebetter = False):
+def add_quanta(name, quanta, value, source, forcereplacebetter = False, error = ''):
     if not quanta:
-        raise(ValueError('Quanta must be specified for add_quanta'))
+        raise(ValueError('Quanta must be specified for add_quanta.'))
     svalue = value.strip()
+    serror = error.strip()
     if not svalue:
         return
+    if serror and (not is_number(serror) or float(serror) < 0.):
+        raise(ValueError('Quanta error value must be a number and positive.'))
 
     #Handle certain quanta
     if quanta == 'hvel' or quanta == 'redshift':
@@ -259,16 +264,22 @@ def add_quanta(name, quanta, value, source, forcereplacebetter = False):
 
     if is_number(value):
         svalue = '%g' % Decimal(svalue)
+    if serror:
+        serror = '%g' % Decimal(serror)
 
     if quanta in events[name]:
         for i, ct in enumerate(events[name][quanta]):
             if ct['value'] == svalue:
-                if source:
+                if source and source not in events[name][quanta][i]['source'].split(','):
                     events[name][quanta][i]['source'] += ',' + source
+                    if serror:
+                        events[name][quanta][i]['error'] = serror
                 return
 
     quantaentry = OrderedDict()
     quantaentry['value'] = svalue
+    if serror:
+        quantaentry['error'] = serror
     if source:
         quantaentry['source'] = source
     if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
@@ -276,11 +287,21 @@ def add_quanta(name, quanta, value, source, forcereplacebetter = False):
         isworse = True
         newsig = get_sig_digits(svalue)
         for ct in events[name][quanta]:
-            oldsig = get_sig_digits(ct['value'])
-            if oldsig >= newsig:
+            if 'error' in ct:
+                if serror:
+                    if float(serror) < float(ct['error']):
+                        isworse = False
+                        continue
                 newquantas.append(ct)
-            if newsig >= oldsig:
-                isworse = False
+            else:
+                if serror:
+                    isworse = False
+                    continue
+                oldsig = get_sig_digits(ct['value'])
+                if oldsig >= newsig:
+                    newquantas.append(ct)
+                if newsig >= oldsig:
+                    isworse = False
         if not isworse:
             newquantas.append(quantaentry)
         events[name][quanta] = newquantas
@@ -422,7 +443,7 @@ if dovizier:
         source = get_source(name, bibcode = "2015ApJS..219...13W")
         events[name]['snra'] = row['RAJ2000']
         events[name]['sndec'] = row['DEJ2000']
-        add_quanta(name, 'redshift', row['z'], source)
+        add_quanta(name, 'redshift', row['z'], source, error = row['e_z'])
         add_quanta(name, 'ebv', row['E_B-V_'], source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
     table = result[list(result.keys())[0]]
@@ -670,7 +691,7 @@ if dosdss:
                 refurl = "http://classic.sdss.org/supernova/lightcurves.html"
                 source = get_source(name, reference = reference, url = refurl)
             if r == 1:
-                add_quanta(name, 'redshift', row[2], source)
+                add_quanta(name, 'redshift', row[2], source, error = row[4])
             if r >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
@@ -817,7 +838,9 @@ if doitep:
 
 # Now import the Asiago catalog
 if doasiago:
-    response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
+    #response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
+    path = os.path.abspath('../external/asiago-cat.php')
+    response = urllib.request.urlopen('file://' + path)
     html = response.read().decode('utf-8')
     html = html.replace("\r", "")
 
@@ -914,12 +937,26 @@ if dorochester:
             cols = row.findAll('td')
             if not len(cols):
                 continue
-            name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
-            if name[:4].isdigit():
-                name = 'SN' + name
-            name = add_event(name)
 
-            source = get_source(name, reference = str(cols[12].contents[0]).strip().replace('"', "'"))
+            name = ''
+            if cols[14].contents:
+                aka = str(cols[14].contents[0]).strip()
+                if is_number(aka[:4]):
+                    aka = 'SN' + aka
+                    name = add_event(aka)
+
+            sn = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
+            if sn[:4].isdigit():
+                sn = 'SN' + sn
+            if not name:
+                name = add_event(sn)
+
+            if cols[14].contents:
+                add_alias(name, aka)
+
+            reference = cols[12].findAll('a')[0].contents[0].strip()
+            refurl = cols[12].findAll('a')[0]['href'].strip()
+            source = get_source(name, reference = reference, url = refurl)
             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             sources = ','.join(list(filter(None, [source, secondarysource])))
             if str(cols[1].contents[0]).strip() != 'unk':
@@ -940,8 +977,6 @@ if dorochester:
             if cols[11].contents[0] != 'n/a':
                 add_quanta(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
             events[name]['discoverer'] = str(cols[13].contents[0]).strip()
-            if cols[14].contents:
-                add_alias(name, str(cols[14].contents[0]).strip())
 
     vsnetfiles = ["latestsne.dat"]
     for vsnetfile in vsnetfiles:
@@ -1008,6 +1043,11 @@ if dolennarz:
         name = add_event(name)
 
         source = get_source(name, bibcode = bibcode)
+
+        if row['Gal']:
+            add_quanta(name, 'host', row['Gal'], source)
+        if row['z']:
+            add_quanta(name, 'redshift', row['z'], source)
 
         if row['Ddate']:
             dateparts = row['Ddate'].split('-')
@@ -1236,7 +1276,7 @@ if doucbspectra:
                 errors = ''
 
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                fluxes = fluxes, errors = errors, instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
+                fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = True)
 
 if writeevents:
