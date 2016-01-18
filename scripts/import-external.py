@@ -64,6 +64,12 @@ typereps = {
     'Ib P':  ['Ib pec', 'Ib-pec']
 }
 
+repbetterquanta = {
+    'redshift',
+    'ebv',
+    'hvel'
+}
+
 def event_attr_priority(attr):
     if attr == 'photometry' or attr == 'spectra':
         return 'zzzzzzzz'
@@ -110,7 +116,7 @@ def snname(string):
     return newstring
 
 def get_sig_digits(x):
-    return len(x.strip('0').strip('.'))
+    return len(x.strip('0.'))
 
 def round_sig(x, sig=4):
     if x == 0.0:
@@ -227,25 +233,54 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_claimed_type(name, inputtype, source = ""):
-    claimedtype = inputtype.strip()
-    for rep in typereps:
-        if inputtype in typereps[rep]:
-            claimedtype = rep
-            break
+def add_quanta(name, quanta, value, source, forcereplacebetter = False):
+    if not quanta:
+        raise(ValueError('Quanta must be specified for add_quanta'))
+    svalue = value.strip()
+    if not svalue:
+        return
 
-    if 'claimedtype' in events[name]:
-        for i, ct in enumerate(events[name]['claimedtype']):
-            if ct['type'] == claimedtype:
+    #Handle certain quanta
+    if quanta == 'hvel' or quanta == 'redshift':
+        if not is_number(value):
+            return
+    if quanta == 'host':
+        svalue = svalue.replace("NGC", "NGC ")
+        svalue = svalue.replace("UGC", "UGC ")
+        svalue = svalue.replace("IC", "IC ")
+        svalue = ' '.join(svalue.split())
+    elif quanta == 'claimedtype':
+        for rep in typereps:
+            if svalue in typereps[rep]:
+                svalue = rep
+                break
+
+    if quanta in events[name]:
+        for i, ct in enumerate(events[name][quanta]):
+            if ct['value'] == svalue:
                 if source:
-                    events[name]['claimedtype'][i]['source'] += ',' + source
+                    events[name][quanta][i]['source'] += ',' + source
                 return
 
-    claimedtypeentry = OrderedDict()
-    claimedtypeentry['type'] = claimedtype
+    quantaentry = OrderedDict()
+    quantaentry['value'] = svalue
     if source:
-        claimedtypeentry['source'] = source
-    events[name].setdefault('claimedtype',[]).append(claimedtypeentry)
+        quantaentry['source'] = source
+    if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
+        newquantas = []
+        isworse = True
+        newsig = get_sig_digits(svalue)
+        for ct in events[name][quanta]:
+            oldsig = get_sig_digits(ct['value'])
+            if oldsig >= newsig:
+                newquantas.append(ct)
+            if newsig >= oldsig:
+                isworse = False
+        if not isworse:
+            newquantas.append(quantaentry)
+        events[name][quanta] = newquantas
+    else:
+        events[name].setdefault(quanta,[]).append(quantaentry)
 
 def get_max_light(name):
     if 'photometry' not in events[name]:
@@ -338,8 +373,22 @@ if dovizier:
         row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = add_event(name)
-        events[name]['redshift'] = row['zhost']
-        events[name]['ebv'] = row['E_B-V_']
+        source = get_source(name, bibcode = '2014MNRAS.442..844F')
+        add_quanta(name, 'redshift', row['zhost'], source)
+        add_quanta(name, 'ebv', row['E_B-V_'], source)
+
+    result = Vizier.get_catalogs("J/MNRAS/425/1789/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = ''.join(row['SimbadName'].split(' '))
+        name = add_event(name)
+        add_alias(name, 'SN' + row['SN'])
+        source = get_source(name, bibcode = '2012MNRAS.425.1789S')
+        add_quanta(name, 'host', row['Gal'], source)
+        add_quanta(name, 'hvel', row['cz'], source)
+        add_quanta(name, 'ebv', row['E_B-V_'], source)
 
     result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
     table = result[list(result.keys())[0]]
@@ -347,6 +396,7 @@ if dovizier:
     for row in table:
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
+        name = add_event(name)
         source = get_source(name, bibcode = "2014MNRAS.442..844F")
         if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
             add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = source)
@@ -364,10 +414,11 @@ if dovizier:
         row = convert_aq_output(row)
         name = u'LSQ' + str(row['LSQ'])
         name = add_event(name)
+        source = get_source(name, bibcode = "2015ApJS..219...13W")
         events[name]['snra'] = row['RAJ2000']
         events[name]['sndec'] = row['DEJ2000']
-        events[name]['redshift'] = row['z']
-        events[name]['ebv'] = row['E_B-V_']
+        add_quanta(name, 'redshift', row['z'], source)
+        add_quanta(name, 'ebv', row['E_B-V_'], source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -408,16 +459,6 @@ if dosuspect:
                             names = bandsoup.body.findAll(text=re.compile("Name"))
                             name = 'SN' + names[0].split(':')[1].strip()
                             name = add_event(name)
-                            year = re.findall(r'\d+', name)[0]
-                            events[name]['discoveryear'] = year
-                            events[name]['host'] = names[1].split(':')[1].strip()
-                            redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
-                            if redshifts:
-                                events[name]['redshift'] = redshifts[0].split(':')[1].strip()
-                            hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
-                            if hvels:
-                                events[name]['hvel'] = hvels[0].split(':')[1].strip().split(' ')[0]
-                            types = bandsoup.body.findAll(text=re.compile("Type"))
 
                             reference = ''
                             for link in bandsoup.body.findAll('a'):
@@ -427,7 +468,19 @@ if dosuspect:
                             bibcode = suspectrefdict[reference]
                             source = get_source(name, bibcode = bibcode)
 
-                            add_claimed_type(name, types[0].split(':')[1].strip().split(' ')[0], source)
+                            year = re.findall(r'\d+', name)[0]
+                            events[name]['discoveryear'] = year
+                            add_quanta(name, 'host', names[1].split(':')[1].strip(), source)
+
+                            redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
+                            if redshifts:
+                                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), source)
+                            hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
+                            if hvels:
+                                add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], source)
+                            types = bandsoup.body.findAll(text=re.compile("Type"))
+
+                            add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], source)
 
                         bands = bandsoup.body.findAll(text=re.compile("^Band"))
                         band = bands[0].split(':')[1].strip()
@@ -612,7 +665,7 @@ if dosdss:
                 refurl = "http://classic.sdss.org/supernova/lightcurves.html"
                 source = get_source(name, reference = reference, url = refurl)
             if r == 1:
-                events[name]['redshift'] = row[2]
+                add_quanta(name, 'redshift', row[2], source)
             if r >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
@@ -662,7 +715,7 @@ if dogaia:
 
         events[name]['snra'] = col[2].contents[0].strip()
         events[name]['sndec'] = col[3].contents[0].strip()
-        add_claimed_type(name, classname.replace('SN', '').strip(), source)
+        add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
         photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
         photresp = urllib.request.urlopen(photlink)
@@ -701,7 +754,7 @@ if docsp:
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
-                    events[name]['redshift'] = row[0].split(' ')[-1]
+                    add_quanta(name, 'redshift', row[0].split(' ')[-1], source)
                     events[name]['snra'] = row[1].split(' ')[-1]
                     events[name]['sndec'] = row[2].split(' ')[-1]
                 continue
@@ -822,13 +875,13 @@ if doasiago:
             claimedtype = record[17].strip(':')
 
             if (hostname != ''):
-                events[name]['host'] = hostname
+                add_quanta(name, 'host', hostname, source)
             if (claimedtype != ''):
-                add_claimed_type(name, claimedtype, source)
+                add_quanta(name, 'claimedtype', claimedtype, source)
             if (redshift != ''):
-                events[name]['redshift'] = redshift
+                add_quanta(name, 'redshift', redshift, source)
             if (hvel != ''):
-                events[name]['hvel'] = hvel
+                add_quanta(name, 'hvel', hvel, source)
             if (galra != ''):
                 events[name]['galra'] = galra
             if (galdec != ''):
@@ -841,48 +894,49 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if dorochester:
-    path = os.path.abspath('../external/snredshiftall.html')
-    response = urllib.request.urlopen('file://' + path)
-    #response = urllib2.urlopen('http://www.rochesterastronomy.org/snimages/snredshiftall.html')
-    html = response.read()
+    rochesterpaths = ['file://'+os.path.abspath('../external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
+    for path in rochesterpaths:
+        response = urllib.request.urlopen(path)
+        html = response.read()
 
-    soup = BeautifulSoup(html, "html5lib")
-    rows = soup.findAll('tr')
-    secondaryreference = "Latest Supernovae"
-    secondaryrefurl = "http://www.rochesterastronomy.org/snimages/snredshiftall.html"
-    for r, row in enumerate(rows):
-        if r == 0:
-            continue
-        cols = row.findAll('td')
-        if not len(cols):
-            continue
-        name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
-        if name[:4].isdigit():
-            name = 'SN' + name
-        name = add_event(name)
+        soup = BeautifulSoup(html, "html5lib")
+        rows = soup.findAll('tr')
+        secondaryreference = "Latest Supernovae"
+        secondaryrefurl = "http://www.rochesterastronomy.org/snimages/snredshiftall.html"
+        for r, row in enumerate(rows):
+            if r == 0:
+                continue
+            cols = row.findAll('td')
+            if not len(cols):
+                continue
+            name = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
+            if name[:4].isdigit():
+                name = 'SN' + name
+            name = add_event(name)
 
-        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-        if str(cols[1].contents[0]).strip() != 'unk':
-            add_claimed_type(name, str(cols[1].contents[0]).strip(), secondarysource)
-        if str(cols[2].contents[0]).strip() != 'anonymous':
-            events[name]['host'] = str(cols[2].contents[0]).strip()
-        events[name]['snra'] = str(cols[3].contents[0]).strip()
-        events[name]['sndec'] = str(cols[4].contents[0]).strip()
-        if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
-            astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
-            events[name]['discoverday'] = str(astrot.datetime.day)
-            events[name]['discovermonth'] = str(astrot.datetime.month)
-            events[name]['discoveryear'] = str(astrot.datetime.year)
-        if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
-            astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
             source = get_source(name, reference = str(cols[12].contents[0]).strip().replace('"', "'"))
-            if float(str(cols[8].contents[0]).strip()) <= 90.0:
-                add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = ','.join([source, secondarysource]))
-        if cols[11].contents[0] != 'n/a':
-            events[name]['redshift'] = str(cols[11].contents[0]).strip()
-        events[name]['discoverer'] = str(cols[13].contents[0]).strip()
-        if cols[14].contents:
-            add_alias(name, str(cols[14].contents[0]).strip())
+            secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+            sources = ','.join(list(filter(None, [source, secondarysource])))
+            if str(cols[1].contents[0]).strip() != 'unk':
+                add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(), sources)
+            if str(cols[2].contents[0]).strip() != 'anonymous':
+                add_quanta(name, 'host', str(cols[2].contents[0]).strip(), sources)
+            events[name]['snra'] = str(cols[3].contents[0]).strip()
+            events[name]['sndec'] = str(cols[4].contents[0]).strip()
+            if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
+                astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
+                events[name]['discoverday'] = str(astrot.datetime.day)
+                events[name]['discovermonth'] = str(astrot.datetime.month)
+                events[name]['discoveryear'] = str(astrot.datetime.year)
+            if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
+                astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
+                if float(str(cols[8].contents[0]).strip()) <= 90.0:
+                    add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = sources)
+            if cols[11].contents[0] != 'n/a':
+                add_quanta(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
+            events[name]['discoverer'] = str(cols[13].contents[0]).strip()
+            if cols[14].contents:
+                add_alias(name, str(cols[14].contents[0]).strip())
 
     vsnetfiles = ["latestsne.dat"]
     for vsnetfile in vsnetfiles:
@@ -1063,7 +1117,7 @@ if dosnlsspectra:
             if row[0] == '@TELESCOPE':
                 instrument = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                events[name]['redshift'] = row[1].strip()
+                add_quanta(name, 'redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
@@ -1096,7 +1150,7 @@ if docspspectra:
                 jd = row[1].strip()
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
-                events[name]['redshift'] = row[1].strip()
+                add_quanta(name, 'redshift', row[1].strip(), source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))
@@ -1125,7 +1179,10 @@ if doucbspectra:
             elif d == 4:
                 filename = td.contents[0].strip()
                 name = filename.split('-')[0]
-                name = name[:2].upper() + name[2:]
+                if name[:2].upper() == 'SN':
+                    name = name[:2].upper() + name[2:]
+                    if len(name) == 7:
+                        name = name[:6] + name[6].upper()
             elif d == 5:
                 epoch = td.contents[0].strip()
                 year = epoch[:4]
@@ -1148,7 +1205,7 @@ if doucbspectra:
         source = get_source(name, bibcode = bibcode)
         secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
         sources = ','.join([source, secondarysource])
-        add_claimed_type(name, claimedtype, sources)
+        add_quanta(name, 'claimedtype', claimedtype, sources)
 
         with open('../sne-external-spectra/UCB/' + filename) as f:
             specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
@@ -1179,32 +1236,44 @@ if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
         if 'claimedtype' in events[name]:
-            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct != '?' and ct != '-')]
+            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'redshift' in events[name] and 'hvel' not in events[name]:
-            z = float(events[name]['redshift'])
-            sigdigits = len(events[name]['redshift'].strip('0').strip('.'))
-            events[name]['hvel'] = pretty_num(clight/1.e5*((z + 1.)**2. - 1.)/
-                ((z + 1.)**2. + 1.), sig = sigdigits)
-        elif 'hvel' in events[name] and 'z' not in events[name]:
-            voc = float(events[name]['hvel'])*1.e5/clight
-            sigdigits = len(events[name]['hvel'].strip('0').strip('.'))
-            events[name]['redshift'] = pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = sigdigits)
-        if 'redshift' in events[name] and float(events[name]['redshift']) > 0.0:
-            dl = cosmo.luminosity_distance(float(events[name]['redshift']))
-            sigdigits = len(events[name]['redshift'].strip('0').strip('.'))
-            if 'lumdist' not in events[name]:
-                events[name]['lumdist'] = pretty_num(dl.value, sig = sigdigits)
-            if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = sigdigits)
+            # Find the "best" redshift to use for this
+            bestsig = 0
+            for z in events[name]['redshift']:
+                sig = get_sig_digits(z['value'])
+                if sig > bestsig:
+                    bestz = z['value']
+                    bestsig = sig
+            if bestsig > 0:
+                bestz = float(bestz)
+                add_quanta(name, 'hvel', pretty_num(clight/1.e5*((bestz + 1.)**2. - 1.)/
+                    ((bestz + 1.)**2. + 1.), sig = bestsig), 'D')
+        elif 'hvel' in events[name] and 'redshift' not in events[name]:
+            # Find the "best" hvel to use for this
+            bestsig = 0
+            for hv in events[name]['hvel']:
+                sig = get_sig_digits(hv['value'])
+                if sig > bestsig:
+                    besthv = hv['value']
+                    bestsig = sig
+            if bestsig > 0 and is_number(besthv):
+                voc = float(besthv)*1.e5/clight
+                add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D')
         if 'redshift' in events[name]:
-            events[name]['redshift'] = pretty_num(Decimal(events[name]['redshift']))
-        if 'hvel' in events[name]:
-            events[name]['hvel'] = pretty_num(Decimal(events[name]['hvel']))
-        if 'host' in events[name]:
-            events[name]['host'] = events[name]['host'].replace("NGC", "NGC ")
-            events[name]['host'] = events[name]['host'].replace("UGC", "UGC ")
-            events[name]['host'] = events[name]['host'].replace("IC", "IC ")
-            events[name]['host'] = ' '.join(events[name]['host'].split())
+            # Find the "best" redshift to use for this
+            bestsig = 0
+            for z in events[name]['redshift']:
+                sig = get_sig_digits(z['value'])
+                if sig > bestsig:
+                    bestz = z['value']
+                    bestsig = sig
+            if bestsig > 0 and float(bestz) > 0.:
+                dl = cosmo.luminosity_distance(float(bestz))
+                if 'lumdist' not in events[name]:
+                    events[name]['lumdist'] = pretty_num(dl.value, sig = bestsig)
+                if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+                    events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: float(x['time']))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
