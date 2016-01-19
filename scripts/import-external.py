@@ -1480,7 +1480,7 @@ if writeevents:
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                         events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
         if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: (float(x['time'], x['band'])))
+            events[name]['photometry'].sort(key=lambda x: (float(x['time']), x['band']))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
