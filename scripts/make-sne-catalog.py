@@ -22,6 +22,7 @@ from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VB
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html
 from palettable import cubehelix
+from math import isnan
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
@@ -402,7 +403,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for band in bandset:
             bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
-            indt = [i for i, j in enumerate(phototype) if j == 0]
+            indt = [i for i, j in enumerate(phototype) if not j]
             ind = set(indb).intersection(indt)
 
             source = ColumnDataSource(
@@ -420,7 +421,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             upplimlegend = bandname if len(ind) == 0 else ''
 
-            indt = [i for i, j in enumerate(phototype) if j == 1]
+            indt = [i for i, j in enumerate(phototype) if j]
             ind = set(indb).intersection(indt)
             p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
                 color=bandcolorf(band), legend=upplimlegend, size=7)
@@ -430,15 +431,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         spectrumflux = []
         spectrumerrs = []
         for spectrum in catalog[entry]['spectra']:
-            specrange = range(len(spectrum['data']))
-            spectrumwave.append([float(spectrum['data'][x][0]) for x in specrange])
-            spectrumflux.append([float(spectrum['data'][x][1]) for x in specrange])
+            spectrumdata = deepcopy(spectrum['data'])
+            spectrumdata = [x for x in spectrumdata if is_number(x[1]) and not isnan(float(x[1]))]
+            specrange = range(len(spectrumdata))
+            spectrumwave.append([float(spectrumdata[x][0]) for x in specrange])
+            spectrumflux.append([float(spectrumdata[x][1]) for x in specrange])
             if 'errorunit' in spectrum:
-                spectrumerrs.append([float(spectrum['data'][x][2]) for x in specrange])
+                spectrumerrs.append([float(spectrumdata[x][2]) for x in specrange])
+                spectrumerrs[-1] = [x if is_number(x) and not isnan(float(x)) else 0. for x in spectrumerrs[-1]]
         nspec = len(catalog[entry]['spectra'])
         
-        spectrumscaled = spectrumflux
-        for f, flux in enumerate(spectrumflux):
+        spectrumscaled = deepcopy(spectrumflux)
+        for f, flux in enumerate(spectrumscaled):
             mean = numpy.std(flux)
             spectrumscaled[f] = [x/mean for x in flux]
 
@@ -465,7 +469,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         tt2 = [  
                 ("λ", "@x{1.1}"),
-                ("Flux", "@yorig @fluxunit")
+                ("Flux", "@yorig"),
+                ("Flux unit", "@fluxunit")
               ]
         if 'timeunit' in spectrum and 'time' in spectrum:
             tt2 += [ ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}") ]
