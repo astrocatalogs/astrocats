@@ -403,7 +403,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for band in bandset:
             bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
-            indt = [i for i, j in enumerate(phototype) if j == 0]
+            indt = [i for i, j in enumerate(phototype) if not j]
             ind = set(indb).intersection(indt)
 
             source = ColumnDataSource(
@@ -421,7 +421,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             upplimlegend = bandname if len(ind) == 0 else ''
 
-            indt = [i for i, j in enumerate(phototype) if j == 1]
+            indt = [i for i, j in enumerate(phototype) if j]
             ind = set(indb).intersection(indt)
             p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
                 color=bandcolorf(band), legend=upplimlegend, size=7)
