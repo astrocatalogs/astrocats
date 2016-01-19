@@ -71,7 +71,8 @@ typereps = {
 repbetterquanta = {
     'redshift',
     'ebv',
-    'hvel'
+    'hvel',
+    'lumdist'
 }
 
 def event_attr_priority(attr):
@@ -1367,7 +1368,7 @@ if writeevents:
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
                 add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D')
-        if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+        if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
             for ld in events[name]['lumdist']:
