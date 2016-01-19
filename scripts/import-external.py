@@ -52,6 +52,7 @@ with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
+repyears[0] -= 1
 
 typereps = {
     'I P':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],

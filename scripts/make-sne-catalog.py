@@ -97,6 +97,7 @@ with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
 
 repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
+repyears[0] -= 1
 
 if len(columnkey) != len(header):
     print('Error: Header not same length as key list.')
