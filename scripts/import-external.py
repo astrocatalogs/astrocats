@@ -18,7 +18,7 @@ from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
 from math import log10, floor, sqrt, isnan
-from bs4 import BeautifulSoup, SoupStrainer
+from bs4 import BeautifulSoup, SoupStrainer, Tag, NavigableString
 from operator import itemgetter
 from string import ascii_letters
 
@@ -38,6 +38,7 @@ doasiago =        True
 dorochester =     True
 dofirstmax =      True
 dolennarz =       True
+doogle =          True
 donedd =          True
 docfaiaspectra =  True
 docfaibcspectra = True
@@ -159,7 +160,7 @@ def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
             [events[name]['sources'][x]['name'] for x in sourcexs].index(reference)]
     return source
 
-def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = ""):
+def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = "", upperlimit = False):
     if not time or not abmag:
         print('Warning: Time or AB mag not specified when adding photometry.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"')
@@ -196,6 +197,8 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         photoentry['aberr'] = str(aberr)
     if source:
         photoentry['source'] = source
+    if upperlimit:
+        photoentry['upperlimit'] = upperlimit
     events[name].setdefault('photometry',[]).append(photoentry)
 
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
@@ -1094,6 +1097,81 @@ if dolennarz:
                 if len(dateparts) == 3:
                     events[name]['maxday'] = str(astrot.datetime.day)
     f.close()
+
+if doogle:
+    basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
+    for bn in basenames:
+        response = urllib.request.urlopen('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/transients.html')
+        soup = BeautifulSoup(response.read(), "html5lib")
+        links = soup.findAll('a')
+        breaks = soup.findAll('br')
+        datalinks = []
+        for a in links:
+            if a.has_attr('href'):
+                if '.dat' in a['href']:
+                    datalinks.append('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
+
+        ec = 0
+        reference = 'OGLE-IV Transient Detection System'
+        refurl = 'http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'
+        for br in breaks:
+            sibling = br.nextSibling
+            if 'Ra,Dec=' in sibling:
+                line = sibling.replace("\n", '').split('Ra,Dec=')
+                name = line[0].strip()
+
+                if 'NOVA' in name or 'dupl' in name:
+                    continue
+
+                name = add_event(name)
+
+                mySibling = sibling.nextSibling
+                atelref = ''
+                claimedtype = ''
+                while 'Ra,Dec=' not in mySibling:
+                    if isinstance(mySibling, NavigableString):
+                        if 'Phot.class=' in str(mySibling):
+                            claimedtype = re.sub(r'\([^)]*\)', '', str(mySibling).split('=')[-1]).replace('SN','').strip()
+                    if isinstance(mySibling, Tag):
+                        atela = mySibling
+                        if atela and atela.has_attr('href') and 'astronomerstelegram' in atela['href']:
+                            atelref = a.contents[0].strip()
+                            atelurl = a['href']
+                    mySibling = mySibling.nextSibling
+                    if mySibling is None:
+                        break
+
+                nextSibling = sibling.nextSibling
+                if isinstance(nextSibling, Tag) and nextSibling.has_attr('alt') and nextSibling.contents[0].strip() != 'NED':
+                    radec = nextSibling.contents[0].strip().split()
+                else:
+                    radec = line[-1].split()
+                print(radec)
+                ra = radec[0]
+                dec = radec[1]
+                events[name]['snra'] = ra
+                events[name]['sndec'] = ra
+                lcresponse = urllib.request.urlopen(datalinks[ec])
+                lcdat = lcresponse.read().decode('utf-8').splitlines()
+                sources = [get_source(name, reference = reference, url = refurl)]
+                if atelref and atelref != 'ATel#----':
+                    sources.append(get_source(name, reference = atelref, url = atelurl))
+                sources = ','.join(sources)
+                if claimedtype and claimedtype != '-':
+                    add_quanta(name, 'claimedtype', claimedtype, sources)
+                    print('Claimed type: ' + claimedtype)
+                elif 'SN' not in name:
+                    add_quanta(name, 'claimedtype', 'Candidate', sources)
+                for row in lcdat:
+                    mjd = str(jd_to_mjd(Decimal(row[0])))
+                    abmag = row[1]
+                    aberr = row[2]
+                    upperlimit = False
+                    if aberr == '-1':
+                        aberr = ''
+                        upperlimit = True
+                    add_photometry(name, time = mjd, band = 'I', abmag = abmag, aberr = aberr, source = sources, upperlimit = upperlimit)
+                ec += 1
 
 if donedd:
     f = open("../external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
