@@ -1125,6 +1125,14 @@ if doogle:
 
                 name = add_event(name)
 
+                if name[:4] == 'OGLE':
+                    if name[4] == '-':
+                        if is_number(name[5:9]):
+                            events[name]['discoveryear'] = name[5:9]
+                    else:
+                        if is_number(name[4:6]):
+                            events[name]['discoveryear'] = '20' + name[4:6]
+
                 mySibling = sibling.nextSibling
                 atelref = ''
                 claimedtype = ''
@@ -1146,11 +1154,10 @@ if doogle:
                     radec = nextSibling.contents[0].strip().split()
                 else:
                     radec = line[-1].split()
-                print(radec)
                 ra = radec[0]
                 dec = radec[1]
                 events[name]['snra'] = ra
-                events[name]['sndec'] = ra
+                events[name]['sndec'] = dec
                 lcresponse = urllib.request.urlopen(datalinks[ec])
                 lcdat = lcresponse.read().decode('utf-8').splitlines()
                 sources = [get_source(name, reference = reference, url = refurl)]
@@ -1159,10 +1166,10 @@ if doogle:
                 sources = ','.join(sources)
                 if claimedtype and claimedtype != '-':
                     add_quanta(name, 'claimedtype', claimedtype, sources)
-                    print('Claimed type: ' + claimedtype)
                 elif 'SN' not in name:
                     add_quanta(name, 'claimedtype', 'Candidate', sources)
                 for row in lcdat:
+                    row = row.split()
                     mjd = str(jd_to_mjd(Decimal(row[0])))
                     abmag = row[1]
                     aberr = row[2]
