@@ -9,6 +9,7 @@ import operator
 import json
 import argparse
 import hashlib
+import numpy
 from datetime import datetime
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
@@ -18,7 +19,7 @@ from collections import OrderedDict
 from bokeh.io import hplot, vplot, gridplot, vform
 from bokeh.plotting import Figure, show, save, reset_output
 from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, VBoxForm
-from bokeh.resources import CDN
+from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html
 from palettable import cubehelix
 
@@ -433,31 +434,37 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             spectrumflux.append([float(spectrum['data'][x][1]) for x in specrange])
             if 'errorunit' in spectrum:
                 spectrumerrs.append([float(spectrum['data'][x][2]) for x in specrange])
+        nspec = len(catalog[entry]['spectra'])
         
+        spectrumscaled = spectrumflux
+        for f, flux in enumerate(spectrumflux):
+            mean = numpy.std(flux)
+            spectrumscaled[f] = [x/mean for x in flux]
+
         y_height = 0.
-        y_offsets = [0. for x in range(len(spectrumwave))]
-        for i in reversed(range(len(spectrumwave))):
+        y_offsets = [0. for x in range(nspec)]
+        for i in reversed(range(nspec)):
             y_offsets[i] = y_height
-            ydiff = max(spectrumflux[i]) - min(spectrumflux[i])
-            spectrumflux[i] = [j + y_height for j in spectrumflux[i]]
+            ydiff = max(spectrumscaled[i]) - min(spectrumscaled[i])
+            spectrumscaled[i] = [j + y_height for j in spectrumscaled[i]]
             y_height += ydiff
 
         maxsw = max(map(max, spectrumwave))
         minsw = min(map(min, spectrumwave))
-        maxfl = max(map(max, spectrumflux))
-        minfl = min(map(min, spectrumflux))
-        maxfldiff = max(map(operator.sub, list(map(max, spectrumflux)), list(map(min, spectrumflux))))
+        maxfl = max(map(max, spectrumscaled))
+        minfl = min(map(min, spectrumscaled))
+        maxfldiff = max(map(operator.sub, list(map(max, spectrumscaled)), list(map(min, spectrumscaled))))
         x_buffer = 0.0 #0.1*(maxsw - minsw)
         x_range = [-x_buffer + minsw, x_buffer + maxsw]
         y_buffer = 0.1*maxfldiff
         y_range = [-y_buffer + minfl, y_buffer + maxfl]
 
-        for f, flux in enumerate(spectrumflux):
-            spectrumflux[f] = [x - y_offsets[f] for x in flux]
+        for f, flux in enumerate(spectrumscaled):
+            spectrumscaled[f] = [x - y_offsets[f] for x in flux]
 
         tt2 = [  
                 ("λ", "@x{1.1}"),
-                ("Flux", "@y0")
+                ("Flux", "@yorig @fluxunit")
               ]
         if 'timeunit' in spectrum and 'time' in spectrum:
             tt2 += [ ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}") ]
@@ -465,8 +472,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hover2 = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')'),
-            y_axis_label=label_format('Flux (' + catalog[entry]['spectra'][0]['fluxunit'] + ')' + (' + offset'
-            if (len(catalog[entry]['spectra']) > 1) else '')), x_range = x_range, tools = tools, 
+            y_axis_label=label_format('Flux (scaled)' + (' + offset'
+            if (nspec > 1) else '')), x_range = x_range, tools = tools, 
             y_range = y_range)
         p2.add_tools(hover2)
 
@@ -474,16 +481,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for i in range(len(spectrumwave)):
             data = dict(
                 x0 = spectrumwave[i],
-                y0 = spectrumflux[i],
+                y0 = spectrumscaled[i],
+                yorig = spectrumflux[i],
+                fluxunit = [label_format(catalog[entry]['spectra'][i]['fluxunit'])]*len(spectrumscaled[i]),
                 x = spectrumwave[i],
-                y = [y_offsets[i] + j for j in spectrumflux[i]],
+                y = [y_offsets[i] + j for j in spectrumscaled[i]],
                 yoff = [y_offsets[i]],
                 binsize = [1.0],
                 spacing = [1.0],
-                src = [catalog[entry]['spectra'][i]['source'] for j in spectrumflux[i]]
+                src = [catalog[entry]['spectra'][i]['source']]*len(spectrumscaled[i])
             )
             if 'timeunit' in spectrum and 'time' in spectrum:
-                data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in spectrumflux[i]]
+                data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in spectrumscaled[i]]
             sources.append(ColumnDataSource(data))
             p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2)
 
@@ -538,7 +547,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             p = vplot(hplot(p2,vform(binslider,spacingslider)), width=900)
 
-        html = file_html(p, CDN, eventname)
+        html = file_html(p, INLINE, eventname)
         returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
         html = re.sub(r'(\<\/body\>)', r'<a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>Download datafile</a><br><br>\n\1', html)
