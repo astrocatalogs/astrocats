@@ -38,6 +38,7 @@ doasiago =        True
 dorochester =     True
 dofirstmax =      True
 dolennarz =       True
+donedd =          True
 docfaiaspectra =  True
 docfaibcspectra = True
 dosnlsspectra =   True
@@ -243,7 +244,7 @@ def add_quanta(name, quanta, value, source, forcereplacebetter = False, error = 
         raise(ValueError('Quanta must be specified for add_quanta.'))
     svalue = value.strip()
     serror = error.strip()
-    if not svalue:
+    if not svalue or svalue == '--' or svalue == '-':
         return
     if serror and (not is_number(serror) or float(serror) < 0.):
         raise(ValueError('Quanta error value must be a number and positive.'))
@@ -1048,7 +1049,10 @@ if dolennarz:
         if row['Gal']:
             add_quanta(name, 'host', row['Gal'], source)
         if row['z']:
-            add_quanta(name, 'redshift', row['z'], source)
+            if name != 'SN1985D':
+                add_quanta(name, 'redshift', row['z'], source)
+        if row['Dist']:
+            add_quanta(name, 'lumdist', row['Dist'], source)
 
         if row['Ddate']:
             dateparts = row['Ddate'].split('-')
@@ -1088,6 +1092,61 @@ if dolennarz:
                     events[name]['maxmonth'] = str(astrot.datetime.month)
                 if len(dateparts) == 3:
                     events[name]['maxday'] = str(astrot.datetime.day)
+    f.close()
+
+if donedd:
+    f = open("../external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
+    data = csv.reader(f, delimiter=',', quotechar='"')
+    reference = "NED-D"
+    refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
+    oldhostname = ''
+    for r, row in enumerate(data):
+        if r <= 12:
+            continue
+        hostname = row[3]
+        #if hostname == oldhostname:
+        #    continue
+        distmod = row[4]
+        moderr = row[5]
+        dist = row[6]
+        disterr = ''
+        if moderr:
+            sig = get_sig_digits(moderr)
+            disterr = pretty_num(1.0e-6*(10.0**(0.2*(5.0 + float(distmod))) * (10.0**(0.2*float(moderr)) - 1.0)), sig = sig)
+        bibcode = row[8]
+        name = ''
+        if hostname[:3] == 'SN ':
+            if is_number(hostname[3:7]):
+                name = 'SN' + hostname[3:]
+            else:
+                name = hostname[3:]
+        if hostname[:5] == 'SNLS ':
+            name = 'SNLS-' + hostname[5:].split()[0]
+        if name:
+            name = add_event(name)
+            secondarysource = get_source(name, reference = reference, url = refurl, secondary = True)
+            if bibcode:
+                source = get_source(name, bibcode = bibcode)
+                sources = ','.join([source, secondarysource])
+            else:
+                sources = secondarysource
+            add_quanta(name, 'lumdist', dist, sources, error = disterr)
+        #else:
+        #    cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
+        #    for name in events:
+        #        if 'host' in events[name]:
+        #            for host in events[name]['host']:
+        #                if host['value'] == cleanhost:
+        #                    print ('found host: ' + cleanhost)
+        #                    secondarysource = get_source(name, reference = reference, url = refurl, secondary = True)
+        #                    if bibcode:
+        #                        source = get_source(name, bibcode = bibcode)
+        #                        sources = ','.join([source, secondarysource])
+        #                    else:
+        #                        sources = secondarysource
+        #                    add_quanta(name, 'lumdist', dist, sources, error = disterr)
+        #                    break
+        oldhostname = hostname
 
 if docfaiaspectra:
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
@@ -1308,6 +1367,16 @@ if writeevents:
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
                 add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D')
+        if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+            # Find the "best" distance to use for this
+            bestsig = 0
+            for ld in events[name]['lumdist']:
+                sig = get_sig_digits(ld['value'])
+                if sig > bestsig:
+                    bestld = ld['value']
+                    bestsig = sig
+            if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
+                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig)
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
             bestsig = 0
@@ -1317,11 +1386,11 @@ if writeevents:
                     bestz = z['value']
                     bestsig = sig
             if bestsig > 0 and float(bestz) > 0.:
-                dl = cosmo.luminosity_distance(float(bestz))
                 if 'lumdist' not in events[name]:
-                    events[name]['lumdist'] = pretty_num(dl.value, sig = bestsig)
-                if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                    events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
+                    dl = cosmo.luminosity_distance(float(bestz))
+                    add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D')
+                    if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+                        events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: float(x['time']))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
@@ -1354,7 +1423,7 @@ if writeevents:
         f.write(jsonstring)
         f.close()
 
-print(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024.)
+print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
 # Print some useful facts
 if printextra:
