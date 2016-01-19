@@ -1166,15 +1166,17 @@ if doogle:
                 sources = ','.join(sources)
                 if claimedtype and claimedtype != '-':
                     add_quanta(name, 'claimedtype', claimedtype, sources)
-                elif 'SN' not in name:
+                elif 'SN' not in name and 'claimedtype' not in events[name]:
                     add_quanta(name, 'claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()
                     mjd = str(jd_to_mjd(Decimal(row[0])))
                     abmag = row[1]
+                    if float(abmag) > 90.0:
+                        continue
                     aberr = row[2]
                     upperlimit = False
-                    if aberr == '-1':
+                    if aberr == '-1' or float(aberr) > 10.0:
                         aberr = ''
                         upperlimit = True
                     add_photometry(name, time = mjd, band = 'I', abmag = abmag, aberr = aberr, source = sources, upperlimit = upperlimit)
