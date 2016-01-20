@@ -470,75 +470,61 @@ if dosuspect:
         for row in tsvin:
             suspectrefdict[row[0]] = row[1]
 
-    response = urllib.request.urlopen('http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/snindex.cgi')
+    for datafile in sorted(glob.glob("../sne-external/SUSPECT/*.html"), key=lambda s: s.lower()):
+        basename = os.path.basename(datafile)
+        basesplit = basename.split('-')
+        name = basesplit[1]
+        name = add_event(name)
+        band = basesplit[3]
+        ei = int(basesplit[2].split('.')[0])
+        bandlink = 'file://' + os.path.abspath(datafile)
+        bandresp = urllib.request.urlopen(bandlink)
+        bandsoup = BeautifulSoup(bandresp, "html5lib")
+        bandtable = bandsoup.find('table')
+        if ei == 1:
+            names = bandsoup.body.findAll(text=re.compile("Name"))
+            reference = ''
+            for link in bandsoup.body.findAll('a'):
+                if 'adsabs' in link['href']:
+                    reference = str(link).replace('"', "'")
 
-    soup = BeautifulSoup(response.read(), "html5lib")
-    i = 0
-    for a in soup.findAll('a'):
-        if 'phot=yes' in a['href'] and not 'spec=yes' in a['href']:
-            if int(a.contents[0]) > 0:
-                i = i + 1
-                photlink = 'http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/' + a['href']
-                eventresp = urllib.request.urlopen(photlink)
-                eventsoup = BeautifulSoup(eventresp, "html5lib")
-                ei = 0
-                for ea in eventsoup.findAll('a'):
-                    if ea.contents[0] == 'I':
-                        ei = ei + 1
-                        bandlink = 'http://www.nhn.ou.edu/cgi-bin/cgiwrap/~suspect/' + ea['href']
-                        bandresp = urllib.request.urlopen(bandlink)
-                        bandsoup = BeautifulSoup(bandresp, "html5lib")
-                        bandtable = bandsoup.find('table')
-                        if ei == 1:
-                            names = bandsoup.body.findAll(text=re.compile("Name"))
-                            name = 'SN' + names[0].split(':')[1].strip()
-                            name = add_event(name)
+            bibcode = suspectrefdict[reference]
+            source = get_source(name, bibcode = bibcode)
 
-                            reference = ''
-                            for link in bandsoup.body.findAll('a'):
-                                if 'adsabs' in link['href']:
-                                    reference = str(link).replace('"', "'")
+            year = re.findall(r'\d+', name)[0]
+            events[name]['discoveryear'] = year
+            add_quanta(name, 'host', names[1].split(':')[1].strip(), source)
 
-                            bibcode = suspectrefdict[reference]
-                            source = get_source(name, bibcode = bibcode)
+            redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
+            if redshifts:
+                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), source)
+            hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
+            if hvels:
+                add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], source)
+            types = bandsoup.body.findAll(text=re.compile("Type"))
 
-                            year = re.findall(r'\d+', name)[0]
-                            events[name]['discoveryear'] = year
-                            add_quanta(name, 'host', names[1].split(':')[1].strip(), source)
+            add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], source)
 
-                            redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
-                            if redshifts:
-                                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), source)
-                            hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
-                            if hvels:
-                                add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], source)
-                            types = bandsoup.body.findAll(text=re.compile("Type"))
+        secondaryreference = "SUSPECT"
+        secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
+        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
 
-                            add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], source)
-
-                        bands = bandsoup.body.findAll(text=re.compile("^Band"))
-                        band = bands[0].split(':')[1].strip()
-
-                        secondaryreference = "SUSPECT"
-                        secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
-                        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-
-                        for r, row in enumerate(bandtable.findAll('tr')):
-                            if r == 0:
-                                continue
-                            col = row.findAll('td')
-                            mjd = str(jd_to_mjd(Decimal(col[0].contents[0])))
-                            mag = col[3].contents[0]
-                            if mag.isspace():
-                                mag = ''
-                            else:
-                                mag = str(mag)
-                            aberr = col[4].contents[0]
-                            if aberr.isspace():
-                                aberr = ''
-                            else:
-                                aberr = str(aberr)
-                            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
+        for r, row in enumerate(bandtable.findAll('tr')):
+            if r == 0:
+                continue
+            col = row.findAll('td')
+            mjd = str(jd_to_mjd(Decimal(col[0].contents[0])))
+            mag = col[3].contents[0]
+            if mag.isspace():
+                mag = ''
+            else:
+                mag = str(mag)
+            aberr = col[4].contents[0]
+            if aberr.isspace():
+                aberr = ''
+            else:
+                aberr = str(aberr)
+            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
 
 # CfA data
 if docfa:
@@ -988,7 +974,7 @@ if dorochester:
 
     vsnetfiles = ["latestsne.dat"]
     for vsnetfile in vsnetfiles:
-        f = open("../external/" + vsnetfile,'r',encoding='latin1')
+        f = open("../sne-external/" + vsnetfile,'r',encoding='latin1')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         for r, row in enumerate(tsvin):
             if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
