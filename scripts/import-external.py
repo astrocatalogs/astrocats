@@ -1458,6 +1458,14 @@ if dosuspectspectra:
                 with open('../sne-external-spectra/SUSPECT/'+folder+'/'+eventfolder+'/'+spectrum) as f:
                     specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
                     specdata = list(filter(None, specdata))
+                    newspec = []
+                    oldval = ''
+                    for row in specdata:
+                        if row[1] == oldval:
+                            continue
+                        newspec.append(row)
+                        oldval = row[1]
+                    specdata = newspec
                 haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
                 specdata = [list(i) for i in zip(*specdata)]
 
@@ -1539,7 +1547,7 @@ if writeevents:
         print('Writing ' + name)
         filename = event_filename(name)
 
-        jsonstring = json.dumps({name:events[name]}, indent=4, separators=(',', ': '), ensure_ascii=False)
+        jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
 
         outdir = '../'
         if 'discoveryear' in events[name]:
