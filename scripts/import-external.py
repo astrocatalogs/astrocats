@@ -46,6 +46,7 @@ dosnlsspectra =    True
 docspspectra =     True
 doucbspectra =     True
 dosuspectspectra = True
+dosnfspectra =     True
 writeevents =      True
 printextra =       False
 
@@ -1477,6 +1478,63 @@ if dosuspectspectra:
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = secondarysource)
+
+if dosnfspectra:
+    eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
+    bibcodes = {'SN2005gj':'2006ApJ...650..510A', 'SN2006D':'2007ApJ...654L..53T', 'SN2007if':'2010ApJ...713.1073S', 'SN2011fe':'2013A&A...554A..27P'}
+    for eventfolder in eventfolders:
+        name = eventfolder
+        name = add_event(name)
+        secondaryreference = "Nearby Supernova Factory"
+        secondaryrefurl = "http://snfactory.lbl.gov/"
+        secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+        bibcode = bibcodes[name]
+        source = get_source(name, bibcode = bibcode)
+        sources = ','.join([source,secondarysource])
+        eventspectra = glob.glob('../sne-external-spectra/SNFactory/'+eventfolder+'/*.dat')
+        for spectrum in eventspectra:
+            with open(spectrum) as f:
+                specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
+            specdata = list(filter(None, specdata))
+            newspec = []
+            time = ''
+            if 'Keck_20060202_R' in spectrum:
+                time = '53768.23469'
+            elif 'Spectrum05_276' in spectrum:
+                time = pretty_num(astrotime('2005-10-03').mjd, sig = 5)
+            elif 'Spectrum05_329' in spectrum:
+                time = pretty_num(astrotime('2005-11-25').mjd, sig = 5)
+            elif 'Spectrum05_336' in spectrum:
+                time = pretty_num(astrotime('2005-12-02').mjd, sig = 5)
+            for row in specdata:
+                if not time:
+                    if row[0] == '#MJD-OBS':
+                        time = row[2].strip("'")
+                    elif len(row) >= 2:
+                        if row[1] == 'JD':
+                            time = str(jd_to_mjd(Decimal(row[3])))
+                        elif row[1] == 'MJD':
+                            time = row[3]
+                        elif row[1] == 'MJD-OBS':
+                            time = row[3].strip("'")
+                if row[0][0] == '#':
+                    continue
+                newspec.append(row)
+            if not time:
+                print(spectrum)
+                sys.exit()
+            specdata = newspec
+            haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+            specdata = [list(i) for i in zip(*specdata)]
+
+            wavelengths = specdata[0]
+            fluxes = specdata[1]
+            errors = ''
+            if haserrors:
+                errors = specdata[2]
+
+            add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+                fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
