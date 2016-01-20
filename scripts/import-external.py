@@ -463,7 +463,7 @@ if dovizier:
 
 # Suspect catalog
 if dosuspect:
-    with open('../external/suspectreferences.csv','r') as f:
+    with open('../sne-external/suspectreferences.csv','r') as f:
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
         suspectrefdict = {}
         for row in tsvin:
@@ -541,7 +541,7 @@ if dosuspect:
 
 # CfA data
 if docfa:
-    for file in sorted(glob.glob("../external/cfa-input/*.dat"), key=lambda s: s.lower()):
+    for file in sorted(glob.glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower()):
         f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         csv_data = []
@@ -613,7 +613,7 @@ if docfa:
         f.close()
 
     # Hicken 2012
-    f = open("../external/hicken-2012-standard.dat", 'r')
+    f = open("../sne-external/hicken-2012-standard.dat", 'r')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     for r, row in enumerate(tsvin):
         if r <= 47:
@@ -631,7 +631,7 @@ if docfa:
             abmag = row[6].strip(), aberr = row[7].strip(), source = source)
     
     # Bianco 2014
-    tsvin = open("../external/bianco-2014-standard.dat", 'r')
+    tsvin = open("../sne-external/bianco-2014-standard.dat", 'r')
     tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
     for row in tsvin:
         name = 'SN' + row[0]
@@ -643,7 +643,7 @@ if docfa:
 
 # Now import the UCB SNDB
 if doucb:
-    for file in sorted(glob.glob("../external/SNDB/*.dat"), key=lambda s: s.lower()):
+    for file in sorted(glob.glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower()):
         f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
@@ -675,7 +675,7 @@ if doucb:
 # Import SDSS
 if dosdss:
     sdssbands = ['u', 'g', 'r', 'i', 'z']
-    for file in sorted(glob.glob("../external/SDSS/*.sum"), key=lambda s: s.lower()):
+    for file in sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()):
         f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
@@ -715,7 +715,7 @@ if dosdss:
 #Import GAIA
 if dogaia:
     #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
-    path = os.path.abspath('../external/selected-gaia-science-alerts')
+    path = os.path.abspath('../sne-external/selected-gaia-science-alerts')
     response = urllib.request.urlopen('file://' + path)
     html = response.read()
 
@@ -766,7 +766,7 @@ if dogaia:
 # Import CSP
 if docsp:
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-    for file in sorted(glob.glob("../external/CSP/*.dat"), key=lambda s: s.lower()):
+    for file in sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower()):
         f = open(file,'r')
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
@@ -802,10 +802,10 @@ if docsp:
 # Import ITEP
 if doitep:
     needsbib = []
-    with open("../external/itep-refs.txt",'r') as f:
+    with open("../sne-external/itep-refs.txt",'r') as f:
         refrep = f.read().splitlines()
     refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
-    f = open("../external/itep-lc-cat-28dec2015.txt",'r')
+    f = open("../sne-external/itep-lc-cat-28dec2015.txt",'r')
     tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
     curname = ''
     for r, row in enumerate(tsvin):
@@ -846,7 +846,7 @@ if doitep:
 # Now import the Asiago catalog
 if doasiago:
     #response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
-    path = os.path.abspath('../external/asiago-cat.php')
+    path = os.path.abspath('../sne-external/asiago-cat.php')
     response = urllib.request.urlopen('file://' + path)
     html = response.read().decode('utf-8')
     html = html.replace("\r", "")
@@ -929,7 +929,7 @@ if doasiago:
                 events[name]['discoverer'] = discoverer
 
 if dorochester:
-    rochesterpaths = ['file://'+os.path.abspath('../external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
+    rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     for path in rochesterpaths:
         response = urllib.request.urlopen(path)
         html = response.read()
@@ -1189,7 +1189,7 @@ if doogle:
                 ec += 1
 
 if donedd:
-    f = open("../external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
+    f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
     data = csv.reader(f, delimiter=',', quotechar='"')
     reference = "NED-D"
     refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
