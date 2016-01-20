@@ -1100,6 +1100,7 @@ if dolennarz:
 
 if doogle:
     basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
+    oglenames = []
     for bn in basenames:
         response = urllib.request.urlopen('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/transients.html')
         soup = BeautifulSoup(response.read(), "html5lib")
@@ -1122,6 +1123,10 @@ if doogle:
 
                 if 'NOVA' in name or 'dupl' in name:
                     continue
+
+                if name in oglenames:
+                    continue
+                oglenames.append(name)
 
                 name = add_event(name)
 
@@ -1480,7 +1485,7 @@ if writeevents:
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                         events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
         if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: (float(x['time']), x['band']))
+            events[name]['photometry'].sort(key=lambda x: (float(x['time']), x['band'], float(x['abmag'])))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
