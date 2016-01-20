@@ -26,27 +26,28 @@ clight = 29979245800.
 
 eventnames = []
 
-dovizier =        True
-dosuspect =       True
-docfa =           True
-doucb =           True
-dosdss =          True
-dogaia =          True
-docsp =           True
-doitep =          True
-doasiago =        True
-dorochester =     True
-dofirstmax =      True
-dolennarz =       True
-doogle =          True
-donedd =          True
-docfaiaspectra =  True
-docfaibcspectra = True
-dosnlsspectra =   True
-docspspectra =    True
-doucbspectra =    True
-writeevents =     True
-printextra =      False
+dovizier =         True
+dosuspect =        True
+docfa =            True
+doucb =            True
+dosdss =           True
+dogaia =           True
+docsp =            True
+doitep =           True
+doasiago =         True
+dorochester =      True
+dofirstmax =       True
+dolennarz =        True
+doogle =           True
+donedd =           True
+docfaiaspectra =   True
+docfaibcspectra =  True
+dosnlsspectra =    True
+docspspectra =     True
+doucbspectra =     True
+dosuspectspectra = True
+writeevents =      True
+printextra =       False
 
 events = OrderedDict()
 
@@ -1431,6 +1432,43 @@ if doucbspectra:
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = True)
+
+if dosuspectspectra:
+    folders = next(os.walk('../sne-external-spectra/SUSPECT'))[1]
+    for folder in folders:
+        print('../sne-external-spectra/SUSPECT/'+folder)
+        eventfolders = next(os.walk('../sne-external-spectra/SUSPECT/'+folder))[1]
+        for eventfolder in eventfolders:
+            name = eventfolder
+            if is_number(name[:4]):
+                name = 'SN' + name
+            name = add_event(name)
+            secondaryreference = "SUSPECT"
+            secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
+            secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+            eventspectra = next(os.walk('../sne-external-spectra/SUSPECT/'+folder+'/'+eventfolder))[2]
+            for spectrum in eventspectra:
+                date = spectrum.split('_')[1]
+                year = date[:4]
+                month = date[4:6]
+                day = date[6:]
+                sig = get_sig_digits(day) + 5
+                time = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
+
+                with open('../sne-external-spectra/SUSPECT/'+folder+'/'+eventfolder+'/'+spectrum) as f:
+                    specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
+                    specdata = list(filter(None, specdata))
+                haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+                specdata = [list(i) for i in zip(*specdata)]
+
+                wavelengths = specdata[0]
+                fluxes = specdata[1]
+                errors = ''
+                if haserrors:
+                    errors = specdata[2]
+
+                add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
+                    fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = secondarysource)
 
 if writeevents:
     # Calculate some columns based on imported data, sanitize some fields
