@@ -16,9 +16,8 @@ from datetime import datetime
 from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
-from bokeh.io import hplot, vplot, gridplot, vform
 from bokeh.plotting import Figure, show, save, reset_output
-from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, VBoxForm
+from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, VBox, Range1d, LinearAxis
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html
 from palettable import cubehelix
@@ -276,12 +275,12 @@ else:
     md5dict = {}
 
 for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+    if args.eventlist and os.path.splitext(os.path.basename(eventfile))[0] not in args.eventlist:
+        continue
+
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
     filehead, ext = os.path.splitext(eventfile)
-
-    if args.eventlist and os.path.splitext(os.path.basename(eventfile))[0] not in args.eventlist:
-        continue
 
     f = open(eventfile, 'r')
     filetext = f.read()
@@ -300,12 +299,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['download'] = "<a class='dci' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
     photoavail = 'photometry' in catalog[entry]
-    catalog[entry]['numphoto'] = len(catalog[entry]['photometry']) if photoavail else 0
+    numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
+    catalog[entry]['numphoto'] = numphoto
     if photoavail:
         plotlink = "sne/" + eventname + ".html"
         catalog[entry]['photoplot'] = plotlink
         plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a> "
-        catalog[entry]['photolink'] = plotlink + str(len(catalog[entry]['photometry']))
+        catalog[entry]['photolink'] = plotlink + str(numphoto)
     spectraavail = 'spectra' in catalog[entry]
     catalog[entry]['numspectra'] = len(catalog[entry]['spectra']) if spectraavail else 0
     if spectraavail:
@@ -404,22 +404,39 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
             indt = [i for i, j in enumerate(phototype) if not j]
-            ind = set(indb).intersection(indt)
+            indne = [i for i, j in enumerate(photoerrs) if j == 0.]
+            indye = [i for i, j in enumerate(photoerrs) if j > 0.]
+            indne = set(indb).intersection(indt).intersection(indne)
+            indye = set(indb).intersection(indt).intersection(indye)
+
+            noerrorlegend = bandname if len(indne) == 0 else ''
 
             source = ColumnDataSource(
                 data = dict(
-                    x = [phototime[i] for i in ind],
-                    y = [photoAB[i] for i in ind],
-                    err = [photoerrs[i] for i in ind],
-                    desc = [photoband[i] for i in ind],
-                    instr = [photoinstru[i] for i in ind],
-                    src = [photosource[i] for i in ind]
+                    x = [phototime[i] for i in indye],
+                    y = [photoAB[i] for i in indye],
+                    err = [photoerrs[i] for i in indye],
+                    desc = [photoband[i] for i in indye],
+                    instr = [photoinstru[i] for i in indye],
+                    src = [photosource[i] for i in indye]
                 )
             )
-            p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=4)
-            p1.multi_line([err_xs[x] for x in ind], [err_ys[x] for x in ind], color=bandcolorf(band))
+            p1.circle('x', 'y', source = source, color=bandcolorf(band), fill_color="white", legend=noerrorlegend, size=4)
 
-            upplimlegend = bandname if len(ind) == 0 else ''
+            source = ColumnDataSource(
+                data = dict(
+                    x = [phototime[i] for i in indne],
+                    y = [photoAB[i] for i in indne],
+                    err = [photoerrs[i] for i in indne],
+                    desc = [photoband[i] for i in indne],
+                    instr = [photoinstru[i] for i in indne],
+                    src = [photosource[i] for i in indne]
+                )
+            )
+            p1.multi_line([err_xs[x] for x in indne], [err_ys[x] for x in indne], color=bandcolorf(band))
+            p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=4)
+
+            upplimlegend = bandname if len(indye) == 0 and len(indne) == 0 else ''
 
             indt = [i for i, j in enumerate(phototype) if j]
             ind = set(indb).intersection(indt)
@@ -467,17 +484,21 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for f, flux in enumerate(spectrumscaled):
             spectrumscaled[f] = [x - y_offsets[f] for x in flux]
 
-        tt2 = [  
-                ("λ", "@x{1.1}"),
+        tt2 = []
+        if 'redshift' in catalog[entry]:
+            z = float(catalog[entry]['redshift'][0]['value'])
+            tt2 += [ ("λ (rest)", "@xrest{1.1} Å") ]
+        tt2 += [
+                ("λ (obs)", "@x{1.1} Å"),
                 ("Flux", "@yorig"),
                 ("Flux unit", "@fluxunit")
-              ]
+               ]
         if 'timeunit' in spectrum and 'time' in spectrum:
             tt2 += [ ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}") ]
         tt2 += [ ("Source", "@src") ]
         hover2 = HoverTool(tooltips = tt2)
 
-        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Wavelength (' + catalog[entry]['spectra'][0]['waveunit'] + ')'),
+        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
             y_axis_label=label_format('Flux (scaled)' + (' + offset'
             if (nspec > 1) else '')), x_range = x_range, tools = tools, 
             y_range = y_range)
@@ -495,12 +516,21 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 yoff = [y_offsets[i]],
                 binsize = [1.0],
                 spacing = [1.0],
+                redshift = [z if 'redshift' in catalog[entry] else 0.],
                 src = [catalog[entry]['spectra'][i]['source']]*len(spectrumscaled[i])
             )
+            if 'redshift' in catalog[entry]:
+                data['xrest'] = [x/(1.0 + z) for x in spectrumwave[i]]
             if 'timeunit' in spectrum and 'time' in spectrum:
                 data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in spectrumscaled[i]]
             sources.append(ColumnDataSource(data))
             p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2)
+
+        if 'redshift' in catalog[entry]:
+            minredw = minsw/(1.0 + z)
+            maxredw = maxsw/(1.0 + z)
+            p2.extra_x_ranges = {"other wavelength": Range1d(start=minredw, end=maxredw)}
+            p2.add_layout(LinearAxis(axis_label ="Restframe Wavelength (Å)", x_range_name="other wavelength"), 'above')
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
@@ -518,6 +548,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 var dx0 = x0[1] - x0[0];
                 var yoff = space*data['yoff'][0];
                 data['x'] = [x0[0] - 0.5*Math.max(0., f - dx0)];
+                data['xrest'] = [(x0[0] - 0.5*Math.max(0., f - dx0))/(1.0 + data['redshift'][0])];
                 data['y'] = [y0[0] + yoff];
                 var xaccum = 0.;
                 var yaccum = 0.;
@@ -532,6 +563,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     yaccum += y0[i]*dx;
                     if (xaccum >= f) {
                         data['x'].push(data['x'][data['x'].length-1] + xaccum);
+                        data['xrest'].push(data['x'][data['x'].length-1]/(1.0 + data['redshift'][0]));
                         data['y'].push(yaccum/xaccum + yoff);
                         xaccum = 0.;
                         yaccum = 0.;
@@ -547,16 +579,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if (photoavail or spectraavail) and dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
-            p = vplot(hplot(p1),hplot(p2,vform(binslider,spacingslider)), width=900)
+            p = VBox(HBox(p1),HBox(p2,VBox(binslider,spacingslider)), width=900)
         elif photoavail:
             p = p1
         else:
-            p = vplot(hplot(p2,vform(binslider,spacingslider)), width=900)
+            p = VBox(HBox(p2,VBox(binslider,spacingslider)), width=900)
 
-        html = file_html(p, INLINE, eventname)
+        html = file_html(p, CDN, eventname)
         returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
-        html = re.sub(r'(\<\/body\>)', r'<a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>Download datafile</a><br><br>\n\1', html)
+        dla = r'<a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>'
+        html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/wordpress-transient-table/data-icon.png" width="22" height="22"/
+            style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
+            dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/wordpress-transient-table/data-icon.png" width="22" height="22"
+            style="vertical-align: text-bottom;"></a><br><br>\n\1''', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n\1', html)
             for source in catalog[entry]['sources']:
