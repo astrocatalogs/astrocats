@@ -413,18 +413,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             source = ColumnDataSource(
                 data = dict(
-                    x = [phototime[i] for i in indye],
-                    y = [photoAB[i] for i in indye],
-                    err = [photoerrs[i] for i in indye],
-                    desc = [photoband[i] for i in indye],
-                    instr = [photoinstru[i] for i in indye],
-                    src = [photosource[i] for i in indye]
-                )
-            )
-            p1.circle('x', 'y', source = source, color=bandcolorf(band), fill_color="white", legend=noerrorlegend, size=4)
-
-            source = ColumnDataSource(
-                data = dict(
                     x = [phototime[i] for i in indne],
                     y = [photoAB[i] for i in indne],
                     err = [photoerrs[i] for i in indne],
@@ -433,7 +421,19 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     src = [photosource[i] for i in indne]
                 )
             )
-            p1.multi_line([err_xs[x] for x in indne], [err_ys[x] for x in indne], color=bandcolorf(band))
+            p1.circle('x', 'y', source = source, color=bandcolorf(band), fill_color="white", legend=noerrorlegend, size=4)
+
+            source = ColumnDataSource(
+                data = dict(
+                    x = [phototime[i] for i in indye],
+                    y = [photoAB[i] for i in indye],
+                    err = [photoerrs[i] for i in indye],
+                    desc = [photoband[i] for i in indye],
+                    instr = [photoinstru[i] for i in indye],
+                    src = [photosource[i] for i in indye]
+                )
+            )
+            p1.multi_line([err_xs[x] for x in indye], [err_ys[x] for x in indye], color=bandcolorf(band))
             p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=4)
 
             upplimlegend = bandname if len(indye) == 0 and len(indne) == 0 else ''
