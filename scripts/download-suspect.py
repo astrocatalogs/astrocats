@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3.5
 import urllib.request, urllib.error, urllib.parse
-from bs4 import BeautifulSoup, SoupStrainer, Tag, NavigableString
+from bs4 import BeautifulSoup
 import re
 
 # Suspect catalog
