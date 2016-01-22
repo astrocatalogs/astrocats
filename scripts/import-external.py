@@ -738,9 +738,11 @@ if dogaia:
         events[name]['sndec'] = col[3].contents[0].strip()
         add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
-        photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
-        photresp = urllib.request.urlopen(photlink)
-        photsoup = BeautifulSoup(photresp, "html5lib")
+        photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
+        with open(photfile, 'r') as f:
+            phottxt = f.read()
+
+        photsoup = BeautifulSoup(phottxt, "html5lib")
         photodata = str(photsoup.contents[0]).split('\n')[2:-1]
         for ph in photodata:
             photo = ph.split(',')
