@@ -245,7 +245,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quanta(name, quanta, value, source, forcereplacebetter = False, error = ''):
+def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = ''):
     if not quanta:
         raise(ValueError('Quanta must be specified for add_quanta.'))
     svalue = value.strip()
@@ -277,19 +277,20 @@ def add_quanta(name, quanta, value, source, forcereplacebetter = False, error = 
 
     if quanta in events[name]:
         for i, ct in enumerate(events[name][quanta]):
-            if ct['value'] == svalue:
-                if source and source not in events[name][quanta][i]['source'].split(','):
-                    events[name][quanta][i]['source'] += ',' + source
-                    if serror:
-                        events[name][quanta][i]['error'] = serror
+            if ct['value'] == svalue and sources:
+                for source in sources:
+                    if source not in events[name][quanta][i]['source'].split(','):
+                        events[name][quanta][i]['source'] += ',' + source
+                        if serror and 'error' not in events[name][quanta][i]:
+                            events[name][quanta][i]['error'] = serror
                 return
 
     quantaentry = OrderedDict()
     quantaentry['value'] = svalue
     if serror:
         quantaentry['error'] = serror
-    if source:
-        quantaentry['source'] = source
+    if sources:
+        quantaentry['source'] = sources
     if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
         newquantas = []
         isworse = True
@@ -737,9 +738,11 @@ if dogaia:
         events[name]['sndec'] = col[3].contents[0].strip()
         add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
-        photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
-        photresp = urllib.request.urlopen(photlink)
-        photsoup = BeautifulSoup(photresp, "html5lib")
+        photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
+        with open(photfile, 'r') as f:
+            phottxt = f.read()
+
+        photsoup = BeautifulSoup(phottxt, "html5lib")
         photodata = str(photsoup.contents[0]).split('\n')[2:-1]
         for ph in photodata:
             photo = ph.split(',')
