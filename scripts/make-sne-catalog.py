@@ -313,8 +313,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         catalog[entry]['spectraplot'] = plotlink
         plotlink = "<a class='sci' href='" + plotlink + "' target='_blank'></a> "
         catalog[entry]['spectralink'] = plotlink + str(len(catalog[entry]['spectra']))
+
+    prange = list(range(len(catalog[entry]['photometry']))) if 'photometry' in catalog[entry] else []
     
-    prange = list(range(catalog[entry]['numphoto']))
     instrulist = sorted([_f for _f in list({catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else None for x in prange}) if _f])
     if len(instrulist) > 0:
         instruments = ''
