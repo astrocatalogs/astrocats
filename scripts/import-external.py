@@ -475,8 +475,8 @@ if dosuspect:
         basesplit = basename.split('-')
         name = basesplit[1]
         name = add_event(name)
-        band = basesplit[3]
-        ei = int(basesplit[2].split('.')[0])
+        band = basesplit[3].split('.')[0]
+        ei = int(basesplit[2])
         bandlink = 'file://' + os.path.abspath(datafile)
         bandresp = urllib.request.urlopen(bandlink)
         bandsoup = BeautifulSoup(bandresp, "html5lib")
