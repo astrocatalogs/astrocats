@@ -278,7 +278,7 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
     if quanta in events[name]:
         for i, ct in enumerate(events[name][quanta]):
             if ct['value'] == svalue and sources:
-                for source in sources:
+                for source in sources.split(','):
                     if source not in events[name][quanta][i]['source'].split(','):
                         events[name][quanta][i]['source'] += ',' + source
                         if serror and 'error' not in events[name][quanta][i]:
