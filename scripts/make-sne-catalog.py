@@ -46,6 +46,8 @@ columnkey = [
     "maxappmag",
     "maxabsmag",
     "host",
+    "snra",
+    "sndec",
     "instruments",
     "redshift",
     "hvel",
@@ -66,6 +68,8 @@ header = [
     r"<em>m</em><sub>max</sub>",
     r"<em>M</em><sub>max</sub>",
     "Host Name",
+    "R.A.",
+    "Dec.",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
@@ -732,6 +736,11 @@ if args.writecatalog and not args.eventlist:
     catalog = list(catalog.values())
 
     jsonstring = json.dumps(catalog, separators=(',',':'))
+    f = open(outdir + 'sne-catalog.min.json' + testsuffix, 'w')
+    f.write(jsonstring)
+    f.close()
+
+    jsonstring = json.dumps(catalog, indent='\t', separators=(',',':'))
     f = open(outdir + 'sne-catalog.json' + testsuffix, 'w')
     f.write(jsonstring)
     f.close()
