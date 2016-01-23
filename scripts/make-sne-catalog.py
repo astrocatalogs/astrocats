@@ -68,8 +68,8 @@ header = [
     r"<em>m</em><sub>max</sub>",
     r"<em>M</em><sub>max</sub>",
     "Host Name",
-    "R.A.",
-    "Dec.",
+    "R.A. (h:m:s)",
+    "Dec. (d:m:s)",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
@@ -78,6 +78,28 @@ header = [
     "Phot.",
     "Spec.",
     "",
+    ""
+]
+
+titles = [
+    "",
+    "Name (IAU name preferred)",
+    "Aliases",
+    "Discovey Date (year-month-day)",
+    "Date of Maximum (year-month-day)",
+    "Maximum apparent AB magnitude",
+    "Maximum absolute AB magnitude",
+    "Host Name",
+    "J2000 Right Ascension (h:m:s)",
+    "J2000 Declination (d:m:s)",
+    "List of Instruments and Bands",
+    "Redshift",
+    "Heliocentric velocity (km/s)",
+    "Luminosity distance (Mpc)",
+    "Claimed Type",
+    "Photometry",
+    "Spectra",
+    "Download",
     ""
 ]
 
@@ -111,6 +133,7 @@ if len(columnkey) != len(header):
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
 
 header = OrderedDict(list(zip(columnkey,header)))
+titles = OrderedDict(list(zip(columnkey,titles)))
 
 bandcodes = [
     "u",
@@ -301,7 +324,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['download'] = "<a class='dci' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
+    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
     photoavail = 'photometry' in catalog[entry]
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
@@ -750,13 +773,13 @@ if args.writecatalog and not args.eventlist:
     f.write('\t<thead>\n')
     f.write('\t\t<tr>\n')
     for h in header:
-        f.write('\t\t\t<th class="' + h + '">' + header[h] + '</th>\n')
+        f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
     f.write('\t\t</tr>\n')
     f.write('\t</thead>\n')
     f.write('\t<tfoot>\n')
     f.write('\t\t<tr>\n')
     for h in header:
-        f.write('\t\t\t<th class="' + h + '">' + header[h] + '</th>\n')
+        f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
     f.write('\t\t</tr>\n')
     f.write('\t</thead>\n')
     f.write('</table>\n')
