@@ -23,6 +23,7 @@ clight = 29979245800.
 
 eventnames = []
 
+dointernal =       True
 dovizier =         True
 dosuspect =        True
 docfa =            True
@@ -75,6 +76,7 @@ repbetterquanta = {
 }
 
 def event_attr_priority(attr):
+    print(attr)
     if attr == 'photometry' or attr == 'spectra':
         return 'zzzzzzzz'
     if attr == 'name':
@@ -88,7 +90,7 @@ def event_attr_priority(attr):
 def add_event(name, load = True):
     if name not in events:
         if load:
-            newname = load_event_from_file(name)
+            newname = load_event_from_file(name = name)
             if newname:
                 print('Loaded event ' + newname)
                 return newname
@@ -183,7 +185,7 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
-            if (photo['timeunit'] == timeunit and photo['band'] == band and
+            if (photo['timeunit'] == timeunit and 'band' in photo and photo['band'] == band and
                 Decimal(photo['time']) == Decimal(time) and
                 Decimal(photo['abmag']) == Decimal(abmag) and
                 (('aberr' not in photo and not aberr) or ('aberr' in photo and aberr and Decimal(photo['aberr']) == Decimal(aberr)) or
@@ -193,7 +195,8 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     photoentry = OrderedDict()
     photoentry['timeunit'] = timeunit
     photoentry['time'] = str(time)
-    photoentry['band'] = band
+    if band:
+        photoentry['band'] = band
     photoentry['abmag'] = str(abmag)
     if instrument:
         photoentry['instrument'] = instrument
@@ -452,7 +455,8 @@ def derive_and_sanitize():
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                         events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
         if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: (float(x['time']), x['band'], float(x['abmag'])))
+            events[name]['photometry'].sort(key=lambda x: (float(x['time']),
+                x['band'] if 'band' in x else '', float(x['abmag'])))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
@@ -485,13 +489,19 @@ def write_all_events():
         f.write(jsonstring)
         f.close()
 
-def load_event_from_file(name):
-    indir = '../'
-    path = ''
-    for rep in repfolders:
-        newpath = indir + rep + '/' + name + '.json'
-        if os.path.isfile(newpath):
-            path = newpath
+def load_event_from_file(name = '', location = '', clean = False):
+    if not name and not location:
+        raise ValueError('Either event name or location must be specified to load event')
+
+    if location:
+        path = location
+    else:
+        indir = '../'
+        path = ''
+        for rep in repfolders:
+            newpath = indir + rep + '/' + name + '.json'
+            if os.path.isfile(newpath):
+                path = newpath
 
     if not path:
         return False
@@ -499,10 +509,44 @@ def load_event_from_file(name):
         with open(path, 'r') as f:
             events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
             name = next(reversed(events))
+            if clean:
+                clean_event(name)
         return name
+
+def clean_event(name):
+    bibcodes = []
+    if 'name' not in events[name]:
+        events[name]['name'] = name
+    if 'aliases' not in events[name]:
+        add_alias(name, name)
+    if 'sources' in events[name]:
+        for s, source in enumerate(events[name]['sources']):
+            if 'bibcode' in source and 'name' not in source:
+                bibcodes.append(source['bibcode'])
+        if bibcodes:
+            del events[name]['sources']
+            for bibcode in bibcodes:
+                get_source(name, bibcode = bibcode)
+    if 'photometry' in events[name]:
+        for p, photo in enumerate(events[name]['photometry']):
+            if photo['timeunit'] == 'JD':
+                events[name]['photometry'][p]['timeunit'] = 'MJD'
+                events[name]['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
+            if bibcodes and 'source' not in photo:
+                alias = get_source(name, bibcode = bibcodes[0])
+                events[name]['photometry'][p]['source'] = alias
 
 if writeevents:
     delete_old_event_files()
+
+# Import data provided directly to OSC
+if dointernal:
+    for datafile in sorted(glob.glob("../sne-internal/*.json"), key=lambda s: s.lower()):
+        if not load_event_from_file(location = datafile, clean = True):
+            raise IOError('Failed to find specified file.')
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # Import primary data sources from Vizier
 if dovizier:
@@ -1725,12 +1769,13 @@ if writeevents:
     for rep in repfolders:
         files += glob.glob('../' + rep + "/*.json")
 
-        for fi in files:
-            events = OrderedDict()
-            name = os.path.basename(fi).split('.')[0]
-            name = add_event(name)
-            derive_and_sanitize()
-            write_all_events()
+    for fi in files:
+        events = OrderedDict()
+        name = os.path.basename(fi).split('.')[0]
+        name = add_event(name)
+        derive_and_sanitize()
+        print(events)
+        write_all_events()
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 

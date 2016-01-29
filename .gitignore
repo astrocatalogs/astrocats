@@ -4,10 +4,11 @@
 *.html
 !catalog.html
 *.json
-!/external/*
 !/sne-catalog.json
+!/sne-catalog.min.json
 *.sw*
 *-needsbib.txt
+sne-internal
 sne-external
 sne-external-spectra
 sne-pre-1990
