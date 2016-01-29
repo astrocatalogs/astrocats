@@ -76,7 +76,6 @@ repbetterquanta = {
 }
 
 def event_attr_priority(attr):
-    print(attr)
     if attr == 'photometry' or attr == 'spectra':
         return 'zzzzzzzz'
     if attr == 'name':
@@ -1659,7 +1658,6 @@ if doucbspectra:
 if dosuspectspectra:
     folders = next(os.walk('../sne-external-spectra/SUSPECT'))[1]
     for folder in folders:
-        print('../sne-external-spectra/SUSPECT/'+folder)
         eventfolders = next(os.walk('../sne-external-spectra/SUSPECT/'+folder))[1]
         for eventfolder in eventfolders:
             name = eventfolder
@@ -1774,7 +1772,6 @@ if writeevents:
         name = os.path.basename(fi).split('.')[0]
         name = add_event(name)
         derive_and_sanitize()
-        print(events)
         write_all_events()
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
