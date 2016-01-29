@@ -617,9 +617,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
         dla = r'<a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>'
-        html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/wordpress-transient-table/data-icon.png" width="22" height="22"/
+        html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"/
             style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
-            dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/wordpress-transient-table/data-icon.png" width="22" height="22"
+            dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"
             style="vertical-align: text-bottom;"></a><br><br>\n\1''', html)
         if len(catalog[entry]['sources']):
             html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n\1', html)
