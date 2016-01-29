@@ -4,13 +4,11 @@ import csv
 import glob
 import os
 import re
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
 import calendar
 import sys
-import subprocess
 import json
 import codecs
-import numpy
 import resource
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
@@ -18,8 +16,7 @@ from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
 from math import log10, floor, sqrt, isnan
-from bs4 import BeautifulSoup, SoupStrainer, Tag, NavigableString
-from operator import itemgetter
+from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
 clight = 29979245800.
@@ -36,7 +33,6 @@ docsp =            True
 doitep =           True
 doasiago =         True
 dorochester =      True
-dofirstmax =       True
 dolennarz =        True
 doogle =           True
 donedd =           True
@@ -89,12 +85,18 @@ def event_attr_priority(attr):
         return 'aaaaaaac'
     return attr
 
-def add_event(name):
+def add_event(name, load = True):
     if name not in events:
+        if load:
+            newname = load_event_from_file(name)
+            if newname:
+                print('Loaded event ' + newname)
+                return newname
+
         for event in events:
             if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
                 return event
-        print(name)
+        print('Added new event ' + name)
         events[name] = OrderedDict()
         events[name]['name'] = name
         add_alias(name, name)
@@ -245,7 +247,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = ''):
+def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = '', unit = ''):
     if not quanta:
         raise(ValueError('Quanta must be specified for add_quanta.'))
     svalue = value.strip()
@@ -260,17 +262,47 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         if not is_number(value):
             return
     if quanta == 'host':
+        svalue = svalue.strip("()")
         svalue = svalue.replace("NGC", "NGC ")
         svalue = svalue.replace("UGC", "UGC ")
         svalue = svalue.replace("IC", "IC ")
+        svalue = svalue.replace("Mrk", "MRK")
+        svalue = svalue.replace("MRK", "MRK ")
+        svalue = svalue.replace("PGC", "PGC ")
         svalue = ' '.join(svalue.split())
     elif quanta == 'claimedtype':
         for rep in typereps:
             if svalue in typereps[rep]:
                 svalue = rep
                 break
+    elif quanta == 'snra' or quanta == 'sndec' or quanta == 'galra' or quanta == 'galdec':
+        if unit == 'decdeg' or unit == 'radeg':
+            deg = float('%g' % Decimal(svalue))
+            sig = get_sig_digits(svalue)
+            if unit == 'radeg':
+                flhours = deg / 360.0 * 24.0
+                hours = floor(flhours)
+                minutes = floor((flhours - hours) * 60.0)
+                seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
+                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
+            if unit == 'decdeg':
+                fldeg = abs(deg)
+                degree = floor(fldeg)
+                minutes = floor((fldeg - degree) * 60.0)
+                seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
+                svalue = ('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
+        elif unit == 'decdms':
+            svalue = svalue.replace(' ', ':')
+            valuesplit = svalue.split(':')
+            svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
+        elif unit == 'ranospace':
+            svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + svalue[4:]) if len(svalue) > 4 else '')
+        elif unit == 'decnospace':
+            svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + svalue[5:]) if len(svalue) > 5 else '')
+        else:
+            svalue = svalue.replace(' ', ':')
 
-    if is_number(value):
+    if is_number(svalue):
         svalue = '%g' % Decimal(svalue)
     if serror:
         serror = '%g' % Decimal(serror)
@@ -363,9 +395,114 @@ def is_number(s):
     except ValueError:
         return False
 
-catalog = OrderedDict()
 def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
+
+def derive_and_sanitize():
+    # Calculate some columns based on imported data, sanitize some fields
+    for name in events:
+        set_first_max_light(name)
+        if 'claimedtype' in events[name]:
+            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
+        if 'redshift' in events[name] and 'hvel' not in events[name]:
+            # Find the "best" redshift to use for this
+            bestsig = 0
+            for z in events[name]['redshift']:
+                sig = get_sig_digits(z['value'])
+                if sig > bestsig:
+                    bestz = z['value']
+                    bestsig = sig
+            if bestsig > 0:
+                bestz = float(bestz)
+                add_quanta(name, 'hvel', pretty_num(clight/1.e5*((bestz + 1.)**2. - 1.)/
+                    ((bestz + 1.)**2. + 1.), sig = bestsig), 'D')
+        elif 'hvel' in events[name] and 'redshift' not in events[name]:
+            # Find the "best" hvel to use for this
+            bestsig = 0
+            for hv in events[name]['hvel']:
+                sig = get_sig_digits(hv['value'])
+                if sig > bestsig:
+                    besthv = hv['value']
+                    bestsig = sig
+            if bestsig > 0 and is_number(besthv):
+                voc = float(besthv)*1.e5/clight
+                add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D')
+        if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
+            # Find the "best" distance to use for this
+            bestsig = 0
+            for ld in events[name]['lumdist']:
+                sig = get_sig_digits(ld['value'])
+                if sig > bestsig:
+                    bestld = ld['value']
+                    bestsig = sig
+            if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
+                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig)
+        if 'redshift' in events[name]:
+            # Find the "best" redshift to use for this
+            bestsig = 0
+            for z in events[name]['redshift']:
+                sig = get_sig_digits(z['value'])
+                if sig > bestsig:
+                    bestz = z['value']
+                    bestsig = sig
+            if bestsig > 0 and float(bestz) > 0.:
+                if 'lumdist' not in events[name]:
+                    dl = cosmo.luminosity_distance(float(bestz))
+                    add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D')
+                    if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+                        events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
+        if 'photometry' in events[name]:
+            events[name]['photometry'].sort(key=lambda x: (float(x['time']), x['band'], float(x['abmag'])))
+        if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
+            events[name]['spectra'].sort(key=lambda x: float(x['time']))
+        events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
+
+def delete_old_event_files():
+    # Delete all old event JSON files
+    for folder in repfolders:
+        filelist = glob.glob("../" + folder + "/*.json")
+        for f in filelist:
+            os.remove(f)
+
+def write_all_events():
+    # Write it all out!
+    for name in events:
+        print('Writing ' + name)
+        filename = event_filename(name)
+
+        jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
+
+        outdir = '../'
+        if 'discoveryear' in events[name]:
+            for r, year in enumerate(repyears):
+                if int(events[name]['discoveryear']) <= year:
+                    outdir += repfolders[r]
+                    break
+        else:
+            outdir += str(repfolders[0])
+
+        f = codecs.open(outdir + '/' + filename + '.json', 'w', encoding='utf8')
+        f.write(jsonstring)
+        f.close()
+
+def load_event_from_file(name):
+    indir = '../'
+    path = ''
+    for rep in repfolders:
+        newpath = indir + rep + '/' + name + '.json'
+        if os.path.isfile(newpath):
+            path = newpath
+
+    if not path:
+        return False
+    else:
+        with open(path, 'r') as f:
+            events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
+            name = next(reversed(events))
+        return name
+
+if writeevents:
+    delete_old_event_files()
 
 # Import primary data sources from Vizier
 if dovizier:
@@ -398,8 +535,9 @@ if dovizier:
                 if nam.strip()[:2] == 'SN':
                     events[name]['discoveryear'] = nam.strip()[2:]
 
-        events[name]['snra'] = row['RAJ2000']
-        events[name]['sndec'] = row['DEJ2000']
+        source = get_source(name, bibcode = '2014yCat.7272....0G')
+        add_quanta(name, 'snra', row['RAJ2000'], source)
+        add_quanta(name, 'sndec', row['DEJ2000'], source, unit = 'decdms')
 
     result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
     table = result[list(result.keys())[0]]
@@ -450,8 +588,8 @@ if dovizier:
         name = u'LSQ' + str(row['LSQ'])
         name = add_event(name)
         source = get_source(name, bibcode = "2015ApJS..219...13W")
-        events[name]['snra'] = row['RAJ2000']
-        events[name]['sndec'] = row['DEJ2000']
+        add_quanta(name, 'snra', row['RAJ2000'], source)
+        add_quanta(name, 'sndec', row['DEJ2000'], source)
         add_quanta(name, 'redshift', row['z'], source, error = row['e_z'])
         add_quanta(name, 'ebv', row['E_B-V_'], source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
@@ -462,6 +600,9 @@ if dovizier:
         name = 'LSQ' + row['LSQ']
         source = get_source(name, bibcode = "2015ApJS..219...13W")
         add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # Suspect catalog
 if dosuspect:
@@ -526,6 +667,9 @@ if dosuspect:
             else:
                 aberr = str(aberr)
             add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # CfA data
 if docfa:
@@ -628,6 +772,9 @@ if docfa:
         source = get_source(name, bibcode = '2014ApJS..213...19B')
         add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = source)
     f.close()
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # Now import the UCB SNDB
 if doucb:
@@ -659,6 +806,9 @@ if doucb:
             instrument = row[5]
             add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
         f.close()
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
     
 # Import SDSS
 if dosdss:
@@ -675,16 +825,15 @@ if dosdss:
                     name = "SN" + row[5]
                 name = add_event(name)
 
+                bibcode = '2008AJ....136.2306H'
+                source = get_source(name, bibcode = bibcode)
+
                 if row[5] != "RA:":
                     year = re.findall(r'\d+', name)[0]
                     events[name]['discoveryear'] = year
 
-                events[name]['snra'] = row[-4]
-                events[name]['sndec'] = row[-2]
-
-                reference = "SDSS Supernova Survey"
-                refurl = "http://classic.sdss.org/supernova/lightcurves.html"
-                source = get_source(name, reference = reference, url = refurl)
+                add_quanta(name, 'snra', row[-4], source, unit = 'radeg')
+                add_quanta(name, 'sndec', row[-2], source, unit = 'decdeg')
             if r == 1:
                 add_quanta(name, 'redshift', row[2], source, error = row[4])
             if r >= 19:
@@ -699,6 +848,9 @@ if dosdss:
                 instrument = "SDSS"
                 add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
         f.close()
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 #Import GAIA
 if dogaia:
@@ -734,8 +886,8 @@ if dogaia:
         refurl = "https://gaia.ac.uk/selected-gaia-science-alerts"
         source = get_source(name, reference = reference, url = refurl)
 
-        events[name]['snra'] = col[2].contents[0].strip()
-        events[name]['sndec'] = col[3].contents[0].strip()
+        add_quanta(name, 'snra', col[2].contents[0].strip(), source, unit = 'radeg')
+        add_quanta(name, 'sndec', col[3].contents[0].strip(), source, unit = 'decdeg')
         add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
         photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
@@ -752,6 +904,9 @@ if dogaia:
             instrument = 'GAIA'
             band = 'G'
             add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # Import CSP
 if docsp:
@@ -778,8 +933,8 @@ if docsp:
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
                     add_quanta(name, 'redshift', row[0].split(' ')[-1], source)
-                    events[name]['snra'] = row[1].split(' ')[-1]
-                    events[name]['sndec'] = row[2].split(' ')[-1]
+                    add_quanta(name, 'snra', row[1].split(' ')[-1], source)
+                    add_quanta(name, 'sndec', row[2].split(' ')[-1], source)
                 continue
             for v, val in enumerate(row):
                 if v == 0:
@@ -788,6 +943,9 @@ if docsp:
                     if float(row[v]) < 90.0:
                         add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)//2], abmag = row[v], aberr = row[v+1], source = source)
         f.close()
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # Import ITEP
 if doitep:
@@ -832,6 +990,9 @@ if doitep:
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as f:
         f.writelines(["%s\n" % i for i in needsbib])
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 # Now import the Asiago catalog
 if doasiago:
@@ -908,15 +1069,18 @@ if doasiago:
             if (hvel != ''):
                 add_quanta(name, 'hvel', hvel, source)
             if (galra != ''):
-                events[name]['galra'] = galra
+                add_quanta(name, 'galra', galra, source, unit = 'ranospace')
             if (galdec != ''):
-                events[name]['galdec'] = galdec
+                add_quanta(name, 'galdec', galdec, source, unit = 'decnospace')
             if (snra != ''):
-                events[name]['snra'] = snra
+                add_quanta(name, 'snra', snra, source, unit = 'ranospace')
             if (sndec != ''):
-                events[name]['sndec'] = sndec
+                add_quanta(name, 'sndec', sndec, source, unit = 'decnospace')
             if (discoverer != ''):
-                events[name]['discoverer'] = discoverer
+                add_quanta(name, 'discoverer', discoverer, source)
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 if dorochester:
     rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
@@ -960,8 +1124,8 @@ if dorochester:
                 add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 add_quanta(name, 'host', str(cols[2].contents[0]).strip(), sources)
-            events[name]['snra'] = str(cols[3].contents[0]).strip()
-            events[name]['sndec'] = str(cols[4].contents[0]).strip()
+            add_quanta(name, 'snra', str(cols[3].contents[0]).strip(), sources)
+            add_quanta(name, 'sndec', str(cols[4].contents[0]).strip(), sources)
             if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
                 events[name]['discoverday'] = str(astrot.datetime.day)
@@ -973,7 +1137,7 @@ if dorochester:
                     add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = sources)
             if cols[11].contents[0] != 'n/a':
                 add_quanta(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
-            events[name]['discoverer'] = str(cols[13].contents[0]).strip()
+            add_quanta(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
 
     vsnetfiles = ["latestsne.dat"]
     for vsnetfile in vsnetfiles:
@@ -1022,10 +1186,9 @@ if dorochester:
                 sources = secondarysource
             add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = sources)
         f.close()
-
-if dofirstmax:
-    for name in events:
-        set_first_max_light(name)
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 if dolennarz:
     Vizier.ROW_LIMIT = -1
@@ -1088,6 +1251,9 @@ if dolennarz:
                 if len(dateparts) == 3:
                     events[name]['maxday'] = str(astrot.datetime.day)
     f.close()
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 if doogle:
     basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
@@ -1152,14 +1318,14 @@ if doogle:
                     radec = line[-1].split()
                 ra = radec[0]
                 dec = radec[1]
-                events[name]['snra'] = ra
-                events[name]['sndec'] = dec
                 lcresponse = urllib.request.urlopen(datalinks[ec])
                 lcdat = lcresponse.read().decode('utf-8').splitlines()
                 sources = [get_source(name, reference = reference, url = refurl)]
                 if atelref and atelref != 'ATel#----':
                     sources.append(get_source(name, reference = atelref, url = atelurl))
                 sources = ','.join(sources)
+                add_quanta(name, 'snra', ra, sources)
+                add_quanta(name, 'sndec', dec, sources)
                 if claimedtype and claimedtype != '-':
                     add_quanta(name, 'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
@@ -1177,6 +1343,9 @@ if doogle:
                         upperlimit = True
                     add_photometry(name, time = mjd, band = 'I', abmag = abmag, aberr = aberr, source = sources, upperlimit = upperlimit)
                 ec += 1
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 if donedd:
     f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
@@ -1231,19 +1400,24 @@ if donedd:
         #                    add_quanta(name, 'lumdist', dist, sources, error = disterr)
         #                    break
         oldhostname = hostname
+    if writeevents:
+        write_all_events()
+        events = OrderedDict()
 
 if docfaiaspectra:
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIa/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
+        if name[:3] == 'snf' and is_number(name[3:7]):
+            name = 'SNF' + name[3:]
         name = add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
         for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
             fileparts = os.path.basename(file).split('-')
-            if name[:2] == "SN":
+            if name[:2] == "SN" and is_number(name[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
@@ -1263,6 +1437,9 @@ if docfaiaspectra:
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
+        if writeevents:
+            write_all_events()
+            events = OrderedDict()
 
 if docfaibcspectra:
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
@@ -1290,6 +1467,9 @@ if docfaibcspectra:
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
+        if writeevents:
+            write_all_events()
+            events = OrderedDict()
 
 if dosnlsspectra:
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
@@ -1319,6 +1499,9 @@ if dosnlsspectra:
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source)
+        if writeevents:
+            write_all_events()
+            events = OrderedDict()
 
 if docspspectra:
     for file in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
@@ -1350,6 +1533,9 @@ if docspspectra:
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
+        if writeevents:
+            write_all_events()
+            events = OrderedDict()
 
 if doucbspectra:
     secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
@@ -1422,6 +1608,9 @@ if doucbspectra:
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = True)
+        if writeevents:
+            write_all_events()
+            events = OrderedDict()
 
 if dosuspectspectra:
     folders = next(os.walk('../sne-external-spectra/SUSPECT'))[1]
@@ -1467,6 +1656,9 @@ if dosuspectspectra:
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = secondarysource)
+            if writeevents:
+                write_all_events()
+                events = OrderedDict()
 
 if dosnfspectra:
     eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
@@ -1524,90 +1716,21 @@ if dosnfspectra:
 
             add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
+        if writeevents:
+            write_all_events()
+            events = OrderedDict()
 
 if writeevents:
-    # Calculate some columns based on imported data, sanitize some fields
-    for name in events:
-        if 'claimedtype' in events[name]:
-            events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
-        if 'redshift' in events[name] and 'hvel' not in events[name]:
-            # Find the "best" redshift to use for this
-            bestsig = 0
-            for z in events[name]['redshift']:
-                sig = get_sig_digits(z['value'])
-                if sig > bestsig:
-                    bestz = z['value']
-                    bestsig = sig
-            if bestsig > 0:
-                bestz = float(bestz)
-                add_quanta(name, 'hvel', pretty_num(clight/1.e5*((bestz + 1.)**2. - 1.)/
-                    ((bestz + 1.)**2. + 1.), sig = bestsig), 'D')
-        elif 'hvel' in events[name] and 'redshift' not in events[name]:
-            # Find the "best" hvel to use for this
-            bestsig = 0
-            for hv in events[name]['hvel']:
-                sig = get_sig_digits(hv['value'])
-                if sig > bestsig:
-                    besthv = hv['value']
-                    bestsig = sig
-            if bestsig > 0 and is_number(besthv):
-                voc = float(besthv)*1.e5/clight
-                add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D')
-        if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
-            # Find the "best" distance to use for this
-            bestsig = 0
-            for ld in events[name]['lumdist']:
-                sig = get_sig_digits(ld['value'])
-                if sig > bestsig:
-                    bestld = ld['value']
-                    bestsig = sig
-            if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig)
-        if 'redshift' in events[name]:
-            # Find the "best" redshift to use for this
-            bestsig = 0
-            for z in events[name]['redshift']:
-                sig = get_sig_digits(z['value'])
-                if sig > bestsig:
-                    bestz = z['value']
-                    bestsig = sig
-            if bestsig > 0 and float(bestz) > 0.:
-                if 'lumdist' not in events[name]:
-                    dl = cosmo.luminosity_distance(float(bestz))
-                    add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D')
-                    if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                        events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
-        if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: (float(x['time']), x['band'], float(x['abmag'])))
-        if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
-            events[name]['spectra'].sort(key=lambda x: float(x['time']))
-        events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
+    files = []
+    for rep in repfolders:
+        files += glob.glob('../' + rep + "/*.json")
 
-    # Delete all old event JSON files
-    for folder in repfolders:
-        filelist = glob.glob("../" + folder + "/*.json")
-        for f in filelist:
-            os.remove(f)
-
-    # Write it all out!
-    for name in events:
-        print('Writing ' + name)
-        filename = event_filename(name)
-
-        jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
-
-        outdir = '../'
-        if 'discoveryear' in events[name]:
-            for r, year in enumerate(repyears):
-                if int(events[name]['discoveryear']) <= year:
-                    outdir += repfolders[r]
-                    break
-        else:
-            outdir += str(repfolders[0])
-
-        f = codecs.open(outdir + '/' + filename + '.json', 'w', encoding='utf8')
-        f.write(jsonstring)
-        f.close()
+        for fi in files:
+            events = OrderedDict()
+            name = os.path.basename(fi).split('.')[0]
+            name = add_event(name)
+            derive_and_sanitize()
+            write_all_events()
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
