@@ -1656,9 +1656,9 @@ if doucbspectra:
             events = OrderedDict()
 
 if dosuspectspectra:
-    folders = next(os.walk('../sne-external-spectra/SUSPECT'))[1]
+    folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
     for folder in folders:
-        eventfolders = next(os.walk('../sne-external-spectra/SUSPECT/'+folder))[1]
+        eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
         for eventfolder in eventfolders:
             name = eventfolder
             if is_number(name[:4]):
@@ -1667,7 +1667,7 @@ if dosuspectspectra:
             secondaryreference = "SUSPECT"
             secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-            eventspectra = next(os.walk('../sne-external-spectra/SUSPECT/'+folder+'/'+eventfolder))[2]
+            eventspectra = next(os.walk('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder))[2]
             for spectrum in eventspectra:
                 date = spectrum.split('_')[1]
                 year = date[:4]
@@ -1676,7 +1676,7 @@ if dosuspectspectra:
                 sig = get_sig_digits(day) + 5
                 time = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
 
-                with open('../sne-external-spectra/SUSPECT/'+folder+'/'+eventfolder+'/'+spectrum) as f:
+                with open('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder+'/'+spectrum) as f:
                     specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
                     specdata = list(filter(None, specdata))
                     newspec = []
