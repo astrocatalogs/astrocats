@@ -357,7 +357,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         catalog[entry]['instruments'] = instruments
     else:
-        bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band']) for x in prange}) if _f], key=lambda y: bandwavef(y))
+        bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band']
+            if 'band' in catalog[entry]['photometry'][x] else '') for x in prange}) if _f], key=lambda y: bandwavef(y))
         if len(bandlist) > 0:
             catalog[entry]['instruments'] = ", ".join(bandlist)
 
@@ -394,7 +395,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
         photoAB = [float(catalog[entry]['photometry'][x]['abmag']) for x in prange]
         photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
-        photoband = [catalog[entry]['photometry'][x]['band'] for x in prange]
+        photoband = [catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '' for x in prange]
         photoinstru = [catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else '' for x in prange]
         photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
         phototype = [bool(catalog[entry]['photometry'][x]['upperlimit']) if 'upperlimit' in catalog[entry]['photometry'][x] else False for x in prange]
