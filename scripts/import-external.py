@@ -29,28 +29,28 @@ clight = 29979245800.
 eventnames = []
 
 tasks = {
-#    "internal":       {"update": False},
+    "internal":       {"update": False},
     "vizier":         {"update": False},
-#    "suspect":        {"update": False},
-#    "cfa":            {"update": False},
-#    "ucb":            {"update": False},
-#    "sdss":           {"update": False},
-#    "gaia":           {"update": False},
-#    "csp":            {"update": False},
-#    "itep":           {"update": False},
-#    "asiago":         {"update": False},
-#    "rochester":      {"update": True },
-#    "lennarz":        {"update": False},
-#    "ogle":           {"update": True },
-#    "nedd":           {"update": False},
-#    "cfaiaspectra":   {"update": False},
-#    "cfaibcspectra":  {"update": False},
-#    "snlsspectra":    {"update": False},
-#    "cspspectra":     {"update": False},
-#    "ucbspectra":     {"update": False},
-#    "suspectspectra": {"update": False},
-#    "snfspectra":     {"update": False},
-#    "writeevents":    {"update": True },
+    "suspect":        {"update": False},
+    "cfa":            {"update": False},
+    "ucb":            {"update": False},
+    "sdss":           {"update": False},
+    "gaia":           {"update": False},
+    "csp":            {"update": False},
+    "itep":           {"update": False},
+    "asiago":         {"update": False},
+    "rochester":      {"update": True },
+    "lennarz":        {"update": False},
+    "ogle":           {"update": True },
+    "nedd":           {"update": False},
+    "cfaiaspectra":   {"update": False},
+    "cfaibcspectra":  {"update": False},
+    "snlsspectra":    {"update": False},
+    "cspspectra":     {"update": False},
+    "ucbspectra":     {"update": False},
+    "suspectspectra": {"update": False},
+    "snfspectra":     {"update": False},
+    "writeevents":    {"update": True },
 #    "printextra":     {"update": False}
 }
 
@@ -546,7 +546,7 @@ def clean_event(name):
                 alias = get_source(name, bibcode = bibcodes[0])
                 events[name]['photometry'][p]['source'] = alias
 
-if 'writeevents' in tasks:
+if 'writeevents' in tasks and not args.update:
     delete_old_event_files()
 
 # Import data provided directly to OSC
@@ -562,10 +562,19 @@ if 'internal' in tasks:
 if 'vizier' in tasks:
     Vizier.ROW_LIMIT = -1
 
-
     result = Vizier.get_catalogs("II/189/mag")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
+
+    with open('../sne-external/II_189_refs.csv') as f:
+        tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+        ii189bibdict = {}
+        ii189refdict = {}
+        for r, row in enumerate(tsvin):
+            if row[0] != '0':
+                ii189bibdict[r+1] = row[1]
+            else:
+                ii189refdict[r+1] = row[2]
 
     for row in table:
         if row['band'][0] == '(':
@@ -577,11 +586,12 @@ if 'vizier' in tasks:
         mjd = str(jd_to_mjd(Decimal(row['JD'])))
         mag = str(row['m'])
         band = row['band']
+        if row['r_m'] in ii189bibdict:
+            source = get_source(name, bibcode = ii189bibdict[row['r_m']])
+        else:
+            source = get_source(name, reference = ii189refdict[row['r_m']])
 
         add_photometry(name, time = mjd, band = band, abmag = mag, source = ','.join([source,secsource]))
-    sys.exit()
-
-    result = Vizier.get_catalogs("II/189/refs")
 
     result = Vizier.get_catalogs("VII/272/snrs")
     table = result[list(result.keys())[0]]
@@ -1812,7 +1822,7 @@ if 'writeevents' in tasks:
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
 # Print some useful facts
-if printextra:
+if 'printextra' in tasks:
     print('Printing events without any photometry:')
     for name in events:
         if 'photometry' not in events[name]:
