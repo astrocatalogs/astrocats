@@ -7,7 +7,6 @@ Multiple SN catalogs (high priority):
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/708/661 (**ADDED**)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/A%2bA/415/863 (*Data in text files attached to catalog*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/A%2bA/523/A7 (**ADDED**)
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/430/1746
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/other/NewA/20.30/sources
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/other/Nat/491.228
 
