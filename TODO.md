@@ -1,7 +1,7 @@
 ####Below are known VizieR catalogs that could be parsed by the catalog, and should be added ASAP. 
 
 Multiple SN catalogs (high priority):
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/795/44
+* http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/795/44 (**ADDED**)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/749/18
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/756/173
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/708/661
