@@ -542,9 +542,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 fluxunit = [label_format(catalog[entry]['spectra'][i]['fluxunit'])]*len(spectrumscaled[i]),
                 x = spectrumwave[i],
                 y = [y_offsets[i] + j for j in spectrumscaled[i]],
-                yoff = [y_offsets[i]],
-                binsize = [1.0],
-                spacing = [1.0],
+                yoff = [y_offsets[i]]*len(spectrumscaled[i]),
+                binsize = [1.0]*len(spectrumscaled[i]),
+                spacing = [1.0]*len(spectrumscaled[i]),
                 redshift = [z if 'redshift' in catalog[entry] else 0.],
                 src = [catalog[entry]['spectra'][i]['source']]*len(spectrumscaled[i])
             )
