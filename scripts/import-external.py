@@ -51,8 +51,7 @@ tasks = {
     "ucbspectra":     {"update": False},
     "suspectspectra": {"update": False},
     "snfspectra":     {"update": False},
-    "writeevents":    {"update": True },
-    "printextra":     {"update": False}
+    "writeevents":    {"update": True }
 }
 
 events = OrderedDict()
@@ -94,21 +93,28 @@ def event_attr_priority(attr):
         return 'aaaaaaac'
     return attr
 
-def add_event(name, load = True):
-    if name not in events:
+def add_event(name, load = True, delete = True):
+    if name not in events or 'stub' in events[name]:
         if load:
-            newname = load_event_from_file(name = name)
+            newname = load_event_from_file(name = name, delete = delete)
             if newname:
+                if 'stub' in events[newname]:
+                    raise(ValueError('Failed to find event file for stubbed event'))
                 print('Loaded event ' + newname)
                 return newname
 
+        matches = []
         for event in events:
             if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
-                return event
-        print('Added new event ' + name)
+                matches.append(event)
+        if len(matches) == 1:
+            return matches[0]
+        elif len(matches) > 1:
+            raise(ValueError('Error, multiple matches to event, need event merging'))
         events[name] = OrderedDict()
         events[name]['name'] = name
         add_alias(name, name)
+        print('Added new event ' + name)
         return name
     else:
         return name
@@ -477,9 +483,14 @@ def delete_old_event_files():
         for f in filelist:
             os.remove(f)
 
-def write_all_events():
+def write_all_events(empty = False):
     # Write it all out!
     for name in events:
+        if 'stub' in events[name]:
+            if not empty:
+                continue
+            else:
+                del(events[name]['stub'])
         print('Writing ' + name)
         filename = event_filename(name)
 
@@ -516,6 +527,8 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True)
         return False
     else:
         with open(path, 'r') as f:
+            if name in events:
+                del events[name]
             events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
             name = next(reversed(events))
             if clean:
@@ -547,21 +560,56 @@ def clean_event(name):
                 alias = get_source(name, bibcode = bibcodes[0])
                 events[name]['photometry'][p]['source'] = alias
 
-if 'writeevents' in tasks and not args.update:
-    delete_old_event_files()
+def do_task(task):
+    return task in tasks and (not args.update or tasks[task]['update'])
 
-# Import data provided directly to OSC
-if 'internal' in tasks:
-    for datafile in sorted(glob.glob("../sne-internal/*.json"), key=lambda s: s.lower()):
-        if not load_event_from_file(location = datafile, clean = True):
-            raise IOError('Failed to find specified file.')
+def journal_events():
+    global events
     if 'writeevents' in tasks:
         write_all_events()
-        events = OrderedDict()
+    events = OrderedDict((k, OrderedDict((('name', events[k]['name']), ('aliases', events[k]['aliases']), ('stub', True)))) for k in events)
+
+# Either load stubs of each event (if updating) or delete all event files (if starting fresh)
+if 'writeevents' in tasks:
+    if args.update:
+        files = []
+        for rep in repfolders:
+            files += glob.glob('../' + rep + "/*.json")
+
+        for fi in files:
+            name = os.path.basename(os.path.splitext(fi)[0])
+            name = add_event(name, delete = False)
+            events[name] = OrderedDict((('name', events[name]['name']), ('aliases', events[name]['aliases']), ('stub', True)))
+    else:
+        delete_old_event_files()
+
+# Import data provided directly to OSC
+if do_task('internal'):
+    for datafile in sorted(glob.glob("../sne-internal/*.json"), key=lambda s: s.lower()):
+        if not load_event_from_file(location = datafile, clean = True, delete = False):
+            raise IOError('Failed to find specified file.')
+    journal_events()
 
 # Import primary data sources from Vizier
-if 'vizier' in tasks:
+if do_task('vizier'):
     Vizier.ROW_LIMIT = -1
+
+    # 2012ApJ...749...18B
+    result = Vizier.get_catalogs("J/ApJ/749/18/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['Name'].replace(' ','')
+        name = add_event(name)
+        source = get_source(name, bibcode = '2012ApJ...749...18B')
+        mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
+        band = row['Filt']
+        abmag = str(row['mag'])
+        aberr = str(row['e_mag'])
+        aberr = '' if aberr == '--' else aberr
+        upperlimit = True if row['l_mag'] == '>' else False
+        add_photometry(name, time = mjd, abmag = abmag, aberr = aberr, instrument = 'Swift/UVOT',
+            source = source, upperlimit = upperlimit)
 
     # 2010A&A...523A...7G
     result = Vizier.get_catalogs("J/A+A/523/A7/table9")
@@ -782,12 +830,10 @@ if 'vizier' in tasks:
         name = 'LSQ' + row['LSQ']
         source = get_source(name, bibcode = "2015ApJS..219...13W")
         add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 # Suspect catalog
-if 'suspect' in tasks:
+if do_task('suspect'): 
     with open('../sne-external/suspectreferences.csv','r') as f:
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
         suspectrefdict = {}
@@ -849,12 +895,10 @@ if 'suspect' in tasks:
             else:
                 aberr = str(aberr)
             add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 # CfA data
-if 'cfa' in tasks:
+if do_task('cfa'): 
     for file in sorted(glob.glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower()):
         f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -954,12 +998,10 @@ if 'cfa' in tasks:
         source = get_source(name, bibcode = '2014ApJS..213...19B')
         add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = source)
     f.close()
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 # Now import the UCB SNDB
-if 'ucb' in tasks:
+if do_task('ucb'): 
     for file in sorted(glob.glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower()):
         f = open(file,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -988,12 +1030,10 @@ if 'ucb' in tasks:
             instrument = row[5]
             add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
         f.close()
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
     
 # Import SDSS
-if 'sdss' in tasks:
+if do_task('sdss'): 
     sdssbands = ['u', 'g', 'r', 'i', 'z']
     for file in sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()):
         f = open(file,'r')
@@ -1002,11 +1042,11 @@ if 'sdss' in tasks:
         for r, row in enumerate(tsvin):
             if r == 0:
                 if row[5] == "RA:":
-                    name = "SDSS-II" + row[3]
+                    name = "SDSS-II " + row[3]
                 else:
                     name = "SN" + row[5]
                 name = add_event(name)
-                add_alias(name, "SDSS-II" + row[3])
+                add_alias(name, "SDSS-II " + row[3])
 
                 bibcode = '2008AJ....136.2306H'
                 source = get_source(name, bibcode = bibcode)
@@ -1031,12 +1071,10 @@ if 'sdss' in tasks:
                 instrument = "SDSS"
                 add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
         f.close()
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 #Import GAIA
-if 'gaia' in tasks:
+if do_task('gaia'): 
     #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
     path = os.path.abspath('../sne-external/selected-gaia-science-alerts')
     response = urllib.request.urlopen('file://' + path)
@@ -1087,12 +1125,10 @@ if 'gaia' in tasks:
             instrument = 'GAIA'
             band = 'G'
             add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 # Import CSP
-if 'csp' in tasks:
+if do_task('csp'): 
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     for file in sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower()):
         f = open(file,'r')
@@ -1126,12 +1162,10 @@ if 'csp' in tasks:
                     if float(row[v]) < 90.0:
                         add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)//2], abmag = row[v], aberr = row[v+1], source = source)
         f.close()
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 # Import ITEP
-if 'itep' in tasks:
+if do_task('itep'): 
     needsbib = []
     with open("../sne-external/itep-refs.txt",'r') as f:
         refrep = f.read().splitlines()
@@ -1173,12 +1207,10 @@ if 'itep' in tasks:
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as f:
         f.writelines(["%s\n" % i for i in needsbib])
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
 # Now import the Asiago catalog
-if 'asiago' in tasks:
+if do_task('asiago'): 
     #response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
     path = os.path.abspath('../sne-external/asiago-cat.php')
     response = urllib.request.urlopen('file://' + path)
@@ -1261,13 +1293,15 @@ if 'asiago' in tasks:
                 add_quanta(name, 'sndec', sndec, source, unit = 'decnospace')
             if (discoverer != ''):
                 add_quanta(name, 'discoverer', discoverer, source)
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
-if 'rochester' in tasks:
+if do_task('rochester'): 
     rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
-    for path in rochesterpaths:
+    rochesterupdate = [False, True]
+
+    for p, path in enumerate(rochesterpaths):
+        if args.update and not rochesterupdate[p]:
+            continue
         response = urllib.request.urlopen(path)
         html = response.read()
 
@@ -1369,11 +1403,9 @@ if 'rochester' in tasks:
                 sources = secondarysource
             add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = sources)
         f.close()
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
-if 'lennarz' in tasks:
+if do_task('lennarz'): 
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs("J/A+A/538/A120/usc")
     table = result[list(result.keys())[0]]
@@ -1434,14 +1466,15 @@ if 'lennarz' in tasks:
                 if len(dateparts) == 3:
                     events[name]['maxday'] = str(astrot.datetime.day)
     f.close()
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
-if 'ogle' in tasks:
+if do_task('ogle'): 
     basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
     oglenames = []
-    for bn in basenames:
+    ogleupdate = [True, False, False, False, False]
+    for b, bn in enumerate(basenames):
+        if args.update and not ogleupdate[b]:
+            continue
         response = urllib.request.urlopen('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/transients.html')
         soup = BeautifulSoup(response.read(), "html5lib")
         links = soup.findAll('a')
@@ -1470,7 +1503,7 @@ if 'ogle' in tasks:
 
                 name = add_event(name)
 
-                if name[:4] == 'OGLE':
+                if name[:4] == 'OGLE' and 'discoveryear' not in events[name]:
                     if name[4] == '-':
                         if is_number(name[5:9]):
                             events[name]['discoveryear'] = name[5:9]
@@ -1526,11 +1559,9 @@ if 'ogle' in tasks:
                         upperlimit = True
                     add_photometry(name, time = mjd, band = 'I', abmag = abmag, aberr = aberr, source = sources, upperlimit = upperlimit)
                 ec += 1
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
-if 'snls' in tasks:
+if do_task('snls'): 
     with open("../sne-external/SNLS-ugriz.dat", 'r') as f:
         data = csv.reader(f, delimiter=' ', quotechar='"', skipinitialspace = True)
         for row in data:
@@ -1549,7 +1580,7 @@ if 'snls' in tasks:
             aberr = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
             add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = source)
 
-if 'nedd' in tasks:
+if do_task('nedd'): 
     f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
     data = csv.reader(f, delimiter=',', quotechar='"')
     reference = "NED-D"
@@ -1602,11 +1633,9 @@ if 'nedd' in tasks:
         #                    add_quanta(name, 'lumdist', dist, sources, error = disterr)
         #                    break
         oldhostname = hostname
-    if 'writeevents' in tasks:
-        write_all_events()
-        events = OrderedDict()
+    journal_events()
 
-if 'cfaiaspectra' in tasks:
+if do_task('cfaiaspectra'): 
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIa/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
@@ -1639,11 +1668,9 @@ if 'cfaiaspectra' in tasks:
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
-        if 'writeevents' in tasks:
-            write_all_events()
-            events = OrderedDict()
+        journal_events()
 
-if 'cfaibcspectra' in tasks:
+if do_task('cfaibcspectra'): 
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
@@ -1669,11 +1696,9 @@ if 'cfaibcspectra' in tasks:
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
-        if 'writeevents' in tasks:
-            write_all_events()
-            events = OrderedDict()
+        journal_events()
 
-if 'snlsspectra' in tasks:
+if do_task('snlsspectra'): 
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
@@ -1701,11 +1726,9 @@ if 'snlsspectra' in tasks:
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source)
-        if 'writeevents' in tasks:
-            write_all_events()
-            events = OrderedDict()
+        journal_events()
 
-if 'cspspectra' in tasks:
+if do_task('cspspectra'): 
     for file in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
         sfile = os.path.basename(file).split('.')
         if sfile[1] == 'txt':
@@ -1735,11 +1758,9 @@ if 'cspspectra' in tasks:
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
-        if 'writeevents' in tasks:
-            write_all_events()
-            events = OrderedDict()
+        journal_events()
 
-if 'ucbspectra' in tasks:
+if do_task('ucbspectra'): 
     secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
     secondaryrefurl = "http://heracles.astro.berkeley.edu/sndb/info"
 
@@ -1812,11 +1833,9 @@ if 'ucbspectra' in tasks:
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = True)
-        if 'writeevents' in tasks:
-            write_all_events()
-            events = OrderedDict()
+        journal_events()
 
-if 'suspectspectra' in tasks:
+if do_task('suspectspectra'): 
     folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
     for folder in folders:
         eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
@@ -1859,11 +1878,9 @@ if 'suspectspectra' in tasks:
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = secondarysource)
-            if 'writeevents' in tasks:
-                write_all_events()
-                events = OrderedDict()
+            journal_events()
 
-if 'snfspectra' in tasks:
+if do_task('snfspectra'): 
     eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
     bibcodes = {'SN2005gj':'2006ApJ...650..510A', 'SN2006D':'2007ApJ...654L..53T', 'SN2007if':'2010ApJ...713.1073S', 'SN2011fe':'2013A&A...554A..27P'}
     for eventfolder in eventfolders:
@@ -1919,11 +1936,9 @@ if 'snfspectra' in tasks:
 
             add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
-        if 'writeevents' in tasks:
-            write_all_events()
-            events = OrderedDict()
+        journal_events()
 
-if 'writeevents' in tasks:
+if do_task('writeevents'): 
     files = []
     for rep in repfolders:
         files += glob.glob('../' + rep + "/*.json")
@@ -1933,13 +1948,7 @@ if 'writeevents' in tasks:
         name = os.path.basename(os.path.splitext(fi)[0])
         name = add_event(name)
         derive_and_sanitize()
-        write_all_events()
+        write_all_events(empty = True)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
-# Print some useful facts
-if 'printextra' in tasks:
-    print('Printing events without any photometry:')
-    for name in events:
-        if 'photometry' not in events[name]:
-            print(name)

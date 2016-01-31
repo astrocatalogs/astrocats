@@ -10,6 +10,7 @@ import json
 import argparse
 import hashlib
 import numpy
+import shutil
 from datetime import datetime
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
@@ -17,7 +18,7 @@ from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
 from bokeh.plotting import Figure, show, save, reset_output
-from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, VBox, Range1d, LinearAxis
+from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, Range1d, LinearAxis
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html
 from palettable import cubehelix
@@ -32,6 +33,9 @@ parser.add_argument('--test', '-t',              dest='test',         help='Test
 args = parser.parse_args()
 
 outdir = "../"
+
+#linkdir = "https://cdn.rawgit.com/astrotransients/"
+linkdir = "https://sne.space/"
 
 testsuffix = '.test' if args.test else ''
 
@@ -307,7 +311,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
-    filehead, ext = os.path.splitext(eventfile)
 
     f = open(eventfile, 'r')
     filetext = f.read()
@@ -324,7 +327,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='https://cdn.rawgit.com/astrotransients/" + repfolder + "/master/" + eventname + ".json' download></a>"
+    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + repfolder + "/master/" + eventname + ".json' download></a>"
     photoavail = 'photometry' in catalog[entry]
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
@@ -390,6 +393,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
             if eventfile in md5dict and checksum == md5dict[eventfile]:
                 dohtml = False
+
+    # Copy JSON files up a directory if they've changed
+    if dohtml:
+        shutil.copy2(eventfile, '../' + os.path.basename(eventfile))
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
@@ -617,7 +624,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         html = file_html(p, CDN, eventname)
         returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
-        dla = r'<a href="https://cdn.rawgit.com/astrotransients/' + repfolder + '/master/' + eventname + r'.json" download>'
+        dla = r'<a href="' + linkdir + repfolder + '/master/' + eventname + r'.json" download>'
         html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"/
             style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
             dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"
