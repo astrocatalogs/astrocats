@@ -179,20 +179,20 @@ def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
             [events[name]['sources'][x]['name'] for x in sourcexs].index(reference)]
     return source
 
-def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", abmag = "", aberr = "", source = "", upperlimit = False):
-    if not time or not abmag:
+def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = ""):
+    if not time or not magnitude:
         print('Warning: Time or AB mag not specified when adding photometry.\n')
-        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + magnitude + '"')
         return
 
-    if not is_number(time) or not is_number(abmag):
+    if not is_number(time) or not is_number(magnitude):
         print('Warning: Time or AB mag not numerical.\n')
-        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + abmag + '"')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + magnitude + '"')
         return
 
-    if aberr and not is_number(aberr):
+    if e_magnitude and not is_number(e_magnitude):
         print('Warning: AB error not numerical.\n')
-        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB err: "' + aberr + '"')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB err: "' + e_magnitude + '"')
         return
 
     # Look for duplicate data and don't add if duplicate
@@ -200,9 +200,11 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         for photo in events[name]['photometry']:
             if (photo['timeunit'] == timeunit and 'band' in photo and photo['band'] == band and
                 Decimal(photo['time']) == Decimal(time) and
-                Decimal(photo['abmag']) == Decimal(abmag) and
-                (('aberr' not in photo and not aberr) or ('aberr' in photo and aberr and Decimal(photo['aberr']) == Decimal(aberr)) or
-                ('aberr' in photo and not aberr))):
+                Decimal(photo['magnitude']) == Decimal(magnitude) and
+                (('error' not in photo and not e_magnitude) or ('error' in photo and e_magnitude and Decimal(photo['error']) == Decimal(e_magnitude)) or
+                ('error' in photo and not e_magnitude)) and
+                (('system' not in photo and not system) or ('system' in photo and photo['system'] == system) or
+                ('system' in photo and not system))):
                 return
 
     photoentry = OrderedDict()
@@ -210,11 +212,13 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     photoentry['time'] = str(time)
     if band:
         photoentry['band'] = band
-    photoentry['abmag'] = str(abmag)
+    if system:
+        photoentry['system'] = system
+    photoentry['magnitude'] = str(magnitude)
     if instrument:
         photoentry['instrument'] = instrument
-    if aberr:
-        photoentry['aberr'] = str(aberr)
+    if e_magnitude:
+        photoentry['error'] = str(e_magnitude)
     if source:
         photoentry['source'] = source
     if upperlimit:
@@ -369,7 +373,7 @@ def get_max_light(name):
     if 'photometry' not in events[name]:
         return (None, None)
 
-    eventphoto = [Decimal(events[name]['photometry'][x]['abmag']) for x in range(len(events[name]['photometry']))]
+    eventphoto = [Decimal(events[name]['photometry'][x]['magnitude']) for x in range(len(events[name]['photometry']))]
     mlmag = min(eventphoto)
     mlindex = eventphoto.index(mlmag)
     mlmjd = float(events[name]['photometry'][mlindex]['time'])
@@ -471,7 +475,7 @@ def derive_and_sanitize():
                         events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: (float(x['time']),
-                x['band'] if 'band' in x else '', float(x['abmag'])))
+                x['band'] if 'band' in x else '', float(x['magnitude'])))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
@@ -604,11 +608,11 @@ if do_task('vizier'):
         source = get_source(name, bibcode = '2012ApJ...749...18B')
         mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
         band = row['Filt']
-        abmag = str(row['mag'])
-        aberr = str(row['e_mag'])
-        aberr = '' if aberr == '--' else aberr
+        magnitude = str(row['mag'])
+        e_magnitude = str(row['e_mag'])
+        e_magnitude = '' if e_magnitude == '--' else e_magnitude
         upperlimit = True if row['l_mag'] == '>' else False
-        add_photometry(name, time = mjd, abmag = abmag, aberr = aberr, instrument = 'Swift/UVOT',
+        add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, instrument = 'Swift/UVOT',
             source = source, upperlimit = upperlimit)
 
     # 2010A&A...523A...7G
@@ -638,8 +642,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2004A&A...415..863G')
         datesplit = row['Date'].split('-')
-        events[name]['discoverday'] = datesplit[2]
-        events[name]['discovermonth'] = datesplit[1]
+        events[name]['discoverday'] = datesplit[2].lstrip('0')
+        events[name]['discovermonth'] = datesplit[1].lstrip('0')
         events[name]['discoveryear'] = datesplit[0]
         add_quanta(name, 'host', 'Abell ' + str(row['Abell']), source)
         add_quanta(name, 'claimedtype', row['Type'], source)
@@ -698,8 +702,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014ApJ...795...44R')
         if row['mag'] != '--':
-            add_photometry(name, time = str(row['MJD']), band = row['Filt'], abmag = str(row['mag']),
-                aberr = str(row['e_mag']), source = source)
+            add_photometry(name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
+                e_magnitude = str(row['e_mag']), source = source, system = 'AB')
 
     # 1990A&AS...82..145C
     result = Vizier.get_catalogs("II/189/mag")
@@ -731,7 +735,7 @@ if do_task('vizier'):
         else:
             source = get_source(name, reference = ii189refdict[row['r_m']])
 
-        add_photometry(name, time = mjd, band = band, abmag = mag, source = ','.join([source,secsource]))
+        add_photometry(name, time = mjd, band = band, magnitude = mag, source = ','.join([source,secsource]))
 
     result = Vizier.get_catalogs("VII/272/snrs")
     table = result[list(result.keys())[0]]
@@ -787,13 +791,13 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = "2014MNRAS.442..844F")
         if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
-            add_photometry(name, time = row['MJD'], band = 'B', abmag = row['Bmag'], aberr = row['e_Bmag'], source = source)
+            add_photometry(name, time = row['MJD'], band = 'B', magnitude = row['Bmag'], e_magnitude = row['e_Bmag'], source = source)
         if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
-            add_photometry(name, time = row['MJD'], band = 'V', abmag = row['Vmag'], aberr = row['e_Vmag'], source = source)
+            add_photometry(name, time = row['MJD'], band = 'V', magnitude = row['Vmag'], e_magnitude = row['e_Vmag'], source = source)
         if 'Rmag' in row and is_number(row['Rmag']) and not isnan(float(row['Rmag'])):
-            add_photometry(name, time = row['MJD'], band = 'R', abmag = row['Rmag'], aberr = row['e_Rmag'], source = source)
+            add_photometry(name, time = row['MJD'], band = 'R', magnitude = row['Rmag'], e_magnitude = row['e_Rmag'], source = source)
         if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
-            add_photometry(name, time = row['MJD'], band = 'I', abmag = row['Imag'], aberr = row['e_Imag'], source = source)
+            add_photometry(name, time = row['MJD'], band = 'I', magnitude = row['Imag'], e_magnitude = row['e_Imag'], source = source)
 
     # 2012MNRAS.425.1789S
     result = Vizier.get_catalogs("J/MNRAS/425/1789/table1")
@@ -829,7 +833,8 @@ if do_task('vizier'):
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
         source = get_source(name, bibcode = "2015ApJS..219...13W")
-        add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'], abmag = row['mag'], aberr = row['e_mag'], source = source)
+        add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'],
+            magnitude = row['mag'], e_magnitude = row['e_mag'], system = "Swope", source = source)
     journal_events()
 
 # Suspect catalog
@@ -889,12 +894,12 @@ if do_task('suspect'):
                 mag = ''
             else:
                 mag = str(mag)
-            aberr = col[4].contents[0]
-            if aberr.isspace():
-                aberr = ''
+            e_magnitude = col[4].contents[0]
+            if e_magnitude.isspace():
+                e_magnitude = ''
             else:
-                aberr = str(aberr)
-            add_photometry(name, time = mjd, band = band, abmag = mag, aberr = aberr, source = secondarysource + ',' + source)
+                e_magnitude = str(e_magnitude)
+            add_photometry(name, time = mjd, band = band, magnitude = mag, e_magnitude = e_magnitude, source = secondarysource + ',' + source)
     journal_events()
 
 # CfA data
@@ -967,7 +972,7 @@ if do_task('cfa'):
                             tuout = tu
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
-                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)//2], abmag = row[v], aberr = row[v+1], source = secondarysource + ',' + source)
+                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)//2], magnitude = row[v], e_magnitude = row[v+1], source = secondarysource + ',' + source)
         f.close()
 
     # Hicken 2012
@@ -986,7 +991,7 @@ if do_task('cfa'):
 
         source = get_source(name, bibcode = '2012ApJS..200...12H')
         add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
-            abmag = row[6].strip(), aberr = row[7].strip(), source = source)
+            magnitude = row[6].strip(), e_magnitude = row[7].strip(), source = source)
     
     # Bianco 2014
     tsvin = open("../sne-external/bianco-2014-standard.dat", 'r')
@@ -996,7 +1001,8 @@ if do_task('cfa'):
         name = add_event(name)
 
         source = get_source(name, bibcode = '2014ApJS..213...19B')
-        add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], abmag = row[3], aberr = row[4], instrument = row[5], source = source)
+        add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], magnitude = row[3],
+            e_magnitude = row[4], instrument = row[5], system = "Standard", source = source)
     f.close()
     journal_events()
 
@@ -1024,11 +1030,12 @@ if do_task('ucb'):
             if len(row) > 0 and row[0] == "#":
                 continue
             mjd = row[0]
-            abmag = row[1]
-            aberr = row[2]
+            magnitude = row[1]
+            e_magnitude = row[2]
             band = row[4]
             instrument = row[5]
-            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
+            add_photometry(name, time = mjd, instrument = instrument, band = band, magnitude = magnitude,
+                e_magnitude = e_magnitude, source = source)
         f.close()
     journal_events()
     
@@ -1066,10 +1073,11 @@ if do_task('sdss'):
 
                 mjd = row[1]
                 band = sdssbands[int(row[2])]
-                abmag = row[3]
-                aberr = row[4]
+                magnitude = row[3]
+                e_magnitude = row[4]
                 instrument = "SDSS"
-                add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
+                add_photometry(name, time = mjd, instrument = instrument, band = band, magnitude = magnitude,
+                    e_magnitude = e_magnitude, source = source, system = "AB")
         f.close()
     journal_events()
 
@@ -1120,11 +1128,11 @@ if do_task('gaia'):
         for ph in photodata:
             photo = ph.split(',')
             mjd = str(jd_to_mjd(Decimal(photo[1].strip())))
-            abmag = photo[2].strip()
-            aberr = 0.
+            magnitude = photo[2].strip()
+            e_magnitude = 0.
             instrument = 'GAIA'
             band = 'G'
-            add_photometry(name, time = mjd, instrument = instrument, band = band, abmag = abmag, aberr = aberr, source = source)
+            add_photometry(name, time = mjd, instrument = instrument, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
     journal_events()
 
 # Import CSP
@@ -1160,7 +1168,7 @@ if do_task('csp'):
                     mjd = val
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
-                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)//2], abmag = row[v], aberr = row[v+1], source = source)
+                        add_photometry(name, time = mjd, instrument = 'CSP', band = cspbands[(v-1)//2], magnitude = row[v], e_magnitude = row[v+1], source = source)
         f.close()
     journal_events()
 
@@ -1179,8 +1187,8 @@ if do_task('itep'):
         name = 'SN' + row[0].strip()
         mjd = str(jd_to_mjd(Decimal(row[1].strip())))
         band = row[2].strip()
-        abmag = row[3].strip()
-        aberr = row[4].strip()
+        magnitude = row[3].strip()
+        e_magnitude = row[4].strip()
         reference = row[6].strip().strip(',')
 
         if curname != name:
@@ -1200,7 +1208,7 @@ if do_task('itep'):
             needsbib.append(reference)
             source = get_source(name, reference = reference) if reference else ''
 
-        add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = secondarysource + ',' + source)
+        add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = secondarysource + ',' + source)
     f.close()
     
     # Write out references that could use a bibcode
@@ -1351,58 +1359,59 @@ if do_task('rochester'):
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
                 if float(str(cols[8].contents[0]).strip()) <= 90.0:
-                    add_photometry(name, time = str(astrot.mjd), abmag = str(cols[8].contents[0]).strip(), source = sources)
+                    add_photometry(name, time = str(astrot.mjd), magnitude = str(cols[8].contents[0]).strip(), source = sources)
             if cols[11].contents[0] != 'n/a':
                 add_quanta(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
             add_quanta(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
 
-    vsnetfiles = ["latestsne.dat"]
-    for vsnetfile in vsnetfiles:
-        f = open("../sne-external/" + vsnetfile,'r',encoding='latin1')
-        tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
-        for r, row in enumerate(tsvin):
-            if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
-                continue
-            name = row[0].strip()
-            if name[:4].isdigit():
-                name = 'SN' + name
-            if name[:4] == 'PSNJ':
-                name = 'PSN J' + name[4:]
-            name = add_event(name)
-            if not is_number(row[1]):
-                continue
-            year = row[1][:4]
-            month = row[1][4:6]
-            day = row[1][6:]
-            if '.' not in day:
-                day = day[:2] + '.' + day[2:]
-            mjd = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
-            abmag = row[2].rstrip(ascii_letters)
-            if not is_number(abmag):
-                continue
-            if abmag.isdigit():
-                if int(abmag) > 100:
-                    abmag = abmag[:2] + '.' + abmag[2:]
-            secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-            band = row[2].lstrip('1234567890.')
-            if len(row) >= 4:
-                if is_number(row[3]):
-                    aberr = row[3]
-                    refind = 4
-                else:
-                    aberr = ''
-                    refind = 3
+    if not args.update:
+        vsnetfiles = ["latestsne.dat"]
+        for vsnetfile in vsnetfiles:
+            f = open("../sne-external/" + vsnetfile,'r',encoding='latin1')
+            tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
+            for r, row in enumerate(tsvin):
+                if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
+                    continue
+                name = row[0].strip()
+                if name[:4].isdigit():
+                    name = 'SN' + name
+                if name[:4] == 'PSNJ':
+                    name = 'PSN J' + name[4:]
+                name = add_event(name)
+                if not is_number(row[1]):
+                    continue
+                year = row[1][:4]
+                month = row[1][4:6]
+                day = row[1][6:]
+                if '.' not in day:
+                    day = day[:2] + '.' + day[2:]
+                mjd = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+                magnitude = row[2].rstrip(ascii_letters)
+                if not is_number(magnitude):
+                    continue
+                if magnitude.isdigit():
+                    if int(magnitude) > 100:
+                        magnitude = magnitude[:2] + '.' + magnitude[2:]
+                secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+                band = row[2].lstrip('1234567890.')
+                if len(row) >= 4:
+                    if is_number(row[3]):
+                        e_magnitude = row[3]
+                        refind = 4
+                    else:
+                        e_magnitude = ''
+                        refind = 3
 
-                if refind >= len(row):
-                    sources = secondarysource
+                    if refind >= len(row):
+                        sources = secondarysource
+                    else:
+                        reference = ' '.join(row[refind:])
+                        source = get_source(name, reference = reference)
+                        sources = ','.join([source,secondarysource])
                 else:
-                    reference = ' '.join(row[refind:])
-                    source = get_source(name, reference = reference)
-                    sources = ','.join([source,secondarysource])
-            else:
-                sources = secondarysource
-            add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = sources)
-        f.close()
+                    sources = secondarysource
+                add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = sources)
+            f.close()
     journal_events()
 
 if do_task('lennarz'): 
@@ -1439,7 +1448,7 @@ if do_task('lennarz'):
             if 'photometry' not in events[name]:
                 if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
                     mjd = str(astrot.mjd)
-                    add_photometry(name, time = mjd, band = row['Dband'], abmag = row['Dmag'], source = source)
+                    add_photometry(name, time = mjd, band = row['Dband'], magnitude = row['Dmag'], source = source)
             if 'discoveryear' not in events[name] and 'discovermonth' not in events[name] and 'discoverday' not in events[name]:
                 events[name]['discoveryear'] = str(astrot.datetime.year)
                 if len(dateparts) >= 2:
@@ -1458,7 +1467,7 @@ if do_task('lennarz'):
             if 'photometry' not in events[name]:
                 if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
                     mjd = str(astrot.mjd)
-                    add_photometry(name, time = mjd, band = row['Mband'], abmag = row['Mmag'], source = source)
+                    add_photometry(name, time = mjd, band = row['Mband'], magnitude = row['Mmag'], source = source)
             if 'maxyear' not in events[name] and 'maxmonth' not in events[name] and 'maxday' not in events[name]:
                 events[name]['maxyear'] = str(astrot.datetime.year)
                 if len(dateparts) >= 2:
@@ -1549,17 +1558,17 @@ if do_task('ogle'):
                 for row in lcdat:
                     row = row.split()
                     mjd = str(jd_to_mjd(Decimal(row[0])))
-                    abmag = row[1]
-                    if float(abmag) > 90.0:
+                    magnitude = row[1]
+                    if float(magnitude) > 90.0:
                         continue
-                    aberr = row[2]
+                    e_magnitude = row[2]
                     upperlimit = False
-                    if aberr == '-1' or float(aberr) > 10.0:
-                        aberr = ''
+                    if e_magnitude == '-1' or float(e_magnitude) > 10.0:
+                        e_magnitude = ''
                         upperlimit = True
-                    add_photometry(name, time = mjd, band = 'I', abmag = abmag, aberr = aberr, source = sources, upperlimit = upperlimit)
+                    add_photometry(name, time = mjd, band = 'I', magnitude = magnitude, e_magnitude = e_magnitude, source = sources, upperlimit = upperlimit)
                 ec += 1
-    journal_events()
+        journal_events()
 
 if do_task('snls'): 
     with open("../sne-external/SNLS-ugriz.dat", 'r') as f:
@@ -1576,9 +1585,9 @@ if do_task('snls'):
             mjd = row[2]
             sig = get_sig_digits(flux.split('E')[0])
             # Conversion comes from SNLS-Readme
-            abmag = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
-            aberr = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
-            add_photometry(name, time = mjd, band = band, abmag = abmag, aberr = aberr, source = source)
+            magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
+            e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
+            add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
 
 if do_task('nedd'): 
     f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
