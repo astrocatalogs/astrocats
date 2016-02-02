@@ -20,7 +20,7 @@ from collections import OrderedDict
 from bokeh.plotting import Figure, show, save, reset_output
 from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, Range1d, LinearAxis
 from bokeh.resources import CDN, INLINE
-from bokeh.embed import file_html
+from bokeh.embed import file_html, components
 from palettable import cubehelix
 from math import isnan
 
@@ -34,8 +34,7 @@ args = parser.parse_args()
 
 outdir = "../"
 
-#linkdir = "https://cdn.rawgit.com/astrotransients/"
-linkdir = "https://sne.space/"
+linkdir = "https://sne.space/sne/"
 
 testsuffix = '.test' if args.test else ''
 
@@ -112,7 +111,7 @@ photokeys = [
     'time',
     'band',
     'instrument',
-    'abmag',
+    'magnitude',
     'aberr',
     'upperlimit',
     'source'
@@ -167,7 +166,10 @@ bandcodes = [
     "K",
     "C",
     "CR",
-    "CV"
+    "CV",
+    "uvm2",
+    "uvw1",
+    "uvw2"
 ]
 
 bandaliases = {
@@ -175,7 +177,10 @@ bandaliases = {
     "g_SDSS" : "g (SDSS)",
     "r_SDSS" : "r (SDSS)",
     "i_SDSS" : "i (SDSS)",
-    "z_SDSS" : "z (SDSS)"
+    "z_SDSS" : "z (SDSS)",
+    "uvm2"   : "M2 (UVOT)",
+    "uvw1"   : "W1 (UVOT)",
+    "uvw2"   : "W2 (UVOT)"
 }
 
 bandshortaliases = {
@@ -327,7 +332,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + repfolder + "/master/" + eventname + ".json' download></a>"
+    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + eventname + ".json' download></a>"
     photoavail = 'photometry' in catalog[entry]
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
@@ -351,7 +356,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         instruments = ''
         for i, instru in enumerate(instrulist):
             instruments += instru
-            bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band'])
+            bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '')
                 if 'instrument' in catalog[entry]['photometry'][x] and catalog[entry]['photometry'][x]['instrument'] == instru else "" for x in prange}) if _f], key=lambda y: bandwavef(y))
             if bandlist:
                 instruments += ' (' + ", ".join(bandlist) + ')'
@@ -400,7 +405,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
-        photoAB = [float(catalog[entry]['photometry'][x]['abmag']) for x in prange]
+        photoAB = [float(catalog[entry]['photometry'][x]['magnitude']) for x in prange]
         photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
         photoband = [catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '' for x in prange]
         photoinstru = [catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else '' for x in prange]
@@ -503,7 +508,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         y_offsets = [0. for x in range(nspec)]
         for i in reversed(range(nspec)):
             y_offsets[i] = y_height
-            ydiff = max(spectrumscaled[i]) - min(spectrumscaled[i])
+            if (i-1 >= 0 and 'time' in catalog[entry]['spectra'][i] and 'time' in catalog[entry]['spectra'][i-1]
+                and catalog[entry]['spectra'][i]['time'] == catalog[entry]['spectra'][i-1]['time']):
+                    ydiff = 0
+            else:
+                ydiff = max(spectrumscaled[i]) - min(spectrumscaled[i])
             spectrumscaled[i] = [j + y_height for j in spectrumscaled[i]]
             y_height += ydiff
 
@@ -542,18 +551,15 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         sources = []
         for i in range(len(spectrumwave)):
+            sl = len(spectrumscaled[i])
             data = dict(
                 x0 = spectrumwave[i],
                 y0 = spectrumscaled[i],
                 yorig = spectrumflux[i],
-                fluxunit = [label_format(catalog[entry]['spectra'][i]['fluxunit'])]*len(spectrumscaled[i]),
+                fluxunit = [label_format(catalog[entry]['spectra'][i]['fluxunit'])]*sl,
                 x = spectrumwave[i],
                 y = [y_offsets[i] + j for j in spectrumscaled[i]],
-                yoff = [y_offsets[i]]*len(spectrumscaled[i]),
-                binsize = [1.0]*len(spectrumscaled[i]),
-                spacing = [1.0]*len(spectrumscaled[i]),
-                redshift = [z if 'redshift' in catalog[entry] else 0.],
-                src = [catalog[entry]['spectra'][i]['source']]*len(spectrumscaled[i])
+                src = [catalog[entry]['spectra'][i]['source']]*sl
             )
             if 'redshift' in catalog[entry]:
                 data['xrest'] = [x/(1.0 + z) for x in spectrumwave[i]]
@@ -570,21 +576,29 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
+            var yoffs = [""" + ','.join([str(x) for x in y_offsets]) + """];
             for (s = 0; s < """ + str(len(sources)) + """; s++) {
                 var data = eval('s'+s).get('data');
-                if (cb_obj.get('title') == 'Spacing') {
-                    data['spacing'][0] = cb_obj.get('value');
-                } else {
-                    data['binsize'][0] = cb_obj.get('value');
+                var redshift = """ + str(z if 'redshift' in catalog[entry] else 0.) + """;
+                if (!('binsize' in data)) {
+                    data['binsize'] = 1.0
                 }
-                var f = data['binsize'][0]
-                var space = data['spacing'][0]
+                if (!('spacing' in data)) {
+                    data['spacing'] = 1.0
+                }
+                if (cb_obj.get('title') == 'Spacing') {
+                    data['spacing'] = cb_obj.get('value');
+                } else {
+                    data['binsize'] = cb_obj.get('value');
+                }
+                var f = data['binsize']
+                var space = data['spacing']
                 var x0 = data['x0'];
                 var y0 = data['y0'];
                 var dx0 = x0[1] - x0[0];
-                var yoff = space*data['yoff'][0];
+                var yoff = space*yoffs[s];
                 data['x'] = [x0[0] - 0.5*Math.max(0., f - dx0)];
-                data['xrest'] = [(x0[0] - 0.5*Math.max(0., f - dx0))/(1.0 + data['redshift'][0])];
+                data['xrest'] = [(x0[0] - 0.5*Math.max(0., f - dx0))/(1.0 + redshift)];
                 data['y'] = [y0[0] + yoff];
                 var xaccum = 0.;
                 var yaccum = 0.;
@@ -599,7 +613,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     yaccum += y0[i]*dx;
                     if (xaccum >= f) {
                         data['x'].push(data['x'][data['x'].length-1] + xaccum);
-                        data['xrest'].push(data['x'][data['x'].length-1]/(1.0 + data['redshift'][0]));
+                        data['xrest'].push(data['x'][data['x'].length-1]/(1.0 + redshift));
                         data['y'].push(yaccum/xaccum + yoff);
                         xaccum = 0.;
                         yaccum = 0.;
@@ -622,9 +636,15 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             p = VBox(HBox(p2,VBox(binslider,spacingslider)), width=900)
 
         html = file_html(p, CDN, eventname)
+        #script, div = components(p)
+        #with open(outdir + eventname + "-script.js", "w") as fff:
+        #    script = '\n'.join(script.splitlines()[2:-1])
+        #    fff.write(script)
+        #with open(outdir + eventname + "-div.html", "w") as fff:
+        #    fff.write(div)
         returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
         repfolder = get_rep_folder(catalog[entry])
-        dla = r'<a href="' + linkdir + repfolder + '/master/' + eventname + r'.json" download>'
+        dla = r'<a href="' + linkdir + eventname + r'.json" download>'
         html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"/
             style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
             dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"
