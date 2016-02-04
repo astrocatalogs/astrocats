@@ -755,6 +755,8 @@ if do_task('vizier'):
             for nam in names:
                 if nam.strip()[:2] == 'SN':
                     name = nam.strip()
+                    if is_number(name[2:]):
+                        name = name + 'A'
             if not name:
                 for nam in names:
                     if nam.strip('()') == nam:
@@ -857,6 +859,8 @@ if do_task('suspect'):
         basesplit = basename.split('-')
         name = basesplit[1]
         name = add_event(name)
+        if name[:2] == 'SN' and is_number(name[2:]):
+            name = name + 'A'
         band = basesplit[3].split('.')[0]
         ei = int(basesplit[2])
         bandlink = 'file://' + os.path.abspath(datafile)
@@ -1276,7 +1280,7 @@ if do_task('asiago'):
                 if dayarr:
                     add_quanta(name, daykey, dayarr[0], source)
                 monthstr = ''.join(re.findall("[a-zA-Z]+", datestr))
-                add_quanta(name, monthkey, list(calendar.month_abbr).index(monthstr), source)
+                add_quanta(name, monthkey, str(list(calendar.month_abbr).index(monthstr)), source)
 
             hvel = ''
             redshift = ''
@@ -1334,17 +1338,24 @@ if do_task('rochester'):
             name = ''
             if cols[14].contents:
                 aka = str(cols[14].contents[0]).strip()
-                if is_number(aka[:4]):
+                if is_number(aka.strip('?')):
+                    aka = 'SN' + aka.strip('?') + 'A'
+                    name = add_event(aka)
+                elif len(aka) >= 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
                     name = add_event(aka)
 
             sn = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
-            if sn[:4].isdigit():
+            if is_number(sn.strip('?')):
+                sn = 'SN' + sn.strip('?') + 'A'
+            elif len(sn) >= 4 and is_number(sn[:4]):
                 sn = 'SN' + sn
             if not name:
                 name = add_event(sn)
 
             if cols[14].contents:
+                if aka == 'SNR G1.9+0.3':
+                    aka = 'G001.9+00.3'
                 add_alias(name, aka)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
