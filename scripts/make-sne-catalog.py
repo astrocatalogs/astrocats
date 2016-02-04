@@ -169,54 +169,59 @@ bandcodes = [
     "CV",
     "uvm2",
     "uvw1",
-    "uvw2"
+    "uvw2",
+    "pg",
+    "Mp"
 ]
 
-bandaliases = {
-    "u_SDSS" : "u (SDSS)",
-    "g_SDSS" : "g (SDSS)",
-    "r_SDSS" : "r (SDSS)",
-    "i_SDSS" : "i (SDSS)",
-    "z_SDSS" : "z (SDSS)",
-    "uvm2"   : "M2 (UVOT)",
-    "uvw1"   : "W1 (UVOT)",
-    "uvw2"   : "W2 (UVOT)"
-}
+bandaliases = OrderedDict([
+    ("u_SDSS", "u (SDSS)"),
+    ("g_SDSS", "g (SDSS)"),
+    ("r_SDSS", "r (SDSS)"),
+    ("i_SDSS", "i (SDSS)"),
+    ("z_SDSS", "z (SDSS)"),
+    ("uvm2"  , "M2 (UVOT)"),
+    ("uvw1"  , "W1 (UVOT)"),
+    ("uvw2"  , "W2 (UVOT)"),
+])
 
-bandshortaliases = {
-    "u_SDSS" : "u",
-    "g_SDSS" : "g",
-    "r_SDSS" : "r",
-    "i_SDSS" : "i",
-    "z_SDSS" : "z",
-    "G" : ""
-}
+bandshortaliases = OrderedDict([
+    ("u_SDSS", "u")
+    ("g_SDSS", "g")
+    ("r_SDSS", "r")
+    ("i_SDSS", "i")
+    ("z_SDSS", "z")
+    ("G"     , "" )
+])
 
 bandwavelengths = {
-    "u" : 354.,
-    "g" : 475.,
-    "r" : 622.,
-    "i" : 763.,
-    "z" : 905.,
-    "u'" : 354.,
-    "g'" : 475.,
-    "r'" : 622.,
-    "i'" : 763.,
-    "z'" : 905.,
+    "u"      : 354.,
+    "g"      : 475.,
+    "r"      : 622.,
+    "i"      : 763.,
+    "z"      : 905.,
+    "u'"     : 354.,
+    "g'"     : 475.,
+    "r'"     : 622.,
+    "i'"     : 763.,
+    "z'"     : 905.,
     "u_SDSS" : 354.3,
     "g_SDSS" : 477.0,
     "r_SDSS" : 623.1,
     "i_SDSS" : 762.5,
     "z_SDSS" : 913.4,
-    "U" : 365.,
-    "B" : 445.,
-    "V" : 551.,
-    "R" : 658.,
-    "I" : 806.,
-    "Y" : 1020.,
-    "J" : 1220.,
-    "H" : 1630.,
-    "K" : 2190.
+    "U"      : 365.,
+    "B"      : 445.,
+    "V"      : 551.,
+    "R"      : 658.,
+    "I"      : 806.,
+    "Y"      : 1020.,
+    "J"      : 1220.,
+    "H"      : 1630.,
+    "K"      : 2190.,
+    "uvm2"   : 260.,
+    "uvw1"   : 224.6,
+    "uvw2"   : 192.8
 }
 
 wavedict = dict(list(zip(bandcodes,bandwavelengths)))
@@ -357,7 +362,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for i, instru in enumerate(instrulist):
             instruments += instru
             bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '')
-                if 'instrument' in catalog[entry]['photometry'][x] and catalog[entry]['photometry'][x]['instrument'] == instru else "" for x in prange}) if _f], key=lambda y: bandwavef(y))
+                if 'instrument' in catalog[entry]['photometry'][x] and catalog[entry]['photometry'][x]['instrument'] == instru else "" for x in prange}) if _f], key=lambda y: (bandwavef(y), y))
             if bandlist:
                 instruments += ' (' + ", ".join(bandlist) + ')'
             if i < len(instrulist) - 1:
@@ -366,7 +371,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         catalog[entry]['instruments'] = instruments
     else:
         bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band']
-            if 'band' in catalog[entry]['photometry'][x] else '') for x in prange}) if _f], key=lambda y: bandwavef(y))
+            if 'band' in catalog[entry]['photometry'][x] else '') for x in prange}) if _f], key=lambda y: (bandwavef(y), y))
         if len(bandlist) > 0:
             catalog[entry]['instruments'] = ", ".join(bandlist)
 
