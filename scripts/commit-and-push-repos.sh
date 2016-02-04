@@ -7,6 +7,7 @@ if [ $# -eq 0 ]
 fi
 
 git commit -a -m "$1"
+git push
 repos=($(awk -F= '{print $1}' rep-folders.txt))
 echo ${repos[*]}
 cd ..
