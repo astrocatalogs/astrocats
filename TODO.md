@@ -20,5 +20,6 @@ Single SN dataset on VizieR:
 * SN2009nr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/PAZh/37/837
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107
 
-Single SN dataset that are not available in machine-readable form:
+Other single SN datasets:
+* SN1885A - 2011ApJ...730...89P (from Hagai's e-mail)
 * SN2008D - http://www.nature.com.oca.ucsc.edu/nature/journal/v453/n7194/suppinfo/nature06997.html
