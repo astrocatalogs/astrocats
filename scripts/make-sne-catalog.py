@@ -271,11 +271,11 @@ def utf8(x):
 def get_rep_folder(entry):
     if 'discoveryear' not in entry:
         return repfolders[0]
-    if not is_number(entry['discoveryear']):
+    if not is_number(entry['discoveryear'][0]['value']):
         print ('Error, discovery year is not a number!')
         sys.exit()
     for r, repyear in enumerate(repyears):
-        if int(entry['discoveryear']) <= repyear:
+        if int(entry['discoveryear'][0]['value']) <= repyear:
             return repfolders[r]
     return repfolders[0]
 
@@ -380,20 +380,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     # Construct the date
     discoverdatestr = ''
     if 'discoveryear' in catalog[entry]:
-        discoverdatestr += str(catalog[entry]['discoveryear'])
+        discoverdatestr += str(catalog[entry]['discoveryear'][0]['value'])
         if 'discovermonth' in catalog[entry]:
-            discoverdatestr += '-' + str(catalog[entry]['discovermonth']).zfill(2)
+            discoverdatestr += '/' + str(catalog[entry]['discovermonth'][0]['value']).zfill(2)
             if 'discoverday' in catalog[entry]:
-                discoverdatestr += '-' + str(catalog[entry]['discoverday']).zfill(2)
+                discoverdatestr += '/' + str(catalog[entry]['discoverday'][0]['value']).zfill(2)
     catalog[entry]['discoverdate'] = discoverdatestr
 
     maxdatestr = ''
     if 'maxyear' in catalog[entry]:
-        maxdatestr += str(catalog[entry]['maxyear'])
+        maxdatestr += str(catalog[entry]['maxyear'][0]['value'])
         if 'maxmonth' in catalog[entry]:
-            maxdatestr += '-' + str(catalog[entry]['maxmonth']).zfill(2)
+            maxdatestr += '/' + str(catalog[entry]['maxmonth'][0]['value']).zfill(2)
             if 'maxday' in catalog[entry]:
-                maxdatestr += '-' + str(catalog[entry]['maxday']).zfill(2)
+                maxdatestr += '/' + str(catalog[entry]['maxday'][0]['value']).zfill(2)
 
     catalog[entry]['maxdate'] = maxdatestr
 
