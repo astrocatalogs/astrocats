@@ -198,13 +198,18 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
-            if (photo['timeunit'] == timeunit and 'band' in photo and photo['band'] == band and
+            if (photo['timeunit'] == timeunit and
                 Decimal(photo['time']) == Decimal(time) and
                 Decimal(photo['magnitude']) == Decimal(magnitude) and
-                (('error' not in photo and not e_magnitude) or ('error' in photo and e_magnitude and Decimal(photo['error']) == Decimal(e_magnitude)) or
-                ('error' in photo and not e_magnitude)) and
-                (('system' not in photo and not system) or ('system' in photo and photo['system'] == system) or
-                ('system' in photo and not system))):
+                (('band' not in photo and not band) or
+                 ('band' in photo and photo['band'] == band) or
+                 ('band' in photo and not band)) and
+                (('error' not in photo and not e_magnitude) or
+                 ('error' in photo and e_magnitude and Decimal(photo['error']) == Decimal(e_magnitude)) or
+                 ('error' in photo and not e_magnitude)) and
+                (('system' not in photo and not system) or
+                 ('system' in photo and photo['system'] == system) or
+                 ('system' in photo and not system))):
                 return
 
     photoentry = OrderedDict()
@@ -1791,6 +1796,8 @@ if do_task('ucbspectra'):
                     name = name[:2].upper() + name[2:]
                     if len(name) == 7:
                         name = name[:6] + name[6].upper()
+                if name[:3] == 'ptf':
+                    name = name[:3].upper() + name[3:]
             elif d == 5:
                 epoch = td.contents[0].strip()
                 year = epoch[:4]
