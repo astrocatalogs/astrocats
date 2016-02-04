@@ -397,17 +397,17 @@ def set_first_max_light(name):
     if 'maxappmag' not in events[name]:
         (mldt, mlmag) = get_max_light(name)
         if mldt:
-            events[name]['maxyear'] = pretty_num(mldt.year)
-            events[name]['maxmonth'] = pretty_num(mldt.month)
-            events[name]['maxday'] = pretty_num(mldt.day)
-            events[name]['maxappmag'] = pretty_num(mlmag)
+            add_quanta(name, 'maxyear', pretty_num(mldt.year), source = 'D')
+            add_quanta(name, 'maxmonth', pretty_num(mldt.month), source = 'D')
+            add_quanta(name, 'maxday', pretty_num(mldt.day), source = 'D')
+            add_quanta(name, 'maxappmag', pretty_num(mlmag), source = 'D')
 
     if 'discovermonth' not in events[name] or 'discoverday' not in events[name]:
         fldt = get_first_light(name)
         if fldt:
-            events[name]['discoveryear'] = pretty_num(fldt.year)
-            events[name]['discovermonth'] = pretty_num(fldt.month)
-            events[name]['discoverday'] = pretty_num(fldt.day)
+            add_quanta(name, 'discoveryear', pretty_num(fldt.year), source = 'D')
+            add_quanta(name, 'discovermonth', pretty_num(fldt.month), source = 'D')
+            add_quanta(name, 'discoverday', pretty_num(fldt.day), source = 'D')
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
@@ -508,7 +508,7 @@ def write_all_events(empty = False):
         outdir = '../'
         if 'discoveryear' in events[name]:
             for r, year in enumerate(repyears):
-                if int(events[name]['discoveryear']) <= year:
+                if int(events[name]['discoveryear'][0]['value']) <= year:
                     outdir += repfolders[r]
                     break
         else:
@@ -629,9 +629,9 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2010A&A...523A...7G')
         astrot = astrotime(2450000.+row['Date1'], format='jd')
-        events[name]['discoverday'] = str(astrot.datetime.day)
-        events[name]['discovermonth'] = str(astrot.datetime.month)
-        events[name]['discoveryear'] = str(astrot.datetime.year)
+        add_quanta(name, 'discoverday', str(astrot.datetime.day), source)
+        add_quanta(name, 'discovermonth', str(astrot.datetime.month), source)
+        add_quanta(name, 'discoveryear', str(astrot.datetime.year), source)
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
         add_quanta(name, 'redshift', str(row['z']), source)
         add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
@@ -647,9 +647,9 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2004A&A...415..863G')
         datesplit = row['Date'].split('-')
-        events[name]['discoverday'] = datesplit[2].lstrip('0')
-        events[name]['discovermonth'] = datesplit[1].lstrip('0')
-        events[name]['discoveryear'] = datesplit[0]
+        add_quanta(name, 'discoverday', datesplit[2].lstrip('0'), source)
+        add_quanta(name, 'discovermonth', datesplit[1].lstrip('0'), source)
+        add_quanta(name, 'discoveryear', datesplit[0], source)
         add_quanta(name, 'host', 'Abell ' + str(row['Abell']), source)
         add_quanta(name, 'claimedtype', row['Type'], source)
         add_quanta(name, 'snra', row['RAJ2000'], source)
@@ -692,9 +692,9 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014ApJ...795...44R')
         astrot = astrotime(row['tdisc'], format='mjd')
-        events[name]['discoverday'] = str(astrot.datetime.day)
-        events[name]['discovermonth'] = str(astrot.datetime.month)
-        events[name]['discoveryear'] = str(astrot.datetime.year)
+        add_quanta(name, 'discoverday', str(astrot.datetime.day), source)
+        add_quanta(name, 'discovermonth', str(astrot.datetime.month), source)
+        add_quanta(name, 'discoveryear',  str(astrot.datetime.year), source)
         add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
         add_quanta(name, 'snra', row['RAJ2000'], source)
         add_quanta(name, 'sndec', row['DEJ2000'], source)
@@ -764,14 +764,16 @@ if do_task('vizier'):
             name = row["SNR"]
 
         name = add_event(name)
+        source = get_source(name, bibcode = '2014yCat.7272....0G')
 
         if row["Names"]:
             names = row["Names"].split(',')
             for nam in names:
+                add_alias(name, nam.strip('()'))
                 if nam.strip()[:2] == 'SN':
-                    events[name]['discoveryear'] = nam.strip()[2:]
+                    add_quanta(name, 'discoveryear', nam.strip()[2:], source)
 
-        source = get_source(name, bibcode = '2014yCat.7272....0G')
+        add_quanta(name, 'host', 'Milky Way', source)
         add_quanta(name, 'snra', row['RAJ2000'], source)
         add_quanta(name, 'sndec', row['DEJ2000'], source, unit = 'decdms')
 
@@ -872,7 +874,7 @@ if do_task('suspect'):
             source = get_source(name, bibcode = bibcode)
 
             year = re.findall(r'\d+', name)[0]
-            events[name]['discoveryear'] = year
+            add_quanta(name, 'discoveryear', year, source)
             add_quanta(name, 'host', names[1].split(':')[1].strip(), source)
 
             redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
@@ -930,9 +932,12 @@ if do_task('cfa'):
 
         name = snname(eventparts[0])
         name = add_event(name)
+        secondaryname = 'CfA Supernova Archive'
+        secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+        secondarysource = get_source(name, reference = secondaryname, url = secondaryurl, secondary = True)
 
         year = re.findall(r'\d+', name)[0]
-        events[name]['discoveryear'] = year
+        add_quanta(name, 'discoveryear', year, secondarysource)
 
         eventbands = list(eventparts[1])
 
@@ -953,9 +958,6 @@ if do_task('cfa'):
                             refstr = ' '.join(row[2+ci:])
                             refstr = refstr.replace('(','').replace(')','')
                             bibcode = refstr
-                            secondaryname = 'CfA Supernova Archive'
-                            secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-                            secondarysource = get_source(name, reference = secondaryname, url = secondaryurl, secondary = True)
                             source = get_source(name, bibcode = bibcode)
 
                 elif len(row) > 1 and row[1] == "HJD":
@@ -1024,12 +1026,12 @@ if do_task('ucb'):
         name = snname(eventparts[0])
         name = add_event(name)
 
-        year = re.findall(r'\d+', name)[0]
-        events[name]['discoveryear'] = year
-
         reference = "UCB Filippenko Group's Supernova Database (SNDB)"
         refurl = "http://heracles.astro.berkeley.edu/sndb/info"
         source = get_source(name, reference = reference, url = refurl, secondary = True)
+
+        year = re.findall(r'\d+', name)[0]
+        add_quanta(name, 'discoveryear', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
@@ -1065,7 +1067,7 @@ if do_task('sdss'):
 
                 if row[5] != "RA:":
                     year = re.findall(r'\d+', name)[0]
-                    events[name]['discoveryear'] = year
+                    add_quanta(name, 'discoveryear', year, source)
 
                 add_quanta(name, 'snra', row[-4], source, unit = 'radeg')
                 add_quanta(name, 'sndec', row[-2], source, unit = 'decdeg')
@@ -1113,12 +1115,12 @@ if do_task('gaia'):
 
         name = add_event(name)
 
-        year = '20' + re.findall(r'\d+', name)[0]
-        events[name]['discoveryear'] = year
-
         reference = "Gaia Photometric Science Alerts"
         refurl = "https://gaia.ac.uk/selected-gaia-science-alerts"
         source = get_source(name, reference = reference, url = refurl)
+
+        year = '20' + re.findall(r'\d+', name)[0]
+        add_quanta(name, 'discoveryear', year, source)
 
         add_quanta(name, 'snra', col[2].contents[0].strip(), source, unit = 'radeg')
         add_quanta(name, 'sndec', col[3].contents[0].strip(), source, unit = 'decdeg')
@@ -1154,12 +1156,12 @@ if do_task('csp'):
         name = snname(eventparts[0])
         name = add_event(name)
 
-        year = re.findall(r'\d+', name)[0]
-        events[name]['discoveryear'] = year
-
         reference = "Carnegie Supernova Project"
         refurl = "http://csp.obs.carnegiescience.edu/data"
         source = get_source(name, reference = reference, url = refurl)
+
+        year = re.findall(r'\d+', name)[0]
+        add_quanta(name, 'discoveryear', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
@@ -1199,13 +1201,13 @@ if do_task('itep'):
         if curname != name:
             curname = name
             name = add_event(name)
-            year = re.findall(r'\d+', name)[0]
-            events[name]['discoveryear'] = year
 
             secondaryreference = "Sternberg Astronomical Institute Supernova Light Curve Catalogue"
             secondaryrefurl = "http://dau.itep.ru/sn/node/72"
             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
 
+            year = re.findall(r'\d+', name)[0]
+            add_quanta(name, 'discoveryear', year, secondarysource)
         if reference in refrepf:
             bibcode = refrepf[reference]
             source = get_source(name, bibcode = bibcode)
@@ -1251,7 +1253,7 @@ if do_task('asiago'):
             source = get_source(name, reference = reference, url = refurl, secondary = True)
 
             year = re.findall(r'\d+', name)[0]
-            events[name]['discoveryear'] = year
+            add_quanta(name, 'discoveryear', year, source)
 
             hostname = record[2]
             galra = record[3]
@@ -1272,9 +1274,9 @@ if do_task('asiago'):
             if datestr.strip() != '':
                 dayarr = re.findall(r'\d+', datestr)
                 if dayarr:
-                    events[name][daykey] = dayarr[0]
+                    add_quanta(name, daykey, dayarr[0], source)
                 monthstr = ''.join(re.findall("[a-zA-Z]+", datestr))
-                events[name][monthkey] = list(calendar.month_abbr).index(monthstr)
+                add_quanta(name, monthkey, list(calendar.month_abbr).index(monthstr), source)
 
             hvel = ''
             redshift = ''
@@ -1358,9 +1360,9 @@ if do_task('rochester'):
             add_quanta(name, 'sndec', str(cols[4].contents[0]).strip(), sources)
             if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
-                events[name]['discoverday'] = str(astrot.datetime.day)
-                events[name]['discovermonth'] = str(astrot.datetime.month)
-                events[name]['discoveryear'] = str(astrot.datetime.year)
+                add_quanta(name, 'discoverday', str(astrot.datetime.day), sources)
+                add_quanta(name, 'discovermonth', str(astrot.datetime.month), sources)
+                add_quanta(name, 'discoveryear', str(astrot.datetime.year), sources)
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
                 if float(str(cols[8].contents[0]).strip()) <= 90.0:
@@ -1455,11 +1457,11 @@ if do_task('lennarz'):
                     mjd = str(astrot.mjd)
                     add_photometry(name, time = mjd, band = row['Dband'], magnitude = row['Dmag'], source = source)
             if 'discoveryear' not in events[name] and 'discovermonth' not in events[name] and 'discoverday' not in events[name]:
-                events[name]['discoveryear'] = str(astrot.datetime.year)
+                add_quanta(name, 'discoveryear', str(astrot.datetime.year), source)
                 if len(dateparts) >= 2:
-                    events[name]['discovermonth'] = str(astrot.datetime.month)
+                    add_quanta(name, 'discovermonth', str(astrot.datetime.month), source)
                 if len(dateparts) == 3:
-                    events[name]['discoverday'] = str(astrot.datetime.day)
+                    add_quanta(name, 'discoverday', str(astrot.datetime.day), source)
         if row['Mdate']:
             dateparts = row['Mdate'].split('-')
             if len(dateparts) == 3:
@@ -1474,11 +1476,11 @@ if do_task('lennarz'):
                     mjd = str(astrot.mjd)
                     add_photometry(name, time = mjd, band = row['Mband'], magnitude = row['Mmag'], source = source)
             if 'maxyear' not in events[name] and 'maxmonth' not in events[name] and 'maxday' not in events[name]:
-                events[name]['maxyear'] = str(astrot.datetime.year)
+                add_quanta(name, 'maxyear', str(astrot.datetime.year), source)
                 if len(dateparts) >= 2:
-                    events[name]['maxmonth'] = str(astrot.datetime.month)
+                    add_quanta(name, 'maxmonth', str(astrot.datetime.month), source)
                 if len(dateparts) == 3:
-                    events[name]['maxday'] = str(astrot.datetime.day)
+                    add_quanta(name, 'maxday', str(astrot.datetime.day), source)
     f.close()
     journal_events()
 
@@ -1517,14 +1519,6 @@ if do_task('ogle'):
 
                 name = add_event(name)
 
-                if name[:4] == 'OGLE' and 'discoveryear' not in events[name]:
-                    if name[4] == '-':
-                        if is_number(name[5:9]):
-                            events[name]['discoveryear'] = name[5:9]
-                    else:
-                        if is_number(name[4:6]):
-                            events[name]['discoveryear'] = '20' + name[4:6]
-
                 mySibling = sibling.nextSibling
                 atelref = ''
                 claimedtype = ''
@@ -1554,6 +1548,15 @@ if do_task('ogle'):
                 if atelref and atelref != 'ATel#----':
                     sources.append(get_source(name, reference = atelref, url = atelurl))
                 sources = ','.join(sources)
+
+                if name[:4] == 'OGLE':
+                    if name[4] == '-':
+                        if is_number(name[5:9]):
+                            add_quanta(name, 'discoveryear', name[5:9], sources)
+                    else:
+                        if is_number(name[4:6]):
+                            add_quanta(name, 'discoveryear', '20' + name[4:6], sources)
+
                 add_quanta(name, 'snra', ra, sources)
                 add_quanta(name, 'sndec', dec, sources)
                 if claimedtype and claimedtype != '-':
@@ -1717,9 +1720,9 @@ if do_task('snlsspectra'):
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
         name = add_event(name)
-        events[name]['discoveryear'] = '20' + fileparts[1][:2]
-
         source = get_source(name, bibcode = "2009A&A...507...85B")
+
+        add_quanta(name, 'discoveryear', '20' + fileparts[1][:2], source)
 
         f = open(file,'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -1822,7 +1825,7 @@ if do_task('ucbspectra'):
         sources = ','.join([source, secondarysource])
         add_quanta(name, 'claimedtype', claimedtype, sources)
         if 'discoveryear' not in events[name] and name[:2] == 'SN' and is_number(name[2:6]):
-            events[name]['discoveryear'] = name[2:6]
+            add_quanta(name, 'discoveryear', name[2:6], sources)
 
         with open('../sne-external-spectra/UCB/' + filename) as f:
             specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
