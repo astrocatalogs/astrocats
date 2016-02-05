@@ -13,6 +13,7 @@ import resource
 import argparse
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
+
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
@@ -272,7 +273,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = '', unit = ''):
+def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = '', unit = '', kind = ''):
     if not quanta:
         raise(ValueError('Quanta must be specified for add_quanta.'))
     svalue = value.strip()
@@ -348,6 +349,8 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         quantaentry['error'] = serror
     if sources:
         quantaentry['source'] = sources
+    if kind:
+        quantaentry['kind'] = kind
     if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
         newquantas = []
         isworse = True
@@ -397,17 +400,17 @@ def set_first_max_light(name):
     if 'maxappmag' not in events[name]:
         (mldt, mlmag) = get_max_light(name)
         if mldt:
-            add_quanta(name, 'maxyear', pretty_num(mldt.year), source = 'D')
-            add_quanta(name, 'maxmonth', pretty_num(mldt.month), source = 'D')
-            add_quanta(name, 'maxday', pretty_num(mldt.day), source = 'D')
-            add_quanta(name, 'maxappmag', pretty_num(mlmag), source = 'D')
+            add_quanta(name, 'maxyear', pretty_num(mldt.year), 'D')
+            add_quanta(name, 'maxmonth', pretty_num(mldt.month), 'D')
+            add_quanta(name, 'maxday', pretty_num(mldt.day), 'D')
+            add_quanta(name, 'maxappmag', pretty_num(mlmag), 'D')
 
     if 'discovermonth' not in events[name] or 'discoverday' not in events[name]:
         fldt = get_first_light(name)
         if fldt:
-            add_quanta(name, 'discoveryear', pretty_num(fldt.year), source = 'D')
-            add_quanta(name, 'discovermonth', pretty_num(fldt.month), source = 'D')
-            add_quanta(name, 'discoverday', pretty_num(fldt.day), source = 'D')
+            add_quanta(name, 'discoveryear', pretty_num(fldt.year), 'D')
+            add_quanta(name, 'discovermonth', pretty_num(fldt.month), 'D')
+            add_quanta(name, 'discoverday', pretty_num(fldt.day), 'D')
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
@@ -463,7 +466,8 @@ def derive_and_sanitize():
                     bestld = ld['value']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig)
+                add_quanta(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
+                    5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig), 'D')
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
             bestsig = 0
@@ -477,7 +481,8 @@ def derive_and_sanitize():
                     dl = cosmo.luminosity_distance(float(bestz))
                     add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D')
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                        events[name]['maxabsmag'] = pretty_num(float(events[name]['maxappmag']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig)
+                        add_quanta(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
+                            5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), 'D')
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: (float(x['time']),
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
@@ -602,6 +607,34 @@ if do_task('internal'):
 # Import primary data sources from Vizier
 if do_task('vizier'):
     Vizier.ROW_LIMIT = -1
+
+    # 2014MNRAS.444.3258M
+    result = Vizier.get_catalogs("J/MNRAS/444/3258/SNe")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    oldname = ''
+    for row in table:
+        name = row['SN']
+        if name == oldname:
+            continue
+        oldname = name
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014MNRAS.444.3258M')
+        add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
+        add_quanta(name, 'snra', str(row['_RA']), source, unit = 'radeg')
+        add_quanta(name, 'sndec', str(row['_DE']), source, unit = 'decdeg')
+
+    # 2014MNRAS.438.1391P
+    result = Vizier.get_catalogs("J/MNRAS/438/1391/table2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014MNRAS.438.1391P')
+        add_quanta(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
+        add_quanta(name, 'snra', row['RAJ2000'], source)
+        add_quanta(name, 'sndec', row['DEJ2000'], source)
 
     # 2012ApJ...749...18B
     result = Vizier.get_catalogs("J/ApJ/749/18/table1")
@@ -1727,6 +1760,13 @@ if do_task('cfaibcspectra'):
         journal_events()
 
 if do_task('snlsspectra'): 
+    result = Vizier.get_catalogs("J/A+A/507/85/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    datedict = {}
+    for row in table:
+        datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
+
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
@@ -1753,7 +1793,7 @@ if do_task('snlsspectra'):
         errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-            fluxes = fluxes, instrument = instrument, source = source)
+            fluxes = fluxes, timeunit = 'MJD', time = datedict[name], instrument = instrument, source = source)
         journal_events()
 
 if do_task('cspspectra'): 
@@ -1866,6 +1906,9 @@ if do_task('ucbspectra'):
         journal_events()
 
 if do_task('suspectspectra'): 
+    with open('../sne-external-spectra/Suspect/sources.json', 'r') as f:
+        sourcedict = json.loads(f.read())
+
     folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
     for folder in folders:
         eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
@@ -1879,6 +1922,17 @@ if do_task('suspectspectra'):
             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             eventspectra = next(os.walk('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder))[2]
             for spectrum in eventspectra:
+                sources = [secondarysource]
+                bibcode = ''
+                if spectrum in sourcedict:
+                    bibcode = sourcedict[spectrum]
+                elif name in sourcedict:
+                    bibcode = sourcedict[name]
+                if bibcode:
+                    source = get_source(name, bibcode = bibcode)
+                    sources += source
+                sources = ','.join(sources)
+
                 date = spectrum.split('_')[1]
                 year = date[:4]
                 month = date[4:6]
@@ -1907,7 +1961,7 @@ if do_task('suspectspectra'):
                     errors = specdata[2]
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                    fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = secondarysource)
+                    fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources)
             journal_events()
 
 if do_task('snfspectra'): 
