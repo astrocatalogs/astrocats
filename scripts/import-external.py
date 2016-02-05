@@ -577,10 +577,14 @@ def clean_event(name):
 def do_task(task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
-def journal_events():
-    global events
+def journal_events(clear = True):
     if 'writeevents' in tasks:
         write_all_events()
+    if clear:
+        clear_events()
+
+def clear_events():
+    global events
     events = OrderedDict((k, OrderedDict((('name', events[k]['name']), ('aliases', events[k]['aliases']), ('stub', True)))) for k in events)
 
 # Either load stubs of each event (if updating) or delete all event files (if starting fresh)
@@ -796,7 +800,7 @@ if do_task('vizier'):
                         name = nam.strip()
                         break
         if not name:
-            name = row["SNR"]
+            name = row["SNR"].strip()
 
         name = add_event(name)
         source = get_source(name, bibcode = '2014yCat.7272....0G')
@@ -1697,12 +1701,16 @@ if do_task('nedd'):
     journal_events()
 
 if do_task('cfaiaspectra'): 
+    oldname = ''
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIa/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
         if name[:3] == 'snf' and is_number(name[3:7]):
             name = 'SNF' + name[3:]
+        if name != oldname:
+            clear_events()
+        oldname = name
         name = add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
@@ -1729,13 +1737,17 @@ if do_task('cfaiaspectra'):
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
-        journal_events()
+        journal_events(clear = False)
 
 if do_task('cfaibcspectra'): 
+    oldname = ''
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
+        if name != oldname:
+            clear_events()
+        oldname = name
         name = add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
@@ -1757,7 +1769,7 @@ if do_task('cfaibcspectra'):
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
-        journal_events()
+        journal_events(clear = False)
 
 if do_task('snlsspectra'): 
     result = Vizier.get_catalogs("J/A+A/507/85/table1")
@@ -1767,9 +1779,13 @@ if do_task('snlsspectra'):
     for row in table:
         datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
+    oldname = ''
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
+        if name != oldname:
+            clear_events()
+        oldname = name
         name = add_event(name)
         source = get_source(name, bibcode = "2009A&A...507...85B")
 
@@ -1794,9 +1810,10 @@ if do_task('snlsspectra'):
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, timeunit = 'MJD', time = datedict[name], instrument = instrument, source = source)
-        journal_events()
+        journal_events(clear = False)
 
 if do_task('cspspectra'): 
+    oldname = ''
     for file in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
         sfile = os.path.basename(file).split('.')
         if sfile[1] == 'txt':
@@ -1804,6 +1821,9 @@ if do_task('cspspectra'):
         sfile = sfile[0]
         fileparts = sfile.split('_')
         name = 'SN20' + fileparts[0][2:]
+        if name != oldname:
+            clear_events()
+        oldname = name
         name = add_event(name)
         instrument = ': '.join(fileparts[-2:])
         source = get_source(name, bibcode = "2013ApJ...773...53F")
@@ -1826,7 +1846,7 @@ if do_task('cspspectra'):
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
-        journal_events()
+        journal_events(clear = False)
 
 if do_task('ucbspectra'): 
     secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
@@ -1837,6 +1857,7 @@ if do_task('ucbspectra'):
 
     soup = BeautifulSoup(response.read(), "html5lib")
     i = 0
+    oldname = ''
     for t, tr in enumerate(soup.findAll('tr')):
         if t == 0:
             continue
@@ -1870,6 +1891,9 @@ if do_task('ucbspectra'):
             elif d == 11:
                 bibcode = td.findAll('a')[0].contents[0]
 
+        if name != oldname:
+            clear_events()
+        oldname = name
         name = add_event(name)
         source = get_source(name, bibcode = bibcode)
         secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
@@ -1903,7 +1927,7 @@ if do_task('ucbspectra'):
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = True)
-        journal_events()
+        journal_events(clear = False)
 
 if do_task('suspectspectra'): 
     with open('../sne-external-spectra/Suspect/sources.json', 'r') as f:
@@ -1912,10 +1936,14 @@ if do_task('suspectspectra'):
     folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
     for folder in folders:
         eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
+        oldname = ''
         for eventfolder in eventfolders:
             name = eventfolder
             if is_number(name[:4]):
                 name = 'SN' + name
+            if name != oldname:
+                clear_events()
+            oldname = name
             name = add_event(name)
             secondaryreference = "SUSPECT"
             secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
@@ -1962,13 +1990,17 @@ if do_task('suspectspectra'):
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources)
-            journal_events()
+            journal_events(clear = False)
 
 if do_task('snfspectra'): 
     eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
     bibcodes = {'SN2005gj':'2006ApJ...650..510A', 'SN2006D':'2007ApJ...654L..53T', 'SN2007if':'2010ApJ...713.1073S', 'SN2011fe':'2013A&A...554A..27P'}
+    oldname = ''
     for eventfolder in eventfolders:
         name = eventfolder
+        if name != oldname:
+            clear_events()
+        oldname = name
         name = add_event(name)
         secondaryreference = "Nearby Supernova Factory"
         secondaryrefurl = "http://snfactory.lbl.gov/"
@@ -2020,7 +2052,7 @@ if do_task('snfspectra'):
 
             add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
-        journal_events()
+        journal_events(clear = False)
 
 if do_task('writeevents'): 
     files = []
