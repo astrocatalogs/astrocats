@@ -792,12 +792,12 @@ if args.writecatalog and not args.eventlist:
     catalog = list(catalog.values())
 
     jsonstring = json.dumps(catalog, separators=(',',':'))
-    f = open(outdir + 'sne-catalog.min.json' + testsuffix, 'w')
+    f = open(outdir + 'catalog.min.json' + testsuffix, 'w')
     f.write(jsonstring)
     f.close()
 
     jsonstring = json.dumps(catalog, indent='\t', separators=(',',':'))
-    f = open(outdir + 'sne-catalog.json' + testsuffix, 'w')
+    f = open(outdir + 'catalog.json' + testsuffix, 'w')
     f.write(jsonstring)
     f.close()
 
