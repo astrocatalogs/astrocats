@@ -6,6 +6,7 @@ Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/other/NewA/20.30/sources
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/other/Nat/491.228
 * PTF Ia metadata - http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/MNRAS/438/1391
+* More PTF Ia metadata - http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/MNRAS/444/3258
 
 Single SN dataset on VizieR:
 * SN2009bb - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/728/14
