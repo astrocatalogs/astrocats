@@ -49,8 +49,8 @@ columnkey = [
     "maxappmag",
     "maxabsmag",
     "host",
-    "snra",
-    "sndec",
+    "ra",
+    "dec",
     "instruments",
     "redshift",
     "hvel",
@@ -377,26 +377,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
-    # Construct the date
-    discoverdatestr = ''
-    if 'discoveryear' in catalog[entry]:
-        discoverdatestr += str(catalog[entry]['discoveryear'][0]['value'])
-        if 'discovermonth' in catalog[entry]:
-            discoverdatestr += '/' + str(catalog[entry]['discovermonth'][0]['value']).zfill(2)
-            if 'discoverday' in catalog[entry]:
-                discoverdatestr += '/' + str(catalog[entry]['discoverday'][0]['value']).zfill(2)
-    catalog[entry]['discoverdate'] = discoverdatestr
-
-    maxdatestr = ''
-    if 'maxyear' in catalog[entry]:
-        maxdatestr += str(catalog[entry]['maxyear'][0]['value'])
-        if 'maxmonth' in catalog[entry]:
-            maxdatestr += '/' + str(catalog[entry]['maxmonth'][0]['value']).zfill(2)
-            if 'maxday' in catalog[entry]:
-                maxdatestr += '/' + str(catalog[entry]['maxday'][0]['value']).zfill(2)
-
-    catalog[entry]['maxdate'] = maxdatestr
-
     # Check file modification times before constructing .html files, which is expensive
     dohtml = True
     if not args.forcehtml:
@@ -409,13 +389,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         shutil.copy2(eventfile, '../' + os.path.basename(eventfile))
 
     if photoavail and dohtml and args.writehtml:
-        phototime = [float(catalog[entry]['photometry'][x]['time']) for x in prange]
-        photoAB = [float(catalog[entry]['photometry'][x]['magnitude']) for x in prange]
-        photoerrs = [float(catalog[entry]['photometry'][x]['aberr']) if 'aberr' in catalog[entry]['photometry'][x] else 0. for x in prange]
-        photoband = [catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '' for x in prange]
-        photoinstru = [catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else '' for x in prange]
+        phototime = [float(x['time']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoAB = [float(x['magnitude']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoerrs = [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoband = [(x['band'] if 'band' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoinstru = [(x['instrument'] if 'instrument' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
-        phototype = [bool(catalog[entry]['photometry'][x]['upperlimit']) if 'upperlimit' in catalog[entry]['photometry'][x] else False for x in prange]
+        phototype = [(x['upperlimit'] if 'upperlimit' in x else False) for x in catalog[entry]['photometry'] if 'magnitude' in x]
 
         x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
         x_range = [-x_buffer + min(phototime), x_buffer + max(phototime)]
