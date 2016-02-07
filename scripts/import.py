@@ -205,9 +205,9 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
                 (('band' not in photo and not band) or
                  ('band' in photo and photo['band'] == band) or
                  ('band' in photo and not band)) and
-                (('error' not in photo and not e_magnitude) or
-                 ('error' in photo and e_magnitude and Decimal(photo['error']) == Decimal(e_magnitude)) or
-                 ('error' in photo and not e_magnitude)) and
+                (('e_magnitude' not in photo and not e_magnitude) or
+                 ('e_magnitude' in photo and e_magnitude and Decimal(photo['e_magnitude']) == Decimal(e_magnitude)) or
+                 ('e_magnitude' in photo and not e_magnitude)) and
                 (('system' not in photo and not system) or
                  ('system' in photo and photo['system'] == system) or
                  ('system' in photo and not system))):
@@ -224,7 +224,7 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
     if instrument:
         photoentry['instrument'] = instrument
     if e_magnitude:
-        photoentry['error'] = str(e_magnitude)
+        photoentry['e_magnitude'] = str(e_magnitude)
     if source:
         photoentry['source'] = source
     if upperlimit:
@@ -301,7 +301,7 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
             if svalue in typereps[rep]:
                 svalue = rep
                 break
-    elif quanta == 'snra' or quanta == 'sndec' or quanta == 'galra' or quanta == 'galdec':
+    elif quanta == 'ra' or quanta == 'dec' or quanta == 'galra' or quanta == 'galdec':
         if unit == 'decdeg' or unit == 'radeg':
             deg = float('%g' % Decimal(svalue))
             sig = get_sig_digits(svalue)
@@ -381,19 +381,27 @@ def get_max_light(name):
     if 'photometry' not in events[name]:
         return (None, None)
 
-    eventphoto = [Decimal(events[name]['photometry'][x]['magnitude']) for x in range(len(events[name]['photometry']))]
-    mlmag = min(eventphoto)
-    mlindex = eventphoto.index(mlmag)
-    mlmjd = float(events[name]['photometry'][mlindex]['time'])
-    return (astrotime(mlmjd, format='mjd').datetime, mlmag)
+    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude'])) for x in events[name]['photometry'] if 'magnitude' in x]
+    if not eventphoto:
+        return (None, None)
+    mlmag = min([x[2] for x in eventphoto])
+
+    mlindex = [x[2] for x in eventphoto].index(mlmag)
+    if eventphoto[mlindex][0] == 'MJD':
+        mlmjd = float(eventphoto[mlindex][1])
+        return (astrotime(mlmjd, format='mjd').datetime, mlmag)
+    else:
+        return (None, mlmag)
 
 def get_first_light(name):
     if 'photometry' not in events[name]:
         return None
 
-    eventtime = [Decimal(events[name]['photometry'][x]['time']) for x in range(len(events[name]['photometry']))]
+    eventtime = [Decimal(x['time']) for x in events[name]['photometry'] if 'upperlimit' not in x and 'timeunit' in x and x['timeunit'] == 'MJD']
+    if not eventtime:
+        return None
     flindex = eventtime.index(min(eventtime))
-    flmjd = float(events[name]['photometry'][flindex]['time'])
+    flmjd = float(eventtime[flindex])
     return astrotime(flmjd, format='mjd').datetime
 
 def set_first_max_light(name):
@@ -403,7 +411,26 @@ def set_first_max_light(name):
             add_quanta(name, 'maxyear', pretty_num(mldt.year), 'D')
             add_quanta(name, 'maxmonth', pretty_num(mldt.month), 'D')
             add_quanta(name, 'maxday', pretty_num(mldt.day), 'D')
+            add_quanta(name, 'maxdate', str(mldt.year) + '/' + str(mldt.month).zfill(2) + '/' + str(mldt.day).zfill(2), 'D')
+        if mlmag:
             add_quanta(name, 'maxappmag', pretty_num(mlmag), 'D')
+    elif 'maxyear' in events[name] and 'maxmonth' in events[name] and 'maxday' in events[name]:
+        if (events[name]['maxyear'][0]['source'] == events[name]['maxmonth'][0]['source'] and
+            events[name]['maxyear'][0]['source'] == events[name]['maxday'][0]['source']):
+            source = events[name]['maxyear'][0]['source']
+        else:
+            source = 'D'
+        add_quanta(name, 'maxdate', events[name]['maxyear'][0]['value'] + '/' + events[name]['maxmonth'][0]['value'].zfill(2) +
+            '/' + events[name]['maxday'][0]['value'].zfill(2), source)
+    elif 'maxyear' in events[name] and 'maxmonth' in events[name]:
+        if (events[name]['maxyear'][0]['source'] == events[name]['maxmonth'][0]['source']):
+            source = events[name]['maxyear'][0]['source']
+        else:
+            source = 'D'
+        add_quanta(name, 'maxdate', events[name]['maxyear'][0]['value'] + '/' + events[name]['maxmonth'][0]['value'].zfill(2), source)
+    elif 'maxyear' in events[name]:
+        source = events[name]['maxyear'][0]['source']
+        add_quanta(name, 'maxdate', events[name]['maxyear'][0]['value'], source)
 
     if 'discovermonth' not in events[name] or 'discoverday' not in events[name]:
         fldt = get_first_light(name)
@@ -411,6 +438,24 @@ def set_first_max_light(name):
             add_quanta(name, 'discoveryear', pretty_num(fldt.year), 'D')
             add_quanta(name, 'discovermonth', pretty_num(fldt.month), 'D')
             add_quanta(name, 'discoverday', pretty_num(fldt.day), 'D')
+            add_quanta(name, 'discoverdate', str(fldt.year) + '/' + str(fldt.month).zfill(2) + '/' + str(fldt.day).zfill(2), 'D')
+    elif 'discoveryear' in events[name] and 'discovermonth' in events[name] and 'discoverday' in events[name]:
+        if (events[name]['discoveryear'][0]['source'] == events[name]['discovermonth'][0]['source'] and
+            events[name]['discoveryear'][0]['source'] == events[name]['discoverday'][0]['source']):
+            source = events[name]['discoveryear'][0]['source']
+        else:
+            source = 'D'
+        add_quanta(name, 'discoverdate', events[name]['discoveryear'][0]['value'] + '/' + events[name]['discovermonth'][0]['value'].zfill(2) +
+            '/' + events[name]['discoverday'][0]['value'].zfill(2), source)
+    elif 'discoveryear' in events[name] and 'discovermonth' in events[name]:
+        if (events[name]['discoveryear'][0]['source'] == events[name]['discovermonth'][0]['source']):
+            source = events[name]['discoveryear'][0]['source']
+        else:
+            source = 'D'
+        add_quanta(name, 'discoverdate', events[name]['discoveryear'][0]['value'] + '/' + events[name]['discovermonth'][0]['value'].zfill(2), source)
+    elif 'discoveryear' in events[name]:
+        source = events[name]['discoveryear'][0]['source']
+        add_quanta(name, 'discoverdate', events[name]['discoveryear'][0]['value'], source)
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
@@ -625,8 +670,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014MNRAS.444.3258M')
         add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
-        add_quanta(name, 'snra', str(row['_RA']), source, unit = 'radeg')
-        add_quanta(name, 'sndec', str(row['_DE']), source, unit = 'decdeg')
+        add_quanta(name, 'ra', str(row['_RA']), source, unit = 'radeg')
+        add_quanta(name, 'dec', str(row['_DE']), source, unit = 'decdeg')
 
     # 2014MNRAS.438.1391P
     result = Vizier.get_catalogs("J/MNRAS/438/1391/table2")
@@ -637,8 +682,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014MNRAS.438.1391P')
         add_quanta(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
     # 2012ApJ...749...18B
     result = Vizier.get_catalogs("J/ApJ/749/18/table1")
@@ -672,8 +717,8 @@ if do_task('vizier'):
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
         add_quanta(name, 'redshift', str(row['z']), source)
         add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
     # 2004A&A...415..863G
     result = Vizier.get_catalogs("J/A+A/415/863/table1")
@@ -689,8 +734,8 @@ if do_task('vizier'):
         add_quanta(name, 'discoveryear', datesplit[0], source)
         add_quanta(name, 'host', 'Abell ' + str(row['Abell']), source)
         add_quanta(name, 'claimedtype', row['Type'], source)
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
     # 2010ApJ...708..661D
     result = Vizier.get_catalogs("J/ApJ/708/661/sn")
@@ -705,8 +750,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2010ApJ...708..661D')
         add_alias(name, 'SDSS-II ' + str(row['SDSS-II']))
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
     result = Vizier.get_catalogs("J/ApJ/708/661/table1")
     table = result[list(result.keys())[0]]
@@ -733,8 +778,8 @@ if do_task('vizier'):
         add_quanta(name, 'discovermonth', str(astrot.datetime.month), source)
         add_quanta(name, 'discoveryear',  str(astrot.datetime.year), source)
         add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
     result = Vizier.get_catalogs("J/ApJ/795/44/table6")
     table = result[list(result.keys())[0]]
@@ -813,8 +858,8 @@ if do_task('vizier'):
                     add_quanta(name, 'discoveryear', nam.strip()[2:], source)
 
         add_quanta(name, 'host', 'Milky Way', source)
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source, unit = 'decdms')
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source, unit = 'decdms')
 
     # 2014MNRAS.442..844F
     result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
@@ -868,8 +913,8 @@ if do_task('vizier'):
         name = u'LSQ' + str(row['LSQ'])
         name = add_event(name)
         source = get_source(name, bibcode = "2015ApJS..219...13W")
-        add_quanta(name, 'snra', row['RAJ2000'], source)
-        add_quanta(name, 'sndec', row['DEJ2000'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
         add_quanta(name, 'redshift', row['z'], source, error = row['e_z'])
         add_quanta(name, 'ebv', row['E_B-V_'], source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
@@ -1110,8 +1155,8 @@ if do_task('sdss'):
                     year = re.findall(r'\d+', name)[0]
                     add_quanta(name, 'discoveryear', year, source)
 
-                add_quanta(name, 'snra', row[-4], source, unit = 'radeg')
-                add_quanta(name, 'sndec', row[-2], source, unit = 'decdeg')
+                add_quanta(name, 'ra', row[-4], source, unit = 'radeg')
+                add_quanta(name, 'dec', row[-2], source, unit = 'decdeg')
             if r == 1:
                 add_quanta(name, 'redshift', row[2], source, error = row[4])
             if r >= 19:
@@ -1163,8 +1208,8 @@ if do_task('gaia'):
         year = '20' + re.findall(r'\d+', name)[0]
         add_quanta(name, 'discoveryear', year, source)
 
-        add_quanta(name, 'snra', col[2].contents[0].strip(), source, unit = 'radeg')
-        add_quanta(name, 'sndec', col[3].contents[0].strip(), source, unit = 'decdeg')
+        add_quanta(name, 'ra', col[2].contents[0].strip(), source, unit = 'radeg')
+        add_quanta(name, 'dec', col[3].contents[0].strip(), source, unit = 'decdeg')
         add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
         photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
@@ -1208,8 +1253,8 @@ if do_task('csp'):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
                     add_quanta(name, 'redshift', row[0].split(' ')[-1], source)
-                    add_quanta(name, 'snra', row[1].split(' ')[-1], source)
-                    add_quanta(name, 'sndec', row[2].split(' ')[-1], source)
+                    add_quanta(name, 'ra', row[1].split(' ')[-1], source)
+                    add_quanta(name, 'dec', row[2].split(' ')[-1], source)
                 continue
             for v, val in enumerate(row):
                 if v == 0:
@@ -1299,8 +1344,8 @@ if do_task('asiago'):
             hostname = record[2]
             galra = record[3]
             galdec = record[4]
-            snra = record[5]
-            sndec = record[6]
+            ra = record[5]
+            dec = record[6]
             redvel = record[11].strip(':')
             discoverer = record[19]
 
@@ -1343,10 +1388,10 @@ if do_task('asiago'):
                 add_quanta(name, 'galra', galra, source, unit = 'ranospace')
             if (galdec != ''):
                 add_quanta(name, 'galdec', galdec, source, unit = 'decnospace')
-            if (snra != ''):
-                add_quanta(name, 'snra', snra, source, unit = 'ranospace')
-            if (sndec != ''):
-                add_quanta(name, 'sndec', sndec, source, unit = 'decnospace')
+            if (ra != ''):
+                add_quanta(name, 'ra', ra, source, unit = 'ranospace')
+            if (dec != ''):
+                add_quanta(name, 'dec', dec, source, unit = 'decnospace')
             if (discoverer != ''):
                 add_quanta(name, 'discoverer', discoverer, source)
     journal_events()
@@ -1404,8 +1449,8 @@ if do_task('rochester'):
                 add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 add_quanta(name, 'host', str(cols[2].contents[0]).strip(), sources)
-            add_quanta(name, 'snra', str(cols[3].contents[0]).strip(), sources)
-            add_quanta(name, 'sndec', str(cols[4].contents[0]).strip(), sources)
+            add_quanta(name, 'ra', str(cols[3].contents[0]).strip(), sources)
+            add_quanta(name, 'dec', str(cols[4].contents[0]).strip(), sources)
             if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd')
                 add_quanta(name, 'discoverday', str(astrot.datetime.day), sources)
@@ -1549,7 +1594,7 @@ if do_task('ogle'):
                 if '.dat' in a['href']:
                     datalinks.append('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
 
-        ec = 0
+        ec = -1
         reference = 'OGLE-IV Transient Detection System'
         refurl = 'http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'
         for br in breaks:
@@ -1557,6 +1602,7 @@ if do_task('ogle'):
             if 'Ra,Dec=' in sibling:
                 line = sibling.replace("\n", '').split('Ra,Dec=')
                 name = line[0].strip()
+                ec += 1
 
                 if 'NOVA' in name or 'dupl' in name:
                     continue
@@ -1577,8 +1623,8 @@ if do_task('ogle'):
                     if isinstance(mySibling, Tag):
                         atela = mySibling
                         if atela and atela.has_attr('href') and 'astronomerstelegram' in atela['href']:
-                            atelref = a.contents[0].strip()
-                            atelurl = a['href']
+                            atelref = atela.contents[0].strip()
+                            atelurl = atela['href']
                     mySibling = mySibling.nextSibling
                     if mySibling is None:
                         break
@@ -1605,8 +1651,8 @@ if do_task('ogle'):
                         if is_number(name[4:6]):
                             add_quanta(name, 'discoveryear', '20' + name[4:6], sources)
 
-                add_quanta(name, 'snra', ra, sources)
-                add_quanta(name, 'sndec', dec, sources)
+                add_quanta(name, 'ra', ra, sources)
+                add_quanta(name, 'dec', dec, sources)
                 if claimedtype and claimedtype != '-':
                     add_quanta(name, 'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
@@ -1623,7 +1669,6 @@ if do_task('ogle'):
                         e_magnitude = ''
                         upperlimit = True
                     add_photometry(name, time = mjd, band = 'I', magnitude = magnitude, e_magnitude = e_magnitude, source = sources, upperlimit = upperlimit)
-                ec += 1
         journal_events()
 
 if do_task('snls'): 
@@ -1708,8 +1753,8 @@ if do_task('cfaiaspectra'):
             name = 'SN' + name[2:]
         if name[:3] == 'snf' and is_number(name[3:7]):
             name = 'SNF' + name[3:]
-        if name != oldname:
-            clear_events()
+        if oldname and name != oldname:
+            journal_events()
         oldname = name
         name = add_event(name)
         reference = 'CfA Supernova Archive'
@@ -1737,7 +1782,7 @@ if do_task('cfaiaspectra'):
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
-        journal_events(clear = False)
+    journal_events()
 
 if do_task('cfaibcspectra'): 
     oldname = ''
@@ -1745,8 +1790,8 @@ if do_task('cfaibcspectra'):
         fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        if name != oldname:
-            clear_events()
+        if oldname and name != oldname:
+            journal_events()
         oldname = name
         name = add_event(name)
         reference = 'CfA Supernova Archive'
@@ -1769,7 +1814,7 @@ if do_task('cfaibcspectra'):
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
-        journal_events(clear = False)
+    journal_events()
 
 if do_task('snlsspectra'): 
     result = Vizier.get_catalogs("J/A+A/507/85/table1")
@@ -1783,8 +1828,8 @@ if do_task('snlsspectra'):
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
-        if name != oldname:
-            clear_events()
+        if oldname and name != oldname:
+            journal_events()
         oldname = name
         name = add_event(name)
         source = get_source(name, bibcode = "2009A&A...507...85B")
@@ -1810,7 +1855,7 @@ if do_task('snlsspectra'):
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, timeunit = 'MJD', time = datedict[name], instrument = instrument, source = source)
-        journal_events(clear = False)
+    journal_events()
 
 if do_task('cspspectra'): 
     oldname = ''
@@ -1821,8 +1866,8 @@ if do_task('cspspectra'):
         sfile = sfile[0]
         fileparts = sfile.split('_')
         name = 'SN20' + fileparts[0][2:]
-        if name != oldname:
-            clear_events()
+        if oldname and name != oldname:
+            journal_events()
         oldname = name
         name = add_event(name)
         instrument = ': '.join(fileparts[-2:])
@@ -1846,7 +1891,7 @@ if do_task('cspspectra'):
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
-        journal_events(clear = False)
+    journal_events()
 
 if do_task('ucbspectra'): 
     secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
@@ -1891,8 +1936,8 @@ if do_task('ucbspectra'):
             elif d == 11:
                 bibcode = td.findAll('a')[0].contents[0]
 
-        if name != oldname:
-            clear_events()
+        if oldname and name != oldname:
+            journal_events()
         oldname = name
         name = add_event(name)
         source = get_source(name, bibcode = bibcode)
@@ -1927,7 +1972,7 @@ if do_task('ucbspectra'):
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = True)
-        journal_events(clear = False)
+    journal_events()
 
 if do_task('suspectspectra'): 
     with open('../sne-external-spectra/Suspect/sources.json', 'r') as f:
@@ -1941,8 +1986,8 @@ if do_task('suspectspectra'):
             name = eventfolder
             if is_number(name[:4]):
                 name = 'SN' + name
-            if name != oldname:
-                clear_events()
+            if oldname and name != oldname:
+                journal_events()
             oldname = name
             name = add_event(name)
             secondaryreference = "SUSPECT"
@@ -1990,7 +2035,7 @@ if do_task('suspectspectra'):
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources)
-            journal_events(clear = False)
+    journal_events()
 
 if do_task('snfspectra'): 
     eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
@@ -1998,8 +2043,8 @@ if do_task('snfspectra'):
     oldname = ''
     for eventfolder in eventfolders:
         name = eventfolder
-        if name != oldname:
-            clear_events()
+        if oldname and name != oldname:
+            journal_events()
         oldname = name
         name = add_event(name)
         secondaryreference = "Nearby Supernova Factory"
@@ -2052,7 +2097,7 @@ if do_task('snfspectra'):
 
             add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
-        journal_events(clear = False)
+    journal_events()
 
 if do_task('writeevents'): 
     files = []
