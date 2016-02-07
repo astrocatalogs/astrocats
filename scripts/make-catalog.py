@@ -58,6 +58,7 @@ columnkey = [
     "claimedtype",
     "photolink",
     "spectralink",
+    "references",
     "download",
     "responsive"
 ]
@@ -80,6 +81,7 @@ header = [
     "Claimed Type",
     "Phot.",
     "Spec.",
+    "References",
     "",
     ""
 ]
@@ -103,6 +105,7 @@ titles = [
     "Photometry",
     "Spectra",
     "Download",
+    "Bibcodes of references with most data on event",
     ""
 ]
 
@@ -294,7 +297,7 @@ def label_format(label):
 catalog = OrderedDict()
 catalogcopy = OrderedDict()
 snepages = []
-sourcedict = dict()
+sourcedict = {}
 nophoto = []
 nospectra = []
 totalphoto = 0
@@ -683,12 +686,23 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             snepages.append(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['photoplot']])
 
         if 'sources' in catalog[entry]:
+            lsourcedict = {}
             for sourcerow in catalog[entry]['sources']:
                 strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','xmlcharrefreplace').decode("utf-8"))
+                alias = sourcerow['alias']
                 if strippedname in sourcedict:
                     sourcedict[strippedname] += 1
                 else:
                     sourcedict[strippedname] = 1
+
+                for key in catalog[entry].keys():
+                    if 'source' in catalog[entry]['key']:
+                        if strippedname in sourcedict:
+                            lsourcedict[strippedname] += 1
+                        else:
+                            lsourcedict[strippedname] = 1
+
+            catalog[entry]['references'] = (', '.join(sorted(list(lsourcedict.items()), key=operator.itemgetter(1), reverse=True)))[:2]
 
         nophoto.append(catalog[entry]['numphoto'] < 3)
 
