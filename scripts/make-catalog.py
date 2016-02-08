@@ -647,7 +647,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     r'</td></tr>\n\1', html)
             html = re.sub(r'(\<\/body\>)', r'</table>\n\1', html)
         html = re.sub(r'(\<\/body\>)', returnlink+r'\n\1', html)
-        print(outdir + eventname + ".html")
         with open(outdir + eventname + ".html", "w") as fff:
             fff.write(html)
 
@@ -670,19 +669,31 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             for sourcerow in catalog[entry]['sources']:
                 strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode('ascii','xmlcharrefreplace').decode("utf-8"))
                 alias = sourcerow['alias']
+                if 'bibcode' in sourcerow and 'secondary' not in sourcerow:
+                    lsourcedict[alias] = {'bibcode':sourcerow['bibcode'], 'count':0}
                 if strippedname in sourcedict:
                     sourcedict[strippedname] += 1
                 else:
                     sourcedict[strippedname] = 1
 
-                for key in catalog[entry].keys():
-                    if 'source' in catalog[entry]['key']:
-                        if strippedname in sourcedict:
-                            lsourcedict[strippedname] += 1
-                        else:
-                            lsourcedict[strippedname] = 1
+            for key in catalog[entry].keys():
+                if isinstance(catalog[entry][key], list):
+                    for row in catalog[entry][key]:
+                        if 'source' in row:
+                            for lsource in lsourcedict:
+                                if lsource in row['source'].split(','):
+                                    if key == 'spectra':
+                                        lsourcedict[lsource]['count'] += 10
+                                    else:
+                                        lsourcedict[lsource]['count'] += 1
 
-            catalog[entry]['references'] = (', '.join(sorted(list(lsourcedict.items()), key=operator.itemgetter(1), reverse=True)))[:2]
+            ssources = sorted(list(lsourcedict.values()), key=lambda x: x['count'], reverse=True)
+            if ssources:
+                seemorelink = ''
+                if len(ssources) > 3:
+                    seemorelink = "<br><a href='sne/" + eventname + ".html'>(See full list)</a>"
+                catalog[entry]['references'] = ', '.join(["<a href='http://adsabs.harvard.edu/abs/" + y['bibcode'] + "'>" + y['bibcode'] + "</a>"
+                    for y in ssources[:3]]) + seemorelink
 
         nophoto.append(catalog[entry]['numphoto'] < 3)
 
