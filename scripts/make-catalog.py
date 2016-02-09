@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import numpy
 import shutil
+import gzip
 from datetime import datetime
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
@@ -476,11 +477,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         spectrumwave = []
         spectrumflux = []
         spectrumerrs = []
+        if 'redshift' in catalog[entry]:
+            z = float(catalog[entry]['redshift'][0]['value'])
         for spectrum in catalog[entry]['spectra']:
             spectrumdata = deepcopy(spectrum['data'])
             spectrumdata = [x for x in spectrumdata if is_number(x[1]) and not isnan(float(x[1]))]
             specrange = range(len(spectrumdata))
-            spectrumwave.append([float(spectrumdata[x][0]) for x in specrange])
+
+            if 'deredshifted' in spectrum and spectrum['deredshifted']:
+                spectrumwave.append([float(spectrumdata[x][0])*(1.0 + z) for x in specrange])
+            else:
+                spectrumwave.append([float(spectrumdata[x][0]) for x in specrange])
+
             spectrumflux.append([float(spectrumdata[x][1]) for x in specrange])
             if 'errorunit' in spectrum:
                 spectrumerrs.append([float(spectrumdata[x][2]) for x in specrange])
@@ -519,7 +527,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         tt2 = []
         if 'redshift' in catalog[entry]:
-            z = float(catalog[entry]['redshift'][0]['value'])
             tt2 += [ ("λ (rest)", "@xrest{1.1} Å") ]
         tt2 += [
                 ("λ (obs)", "@x{1.1} Å"),
@@ -540,6 +547,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         sources = []
         for i in range(len(spectrumwave)):
             sl = len(spectrumscaled[i])
+
             data = dict(
                 x0 = spectrumwave[i],
                 y0 = spectrumscaled[i],
@@ -822,3 +830,6 @@ if args.writecatalog and not args.eventlist:
     f.write('\t</thead>\n')
     f.write('</table>\n')
     f.close()
+
+    with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
