@@ -120,6 +120,18 @@ def add_event(name, load = True, delete = True):
     else:
         return name
 
+def get_preferred_name(name):
+    if name not in events:
+        matches = []
+        for event in events:
+            if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
+                matches.append(event)
+        if len(matches) == 1:
+            return matches[0]
+        return name
+    else:
+        return name
+
 def event_filename(name):
     return(name.replace('/', '_'))
 
@@ -1753,6 +1765,7 @@ if do_task('cfaiaspectra'):
             name = 'SN' + name[2:]
         if name[:3] == 'snf' and is_number(name[3:7]):
             name = 'SNF' + name[3:]
+        name = get_preferred_name(name)
         if oldname and name != oldname:
             journal_events()
         oldname = name
@@ -1790,6 +1803,7 @@ if do_task('cfaibcspectra'):
         fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
         if name[:2] == 'sn' and is_number(name[2:6]):
             name = 'SN' + name[2:]
+        name = get_preferred_name(name)
         if oldname and name != oldname:
             journal_events()
         oldname = name
@@ -1828,6 +1842,7 @@ if do_task('snlsspectra'):
     for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
         fileparts = os.path.basename(file).split('_')
         name = 'SNLS-' + fileparts[1]
+        name = get_preferred_name(name)
         if oldname and name != oldname:
             journal_events()
         oldname = name
@@ -1866,6 +1881,7 @@ if do_task('cspspectra'):
         sfile = sfile[0]
         fileparts = sfile.split('_')
         name = 'SN20' + fileparts[0][2:]
+        name = get_preferred_name(name)
         if oldname and name != oldname:
             journal_events()
         oldname = name
@@ -1936,6 +1952,7 @@ if do_task('ucbspectra'):
             elif d == 11:
                 bibcode = td.findAll('a')[0].contents[0]
 
+        name = get_preferred_name(name)
         if oldname and name != oldname:
             journal_events()
         oldname = name
@@ -1986,6 +2003,7 @@ if do_task('suspectspectra'):
             name = eventfolder
             if is_number(name[:4]):
                 name = 'SN' + name
+            name = get_preferred_name(name)
             if oldname and name != oldname:
                 journal_events()
             oldname = name
@@ -2043,6 +2061,7 @@ if do_task('snfspectra'):
     oldname = ''
     for eventfolder in eventfolders:
         name = eventfolder
+        name = get_preferred_name(name)
         if oldname and name != oldname:
             journal_events()
         oldname = name
