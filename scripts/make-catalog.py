@@ -64,6 +64,10 @@ columnkey = [
     "responsive"
 ]
 
+eventignorekey = [
+    "download"
+]
+
 header = [
     "",
     "Name",
@@ -82,6 +86,29 @@ header = [
     "Claimed Type",
     "Phot.",
     "Spec.",
+    "References",
+    "",
+    ""
+]
+
+eventpageheader = [
+    "",
+    "Name",
+    "Aliases",
+    "Discovery Date",
+    "Date of Maximum",
+    r"<em>m</em><sub>max</sub>",
+    r"<em>M</em><sub>max</sub>",
+    "Host Name",
+    "R.A. (h:m:s)",
+    "Dec. (d:m:s)",
+    "Instruments/Bands",
+    r"<em>z</em>",
+    r"<em>v</em><sub>&#9737;</sub> (km/s)",
+    r"<em>d</em><sub>L</sub> (Mpc)",
+    "Claimed Type",
+    "# Phot. Obs.",
+    "# Spectra",
     "References",
     "",
     ""
@@ -137,9 +164,14 @@ if len(columnkey) != len(header):
     print('Error: Header not same length as key list.')
     sys.exit(0)
 
+if len(columnkey) != len(eventpageheader):
+    print('Error: Event page header not same length as key list.')
+    sys.exit(0)
+
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
 
 header = OrderedDict(list(zip(columnkey,header)))
+eventpageheader = OrderedDict(list(zip(columnkey,eventpageheader)))
 titles = OrderedDict(list(zip(columnkey,titles)))
 
 bandcodes = [
@@ -484,7 +516,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             spectrumdata = [x for x in spectrumdata if is_number(x[1]) and not isnan(float(x[1]))]
             specrange = range(len(spectrumdata))
 
-            if 'deredshifted' in spectrum and spectrum['deredshifted']:
+            if 'deredshifted' in spectrum and spectrum['deredshifted'] and 'redshift' in catalog[entry]:
                 spectrumwave.append([float(spectrumdata[x][0])*(1.0 + z) for x in specrange])
             else:
                 spectrumwave.append([float(spectrumdata[x][0]) for x in specrange])
@@ -638,23 +670,47 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         #    fff.write(script)
         #with open(outdir + eventname + "-div.html", "w") as fff:
         #    fff.write(div)
-        returnlink = r'<br><a href="https://sne.space"><< Return to supernova catalog</a>'
+        html = re.sub(r'(\<\/title\>)', r'\1\n<link rel="stylesheet" href="event.css" type="text/css">', html)
+
         repfolder = get_rep_folder(catalog[entry])
         dla = r'<a href="' + linkdir + eventname + r'.json" download>'
         html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"/
             style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
             dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"
             style="vertical-align: text-bottom;"></a><br><br>\n\1''', html)
+
+        newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>sources</sup></th></tr>\n'
+        for key in columnkey:
+            if key in catalog[entry] and key not in eventignorekey and len(catalog[entry][key]) > 0:
+                newhtml = newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] + r'</td><td width=250px class="event-cell">'
+                for r, row in enumerate(catalog[entry][key]):
+                    if 'value' in row and 'source' in row:
+                        sources = row['source'].split(',')
+                        sourcehtml = ''
+                        for s, source in enumerate(sources):
+                            if source == 'D':
+                                sourcehtml = sourcehtml + (',' if s > 0 else '') + source
+                            else:
+                                sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
+                        newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value'] + r'<sup>' + sourcehtml + r'</sup>'
+                    else:
+                        newhtml = newhtml + row
+                newhtml = newhtml + r'</td></tr>\n'
+        newhtml = newhtml + r'</table><em>D = Derived value</em></div>\n\1'
+        html = re.sub(r'(\<\/body\>)', newhtml, html)
+
         if len(catalog[entry]['sources']):
-            html = re.sub(r'(\<\/body\>)', r'<em>Sources of data:</em><br><table><tr><th width=30px>ID</th><th>Source</th></tr>\n\1', html)
+            newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Sources of data</h3><table class="event-table"><tr><th width=30px class="event-cell">ID</th><th class="event-cell">Source</th></tr>\n'
             for source in catalog[entry]['sources']:
-                html = re.sub(r'(\<\/body\>)', r'<tr><td>' + source['alias'] +
-                    r'</td><td>' + (('<a href="' + source['url'] + '">') if 'url' in source else '') +
+                newhtml = (newhtml + r'<tr><td class="event-cell" id="source' + source['alias'] + '">' + source['alias'] +
+                    r'</td><td width=250px class="event-cell">' + (('<a href="' + source['url'] + '">') if 'url' in source else '') +
                     source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
                     (r'</a>' if 'url' in source else '') +
-                    r'</td></tr>\n\1', html)
-            html = re.sub(r'(\<\/body\>)', r'</table>\n\1', html)
-        html = re.sub(r'(\<\/body\>)', returnlink+r'\n\1', html)
+                    r'</td></tr>\n')
+            newhtml = newhtml + r'</table></div>\n\1'
+
+            html = re.sub(r'(\<\/body\>)', newhtml, html)
+
         with open(outdir + eventname + ".html", "w") as fff:
             fff.write(html)
 

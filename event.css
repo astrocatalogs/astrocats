@@ -1,0 +1,17 @@
+.event-table {
+    background: #eee;
+    border-collapse: collapse;
+}
+
+.event-cell {
+    border: 3px solid white;
+}
+
+.event-tab-title {
+    text-align: center;
+}
+
+.event-tab-div {
+    float: left;
+    margin: 5px;
+}
