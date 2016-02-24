@@ -366,6 +366,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     entry = next(reversed(catalog))
 
     eventname = entry
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[0]
 
     if args.eventlist and eventname not in args.eventlist:
         continue
@@ -373,19 +374,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + eventname + ".json' download></a>"
+    catalog[entry]['name'] = "<a href='sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
+    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
     photoavail = 'photometry' in catalog[entry]
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
     if photoavail:
-        plotlink = "sne/" + eventname + ".html"
+        plotlink = "sne/" + fileeventname + "/"
         catalog[entry]['photoplot'] = plotlink
         plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a> "
         catalog[entry]['photolink'] = plotlink + str(numphoto)
     spectraavail = 'spectra' in catalog[entry]
     catalog[entry]['numspectra'] = len(catalog[entry]['spectra']) if spectraavail else 0
     if spectraavail:
-        plotlink = "sne/" + eventname + ".html"
+        plotlink = "sne/" + fileeventname + "/"
         catalog[entry]['spectraplot'] = plotlink
         plotlink = "<a class='sci' href='" + plotlink + "' target='_blank'></a> "
         catalog[entry]['spectralink'] = plotlink + str(len(catalog[entry]['spectra']))
@@ -416,7 +418,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     # Check file modification times before constructing .html files, which is expensive
     dohtml = True
     if not args.forcehtml:
-        if (photoavail or spectraavail) and os.path.isfile(outdir + eventname + ".html"):
+        if os.path.isfile(outdir + fileeventname + ".html"):
             if eventfile in md5dict and checksum == md5dict[eventfile]:
                 dohtml = False
 
@@ -654,16 +656,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
         spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
 
-    if (photoavail or spectraavail) and dohtml and args.writehtml:
+    if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
             p = VBox(HBox(p1),HBox(p2,VBox(binslider,spacingslider)), width=900)
         elif photoavail:
             p = p1
-        else:
+        elif spectraavail:
             p = VBox(HBox(p2,VBox(binslider,spacingslider)), width=900)
 
-        html = file_html(p, CDN, eventname)
+        if photoavail or spectraavail:
+            html = file_html(p, CDN, eventname)
+        else:
+            html = '<html><title></title><body></body></html>'
+
         #script, div = components(p)
         #with open(outdir + eventname + "-script.js", "w") as fff:
         #    script = '\n'.join(script.splitlines()[2:-1])
@@ -673,7 +679,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         html = re.sub(r'(\<\/title\>)', r'\1\n<link rel="stylesheet" href="event.css" type="text/css">', html)
 
         repfolder = get_rep_folder(catalog[entry])
-        dla = r'<a href="' + linkdir + eventname + r'.json" download>'
+        dla = r'<a href="' + linkdir + fileeventname + r'.json" download>'
         html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"/
             style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
             dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"
@@ -683,23 +689,28 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for key in columnkey:
             if key in catalog[entry] and key not in eventignorekey and len(catalog[entry][key]) > 0:
                 newhtml = newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] + r'</td><td width=250px class="event-cell">'
-                for r, row in enumerate(catalog[entry][key]):
-                    if 'value' in row and 'source' in row:
-                        sources = row['source'].split(',')
-                        sourcehtml = ''
-                        for s, source in enumerate(sources):
-                            if source == 'D':
-                                sourcehtml = sourcehtml + (',' if s > 0 else '') + source
-                            else:
-                                sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
-                        newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value'] + r'<sup>' + sourcehtml + r'</sup>'
-                    else:
-                        newhtml = newhtml + row
+                
+                if isinstance(catalog[entry][key], str):
+                    newhtml = newhtml + catalog[entry][key]
+                else:
+                    for r, row in enumerate(catalog[entry][key]):
+                        if 'value' in row and 'source' in row:
+                            sources = row['source'].split(',')
+                            sourcehtml = ''
+                            for s, source in enumerate(sources):
+                                if source == 'D':
+                                    sourcehtml = sourcehtml + (',' if s > 0 else '') + source
+                                else:
+                                    sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
+                            newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value'] + r'<sup>' + sourcehtml + r'</sup>'
+                        elif isinstance(row, str):
+                            newhtml = newhtml + (r'<br>' if r > 0 else '') + row.strip()
+
                 newhtml = newhtml + r'</td></tr>\n'
         newhtml = newhtml + r'</table><em>D = Derived value</em></div>\n\1'
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
-        if len(catalog[entry]['sources']):
+        if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
             newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Sources of data</h3><table class="event-table"><tr><th width=30px class="event-cell">ID</th><th class="event-cell">Source</th></tr>\n'
             for source in catalog[entry]['sources']:
                 newhtml = (newhtml + r'<tr><td class="event-cell" id="source' + source['alias'] + '">' + source['alias'] +
@@ -711,7 +722,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             html = re.sub(r'(\<\/body\>)', newhtml, html)
 
-        with open(outdir + eventname + ".html", "w") as fff:
+        with open(outdir + fileeventname + ".html", "w") as fff:
             fff.write(html)
 
     # Necessary to clear Bokeh state
@@ -755,7 +766,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if ssources:
                 seemorelink = ''
                 if len(ssources) > 3:
-                    seemorelink = "<br><a href='sne/" + eventname + ".html'>(See full list)</a>"
+                    seemorelink = "<br><a href='sne/" + fileeventname + "/'>(See full list)</a>"
                 catalog[entry]['references'] = ', '.join(["<a href='http://adsabs.harvard.edu/abs/" + y['bibcode'] + "'>" + y['bibcode'] + "</a>"
                     for y in ssources[:3]]) + seemorelink
 
