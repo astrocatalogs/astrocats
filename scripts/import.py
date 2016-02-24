@@ -1411,7 +1411,8 @@ if do_task('asiago'):
     journal_events()
 
 if do_task('rochester'): 
-    rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
+    rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html', 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
+    #rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     rochesterupdate = [False, True]
 
     for p, path in enumerate(rochesterpaths):

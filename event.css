@@ -15,3 +15,12 @@
     float: left;
     margin: 5px;
 }
+
+.event-download {
+    font-size: 32pt;
+    color: darkgreen;
+    font-weight: bold;
+    text-decoration: none;
+    background: lightgreen;
+    width: 100%;
+}

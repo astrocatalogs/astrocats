@@ -13,6 +13,9 @@ import numpy
 import shutil
 import gzip
 from datetime import datetime
+from astropy.time import Time as astrotime
+from astropy.coordinates import SkyCoord as coord
+from astropy import units as un
 #from colorpy.ciexyz import xyz_from_wavelength
 #from colorpy.colormodels import irgb_string_from_xyz
 from copy import deepcopy
@@ -23,7 +26,7 @@ from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VB
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
-from math import isnan
+from math import isnan, floor
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
@@ -511,6 +514,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         spectrumwave = []
         spectrumflux = []
         spectrumerrs = []
+        spectrummjdmax = []
+        hasepoch = False
+        hasmjdmax = False
         if 'redshift' in catalog[entry]:
             z = float(catalog[entry]['redshift'][0]['value'])
         for spectrum in catalog[entry]['spectra']:
@@ -527,6 +533,23 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if 'errorunit' in spectrum:
                 spectrumerrs.append([float(spectrumdata[x][2]) for x in specrange])
                 spectrumerrs[-1] = [x if is_number(x) and not isnan(float(x)) else 0. for x in spectrumerrs[-1]]
+
+            if 'timeunit' in spectrum and 'time' in spectrum:
+                hasepoch = True
+
+            mjdmax = ''
+            if spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
+                if 'maxyear' in catalog[entry] and 'maxmonth' in catalog[entry] and 'maxday' in catalog[entry]:
+                    day = catalog[entry]['maxday'][0]['value']
+                    mjdmax = astrotime(catalog[entry]['maxyear'][0]['value'] + '-' + catalog[entry]['maxmonth'][0]['value'] + '-' +
+                                    str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+                elif 'maxdate' in catalog[entry]:
+                    mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'])
+                if mjdmax:
+                    hasmjdmax = True
+                    mjdmax = (float(spectrum['time']) - mjdmax) / (1.0 + float(catalog[entry]['redshift'][0]['value']))
+                    spectrummjdmax.append(mjdmax)
+
         nspec = len(catalog[entry]['spectra'])
         
         spectrumscaled = deepcopy(spectrumflux)
@@ -567,8 +590,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 ("Flux", "@yorig"),
                 ("Flux unit", "@fluxunit")
                ]
-        if 'timeunit' in spectrum and 'time' in spectrum:
+
+        if hasepoch:
             tt2 += [ ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}") ]
+
+        if hasmjdmax:
+            tt2 += [ ("Rest days to max", "@mjdmax{1.11}") ]
+
         tt2 += [ ("Source", "@src") ]
         hover2 = HoverTool(tooltips = tt2)
 
@@ -593,8 +621,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             )
             if 'redshift' in catalog[entry]:
                 data['xrest'] = [x/(1.0 + z) for x in spectrumwave[i]]
-            if 'timeunit' in spectrum and 'time' in spectrum:
+            if hasepoch:
                 data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in spectrumscaled[i]]
+            if hasmjdmax:
+                data['mjdmax'] = [spectrummjdmax[i] for j in spectrumscaled[i]]
             sources.append(ColumnDataSource(data))
             p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2)
 
@@ -676,14 +706,19 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         #    fff.write(script)
         #with open(outdir + eventname + "-div.html", "w") as fff:
         #    fff.write(div)
-        html = re.sub(r'(\<\/title\>)', r'\1\n<link rel="stylesheet" href="event.css" type="text/css">', html)
+        html = re.sub(r'(\<\/title\>)', r'''\1\n
+            <base target="_parent" />\n
+            <link rel="stylesheet" href="event.css" type="text/css">\n
+            <script type="text/javascript">\n
+                if(top==self)\n
+                this.location="''' + eventname + '''"\n
+            </script>'''
+            , html)
 
         repfolder = get_rep_folder(catalog[entry])
-        dla = r'<a href="' + linkdir + fileeventname + r'.json" download>'
-        html = re.sub(r'(\<\/body\>)', dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"/
-            style="vertical-align: text-bottom; margin-left: 230px;"></a>&nbsp;''' +
-            dla + r'Download data</a>&nbsp;' + dla + r'''<img src="https://sne.space/wp-content/plugins/transient-table/data-icon.png" width="22" height="22"
-            style="vertical-align: text-bottom;"></a><br><br>\n\1''', html)
+        html = re.sub(r'(\<\/body\>)', '<div style="width:100%; text-align:center;">' + r'<a class="event-download" href="' +
+            linkdir + fileeventname + r'.json" download>' + r'&#11015; Download all event data &#11015;' +
+            r'</a></div>\n\1', html)
 
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>sources</sup></th></tr>\n'
         for key in columnkey:
@@ -718,9 +753,19 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
                     (r'</a>' if 'url' in source else '') +
                     r'</td></tr>\n')
-            newhtml = newhtml + r'</table></div>\n\1'
+            newhtml = newhtml + r'</table></div>'
 
-            html = re.sub(r'(\<\/body\>)', newhtml, html)
+        if 'ra' in catalog[entry] and 'dec' in catalog[entry]:
+            snra = catalog[entry]['ra'][0]['value']
+            sndec = catalog[entry]['dec'][0]['value']
+            c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
+            newhtml = (newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3><a href="http://skyserver.sdss.org/dr12/en/tools/chart/navi.aspx?opt=G&ra='
+                + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
+                + str(c.ra.deg) + '&amp;dec=' + str(c.dec.deg) + '&amp;scale=0.3&amp;width=500&amp;height=500&amp;opt=G" width=250></div>')
+
+        newhtml = newhtml + r'\n\1'
+
+        html = re.sub(r'(\<\/body\>)', newhtml, html)
 
         with open(outdir + fileeventname + ".html", "w") as fff:
             fff.write(html)
