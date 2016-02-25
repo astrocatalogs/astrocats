@@ -1358,8 +1358,8 @@ if do_task('asiago'):
             hostname = record[2]
             galra = record[3]
             galdec = record[4]
-            ra = record[5]
-            dec = record[6]
+            ra = record[5].strip(':')
+            dec = record[6].strip(':')
             redvel = record[11].strip(':')
             discoverer = record[19]
 

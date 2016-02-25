@@ -12,6 +12,7 @@ import hashlib
 import numpy
 import shutil
 import gzip
+import requests
 from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
@@ -329,6 +330,14 @@ def label_format(label):
     newlabel = label.replace('Angstrom', 'Å')
     newlabel = newlabel.replace('^2', '²')
     return newlabel
+
+def is_valid_link(url):
+    response = requests.get(url)
+    try:
+        response.raise_for_status()
+    except:
+        return False
+    return True
 
 catalog = OrderedDict()
 catalogcopy = OrderedDict()
@@ -759,8 +768,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             snra = catalog[entry]['ra'][0]['value']
             sndec = catalog[entry]['dec'][0]['value']
             c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
-            newhtml = (newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3><a href="http://skyserver.sdss.org/dr12/en/tools/chart/navi.aspx?opt=G&ra='
-                + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
+            #imgurl = ('http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra=' + str(c.ra.deg) + '&dec=' + str(c.dec.deg))
+            #print(imgurl)
+            #if is_valid_link(imgurl):
+            newhtml = (newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3><a href="http://skyserver.sdss.org/DR10/en/tools/chart/navi.aspx?opt=G&ra='
+                + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra='
                 + str(c.ra.deg) + '&amp;dec=' + str(c.dec.deg) + '&amp;scale=0.3&amp;width=500&amp;height=500&amp;opt=G" width=250></div>')
 
         newhtml = newhtml + r'\n\1'
