@@ -309,13 +309,13 @@ def utf8(x):
     return str(x, 'utf-8')
 
 def get_rep_folder(entry):
-    if 'discoveryear' not in entry:
+    if 'discoverdate' not in entry:
         return repfolders[0]
-    if not is_number(entry['discoveryear'][0]['value']):
+    if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
         print ('Error, discovery year is not a number!')
         sys.exit()
     for r, repyear in enumerate(repyears):
-        if int(entry['discoveryear'][0]['value']) <= repyear:
+        if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repyear:
             return repfolders[r]
     return repfolders[0]
 
@@ -347,6 +347,8 @@ nophoto = []
 nospectra = []
 totalphoto = 0
 totalspectra = 0
+hostgalscount = 0
+hostgalshtml = ''
 
 files = []
 for rep in repfolders:
@@ -548,11 +550,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             mjdmax = ''
             if spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
-                if 'maxyear' in catalog[entry] and 'maxmonth' in catalog[entry] and 'maxday' in catalog[entry]:
-                    day = catalog[entry]['maxday'][0]['value']
-                    mjdmax = astrotime(catalog[entry]['maxyear'][0]['value'] + '-' + catalog[entry]['maxmonth'][0]['value'] + '-' +
-                                    str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
-                elif 'maxdate' in catalog[entry]:
+                if 'maxdate' in catalog[entry]:
                     mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'])
                 if mjdmax:
                     hasmjdmax = True
@@ -695,6 +693,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
         spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
 
+    skyhtml = ''
+    if 'ra' in catalog[entry] and 'dec' in catalog[entry]:
+        snra = catalog[entry]['ra'][0]['value']
+        sndec = catalog[entry]['dec'][0]['value']
+        c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
+        skyhtml = ('<a href="http://skyserver.sdss.org/DR10/en/tools/chart/navi.aspx?opt=G&ra='
+            + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra='
+            + str(c.ra.deg) + '&amp;dec=' + str(c.dec.deg) + '&amp;scale=0.3&amp;width=500&amp;height=500&amp;opt=G" width=250>')
+
+        hostgalscount += 1
+        if (hostgalscount % 5) == 0:
+            hostgalshtml = hostgalshtml + '<br>'
+        hostgalshtml = hostgalshtml + skyhtml
+
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
@@ -764,16 +776,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     r'</td></tr>\n')
             newhtml = newhtml + r'</table></div>'
 
-        if 'ra' in catalog[entry] and 'dec' in catalog[entry]:
-            snra = catalog[entry]['ra'][0]['value']
-            sndec = catalog[entry]['dec'][0]['value']
-            c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
-            #imgurl = ('http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra=' + str(c.ra.deg) + '&dec=' + str(c.dec.deg))
-            #print(imgurl)
-            #if is_valid_link(imgurl):
-            newhtml = (newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3><a href="http://skyserver.sdss.org/DR10/en/tools/chart/navi.aspx?opt=G&ra='
-                + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra='
-                + str(c.ra.deg) + '&amp;dec=' + str(c.dec.deg) + '&amp;scale=0.3&amp;width=500&amp;height=500&amp;opt=G" width=250></div>')
+            if skyhtml:
+                newhtml = newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3>' + skyhtml + '</div>'
 
         newhtml = newhtml + r'\n\1'
 
@@ -900,6 +904,8 @@ if args.writecatalog and not args.eventlist:
         f.write("{:,}".format(totalphoto))
     with open(outdir + 'spectracount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(totalspectra))
+    with open(outdir + 'hostgalaxies.html' + testsuffix, 'w') as f:
+        f.write(hostgalshtml)
 
     ctypedict = dict()
     for entry in catalog:
