@@ -700,6 +700,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
         spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
 
+    hasimage = False
     skyhtml = ''
     if 'ra' in catalog[entry] and 'dec' in catalog[entry]:
         snra = catalog[entry]['ra'][0]['value']
@@ -723,6 +724,17 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         if hasimage:
             skyhtml = ('<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
                 + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250>')
+
+    plotlink = "sne/" + fileeventname + "/"
+    if hasimage:
+        hostlink = "<a class='hhi' href='" + plotlink + "' target='_blank'></a>"
+    else:
+        hostlink = "<a class='nhi' href='" + plotlink + "' target='_blank'></a>"
+
+    if 'host' not in catalog[entry]:
+        catalog[entry]['host'] = [{'value':'hostlink'}]
+    else:
+        catalog[entry]['host'][0]['value'] = hostlink + " " + catalog[entry]['host'][0]['value']
 
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
@@ -793,7 +805,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     r'</td></tr>\n')
             newhtml = newhtml + r'</table></div>'
 
-            if skyhtml:
+            if hasimage:
                 newhtml = newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3>' + skyhtml + '</div>'
 
         newhtml = newhtml + r'\n\1'
