@@ -13,6 +13,8 @@ import numpy
 import shutil
 import gzip
 import requests
+import urllib.request
+import filecmp
 from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
@@ -30,11 +32,11 @@ from palettable import cubehelix
 from math import isnan, floor
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--no-write-catalog', '-wc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
-parser.add_argument('--no-write-html', '-wh',    dest='writehtml',    help='Don\'t write html plot files', default=True, action='store_false')
-parser.add_argument('--force-html', '-fh',       dest='forcehtml',    help='Force write html plot files',  default=False, action='store_true')
-parser.add_argument('--event-list', '-el',       dest='eventlist',    help='Process a list of events',     default=[], type=str, nargs='+')
-parser.add_argument('--test', '-t',              dest='test',         help='Test this script',             default=False, action='store_true')
+parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
+parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',    help='Don\'t write html plot files', default=True, action='store_false')
+parser.add_argument('--force-html', '-fh',        dest='forcehtml',    help='Force write html plot files',  default=False, action='store_true')
+parser.add_argument('--event-list', '-el',        dest='eventlist',    help='Process a list of events',     default=[], type=str, nargs='+')
+parser.add_argument('--test', '-t',               dest='test',         help='Test this script',             default=False, action='store_true')
 args = parser.parse_args()
 
 outdir = "../"
@@ -347,8 +349,6 @@ nophoto = []
 nospectra = []
 totalphoto = 0
 totalspectra = 0
-hostgalscount = 0
-hostgalshtml = ''
 
 files = []
 for rep in repfolders:
@@ -390,6 +390,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['name'] = "<a href='sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
     catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
+    if 'discoverdate' in catalog[entry]:
+        for d, date in enumerate(catalog[entry]['discoverdate']):
+            catalog[entry]['discoverdate'][d]['value'] = catalog[entry]['discoverdate'][d]['value'].split('.')[0]
+    if 'maxdate' in catalog[entry]:
+        for d, date in enumerate(catalog[entry]['maxdate']):
+            catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][d]['value'].split('.')[0]
+
     photoavail = 'photometry' in catalog[entry]
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
@@ -551,7 +558,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             mjdmax = ''
             if spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
                 if 'maxdate' in catalog[entry]:
-                    mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'])
+                    mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'].replace('/', '-')).mjd
                 if mjdmax:
                     hasmjdmax = True
                     mjdmax = (float(spectrum['time']) - mjdmax) / (1.0 + float(catalog[entry]['redshift'][0]['value']))
@@ -698,14 +705,24 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         snra = catalog[entry]['ra'][0]['value']
         sndec = catalog[entry]['dec'][0]['value']
         c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
-        skyhtml = ('<a href="http://skyserver.sdss.org/DR10/en/tools/chart/navi.aspx?opt=G&ra='
-            + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="http://skyservice.pha.jhu.edu/DR10/ImgCutout/getjpeg.aspx?ra='
-            + str(c.ra.deg) + '&amp;dec=' + str(c.dec.deg) + '&amp;scale=0.3&amp;width=500&amp;height=500&amp;opt=G" width=250>')
 
-        hostgalscount += 1
-        if (hostgalscount % 5) == 0:
-            hostgalshtml = hostgalshtml + '<br>'
-        hostgalshtml = hostgalshtml + skyhtml
+        hasimage = True
+        if not os.path.isfile(outdir + fileeventname + '-host.jpg'):
+            try:
+                response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
+                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.3&width=500&height=500&opt=G')
+            except:
+                hasimage = False
+            else:
+                with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
+                    f.write(response.read())
+
+        if hasimage and filecmp.cmp(outdir + fileeventname + '-host.jpg', outdir + 'missing.jpg'):
+            hasimage = False
+
+        if hasimage:
+            skyhtml = ('<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
+                + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250>')
 
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
@@ -904,8 +921,6 @@ if args.writecatalog and not args.eventlist:
         f.write("{:,}".format(totalphoto))
     with open(outdir + 'spectracount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(totalspectra))
-    with open(outdir + 'hostgalaxies.html' + testsuffix, 'w') as f:
-        f.write(hostgalshtml)
 
     ctypedict = dict()
     for entry in catalog:

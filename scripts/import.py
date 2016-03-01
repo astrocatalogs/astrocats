@@ -80,7 +80,9 @@ repbetterquanta = {
     'redshift',
     'ebv',
     'hvel',
-    'lumdist'
+    'lumdist',
+    'discoverdate',
+    'maxdate'
 }
 
 def event_attr_priority(attr):
@@ -372,30 +374,43 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
     if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
         newquantas = []
         isworse = True
-        newsig = get_sig_digits(svalue)
-        for ct in events[name][quanta]:
-            if 'error' in ct:
-                if serror:
-                    if float(serror) < float(ct['error']):
+        if quanta == 'discoverdate' or quanta == 'maxdate':
+            for ct in events[name][quanta]:
+                ctsplit = ct['value'].split('/')
+                svsplit = svalue.split('/')
+                if len(ctsplit) < len(svsplit):
+                    isworse = False
+                    continue
+                elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
+                    if max(2,get_sig_digits(ctsplit[-1].lstrip('0'))) < max(2,get_sig_digits(svsplit[-1].lstrip('0'))):
                         isworse = False
                         continue
                 newquantas.append(ct)
-            else:
-                if serror:
-                    isworse = False
-                    continue
-                oldsig = get_sig_digits(ct['value'])
-                if oldsig >= newsig:
+        else:
+            newsig = get_sig_digits(svalue)
+            for ct in events[name][quanta]:
+                if 'error' in ct:
+                    if serror:
+                        if float(serror) < float(ct['error']):
+                            isworse = False
+                            continue
                     newquantas.append(ct)
-                if newsig >= oldsig:
-                    isworse = False
+                else:
+                    if serror:
+                        isworse = False
+                        continue
+                    oldsig = get_sig_digits(ct['value'])
+                    if oldsig >= newsig:
+                        newquantas.append(ct)
+                    if newsig >= oldsig:
+                        isworse = False
         if not isworse:
             newquantas.append(quantaentry)
         events[name][quanta] = newquantas
     else:
         events[name].setdefault(quanta,[]).append(quantaentry)
 
-def make_date_string(year, month = '', day = '')
+def make_date_string(year, month = '', day = ''):
     if not year:
         raise ValueError('At least the year must be specified when constructing date string')
     datestring = str(year)
@@ -441,7 +456,7 @@ def set_first_max_light(name):
         if mlmag:
             add_quanta(name, 'maxappmag', pretty_num(mlmag), 'D')
 
-    if 'discoverdate' not in events[name]:
+    if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         fldt = get_first_light(name)
         if fldt:
             add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
@@ -759,7 +774,7 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014ApJ...795...44R')
         astrot = astrotime(row['tdisc'], format='mjd').datetime
-        add_quanta(name, 'discoverdate',  make_date_string(str(astrot.year, astrot.month, astrot.day), source)
+        add_quanta(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
         add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
@@ -1526,7 +1541,7 @@ if do_task('lennarz'):
         if row['Ddate']:
             datestring = row['Ddate'].replace('-', '/')
 
-            add_quanta(name, 'maxdate', datestring, source)
+            add_quanta(name, 'discoverdate', datestring, source)
 
             if 'photometry' not in events[name]:
                 if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
