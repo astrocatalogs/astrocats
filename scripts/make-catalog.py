@@ -723,7 +723,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         imgsrc = ''
         hasimage = True
         if eventname in hostimgdict:
-            imgsrc = hostingdict[eventname]
+            imgsrc = hostimgdict[eventname]
         else:
             try:
                 response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
@@ -772,6 +772,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
             elif imgsrc == 'DSS':
                 hostimgs.append([eventname, 'DSS'])
+                url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
+                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=0.041666&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                       "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
+                       "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
                 skyhtml = ('<a href="' + url + '"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
         else:
             hostimgs.append([eventname, 'None'])
@@ -783,7 +787,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hostlink = "<a class='nhi' href='" + plotlink + "' target='_blank'></a>"
 
     if 'host' not in catalog[entry]:
-        catalog[entry]['host'] = [{'value':'hostlink'}]
+        if hasimage:
+            catalog[entry]['host'] = [{'value':hostlink}]
     else:
         catalog[entry]['host'][0]['value'] = hostlink + " " + catalog[entry]['host'][0]['value']
 

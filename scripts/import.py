@@ -1825,7 +1825,7 @@ if do_task('wiserepspectra'):
                                 errors = ''
                                 if len(data) == 3:
                                     errors = data[1]
-                                time = astrotime(epoch)
+                                time = astrotime(epoch).mjd
 
                                 if max([float(x) for x in fluxes]) < 1.0e-5:
                                     fluxunit = 'erg/s/cm^2/Angstrom'
@@ -1833,7 +1833,7 @@ if do_task('wiserepspectra'):
                                     fluxunit = 'Uncalibrated'
 
                                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = fluxunit, errors = errors, errorunit = fluxunit, wavelengths = wavelengths,
-                                    fluxes = fluxes, timeunit = 'MJD', time = epoch, instrument = instrument, source = sources, observer = observer, reducer = reducer)
+                                    fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer)
 
                                 f.close()
     journal_events()
