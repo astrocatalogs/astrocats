@@ -14,6 +14,7 @@ import shutil
 import gzip
 import requests
 import urllib.request
+import urllib.parse
 import filecmp
 from datetime import datetime
 from astropy.time import Time as astrotime
@@ -29,14 +30,16 @@ from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VB
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
+from bs4 import BeautifulSoup, Tag, NavigableString
 from math import isnan, floor
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',    default=True, action='store_false')
-parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',    help='Don\'t write html plot files', default=True, action='store_false')
-parser.add_argument('--force-html', '-fh',        dest='forcehtml',    help='Force write html plot files',  default=False, action='store_true')
-parser.add_argument('--event-list', '-el',        dest='eventlist',    help='Process a list of events',     default=[], type=str, nargs='+')
-parser.add_argument('--test', '-t',               dest='test',         help='Test this script',             default=False, action='store_true')
+parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',         default=True, action='store_false')
+parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',    help='Don\'t write html plot files',      default=True, action='store_false')
+parser.add_argument('--no-collect-hosts', '-nch', dest='collecthosts', help='Don\'t collect host galaxy images', default=True, action='store_false')
+parser.add_argument('--force-html', '-fh',        dest='forcehtml',    help='Force write html plot files',       default=False, action='store_true')
+parser.add_argument('--event-list', '-el',        dest='eventlist',    help='Process a list of events',          default=[], type=str, nargs='+')
+parser.add_argument('--test', '-t',               dest='test',         help='Test this script',                  default=False, action='store_true')
 args = parser.parse_args()
 
 outdir = "../"
@@ -349,6 +352,16 @@ nophoto = []
 nospectra = []
 totalphoto = 0
 totalspectra = 0
+
+hostimgs = []
+if os.path.isfile(outdir + 'hostimgs.json'):
+    with open(outdir + 'hostimgs.json', 'r') as f:
+        filetext = f.read()
+    oldhostimgs = json.loads(filetext)
+    oldhostimgs = [list(i) for i in zip(*oldhostimgs)]
+    hostimgdict = dict(list(zip(oldhostimgs[0], oldhostimgs[1])))
+else:
+    hostimgdict = {}
 
 files = []
 for rep in repfolders:
@@ -702,13 +715,16 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     hasimage = False
     skyhtml = ''
-    if 'ra' in catalog[entry] and 'dec' in catalog[entry]:
+    if 'ra' in catalog[entry] and 'dec' in catalog[entry] and args.collecthosts:
         snra = catalog[entry]['ra'][0]['value']
         sndec = catalog[entry]['dec'][0]['value']
         c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
 
+        imgsrc = ''
         hasimage = True
-        if not os.path.isfile(outdir + fileeventname + '-host.jpg'):
+        if eventname in hostimgdict:
+            imgsrc = hostingdict[eventname]
+        else:
             try:
                 response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
                     + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.3&width=500&height=500&opt=G')
@@ -717,13 +733,48 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             else:
                 with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
                     f.write(response.read())
+                imgsrc = 'SDSS'
 
-        if hasimage and filecmp.cmp(outdir + fileeventname + '-host.jpg', outdir + 'missing.jpg'):
-            hasimage = False
+            if hasimage and filecmp.cmp(outdir + fileeventname + '-host.jpg', outdir + 'missing.jpg'):
+                hasimage = False
+
+            if not hasimage:
+                hasimage = True
+                url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
+                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=0.041666&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                       "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
+                       "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
+
+                response = urllib.request.urlopen(url)
+                bandsoup = BeautifulSoup(response, "html5lib")
+                images = bandsoup.findAll('img')
+                imgname = ''
+                for image in images:
+                    if "Quicklook RGB image" in image.get('alt', ''):
+                        imgname = image.get('src', '').split('/')[-1]
+
+                if imgname:
+                    try:
+                        response = urllib.request.urlopen('http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname)
+                    except:
+                        hasimage = False
+                    else:
+                        with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
+                            f.write(response.read())
+                        imgsrc = 'DSS'
+                else:
+                    hasimage = False
 
         if hasimage:
-            skyhtml = ('<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
-                + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250>')
+            if imgsrc == 'SDSS':
+                hostimgs.append([eventname, 'SDSS'])
+                skyhtml = ('<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
+                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
+            elif imgsrc == 'DSS':
+                hostimgs.append([eventname, 'DSS'])
+                skyhtml = ('<a href="' + url + '"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
+        else:
+            hostimgs.append([eventname, 'None'])
 
     plotlink = "sne/" + fileeventname + "/"
     if hasimage:
@@ -887,6 +938,12 @@ if args.writecatalog and not args.eventlist:
     #Write the MD5 checksums
     jsonstring = json.dumps(md5s, separators=(',',':'))
     f = open(outdir + 'md5s.json' + testsuffix, 'w')
+    f.write(jsonstring)
+    f.close()
+
+    #Write the host image info
+    jsonstring = json.dumps(hostimgs, separators=(',',':'))
+    f = open(outdir + 'hostimgs.json' + testsuffix, 'w')
     f.write(jsonstring)
     f.close()
 

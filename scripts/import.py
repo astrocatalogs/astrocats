@@ -45,6 +45,7 @@ tasks = {
     "ogle":           {"update": True },
     "snls":           {"update": False},
     "nedd":           {"update": False},
+    "wiserepspectra": {"update": False},
     "cfaiaspectra":   {"update": False},
     "cfaibcspectra":  {"update": False},
     "snlsspectra":    {"update": False},
@@ -995,8 +996,8 @@ if do_task('suspect'):
 
 # CfA data
 if do_task('cfa'): 
-    for file in sorted(glob.glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower()):
-        f = open(file,'r')
+    for fname in sorted(glob.glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower()):
+        f = open(fname,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         csv_data = []
         for r, row in enumerate(tsvin):
@@ -1010,7 +1011,7 @@ if do_task('cfa'):
                 csv_data[r][c] = col.strip()
             csv_data[r] = [_f for _f in csv_data[r] if _f]
 
-        eventname = os.path.basename(os.path.splitext(file)[0])
+        eventname = os.path.basename(os.path.splitext(fname)[0])
 
         eventparts = eventname.split('_')
 
@@ -1099,11 +1100,11 @@ if do_task('cfa'):
 
 # Now import the UCB SNDB
 if do_task('ucb'): 
-    for file in sorted(glob.glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower()):
-        f = open(file,'r')
+    for fname in sorted(glob.glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower()):
+        f = open(fname,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
-        eventname = os.path.basename(os.path.splitext(file)[0])
+        eventname = os.path.basename(os.path.splitext(fname)[0])
 
         eventparts = eventname.split('.')
 
@@ -1133,8 +1134,8 @@ if do_task('ucb'):
 # Import SDSS
 if do_task('sdss'): 
     sdssbands = ['u', 'g', 'r', 'i', 'z']
-    for file in sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()):
-        f = open(file,'r')
+    for fname in sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()):
+        f = open(fname,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
         for r, row in enumerate(tsvin):
@@ -1229,11 +1230,11 @@ if do_task('gaia'):
 # Import CSP
 if do_task('csp'): 
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-    for file in sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower()):
-        f = open(file,'r')
+    for fname in sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower()):
+        f = open(fname,'r')
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
-        eventname = os.path.basename(os.path.splitext(file)[0])
+        eventname = os.path.basename(os.path.splitext(fname)[0])
 
         eventparts = eventname.split('opt+')
 
@@ -1727,6 +1728,116 @@ if do_task('nedd'):
         oldhostname = hostname
     journal_events()
 
+if do_task('wiserepspectra'):
+    secondaryreference = 'WISeREP'
+    secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
+
+    oldname = ''
+    for folder in sorted(next(os.walk("../sne-external-WISEREP"))[1], key=lambda s: s.lower()):
+        files = glob.glob("../sne-external-WISEREP/" + folder + '/*')
+        for fname in files:
+            if '.html' in fname:
+                with open(fname, 'r') as f:
+                    path = os.path.abspath(fname)
+                    response = urllib.request.urlopen('file://' + path)
+                    bs = BeautifulSoup(response, "html5lib")
+                    trs = bs.findAll('tr', {'valign': 'top'})
+                    for tri, tr in enumerate(trs):
+                        if "Click to show/update object" in str(tr.contents):
+                            produceoutput = True
+                            tds = tr.findAll('td')
+                            for tdi, td in enumerate(tds):
+                                if td.contents:
+                                    if tdi == 3:
+                                        name = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                    elif tdi == 5:
+                                        claimedtype = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                    elif tdi == 9:
+                                        instrument = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                    elif tdi == 11:
+                                        epoch = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                    elif tdi == 13:
+                                        observer = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                        if observer == 'Unknown' or observer == 'Other':
+                                            observer = ''
+                                    elif tdi == 17:
+                                        reducer = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                        if reducer == 'Unknown' or reducer == 'Other':
+                                            reducer = ''
+                                    elif tdi == 25:
+                                        speclinks = td.findAll('a')
+                                        for link in speclinks:
+                                            if 'Ascii' in link['href']:
+                                                specfile = link['href'].split('/')[-1]
+                                                for fname in files:
+                                                    if specfile in fname:
+                                                        specpath = fname
+                                    else:
+                                        continue
+                        elif "Publish:</span>" in str(tr.contents) and produceoutput:
+                            produceoutput = False
+                            biblink = bs.find('a', {'title': 'Link to NASA ADS'})
+                            bibcode = biblink.contents[0]
+                            print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode)
+
+                            name = add_event(name)
+                            if oldname and name != oldname:
+                                journal_events()
+                            oldname = name
+
+                            source = get_source(name, bibcode = bibcode)
+                            secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+                            sources = ','.join([source, secondarysource])
+
+                            if specpath:
+                                f = open(specpath,'r')
+                                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+
+                                skipspec = False
+                                trytabs = False
+                                newdata = []
+                                for row in data:
+                                    if row and '#' not in row[0]:
+                                        if len(row) < 2:
+                                            trytabs = True
+                                            break
+                                        if is_number(row[0]):
+                                            newdata.append(row)
+
+                                if trytabs:
+                                    f.seek(0)
+                                    data = csv.reader(f, delimiter='\t', skipinitialspace=True)
+                                    newdata = []
+                                    for row in data:
+                                        if row and '#' not in row[0]:
+                                            if len(row) < 2:
+                                                skipspec = True
+                                                break
+                                            if is_number(row[0]):
+                                                newdata.append(row)
+
+                                if skipspec:
+                                    continue
+
+                                data = [list(i) for i in zip(*newdata)]
+                                wavelengths = data[0]
+                                fluxes = data[1]
+                                errors = ''
+                                if len(data) == 3:
+                                    errors = data[1]
+                                time = astrotime(epoch)
+
+                                if max([float(x) for x in fluxes]) < 1.0e-5:
+                                    fluxunit = 'erg/s/cm^2/Angstrom'
+                                else:
+                                    fluxunit = 'Uncalibrated'
+
+                                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = fluxunit, errors = errors, errorunit = fluxunit, wavelengths = wavelengths,
+                                    fluxes = fluxes, timeunit = 'MJD', time = epoch, instrument = instrument, source = sources, observer = observer, reducer = reducer)
+
+                                f.close()
+    journal_events()
+
 if do_task('cfaiaspectra'): 
     oldname = ''
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
@@ -1743,8 +1854,8 @@ if do_task('cfaiaspectra'):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
-        for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
-            fileparts = os.path.basename(file).split('-')
+        for fname in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
+            fileparts = os.path.basename(fname).split('-')
             if name[:2] == "SN" and is_number(name[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
@@ -1756,7 +1867,7 @@ if do_task('cfaiaspectra'):
                 day = fileparts[2][6:]
                 instrument = fileparts[3].split('.')[0]
             time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
-            f = open(file,'r')
+            f = open(fname,'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
@@ -1781,8 +1892,8 @@ if do_task('cfaibcspectra'):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
-        for file in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
-            fileparts = os.path.basename(file).split('-')
+        for fname in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
+            fileparts = os.path.basename(fname).split('-')
             instrument = ''
             year = fileparts[1][:4]
             month = fileparts[1][4:6]
@@ -1790,7 +1901,7 @@ if do_task('cfaibcspectra'):
             if len(fileparts) > 2:
                 instrument = fileparts[-1].split('.')[0]
             time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
-            f = open(file,'r')
+            f = open(fname,'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
@@ -1809,8 +1920,8 @@ if do_task('snlsspectra'):
         datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
     oldname = ''
-    for file in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
-        fileparts = os.path.basename(file).split('_')
+    for fname in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
+        fileparts = os.path.basename(fname).split('_')
         name = 'SNLS-' + fileparts[1]
         name = get_preferred_name(name)
         if oldname and name != oldname:
@@ -1821,7 +1932,7 @@ if do_task('snlsspectra'):
 
         add_quanta(name, 'discoverdate', '20' + fileparts[1][:2], source)
 
-        f = open(file,'r')
+        f = open(fname,'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
         specdata = []
         for r, row in enumerate(data):
@@ -1844,8 +1955,8 @@ if do_task('snlsspectra'):
 
 if do_task('cspspectra'): 
     oldname = ''
-    for file in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
-        sfile = os.path.basename(file).split('.')
+    for fname in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
+        sfile = os.path.basename(fname).split('.')
         if sfile[1] == 'txt':
             continue
         sfile = sfile[0]
@@ -1859,7 +1970,7 @@ if do_task('cspspectra'):
         instrument = ': '.join(fileparts[-2:])
         source = get_source(name, bibcode = "2013ApJ...773...53F")
 
-        f = open(file,'r')
+        f = open(fname,'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
         specdata = []
         for r, row in enumerate(data):
