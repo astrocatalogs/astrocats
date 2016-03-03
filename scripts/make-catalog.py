@@ -385,9 +385,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
 
-    f = open(eventfile, 'r')
-    filetext = f.read()
-    f.close()
+    with open(eventfile, 'r') as f:
+        filetext = f.read()
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
@@ -942,48 +941,42 @@ if args.writecatalog and not args.eventlist:
 
     #Write the MD5 checksums
     jsonstring = json.dumps(md5s, separators=(',',':'))
-    f = open(outdir + 'md5s.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'md5s.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     #Write the host image info
     jsonstring = json.dumps(hostimgs, separators=(',',':'))
-    f = open(outdir + 'hostimgs.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     # Make a few small files for generating charts
-    f = open(outdir + 'snepages.csv' + testsuffix, 'w')
-    csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
-    for row in snepages:
-        csvout.writerow(row)
-    f.close()
+    with open(outdir + 'snepages.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
+        for row in snepages:
+            csvout.writerow(row)
 
-    f = open(outdir + 'sources.csv' + testsuffix, 'w')
-    sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
-    csvout = csv.writer(f)
-    csvout.writerow(['Source','Number'])
-    for source in sortedsources:
-        csvout.writerow(source)
-    f.close()
+    with open(outdir + 'sources.csv' + testsuffix, 'w') as f:
+        sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
+        csvout = csv.writer(f)
+        csvout.writerow(['Source','Number'])
+        for source in sortedsources:
+            csvout.writerow(source)
 
     nophoto = sum(nophoto)
     hasphoto = len(catalog) - nophoto
-    f = open(outdir + 'pie.csv' + testsuffix, 'w')
-    csvout = csv.writer(f)
-    csvout.writerow(['Category','Number'])
-    csvout.writerow(['Has light curve', hasphoto])
-    csvout.writerow(['No light curve', nophoto])
-    f.close()
+    with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f)
+        csvout.writerow(['Category','Number'])
+        csvout.writerow(['Has light curve', hasphoto])
+        csvout.writerow(['No light curve', nophoto])
 
     nospectra = sum(nospectra)
     hasspectra = len(catalog) - nospectra
-    f = open(outdir + 'spectra-pie.csv' + testsuffix, 'w')
-    csvout = csv.writer(f)
-    csvout.writerow(['Category','Number'])
-    csvout.writerow(['Has spectra', hasspectra])
-    csvout.writerow(['No spectra', nospectra])
-    f.close()
+    with open(outdir + 'spectra-pie.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f)
+        csvout.writerow(['Category','Number'])
+        csvout.writerow(['Has spectra', hasspectra])
+        csvout.writerow(['No spectra', nospectra])
 
     with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(hasphoto))
@@ -1013,42 +1006,38 @@ if args.writecatalog and not args.eventlist:
         else:
             ctypedict[cleanedtype] = 1
     sortedctypes = sorted(list(ctypedict.items()), key=operator.itemgetter(1), reverse=True)
-    f = open(outdir + 'types.csv' + testsuffix, 'w')
-    csvout = csv.writer(f)
-    csvout.writerow(['Type','Number'])
-    for ctype in sortedctypes:
-        csvout.writerow(ctype)
-    f.close()
+    with open(outdir + 'types.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f)
+        csvout.writerow(['Type','Number'])
+        for ctype in sortedctypes:
+            csvout.writerow(ctype)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
 
     jsonstring = json.dumps(catalog, separators=(',',':'))
-    f = open(outdir + 'catalog.min.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'catalog.min.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     jsonstring = json.dumps(catalog, indent='\t', separators=(',',':'))
-    f = open(outdir + 'catalog.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'catalog.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
-    f = open(outdir + 'catalog.html' + testsuffix, 'w')
-    f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
-    f.write('\t<thead>\n')
-    f.write('\t\t<tr>\n')
-    for h in header:
-        f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
-    f.write('\t\t</tr>\n')
-    f.write('\t</thead>\n')
-    f.write('\t<tfoot>\n')
-    f.write('\t\t<tr>\n')
-    for h in header:
-        f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
-    f.write('\t\t</tr>\n')
-    f.write('\t</thead>\n')
-    f.write('</table>\n')
-    f.close()
+    with open(outdir + 'catalog.html' + testsuffix, 'w') as f:
+        f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
+        f.write('\t<thead>\n')
+        f.write('\t\t<tr>\n')
+        for h in header:
+            f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
+        f.write('\t\t</tr>\n')
+        f.write('\t</thead>\n')
+        f.write('\t<tfoot>\n')
+        f.write('\t\t<tr>\n')
+        for h in header:
+            f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
+        f.write('\t\t</tr>\n')
+        f.write('\t</thead>\n')
+        f.write('</table>\n')
 
     with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
