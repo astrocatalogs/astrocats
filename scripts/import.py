@@ -32,29 +32,29 @@ clight = 29979245800.
 eventnames = []
 
 tasks = {
-#    "internal":       {"update": False},
-#    "vizier":         {"update": False},
-#    "suspect":        {"update": False},
-#    "cfa":            {"update": False},
-#    "ucb":            {"update": False},
-#    "sdss":           {"update": False},
-#    "gaia":           {"update": False},
-#    "csp":            {"update": False},
-#    "itep":           {"update": False},
-#    "asiago":         {"update": False},
-#    "rochester":      {"update": True },
-#    "lennarz":        {"update": False},
-#    "ogle":           {"update": True },
-#    "snls":           {"update": False},
-#    "nedd":           {"update": False},
+    "internal":       {"update": False},
+    "vizier":         {"update": False},
+    "suspect":        {"update": False},
+    "cfa":            {"update": False},
+    "ucb":            {"update": False},
+    "sdss":           {"update": False},
+    "gaia":           {"update": False},
+    "csp":            {"update": False},
+    "itep":           {"update": False},
+    "asiago":         {"update": False},
+    "rochester":      {"update": True },
+    "lennarz":        {"update": False},
+    "ogle":           {"update": True },
+    "snls":           {"update": False},
+    "nedd":           {"update": False},
     "wiserepspectra": {"update": False},
-#    "cfaiaspectra":   {"update": False},
-#    "cfaibcspectra":  {"update": False},
-#    "snlsspectra":    {"update": False},
-#    "cspspectra":     {"update": False},
-#    "ucbspectra":     {"update": False},
-#    "suspectspectra": {"update": False},
-#    "snfspectra":     {"update": False},
+    "cfaiaspectra":   {"update": False},
+    "cfaibcspectra":  {"update": False},
+    "snlsspectra":    {"update": False},
+    "cspspectra":     {"update": False},
+    "ucbspectra":     {"update": False},
+    "suspectspectra": {"update": False},
+    "snfspectra":     {"update": False},
     "writeevents":    {"update": True }
 }
 
@@ -1736,6 +1736,7 @@ if do_task('nedd'):
     journal_events()
 
 if do_task('wiserepspectra'):
+    wiserepcnt = 0
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
 
@@ -1778,7 +1779,7 @@ if do_task('wiserepspectra'):
                                         specfile = ''
                                         for link in speclinks:
                                             if 'Ascii' in link['href']:
-                                                specfile = link['href'].split('/')[-1]
+                                                specfile = link.contents[0].strip()
                                                 tfiles = deepcopy(lfiles)
                                                 for fi, fname in enumerate(lfiles):
                                                     if specfile in fname:
@@ -1796,10 +1797,11 @@ if do_task('wiserepspectra'):
                             bibcode = biblink.contents[0]
                             print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode)
 
-                            name = add_event(name)
+                            name = get_preferred_name(name)
                             if oldname and name != oldname:
                                 journal_events()
                             oldname = name
+                            name = add_event(name)
 
                             source = get_source(name, bibcode = bibcode)
                             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
@@ -1835,6 +1837,7 @@ if do_task('wiserepspectra'):
                                                 oldval = row[1]
 
                                 if skipspec:
+                                    print('skipped adding spectrum file ' + specfile)
                                     continue
 
                                 data = [list(i) for i in zip(*newdata)]
@@ -1852,10 +1855,11 @@ if do_task('wiserepspectra'):
 
                                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = fluxunit, errors = errors, errorunit = fluxunit, wavelengths = wavelengths,
                                     fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer)
+                                wiserepcnt = wiserepcnt + 1
 
                 print('unadded files: ')
                 print(lfiles)
-                break
+                print('wiserep spec count: ' + str(wiserepcnt))
     journal_events()
 
 if do_task('cfaiaspectra'): 

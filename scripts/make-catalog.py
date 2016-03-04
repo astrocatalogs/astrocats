@@ -400,7 +400,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['name'] = "<a href='sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
+    catalog[entry]['name'] = "<a href='https://sne.space/sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
     catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
@@ -831,7 +831,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 newhtml = newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] + r'</td><td width=250px class="event-cell">'
                 
                 if isinstance(catalog[entry][key], str):
-                    newhtml = newhtml + catalog[entry][key]
+                    newhtml = newhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
                 else:
                     for r, row in enumerate(catalog[entry][key]):
                         if 'value' in row and 'source' in row:
