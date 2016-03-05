@@ -315,6 +315,13 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         svalue = svalue.replace("Mrk", "MRK")
         svalue = svalue.replace("MRK", "MRK ")
         svalue = svalue.replace("PGC", "PGC ")
+        svalue = svalue.replace("MCG+", "MCG +")
+        svalue = svalue.replace("MCG-", "MCG -")
+        svalue = svalue.replace("M+", "MCG +")
+        svalue = svalue.replace("M-", "MCG -")
+        if svalue[:5] == "MGC +" or svalue[:5] == "MGC -":
+            svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].split("-")])
+            print(svalue)
         svalue = ' '.join(svalue.split())
     elif quanta == 'claimedtype':
         for rep in typereps:
@@ -1797,6 +1804,8 @@ if do_task('wiserepspectra'):
                             bibcode = biblink.contents[0]
                             print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode)
 
+                            if name[:2] == 'sn':
+                                name = 'SN' + name[2:]
                             name = get_preferred_name(name)
                             if oldname and name != oldname:
                                 journal_events()
@@ -1816,27 +1825,22 @@ if do_task('wiserepspectra'):
                                 oldval = ''
                                 for row in data:
                                     if row and '#' not in row[0]:
-                                        if len(row) < 2:
-                                            trytabs = True
-                                            break
-                                        if is_number(row[0]) and row[1] != oldval:
+                                        if len(row) >= 2 and is_number(row[0]) and is_number(row[1]) and row[1] != oldval:
                                             newdata.append(row)
                                             oldval = row[1]
 
-                                if trytabs:
+                                # Try tab-delimited if data array is empty
+                                if not newdata:
                                     f.seek(0)
                                     data = csv.reader(f, delimiter='\t', skipinitialspace=True)
                                     newdata = []
                                     for row in data:
                                         if row and '#' not in row[0]:
-                                            if len(row) < 2:
-                                                skipspec = True
-                                                break
-                                            if is_number(row[0]) and row[1] != oldval:
+                                            if len(row) >= 2 and is_number(row[0]) and is_number(row[1]) and row[1] != oldval:
                                                 newdata.append(row)
                                                 oldval = row[1]
 
-                                if skipspec:
+                                if skipspec or not newdata:
                                     print('skipped adding spectrum file ' + specfile)
                                     continue
 
@@ -1846,7 +1850,7 @@ if do_task('wiserepspectra'):
                                 errors = ''
                                 if len(data) == 3:
                                     errors = data[1]
-                                time = astrotime(epoch).mjd
+                                time = str(astrotime(epoch).mjd)
 
                                 if max([float(x) for x in fluxes]) < 1.0e-5:
                                     fluxunit = 'erg/s/cm^2/Angstrom'

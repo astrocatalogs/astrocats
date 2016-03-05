@@ -461,15 +461,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(x['time']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        phototimelowererrs = [float(x['e_lower_time']) if ('e_lower_time' in x and 'e_upper_time' in x)
+            else (float(x['e_time']) if 'e_time' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        phototimeuppererrs = [float(x['e_upper_time']) if ('e_lower_time' in x and 'e_upper_time' in x) in x
+            else (float(x['e_time']) if 'e_time' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoAB = [float(x['magnitude']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
-        photoerrs = [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoABerrs = [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoband = [(x['band'] if 'band' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoinstru = [(x['instrument'] if 'instrument' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
         phototype = [(x['upperlimit'] if 'upperlimit' in x else False) for x in catalog[entry]['photometry'] if 'magnitude' in x]
 
         x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
-        x_range = [-x_buffer + min(phototime), x_buffer + max(phototime)]
 
         tt = [  
                 ("Source ID", "@src"),
@@ -483,15 +486,16 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hover = HoverTool(tooltips = tt)
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='AB Magnitude', x_range = x_range, tools = tools, 
-            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoerrs))])))
+            y_axis_label='AB Magnitude', tools = tools, 
+            x_range = (x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))]), -x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))])),
+            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])))
         p1.add_tools(hover)
 
         err_xs = []
         err_ys = []
 
-        for x, y, yerr in list(zip(phototime, photoAB, photoerrs)):
-            err_xs.append((x, x))
+        for x, y, xlowerr, xupperr, yerr in list(zip(phototime, photoAB, phototimelowererrs, phototimeuppererrs, photoABerrs)):
+            err_xs.append((x - xlowerr, x + xupperr))
             err_ys.append((y - yerr, y + yerr))
 
         bandset = set(photoband)
@@ -501,10 +505,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
             indt = [i for i, j in enumerate(phototype) if not j]
-            indne = [i for i, j in enumerate(photoerrs) if j == 0.]
-            indye = [i for i, j in enumerate(photoerrs) if j > 0.]
-            indne = set(indb).intersection(indt).intersection(indne)
-            indye = set(indb).intersection(indt).intersection(indye)
+            # Should always have upper error if have lower error.
+            indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
+            indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
+            indney = [i for i, j in enumerate(photoABerrs) if j == 0.]
+            indyey = [i for i, j in enumerate(photoABerrs) if j > 0.]
+            indne = set(indb).intersection(indt).intersection(indney).intersection(indnex)
+            indye = set(indb).intersection(indt).intersection(set(indyey).union(indnex))
 
             noerrorlegend = bandname if len(indne) == 0 else ''
 
@@ -512,7 +519,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 data = dict(
                     x = [phototime[i] for i in indne],
                     y = [photoAB[i] for i in indne],
-                    err = [photoerrs[i] for i in indne],
+                    err = [photoABerrs[i] for i in indne],
                     desc = [photoband[i] for i in indne],
                     instr = [photoinstru[i] for i in indne],
                     src = [photosource[i] for i in indne]
@@ -524,7 +531,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 data = dict(
                     x = [phototime[i] for i in indye],
                     y = [photoAB[i] for i in indye],
-                    err = [photoerrs[i] for i in indye],
+                    err = [photoABerrs[i] for i in indye],
                     desc = [photoband[i] for i in indye],
                     instr = [photoinstru[i] for i in indye],
                     src = [photosource[i] for i in indye]
@@ -719,6 +726,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         sndec = catalog[entry]['dec'][0]['value']
         c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
 
+        if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
+            if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                sdssimagescale = max(0.05,0.04125/float(catalog[entry]['lumdist'][0]['value']))
+            else:
+                sdssimagescale = max(0.05,20.6265/float(catalog[entry]['lumdist'][0]['value']))
+        else:
+            if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                sdssimagescale = 0.0006
+            else:
+                sdssimagescale = 0.3
+        dssimagescale = 0.13889*sdssimagescale
+        #At the moment, no way to check if host is in SDSS footprint without comparing to empty image, which is only possible at fixed angular resolution.
+        sdssimagescale = 0.3
+
         imgsrc = ''
         hasimage = True
         if eventname in hostimgdict:
@@ -726,7 +747,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             try:
                 response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
-                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.3&width=500&height=500&opt=G')
+                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G')
             except:
                 hasimage = False
             else:
@@ -740,7 +761,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if not hasimage:
                 hasimage = True
                 url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
-                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=0.041666&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=" + dssimagescale + "&float=on&scaling=Log&resolver=SIMBAD-NED" +
                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
 
