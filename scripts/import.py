@@ -562,7 +562,7 @@ def delete_old_event_files():
         for f in filelist:
             os.remove(f)
 
-def write_all_events(empty = False):
+def write_all_events(empty = False, lfs = True):
     # Write it all out!
     for name in events:
         if 'stub' in events[name]:
@@ -585,9 +585,10 @@ def write_all_events(empty = False):
             outdir += str(repfolders[0])
 
         path = outdir + '/' + filename + '.json'
-        f = codecs.open(path, 'w', encoding='utf8')
-        f.write(jsonstring)
-        f.close()
+        with codecs.open(path, 'w', encoding='utf8') as f:
+            f.write(jsonstring)
+        if (os.path.getsize(path) > 90000000):
+            os.system('cd ' + outdir + '; git lfs track ' + filename + '; cd ' + '../scripts')
 
 def load_event_from_file(name = '', location = '', clean = False, delete = True):
     if not name and not location:
@@ -2229,7 +2230,7 @@ if do_task('writeevents'):
         name = os.path.basename(os.path.splitext(fi)[0])
         name = add_event(name)
         derive_and_sanitize()
-        write_all_events(empty = True)
+        write_all_events(empty = True, lfs = True)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
