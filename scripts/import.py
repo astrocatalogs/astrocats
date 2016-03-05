@@ -11,9 +11,11 @@ import json
 import codecs
 import resource
 import argparse
+import gzip
+import shutil
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
-
+from copy import deepcopy
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
@@ -246,6 +248,9 @@ def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = ""
         photoentry['upperlimit'] = upperlimit
     events[name].setdefault('photometry',[]).append(photoentry)
 
+def trim_str_arr(arr, length = 10):
+    return [str(round_sig(float(x), length)) if (len(x) > length and len(str(round_sig(float(x), length))) < len(x)) else x for x in arr]
+
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "",
     observer = "", reducer = ""):
@@ -280,9 +285,9 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
             'Warning: No error unit specified, not adding spectrum.'
             return
         spectrumentry['errorunit'] = errorunit
-        data = [wavelengths, fluxes, errors]
+        data = [trim_str_arr(wavelengths), trim_str_arr(fluxes), trim_str_arr(errors)]
     else:
-        data = [wavelengths, fluxes]
+        data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
     spectrumentry['data'] = [list(i) for i in zip(*data)]
     if source:
         spectrumentry['source'] = source
@@ -310,6 +315,13 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         svalue = svalue.replace("Mrk", "MRK")
         svalue = svalue.replace("MRK", "MRK ")
         svalue = svalue.replace("PGC", "PGC ")
+        svalue = svalue.replace("MCG+", "MCG +")
+        svalue = svalue.replace("MCG-", "MCG -")
+        svalue = svalue.replace("M+", "MCG +")
+        svalue = svalue.replace("M-", "MCG -")
+        if svalue[:5] == "MGC +" or svalue[:5] == "MGC -":
+            svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].split("-")])
+            print(svalue)
         svalue = ' '.join(svalue.split())
     elif quanta == 'claimedtype':
         for rep in typereps:
@@ -533,6 +545,9 @@ def derive_and_sanitize():
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                         add_quanta(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
                             5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), 'D')
+                if 'comovingdist' not in events[name]:
+                    dl = cosmo.comoving_distance(float(bestz))
+                    add_quanta(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: (float(x['time']),
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
@@ -543,7 +558,7 @@ def derive_and_sanitize():
 def delete_old_event_files():
     # Delete all old event JSON files
     for folder in repfolders:
-        filelist = glob.glob("../" + folder + "/*.json") + glob.glob("../" + folder + "/*.json.gz")
+        filelist = glob.glob("../" + folder + "/*.json")
         for f in filelist:
             os.remove(f)
 
@@ -569,7 +584,8 @@ def write_all_events(empty = False):
         else:
             outdir += str(repfolders[0])
 
-        f = codecs.open(outdir + '/' + filename + '.json', 'w', encoding='utf8')
+        path = outdir + '/' + filename + '.json'
+        f = codecs.open(path, 'w', encoding='utf8')
         f.write(jsonstring)
         f.close()
 
@@ -595,8 +611,9 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True)
                 del events[name]
             events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
             name = next(reversed(events))
-            if clean:
-                clean_event(name)
+
+        if clean:
+            clean_event(name)
         if 'writeevents' in tasks and delete:
             os.remove(path)
         return name
@@ -1438,6 +1455,8 @@ if do_task('rochester'):
             elif len(sn) >= 4 and is_number(sn[:4]):
                 sn = 'SN' + sn
             if not name:
+                if not sn:
+                    continue
                 name = add_event(sn)
 
             if cols[14].contents:
@@ -1688,10 +1707,10 @@ if do_task('nedd'):
         distmod = row[4]
         moderr = row[5]
         dist = row[6]
-        disterr = ''
-        if moderr:
-            sig = get_sig_digits(moderr)
-            disterr = pretty_num(1.0e-6*(10.0**(0.2*(5.0 + float(distmod))) * (10.0**(0.2*float(moderr)) - 1.0)), sig = sig)
+        #disterr = ''
+        #if moderr:
+        #    sig = get_sig_digits(moderr)
+        #    disterr = pretty_num(1.0e-6*(10.0**(0.2*(5.0 + float(distmod))) * (10.0**(0.2*float(moderr)) - 1.0)), sig = sig)
         bibcode = row[8]
         name = ''
         if hostname[:3] == 'SN ':
@@ -1699,7 +1718,7 @@ if do_task('nedd'):
                 name = 'SN' + hostname[3:]
             else:
                 name = hostname[3:]
-        if hostname[:5] == 'SNLS ':
+        elif hostname[:5] == 'SNLS ':
             name = 'SNLS-' + hostname[5:].split()[0]
         if name:
             name = add_event(name)
@@ -1709,7 +1728,7 @@ if do_task('nedd'):
                 sources = ','.join([source, secondarysource])
             else:
                 sources = secondarysource
-            add_quanta(name, 'lumdist', dist, sources, error = disterr)
+            add_quanta(name, 'comovingdist', dist, sources)
         #else:
         #    cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
         #    for name in events:
@@ -1723,12 +1742,13 @@ if do_task('nedd'):
         #                        sources = ','.join([source, secondarysource])
         #                    else:
         #                        sources = secondarysource
-        #                    add_quanta(name, 'lumdist', dist, sources, error = disterr)
+        #                    add_quanta(name, 'comovingdist', dist, sources)
         #                    break
         oldhostname = hostname
     journal_events()
 
 if do_task('wiserepspectra'):
+    wiserepcnt = 0
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
 
@@ -1737,6 +1757,7 @@ if do_task('wiserepspectra'):
         files = glob.glob("../sne-external-WISEREP/" + folder + '/*')
         for fname in files:
             if '.html' in fname:
+                lfiles = deepcopy(files)
                 with open(fname, 'r') as f:
                     path = os.path.abspath(fname)
                     response = urllib.request.urlopen('file://' + path)
@@ -1745,6 +1766,7 @@ if do_task('wiserepspectra'):
                     for tri, tr in enumerate(trs):
                         if "Click to show/update object" in str(tr.contents):
                             produceoutput = True
+                            specpath = ''
                             tds = tr.findAll('td')
                             for tdi, td in enumerate(tds):
                                 if td.contents:
@@ -1766,57 +1788,53 @@ if do_task('wiserepspectra'):
                                             reducer = ''
                                     elif tdi == 25:
                                         speclinks = td.findAll('a')
+                                        specfile = ''
                                         for link in speclinks:
                                             if 'Ascii' in link['href']:
-                                                specfile = link['href'].split('/')[-1]
-                                                for fname in files:
+                                                specfile = link.contents[0].strip()
+                                                tfiles = deepcopy(lfiles)
+                                                for fi, fname in enumerate(lfiles):
                                                     if specfile in fname:
                                                         specpath = fname
+                                                        del(tfiles[fi])
+                                                        break
+                                                lfiles = deepcopy(tfiles)
+                                        if not specpath:
+                                            print ('Warning: Spectrum file not found, "' + specfile + '"')
                                     else:
                                         continue
-                        elif "Publish:</span>" in str(tr.contents) and produceoutput:
+                        elif "Publish:</span>" in str(tr.contents) and produceoutput and specpath:
                             produceoutput = False
                             biblink = bs.find('a', {'title': 'Link to NASA ADS'})
                             bibcode = biblink.contents[0]
                             print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode)
 
-                            name = add_event(name)
+                            if name[:2] == 'sn':
+                                name = 'SN' + name[2:]
+                            name = get_preferred_name(name)
                             if oldname and name != oldname:
                                 journal_events()
                             oldname = name
+                            name = add_event(name)
 
                             source = get_source(name, bibcode = bibcode)
                             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
                             sources = ','.join([source, secondarysource])
 
-                            if specpath:
-                                f = open(specpath,'r')
-                                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+                            with open(specpath,'r') as f:
+                                data = [x.split() for x in f]
 
                                 skipspec = False
-                                trytabs = False
                                 newdata = []
+                                oldval = ''
                                 for row in data:
                                     if row and '#' not in row[0]:
-                                        if len(row) < 2:
-                                            trytabs = True
-                                            break
-                                        if is_number(row[0]):
+                                        if len(row) >= 2 and is_number(row[0]) and is_number(row[1]) and row[1] != oldval:
                                             newdata.append(row)
+                                            oldval = row[1]
 
-                                if trytabs:
-                                    f.seek(0)
-                                    data = csv.reader(f, delimiter='\t', skipinitialspace=True)
-                                    newdata = []
-                                    for row in data:
-                                        if row and '#' not in row[0]:
-                                            if len(row) < 2:
-                                                skipspec = True
-                                                break
-                                            if is_number(row[0]):
-                                                newdata.append(row)
-
-                                if skipspec:
+                                if skipspec or not newdata:
+                                    print('skipped adding spectrum file ' + specfile)
                                     continue
 
                                 data = [list(i) for i in zip(*newdata)]
@@ -1825,7 +1843,7 @@ if do_task('wiserepspectra'):
                                 errors = ''
                                 if len(data) == 3:
                                     errors = data[1]
-                                time = astrotime(epoch).mjd
+                                time = str(astrotime(epoch).mjd)
 
                                 if max([float(x) for x in fluxes]) < 1.0e-5:
                                     fluxunit = 'erg/s/cm^2/Angstrom'
@@ -1834,8 +1852,11 @@ if do_task('wiserepspectra'):
 
                                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = fluxunit, errors = errors, errorunit = fluxunit, wavelengths = wavelengths,
                                     fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer)
+                                wiserepcnt = wiserepcnt + 1
 
-                                f.close()
+                print('unadded files: ')
+                print(lfiles)
+                print('wiserep spec count: ' + str(wiserepcnt))
     journal_events()
 
 if do_task('cfaiaspectra'): 

@@ -31,7 +31,7 @@ from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
 from bs4 import BeautifulSoup, Tag, NavigableString
-from math import isnan, floor
+from math import isnan, floor, ceil
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',         default=True, action='store_false')
@@ -385,9 +385,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
 
-    f = open(eventfile, 'r')
-    filetext = f.read()
-    f.close()
+    with open(eventfile, 'r') as f:
+        filetext = f.read()
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
@@ -401,7 +400,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['name'] = "<a href='sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
+    catalog[entry]['name'] = "<a href='https://sne.space/sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
     catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
@@ -462,15 +461,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(x['time']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        phototimelowererrs = [float(x['e_lower_time']) if ('e_lower_time' in x and 'e_upper_time' in x)
+            else (float(x['e_time']) if 'e_time' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        phototimeuppererrs = [float(x['e_upper_time']) if ('e_lower_time' in x and 'e_upper_time' in x) in x
+            else (float(x['e_time']) if 'e_time' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoAB = [float(x['magnitude']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
-        photoerrs = [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoABerrs = [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoband = [(x['band'] if 'band' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoinstru = [(x['instrument'] if 'instrument' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
         phototype = [(x['upperlimit'] if 'upperlimit' in x else False) for x in catalog[entry]['photometry'] if 'magnitude' in x]
 
         x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
-        x_range = [-x_buffer + min(phototime), x_buffer + max(phototime)]
 
         tt = [  
                 ("Source ID", "@src"),
@@ -484,15 +486,21 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hover = HoverTool(tooltips = tt)
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='AB Magnitude', x_range = x_range, tools = tools, 
-            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoerrs))])))
+            y_axis_label='AB Magnitude', tools = tools, 
+            x_range = (-x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))]),
+                        x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])),
+            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])))
         p1.add_tools(hover)
 
+        xs = []
+        ys = []
         err_xs = []
         err_ys = []
 
-        for x, y, yerr in list(zip(phototime, photoAB, photoerrs)):
-            err_xs.append((x, x))
+        for x, y, xlowerr, xupperr, yerr in list(zip(phototime, photoAB, phototimelowererrs, phototimeuppererrs, photoABerrs)):
+            xs.append(x)
+            ys.append(y)
+            err_xs.append((x - xlowerr, x + xupperr))
             err_ys.append((y - yerr, y + yerr))
 
         bandset = set(photoband)
@@ -502,10 +510,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
             indt = [i for i, j in enumerate(phototype) if not j]
-            indne = [i for i, j in enumerate(photoerrs) if j == 0.]
-            indye = [i for i, j in enumerate(photoerrs) if j > 0.]
-            indne = set(indb).intersection(indt).intersection(indne)
-            indye = set(indb).intersection(indt).intersection(indye)
+            # Should always have upper error if have lower error.
+            indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
+            indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
+            indney = [i for i, j in enumerate(photoABerrs) if j == 0.]
+            indyey = [i for i, j in enumerate(photoABerrs) if j > 0.]
+            indne = set(indb).intersection(indt).intersection(indney).intersection(indnex)
+            indye = set(indb).intersection(indt).intersection(set(indyey).union(indnex))
 
             noerrorlegend = bandname if len(indne) == 0 else ''
 
@@ -513,7 +524,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 data = dict(
                     x = [phototime[i] for i in indne],
                     y = [photoAB[i] for i in indne],
-                    err = [photoerrs[i] for i in indne],
+                    err = [photoABerrs[i] for i in indne],
                     desc = [photoband[i] for i in indne],
                     instr = [photoinstru[i] for i in indne],
                     src = [photosource[i] for i in indne]
@@ -525,13 +536,14 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 data = dict(
                     x = [phototime[i] for i in indye],
                     y = [photoAB[i] for i in indye],
-                    err = [photoerrs[i] for i in indye],
+                    err = [photoABerrs[i] for i in indye],
                     desc = [photoband[i] for i in indye],
                     instr = [photoinstru[i] for i in indye],
                     src = [photosource[i] for i in indye]
                 )
             )
-            p1.multi_line([err_xs[x] for x in indye], [err_ys[x] for x in indye], color=bandcolorf(band))
+            p1.multi_line([err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye], color=bandcolorf(band))
+            p1.multi_line([[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye], color=bandcolorf(band))
             p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=4)
 
             upplimlegend = bandname if len(indye) == 0 and len(indne) == 0 else ''
@@ -552,6 +564,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             z = float(catalog[entry]['redshift'][0]['value'])
         for spectrum in catalog[entry]['spectra']:
             spectrumdata = deepcopy(spectrum['data'])
+            oldlen = len(spectrumdata)
+            specslice = ceil(float(len(spectrumdata))/50000)
+            spectrumdata = spectrumdata[::specslice]
+            print (str(oldlen) + " " + str(len(spectrumdata)))
             spectrumdata = [x for x in spectrumdata if is_number(x[1]) and not isnan(float(x[1]))]
             specrange = range(len(spectrumdata))
 
@@ -720,6 +736,20 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         sndec = catalog[entry]['dec'][0]['value']
         c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
 
+        if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
+            if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                sdssimagescale = max(0.05,0.04125/float(catalog[entry]['lumdist'][0]['value']))
+            else:
+                sdssimagescale = max(0.05,20.6265/float(catalog[entry]['lumdist'][0]['value']))
+        else:
+            if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                sdssimagescale = 0.0006
+            else:
+                sdssimagescale = 0.3
+        dssimagescale = 0.13889*sdssimagescale
+        #At the moment, no way to check if host is in SDSS footprint without comparing to empty image, which is only possible at fixed angular resolution.
+        sdssimagescale = 0.3
+
         imgsrc = ''
         hasimage = True
         if eventname in hostimgdict:
@@ -727,7 +757,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             try:
                 response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
-                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.3&width=500&height=500&opt=G')
+                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G')
             except:
                 hasimage = False
             else:
@@ -741,7 +771,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if not hasimage:
                 hasimage = True
                 url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
-                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=0.041666&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=" + str(dssimagescale) + "&float=on&scaling=Log&resolver=SIMBAD-NED" +
                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
 
@@ -773,7 +803,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             elif imgsrc == 'DSS':
                 hostimgs.append([eventname, 'DSS'])
                 url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
-                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=0.041666&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=" + str(dssimagescale) + "float=on&scaling=Log&resolver=SIMBAD-NED" +
                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
                 skyhtml = ('<a href="' + url + '"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
@@ -832,11 +862,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 newhtml = newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] + r'</td><td width=250px class="event-cell">'
                 
                 if isinstance(catalog[entry][key], str):
-                    newhtml = newhtml + catalog[entry][key]
+                    newhtml = newhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
                 else:
                     for r, row in enumerate(catalog[entry][key]):
                         if 'value' in row and 'source' in row:
-                            sources = row['source'].split(',')
+                            sources = [str(x) for x in sorted([x.strip() for x in row['source'].split(',')], key=lambda x: float(x) if is_number(x) else float("inf"))]
                             sourcehtml = ''
                             for s, source in enumerate(sources):
                                 if source == 'D':
@@ -942,48 +972,42 @@ if args.writecatalog and not args.eventlist:
 
     #Write the MD5 checksums
     jsonstring = json.dumps(md5s, separators=(',',':'))
-    f = open(outdir + 'md5s.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'md5s.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     #Write the host image info
     jsonstring = json.dumps(hostimgs, separators=(',',':'))
-    f = open(outdir + 'hostimgs.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     # Make a few small files for generating charts
-    f = open(outdir + 'snepages.csv' + testsuffix, 'w')
-    csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
-    for row in snepages:
-        csvout.writerow(row)
-    f.close()
+    with open(outdir + 'snepages.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
+        for row in snepages:
+            csvout.writerow(row)
 
-    f = open(outdir + 'sources.csv' + testsuffix, 'w')
-    sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
-    csvout = csv.writer(f)
-    csvout.writerow(['Source','Number'])
-    for source in sortedsources:
-        csvout.writerow(source)
-    f.close()
+    with open(outdir + 'sources.csv' + testsuffix, 'w') as f:
+        sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
+        csvout = csv.writer(f)
+        csvout.writerow(['Source','Number'])
+        for source in sortedsources:
+            csvout.writerow(source)
 
     nophoto = sum(nophoto)
     hasphoto = len(catalog) - nophoto
-    f = open(outdir + 'pie.csv' + testsuffix, 'w')
-    csvout = csv.writer(f)
-    csvout.writerow(['Category','Number'])
-    csvout.writerow(['Has light curve', hasphoto])
-    csvout.writerow(['No light curve', nophoto])
-    f.close()
+    with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f)
+        csvout.writerow(['Category','Number'])
+        csvout.writerow(['Has light curve', hasphoto])
+        csvout.writerow(['No light curve', nophoto])
 
     nospectra = sum(nospectra)
     hasspectra = len(catalog) - nospectra
-    f = open(outdir + 'spectra-pie.csv' + testsuffix, 'w')
-    csvout = csv.writer(f)
-    csvout.writerow(['Category','Number'])
-    csvout.writerow(['Has spectra', hasspectra])
-    csvout.writerow(['No spectra', nospectra])
-    f.close()
+    with open(outdir + 'spectra-pie.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f)
+        csvout.writerow(['Category','Number'])
+        csvout.writerow(['Has spectra', hasspectra])
+        csvout.writerow(['No spectra', nospectra])
 
     with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(hasphoto))
@@ -1013,42 +1037,38 @@ if args.writecatalog and not args.eventlist:
         else:
             ctypedict[cleanedtype] = 1
     sortedctypes = sorted(list(ctypedict.items()), key=operator.itemgetter(1), reverse=True)
-    f = open(outdir + 'types.csv' + testsuffix, 'w')
-    csvout = csv.writer(f)
-    csvout.writerow(['Type','Number'])
-    for ctype in sortedctypes:
-        csvout.writerow(ctype)
-    f.close()
+    with open(outdir + 'types.csv' + testsuffix, 'w') as f:
+        csvout = csv.writer(f)
+        csvout.writerow(['Type','Number'])
+        for ctype in sortedctypes:
+            csvout.writerow(ctype)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
 
     jsonstring = json.dumps(catalog, separators=(',',':'))
-    f = open(outdir + 'catalog.min.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'catalog.min.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     jsonstring = json.dumps(catalog, indent='\t', separators=(',',':'))
-    f = open(outdir + 'catalog.json' + testsuffix, 'w')
-    f.write(jsonstring)
-    f.close()
+    with open(outdir + 'catalog.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
-    f = open(outdir + 'catalog.html' + testsuffix, 'w')
-    f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
-    f.write('\t<thead>\n')
-    f.write('\t\t<tr>\n')
-    for h in header:
-        f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
-    f.write('\t\t</tr>\n')
-    f.write('\t</thead>\n')
-    f.write('\t<tfoot>\n')
-    f.write('\t\t<tr>\n')
-    for h in header:
-        f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
-    f.write('\t\t</tr>\n')
-    f.write('\t</thead>\n')
-    f.write('</table>\n')
-    f.close()
+    with open(outdir + 'catalog.html' + testsuffix, 'w') as f:
+        f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
+        f.write('\t<thead>\n')
+        f.write('\t\t<tr>\n')
+        for h in header:
+            f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
+        f.write('\t\t</tr>\n')
+        f.write('\t</thead>\n')
+        f.write('\t<tfoot>\n')
+        f.write('\t\t<tr>\n')
+        for h in header:
+            f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
+        f.write('\t\t</tr>\n')
+        f.write('\t</thead>\n')
+        f.write('</table>\n')
 
     with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
