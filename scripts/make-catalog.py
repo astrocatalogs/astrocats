@@ -427,13 +427,15 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     prange = list(range(len(catalog[entry]['photometry']))) if 'photometry' in catalog[entry] else []
     
-    instrulist = sorted([_f for _f in list({catalog[entry]['photometry'][x]['instrument'] if 'instrument' in catalog[entry]['photometry'][x] else None for x in prange}) if _f])
+    instrulist = sorted([_f for _f in list({catalog[entry]['photometry'][x]['instrument']
+        if 'instrument' in catalog[entry]['photometry'][x] else None for x in prange}) if _f])
     if len(instrulist) > 0:
         instruments = ''
         for i, instru in enumerate(instrulist):
             instruments += instru
             bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '')
-                if 'instrument' in catalog[entry]['photometry'][x] and catalog[entry]['photometry'][x]['instrument'] == instru else "" for x in prange}) if _f], key=lambda y: (bandwavef(y), y))
+                if 'instrument' in catalog[entry]['photometry'][x] and catalog[entry]['photometry'][x]['instrument'] == instru
+                else "" for x in prange}) if _f], key=lambda y: (bandwavef(y), y))
             if bandlist:
                 instruments += ' (' + ", ".join(bandlist) + ')'
             if i < len(instrulist) - 1:
@@ -516,7 +518,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             indney = [i for i, j in enumerate(photoABerrs) if j == 0.]
             indyey = [i for i, j in enumerate(photoABerrs) if j > 0.]
             indne = set(indb).intersection(indt).intersection(indney).intersection(indnex)
-            indye = set(indb).intersection(indt).intersection(set(indyey).union(indnex))
+            indye = set(indb).intersection(indt).intersection(set(indyey).union(indyex))
 
             noerrorlegend = bandname if len(indne) == 0 else ''
 

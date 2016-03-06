@@ -488,6 +488,24 @@ def set_first_max_light(name):
         if fldt:
             add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
 
+    if 'discoverdate' not in events[name] and 'spectra' in events[name]:
+        minspecmjd = float("+inf")
+        for spectrum in events[name]['spectra']:
+            if 'time' in spectrum and 'timeunit' in spectrum:
+                if spectrum['timeunit'] == 'MJD':
+                    mjd = float(spectrum['time'])
+                elif spectrum['timeunit'] == 'JD':
+                    mjd = float(jd_to_mjd(Decimal(spectrum['time'])))
+                else:
+                    continue
+
+                if mjd < minspecmjd:
+                    minspecmjd = mjd
+
+        if minspecmjd < float("+inf"):
+            fldt = astrotime(minspecmjd, format='mjd').datetime
+            add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
+
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
@@ -1789,6 +1807,8 @@ if do_task('wiserepspectra'):
                                         name = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
                                     elif tdi == 5:
                                         claimedtype = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                        if claimedtype[:3] == 'SN ':
+                                            claimedtype = claimedtype[3:].strip()
                                     elif tdi == 9:
                                         instrument = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
                                     elif tdi == 11:
@@ -1820,9 +1840,14 @@ if do_task('wiserepspectra'):
                                         continue
                         elif "Publish:</span>" in str(tr.contents) and produceoutput and specpath:
                             produceoutput = False
+                            trstr = str(tr)
+                            result = re.search('redshift=(.*?)&amp;', trstr)
+                            redshift = ''
+                            if result:
+                                redshift = result.group(1)
                             biblink = bs.find('a', {'title': 'Link to NASA ADS'})
                             bibcode = biblink.contents[0]
-                            print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode)
+                            print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
 
                             if name[:2] == 'sn':
                                 name = 'SN' + name[2:]
@@ -1835,6 +1860,9 @@ if do_task('wiserepspectra'):
                             source = get_source(name, bibcode = bibcode)
                             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
                             sources = ','.join([source, secondarysource])
+
+                            add_quanta(name, 'claimedtype', claimedtype, sources)
+                            add_quanta(name, 'redshift', redshift, sources)
 
                             with open(specpath,'r') as f:
                                 data = [x.split() for x in f]
