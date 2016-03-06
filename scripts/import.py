@@ -315,13 +315,27 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         svalue = svalue.replace("Mrk", "MRK")
         svalue = svalue.replace("MRK", "MRK ")
         svalue = svalue.replace("PGC", "PGC ")
+        svalue = svalue.replace("MGC ", "MCG ")
         svalue = svalue.replace("MCG+", "MCG +")
         svalue = svalue.replace("MCG-", "MCG -")
         svalue = svalue.replace("M+", "MCG +")
         svalue = svalue.replace("M-", "MCG -")
-        if svalue[:5] == "MGC +" or svalue[:5] == "MGC -":
+        if len(svalue) > 5 and (svalue[:5] == "MCG +" or svalue[:5] == "MCG -"):
             svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].split("-")])
-            print(svalue)
+        if len(svalue) > 5 and svalue[:5] == "CGCG ":
+            svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].split("-")])
+        if (len(svalue) > 1 and svalue[0] == "E") or (len(svalue) > 3 and svalue[:3] == 'ESO'):
+            if svalue[0] == "E":
+                esplit = svalue[1:].split("-")
+            else:
+                esplit = svalue[3:].split("-")
+            if len(esplit) == 2 and is_number(esplit[0]):
+                if esplit[1][0] == 'G':
+                    parttwo = esplit[1][1:]
+                else:
+                    parttwo = esplit[1]
+                if is_number(parttwo):
+                    svalue = 'ESO ' + esplit[0] + '-G' + parttwo
         svalue = ' '.join(svalue.split())
     elif quanta == 'claimedtype':
         for rep in typereps:

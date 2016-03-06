@@ -170,11 +170,11 @@ repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 repyears[0] -= 1
 
 if len(columnkey) != len(header):
-    print('Error: Header not same length as key list.')
+    raise(ValueError('Header not same length as key list.'))
     sys.exit(0)
 
 if len(columnkey) != len(eventpageheader):
-    print('Error: Event page header not same length as key list.')
+    raise(ValueError('Event page header not same length as key list.'))
     sys.exit(0)
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
@@ -317,7 +317,7 @@ def get_rep_folder(entry):
     if 'discoverdate' not in entry:
         return repfolders[0]
     if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
-        print ('Error, discovery year is not a number!')
+        raise(ValueError('Discovery year is not a number!'))
         sys.exit()
     for r, repyear in enumerate(repyears):
         if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repyear:
@@ -567,7 +567,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             oldlen = len(spectrumdata)
             specslice = ceil(float(len(spectrumdata))/50000)
             spectrumdata = spectrumdata[::specslice]
-            print (str(oldlen) + " " + str(len(spectrumdata)))
             spectrumdata = [x for x in spectrumdata if is_number(x[1]) and not isnan(float(x[1]))]
             specrange = range(len(spectrumdata))
 
