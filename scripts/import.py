@@ -76,7 +76,8 @@ typereps = {
     'II P':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
     'II L':   ['IIL'],
     'IIn P':  ['IIn pec', 'IIn-pec'],
-    'IIb P':  ['IIb-pec', 'IIb: pec']
+    'IIb P':  ['IIb-pec', 'IIb: pec'],
+    'not Ia': ['nIa']
 }
 
 repbetterquanta = {
@@ -309,21 +310,29 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
             return
     if quanta == 'host':
         svalue = svalue.strip("()")
-        svalue = svalue.replace("NGC", "NGC ")
-        svalue = svalue.replace("UGC", "UGC ")
+        svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
+        svalue = svalue.replace("ARP", "ARP ")
+        svalue = svalue.replace("CGCG", "CGCG ")
+        svalue = svalue.replace("HOLM", "HOLM ")
         svalue = svalue.replace("IC", "IC ")
-        svalue = svalue.replace("Mrk", "MRK")
-        svalue = svalue.replace("MRK", "MRK ")
-        svalue = svalue.replace("PGC", "PGC ")
-        svalue = svalue.replace("MGC ", "MCG ")
+        svalue = svalue.replace("Intergal.", "Intergalactic")
         svalue = svalue.replace("MCG+", "MCG +")
         svalue = svalue.replace("MCG-", "MCG -")
         svalue = svalue.replace("M+", "MCG +")
         svalue = svalue.replace("M-", "MCG -")
+        svalue = svalue.replace("MGC ", "MCG ")
+        svalue = svalue.replace("Mrk", "MRK")
+        svalue = svalue.replace("MRK", "MRK ")
+        svalue = svalue.replace("NGC", "NGC ")
+        svalue = svalue.replace("PGC", "PGC ")
+        svalue = svalue.replace("SDSS", "SDSS ")
+        svalue = svalue.replace("UGC", "UGC ")
+        if len(svalue) > 4 and (svalue[:4] == "PGC "):
+            svalue = svalue[:4] + svalue[4:].lstrip(" 0")
         if len(svalue) > 5 and (svalue[:5] == "MCG +" or svalue[:5] == "MCG -"):
-            svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].split("-")])
+            svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
         if len(svalue) > 5 and svalue[:5] == "CGCG ":
-            svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].split("-")])
+            svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
         if (len(svalue) > 1 and svalue[0] == "E") or (len(svalue) > 3 and svalue[:3] == 'ESO'):
             if svalue[0] == "E":
                 esplit = svalue[1:].split("-")
@@ -335,13 +344,19 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                 else:
                     parttwo = esplit[1]
                 if is_number(parttwo):
-                    svalue = 'ESO ' + esplit[0] + '-G' + parttwo
+                    svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
         svalue = ' '.join(svalue.split())
     elif quanta == 'claimedtype':
+        isq = False
+        if '?' in svalue:
+            isq = True
+            svalue = svalue.strip(' ?')
         for rep in typereps:
             if svalue in typereps[rep]:
                 svalue = rep
                 break
+        if isq:
+            svalue = svalue + '?'
     elif quanta == 'ra' or quanta == 'dec' or quanta == 'galra' or quanta == 'galdec':
         if unit == 'decdeg' or unit == 'radeg':
             deg = float('%g' % Decimal(svalue))
@@ -594,7 +609,7 @@ def delete_old_event_files():
         for f in filelist:
             os.remove(f)
 
-def write_all_events(empty = False, lfs = True):
+def write_all_events(empty = False, lfs = False):
     # Write it all out!
     for name in events:
         if 'stub' in events[name]:
@@ -1503,7 +1518,7 @@ if do_task('rochester'):
             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             sources = ','.join(list(filter(None, [source, secondarysource])))
             if str(cols[1].contents[0]).strip() != 'unk':
-                add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(' :'), sources)
+                add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 add_quanta(name, 'host', str(cols[2].contents[0]).strip(), sources)
             add_quanta(name, 'ra', str(cols[3].contents[0]).strip(), sources)
@@ -1809,6 +1824,7 @@ if do_task('wiserepspectra'):
                                         claimedtype = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
                                         if claimedtype[:3] == 'SN ':
                                             claimedtype = claimedtype[3:].strip()
+                                        claimedtype = claimedtype.replace('-like', '').strip()
                                     elif tdi == 9:
                                         instrument = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
                                     elif tdi == 11:
