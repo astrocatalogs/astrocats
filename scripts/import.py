@@ -635,7 +635,7 @@ def write_all_events(empty = False, lfs = False):
         with codecs.open(path, 'w', encoding='utf8') as f:
             f.write(jsonstring)
         if (os.path.getsize(path) > 90000000):
-            os.system('cd ' + outdir + '; git lfs track ' + filename + '; cd ' + '../scripts')
+            os.system('cd ' + outdir + '; git lfs track ' + filename + '.json; cd ' + '../scripts')
 
 def load_event_from_file(name = '', location = '', clean = False, delete = True):
     if not name and not location:
@@ -1859,6 +1859,10 @@ if do_task('wiserepspectra'):
                                         continue
                         if "Spec Type:</span>" in str(tr.contents) and produceoutput:
                             produceoutput = False
+
+                            if claimedtype == 'TDE' or claimedtype == 'Varstar':
+                                continue
+
                             trstr = str(tr)
                             result = re.search('redshift=(.*?)&amp;', trstr)
                             redshift = ''
@@ -1875,8 +1879,6 @@ if do_task('wiserepspectra'):
                                 if biblink:
                                     bibcode = biblink.contents[0]
 
-                            print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
-
                             if name[:2] == 'sn':
                                 name = 'SN' + name[2:]
                             name = get_preferred_name(name)
@@ -1884,6 +1886,8 @@ if do_task('wiserepspectra'):
                                 journal_events()
                             oldname = name
                             name = add_event(name)
+
+                            print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
 
                             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
                             if bibcode:
