@@ -4,7 +4,7 @@ import csv
 import glob
 import os
 import re
-import urllib.request
+import urllib
 import calendar
 import sys
 import json
@@ -1428,7 +1428,7 @@ if do_task('asiago'):
                 redshift = str(redshift)
                 hvel = str(hvel)
 
-            claimedtype = record[17].strip(':')
+            claimedtype = record[17].strip(':*')
 
             if (hostname != ''):
                 add_quanta(name, 'host', hostname, source)
@@ -1503,7 +1503,7 @@ if do_task('rochester'):
             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             sources = ','.join(list(filter(None, [source, secondarysource])))
             if str(cols[1].contents[0]).strip() != 'unk':
-                add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(), sources)
+                add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(' :'), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 add_quanta(name, 'host', str(cols[2].contents[0]).strip(), sources)
             add_quanta(name, 'ra', str(cols[3].contents[0]).strip(), sources)
@@ -1781,9 +1781,9 @@ if do_task('nedd'):
     journal_events()
 
 if do_task('wiserepspectra'):
-    wiserepcnt = 0
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
+    wiserepcnt = 0
 
     oldname = ''
     for folder in sorted(next(os.walk("../sne-external-WISEREP"))[1], key=lambda s: s.lower()):
@@ -1824,29 +1824,41 @@ if do_task('wiserepspectra'):
                                     elif tdi == 25:
                                         speclinks = td.findAll('a')
                                         specfile = ''
-                                        for link in speclinks:
-                                            if 'Ascii' in link['href']:
-                                                specfile = link.contents[0].strip()
-                                                tfiles = deepcopy(lfiles)
-                                                for fi, fname in enumerate(lfiles):
-                                                    if specfile in fname:
-                                                        specpath = fname
-                                                        del(tfiles[fi])
-                                                        break
-                                                lfiles = deepcopy(tfiles)
+                                        try:
+                                            for link in speclinks:
+                                                if 'Ascii' in link['href']:
+                                                    specfile = link.contents[0].strip()
+                                                    tfiles = deepcopy(lfiles)
+                                                    for fi, fname in enumerate(lfiles):
+                                                        if specfile in fname:
+                                                            specpath = fname
+                                                            del(tfiles[fi])
+                                                            lfiles = deepcopy(tfiles)
+                                                            raise(StopIteration)
+                                        except StopIteration:
+                                            pass
                                         if not specpath:
                                             print ('Warning: Spectrum file not found, "' + specfile + '"')
                                     else:
                                         continue
-                        elif "Publish:</span>" in str(tr.contents) and produceoutput and specpath:
+                        if "Spec Type:</span>" in str(tr.contents) and produceoutput:
                             produceoutput = False
                             trstr = str(tr)
                             result = re.search('redshift=(.*?)&amp;', trstr)
                             redshift = ''
                             if result:
                                 redshift = result.group(1)
-                            biblink = bs.find('a', {'title': 'Link to NASA ADS'})
-                            bibcode = biblink.contents[0]
+
+                            result = re.search('publish=(.*?)&amp;', trstr)
+                            bibcode = ''
+                            if result:
+                                bibcode = urllib.parse.unquote(urllib.parse.unquote(result.group(1))).split('/')[-1]
+
+                            if not bibcode:
+                                biblink = bs.find('a', {'title': 'Link to NASA ADS'})
+                                if biblink:
+                                    bibcode = biblink.contents[0]
+
                             print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
 
                             if name[:2] == 'sn':
@@ -1857,12 +1869,18 @@ if do_task('wiserepspectra'):
                             oldname = name
                             name = add_event(name)
 
-                            source = get_source(name, bibcode = bibcode)
                             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-                            sources = ','.join([source, secondarysource])
+                            if bibcode:
+                                source = get_source(name, bibcode = bibcode)
+                                sources = ','.join([source, secondarysource])
+                            else:
+                                sources = secondarysource
 
                             add_quanta(name, 'claimedtype', claimedtype, sources)
                             add_quanta(name, 'redshift', redshift, sources)
+
+                            if not specpath:
+                                continue
 
                             with open(specpath,'r') as f:
                                 data = [x.split() for x in f]
@@ -1897,9 +1915,8 @@ if do_task('wiserepspectra'):
                                     fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer)
                                 wiserepcnt = wiserepcnt + 1
 
-                print('unadded files: ')
-                print(lfiles)
-                print('wiserep spec count: ' + str(wiserepcnt))
+                print('unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
+                print('wiserep spec cnt: ' + str(wiserepcnt))
     journal_events()
 
 if do_task('cfaiaspectra'): 
