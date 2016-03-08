@@ -338,12 +338,12 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                 esplit = svalue[1:].split("-")
             else:
                 esplit = svalue[3:].split("-")
-            if len(esplit) == 2 and is_number(esplit[0]):
-                if esplit[1][0] == 'G':
-                    parttwo = esplit[1][1:]
+            if len(esplit) == 2 and is_number(esplit[0].strip()):
+                if esplit[1].strip()[0] == 'G':
+                    parttwo = esplit[1].strip()[1:]
                 else:
-                    parttwo = esplit[1]
-                if is_number(parttwo):
+                    parttwo = esplit[1].strip()
+                if is_number(parttwo.strip()):
                     svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
         svalue = ' '.join(svalue.split())
     elif quanta == 'claimedtype':
