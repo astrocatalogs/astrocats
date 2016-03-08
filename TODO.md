@@ -23,3 +23,7 @@ Single SN dataset on VizieR:
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Hagai's e-mail)
 * SN2008D - http://www.nature.com.oca.ucsc.edu/nature/journal/v453/n7194/suppinfo/nature06997.html
+
+SNR catalogs:
+* Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
+* Fermi SNR catalog
