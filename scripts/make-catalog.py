@@ -488,7 +488,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hover = HoverTool(tooltips = tt)
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='AB Magnitude', tools = tools, 
+            y_axis_label='Magnitude', tools = tools, 
             x_range = (-x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))]),
                         x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])),
             y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])))

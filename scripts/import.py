@@ -15,6 +15,7 @@ import gzip
 import shutil
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
+from astroquery.simbad import Simbad
 from copy import deepcopy
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
@@ -33,19 +34,21 @@ eventnames = []
 
 tasks = {
     "internal":       {"update": False},
+    "simbad":         {"update": False},
     "vizier":         {"update": False},
     "suspect":        {"update": False},
     "cfa":            {"update": False},
     "ucb":            {"update": False},
     "sdss":           {"update": False},
-    "gaia":           {"update": False},
     "csp":            {"update": False},
     "itep":           {"update": False},
     "asiago":         {"update": False},
     "rochester":      {"update": True },
     "lennarz":        {"update": False},
+    "gaia":           {"update": False},
     "ogle":           {"update": True },
     "snls":           {"update": False},
+    "panstarrs":      {"update": False},
     "nedd":           {"update": False},
     "wiserepspectra": {"update": False},
     "cfaiaspectra":   {"update": False},
@@ -117,6 +120,7 @@ def add_event(name, load = True, delete = True):
         if len(matches) == 1:
             return matches[0]
         elif len(matches) > 1:
+            print(matches)
             raise(ValueError('Error, multiple matches to event, need event merging'))
         events[name] = OrderedDict()
         events[name]['name'] = name
@@ -340,7 +344,7 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                 esplit = svalue[3:].split("-")
             if len(esplit) == 2 and is_number(esplit[0].strip()):
                 if esplit[1].strip()[0] == 'G':
-                    parttwo = esplit[1].strip()[1:]
+                    parttwo = esplit[1][1:].strip()
                 else:
                     parttwo = esplit[1].strip()
                 if is_number(parttwo.strip()):
@@ -723,6 +727,24 @@ if do_task('internal'):
             raise IOError('Failed to find specified file.')
     journal_events()
 
+#if do_task('simbad'):
+#    Simbad.list_votable_fields()
+#    customSimbad = Simbad()
+#    customSimbad.add_votable_fields('otype', 'id(opt)')
+#    result = customSimbad.query_object('SN 20[0-9][0-9]*', wildcard=True)
+#    for r, row in enumerate(result):
+#        if row['OTYPE'].decode() != "SN":
+#            continue
+#        name = row["MAIN_ID"].decode()
+#        aliases = Simbad.query_objectids(name)
+#        print(aliases)
+#        if name[:3] == 'SN ':
+#            name = 'SN' + name[3:]
+#        if name[:2] == 'SN' and is_number(name[2:]):
+#            name = name + 'A'
+#        name = add_event(name)
+#    journal_events()
+
 # Import primary data sources from Vizier
 if do_task('vizier'):
     Vizier.ROW_LIMIT = -1
@@ -987,6 +1009,7 @@ if do_task('vizier'):
     for row in table:
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
+        name = add_event(name)
         source = get_source(name, bibcode = "2015ApJS..219...13W")
         add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'],
             magnitude = row['mag'], e_magnitude = row['e_mag'], system = "Swope", source = source)
@@ -1465,6 +1488,78 @@ if do_task('asiago'):
                 add_quanta(name, 'discoverer', discoverer, source)
     journal_events()
 
+if do_task('lennarz'): 
+    Vizier.ROW_LIMIT = -1
+    result = Vizier.get_catalogs("J/A+A/538/A120/usc")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+
+    bibcode = "2012A&A...538A.120L"
+    for row in table:
+        row = convert_aq_output(row)
+        name = 'SN' + row['SN']
+        name = add_event(name)
+
+        source = get_source(name, bibcode = bibcode)
+
+        if row['RAJ2000']:
+            add_quanta(name, 'ra', row['RAJ2000'], source)
+        if row['DEJ2000']:
+            add_quanta(name, 'dec', row['DEJ2000'], source)
+        if row['RAG']:
+            add_quanta(name, 'galra', row['RAG'], source)
+        if row['DEG']:
+            add_quanta(name, 'galdec', row['DEG'], source)
+        if row['Gal']:
+            add_quanta(name, 'host', row['Gal'], source)
+        if row['Type']:
+            claimedtypes = row['Type'].split('|')
+            for claimedtype in claimedtypes:
+                add_quanta(name, 'claimedtype', claimedtype.strip(' -'), source)
+        if row['z']:
+            if name != 'SN1985D':
+                add_quanta(name, 'redshift', row['z'], source)
+        if row['Dist']:
+            if row['e_Dist']:
+                add_quanta(name, 'lumdist', row['Dist'], source, error = row['e_Dist'])
+            else:
+                add_quanta(name, 'lumdist', row['Dist'], source)
+
+        if row['Ddate']:
+            datestring = row['Ddate'].replace('-', '/')
+
+            add_quanta(name, 'discoverdate', datestring, source)
+
+            if 'photometry' not in events[name]:
+                if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
+                    datesplit = row['Ddate'].strip().split('-')
+                    if len(datesplit) == 3:
+                        datestr = row['Ddate'].strip()
+                    elif len(datesplit) == 2:
+                        datestr = row['Ddate'].strip() + '-01'
+                    elif len(datesplit) == 1:
+                        datestr = row['Ddate'].strip() + '-01-01'
+                    mjd = str(astrotime(datestr).mjd)
+                    add_photometry(name, time = mjd, band = row['Dband'], magnitude = row['Dmag'], source = source)
+        if row['Mdate']:
+            datestring = row['Mdate'].replace('-', '/')
+
+            add_quanta(name, 'maxdate', datestring, source)
+
+            if 'photometry' not in events[name]:
+                if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
+                    datesplit = row['Mdate'].strip().split('-')
+                    if len(datesplit) == 3:
+                        datestr = row['Mdate'].strip()
+                    elif len(datesplit) == 2:
+                        datestr = row['Mdate'].strip() + '-01'
+                    elif len(datesplit) == 1:
+                        datestr = row['Mdate'].strip() + '-01-01'
+                    mjd = str(astrotime(datestr).mjd)
+                    add_photometry(name, time = mjd, band = row['Mband'], magnitude = row['Mmag'], source = source)
+    f.close()
+    journal_events()
+
 if do_task('rochester'): 
     rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html', 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     #rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
@@ -1507,9 +1602,13 @@ if do_task('rochester'):
                     continue
                 name = add_event(sn)
 
+            add_alias(name, sn)
+
             if cols[14].contents:
                 if aka == 'SNR G1.9+0.3':
                     aka = 'G001.9+00.3'
+                if aka[:3] == 'PS1' and aka[3] != '-':
+                    aka = 'PS1-' + aka[3:]
                 add_alias(name, aka)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
@@ -1582,49 +1681,6 @@ if do_task('rochester'):
                     sources = secondarysource
                 add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = sources)
             f.close()
-    journal_events()
-
-if do_task('lennarz'): 
-    Vizier.ROW_LIMIT = -1
-    result = Vizier.get_catalogs("J/A+A/538/A120/usc")
-    table = result[list(result.keys())[0]]
-    table.convert_bytestring_to_unicode(python3_only=True)
-
-    bibcode = "2012A&A...538A.120L"
-    for row in table:
-        row = convert_aq_output(row)
-        name = 'SN' + row['SN']
-        name = add_event(name)
-
-        source = get_source(name, bibcode = bibcode)
-
-        if row['Gal']:
-            add_quanta(name, 'host', row['Gal'], source)
-        if row['z']:
-            if name != 'SN1985D':
-                add_quanta(name, 'redshift', row['z'], source)
-        if row['Dist']:
-            add_quanta(name, 'lumdist', row['Dist'], source)
-
-        if row['Ddate']:
-            datestring = row['Ddate'].replace('-', '/')
-
-            add_quanta(name, 'discoverdate', datestring, source)
-
-            if 'photometry' not in events[name]:
-                if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
-                    mjd = str(astrot.mjd)
-                    add_photometry(name, time = mjd, band = row['Dband'], magnitude = row['Dmag'], source = source)
-        if row['Mdate']:
-            datestring = row['Mdate'].replace('-', '/')
-
-            add_quanta(name, 'maxdate', datestring, source)
-
-            if 'photometry' not in events[name]:
-                if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
-                    mjd = str(astrot.mjd)
-                    add_photometry(name, time = mjd, band = row['Mband'], magnitude = row['Mmag'], source = source)
-    f.close()
     journal_events()
 
 if do_task('ogle'): 
@@ -1739,6 +1795,25 @@ if do_task('snls'):
             magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
             e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
             add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+    journal_events()
+
+if do_task('panstarrs'):
+    with open("../sne-external/2015MNRAS.449.451W.dat", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(data):
+            if r == 0:
+                continue
+            namesplit = row[0].split('/')
+            name = namesplit[-1]
+            if name[:2] == 'SN':
+                name = name.replace(' ', '')
+            name = add_event(name)
+            if len(namesplit) > 1:
+                add_alias(name, namesplit[0])
+            source = get_source(name, bibcode = '2015MNRAS.449.451W')
+            add_quanta(name, 'claimedtype', row[1], source)
+            add_photometry(name, time = row[2], band = row[4], magnitude = row[3], source = source)
+    journal_events()
 
 if do_task('nedd'): 
     f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
