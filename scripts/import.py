@@ -75,7 +75,7 @@ typereps = {
     'Ib P':   ['Ib pec', 'Ib-pec'],
     'Ic P':   ['Ic pec', 'Ic-pec'],
     'Ib/c':   ['Ibc'],
-    'Ib/c P': ['Ib/c-pec'],
+    'Ib/c P': ['Ib/c-pec', 'Ibc pec'],
     'II P':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
     'II L':   ['IIL'],
     'IIn P':  ['IIn pec', 'IIn-pec'],
