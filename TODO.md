@@ -24,10 +24,13 @@ Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Hagai's e-mail)
 * SN2008D - http://www.nature.com.oca.ucsc.edu/nature/journal/v453/n7194/suppinfo/nature06997.html
 * SN2008in - http://adsabs.harvard.edu/abs/2011ApJ...736...76R
+* SN2009N - http://adsabs.harvard.edu/abs/2014MNRAS.438..368T
 * SN2009bw - http://adsabs.harvard.edu/abs/2012MNRAS.422.1122I
 * SN2009ib - http://adsabs.harvard.edu/abs/2015MNRAS.450.3137T
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B
 * SN2012aw - http://adsabs.harvard.edu/abs/2014ApJ...787..139D
+* SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
+* SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
