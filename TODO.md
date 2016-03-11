@@ -7,7 +7,6 @@ Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/other/Nat/491.228
 
 Single SN dataset on VizieR:
-* SN1604 - Clark and Stephenson 1977.
 * SN2009bb - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/728/14
 * SN2008am - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/729/143
 * PTF10vdl - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/736/159
