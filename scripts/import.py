@@ -936,6 +936,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014yCat.7272....0G')
 
+        add_alias(name, row["SNR"].strip())
+
         if row["Names"]:
             names = row["Names"].split(',')
             for nam in names:

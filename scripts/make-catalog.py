@@ -96,7 +96,7 @@ header = [
     "Phot.",
     "Spec.",
     "References",
-    "",
+    "Data",
     ""
 ]
 
@@ -119,7 +119,7 @@ eventpageheader = [
     "# Phot. Obs.",
     "# Spectra",
     "References",
-    "",
+    "Download",
     ""
 ]
 
@@ -141,8 +141,8 @@ titles = [
     "Claimed Type",
     "Photometry",
     "Spectra",
-    "Download",
     "Bibcodes of references with most data on event",
+    "Download and edit data",
     ""
 ]
 
@@ -162,6 +162,17 @@ sourcekeys = [
     'alias',
     'secondary'
 ]
+
+newfiletemplate = (
+'''{
+  "{0}":{
+    "name":"{0}",
+    "aliases":[
+      "{0}"
+    ]
+  }
+}'''
+)
 
 with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
@@ -273,7 +284,7 @@ wavedict = dict(list(zip(bandcodes,bandwavelengths)))
 
 seed(101)
 #bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
-bandcolors = cubehelix.cubehelix1_16.hex_colors[2:14] + cubehelix.cubehelix2_16.hex_colors[2:14] + cubehelix.cubehelix3_16.hex_colors[2:14]
+bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
 shuffle(bandcolors)
 
 def event_filename(name):
@@ -401,7 +412,14 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     repfolder = get_rep_folder(catalog[entry])
     catalog[entry]['name'] = "<a href='https://sne.space/sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
-    catalog[entry]['download'] = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
+    datalink = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
+    if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
+        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/edit/master/"
+            + fileeventname + ".json' target='_blank'></a>")
+    else:
+        template = urllib.parse.quote(newfiletemplate.replace('{0}',eventname))
+        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/new/master/?filename="
+            + fileeventname + ".json&value=" + template + "' target='_blank'></a>")
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
             catalog[entry]['discoverdate'][d]['value'] = catalog[entry]['discoverdate'][d]['value'].split('.')[0]
@@ -488,7 +506,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hover = HoverTool(tooltips = tt)
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='Magnitude', tools = tools, 
+            y_axis_label='Magnitude', tools = tools, #responsive = True,
             x_range = (-x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))]),
                         x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])),
             y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])))
@@ -827,22 +845,31 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
             p = VBox(HBox(p1),HBox(p2,VBox(binslider,spacingslider)), width=900)
+            #script, div = components(dict(p1=p1, p2=p2, binslider=binslider, spacingslider=spacingslider))
         elif photoavail:
             p = p1
+            #script, div = components(dict(p1=p1))
         elif spectraavail:
             p = VBox(HBox(p2,VBox(binslider,spacingslider)), width=900)
+            #script, div = components(dict(p2=p2, binslider=binslider, spacingslider=spacingslider))
 
+        html = '<html><head><title>'+eventname+'</title>'
         if photoavail or spectraavail:
             html = file_html(p, CDN, eventname)
+            #html = html + '''<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" rel="stylesheet" type="text/css">
+            #    <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>''' + script + '</head><body>'
         else:
             html = '<html><title></title><body></body></html>'
 
-        #script, div = components(p)
-        #with open(outdir + eventname + "-script.js", "w") as fff:
-        #    script = '\n'.join(script.splitlines()[2:-1])
-        #    fff.write(script)
-        #with open(outdir + eventname + "-div.html", "w") as fff:
-        #    fff.write(div)
+        #if photoavail and spectraavail:
+        #    html = html + div['p1'] + div['p2'] + div['binslider'] + div['spacingslider']
+        #elif photoavail:
+        #    html = html + div['p1']
+        #elif spectraavail:
+        #    html = html + div['p2'] + div['binslider'] + div['spacingslider']
+
+        #html = html + '</body></html>'
+
         html = re.sub(r'(\<\/title\>)', r'''\1\n
             <base target="_parent" />\n
             <link rel="stylesheet" href="event.css" type="text/css">\n
