@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /root/.bashrc
+
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied, exiting"
