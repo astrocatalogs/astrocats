@@ -1,5 +1,6 @@
 #! /bin/bash
 
+source /root/.bashrc
 cd /var/www/html/sne/sne/scripts
 ./import.py -u
 ./make-catalog.py
