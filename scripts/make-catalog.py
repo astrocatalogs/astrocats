@@ -26,7 +26,8 @@ from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
 from bokeh.plotting import Figure, show, save, reset_output
-from bokeh.models import HoverTool, CustomJS, Slider, ColumnDataSource, HBox, VBox, Range1d, LinearAxis
+from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,
+                          HBox, VBox, Range1d, LinearAxis, DatetimeAxis)
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
@@ -497,19 +498,36 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         tt = [  
                 ("Source ID", "@src"),
                 ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")", "@x{1.11}"),
-                ("Magnitude", "@y{1.111}"),
-                ("Error", "@err{1.111}"),
-                ("Band", "@desc")
+                ("Apparent Magnitude", "@y{1.111}")
              ]
+        if len(list(filter(None, photoABerrs))):
+            tt += [("Error", "@err{1.111}")]
+        if len(list(filter(None, photoband))):
+            tt += [("Band", "@desc")]
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
         hover = HoverTool(tooltips = tt)
 
+        min_x_range = -x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))])
+        max_x_range = x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])
+
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='Magnitude', tools = tools, #responsive = True,
-            x_range = (-x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))]),
-                        x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])),
-            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]), -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])))
+            y_axis_label='Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
+            x_range = (min_x_range, max_x_range),
+            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]),
+                       -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])),
+            title_text_font_size='16pt')
+        p1.xaxis.axis_label_text_font_size = '12pt'
+        p1.yaxis.axis_label_text_font_size = '12pt'
+        p1.xaxis.major_label_text_font_size = '8pt'
+        p1.yaxis.major_label_text_font_size = '8pt'
+
+        min_x_date = astrotime(min_x_range, format='mjd').datetime
+        max_x_date = astrotime(max_x_range, format='mjd').datetime
+
+        p1.extra_x_ranges = {"gregorian date": Range1d(start=min_x_date, end=max_x_date)}
+        p1.add_layout(DatetimeAxis(axis_label ="Time (Gregorian Date)", major_label_text_font_size = '8pt',
+            x_range_name="gregorian date", axis_label_text_font_size = '12pt'), 'above')
         p1.add_tools(hover)
 
         xs = []
@@ -572,6 +590,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             ind = set(indb).intersection(indt)
             p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
                 color=bandcolorf(band), legend=upplimlegend, size=7)
+
+        p1.legend.label_text_font_size = '8pt'
+        p1.legend.label_width = 20
+        p1.legend.label_height = 14
+        p1.legend.glyph_height = 14
 
     if spectraavail and dohtml and args.writehtml:
         spectrumwave = []
@@ -664,8 +687,12 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
             y_axis_label=label_format('Flux (scaled)' + (' + offset'
-            if (nspec > 1) else '')), x_range = x_range, tools = tools, 
-            y_range = y_range)
+            if (nspec > 1) else '')), x_range = x_range, tools = tools, #responsive = True,
+            plot_width = 485, plot_height = 485, y_range = y_range, title_text_font_size='16pt')
+        p2.xaxis.axis_label_text_font_size = '12pt'
+        p2.yaxis.axis_label_text_font_size = '12pt'
+        p2.xaxis.major_label_text_font_size = '8pt'
+        p2.yaxis.major_label_text_font_size = '8pt'
         p2.add_tools(hover2)
 
         sources = []
@@ -694,7 +721,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             minredw = minsw/(1.0 + z)
             maxredw = maxsw/(1.0 + z)
             p2.extra_x_ranges = {"other wavelength": Range1d(start=minredw, end=maxredw)}
-            p2.add_layout(LinearAxis(axis_label ="Restframe Wavelength (Å)", x_range_name="other wavelength"), 'above')
+            p2.add_layout(LinearAxis(axis_label ="Restframe Wavelength (Å)",
+                x_range_name="other wavelength", axis_label_text_font_size = '12pt',
+                major_label_text_font_size = '8pt'), 'above')
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
@@ -844,8 +873,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
-            p = VBox(HBox(p1),HBox(p2,VBox(binslider,spacingslider)), width=900)
-            #script, div = components(dict(p1=p1, p2=p2, binslider=binslider, spacingslider=spacingslider))
+            p = HBox(p1,VBox(p2,binslider,spacingslider))
+            #script, div = components(dict(p1=p1, p2=p2))#, binslider=binslider, spacingslider=spacingslider))
         elif photoavail:
             p = p1
             #script, div = components(dict(p1=p1))
@@ -862,7 +891,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             html = '<html><title></title><body></body></html>'
 
         #if photoavail and spectraavail:
-        #    html = html + div['p1'] + div['p2'] + div['binslider'] + div['spacingslider']
+        #    html = html + div['p1'] + div['p2']# + div['binslider'] + div['spacingslider']
         #elif photoavail:
         #    html = html + div['p1']
         #elif spectraavail:
@@ -881,7 +910,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         repfolder = get_rep_folder(catalog[entry])
         html = re.sub(r'(\<\/body\>)', '<div style="width:100%; text-align:center;">' + r'<a class="event-download" href="' +
-            linkdir + fileeventname + r'.json" download>' + r'&#11015; Download all event data &#11015;' +
+            linkdir + fileeventname + r'.json" download>' + r'Click to download all data for ' + eventname + ' in JSON format' +
             r'</a></div>\n\1', html)
 
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>sources</sup></th></tr>\n'

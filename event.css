@@ -17,10 +17,24 @@
 }
 
 .event-download {
-    font-size: 32pt;
+    font-size: 20pt;
     color: darkgreen;
     font-weight: bold;
     text-decoration: none;
     background: lightgreen;
     width: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.event-download:hover {
+	text-decoration: underline;
+}
+
+.bk-hbox-spacer {
+	margin-right: 0!important;
+}
+
+.bk-slider-horizontal {
+	height: 30px!important;
 }
