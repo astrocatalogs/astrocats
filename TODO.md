@@ -37,5 +37,5 @@ Other single SN datasets:
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
-* Fermi SNR catalog
+* Fermi SNR catalog - http://arxiv.org/abs/1511.06778
 * GALEX SNR catalog?
