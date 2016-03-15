@@ -1,6 +1,7 @@
 .event-table {
     background: #eee;
     border-collapse: collapse;
+	width: 340px;
 }
 
 .event-cell {
@@ -9,11 +10,24 @@
 
 .event-tab-title {
     text-align: center;
+	width: 350px;
 }
 
 .event-tab-div {
     float: left;
     margin: 5px;
+	width: 350px;
+}
+
+.event-host-title {
+    text-align: center;
+	width: 260px;
+}
+
+.event-host-div {
+    float: left;
+    margin: 5px;
+	width: 260px;
 }
 
 .event-download {
@@ -37,4 +51,10 @@
 
 .bk-slider-horizontal {
 	height: 30px!important;
+	margin-left: 15px!important;
+	width: 200px!important;
+}
+
+.bk-hbox label {
+	margin-left: 15px!important;
 }

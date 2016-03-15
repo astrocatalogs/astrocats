@@ -650,7 +650,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 and catalog[entry]['spectra'][i]['time'] == catalog[entry]['spectra'][i-1]['time']):
                     ydiff = 0
             else:
-                ydiff = max(spectrumscaled[i]) - min(spectrumscaled[i])
+                ydiff = 0.8*(max(spectrumscaled[i]) - min(spectrumscaled[i]))
             spectrumscaled[i] = [j + y_height for j in spectrumscaled[i]]
             y_height += ydiff
 
@@ -873,7 +873,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
-            p = HBox(p1,VBox(p2,binslider,spacingslider))
+            p = HBox(p1,VBox(p2,HBox(binslider,spacingslider)))
             #script, div = components(dict(p1=p1, p2=p2))#, binslider=binslider, spacingslider=spacingslider))
         elif photoavail:
             p = p1
@@ -946,10 +946,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
                     (r'</a>' if 'url' in source else '') +
                     r'</td></tr>\n')
-            newhtml = newhtml + r'</table></div>'
+            newhtml = newhtml + r'</table><em>Sources are presented in order of importation, not in order of importance.</em></div>\n'
 
             if hasimage:
-                newhtml = newhtml + '<div class="event-tab-div"><h3 class="event-tab-title">Host Image</h3>' + skyhtml + '</div>'
+                newhtml = newhtml + '<div class="event-host-div"><h3 class="event-host-title">Host Image</h3>' + skyhtml
+                newhtml = newhtml + r'</table><em>Host images are taken from SDSS if available; if not, DSS is used.</em></div>\n'
 
         newhtml = newhtml + r'\n\1'
 
