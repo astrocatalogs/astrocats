@@ -1,5 +1,8 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
+Multiple SN datasets:
+* http://arxiv.org/abs/1603.03823
+
 Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/756/173
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/A%2bA/415/863 (*Data in text files attached to catalog*)
@@ -34,5 +37,5 @@ Other single SN datasets:
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
-* Fermi SNR catalog
+* Fermi SNR catalog - http://arxiv.org/abs/1511.06778
 * GALEX SNR catalog?
