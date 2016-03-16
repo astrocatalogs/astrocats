@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source /root/.bashrc
+PATH=/opt/local/bin:/usr/local/bin:$PATH ; export PATH
+LD_LIBRARY_PATH=/usr/local/lib:/opt/local/lib ; export LD_LIBRARY_PATH
 
 if [ $# -eq 0 ]
   then
@@ -8,7 +9,6 @@ if [ $# -eq 0 ]
 	exit
 fi
 
-export
 git pull
 git commit -a -m "$1"
 git push
