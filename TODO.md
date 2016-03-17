@@ -40,6 +40,7 @@ Other single SN datasets:
 * SN2010bh - http://iopscience.iop.org/article/10.1088/0004-637X/740/1/41/meta
 * PS1-11ap - http://mnras.oxfordjournals.org/content/437/1/656.full
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B, http://adsabs.harvard.edu/abs/2014ApJ...787..139D
+* SN2012bz - http://www.aanda.org/articles/aa/full_html/2014/06/aa23387-14/aa23387-14.html
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D
 * SN2013hx - Inserra+ 2013 in prep.?
