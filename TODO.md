@@ -37,6 +37,7 @@ Other single SN datasets:
 * SN2009bw - http://adsabs.harvard.edu/abs/2012MNRAS.422.1122I
 * SN2009ib - http://adsabs.harvard.edu/abs/2015MNRAS.450.3137T
 * SN2009ip - http://mnras.oxfordjournals.org/content/453/4/3886.full
+* SN2010bh - http://iopscience.iop.org/article/10.1088/0004-637X/740/1/41/meta
 * PS1-11ap - http://mnras.oxfordjournals.org/content/437/1/656.full
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B
 * SN2012aw - http://adsabs.harvard.edu/abs/2014ApJ...787..139D
