@@ -37,6 +37,7 @@ Other single SN datasets:
 * SN2012aw - http://adsabs.harvard.edu/abs/2014ApJ...787..139D
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D
+* SN2013hx - Inserra+ 2013 in prep.?
 * iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
 * SN2015U - http://arxiv.org/abs/1603.04866
 
