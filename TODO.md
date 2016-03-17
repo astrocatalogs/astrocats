@@ -1,14 +1,15 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
-Multiple SN datasets:
-* http://arxiv.org/abs/1603.03823
-
 Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/A%2bA/415/863 (*Data in text files attached to catalog*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/491.228
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/746/85 (*Needs conversion from flux to magnitude*)
+
+Multiple SN datasets:
+* http://arxiv.org/abs/1603.03823
+* http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta
 
 Single SN dataset on VizieR:
 * SN2002ch - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/394/2266
@@ -22,7 +23,6 @@ Single SN dataset on VizieR:
 * SN2012aw - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/433/1871
 * SN2012fr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/AJ/148/1
 * PS1-12sk - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/769/39
-* iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
 * SN2014J - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/805/74
 
 Other single SN datasets:
@@ -37,6 +37,7 @@ Other single SN datasets:
 * SN2012aw - http://adsabs.harvard.edu/abs/2014ApJ...787..139D
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D
+* iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
 * SN2015U - http://arxiv.org/abs/1603.04866
 
 SNR catalogs:
