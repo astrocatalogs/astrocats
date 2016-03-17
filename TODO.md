@@ -9,8 +9,8 @@ Multiple SN datasets on VizieR:
 
 Other multiple SN datasets:
 * http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta (PTF11rks, SN2011ke, SN2011kf, SN2012il)
-* http://mnras.oxfordjournals.org.oca.ucsc.edu/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
-* http://mnras.oxfordjournals.org.oca.ucsc.edu/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
+* http://mnras.oxfordjournals.org/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
+* http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
 * http://arxiv.org/abs/1603.03823
 
 Single SN dataset on VizieR:
@@ -29,12 +29,12 @@ Single SN dataset on VizieR:
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Hagai's e-mail)
-* SN2008D - http://www.nature.com.oca.ucsc.edu/nature/journal/v453/n7194/suppinfo/nature06997.html
+* SN2008D - http://www.nature.com/nature/journal/v453/n7194/suppinfo/nature06997.html
 * SN2008in - http://adsabs.harvard.edu/abs/2011ApJ...736...76R
 * SN2009N - http://adsabs.harvard.edu/abs/2014MNRAS.438..368T
 * SN2009bw - http://adsabs.harvard.edu/abs/2012MNRAS.422.1122I
 * SN2009ib - http://adsabs.harvard.edu/abs/2015MNRAS.450.3137T
-* SN2009ip - http://mnras.oxfordjournals.org.oca.ucsc.edu/content/453/4/3886.full
+* SN2009ip - http://mnras.oxfordjournals.org/content/453/4/3886.full
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B
 * SN2012aw - http://adsabs.harvard.edu/abs/2014ApJ...787..139D
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
