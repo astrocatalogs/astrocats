@@ -20,8 +20,6 @@ from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
 from astropy import units as un
-#from colorpy.ciexyz import xyz_from_wavelength
-#from colorpy.colormodels import irgb_string_from_xyz
 from copy import deepcopy
 from random import shuffle, seed
 from collections import OrderedDict
@@ -1004,7 +1002,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 catalog[entry]['references'] = ', '.join(["<a href='http://adsabs.harvard.edu/abs/" + y['bibcode'] + "'>" + y['bibcode'] + "</a>"
                     for y in ssources[:3]]) + seemorelink
 
-        nophoto.append(catalog[entry]['numphoto'] < 3)
+        nophoto.append(catalog[entry]['numphoto'] < 5)
 
         nospectra.append(catalog[entry]['numspectra'] == 0)
 
