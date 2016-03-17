@@ -40,6 +40,7 @@ Other single SN datasets:
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D
 * SN2013hx - Inserra+ 2013 in prep.?
 * iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
+* LSQ14bdq - http://iopscience.iop.org/article/10.1088/2041-8205/807/1/L18/meta
 * SN2015U - http://arxiv.org/abs/1603.04866
 
 SNR catalogs:
