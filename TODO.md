@@ -9,6 +9,7 @@ Multiple SN datasets on VizieR:
 
 Other multiple SN datasets:
 * http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta (PTF11rks, SN2011ke, SN2011kf, SN2012il)
+* http://mnras.oxfordjournals.org.oca.ucsc.edu/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
 * http://mnras.oxfordjournals.org.oca.ucsc.edu/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
 * http://arxiv.org/abs/1603.03823
 
