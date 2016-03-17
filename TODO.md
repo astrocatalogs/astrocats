@@ -6,6 +6,7 @@ Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/491.228
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/746/85 (*Needs conversion from flux to magnitude*)
+* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/474.484
 
 Other multiple SN datasets:
 * http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta (PTF11rks, SN2011ke, SN2011kf, SN2012il)
