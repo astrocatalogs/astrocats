@@ -34,6 +34,7 @@ Other single SN datasets:
 * SN2012aw - http://adsabs.harvard.edu/abs/2014ApJ...787..139D
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D
+* SN2015U - http://arxiv.org/abs/1603.04866
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
