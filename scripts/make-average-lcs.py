@@ -4,13 +4,13 @@ import json
 import re
 import sys
 import glob
+from photometry import bandcolorf, bandaliasf
 from bokeh.plotting import Figure, show, save, reset_output
 from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,
                           HBox, VBox, Range1d, LinearAxis, DatetimeAxis)
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
-from palettable import cubehelix
-from random import shuffle, seed, randint, uniform
+from random import randint, uniform
 from math import log10, floor
 from collections import OrderedDict
 from astropy.time import Time as astrotime
@@ -30,70 +30,6 @@ tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 outdir = "../"
 
 averagetype = "II"
-
-bandcodes = [
-    "u",
-    "g",
-    "r",
-    "i",
-    "z",
-    "u'",
-    "g'",
-    "r'",
-    "i'",
-    "z'",
-    "u_SDSS",
-    "g_SDSS",
-    "r_SDSS",
-    "i_SDSS",
-    "z_SDSS",
-    "U",
-    "B",
-    "V",
-    "R",
-    "I",
-    "G",
-    "Y",
-    "J",
-    "H",
-    "K",
-    "C",
-    "CR",
-    "CV",
-    "uvm2",
-    "uvw1",
-    "uvw2",
-    "pg",
-    "Mp"
-]
-
-bandaliases = OrderedDict([
-    ("u_SDSS", "u (SDSS)"),
-    ("g_SDSS", "g (SDSS)"),
-    ("r_SDSS", "r (SDSS)"),
-    ("i_SDSS", "i (SDSS)"),
-    ("z_SDSS", "z (SDSS)"),
-    ("uvm2"  , "M2 (UVOT)"),
-    ("uvw1"  , "W1 (UVOT)"),
-    ("uvw2"  , "W2 (UVOT)"),
-])
-
-seed(101)
-#bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
-bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
-shuffle(bandcolors)
-
-bandcolordict = dict(list(zip(bandcodes,bandcolors)))
-
-def bandaliasf(code):
-    if (code in bandaliases):
-        return bandaliases[code]
-    return code
-
-def bandcolorf(color):
-    if (color in bandcolordict):
-        return bandcolordict[color]
-    return 'black'
 
 def get_sig_digits(x):
     return len((''.join(x.split('.'))).strip('0'))
@@ -183,23 +119,17 @@ hover = HoverTool(tooltips = tt)
 min_x_range = -x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))])
 max_x_range = x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])
 
-p1 = Figure(title='Average photometry for ' + averagetype, x_axis_label='Time (MJD)',
+p1 = Figure(title='Average Photometry for Type ' + averagetype + ' SNe', x_axis_label='Time (MJD)',
     y_axis_label='Absolute Magnitude', tools = tools, plot_width = 1000, plot_height = 1000, #responsive = True,
     x_range = (min_x_range, max_x_range),
     y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]),
                -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])),
-    title_text_font_size='16pt', webgl = True)
-p1.xaxis.axis_label_text_font_size = '12pt'
-p1.yaxis.axis_label_text_font_size = '12pt'
-p1.xaxis.major_label_text_font_size = '8pt'
-p1.yaxis.major_label_text_font_size = '8pt'
+    title_text_font_size='20pt', webgl = True)
+p1.xaxis.axis_label_text_font_size = '16pt'
+p1.yaxis.axis_label_text_font_size = '16pt'
+p1.xaxis.major_label_text_font_size = '12pt'
+p1.yaxis.major_label_text_font_size = '12pt'
 
-min_x_date = astrotime(min_x_range, format='mjd').datetime
-max_x_date = astrotime(max_x_range, format='mjd').datetime
-
-p1.extra_x_ranges = {"gregorian date": Range1d(start=min_x_date, end=max_x_date)}
-p1.add_layout(DatetimeAxis(axis_label ="Time (Gregorian Date)", major_label_text_font_size = '8pt',
-    x_range_name="gregorian date", axis_label_text_font_size = '12pt'), 'above')
 p1.add_tools(hover)
 
 xs = []
@@ -238,7 +168,7 @@ for band in bandset:
             src = [photoevent[i] for i in indne]
         )
     )
-    p1.circle('x', 'y', source = source, color=bandcolorf(band), legend='', size=2, line_alpha=0.5, fill_alpha=0.5)
+    p1.circle('x', 'y', source = source, color=bandcolorf(band), legend='', size=2, line_alpha=0.75, fill_alpha=0.75)
 
     source = ColumnDataSource(
         data = dict(
@@ -252,7 +182,7 @@ for band in bandset:
     )
     #p1.multi_line([err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye], color=bandcolorf(band))
     #p1.multi_line([[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye], color=bandcolorf(band))
-    p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=2, line_alpha=0.5, fill_alpha=0.5)
+    p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=2, line_alpha=0.75, fill_alpha=0.75)
 
     #upplimlegend = bandname if len(indye) == 0 and len(indne) == 0 else ''
 

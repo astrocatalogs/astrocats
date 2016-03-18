@@ -487,6 +487,7 @@ def get_max_light(name):
         leventphoto = [x for x in eventphoto if 'band' in x and x['band'] in mb]
         if leventphoto:
             mlmag = min([x[2] for x in leventphoto])
+            eventphoto = leventphoto
             break
 
     if not mlmag:
@@ -1040,7 +1041,7 @@ if do_task('vizier'):
 # Suspect catalog
 if do_task('suspect'): 
     with open('../sne-external/suspectreferences.csv','r') as f:
-        tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+        tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
         suspectrefdict = {}
         for row in tsvin:
             suspectrefdict[row[0]] = row[1]
@@ -1058,33 +1059,34 @@ if do_task('suspect'):
         bandresp = urllib.request.urlopen(bandlink)
         bandsoup = BeautifulSoup(bandresp, "html5lib")
         bandtable = bandsoup.find('table')
-        if ei == 1:
-            names = bandsoup.body.findAll(text=re.compile("Name"))
-            reference = ''
-            for link in bandsoup.body.findAll('a'):
-                if 'adsabs' in link['href']:
-                    reference = str(link).replace('"', "'")
 
-            bibcode = suspectrefdict[reference]
-            source = get_source(name, bibcode = bibcode)
+        names = bandsoup.body.findAll(text=re.compile("Name"))
+        reference = ''
+        for link in bandsoup.body.findAll('a'):
+            if 'adsabs' in link['href']:
+                reference = str(link).replace('"', "'")
 
-            year = re.findall(r'\d+', name)[0]
-            add_quanta(name, 'discoverdate', year, source)
-            add_quanta(name, 'host', names[1].split(':')[1].strip(), source)
-
-            redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
-            if redshifts:
-                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), source)
-            hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
-            if hvels:
-                add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], source)
-            types = bandsoup.body.findAll(text=re.compile("Type"))
-
-            add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], source)
+        bibcode = suspectrefdict[reference]
+        source = get_source(name, bibcode = bibcode)
 
         secondaryreference = "SUSPECT"
         secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
         secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+
+        if ei == 1:
+            year = re.findall(r'\d+', name)[0]
+            add_quanta(name, 'discoverdate', year, secondarysource)
+            add_quanta(name, 'host', names[1].split(':')[1].strip(), secondarysource)
+
+            redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
+            if redshifts:
+                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource)
+            hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
+            if hvels:
+                add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], secondarysource)
+            types = bandsoup.body.findAll(text=re.compile("Type"))
+
+            add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], secondarysource)
 
         for r, row in enumerate(bandtable.findAll('tr')):
             if r == 0:
@@ -1281,7 +1283,7 @@ if do_task('sdss'):
                 e_magnitude = row[4]
                 instrument = "SDSS"
                 add_photometry(name, time = mjd, instrument = instrument, band = band, magnitude = magnitude,
-                    e_magnitude = e_magnitude, source = source, system = "AB")
+                    e_magnitude = e_magnitude, source = source, system = "SDSS")
         f.close()
     journal_events()
 
@@ -1818,7 +1820,8 @@ if do_task('snls'):
         for row in data:
             flux = row[3]
             err = row[4]
-            if float(flux) < 2.0*float(err):
+            # Being extra strict here with the flux constraint, see note below.
+            if float(flux) < 3.0*float(err):
                 continue
             name = 'SNLS-' + row[0]
             name = add_event(name)
@@ -1827,6 +1830,7 @@ if do_task('snls'):
             mjd = row[2]
             sig = get_sig_digits(flux.split('E')[0])
             # Conversion comes from SNLS-Readme
+            # NOTE: Datafiles available for download suggest different zeropoints than 30, need to inquire.
             magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
             e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
             add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
