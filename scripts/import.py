@@ -2001,8 +2001,8 @@ if do_task('wiserepspectra'):
                             else:
                                 sources = secondarysource
 
-                            add_quanta(name, 'claimedtype', claimedtype, sources)
-                            add_quanta(name, 'redshift', redshift, sources)
+                            add_quanta(name, 'claimedtype', claimedtype, secondarysource)
+                            add_quanta(name, 'redshift', redshift, secondarysource)
 
                             if not specpath:
                                 continue

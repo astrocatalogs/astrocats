@@ -45,6 +45,8 @@ args = parser.parse_args()
 
 outdir = "../"
 
+googlepingurl = "http://www.google.com/webmasters/tools/ping?sitemap=https%3A%2F%2Fsne.space%2Fsitemap.xml"
+
 linkdir = "https://sne.space/sne/"
 
 testsuffix = '.test' if args.test else ''
@@ -106,9 +108,9 @@ eventpageheader = [
     "Name",
     "Aliases",
     "Discovery Date",
-    "Date of Maximum",
-    r"<em>m</em><sub>max</sub>",
-    r"<em>M</em><sub>max</sub>",
+    "Maximum Date [band]",
+    r"<em>m</em><sub>max</sub> [band]",
+    r"<em>M</em><sub>max</sub> [band]",
     "Host Name",
     "R.A. (h:m:s)",
     "Dec. (d:m:s)",
@@ -173,6 +175,37 @@ newfiletemplate = (
     ]
   }
 }'''
+)
+
+sitemaptemplate = (
+'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+  <url>
+    <loc>https://sne.space</loc>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://sne.space/about</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sne.space/contribute</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sne.space/statistics</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sne.space/download</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sne.space/links</loc>
+    <priority>0.7</priority>
+  </url>
+{0}</urlset>'''
 )
 
 with open('rep-folders.txt', 'r') as f:
@@ -815,7 +848,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + source
                                 else:
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
-                            newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value'] + r'<sup>' + sourcehtml + r'</sup>'
+                            newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value']
+                            if key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag' and 'maxband' in catalog[entry]:
+                                newhtml = newhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
+                            newhtml = newhtml + r'<sup>' + sourcehtml + r'</sup>'
                         elif isinstance(row, str):
                             newhtml = newhtml + (r'<br>' if r > 0 else '') + row.strip()
 
@@ -943,15 +979,15 @@ if args.writecatalog and not args.eventlist:
     with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
         csvout = csv.writer(f)
         csvout.writerow(['Category','Number'])
-        csvout.writerow(['Has light curve and spectrum', len(sum(lcspye))])
-        csvout.writerow(['Has light curve only', len(sum(lconly))])
-        csvout.writerow(['Has spectrum only', len(sum(sponly))])
-        csvout.writerow(['No light curve or spectrum', len(sum(lcspno))])
+        csvout.writerow(['Has light curve and spectra', sum(lcspye)])
+        csvout.writerow(['Has light curve only', sum(lconly)])
+        csvout.writerow(['Has spectra only', sum(sponly)])
+        csvout.writerow(['No light curve or spectra', sum(lcspno)])
 
     with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(len(sum(hasalc))))
+        f.write("{:,}".format(sum(hasalc)))
     with open(outdir + 'hasspectra.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(len(sum(hasasp))))
+        f.write("{:,}".format(sum(hasasp)))
     with open(outdir + 'snecount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(len(catalog)))
     with open(outdir + 'photocount.html' + testsuffix, 'w') as f:
@@ -981,6 +1017,17 @@ if args.writecatalog and not args.eventlist:
         csvout.writerow(['Type','Number'])
         for ctype in sortedctypes:
             csvout.writerow(ctype)
+
+    with open('../../sitemap.xml', 'w') as f:
+        sitemapxml = sitemaptemplate
+        sitemaplocs = ''
+        for key in catalog.keys():
+            sitemaplocs = sitemaplocs + "  <url>\n    <loc>https://sne.space/sne/" + key + "</loc>\n  </url>\n"
+        sitemapxml = sitemapxml.replace('{0}', sitemaplocs)
+        f.write(sitemapxml)
+
+    # Ping Google to let them know sitemap has been updated
+    response = urllib.request.urlopen(googlepingurl)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
