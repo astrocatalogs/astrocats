@@ -359,7 +359,12 @@ catalogcopy = OrderedDict()
 snepages = []
 sourcedict = {}
 nophoto = []
-nospectra = []
+lcspye = []
+lcspno = []
+lconly = []
+sponly = []
+hasalc = []
+hasasp = []
 totalphoto = 0
 totalspectra = 0
 
@@ -1002,9 +1007,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 catalog[entry]['references'] = ', '.join(["<a href='http://adsabs.harvard.edu/abs/" + y['bibcode'] + "'>" + y['bibcode'] + "</a>"
                     for y in ssources[:3]]) + seemorelink
 
-        nophoto.append(catalog[entry]['numphoto'] < 5)
+        lcspye.append(catalog[entry]['numphoto'] >= 5 and catalog[entry]['numspectra'] >  0)
+        lconly.append(catalog[entry]['numphoto'] >= 5 and catalog[entry]['numspectra'] == 0)
+        sponly.append(catalog[entry]['numphoto'] <  5 and catalog[entry]['numspectra'] >  0)
+        lcspno.append(catalog[entry]['numphoto'] <  5 and catalog[entry]['numspectra'] == 0)
 
-        nospectra.append(catalog[entry]['numspectra'] == 0)
+        hasalc.append(catalog[entry]['numphoto'] >= 5)
+        hasasp.append(catalog[entry]['numspectra'] >  0)
 
         totalphoto += catalog[entry]['numphoto']
         totalspectra += catalog[entry]['numspectra']
@@ -1049,26 +1058,18 @@ if args.writecatalog and not args.eventlist:
         for source in sortedsources:
             csvout.writerow(source)
 
-    nophoto = sum(nophoto)
-    hasphoto = len(catalog) - nophoto
     with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
         csvout = csv.writer(f)
         csvout.writerow(['Category','Number'])
-        csvout.writerow(['Has light curve', hasphoto])
-        csvout.writerow(['No light curve', nophoto])
-
-    nospectra = sum(nospectra)
-    hasspectra = len(catalog) - nospectra
-    with open(outdir + 'spectra-pie.csv' + testsuffix, 'w') as f:
-        csvout = csv.writer(f)
-        csvout.writerow(['Category','Number'])
-        csvout.writerow(['Has spectra', hasspectra])
-        csvout.writerow(['No spectra', nospectra])
+        csvout.writerow(['Has light curve and spectrum', len(lcspye)])
+        csvout.writerow(['Has light curve only', len(lconly)])
+        csvout.writerow(['Has spectrum only', len(sponly)])
+        csvout.writerow(['No light curve or spectrum', len(lcspno)])
 
     with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(hasphoto))
+        f.write("{:,}".format(len(hasalc)))
     with open(outdir + 'hasspectra.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(hasspectra))
+        f.write("{:,}".format(len(hasasp)))
     with open(outdir + 'snecount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(len(catalog)))
     with open(outdir + 'photocount.html' + testsuffix, 'w') as f:

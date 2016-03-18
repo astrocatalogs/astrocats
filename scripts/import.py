@@ -92,6 +92,12 @@ repbetterquanta = {
     'maxdate'
 }
 
+maxbands = [
+    ['B', 'b', 'g'], # B-like bands first
+    ['V'],           # if not, V-like bands
+    ['R', 'r']       # if not, R-like bands
+]
+
 def event_attr_priority(attr):
     if attr == 'photometry' or attr == 'spectra':
         return 'zzzzzzzz'
@@ -469,19 +475,31 @@ def make_date_string(year, month = '', day = ''):
 
 def get_max_light(name):
     if 'photometry' not in events[name]:
-        return (None, None)
+        return (None, None, None)
 
-    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude'])) for x in events[name]['photometry'] if 'magnitude' in x]
+    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band']) for x in events[name]['photometry'] if
+                  ('magnitude' in x and 'band' in x and 'time' in x and 'timeunit' in x)]
     if not eventphoto:
-        return (None, None)
-    mlmag = min([x[2] for x in eventphoto])
+        return (None, None, None)
+
+    mlmag = None
+    for mb in maxbands:
+        leventphoto = [x for x in eventphoto if 'band' in x and x['band'] in mb]
+        if leventphoto:
+            mlmag = min([x[2] for x in leventphoto])
+            break
+
+    if not mlmag:
+        mlmag = min([x[2] for x in eventphoto])
 
     mlindex = [x[2] for x in eventphoto].index(mlmag)
+    mlband = eventphoto[mlindex][3]
+
     if eventphoto[mlindex][0] == 'MJD':
         mlmjd = float(eventphoto[mlindex][1])
-        return (astrotime(mlmjd, format='mjd').datetime, mlmag)
+        return (astrotime(mlmjd, format='mjd').datetime, mlmag, mlband)
     else:
-        return (None, mlmag)
+        return (None, mlmag, mlband)
 
 def get_first_light(name):
     if 'photometry' not in events[name]:
@@ -496,11 +514,13 @@ def get_first_light(name):
 
 def set_first_max_light(name):
     if 'maxappmag' not in events[name]:
-        (mldt, mlmag) = get_max_light(name)
+        (mldt, mlmag, mlband) = get_max_light(name)
         if mldt:
             add_quanta(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), 'D')
         if mlmag:
             add_quanta(name, 'maxappmag', pretty_num(mlmag), 'D')
+        if mlband:
+            add_quanta(name, 'maxband', mlband, 'D')
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         fldt = get_first_light(name)
@@ -1213,6 +1233,8 @@ if do_task('ucb'):
                 continue
             mjd = row[0]
             magnitude = row[1]
+            if magnitude and float(magnitude) > 99.0:
+                continue
             e_magnitude = row[2]
             band = row[4]
             instrument = row[5]
@@ -1356,6 +1378,8 @@ if do_task('csp'):
 
 # Import ITEP
 if do_task('itep'): 
+    itepphotometryerrors = ['SN1995N']
+
     needsbib = []
     with open("../sne-external/itep-refs.txt",'r') as f:
         refrep = f.read().splitlines()
@@ -1390,7 +1414,8 @@ if do_task('itep'):
             needsbib.append(reference)
             source = get_source(name, reference = reference) if reference else ''
 
-        add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = secondarysource + ',' + source)
+        if name not in itepphotometryerrors:
+            add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = secondarysource + ',' + source)
     f.close()
     
     # Write out references that could use a bibcode
@@ -1567,6 +1592,10 @@ if do_task('rochester'):
     #rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     rochesterupdate = [False, True]
 
+    # These are known to be in error on the Rochester page, so ignore them.
+    rochesterredshifterrors = ['LSQ12bgl']
+    rochesterphotometryerrors = ['SNF20080514-002']
+
     for p, path in enumerate(rochesterpaths):
         if args.update and not rochesterupdate[p]:
             continue
@@ -1629,9 +1658,9 @@ if do_task('rochester'):
                 add_quanta(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-                if float(str(cols[8].contents[0]).strip()) <= 90.0:
+                if float(str(cols[8].contents[0]).strip()) <= 90.0 and name not in rochesterphotometryerrors:
                     add_photometry(name, time = str(astrot.mjd), magnitude = str(cols[8].contents[0]).strip(), source = sources)
-            if cols[11].contents[0] != 'n/a':
+            if cols[11].contents[0] != 'n/a' and name not in rochesterredshifterrors:
                 add_quanta(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
             add_quanta(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
 
@@ -1663,6 +1692,10 @@ if do_task('rochester'):
                 if magnitude.isdigit():
                     if int(magnitude) > 100:
                         magnitude = magnitude[:2] + '.' + magnitude[2:]
+
+                if float(str(cols[8].contents[0]).strip()) >= 90.0:
+                    continue
+
                 secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
                 band = row[2].lstrip('1234567890.')
                 if len(row) >= 4:
@@ -1785,7 +1818,7 @@ if do_task('snls'):
         for row in data:
             flux = row[3]
             err = row[4]
-            if float(flux) < float(err):
+            if float(flux) < 2.0*float(err):
                 continue
             name = 'SNLS-' + row[0]
             name = add_event(name)
