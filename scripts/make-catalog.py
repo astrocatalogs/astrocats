@@ -16,6 +16,8 @@ import requests
 import urllib.request
 import urllib.parse
 import filecmp
+from photometry import *
+from digits import *
 from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
@@ -193,98 +195,7 @@ header = OrderedDict(list(zip(columnkey,header)))
 eventpageheader = OrderedDict(list(zip(columnkey,eventpageheader)))
 titles = OrderedDict(list(zip(columnkey,titles)))
 
-bandcodes = [
-    "u",
-    "g",
-    "r",
-    "i",
-    "z",
-    "u'",
-    "g'",
-    "r'",
-    "i'",
-    "z'",
-    "u_SDSS",
-    "g_SDSS",
-    "r_SDSS",
-    "i_SDSS",
-    "z_SDSS",
-    "U",
-    "B",
-    "V",
-    "R",
-    "I",
-    "G",
-    "Y",
-    "J",
-    "H",
-    "K",
-    "C",
-    "CR",
-    "CV",
-    "uvm2",
-    "uvw1",
-    "uvw2",
-    "pg",
-    "Mp"
-]
-
-bandaliases = OrderedDict([
-    ("u_SDSS", "u (SDSS)"),
-    ("g_SDSS", "g (SDSS)"),
-    ("r_SDSS", "r (SDSS)"),
-    ("i_SDSS", "i (SDSS)"),
-    ("z_SDSS", "z (SDSS)"),
-    ("uvm2"  , "M2 (UVOT)"),
-    ("uvw1"  , "W1 (UVOT)"),
-    ("uvw2"  , "W2 (UVOT)"),
-])
-
-bandshortaliases = OrderedDict([
-    ("u_SDSS", "u"),
-    ("g_SDSS", "g"),
-    ("r_SDSS", "r"),
-    ("i_SDSS", "i"),
-    ("z_SDSS", "z"),
-    ("G"     , "" )
-])
-
-bandwavelengths = {
-    "u"      : 354.,
-    "g"      : 475.,
-    "r"      : 622.,
-    "i"      : 763.,
-    "z"      : 905.,
-    "u'"     : 354.,
-    "g'"     : 475.,
-    "r'"     : 622.,
-    "i'"     : 763.,
-    "z'"     : 905.,
-    "u_SDSS" : 354.3,
-    "g_SDSS" : 477.0,
-    "r_SDSS" : 623.1,
-    "i_SDSS" : 762.5,
-    "z_SDSS" : 913.4,
-    "U"      : 365.,
-    "B"      : 445.,
-    "V"      : 551.,
-    "R"      : 658.,
-    "I"      : 806.,
-    "Y"      : 1020.,
-    "J"      : 1220.,
-    "H"      : 1630.,
-    "K"      : 2190.,
-    "uvm2"   : 260.,
-    "uvw1"   : 224.6,
-    "uvw2"   : 192.8
-}
-
 wavedict = dict(list(zip(bandcodes,bandwavelengths)))
-
-seed(101)
-#bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
-bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
-shuffle(bandcolors)
 
 def event_filename(name):
     return(name.replace('/', '_'))
@@ -296,29 +207,7 @@ def event_filename(name):
 #        if (hexstr != "#000000"):
 #            bandcolors[b] = hexstr
 
-bandcolordict = dict(list(zip(bandcodes,bandcolors)))
-
 coldict = dict(list(zip(list(range(len(columnkey))),columnkey)))
-
-def bandcolorf(color):
-    if (color in bandcolordict):
-        return bandcolordict[color]
-    return 'black'
-
-def bandaliasf(code):
-    if (code in bandaliases):
-        return bandaliases[code]
-    return code
-
-def bandshortaliasf(code):
-    if (code in bandshortaliases):
-        return bandshortaliases[code]
-    return code
-
-def bandwavef(code):
-    if (code in bandwavelengths):
-        return bandwavelengths[code]
-    return 0.
 
 def utf8(x):
     return str(x, 'utf-8')
@@ -333,13 +222,6 @@ def get_rep_folder(entry):
         if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repyear:
             return repfolders[r]
     return repfolders[0]
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
 
 def label_format(label):
     newlabel = label.replace('Angstrom', 'Å')
@@ -1061,15 +943,15 @@ if args.writecatalog and not args.eventlist:
     with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
         csvout = csv.writer(f)
         csvout.writerow(['Category','Number'])
-        csvout.writerow(['Has light curve and spectrum', len(lcspye)])
-        csvout.writerow(['Has light curve only', len(lconly)])
-        csvout.writerow(['Has spectrum only', len(sponly)])
-        csvout.writerow(['No light curve or spectrum', len(lcspno)])
+        csvout.writerow(['Has light curve and spectrum', len(sum(lcspye))])
+        csvout.writerow(['Has light curve only', len(sum(lconly))])
+        csvout.writerow(['Has spectrum only', len(sum(sponly))])
+        csvout.writerow(['No light curve or spectrum', len(sum(lcspno))])
 
     with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(len(hasalc)))
+        f.write("{:,}".format(len(sum(hasalc))))
     with open(outdir + 'hasspectra.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(len(hasasp)))
+        f.write("{:,}".format(len(sum(hasasp))))
     with open(outdir + 'snecount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(len(catalog)))
     with open(outdir + 'photocount.html' + testsuffix, 'w') as f:

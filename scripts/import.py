@@ -13,10 +13,12 @@ import resource
 import argparse
 import gzip
 import shutil
+from digits import *
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
 from copy import deepcopy
+from astropy import constants as const
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
@@ -28,7 +30,7 @@ parser = argparse.ArgumentParser(description='Generate a catalog JSON file and p
 parser.add_argument('--update', '-u', dest='update', help='Only update catalog using live sources.',    default=False, action='store_true')
 args = parser.parse_args()
 
-clight = 29979245800.
+clight = const.c.cgs.value
 
 eventnames = []
 
@@ -168,17 +170,6 @@ def snname(string):
         newstring = head + tail
 
     return newstring
-
-def get_sig_digits(x):
-    return len((''.join(x.split('.'))).strip('0'))
-
-def round_sig(x, sig=4):
-    if x == 0.0:
-        return 0.0
-    return round(x, sig-int(floor(log10(abs(x))))-1)
-
-def pretty_num(x, sig=4):
-    return str('%g'%(round_sig(x, sig)))
 
 def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
     nsources = len(events[name]['sources']) if 'sources' in events[name] else 0
@@ -484,7 +475,7 @@ def get_max_light(name):
 
     mlmag = None
     for mb in maxbands:
-        leventphoto = [x for x in eventphoto if 'band' in x and x['band'] in mb]
+        leventphoto = [x for x in eventphoto if x[3] in mb]
         if leventphoto:
             mlmag = min([x[2] for x in leventphoto])
             eventphoto = leventphoto
@@ -2413,16 +2404,16 @@ if do_task('snfspectra'):
                 fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
     journal_events()
 
-if do_task('writeevents'): 
-    files = []
-    for rep in repfolders:
-        files += glob.glob('../' + rep + "/*.json")
+files = []
+for rep in repfolders:
+    files += glob.glob('../' + rep + "/*.json")
 
-    for fi in files:
-        events = OrderedDict()
-        name = os.path.basename(os.path.splitext(fi)[0])
-        name = add_event(name)
-        derive_and_sanitize()
+for fi in files:
+    events = OrderedDict()
+    name = os.path.basename(os.path.splitext(fi)[0])
+    name = add_event(name)
+    derive_and_sanitize()
+    if do_task('writeevents'): 
         write_all_events(empty = True, lfs = True)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
