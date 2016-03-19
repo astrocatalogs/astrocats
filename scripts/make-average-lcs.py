@@ -29,7 +29,7 @@ tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
 outdir = "../"
 
-averagetype = "IIn"
+averagetype = "Ib"
 
 def get_sig_digits(x):
     return len((''.join(x.split('.'))).strip('0'))
