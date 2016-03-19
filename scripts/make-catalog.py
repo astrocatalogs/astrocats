@@ -633,7 +633,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if hasmjdmax:
                 data['mjdmax'] = [spectrummjdmax[i] for j in spectrumscaled[i]]
             sources.append(ColumnDataSource(data))
-            p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2)
+            p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2, line_join='round')
 
         if 'redshift' in catalog[entry]:
             minredw = minsw/(1.0 + z)
