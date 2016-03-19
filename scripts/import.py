@@ -13,6 +13,7 @@ import resource
 import argparse
 import gzip
 import shutil
+from html import unescape
 from digits import *
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
@@ -33,6 +34,8 @@ args = parser.parse_args()
 clight = const.c.cgs.value
 
 eventnames = []
+
+bibauthordict = {}
 
 tasks = {
     "internal":       {"update": False},
@@ -255,7 +258,7 @@ def trim_str_arr(arr, length = 10):
 
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "",
-    observer = "", reducer = ""):
+    observer = "", reducer = "", filename = ""):
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
         return
@@ -279,6 +282,9 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['observer'] = observer
     if reducer:
         spectrumentry['reducer'] = reducer
+    if filename:
+        print('spectrum filename: ' + filename)
+        spectrumentry['filename'] = filename
 
     spectrumentry['waveunit'] = waveunit
     spectrumentry['fluxunit'] = fluxunit
@@ -554,6 +560,13 @@ def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
 def derive_and_sanitize():
+    path = '../bibauthors.json'
+    if os.path.isfile(path):
+        with open(path, 'r') as f:
+            bibauthordict = json.loads(f.read())
+    else:
+        bibauthordict = {}
+
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
         set_first_max_light(name)
@@ -616,7 +629,34 @@ def derive_and_sanitize():
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: float(x['time']))
+        if 'sources' in events[name]:
+            for source in events[name]['sources']:
+                if 'bibcode' in source and source['bibcode'] not in bibauthordict:
+                    bibcode = source['bibcode']
+                    adsquery = ('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=ALL&version=1&bibcode=' +
+                                urllib.parse.quote(bibcode) + '&data_type=Custom&format=%253m%20%25(y)')
+                    response = urllib.request.urlopen(adsquery)
+                    html = response.read().decode('utf-8')
+                    hsplit = html.split("\n")
+                    if len(hsplit) > 5:
+                        bibcodeauthor = hsplit[5]
+                    else:
+                        bibcodeauthor = ''
+
+                    if not bibcodeauthor:
+                        print("Warning: Bibcode didn't return authors, not converting this bibcode.")
+
+                    bibauthordict[bibcode] = unescape(bibcodeauthor).strip()
+
+            for source in events[name]['sources']:
+                if 'bibcode' in source and source['bibcode'] in bibauthordict and bibauthordict[source['bibcode']]:
+                    source['name'] = bibauthordict[source['bibcode']]
+
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
+
+    jsonstring = json.dumps(bibauthordict, indent='\t', separators=(',', ':'), ensure_ascii=False)
+    with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
+        f.write(jsonstring)
 
 def delete_old_event_files():
     # Delete all old event JSON files
@@ -2037,7 +2077,8 @@ if do_task('wiserepspectra'):
                                     fluxunit = 'Uncalibrated'
 
                                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = fluxunit, errors = errors, errorunit = fluxunit, wavelengths = wavelengths,
-                                    fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer)
+                                    fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer,
+                                    filename = specfile)
                                 wiserepcnt = wiserepcnt + 1
 
                 print('unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
@@ -2061,7 +2102,8 @@ if do_task('cfaiaspectra'):
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
         for fname in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
-            fileparts = os.path.basename(fname).split('-')
+            filename = os.path.basename(fname)
+            fileparts = filename.split('-')
             if name[:2] == "SN" and is_number(name[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
@@ -2079,7 +2121,7 @@ if do_task('cfaiaspectra'):
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
-            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
     journal_events()
@@ -2099,7 +2141,8 @@ if do_task('cfaibcspectra'):
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
         for fname in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
-            fileparts = os.path.basename(fname).split('-')
+            filename = os.path.basename(fname)
+            fileparts = filename.split('-')
             instrument = ''
             year = fileparts[1][:4]
             month = fileparts[1][4:6]
@@ -2112,7 +2155,7 @@ if do_task('cfaibcspectra'):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
-            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths, filename = filename,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
     journal_events()
@@ -2127,7 +2170,8 @@ if do_task('snlsspectra'):
 
     oldname = ''
     for fname in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
-        fileparts = os.path.basename(fname).split('_')
+        filename = os.path.basename(fname)
+        fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
         name = get_preferred_name(name)
         if oldname and name != oldname:
@@ -2156,13 +2200,15 @@ if do_task('snlsspectra'):
         errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-            fluxes = fluxes, timeunit = 'MJD', time = datedict[name], instrument = instrument, source = source)
+            fluxes = fluxes, timeunit = 'MJD', time = datedict[name], instrument = instrument, source = source,
+            filename = filename)
     journal_events()
 
 if do_task('cspspectra'): 
     oldname = ''
     for fname in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
-        sfile = os.path.basename(fname).split('.')
+        filename = os.path.basename(fname)
+        sfile = filename.split('.')
         if sfile[1] == 'txt':
             continue
         sfile = sfile[0]
@@ -2193,7 +2239,7 @@ if do_task('cspspectra'):
         fluxes = specdata[1]
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-            fluxes = fluxes, instrument = instrument, source = source, deredshifted = True)
+            fluxes = fluxes, instrument = instrument, source = source, deredshifted = True, filename = filename)
     journal_events()
 
 if do_task('ucbspectra'): 
@@ -2273,8 +2319,9 @@ if do_task('ucbspectra'):
             if not list(filter(None, errors)):
                 errors = ''
 
-            add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer)
+            add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
+                wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
+                instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer)
     journal_events()
 
 if do_task('suspectspectra'): 
@@ -2338,7 +2385,7 @@ if do_task('suspectspectra'):
                     errors = specdata[2]
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                    fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources)
+                    fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources, filename = spectrum)
     journal_events()
 
 if do_task('snfspectra'): 
@@ -2360,6 +2407,7 @@ if do_task('snfspectra'):
         sources = ','.join([source,secondarysource])
         eventspectra = glob.glob('../sne-external-spectra/SNFactory/'+eventfolder+'/*.dat')
         for spectrum in eventspectra:
+            filename = os.path.basename(spectrum)
             with open(spectrum) as f:
                 specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
             specdata = list(filter(None, specdata))
@@ -2400,8 +2448,9 @@ if do_task('snfspectra'):
             if haserrors:
                 errors = specdata[2]
 
-            add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-                fluxes = fluxes, errors = errors, errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources)
+            add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
+                wavelengths = wavelengths, fluxes = fluxes, errors = errors,
+                errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources, filename = filename)
     journal_events()
 
 files = []
