@@ -13,6 +13,7 @@ from astropy.coordinates import SkyCoord as coord
 from astropy import units as un
 from palettable import cubehelix
 from math import *
+from random import shuffle, seed, randint, uniform
 
 tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
@@ -25,10 +26,12 @@ sndecs = []
 sntypes = []
 snnames = []
 
+seed(12483)
 colors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
           cubehelix.cubehelix2_16.hex_colors[2:13] +
           cubehelix.cubehelix3_16.hex_colors[2:13] +
           cubehelix.perceptual_rainbow_16.hex_colors)
+shuffle(colors)
 
 with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
