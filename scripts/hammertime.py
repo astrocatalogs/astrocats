@@ -30,6 +30,8 @@ seed(12483)
 colors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
           cubehelix.cubehelix2_16.hex_colors[2:13] +
           cubehelix.cubehelix3_16.hex_colors[2:13] +
+          cubehelix.jim_special_16.hex_colors[2:13] +
+          cubehelix.purple_16.hex_colors[2:13] +
           cubehelix.perceptual_rainbow_16.hex_colors)
 shuffle(colors)
 
@@ -51,6 +53,17 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     thisevent = thisevent[list(thisevent.keys())[0]]
 
     if 'ra' in thisevent and 'dec' in thisevent:
+        if 'claimedtype' in thisevent and thisevent['claimedtype']:
+            thistype = thisevent['claimedtype'][0]['value'].replace('?', '').replace('*', '')
+            if thistype in ('', 'QSO', 'AGN', 'Nova', 'Galaxy', 'CV'):
+                continue
+            elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate'):
+                sntypes.append('Unknown')
+            else:
+                sntypes.append(thistype)
+        else:
+            sntypes.append('Unknown')
+
         print(thisevent['name'])
         c = coord(ra=thisevent['ra'][0]['value'], dec=thisevent['dec'][0]['value'], unit=(un.hourangle, un.deg))
         snnames.append(thisevent['name'])
@@ -62,14 +75,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         sndecs.append(c.dec.deg)
         snhxs.append(snhx)
         snhys.append(snhy)
-        if 'claimedtype' in thisevent and thisevent['claimedtype']:
-            thistype = thisevent['claimedtype'][0]['value'].strip('?')
-            if thistype in ('Other', 'not Ia'):
-                sntypes.append('Unknown')
-            else:
-                sntypes.append(thistype)
-        else:
-            sntypes.append('Unknown')
 
 rangepts = 100
 raseps = 24
@@ -79,8 +84,6 @@ decrange = [-pi/2.0 + i*pi/rangepts for i in range(0, rangepts+1)]
 
 ragrid = [-pi + i*2.0*pi/raseps for i in range(0, raseps+1)]
 decgrid = [-pi/2.0 + i*pi/decseps for i in range(0, decseps+1)]
-
-print(ragrid)
 
 tt = [  
         ("Event", "@event"),
@@ -117,7 +120,9 @@ p1.multi_line(decxs, decys, color='#bbbbbb')
 xs = []
 ys = []
 
-claimedtypes = list(set(sntypes))
+claimedtypes = sorted(list(set(sntypes)))
+
+print(claimedtypes)
 
 for ci, ct in enumerate(claimedtypes):
     ind = [i for i, t in enumerate(sntypes) if t == ct]
@@ -134,14 +139,16 @@ for ci, ct in enumerate(claimedtypes):
     )
     if ct == 'Unknown':
         tcolor = 'black'
+        falpha = 0.0
     else:
         tcolor = colors[ci]
-    p1.circle('x', 'y', source = source, color=tcolor, legend=ct, size=3)
+        falpha = 1.0
+    p1.circle('x', 'y', source = source, color=tcolor, fill_alpha=falpha, legend=ct, size=3)
 
-p1.legend.label_text_font_size = '8pt'
+p1.legend.label_text_font_size = '7pt'
 p1.legend.label_width = 20
-p1.legend.label_height = 14
-p1.legend.glyph_height = 14
+p1.legend.label_height = 10
+p1.legend.glyph_height = 10
 
 html = file_html(p1, CDN, 'Supernova locations')
 

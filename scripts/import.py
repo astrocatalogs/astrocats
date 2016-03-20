@@ -73,17 +73,20 @@ repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
 repyears[0] -= 1
 
 typereps = {
+    'CC':     ['CCSN'],
     'I P':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
     'Ia P':   ['Ia pec', 'Ia-pec', 'Iapec'],
     'Ib P':   ['Ib pec', 'Ib-pec'],
     'Ic P':   ['Ic pec', 'Ic-pec'],
+    'Ia/c':   ['Ic/Ia', 'Iac'],
     'Ib/c':   ['Ibc'],
-    'Ib/c P': ['Ib/c-pec', 'Ibc pec'],
+    'Ib/c P': ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
     'II P':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
     'II L':   ['IIL'],
     'IIn P':  ['IIn pec', 'IIn-pec'],
     'IIb P':  ['IIb-pec', 'IIb: pec'],
-    'not Ia': ['nIa']
+    'not Ia': ['nIa'],
+    'Ia CSM': ['Ia-CSM', 'Ia-csm']
 }
 
 repbetterquanta = {
@@ -1014,6 +1017,7 @@ if do_task('vizier'):
                 if nam.strip()[:2] == 'SN':
                     add_quanta(name, 'discoverdate', nam.strip()[2:], source)
 
+        add_quanta(name, 'claimedtype', 'SNR', source)
         add_quanta(name, 'host', 'Milky Way', source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source, unit = 'decdms')
@@ -1543,7 +1547,7 @@ if do_task('asiago'):
                 redshift = str(redshift)
                 hvel = str(hvel)
 
-            claimedtype = record[17].strip(':*')
+            claimedtype = record[17].replace(':', '').replace('*', '').strip()
 
             if (hostname != ''):
                 add_quanta(name, 'host', hostname, source)
