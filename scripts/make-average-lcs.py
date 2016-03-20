@@ -4,12 +4,12 @@ import json
 import re
 import sys
 import glob
-from photometry import bandcolorf, bandaliasf
+from photometry import *
+from digits import *
 from bokeh.plotting import Figure, show, save, reset_output
-from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,
-                          HBox, VBox, Range1d, LinearAxis, DatetimeAxis)
-from bokeh.resources import CDN, INLINE
-from bokeh.embed import file_html, components
+from bokeh.models import (HoverTool, ColumnDataSource)
+from bokeh.resources import CDN
+from bokeh.embed import file_html
 from random import randint, uniform
 from math import log10, floor
 from collections import OrderedDict
@@ -30,14 +30,6 @@ tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 outdir = "../"
 
 averagetype = "Ib"
-
-def get_sig_digits(x):
-    return len((''.join(x.split('.'))).strip('0'))
-
-def round_sig(x, sig=4):
-    if x == 0.0:
-        return 0.0
-    return round(x, sig-int(floor(log10(abs(x))))-1)
 
 with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
@@ -82,11 +74,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     prange = list(range(len(thisevent['photometry']))) if 'photometry' in thisevent else []
 
-    #phototime += [float(x['time']) - maxdate for x in thisevent['photometry'] if 'magnitude' in x]
     phototime += [float(x['time'][:-1] + str(randint(0,9)) if x['time'][-1] != '.' else x['time'] + '.' + str(randint(0,9))) - maxdate
                   for x in thisevent['photometry'] if 'magnitude' in x]
-    #phototime += [(float(x['time']) + uniform(-1,1)*10.**(log10(abs(float(x['time']) - round_sig(float(x['time']), get_sig_digits(x['time'])-1)))) - maxdate)
-    #              for x in thisevent['photometry'] if 'magnitude' in x]
     phototimelowererrs += [float(x['e_lower_time']) if ('e_lower_time' in x and 'e_upper_time' in x)
         else (float(x['e_time']) if 'e_time' in x else 0.) for x in thisevent['photometry'] if 'magnitude' in x]
     phototimeuppererrs += [float(x['e_upper_time']) if ('e_lower_time' in x and 'e_upper_time' in x) in x
@@ -180,16 +169,7 @@ for band in bandset:
             src = [photoevent[i] for i in indye]
         )
     )
-    #p1.multi_line([err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye], color=bandcolorf(band))
-    #p1.multi_line([[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye], color=bandcolorf(band))
     p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=2, line_alpha=0.75, fill_alpha=0.75)
-
-    #upplimlegend = bandname if len(indye) == 0 and len(indne) == 0 else ''
-
-    #indt = [i for i, j in enumerate(phototype) if j]
-    #ind = set(indb).intersection(indt)
-    #p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
-    #    color=bandcolorf(band), legend=upplimlegend, size=7)
 
 p1.legend.label_text_font_size = '8pt'
 p1.legend.label_width = 20

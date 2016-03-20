@@ -849,7 +849,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                                 else:
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
                             newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value']
-                            if (key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]:
+                            if ((key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]
+                                and catalog[entry]['maxband']):
                                 newhtml = newhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
                             newhtml = newhtml + r'<sup>' + sourcehtml + r'</sup>'
                         elif isinstance(row, str):

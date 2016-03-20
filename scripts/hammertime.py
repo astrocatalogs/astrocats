@@ -3,17 +3,16 @@
 import json
 import sys
 import glob
-from bokeh.plotting import Figure, show, save, reset_output
-from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,
-                          HBox, VBox, Range1d, LinearAxis, DatetimeAxis)
+from bokeh.plotting import Figure, reset_output
+from bokeh.models import (HoverTool, ColumnDataSource)
 from bokeh.resources import CDN
-from bokeh.embed import file_html, components
+from bokeh.embed import file_html
 from collections import OrderedDict
 from astropy.coordinates import SkyCoord as coord
 from astropy import units as un
 from palettable import cubehelix
 from math import *
-from random import shuffle, seed, randint, uniform
+from random import shuffle, seed
 
 tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
@@ -81,7 +80,6 @@ raseps = 24
 decseps = 18
 rarange = [-pi + i*2.0*pi/rangepts for i in range(0, rangepts+1)]
 decrange = [-pi/2.0 + i*pi/rangepts for i in range(0, rangepts+1)]
-
 ragrid = [-pi + i*2.0*pi/raseps for i in range(0, raseps+1)]
 decgrid = [-pi/2.0 + i*pi/decseps for i in range(0, decseps+1)]
 
@@ -117,12 +115,8 @@ for dg in decgrid:
 p1.add_tools(hover)
 p1.multi_line(raxs, rays, color='#bbbbbb')
 p1.multi_line(decxs, decys, color='#bbbbbb')
-xs = []
-ys = []
 
 claimedtypes = sorted(list(set(sntypes)))
-
-print(claimedtypes)
 
 for ci, ct in enumerate(claimedtypes):
     ind = [i for i, t in enumerate(sntypes) if t == ct]
@@ -154,4 +148,3 @@ html = file_html(p1, CDN, 'Supernova locations')
 
 with open(outdir + "sne-locations.html", "w") as f:
     f.write(html)
-

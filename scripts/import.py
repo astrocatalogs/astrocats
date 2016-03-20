@@ -475,8 +475,8 @@ def get_max_light(name):
     if 'photometry' not in events[name]:
         return (None, None, None)
 
-    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band']) for x in events[name]['photometry'] if
-                  ('magnitude' in x and 'band' in x and 'time' in x and 'timeunit' in x)]
+    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '') for x in events[name]['photometry'] if
+                  ('magnitude' in x and 'time' in x and 'timeunit' in x)]
     if not eventphoto:
         return (None, None, None)
 
