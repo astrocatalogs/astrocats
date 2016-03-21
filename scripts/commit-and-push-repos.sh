@@ -10,8 +10,8 @@ if [ $# -eq 0 ]
 fi
 
 git pull
-git commit -a -m "$1"
-git push
+#git commit -a -m "$1"
+#git push
 repos=($(awk -F= '{print $1}' rep-folders.txt))
 echo ${repos[*]}
 cd ..
@@ -21,7 +21,7 @@ for repo in ${repos[@]}; do
 	git pull
 	git add -A
 	git commit -a -m "$1"
-	git lfs push origin master
-	git push
+	#git lfs push origin master
+	#git push
 	cd ..
 done

@@ -117,23 +117,27 @@ def event_attr_priority(attr):
 
 def add_event(name, load = True, delete = True):
     if name not in events or 'stub' in events[name]:
+        newname = name
+        if name not in events:
+            matches = []
+            for event in events:
+                if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
+                    matches.append(event)
+            if len(matches) > 1:
+                raise(ValueError('Error, multiple matches to event, need event merging'))
+            elif len(matches) == 1:
+                newname = matches[0]
+
         if load:
-            newname = load_event_from_file(name = name, delete = delete)
+            newname = load_event_from_file(name = newname, delete = delete)
             if newname:
                 if 'stub' in events[newname]:
                     raise(ValueError('Failed to find event file for stubbed event'))
-                print('Loaded event ' + newname)
                 return newname
 
-        matches = []
-        for event in events:
-            if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
-                matches.append(event)
         if len(matches) == 1:
             return matches[0]
-        elif len(matches) > 1:
-            print(matches)
-            raise(ValueError('Error, multiple matches to event, need event merging'))
+
         events[name] = OrderedDict()
         events[name]['name'] = name
         add_alias(name, name)
@@ -185,7 +189,8 @@ def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
                 print('Warning: Reference URL ignored if bibcode specified')
         reference = bibcode
         url = "http://adsabs.harvard.edu/abs/" + bibcode
-    if 'sources' not in events[name] or reference not in [events[name]['sources'][x]['name'] for x in range(nsources)]:
+    if 'sources' not in events[name] or (reference not in [events[name]['sources'][x]['name'] for x in range(nsources)] and
+        ('bibcode' not in events[name] or bibcode not in [events[name]['sources'][x]['bibcode'] for x in range(nsources)])):
         source = str(nsources + 1)
         newsource = OrderedDict()
         newsource['name'] = reference
@@ -260,6 +265,13 @@ def trim_str_arr(arr, length = 10):
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "",
     observer = "", reducer = "", filename = ""):
+
+    # Don't add duplicate spectra
+    if 'spectra' in events[name]:
+        for spectrum in events[name]['spectra']:
+            if spectrum['filename'] == filename:
+                return
+
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
         return
@@ -284,7 +296,6 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
     if reducer:
         spectrumentry['reducer'] = reducer
     if filename:
-        print('spectrum filename: ' + filename)
         spectrumentry['filename'] = filename
 
     spectrumentry['waveunit'] = waveunit
@@ -693,7 +704,6 @@ def write_all_events(empty = False, lfs = False):
                 continue
             else:
                 del(events[name]['stub'])
-        print('Writing ' + name)
         filename = event_filename(name)
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
@@ -836,6 +846,7 @@ if do_task('vizier'):
         add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
         add_quanta(name, 'ra', str(row['_RA']), source, unit = 'radeg')
         add_quanta(name, 'dec', str(row['_DE']), source, unit = 'decdeg')
+    journal_events()
 
     # 2014MNRAS.438.1391P
     result = Vizier.get_catalogs("J/MNRAS/438/1391/table2")
@@ -848,6 +859,7 @@ if do_task('vizier'):
         add_quanta(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
+    journal_events()
 
     # 2012ApJ...749...18B
     result = Vizier.get_catalogs("J/ApJ/749/18/table1")
@@ -865,6 +877,7 @@ if do_task('vizier'):
         upperlimit = True if row['l_mag'] == '>' else False
         add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, instrument = 'Swift/UVOT',
             source = source, upperlimit = upperlimit)
+    journal_events()
 
     # 2010A&A...523A...7G
     result = Vizier.get_catalogs("J/A+A/523/A7/table9")
@@ -881,6 +894,7 @@ if do_task('vizier'):
         add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
+    journal_events()
 
     # 2004A&A...415..863G
     result = Vizier.get_catalogs("J/A+A/415/863/table1")
@@ -896,6 +910,7 @@ if do_task('vizier'):
         add_quanta(name, 'claimedtype', row['Type'], source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
+    journal_events()
 
     # 2010ApJ...708..661D
     result = Vizier.get_catalogs("J/ApJ/708/661/sn")
@@ -924,6 +939,7 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2010ApJ...708..661D')
         add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
+    journal_events()
 
     # 2014ApJ...795...44R
     result = Vizier.get_catalogs("J/ApJ/795/44/ps1_snIa")
@@ -949,6 +965,7 @@ if do_task('vizier'):
         if row['mag'] != '--':
             add_photometry(name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
                 e_magnitude = str(row['e_mag']), source = source, system = 'AB')
+    journal_events()
 
     # 1990A&AS...82..145C
     result = Vizier.get_catalogs("II/189/mag")
@@ -981,12 +998,13 @@ if do_task('vizier'):
             source = get_source(name, reference = ii189refdict[row['r_m']])
 
         add_photometry(name, time = mjd, band = band, magnitude = mag, source = ','.join([source,secsource]))
+    journal_events()
 
+    # 2014yCat.7272....0G
     result = Vizier.get_catalogs("VII/272/snrs")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
 
-    # 2014yCat.7272....0G
     for row in table:
         row = convert_aq_output(row)
         name = ''
@@ -1006,14 +1024,15 @@ if do_task('vizier'):
             name = row["SNR"].strip()
 
         name = add_event(name)
-        source = get_source(name, bibcode = '2014yCat.7272....0G')
+        source = (get_source(name, bibcode = '2014BASI...42...47G') + ',' +
+                  get_source(name, reference = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
 
         add_alias(name, row["SNR"].strip())
 
         if row["Names"]:
             names = row["Names"].split(',')
             for nam in names:
-                add_alias(name, nam.strip('()'))
+                add_alias(name, nam.strip('()').strip())
                 if nam.strip()[:2] == 'SN':
                     add_quanta(name, 'discoverdate', nam.strip()[2:], source)
 
@@ -1021,6 +1040,7 @@ if do_task('vizier'):
         add_quanta(name, 'host', 'Milky Way', source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source, unit = 'decdms')
+    journal_events()
 
     # 2014MNRAS.442..844F
     result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
@@ -1033,6 +1053,7 @@ if do_task('vizier'):
         source = get_source(name, bibcode = '2014MNRAS.442..844F')
         add_quanta(name, 'redshift', str(row['zhost']), source)
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+    journal_events()
 
     result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
     table = result[list(result.keys())[0]]
@@ -1050,6 +1071,7 @@ if do_task('vizier'):
             add_photometry(name, time = row['MJD'], band = 'R', magnitude = row['Rmag'], e_magnitude = row['e_Rmag'], source = source)
         if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
             add_photometry(name, time = row['MJD'], band = 'I', magnitude = row['Imag'], e_magnitude = row['e_Imag'], source = source)
+    journal_events()
 
     # 2012MNRAS.425.1789S
     result = Vizier.get_catalogs("J/MNRAS/425/1789/table1")
@@ -1064,6 +1086,7 @@ if do_task('vizier'):
         add_quanta(name, 'host', row['Gal'], source)
         add_quanta(name, 'hvel', str(row['cz']), source)
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+    journal_events()
 
     # 2015ApJS..219...13W
     result = Vizier.get_catalogs("J/ApJS/219/13/table3")
