@@ -15,6 +15,7 @@ Other multiple SN datasets:
 * http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
 * http://adsabs.harvard.edu/abs/2014arXiv1401.3317S (SDSS SNe light curves, broken link - http://sdssdp62.fnal.gov/sdsssn/DataRelease/index.html)
 * http://arxiv.org/abs/1603.03823
+* http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
 
 Single SN dataset on VizieR:
 * SN2002ch - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/394/2266
