@@ -1979,6 +1979,12 @@ if do_task('wiserepspectra'):
                     trs = bs.findAll('tr', {'valign': 'top'})
                     for tri, tr in enumerate(trs):
                         if "Click to show/update object" in str(tr.contents):
+                            claimedtype = ''
+                            instrument = ''
+                            epoch = ''
+                            observer = ''
+                            reducer = ''
+                            specfile = ''
                             produceoutput = True
                             specpath = ''
                             tds = tr.findAll('td')
@@ -1988,6 +1994,8 @@ if do_task('wiserepspectra'):
                                         name = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
                                     elif tdi == 5:
                                         claimedtype = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
+                                        if claimedtype == 'SN':
+                                            continue
                                         if claimedtype[:3] == 'SN ':
                                             claimedtype = claimedtype[3:].strip()
                                         claimedtype = claimedtype.replace('-like', '').strip()
@@ -2005,7 +2013,6 @@ if do_task('wiserepspectra'):
                                             reducer = ''
                                     elif tdi == 25:
                                         speclinks = td.findAll('a')
-                                        specfile = ''
                                         try:
                                             for link in speclinks:
                                                 if 'Ascii' in link['href']:
