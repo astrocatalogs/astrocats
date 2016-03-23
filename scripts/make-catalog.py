@@ -330,7 +330,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['name'] = "<a href='https://sne.space/sne/" + fileeventname + "/'>" + catalog[entry]['name'] + "</a>"
+    catalog[entry]['name'] = "<a href='https://sne.space/sne/" + fileeventname + "/' target='_blank'>" + catalog[entry]['name'] + "</a>"
     datalink = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
         catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/edit/master/"
@@ -863,13 +863,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
             newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Sources of data</h3><table class="event-table"><tr><th width=30px class="event-cell">ID</th><th class="event-cell">Source</th></tr>\n'
             for source in catalog[entry]['sources']:
-                hasurlnobib = 'url' in source and 'bibcode' not in source
+                hasurlnobib = ('url' in source and 'bibcode' not in source)
                 newhtml = (newhtml + r'<tr><td class="event-cell" id="source' + source['alias'] + '">' + source['alias'] +
                     r'</td><td width=250px class="event-cell">' + (('<a href="' + source['url'] + '">') if hasurlnobib else '') +
                     source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
                     (r'</a>' if hasurlnobib else '') +
-                    (((r'<br>' if source['name'] else '') + r'\n' + (('<a href="' + source['url'] + '">') if 'url' in source else '') + source['bibcode'] +
-                    (r'</a>' if 'url' in source else '')) if 'bibcode' in source else '') +
+                    ((r'<br>\n' + (('<a href="' + source['url'] + '">') if 'url' in source else '') + source['bibcode'] +
+                    (r'</a>' if 'url' in source else '')) if 'bibcode' in source and source['name'] != source['bibcode'] else '') +
                     r'</td></tr>\n')
             newhtml = newhtml + r'</table><em>Sources are presented in order of importation, not in order of importance.</em></div>\n'
 

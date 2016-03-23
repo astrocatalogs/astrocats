@@ -187,10 +187,15 @@ def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
         else:
             if url:
                 print('Warning: Reference URL ignored if bibcode specified')
+
+        if bibcode and len(bibcode) != 19:
+            print('Bad bibcode: ' + bibcode)
+            raise(ValueError('Bibcode must be exactly 19 characters long'))
+
         reference = bibcode
         url = "http://adsabs.harvard.edu/abs/" + bibcode
-    if 'sources' not in events[name] or (reference not in [events[name]['sources'][x]['name'] for x in range(nsources)] and
-        ('bibcode' not in events[name] or bibcode not in [events[name]['sources'][x]['bibcode'] for x in range(nsources)])):
+    if 'sources' not in events[name] or (reference not in [x['name'] for x in events[name]['sources']] and
+        not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]):
         source = str(nsources + 1)
         newsource = OrderedDict()
         newsource['name'] = reference
@@ -203,9 +208,14 @@ def get_source(name, reference = '', url = '', bibcode = '', secondary = ''):
             newsource['secondary'] = True
         events[name].setdefault('sources',[]).append(newsource)
     else:
-        sourcexs = range(nsources)
-        source = [events[name]['sources'][x]['alias'] for x in sourcexs][
-            [events[name]['sources'][x]['name'] for x in sourcexs].index(reference)]
+        if reference in [x['name'] for x in events[name]['sources']]:
+            source = [x['alias'] for x in events[name]['sources']][
+                [x['name'] for x in events[name]['sources']].index(reference)]
+        elif bibcode and bibcode in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]:
+            source = [x['alias'] for x in events[name]['sources']][
+                [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']].index(bibcode)]
+        else:
+            raise(ValueError("Couldn't find source that should exist!"))
     return source
 
 def add_photometry(name, timeunit = "MJD", time = "", instrument = "", band = "", magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = ""):
@@ -658,7 +668,7 @@ def derive_and_sanitize():
                 if 'bibcode' in source:
                     #First sanitize the bibcode
                     if len(source['bibcode']) != 19:
-                        source['bibcode'] = urllib.parse.unquote(source['bibcode']).replace('A.A.', 'A&A')
+                        source['bibcode'] = urllib.parse.unquote(unescape(source['bibcode'])).replace('A.A.', 'A&A')
                     if source['bibcode'] in biberrordict:
                         source['bibcode'] = biberrordict[source['bibcode']]
 
@@ -704,6 +714,7 @@ def write_all_events(empty = False, lfs = False):
                 continue
             else:
                 del(events[name]['stub'])
+        print('Writing ' + name)
         filename = event_filename(name)
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
@@ -1141,7 +1152,7 @@ if do_task('suspect'):
             if 'adsabs' in link['href']:
                 reference = str(link).replace('"', "'")
 
-        bibcode = suspectrefdict[reference]
+        bibcode = unescape(suspectrefdict[reference])
         source = get_source(name, bibcode = bibcode)
 
         secondaryreference = "SUSPECT"
@@ -1229,7 +1240,7 @@ if do_task('cfa'):
                         if col[0] == "(":
                             refstr = ' '.join(row[2+ci:])
                             refstr = refstr.replace('(','').replace(')','')
-                            bibcode = refstr
+                            bibcode = unescape(refstr)
                             source = get_source(name, bibcode = bibcode)
 
                 elif len(row) > 1 and row[1] == "HJD":
@@ -1485,7 +1496,7 @@ if do_task('itep'):
             year = re.findall(r'\d+', name)[0]
             add_quanta(name, 'discoverdate', year, secondarysource)
         if reference in refrepf:
-            bibcode = refrepf[reference]
+            bibcode = unescape(refrepf[reference])
             source = get_source(name, bibcode = bibcode)
         else:
             needsbib.append(reference)
@@ -1912,7 +1923,7 @@ if do_task('snls'):
     journal_events()
 
 if do_task('panstarrs'):
-    with open("../sne-external/2015MNRAS.449.451W.dat", 'r') as f:
+    with open("../sne-external/2015MNRAS.449..451W.dat", 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(data):
             if r == 0:
@@ -1924,7 +1935,7 @@ if do_task('panstarrs'):
             name = add_event(name)
             if len(namesplit) > 1:
                 add_alias(name, namesplit[0])
-            source = get_source(name, bibcode = '2015MNRAS.449.451W')
+            source = get_source(name, bibcode = '2015MNRAS.449..451W')
             add_quanta(name, 'claimedtype', row[1], source)
             add_photometry(name, time = row[2], band = row[4], magnitude = row[3], source = source)
     journal_events()
@@ -1948,7 +1959,7 @@ if do_task('nedd'):
         #if moderr:
         #    sig = get_sig_digits(moderr)
         #    disterr = pretty_num(1.0e-6*(10.0**(0.2*(5.0 + float(distmod))) * (10.0**(0.2*float(moderr)) - 1.0)), sig = sig)
-        bibcode = row[8]
+        bibcode = unescape(row[8])
         name = ''
         if hostname[:3] == 'SN ':
             if is_number(hostname[3:7]):
@@ -1988,6 +1999,21 @@ if do_task('wiserepspectra'):
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
     wiserepcnt = 0
+
+    # These are known to be in error on the WISeREP page, either fix or ignore them.
+    wiserepbibcorrectdict = {'2000AJ....120..367G]':'2000AJ....120..367G',
+                             'Harutyunyan+et+al.+2008':'2008A&A...488..383H',
+                             '0609268':'2007AJ....133...58K',
+                             '2006ApJ...636...400Q':'2006ApJ...636..400Q',
+                             '2011ApJ...741...76':'2011ApJ...741...76C',
+                             '2016PASP...128...961':'2016PASP..128...961',
+                             '2002AJ....1124..417H':'2002AJ....1124.417H',
+                             '2013ApJ…774…58D':'2013ApJ...774...58D',
+                             '2011Sci.333..856S':'2011Sci...333..856S',
+                             '2014MNRAS.438,368':'2014MNRAS.438..368T',
+                             '2012MNRAS.420.1135':'2012MNRAS.420.1135S',
+                             '2012Sci..337..942D':'2012Sci...337..942D',
+                             'stt1839':''}
 
     oldname = ''
     for folder in sorted(next(os.walk("../sne-external-WISEREP"))[1], key=lambda s: s.lower()):
@@ -2068,7 +2094,7 @@ if do_task('wiserepspectra'):
                             result = re.search('publish=(.*?)&amp;', trstr)
                             bibcode = ''
                             if result:
-                                bibcode = urllib.parse.unquote(urllib.parse.unquote(result.group(1))).split('/')[-1]
+                                bibcode = unescape(urllib.parse.unquote(urllib.parse.unquote(result.group(1))).split('/')[-1])
 
                             if not bibcode:
                                 biblink = bs.find('a', {'title': 'Link to NASA ADS'})
@@ -2083,11 +2109,17 @@ if do_task('wiserepspectra'):
                             oldname = name
                             name = add_event(name)
 
-                            print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
+                            #print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
 
                             secondarysource = get_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
                             if bibcode:
-                                source = get_source(name, bibcode = bibcode)
+                                newbibcode = bibcode
+                                if bibcode in wiserepbibcorrectdict:
+                                    newbibcode = wiserepbibcorrectdict[bibcode]
+                                if newbibcode:
+                                    source = get_source(name, bibcode = unescape(newbibcode))
+                                else:
+                                    source = get_source(name, reference = unescape(bibcode))
                                 sources = ','.join([source, secondarysource])
                             else:
                                 sources = secondarysource
@@ -2251,7 +2283,7 @@ if do_task('snlsspectra'):
         errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-            fluxes = fluxes, timeunit = 'MJD', time = datedict[name], instrument = instrument, source = source,
+            fluxes = fluxes, timeunit = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', instrument = instrument, source = source,
             filename = filename)
     journal_events()
 
@@ -2334,7 +2366,7 @@ if do_task('ucbspectra'):
                 observer = '' if observerreducer[0].strip() == 'None' else observerreducer[0].strip()
                 reducer = '' if observerreducer[1].strip() == 'None' else observerreducer[1].strip()
             elif d == 11:
-                bibcode = td.findAll('a')[0].contents[0]
+                bibcode = unescape(td.findAll('a')[0].contents[0])
 
         name = get_preferred_name(name)
         if oldname and name != oldname:
@@ -2404,7 +2436,7 @@ if do_task('suspectspectra'):
                 elif name in sourcedict:
                     bibcode = sourcedict[name]
                 if bibcode:
-                    source = get_source(name, bibcode = bibcode)
+                    source = get_source(name, bibcode = unescape(bibcode))
                     sources += source
                 sources = ','.join(sources)
 
