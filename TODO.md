@@ -23,7 +23,6 @@ Single SN dataset on VizieR:
 * SN2009nr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/PAZh/37/837
 * SN2012aw - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/433/1871
 * SN2012fr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/AJ/148/1
-* PS1-12sk - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/769/39
 * SN2014J - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/805/74
 
 Other single SN datasets:
