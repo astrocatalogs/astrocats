@@ -35,13 +35,17 @@ from bs4 import BeautifulSoup, Tag, NavigableString
 from math import isnan, floor, ceil
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',         default=True, action='store_false')
-parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',    help='Don\'t write html plot files',      default=True, action='store_false')
-parser.add_argument('--no-collect-hosts', '-nch', dest='collecthosts', help='Don\'t collect host galaxy images', default=True, action='store_false')
-parser.add_argument('--force-html', '-fh',        dest='forcehtml',    help='Force write html plot files',       default=False, action='store_true')
-parser.add_argument('--event-list', '-el',        dest='eventlist',    help='Process a list of events',          default=[], type=str, nargs='+')
-parser.add_argument('--test', '-t',               dest='test',         help='Test this script',                  default=False, action='store_true')
+parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',          default=True, action='store_false')
+parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',    help='Don\'t write html plot files',       default=True, action='store_false')
+parser.add_argument('--no-collect-hosts', '-nch', dest='collecthosts', help='Don\'t collect host galaxy images',  default=True, action='store_false')
+parser.add_argument('--force-html', '-fh',        dest='forcehtml',    help='Force write html plot files',        default=False, action='store_true')
+parser.add_argument('--event-list', '-el',        dest='eventlist',    help='Process a list of events',           default=[], type=str, nargs='+')
+parser.add_argument('--test', '-te',              dest='test',         help='Test this script',                   default=False, action='store_true')
+parser.add_argument('--travis', '-tr',            dest='travis',       help='Set some options when using Travis', default=False, action='store_true')
 args = parser.parse_args()
+
+if args.travis:
+    print('travis_fold:start:MAKE')
 
 outdir = "../"
 
@@ -1062,3 +1066,6 @@ if args.writecatalog and not args.eventlist:
 
     with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
+
+if args.travis:
+    print('travis_fold:end:MAKE')

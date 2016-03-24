@@ -28,8 +28,8 @@ from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--update', '-u', dest='update', help='Only update catalog using live sources.',    default=False, action='store_true')
-parser.add_argument('--travis', '-t', dest='travis', help='Run import script in test mode for Travis.', default=False, action='store_true')
+parser.add_argument('--update', '-u',  dest='update', help='Only update catalog using live sources.',    default=False, action='store_true')
+parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in test mode for Travis.', default=False, action='store_true')
 args = parser.parse_args()
 
 if args.travis:
