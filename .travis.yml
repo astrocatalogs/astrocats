@@ -18,10 +18,13 @@ before_install:
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
     - pip install -r scripts/requirements.txt
-    - git clone git@github.com:astrotransients/sne-external-spectra.git
+    - git clone git://github.com/astrocatalogs/sne-internal.git
+    - git clone git://github.com/astrocatalogs/sne-external.git
+    - git clone git://github.com/astrocatalogs/sne-external-spectra.git
+    - git clone git://github.com/astrocatalogs/sne-external-WISEREP.git
 
 # Run test
 script:
     - cd scripts
-    - python import-external.py
-    - python make-sne-catalog.py
+    - python import.py
+    - python make-catalog.py
