@@ -39,30 +39,30 @@ eventnames = []
 
 tasks = {
     "internal":       {"update": False},
-    #"simbad":         {"update": False},
+    "simbad":         {"update": False},
     "vizier":         {"update": False},
-    #"suspect":        {"update": False},
-    #"cfa":            {"update": False},
-    #"ucb":            {"update": False},
-    #"sdss":           {"update": False},
-    #"csp":            {"update": False},
-    #"itep":           {"update": False},
-    #"asiago":         {"update": False},
-    #"rochester":      {"update": True },
-    #"lennarz":        {"update": False},
-    #"gaia":           {"update": False},
-    #"ogle":           {"update": True },
-    #"snls":           {"update": False},
-    #"panstarrs":      {"update": False},
-    #"nedd":           {"update": False},
-    #"wiserepspectra": {"update": False},
-    #"cfaiaspectra":   {"update": False},
-    #"cfaibcspectra":  {"update": False},
-    #"snlsspectra":    {"update": False},
-    #"cspspectra":     {"update": False},
-    #"ucbspectra":     {"update": False},
-    #"suspectspectra": {"update": False},
-    #"snfspectra":     {"update": False},
+    "suspect":        {"update": False},
+    "cfa":            {"update": False},
+    "ucb":            {"update": False},
+    "sdss":           {"update": False},
+    "csp":            {"update": False},
+    "itep":           {"update": False},
+    "asiago":         {"update": False},
+    "rochester":      {"update": True },
+    "lennarz":        {"update": False},
+    "gaia":           {"update": False},
+    "ogle":           {"update": True },
+    "snls":           {"update": False},
+    "panstarrs":      {"update": False},
+    "nedd":           {"update": False},
+    "wiserepspectra": {"update": False},
+    "cfaiaspectra":   {"update": False},
+    "cfaibcspectra":  {"update": False},
+    "snlsspectra":    {"update": False},
+    "cspspectra":     {"update": False},
+    "ucbspectra":     {"update": False},
+    "suspectspectra": {"update": False},
+    "snfspectra":     {"update": False},
     "writeevents":    {"update": True }
 }
 
@@ -845,286 +845,286 @@ if do_task('vizier'):
     Vizier.ROW_LIMIT = -1
 
     # 2014MNRAS.444.3258M
-    #result = Vizier.get_catalogs("J/MNRAS/444/3258/SNe")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #oldname = ''
-    #for row in table:
-    #    name = row['SN']
-    #    if name == oldname:
-    #        continue
-    #    oldname = name
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2014MNRAS.444.3258M')
-    #    add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
-    #    add_quanta(name, 'ra', str(row['_RA']), source, unit = 'radeg')
-    #    add_quanta(name, 'dec', str(row['_DE']), source, unit = 'decdeg')
-    #journal_events()
+    result = Vizier.get_catalogs("J/MNRAS/444/3258/SNe")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    oldname = ''
+    for row in table:
+        name = row['SN']
+        if name == oldname:
+            continue
+        oldname = name
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014MNRAS.444.3258M')
+        add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
+        add_quanta(name, 'ra', str(row['_RA']), source, unit = 'radeg')
+        add_quanta(name, 'dec', str(row['_DE']), source, unit = 'decdeg')
+    journal_events()
 
-    ## 2014MNRAS.438.1391P
-    #result = Vizier.get_catalogs("J/MNRAS/438/1391/table2")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = row['SN']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2014MNRAS.438.1391P')
-    #    add_quanta(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source)
-    #journal_events()
+    # 2014MNRAS.438.1391P
+    result = Vizier.get_catalogs("J/MNRAS/438/1391/table2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014MNRAS.438.1391P')
+        add_quanta(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
+    journal_events()
 
-    ## 2012ApJ...749...18B
-    #result = Vizier.get_catalogs("J/ApJ/749/18/table1")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = row['Name'].replace(' ','')
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2012ApJ...749...18B')
-    #    mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
-    #    band = row['Filt']
-    #    magnitude = str(row['mag'])
-    #    e_magnitude = str(row['e_mag'])
-    #    e_magnitude = '' if e_magnitude == '--' else e_magnitude
-    #    upperlimit = True if row['l_mag'] == '>' else False
-    #    add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, instrument = 'Swift/UVOT',
-    #        source = source, upperlimit = upperlimit)
-    #journal_events()
+    # 2012ApJ...749...18B
+    result = Vizier.get_catalogs("J/ApJ/749/18/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['Name'].replace(' ','')
+        name = add_event(name)
+        source = get_source(name, bibcode = '2012ApJ...749...18B')
+        mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
+        band = row['Filt']
+        magnitude = str(row['mag'])
+        e_magnitude = str(row['e_mag'])
+        e_magnitude = '' if e_magnitude == '--' else e_magnitude
+        upperlimit = True if row['l_mag'] == '>' else False
+        add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, instrument = 'Swift/UVOT',
+            source = source, upperlimit = upperlimit)
+    journal_events()
 
-    ## 2010A&A...523A...7G
-    #result = Vizier.get_catalogs("J/A+A/523/A7/table9")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = 'SNLS-' + row['SNLS']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2010A&A...523A...7G')
-    #    astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
-    #    add_quanta(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
-    #    add_quanta(name, 'ebv', str(row['E_B-V_']), source)
-    #    add_quanta(name, 'redshift', str(row['z']), source)
-    #    add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source)
-    #journal_events()
+    # 2010A&A...523A...7G
+    result = Vizier.get_catalogs("J/A+A/523/A7/table9")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = 'SNLS-' + row['SNLS']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2010A&A...523A...7G')
+        astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
+        add_quanta(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+        add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+        add_quanta(name, 'redshift', str(row['z']), source)
+        add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
+    journal_events()
 
-    ## 2004A&A...415..863G
-    #result = Vizier.get_catalogs("J/A+A/415/863/table1")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = 'SN' + row['SN']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2004A&A...415..863G')
-    #    datesplit = row['Date'].split('-')
-    #    add_quanta(name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
-    #    add_quanta(name, 'host', 'Abell ' + str(row['Abell']), source)
-    #    add_quanta(name, 'claimedtype', row['Type'], source)
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source)
-    #journal_events()
+    # 2004A&A...415..863G
+    result = Vizier.get_catalogs("J/A+A/415/863/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = 'SN' + row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2004A&A...415..863G')
+        datesplit = row['Date'].split('-')
+        add_quanta(name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
+        add_quanta(name, 'host', 'Abell ' + str(row['Abell']), source)
+        add_quanta(name, 'claimedtype', row['Type'], source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
+    journal_events()
 
-    ## 2010ApJ...708..661D
-    #result = Vizier.get_catalogs("J/ApJ/708/661/sn")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = row['SN']
-    #    if not name:
-    #        name = 'SDSS-II ' + str(row['SDSS-II'])
-    #    else:
-    #        name = 'SN' + name
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2010ApJ...708..661D')
-    #    add_alias(name, 'SDSS-II ' + str(row['SDSS-II']))
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source)
+    # 2010ApJ...708..661D
+    result = Vizier.get_catalogs("J/ApJ/708/661/sn")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['SN']
+        if not name:
+            name = 'SDSS-II ' + str(row['SDSS-II'])
+        else:
+            name = 'SN' + name
+        name = add_event(name)
+        source = get_source(name, bibcode = '2010ApJ...708..661D')
+        add_alias(name, 'SDSS-II ' + str(row['SDSS-II']))
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
-    #result = Vizier.get_catalogs("J/ApJ/708/661/table1")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    if row['f_SN'] == 'a':
-    #        name = 'SDSS-II ' + str(row['SN'])
-    #    else:
-    #        name = 'SN' + row['SN']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2010ApJ...708..661D')
-    #    add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
-    #journal_events()
+    result = Vizier.get_catalogs("J/ApJ/708/661/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        if row['f_SN'] == 'a':
+            name = 'SDSS-II ' + str(row['SN'])
+        else:
+            name = 'SN' + row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2010ApJ...708..661D')
+        add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
+    journal_events()
 
-    ## 2014ApJ...795...44R
-    #result = Vizier.get_catalogs("J/ApJ/795/44/ps1_snIa")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = row['SN']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2014ApJ...795...44R')
-    #    astrot = astrotime(row['tdisc'], format='mjd').datetime
-    #    add_quanta(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
-    #    add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source)
+    # 2014ApJ...795...44R
+    result = Vizier.get_catalogs("J/ApJ/795/44/ps1_snIa")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014ApJ...795...44R')
+        astrot = astrotime(row['tdisc'], format='mjd').datetime
+        add_quanta(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
+        add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
 
-    #result = Vizier.get_catalogs("J/ApJ/795/44/table6")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    name = row['SN']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2014ApJ...795...44R')
-    #    if row['mag'] != '--':
-    #        add_photometry(name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
-    #            e_magnitude = str(row['e_mag']), source = source, system = 'AB')
-    #journal_events()
+    result = Vizier.get_catalogs("J/ApJ/795/44/table6")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014ApJ...795...44R')
+        if row['mag'] != '--':
+            add_photometry(name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
+                e_magnitude = str(row['e_mag']), source = source, system = 'AB')
+    journal_events()
 
-    ## 1990A&AS...82..145C
-    #result = Vizier.get_catalogs("II/189/mag")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
+    # 1990A&AS...82..145C
+    result = Vizier.get_catalogs("II/189/mag")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
 
-    #with open('../sne-external/II_189_refs.csv') as f:
-    #    tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
-    #    ii189bibdict = {}
-    #    ii189refdict = {}
-    #    for r, row in enumerate(tsvin):
-    #        if row[0] != '0':
-    #            ii189bibdict[r+1] = row[1]
-    #        else:
-    #            ii189refdict[r+1] = row[2]
+    with open('../sne-external/II_189_refs.csv') as f:
+        tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+        ii189bibdict = {}
+        ii189refdict = {}
+        for r, row in enumerate(tsvin):
+            if row[0] != '0':
+                ii189bibdict[r+1] = row[1]
+            else:
+                ii189refdict[r+1] = row[2]
 
-    #for row in table:
-    #    if row['band'][0] == '(':
-    #        continue
-    #    name = 'SN' + row['SN']
-    #    name = add_event(name)
-    #    source = ''
-    #    secsource = get_source(name, bibcode = '1990A&AS...82..145C', secondary = True)
-    #    mjd = str(jd_to_mjd(Decimal(row['JD'])))
-    #    mag = str(row['m'])
-    #    band = row['band'].strip("'")
-    #    if row['r_m'] in ii189bibdict:
-    #        source = get_source(name, bibcode = ii189bibdict[row['r_m']])
-    #    else:
-    #        source = get_source(name, reference = ii189refdict[row['r_m']])
+    for row in table:
+        if row['band'][0] == '(':
+            continue
+        name = 'SN' + row['SN']
+        name = add_event(name)
+        source = ''
+        secsource = get_source(name, bibcode = '1990A&AS...82..145C', secondary = True)
+        mjd = str(jd_to_mjd(Decimal(row['JD'])))
+        mag = str(row['m'])
+        band = row['band'].strip("'")
+        if row['r_m'] in ii189bibdict:
+            source = get_source(name, bibcode = ii189bibdict[row['r_m']])
+        else:
+            source = get_source(name, reference = ii189refdict[row['r_m']])
 
-    #    add_photometry(name, time = mjd, band = band, magnitude = mag, source = ','.join([source,secsource]))
-    #journal_events()
+        add_photometry(name, time = mjd, band = band, magnitude = mag, source = ','.join([source,secsource]))
+    journal_events()
 
-    ## 2014yCat.7272....0G
-    #result = Vizier.get_catalogs("VII/272/snrs")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
+    # 2014yCat.7272....0G
+    result = Vizier.get_catalogs("VII/272/snrs")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
 
-    #for row in table:
-    #    row = convert_aq_output(row)
-    #    name = ''
-    #    if row["Names"]:
-    #        names = row["Names"].split(',')
-    #        for nam in names:
-    #            if nam.strip()[:2] == 'SN':
-    #                name = nam.strip()
-    #                if is_number(name[2:]):
-    #                    name = name + 'A'
-    #        if not name:
-    #            for nam in names:
-    #                if nam.strip('()') == nam:
-    #                    name = nam.strip()
-    #                    break
-    #    if not name:
-    #        name = row["SNR"].strip()
+    for row in table:
+        row = convert_aq_output(row)
+        name = ''
+        if row["Names"]:
+            names = row["Names"].split(',')
+            for nam in names:
+                if nam.strip()[:2] == 'SN':
+                    name = nam.strip()
+                    if is_number(name[2:]):
+                        name = name + 'A'
+            if not name:
+                for nam in names:
+                    if nam.strip('()') == nam:
+                        name = nam.strip()
+                        break
+        if not name:
+            name = row["SNR"].strip()
 
-    #    name = add_event(name)
-    #    source = (get_source(name, bibcode = '2014BASI...42...47G') + ',' +
-    #              get_source(name, reference = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
+        name = add_event(name)
+        source = (get_source(name, bibcode = '2014BASI...42...47G') + ',' +
+                  get_source(name, reference = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
 
-    #    add_alias(name, row["SNR"].strip())
+        add_alias(name, row["SNR"].strip())
 
-    #    if row["Names"]:
-    #        names = row["Names"].split(',')
-    #        for nam in names:
-    #            add_alias(name, nam.strip('()').strip())
-    #            if nam.strip()[:2] == 'SN':
-    #                add_quanta(name, 'discoverdate', nam.strip()[2:], source)
+        if row["Names"]:
+            names = row["Names"].split(',')
+            for nam in names:
+                add_alias(name, nam.strip('()').strip())
+                if nam.strip()[:2] == 'SN':
+                    add_quanta(name, 'discoverdate', nam.strip()[2:], source)
 
-    #    add_quanta(name, 'claimedtype', 'SNR', source)
-    #    add_quanta(name, 'host', 'Milky Way', source)
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source, unit = 'decdms')
-    #journal_events()
+        add_quanta(name, 'claimedtype', 'SNR', source)
+        add_quanta(name, 'host', 'Milky Way', source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source, unit = 'decdms')
+    journal_events()
 
-    ## 2014MNRAS.442..844F
-    #result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    row = convert_aq_output(row)
-    #    name = 'SN' + row['SN']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = '2014MNRAS.442..844F')
-    #    add_quanta(name, 'redshift', str(row['zhost']), source)
-    #    add_quanta(name, 'ebv', str(row['E_B-V_']), source)
-    #journal_events()
+    # 2014MNRAS.442..844F
+    result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = 'SN' + row['SN']
+        name = add_event(name)
+        source = get_source(name, bibcode = '2014MNRAS.442..844F')
+        add_quanta(name, 'redshift', str(row['zhost']), source)
+        add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+    journal_events()
 
-    #result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    row = convert_aq_output(row)
-    #    name = 'SN' + str(row['SN'])
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = "2014MNRAS.442..844F")
-    #    if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
-    #        add_photometry(name, time = row['MJD'], band = 'B', magnitude = row['Bmag'], e_magnitude = row['e_Bmag'], source = source)
-    #    if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
-    #        add_photometry(name, time = row['MJD'], band = 'V', magnitude = row['Vmag'], e_magnitude = row['e_Vmag'], source = source)
-    #    if 'Rmag' in row and is_number(row['Rmag']) and not isnan(float(row['Rmag'])):
-    #        add_photometry(name, time = row['MJD'], band = 'R', magnitude = row['Rmag'], e_magnitude = row['e_Rmag'], source = source)
-    #    if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
-    #        add_photometry(name, time = row['MJD'], band = 'I', magnitude = row['Imag'], e_magnitude = row['e_Imag'], source = source)
-    #journal_events()
+    result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = 'SN' + str(row['SN'])
+        name = add_event(name)
+        source = get_source(name, bibcode = "2014MNRAS.442..844F")
+        if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
+            add_photometry(name, time = row['MJD'], band = 'B', magnitude = row['Bmag'], e_magnitude = row['e_Bmag'], source = source)
+        if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
+            add_photometry(name, time = row['MJD'], band = 'V', magnitude = row['Vmag'], e_magnitude = row['e_Vmag'], source = source)
+        if 'Rmag' in row and is_number(row['Rmag']) and not isnan(float(row['Rmag'])):
+            add_photometry(name, time = row['MJD'], band = 'R', magnitude = row['Rmag'], e_magnitude = row['e_Rmag'], source = source)
+        if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
+            add_photometry(name, time = row['MJD'], band = 'I', magnitude = row['Imag'], e_magnitude = row['e_Imag'], source = source)
+    journal_events()
 
-    ## 2012MNRAS.425.1789S
-    #result = Vizier.get_catalogs("J/MNRAS/425/1789/table1")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    row = convert_aq_output(row)
-    #    name = ''.join(row['SimbadName'].split(' '))
-    #    name = add_event(name)
-    #    add_alias(name, 'SN' + row['SN'])
-    #    source = get_source(name, bibcode = '2012MNRAS.425.1789S')
-    #    add_quanta(name, 'host', row['Gal'], source)
-    #    add_quanta(name, 'hvel', str(row['cz']), source)
-    #    add_quanta(name, 'ebv', str(row['E_B-V_']), source)
-    #journal_events()
+    # 2012MNRAS.425.1789S
+    result = Vizier.get_catalogs("J/MNRAS/425/1789/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = ''.join(row['SimbadName'].split(' '))
+        name = add_event(name)
+        add_alias(name, 'SN' + row['SN'])
+        source = get_source(name, bibcode = '2012MNRAS.425.1789S')
+        add_quanta(name, 'host', row['Gal'], source)
+        add_quanta(name, 'hvel', str(row['cz']), source)
+        add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+    journal_events()
 
-    ## 2015ApJS..219...13W
-    #result = Vizier.get_catalogs("J/ApJS/219/13/table3")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    row = convert_aq_output(row)
-    #    name = u'LSQ' + str(row['LSQ'])
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = "2015ApJS..219...13W")
-    #    add_quanta(name, 'ra', row['RAJ2000'], source)
-    #    add_quanta(name, 'dec', row['DEJ2000'], source)
-    #    add_quanta(name, 'redshift', row['z'], source, error = row['e_z'])
-    #    add_quanta(name, 'ebv', row['E_B-V_'], source)
-    #result = Vizier.get_catalogs("J/ApJS/219/13/table2")
-    #table = result[list(result.keys())[0]]
-    #table.convert_bytestring_to_unicode(python3_only=True)
-    #for row in table:
-    #    row = convert_aq_output(row)
-    #    name = 'LSQ' + row['LSQ']
-    #    name = add_event(name)
-    #    source = get_source(name, bibcode = "2015ApJS..219...13W")
-    #    add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'],
-    #        magnitude = row['mag'], e_magnitude = row['e_mag'], system = "Swope", source = source)
-    #journal_events()
+    # 2015ApJS..219...13W
+    result = Vizier.get_catalogs("J/ApJS/219/13/table3")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = u'LSQ' + str(row['LSQ'])
+        name = add_event(name)
+        source = get_source(name, bibcode = "2015ApJS..219...13W")
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quanta(name, 'redshift', row['z'], source, error = row['e_z'])
+        add_quanta(name, 'ebv', row['E_B-V_'], source)
+    result = Vizier.get_catalogs("J/ApJS/219/13/table2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = 'LSQ' + row['LSQ']
+        name = add_event(name)
+        source = get_source(name, bibcode = "2015ApJS..219...13W")
+        add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'La Silla-QUEST', band = row['Filt'],
+            magnitude = row['mag'], e_magnitude = row['e_mag'], system = "Swope", source = source)
+    journal_events()
 
     # 2012Natur.491..228C
     result = Vizier.get_catalogs("J/other/Nat/491.228/tablef1")
