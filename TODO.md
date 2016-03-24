@@ -4,7 +4,6 @@ Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/A%2bA/415/863 (*Data in text files attached to catalog*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/491.228
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/746/85 (*Needs conversion from flux to magnitude*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/474.484
 
