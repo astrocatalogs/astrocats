@@ -16,7 +16,6 @@ Other multiple SN datasets:
 * http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
 
 Single SN dataset on VizieR:
-* SN2002ch - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/394/2266
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107
 * SN2003ie - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/AJ/145/99
 * SN2008am - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/729/143
