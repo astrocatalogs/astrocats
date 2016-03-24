@@ -32,9 +32,6 @@ parser.add_argument('--update', '-u',  dest='update', help='Only update catalog 
 parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in test mode for Travis.', default=False, action='store_true')
 args = parser.parse_args()
 
-if args.travis:
-    print('travis_fold:start:IMPORT')
-
 clight = const.c.cgs.value
 travislimit = 10
 
@@ -2576,6 +2573,3 @@ for fi in files:
         write_all_events(empty = True, lfs = True)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
-
-if args.travis:
-    print('travis_fold:end:IMPORT')

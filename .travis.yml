@@ -34,5 +34,9 @@ install:
 # Run test
 script:
     - cd scripts
+    - echo "travis_fold:start:IMPORT Importing data"
     - python import.py -tr
+    - echo "travis_fold:end:IMPORT Importing data done"
+    - echo "travis_fold:start:MAKE Making catalog"
     - python make-catalog.py -tr
+    - echo "travis_fold:end:MAKE Making catalog done"

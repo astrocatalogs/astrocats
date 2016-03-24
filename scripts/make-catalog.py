@@ -44,9 +44,6 @@ parser.add_argument('--test', '-te',              dest='test',         help='Tes
 parser.add_argument('--travis', '-tr',            dest='travis',       help='Set some options when using Travis', default=False, action='store_true')
 args = parser.parse_args()
 
-if args.travis:
-    print('travis_fold:start:MAKE')
-
 outdir = "../"
 
 googlepingurl = "http://www.google.com/webmasters/tools/ping?sitemap=https%3A%2F%2Fsne.space%2Fsitemap.xml"
@@ -1066,6 +1063,3 @@ if args.writecatalog and not args.eventlist:
 
     with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
-
-if args.travis:
-    print('travis_fold:end:MAKE')
