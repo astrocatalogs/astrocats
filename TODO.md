@@ -4,9 +4,7 @@ Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/A%2bA/415/863 (*Data in text files attached to catalog*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/491.228
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/746/85 (*Needs conversion from flux to magnitude*)
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/Nat/474.484
 
 Other multiple SN datasets:
 * http://iopscience.iop.org/article/10.1088/0004-637X/743/2/114/meta (PS1-10awh, PS1-10ky)
@@ -18,14 +16,11 @@ Other multiple SN datasets:
 * http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
 
 Single SN dataset on VizieR:
-* SN2002ch - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/394/2266
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107
 * SN2003ie - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/AJ/145/99
 * SN2008am - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/729/143
 * SN2009bb - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/728/14
 * SN2009nr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/PAZh/37/837
-* PTF10vdl - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/736/159
-* PTF12gzk - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/760/L33
 * SN2012aw - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/433/1871
 * SN2012fr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/AJ/148/1
 * PS1-12sk - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/769/39
