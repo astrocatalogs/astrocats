@@ -32,5 +32,5 @@ install:
 # Run test
 script:
     - cd scripts
-    - python import.py
+    - python import.py -t
     - python make-catalog.py
