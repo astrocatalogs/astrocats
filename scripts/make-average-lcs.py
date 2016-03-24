@@ -29,7 +29,7 @@ tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
 outdir = "../"
 
-averagetype = "Ib"
+averagetype = "Ia P"
 
 with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()

@@ -29,9 +29,14 @@ from string import ascii_letters
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--update', '-u', dest='update', help='Only update catalog using live sources.',    default=False, action='store_true')
+parser.add_argument('--travis', '-t', dest='travis', help='Run import script in test mode for Travis.', default=False, action='store_true')
 args = parser.parse_args()
 
+if args.travis:
+    print('travis_fold:start:IMPORT')
+
 clight = const.c.cgs.value
+travislimit = 10
 
 eventnames = []
 
@@ -2164,6 +2169,9 @@ if do_task('wiserepspectra'):
                                     filename = specfile)
                                 wiserepcnt = wiserepcnt + 1
 
+                                if args.travis and wiserepcnt % travislimit == 0:
+                                    break
+
                 print('unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
                 print('wiserep spec cnt: ' + str(wiserepcnt))
     journal_events()
@@ -2184,7 +2192,7 @@ if do_task('cfaiaspectra'):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
-        for fname in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
+        for fi, fname in enumerate(sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
             if name[:2] == "SN" and is_number(name[2:6]):
@@ -2207,6 +2215,8 @@ if do_task('cfaiaspectra'):
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
                 wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
+            if args.travis and fi >= travislimit:
+                break
     journal_events()
 
 if do_task('cfaibcspectra'): 
@@ -2223,7 +2233,7 @@ if do_task('cfaibcspectra'):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = get_source(name, reference = reference, url = refurl, secondary = True)
-        for fname in sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower()):
+        for fi, fname in enumerate(sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
             instrument = ''
@@ -2241,6 +2251,8 @@ if do_task('cfaibcspectra'):
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths, filename = filename,
                 fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
+            if args.travis and fi >= travislimit:
+                break
     journal_events()
 
 if do_task('snlsspectra'): 
@@ -2252,7 +2264,7 @@ if do_task('snlsspectra'):
         datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
     oldname = ''
-    for fname in sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()):
+    for fi, fname in enumerate(sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower())):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
@@ -2285,11 +2297,13 @@ if do_task('snlsspectra'):
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, timeunit = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', instrument = instrument, source = source,
             filename = filename)
+        if args.travis and fi >= travislimit:
+            break
     journal_events()
 
 if do_task('cspspectra'): 
     oldname = ''
-    for fname in sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()):
+    for fi, fname in enumerate(sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower())):
         filename = os.path.basename(fname)
         sfile = filename.split('.')
         if sfile[1] == 'txt':
@@ -2323,6 +2337,8 @@ if do_task('cspspectra'):
 
         add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, instrument = instrument, source = source, deredshifted = True, filename = filename)
+        if args.travis and fi >= travislimit:
+            break
     journal_events()
 
 if do_task('ucbspectra'): 
@@ -2333,7 +2349,7 @@ if do_task('ucbspectra'):
     response = urllib.request.urlopen('file://' + path)
 
     soup = BeautifulSoup(response.read(), "html5lib")
-    i = 0
+    ucbspeccnt = 0
     oldname = ''
     for t, tr in enumerate(soup.findAll('tr')):
         if t == 0:
@@ -2405,12 +2421,16 @@ if do_task('ucbspectra'):
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
                 wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
                 instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer)
+            ucbspeccnt = ucbspeccnt + 1
+            if args.travis and ucbspeccnt >= travislimit:
+                break
     journal_events()
 
 if do_task('suspectspectra'): 
     with open('../sne-external-spectra/Suspect/sources.json', 'r') as f:
         sourcedict = json.loads(f.read())
 
+    suspectcnt = 0
     folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
     for folder in folders:
         eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
@@ -2469,12 +2489,16 @@ if do_task('suspectspectra'):
 
                 add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources, filename = spectrum)
+                suspectcnt = suspectcnt + 1
+                if args.travis and suspectcnt % travislimit == 0:
+                    break
     journal_events()
 
 if do_task('snfspectra'): 
     eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
     bibcodes = {'SN2005gj':'2006ApJ...650..510A', 'SN2006D':'2007ApJ...654L..53T', 'SN2007if':'2010ApJ...713.1073S', 'SN2011fe':'2013A&A...554A..27P'}
     oldname = ''
+    snfcnt = 0
     for eventfolder in eventfolders:
         name = eventfolder
         name = get_preferred_name(name)
@@ -2534,6 +2558,9 @@ if do_task('snfspectra'):
             add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, errors = errors,
                 errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources, filename = filename)
+            snfcnt = snfcnt + 1
+            if args.travis and snfcnt % travislimit == 0:
+                break
     journal_events()
 
 files = []
@@ -2550,3 +2577,5 @@ for fi in files:
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
+if args.travis:
+    print('travis_fold:end:IMPORT')
