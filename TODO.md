@@ -1,10 +1,13 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
 Multiple SN datasets on VizieR:
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173
+* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (*Data in text files attached to catalog*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/A%2bA/415/863 (*Data in text files attached to catalog*)
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources
+* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources (*Data in text files attached to catalog*)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/746/85 (*Needs conversion from flux to magnitude*)
+
+Single SN dataset on VizieR:
+* SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107 (*Use dust-corrected or not?*)
 
 Other multiple SN datasets:
 * http://iopscience.iop.org/article/10.1088/0004-637X/743/2/114/meta (PS1-10awh, PS1-10ky)
@@ -14,10 +17,6 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2014arXiv1401.3317S (SDSS SNe light curves, broken link - http://sdssdp62.fnal.gov/sdsssn/DataRelease/index.html)
 * http://arxiv.org/abs/1603.03823
 * http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
-
-Single SN dataset on VizieR:
-* SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107
-* SN2014J - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/805/74
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Hagai's e-mail)
