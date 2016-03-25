@@ -32,11 +32,6 @@ parser.add_argument('--update', '-u',  dest='update', help='Only update catalog 
 parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in test mode for Travis.', default=False, action='store_true')
 args = parser.parse_args()
 
-clight = const.c.cgs.value
-travislimit = 5
-
-eventnames = []
-
 tasks = {
     "internal":       {"update": False},
     "simbad":         {"update": False},
@@ -66,13 +61,17 @@ tasks = {
     "writeevents":    {"update": True }
 }
 
+clight = const.c.cgs.value
+travislimit = 5
+
+eventnames = []
 events = OrderedDict()
 
 with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
+    repofolders = f.read().splitlines()
 
-repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
-repyears[0] -= 1
+repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders))]
+repoyears[0] -= 1
 
 typereps = {
     'CC':     ['CCSN'],
@@ -704,7 +703,7 @@ def derive_and_sanitize():
 
 def delete_old_event_files():
     # Delete all old event JSON files
-    for folder in repfolders:
+    for folder in repofolders:
         filelist = glob.glob("../" + folder + "/*.json")
         for f in filelist:
             os.remove(f)
@@ -725,12 +724,12 @@ def write_all_events(empty = False, lfs = False):
 
         outdir = '../'
         if 'discoverdate' in events[name]:
-            for r, year in enumerate(repyears):
+            for r, year in enumerate(repoyears):
                 if int(events[name]['discoverdate'][0]['value'].split('/')[0]) <= year:
-                    outdir += repfolders[r]
+                    outdir += repofolders[r]
                     break
         else:
-            outdir += str(repfolders[0])
+            outdir += str(repofolders[0])
 
         path = outdir + '/' + filename + '.json'
         with codecs.open(path, 'w', encoding='utf8') as f:
@@ -747,7 +746,7 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True)
     else:
         indir = '../'
         path = ''
-        for rep in repfolders:
+        for rep in repofolders:
             newpath = indir + rep + '/' + name + '.json'
             if os.path.isfile(newpath):
                 path = newpath
@@ -810,7 +809,7 @@ def clear_events():
 if 'writeevents' in tasks:
     if args.update:
         files = []
-        for rep in repfolders:
+        for rep in repofolders:
             files += glob.glob('../' + rep + "/*.json")
 
         for fi in files:
@@ -3008,7 +3007,7 @@ if do_task('snfspectra'):
     journal_events()
 
 files = []
-for rep in repfolders:
+for rep in repofolders:
     files += glob.glob('../' + rep + "/*.json")
 
 for fi in files:
