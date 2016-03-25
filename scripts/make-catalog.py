@@ -46,6 +46,8 @@ args = parser.parse_args()
 
 outdir = "../"
 
+travislimit = 1000
+
 googlepingurl = "http://www.google.com/webmasters/tools/ping?sitemap=https%3A%2F%2Fsne.space%2Fsitemap.xml"
 
 linkdir = "https://sne.space/sne/"
@@ -312,6 +314,9 @@ else:
 for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if args.eventlist and os.path.splitext(os.path.basename(eventfile))[0] not in args.eventlist:
         continue
+
+    if args.travis and fcnt >= travislimit:
+        break
 
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
