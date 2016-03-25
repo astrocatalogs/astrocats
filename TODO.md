@@ -17,7 +17,6 @@ Other multiple SN datasets:
 
 Single SN dataset on VizieR:
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107
-* SN2012aw - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/433/1871
 * SN2012fr - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/AJ/148/1
 * SN2014J - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/ApJ/805/74
 
