@@ -23,7 +23,6 @@ from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
 from astropy import units as un
 from copy import deepcopy
-from random import shuffle, seed
 from collections import OrderedDict
 from bokeh.plotting import Figure, show, save, reset_output
 from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,

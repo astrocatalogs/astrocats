@@ -2,6 +2,12 @@ from palettable import cubehelix
 from collections import OrderedDict
 from random import shuffle, seed, randint, uniform
 
+bandreps = {
+    'M2':     ['uvm2', 'UVM2'],
+    'W1':     ['uvw1', 'UVW1'],
+    'W2':     ['uvw2', 'UVW2']
+}
+
 bandcodes = [
     "u",
     "g",
@@ -31,9 +37,9 @@ bandcodes = [
     "C",
     "CR",
     "CV",
-    "uvm2",
-    "uvw1",
-    "uvw2",
+    "M2",
+    "W1",
+    "W2",
     "pg",
     "Mp"
 ]
@@ -47,6 +53,9 @@ bandaliases = OrderedDict([
     ("uvm2"  , "M2 (UVOT)"),
     ("uvw1"  , "W1 (UVOT)"),
     ("uvw2"  , "W2 (UVOT)"),
+    ("UVM2"  , "M2 (UVOT)"),
+    ("UVW1"  , "W1 (UVOT)"),
+    ("UVW2"  , "W2 (UVOT)")
 ])
 
 bandshortaliases = OrderedDict([
@@ -85,7 +94,10 @@ bandwavelengths = {
     "K"      : 2190.,
     "uvm2"   : 260.,
     "uvw1"   : 224.6,
-    "uvw2"   : 192.8
+    "uvw2"   : 192.8,
+    "UVM2"   : 260.,
+    "UVW1"   : 224.6,
+    "UVW2"   : 192.8
 }
 
 seed(101)
@@ -95,22 +107,22 @@ shuffle(bandcolors)
 
 bandcolordict = dict(list(zip(bandcodes,bandcolors)))
 
-def bandcolorf(color):
-    if (color in bandcolordict):
-        return bandcolordict[color]
+def bandcolorf(code):
+    if code in bandcolordict:
+        return bandcolordict[code]
     return 'black'
 
 def bandaliasf(code):
-    if (code in bandaliases):
+    if code in bandaliases:
         return bandaliases[code]
     return code
 
 def bandshortaliasf(code):
-    if (code in bandshortaliases):
+    if code in bandshortaliases:
         return bandshortaliases[code]
     return code
 
 def bandwavef(code):
-    if (code in bandwavelengths):
+    if code in bandwavelengths:
         return bandwavelengths[code]
     return 0.
