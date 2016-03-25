@@ -968,12 +968,13 @@ if args.writecatalog and not args.eventlist:
     with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
-    # Make a few small files for generating charts
+    # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift, r.a., dec., # obs., link
     with open(outdir + 'snepages.csv' + testsuffix, 'w') as f:
         csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
         for row in snepages:
             csvout.writerow(row)
 
+    # Make a few small files for generating charts
     with open(outdir + 'sources.csv' + testsuffix, 'w') as f:
         sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
         csvout = csv.writer(f)
