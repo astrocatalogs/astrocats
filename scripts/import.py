@@ -143,7 +143,8 @@ def add_event(name, load = True, delete = True):
         events[name] = OrderedDict()
         events[name]['name'] = name
         add_alias(name, name)
-        print('Added new event ' + name)
+        if not args.travis:
+            print('Added new event ' + name)
         return name
     else:
         return name
@@ -716,7 +717,8 @@ def write_all_events(empty = False, lfs = False):
                 continue
             else:
                 del(events[name]['stub'])
-        print('Writing ' + name)
+        if not args.travis:
+            print('Writing ' + name)
         filename = event_filename(name)
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
@@ -789,7 +791,10 @@ def clean_event(name):
                 events[name]['photometry'][p]['source'] = alias
 
 def do_task(task):
-    return task in tasks and (not args.update or tasks[task]['update'])
+    dotask = task in tasks and (not args.update or tasks[task]['update'])
+    if dotask:
+        print('Doing ' + task)
+    return dotask
 
 def journal_events(clear = True):
     if 'writeevents' in tasks:
