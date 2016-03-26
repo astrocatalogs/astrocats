@@ -717,7 +717,7 @@ def derive_and_sanitize():
                 if 'bibcode' in source and source['bibcode'] in bibauthordict and bibauthordict[source['bibcode']]:
                     source['name'] = bibauthordict[source['bibcode']]
         if 'redshift' in events[name]:
-            events[name]['redshift'] = list(sorted(events[name]['redshift'].items(), key=lambda key: redshift_priority(key[0])))
+            events[name]['redshift'] = list(sorted(events[name]['redshift'], key=lambda key: redshift_priority(key['kind'])))
 
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
