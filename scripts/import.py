@@ -116,6 +116,15 @@ def event_attr_priority(attr):
         return 'aaaaaaac'
     return attr
 
+def redshift_priority(attr):
+    if attr == 'heliocentric':
+        return 0
+    if attr == 'cmb':
+        return 1
+    if attr == 'host':
+        return 2
+    return 3
+
 def add_event(name, load = True, delete = True):
     if name not in events or 'stub' in events[name]:
         newname = name
@@ -577,6 +586,20 @@ def set_first_max_light(name):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
 
+def get_best_redshift(name):
+    bestsig = 0
+    bestkind = 10
+    prefkinds = ['heliocentric', 'cmb', 'host', '']
+    for z in events[name]['redshift']:
+        kind = prefkinds.index(z['kind'] if 'kind' in z else '')
+        sig = get_sig_digits(z['value'])
+        if sig > bestsig and kind <= bestkind:
+            bestz = z['value']
+            bestkind = kind
+            bestsig = sig
+
+    return (bestz, bestkind, bestsig)
+
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
@@ -619,14 +642,8 @@ def derive_and_sanitize():
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'redshift' in events[name] and 'hvel' not in events[name]:
-            # Find the "best" redshift to use for this
-            bestsig = 0
-            for z in events[name]['redshift']:
-                sig = get_sig_digits(z['value'])
-                if sig > bestsig:
-                    bestz = z['value']
-                    bestsig = sig
-            if bestsig > 0:
+            (bestz, bestkind, bestsig) = get_best_redshift(name)
+            if bestsig > 0 and prefkinds[bestkind] == 'heliocentric':
                 bestz = float(bestz)
                 add_quanta(name, 'hvel', pretty_num(clight/1.e5*((bestz + 1.)**2. - 1.)/
                     ((bestz + 1.)**2. + 1.), sig = bestsig), 'D')
@@ -640,7 +657,7 @@ def derive_and_sanitize():
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
-                add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D')
+                add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D', kind = 'heliocentric')
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
@@ -654,12 +671,7 @@ def derive_and_sanitize():
                     5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig), 'D')
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
-            bestsig = 0
-            for z in events[name]['redshift']:
-                sig = get_sig_digits(z['value'])
-                if sig > bestsig:
-                    bestz = z['value']
-                    bestsig = sig
+            (bestz, bestkind, bestsig) = get_best_redshift(name)
             if bestsig > 0 and float(bestz) > 0.:
                 if 'lumdist' not in events[name]:
                     dl = cosmo.luminosity_distance(float(bestz))
@@ -704,6 +716,8 @@ def derive_and_sanitize():
             for source in events[name]['sources']:
                 if 'bibcode' in source and source['bibcode'] in bibauthordict and bibauthordict[source['bibcode']]:
                     source['name'] = bibauthordict[source['bibcode']]
+        if 'redshift' in events[name]:
+            events[name]['redshift'] = list(sorted(events[name]['redshift'].items(), key=lambda key: redshift_priority(key[0])))
 
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
@@ -917,7 +931,7 @@ if do_task('vizier'):
         astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
         add_quanta(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
-        add_quanta(name, 'redshift', str(row['z']), source)
+        add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
         add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
@@ -978,7 +992,7 @@ if do_task('vizier'):
         source = get_source(name, bibcode = '2014ApJ...795...44R')
         astrot = astrotime(row['tdisc'], format='mjd').datetime
         add_quanta(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
-        add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
+        add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
 
@@ -1078,7 +1092,7 @@ if do_task('vizier'):
         name = 'SN' + row['SN']
         name = add_event(name)
         source = get_source(name, bibcode = '2014MNRAS.442..844F')
-        add_quanta(name, 'redshift', str(row['zhost']), source)
+        add_quanta(name, 'redshift', str(row['zhost']), kind = 'host', source)
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
     journal_events()
 
@@ -1126,7 +1140,7 @@ if do_task('vizier'):
         source = get_source(name, bibcode = "2015ApJS..219...13W")
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
-        add_quanta(name, 'redshift', row['z'], source, error = row['e_z'])
+        add_quanta(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
         add_quanta(name, 'ebv', row['E_B-V_'], source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
     table = result[list(result.keys())[0]]
@@ -1629,7 +1643,7 @@ if do_task('suspect'):
 
             redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
             if redshifts:
-                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource)
+                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), kind = 'heliocentric', secondarysource)
             hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
             if hvels:
                 add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], secondarysource)
@@ -1820,7 +1834,7 @@ if do_task('sdss'):
                 add_quanta(name, 'ra', row[-4], source, unit = 'radeg')
                 add_quanta(name, 'dec', row[-2], source, unit = 'decdeg')
             if r == 1:
-                add_quanta(name, 'redshift', row[2], source, error = row[4])
+                add_quanta(name, 'redshift', row[2], source, error = row[4], kind = 'heliocentric')
             if r >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
@@ -1914,7 +1928,7 @@ if do_task('csp'):
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
-                    add_quanta(name, 'redshift', row[0].split(' ')[-1], source)
+                    add_quanta(name, 'redshift', row[0].split(' ')[-1], source, kind = 'cmb')
                     add_quanta(name, 'ra', row[1].split(' ')[-1], source)
                     add_quanta(name, 'dec', row[2].split(' ')[-1], source)
                 continue
@@ -2052,7 +2066,7 @@ if do_task('asiago'):
             if (claimedtype != ''):
                 add_quanta(name, 'claimedtype', claimedtype, source)
             if (redshift != ''):
-                add_quanta(name, 'redshift', redshift, source)
+                add_quanta(name, 'redshift', redshift, source, kind = 'host')
             if (hvel != ''):
                 add_quanta(name, 'hvel', hvel, source)
             if (galra != ''):
@@ -2097,12 +2111,12 @@ if do_task('lennarz'):
                 add_quanta(name, 'claimedtype', claimedtype.strip(' -'), source)
         if row['z']:
             if name != 'SN1985D':
-                add_quanta(name, 'redshift', row['z'], source)
+                add_quanta(name, 'redshift', row['z'], source, kind = 'host')
         if row['Dist']:
             if row['e_Dist']:
-                add_quanta(name, 'lumdist', row['Dist'], source, error = row['e_Dist'])
+                add_quanta(name, 'lumdist', row['Dist'], source, error = row['e_Dist'], kind = 'host')
             else:
-                add_quanta(name, 'lumdist', row['Dist'], source)
+                add_quanta(name, 'lumdist', row['Dist'], source, kind = 'host')
 
         if row['Ddate']:
             datestring = row['Ddate'].replace('-', '/')
@@ -2746,14 +2760,16 @@ if do_task('snlsspectra'):
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
                 add_quanta(name, 'redshift', row[1].strip(), source)
+            elif row[0] == '@UNITS':
+                fluxmult = float(row[1])
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
         specdata = [list(i) for i in zip(*specdata)]
         wavelengths = specdata[1]
         
-        fluxes = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[2]]
-        errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
+        fluxes = fluxmult*[pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[2]]
+        errors = fluxmult*[pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, timeunit = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', telescope = telescope, source = source,
