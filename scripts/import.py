@@ -1092,7 +1092,7 @@ if do_task('vizier'):
         name = 'SN' + row['SN']
         name = add_event(name)
         source = get_source(name, bibcode = '2014MNRAS.442..844F')
-        add_quanta(name, 'redshift', str(row['zhost']), kind = 'host', source)
+        add_quanta(name, 'redshift', str(row['zhost']), source, kind = 'host')
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
     journal_events()
 
@@ -1643,7 +1643,7 @@ if do_task('suspect'):
 
             redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
             if redshifts:
-                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), kind = 'heliocentric', secondarysource)
+                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource, kind = 'heliocentric')
             hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
             if hvels:
                 add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], secondarysource)
