@@ -2760,16 +2760,14 @@ if do_task('snlsspectra'):
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
                 add_quanta(name, 'redshift', row[1].strip(), source)
-            elif row[0] == '@UNITS':
-                fluxmult = float(row[1])
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
         specdata = [list(i) for i in zip(*specdata)]
         wavelengths = specdata[1]
         
-        fluxes = fluxmult*[pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[2]]
-        errors = fluxmult*[pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
+        fluxes = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[2]]
+        errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, timeunit = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', telescope = telescope, source = source,
