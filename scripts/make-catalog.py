@@ -271,9 +271,17 @@ def is_valid_link(url):
         return False
     return True
 
+def get_first_value(name, field):
+    return catalog[name][field][0]['value'] if field in catalog[name] and catalog[name][field] else ''
+
+def get_first_kind(name, field):
+    return (catalog[name][field][0]['kind'] if field in catalog[name] and
+        catalog[name][field] and 'kind' in catalog[name][field][0] else '')
+
 catalog = OrderedDict()
 catalogcopy = OrderedDict()
-snepages = []
+snepages = [["# name", "aliases", "max apparent mag", "max mag date", "claimed type", "redshift", "redshift kind",
+    "ra", "dec", "# of photometric obs.", "URL"]]
 sourcedict = {}
 nophoto = []
 lcspye = []
@@ -354,18 +362,22 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     photoavail = 'photometry' in catalog[entry]
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
+
+    maxabsappoffset = 0.0
+    if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+        maxabsappoffset = float(get_first_value(entry, 'maxabsmag')) - float(get_first_value(entry, 'maxappmag'))
+
+    plotlink = "sne/" + fileeventname + "/"
     if photoavail:
-        plotlink = "sne/" + fileeventname + "/"
         catalog[entry]['photoplot'] = plotlink
-        plotlink = "<a class='lci' href='" + plotlink + "' target='_blank'></a> "
-        catalog[entry]['photolink'] = plotlink + str(numphoto)
+        photolink = "<a class='lci' href='" + plotlink + "' target='_blank'></a> "
+        catalog[entry]['photolink'] = photolink + str(numphoto)
     spectraavail = 'spectra' in catalog[entry]
     catalog[entry]['numspectra'] = len(catalog[entry]['spectra']) if spectraavail else 0
     if spectraavail:
-        plotlink = "sne/" + fileeventname + "/"
         catalog[entry]['spectraplot'] = plotlink
-        plotlink = "<a class='sci' href='" + plotlink + "' target='_blank'></a> "
-        catalog[entry]['spectralink'] = plotlink + str(len(catalog[entry]['spectra']))
+        speclink = "<a class='sci' href='" + plotlink + "' target='_blank'></a> "
+        catalog[entry]['spectralink'] = speclink + str(len(catalog[entry]['spectra']))
 
     prange = list(range(len(catalog[entry]['photometry']))) if 'photometry' in catalog[entry] else []
     
@@ -418,13 +430,16 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
 
+        hastimeerrs = (len(list(filter(None, phototimelowererrs))) and len(list(filter(None, phototimeuppererrs))))
+        hasABerrs = len(list(filter(None, photoABerrs)))
         tt = [  
                 ("Source ID", "@src"),
-                ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")", "@x{1.11}"),
-                ("Apparent Magnitude", "@y{1.111}")
+                ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")",
+                 "@x{1.11}" + "<sub>-@xle{1}</sub><sup>+@xue{1}</sup>" if hastimeerrs else "")
              ]
-        if len(list(filter(None, photoABerrs))):
-            tt += [("Error", "@err{1.111}")]
+        tt += [("Apparent Magnitude", "@y{1.111}" + "&nbsp;±&nbsp;@err{1.11}" if hasABerrs else "")]
+        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+            tt += [("Absolute Magnitude", "@yabs{1.111}" + "&nbsp;±&nbsp;@err{1.11}" if hasABerrs else "")]
         if len(list(filter(None, photoband))):
             tt += [("Band", "@desc")]
         if len(list(filter(None, photoinstru))):
@@ -433,13 +448,17 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         min_x_range = -x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))])
         max_x_range = x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])
+        min_y_range = 0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))])
+        max_y_range = -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
-            y_axis_label='Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
-            x_range = (min_x_range, max_x_range),
-            y_range = (0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))]),
-                       -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])),
-            title_text_font_size='16pt')
+            y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
+            x_range = (min_x_range, max_x_range), y_range = (min_y_range, max_y_range),
+            title_text_font_size='16pt', title_text_font = 'futura')
+        p1.xaxis.axis_label_text_font = 'futura'
+        p1.yaxis.axis_label_text_font = 'futura'
+        p1.xaxis.major_label_text_font = 'futura'
+        p1.yaxis.major_label_text_font = 'futura'
         p1.xaxis.axis_label_text_font_size = '12pt'
         p1.yaxis.axis_label_text_font_size = '12pt'
         p1.xaxis.major_label_text_font_size = '8pt'
@@ -448,9 +467,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
 
+
         p1.extra_x_ranges = {"gregorian date": Range1d(start=min_x_date, end=max_x_date)}
-        p1.add_layout(DatetimeAxis(axis_label ="Time (Gregorian Date)", major_label_text_font_size = '8pt',
-            x_range_name="gregorian date", axis_label_text_font_size = '12pt'), 'above')
+        p1.add_layout(DatetimeAxis(axis_label = "Time (Gregorian Date)", major_label_text_font_size = '8pt',
+            major_label_text_font = 'futura', axis_label_text_font = 'futura',
+            x_range_name = "gregorian date", axis_label_text_font_size = '12pt'), 'above')
+        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+            min_y_absmag = min_y_range + maxabsappoffset
+            max_y_absmag = max_y_range + maxabsappoffset
+            p1.extra_y_ranges = {"abs mag": Range1d(start=min_y_absmag, end=max_y_absmag)}
+            p1.add_layout(LinearAxis(axis_label = "Absolute Magnitude", major_label_text_font_size = '8pt',
+                major_label_text_font = 'futura', axis_label_text_font = 'futura',
+                y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
         p1.add_tools(hover)
 
         xs = []
@@ -481,28 +509,38 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             noerrorlegend = bandname if len(indne) == 0 else ''
 
-            source = ColumnDataSource(
-                data = dict(
-                    x = [phototime[i] for i in indne],
-                    y = [photoAB[i] for i in indne],
-                    err = [photoABerrs[i] for i in indne],
-                    desc = [photoband[i] for i in indne],
-                    instr = [photoinstru[i] for i in indne],
-                    src = [photosource[i] for i in indne]
-                )
+            data = dict(
+                x = [phototime[i] for i in indne],
+                y = [photoAB[i] for i in indne],
+                err = [photoABerrs[i] for i in indne],
+                desc = [photoband[i] for i in indne],
+                instr = [photoinstru[i] for i in indne],
+                src = [photosource[i] for i in indne]
             )
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                data['yabs'] = [photoAB[i] + maxabsappoffset for i in indne]
+            if hastimeerrs:
+                data['xle'] = [phototimelowererrs[i] for i in indne]
+                data['xue'] = [phototimeuppererrs[i] for i in indne]
+
+            source = ColumnDataSource(data)
             p1.circle('x', 'y', source = source, color=bandcolorf(band), fill_color="white", legend=noerrorlegend, size=4)
 
-            source = ColumnDataSource(
-                data = dict(
-                    x = [phototime[i] for i in indye],
-                    y = [photoAB[i] for i in indye],
-                    err = [photoABerrs[i] for i in indye],
-                    desc = [photoband[i] for i in indye],
-                    instr = [photoinstru[i] for i in indye],
-                    src = [photosource[i] for i in indye]
-                )
+            data = dict(
+                x = [phototime[i] for i in indye],
+                y = [photoAB[i] for i in indye],
+                err = [photoABerrs[i] for i in indye],
+                desc = [photoband[i] for i in indye],
+                instr = [photoinstru[i] for i in indye],
+                src = [photosource[i] for i in indye]
             )
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                data['yabs'] = [photoAB[i] + maxabsappoffset for i in indye]
+            if hastimeerrs:
+                data['xle'] = [phototimelowererrs[i] for i in indye]
+                data['xue'] = [phototimeuppererrs[i] for i in indye]
+
+            source = ColumnDataSource(data)
             p1.multi_line([err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye], color=bandcolorf(band))
             p1.multi_line([[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye], color=bandcolorf(band))
             p1.circle('x', 'y', source = source, color=bandcolorf(band), legend=bandname, size=4)
@@ -511,9 +549,28 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
             indt = [i for i, j in enumerate(phototype) if j]
             ind = set(indb).intersection(indt)
-            p1.inverted_triangle([phototime[x] for x in ind], [photoAB[x] for x in ind],
+            data = dict(
+                x = [phototime[i] for i in ind],
+                y = [photoAB[i] for i in ind],
+                err = [photoABerrs[i] for i in ind],
+                desc = [photoband[i] for i in ind],
+                instr = [photoinstru[i] for i in ind],
+                src = [photosource[i] for i in ind]
+            )
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                data['yabs'] = [photoAB[i] + maxabsappoffset for i in ind]
+            if hastimeerrs:
+                data['xle'] = [phototimelowererrs[i] for i in ind]
+                data['xue'] = [phototimeuppererrs[i] for i in ind]
+
+            source = ColumnDataSource(data)
+            # Currently Bokeh doesn't support tooltips for inverted_triangle, so hide an invisible circle behind for the tooltip
+            p1.circle('x', 'y', source = source,
+                alpha=0.0, legend=upplimlegend, size=7)
+            p1.inverted_triangle('x', 'y', source = source,
                 color=bandcolorf(band), legend=upplimlegend, size=7)
 
+        p1.legend.label_text_font = 'futura'
         p1.legend.label_text_font_size = '8pt'
         p1.legend.label_width = 20
         p1.legend.label_height = 14
@@ -611,7 +668,12 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
             y_axis_label=label_format('Flux (scaled)' + (' + offset'
             if (nspec > 1) else '')), x_range = x_range, tools = tools, #responsive = True,
-            plot_width = 485, plot_height = 485, y_range = y_range, title_text_font_size='16pt')
+            plot_width = 485, plot_height = 485, y_range = y_range, title_text_font_size='16pt',
+            title_text_font = 'futura')
+        p2.xaxis.axis_label_text_font = 'futura'
+        p2.yaxis.axis_label_text_font = 'futura'
+        p2.xaxis.major_label_text_font = 'futura'
+        p2.yaxis.major_label_text_font = 'futura'
         p2.xaxis.axis_label_text_font_size = '12pt'
         p2.yaxis.axis_label_text_font_size = '12pt'
         p2.xaxis.major_label_text_font_size = '8pt'
@@ -646,7 +708,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             p2.extra_x_ranges = {"other wavelength": Range1d(start=minredw, end=maxredw)}
             p2.add_layout(LinearAxis(axis_label ="Restframe Wavelength (Å)",
                 x_range_name="other wavelength", axis_label_text_font_size = '12pt',
-                major_label_text_font_size = '8pt'), 'above')
+                axis_label_text_font = 'futura',
+                major_label_text_font_size = '8pt', major_label_text_font = 'futura'), 'above')
 
         sdicts = dict(zip(['s'+str(x) for x in range(len(sources))], sources))
         callback = CustomJS(args=sdicts, code="""
@@ -781,7 +844,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             hostimgs.append([eventname, 'None'])
 
-    plotlink = "sne/" + fileeventname + "/"
     if hasimage:
         hostlink = "<a class='hhi' href='" + plotlink + "' target='_blank'></a>"
     else:
@@ -822,6 +884,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         #html = html + '</body></html>'
 
+        html = html.replace('<body>', "<body class='event-body'>")
         html = re.sub(r'(\<\/title\>)', r'''\1\n
             <base target="_parent" />\n
             <link rel="stylesheet" href="event.css" type="text/css">\n
@@ -900,8 +963,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     # Save this stuff because next line will delete it.
     if args.writecatalog:
-        if 'photoplot' in catalog[entry]:
-            snepages.append(catalog[entry]['aliases'] + ['https://sne.space/' + catalog[entry]['photoplot']])
+        # Construct array for Bishop's webpage
+        # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift (helio), redshift (host), r.a., dec., # obs., link
+        snepages.append([entry, ",".join(catalog[entry]['aliases']), get_first_value(entry, 'maxappmag'), get_first_value(entry, 'maxdate'),
+            get_first_value(entry, 'claimedtype'), get_first_value(entry, 'redshift'), get_first_kind(entry, 'redshift'),
+            get_first_value(entry, 'ra'), get_first_value(entry, 'dec'), catalog[entry]['numphoto'], 'https://sne.space/' + plotlink])
 
         if 'sources' in catalog[entry]:
             lsourcedict = {}

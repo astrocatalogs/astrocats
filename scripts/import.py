@@ -62,6 +62,7 @@ tasks = {
 }
 
 clight = const.c.cgs.value
+km = const.km.cgs.value
 travislimit = 10
 
 eventnames = []
@@ -93,7 +94,7 @@ typereps = {
 repbetterquanta = {
     'redshift',
     'ebv',
-    'hvel',
+    'peculiarvelocity',
     'lumdist',
     'discoverdate',
     'maxdate'
@@ -345,20 +346,40 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = '', unit = '', kind = ''):
+def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = '', unit = '', kind = '', sisters = False):
     if not quanta:
         raise(ValueError('Quanta must be specified for add_quanta.'))
     svalue = value.strip()
     serror = error.strip()
+
     if not svalue or svalue == '--' or svalue == '-':
         return
     if serror and (not is_number(serror) or float(serror) < 0.):
         raise(ValueError('Quanta error value must be a number and positive.'))
 
+    #Set default units
+    if not unit and quanta == 'peculiarvelocity':
+        unit = 'km/s' 
+    if not unit and quanta == 'ra':
+        unit = 'hours'
+    if not unit and quanta == 'dec':
+        unit = 'degrees'
+
     #Handle certain quanta
-    if quanta == 'hvel' or quanta == 'redshift':
+    if quanta in ['peculiarvelocity', 'redshift']:
         if not is_number(value):
             return
+        if not sisters:
+            if quanta == 'peculiarvelocity':
+                if unit and unit != 'km/s':
+                    raise(ValueError('Only km/s presently supported for peculiar velocities.'))
+                newvalue = str(Decimal(km*clight)*Decimal(value))
+                add_quanta(name, 'redshift', newvalue, sources, forcereplacebetter = forcereplacebetter,
+                    error = error, kind = kind, sisters = True)
+            else:
+                newvalue = str(Decimal(value)/Decimal(clight*km))
+                add_quanta(name, 'peculiarvelocity', newvalue, sources, forcereplacebetter = forcereplacebetter,
+                    error = error, kind = kind, sisters = True)
     if quanta == 'host':
         svalue = svalue.strip("()")
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
@@ -408,32 +429,31 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                 break
         if isq:
             svalue = svalue + '?'
-    elif quanta == 'ra' or quanta == 'dec' or quanta == 'galra' or quanta == 'galdec':
-        if unit == 'decdeg' or unit == 'radeg':
+    elif quanta in ['ra', 'dec', 'galra', 'galdec']:
+        if unit == 'floatdegrees':
             deg = float('%g' % Decimal(svalue))
             sig = get_sig_digits(svalue)
-            if unit == 'radeg':
+            if 'ra' in quanta:
                 flhours = deg / 360.0 * 24.0
                 hours = floor(flhours)
                 minutes = floor((flhours - hours) * 60.0)
                 seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
                 svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
-            if unit == 'decdeg':
+            elif 'dec' in quanta:
                 fldeg = abs(deg)
                 degree = floor(fldeg)
                 minutes = floor((fldeg - degree) * 60.0)
                 seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
                 svalue = ('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
-        elif unit == 'decdms':
-            svalue = svalue.replace(' ', ':')
-            valuesplit = svalue.split(':')
-            svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
-        elif unit == 'ranospace':
+        elif unit == 'nospace' and 'ra' in quanta:
             svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + svalue[4:]) if len(svalue) > 4 else '')
-        elif unit == 'decnospace':
+        elif unit == 'nospace' and 'dec' in quanta:
             svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + svalue[5:]) if len(svalue) > 5 else '')
         else:
             svalue = svalue.replace(' ', ':')
+            if 'dec' in quanta:
+                valuesplit = svalue.split(':')
+                svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
     elif quanta == 'maxdate' or quanta == 'discoverdate':
         if quanta in events[name]:
             for i, ct in enumerate(events[name][quanta]):
@@ -449,6 +469,8 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
     if quanta in events[name]:
         for i, ct in enumerate(events[name][quanta]):
             if ct['value'] == svalue and sources:
+                if 'kind' in ct and kind and ct['kind'] != kind:
+                    return
                 for source in sources.split(','):
                     if source not in events[name][quanta][i]['source'].split(','):
                         events[name][quanta][i]['source'] += ',' + source
@@ -464,6 +486,8 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         quantaentry['source'] = sources
     if kind:
         quantaentry['kind'] = kind
+    if unit:
+        quantaentry['unit'] = kind
     if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
         newquantas = []
         isworse = True
@@ -642,16 +666,16 @@ def derive_and_sanitize():
         set_first_max_light(name)
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
-        if 'redshift' in events[name] and 'hvel' not in events[name]:
+        if 'redshift' in events[name] and 'peculiarvelocity' not in events[name]:
             (bestz, bestkind, bestsig) = get_best_redshift(name)
-            if bestsig > 0 and prefkinds[bestkind] == 'heliocentric':
+            if bestsig > 0:
                 bestz = float(bestz)
-                add_quanta(name, 'hvel', pretty_num(clight/1.e5*((bestz + 1.)**2. - 1.)/
-                    ((bestz + 1.)**2. + 1.), sig = bestsig), 'D')
-        elif 'hvel' in events[name] and 'redshift' not in events[name]:
-            # Find the "best" hvel to use for this
+                add_quanta(name, 'peculiarvelocity', pretty_num(clight/1.e5*((bestz + 1.)**2. - 1.)/
+                    ((bestz + 1.)**2. + 1.), sig = bestsig), 'D', kind = prefkinds[bestkind])
+        elif 'peculiarvelocity' in events[name] and 'redshift' not in events[name]:
+            # Find the "best" peculiarvelocity to use for this
             bestsig = 0
-            for hv in events[name]['hvel']:
+            for hv in events[name]['peculiarvelocity']:
                 sig = get_sig_digits(hv['value'])
                 if sig > bestsig:
                     besthv = hv['value']
@@ -886,8 +910,8 @@ if do_task('vizier'):
         name = add_event(name)
         source = get_source(name, bibcode = '2014MNRAS.444.3258M')
         add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
-        add_quanta(name, 'ra', str(row['_RA']), source, unit = 'radeg')
-        add_quanta(name, 'dec', str(row['_DE']), source, unit = 'decdeg')
+        add_quanta(name, 'ra', str(row['_RA']), source, unit = 'floatdegrees')
+        add_quanta(name, 'dec', str(row['_DE']), source, unit = 'floatdegrees')
     journal_events()
 
     # 2014MNRAS.438.1391P
@@ -1081,7 +1105,7 @@ if do_task('vizier'):
         add_quanta(name, 'claimedtype', 'SNR', source)
         add_quanta(name, 'host', 'Milky Way', source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source, unit = 'decdms')
+        add_quanta(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
     # 2014MNRAS.442..844F
@@ -1126,7 +1150,7 @@ if do_task('vizier'):
         add_alias(name, 'SN' + row['SN'])
         source = get_source(name, bibcode = '2012MNRAS.425.1789S')
         add_quanta(name, 'host', row['Gal'], source)
-        add_quanta(name, 'hvel', str(row['cz']), source)
+        add_quanta(name, 'peculiarvelocity', str(row['cz']), source, kind = 'heliocentric')
         add_quanta(name, 'ebv', str(row['E_B-V_']), source)
     journal_events()
 
@@ -1647,7 +1671,8 @@ if do_task('suspect'):
                 add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource, kind = 'heliocentric')
             hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
             if hvels:
-                add_quanta(name, 'hvel', hvels[0].split(':')[1].strip().split(' ')[0], secondarysource)
+                add_quanta(name, 'peculiarvelocity', hvels[0].split(':')[1].strip().split(' ')[0],
+                    secondarysource, kind = 'heliocentric')
             types = bandsoup.body.findAll(text=re.compile("Type"))
 
             add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], secondarysource)
@@ -1832,8 +1857,8 @@ if do_task('sdss'):
                     year = re.findall(r'\d+', name)[0]
                     add_quanta(name, 'discoverdate', year, source)
 
-                add_quanta(name, 'ra', row[-4], source, unit = 'radeg')
-                add_quanta(name, 'dec', row[-2], source, unit = 'decdeg')
+                add_quanta(name, 'ra', row[-4], source, unit = 'floatdegrees')
+                add_quanta(name, 'dec', row[-2], source, unit = 'floatdegrees')
             if r == 1:
                 add_quanta(name, 'redshift', row[2], source, error = row[4], kind = 'heliocentric')
             if r >= 19:
@@ -1885,8 +1910,8 @@ if do_task('gaia'):
         year = '20' + re.findall(r'\d+', name)[0]
         add_quanta(name, 'discoverdate', year, source)
 
-        add_quanta(name, 'ra', col[2].contents[0].strip(), source, unit = 'radeg')
-        add_quanta(name, 'dec', col[3].contents[0].strip(), source, unit = 'decdeg')
+        add_quanta(name, 'ra', col[2].contents[0].strip(), source, unit = 'floatdegrees')
+        add_quanta(name, 'dec', col[3].contents[0].strip(), source, unit = 'floatdegrees')
         add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
         photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
@@ -2050,15 +2075,15 @@ if do_task('asiago'):
 
             add_quanta(name, datekey, datestring, source)
 
-            hvel = ''
+            peculiarvelocity = ''
             redshift = ''
             if redvel != '':
                 if round(float(redvel)) == float(redvel):
-                    hvel = int(redvel)
+                    peculiarvelocity = int(redvel)
                 else:
                     redshift = float(redvel)
                 redshift = str(redshift)
-                hvel = str(hvel)
+                peculiarvelocity = str(peculiarvelocity)
 
             claimedtype = record[17].replace(':', '').replace('*', '').strip()
 
@@ -2068,16 +2093,16 @@ if do_task('asiago'):
                 add_quanta(name, 'claimedtype', claimedtype, source)
             if (redshift != ''):
                 add_quanta(name, 'redshift', redshift, source, kind = 'host')
-            if (hvel != ''):
-                add_quanta(name, 'hvel', hvel, source)
+            if (peculiarvelocity != ''):
+                add_quanta(name, 'peculiarvelocity', peculiarvelocity, source, kind = 'host')
             if (galra != ''):
-                add_quanta(name, 'galra', galra, source, unit = 'ranospace')
+                add_quanta(name, 'galra', galra, source, unit = 'nospace')
             if (galdec != ''):
-                add_quanta(name, 'galdec', galdec, source, unit = 'decnospace')
+                add_quanta(name, 'galdec', galdec, source, unit = 'nospace')
             if (ra != ''):
-                add_quanta(name, 'ra', ra, source, unit = 'ranospace')
+                add_quanta(name, 'ra', ra, source, unit = 'nospace')
             if (dec != ''):
-                add_quanta(name, 'dec', dec, source, unit = 'decnospace')
+                add_quanta(name, 'dec', dec, source, unit = 'nospace')
             if (discoverer != ''):
                 add_quanta(name, 'discoverer', discoverer, source)
     journal_events()
