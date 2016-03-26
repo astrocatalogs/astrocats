@@ -589,7 +589,7 @@ def set_first_max_light(name):
 
 prefkinds = ['heliocentric', 'cmb', 'host', '']
 def get_best_redshift(name):
-    bestsig = 0
+    bestsig = -1
     bestkind = 10
     for z in events[name]['redshift']:
         kind = prefkinds.index(z['kind'] if 'kind' in z else '')
