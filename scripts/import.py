@@ -20,6 +20,7 @@ from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
 from copy import deepcopy
 from astropy import constants as const
+from astropy import units as un
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
@@ -62,7 +63,7 @@ tasks = {
 }
 
 clight = const.c.cgs.value
-km = const.km.cgs.value
+km = (1.0 * un.km).cgs.value
 travislimit = 10
 
 eventnames = []
@@ -373,11 +374,11 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
             if quanta == 'peculiarvelocity':
                 if unit and unit != 'km/s':
                     raise(ValueError('Only km/s presently supported for peculiar velocities.'))
-                newvalue = str(Decimal(km*clight)*Decimal(value))
+                newvalue = str(Decimal(km/clight)*Decimal(value))
                 add_quanta(name, 'redshift', newvalue, sources, forcereplacebetter = forcereplacebetter,
                     error = error, kind = kind, sisters = True)
             else:
-                newvalue = str(Decimal(value)/Decimal(clight*km))
+                newvalue = str(Decimal(clight/km)*Decimal(value))
                 add_quanta(name, 'peculiarvelocity', newvalue, sources, forcereplacebetter = forcereplacebetter,
                     error = error, kind = kind, sisters = True)
     if quanta == 'host':
@@ -487,7 +488,7 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
     if kind:
         quantaentry['kind'] = kind
     if unit:
-        quantaentry['unit'] = kind
+        quantaentry['unit'] = unit
     if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
         newquantas = []
         isworse = True
@@ -700,7 +701,7 @@ def derive_and_sanitize():
             if bestsig > 0 and float(bestz) > 0.:
                 if 'lumdist' not in events[name]:
                     dl = cosmo.luminosity_distance(float(bestz))
-                    add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D')
+                    add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D', kind = prefkinds[bestkind])
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                         add_quanta(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
                             5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), 'D')

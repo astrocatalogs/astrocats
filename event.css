@@ -1,6 +1,30 @@
+.event-download {
+    font-size: 18pt;
+    color: darkgreen !important;
+    font-weight: bold;
+    text-decoration: none;
+    background: lightgreen;
+    width: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.event-download:hover {
+	text-decoration: underline;
+}
+
 .event-body {
 	font-family: Futura,Century Gothic,AppleGothic,sans-serif;
 	font-size: 10pt;
+}
+
+.event-body a {
+	color: #B52C00;
+	text-decoration: none;
+}
+
+.event-body a:hover {
+	text-decoration: underline;
 }
 
 .event-table {
@@ -36,21 +60,6 @@
     float: left;
     margin: 5px;
 	width: 260px;
-}
-
-.event-download {
-    font-size: 18pt;
-    color: darkgreen;
-    font-weight: bold;
-    text-decoration: none;
-    background: lightgreen;
-    width: 100%;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-.event-download:hover {
-	text-decoration: underline;
 }
 
 .bk-hbox-spacer {
