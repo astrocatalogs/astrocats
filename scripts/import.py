@@ -117,12 +117,13 @@ def event_attr_priority(attr):
     return attr
 
 def redshift_priority(attr):
-    if attr == 'heliocentric':
-        return 0
-    if attr == 'cmb':
-        return 1
-    if attr == 'host':
-        return 2
+    if 'kind' in attr:
+        if attr['kind'] == 'heliocentric':
+            return 0
+        if attr['kind'] == 'cmb':
+            return 1
+        if attr['kind'] == 'host':
+            return 2
     return 3
 
 def add_event(name, load = True, delete = True):
@@ -275,9 +276,9 @@ def add_photometry(name, timeunit = "MJD", time = "", telescope = "", instrument
     if instrument:
         photoentry['instrument'] = instrument
     if telescope:
-        photoentry['telescope'] = instrument
+        photoentry['telescope'] = telescope
     if observatory:
-        photoentry['observatory'] = instrument
+        photoentry['observatory'] = observatory
     if e_magnitude:
         photoentry['e_magnitude'] = str(e_magnitude)
     if source:
@@ -586,10 +587,10 @@ def set_first_max_light(name):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
 
+prefkinds = ['heliocentric', 'cmb', 'host', '']
 def get_best_redshift(name):
     bestsig = 0
     bestkind = 10
-    prefkinds = ['heliocentric', 'cmb', 'host', '']
     for z in events[name]['redshift']:
         kind = prefkinds.index(z['kind'] if 'kind' in z else '')
         sig = get_sig_digits(z['value'])
@@ -717,7 +718,7 @@ def derive_and_sanitize():
                 if 'bibcode' in source and source['bibcode'] in bibauthordict and bibauthordict[source['bibcode']]:
                     source['name'] = bibauthordict[source['bibcode']]
         if 'redshift' in events[name]:
-            events[name]['redshift'] = list(sorted(events[name]['redshift'], key=lambda key: redshift_priority(key['kind'])))
+            events[name]['redshift'] = list(sorted(events[name]['redshift'], key=lambda key: redshift_priority(key)))
 
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
@@ -815,8 +816,8 @@ def clean_event(name):
 
 def do_task(task):
     dotask = task in tasks and (not args.update or tasks[task]['update'])
-    if dotask:
-        print('Doing ' + task)
+    #if dotask:
+    #    print('Doing ' + task)
     return dotask
 
 def journal_events(clear = True):
@@ -2998,6 +2999,8 @@ if do_task('snfspectra'):
             time = ''
             telescope = ''
             instrument = ''
+            observer = ''
+            observatory = ''
             if 'Keck_20060202_R' in spectrum:
                 time = '53768.23469'
             elif 'Spectrum05_276' in spectrum:
@@ -3007,28 +3010,29 @@ if do_task('snfspectra'):
             elif 'Spectrum05_336' in spectrum:
                 time = pretty_num(astrotime('2005-12-02').mjd, sig = 5)
             for row in specdata:
-                if not time:
-                    if row[0] == '#MJD-OBS':
-                        time = row[2].strip("'")
-                    elif len(row) >= 2:
-                        if row[1] == 'JD':
-                            time = str(jd_to_mjd(Decimal(row[3])))
-                        elif row[1] == 'MJD':
-                            time = row[3]
-                        elif row[1] == 'MJD-OBS':
-                            time = row[3].strip("'")
-                if len(row) >= 2:
-                    if row[1] == 'OBSERVER=':
-                        observer = row[2].strip("'").capitalize()
-                    if row[1] == 'OBSERVAT=':
-                        observatory = row[2].strip("'").capitalize()
-                    if row[1] == 'TELESCOP=':
-                        telescope = row[2].strip("'").capitalize()
-                    if row[1] == 'INSTRUME=':
-                        instrument = row[2].strip("'").capitalize()
                 if row[0][0] == '#':
-                    continue
-                newspec.append(row)
+                    joinrow = (' '.join(row)).split('=')
+                    if len(joinrow) < 2:
+                        continue
+                    field = joinrow[0].strip('# ')
+                    value = joinrow[1].split('/')[0].strip("' ")
+                    if not time:
+                        if field == 'JD':
+                            time = str(jd_to_mjd(Decimal(value)))
+                        elif field == 'MJD':
+                            time = value
+                        elif field == 'MJD-OBS':
+                            time = value
+                    if field == 'OBSERVER':
+                        observer = value.capitalize()
+                    if field == 'OBSERVAT':
+                        observatory = value.capitalize()
+                    if field == 'TELESCOP':
+                        telescope = value.capitalize()
+                    if field == 'INSTRUME':
+                        instrument = value.capitalize()
+                else:
+                    newspec.append(row)
             if not time:
                 print(spectrum)
                 sys.exit()
