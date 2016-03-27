@@ -50,12 +50,9 @@ bandaliases = OrderedDict([
     ("r_SDSS", "r (SDSS)"),
     ("i_SDSS", "i (SDSS)"),
     ("z_SDSS", "z (SDSS)"),
-    ("uvm2"  , "M2 (UVOT)"),
-    ("uvw1"  , "W1 (UVOT)"),
-    ("uvw2"  , "W2 (UVOT)"),
-    ("UVM2"  , "M2 (UVOT)"),
-    ("UVW1"  , "W1 (UVOT)"),
-    ("UVW2"  , "W2 (UVOT)")
+    ("M2"  , "M2 (UVOT)"),
+    ("W1"  , "W1 (UVOT)"),
+    ("W2"  , "W2 (UVOT)")
 ])
 
 bandshortaliases = OrderedDict([
@@ -92,12 +89,9 @@ bandwavelengths = {
     "J"      : 1220.,
     "H"      : 1630.,
     "K"      : 2190.,
-    "uvm2"   : 260.,
-    "uvw1"   : 224.6,
-    "uvw2"   : 192.8,
-    "UVM2"   : 260.,
-    "UVW1"   : 224.6,
-    "UVW2"   : 192.8
+    "M2"     : 260.,
+    "W1"     : 224.6,
+    "W2"     : 192.8
 }
 
 seed(101)
@@ -107,22 +101,32 @@ shuffle(bandcolors)
 
 bandcolordict = dict(list(zip(bandcodes,bandcolors)))
 
+def bandrepf(code):
+    for rep in bandreps:
+        if code in bandreps[rep]:
+            return rep
+    return code
+
 def bandcolorf(code):
-    if code in bandcolordict:
-        return bandcolordict[code]
+    newcode = bandrepf(code)
+    if newcode in bandcolordict:
+        return bandcolordict[newcode]
     return 'black'
 
 def bandaliasf(code):
-    if code in bandaliases:
-        return bandaliases[code]
-    return code
+    newcode = bandrepf(code)
+    if newcode in bandaliases:
+        return bandaliases[newcode]
+    return newcode
 
 def bandshortaliasf(code):
-    if code in bandshortaliases:
-        return bandshortaliases[code]
-    return code
+    newcode = bandrepf(code)
+    if newcode in bandshortaliases:
+        return bandshortaliases[newcode]
+    return newcode
 
 def bandwavef(code):
-    if code in bandwavelengths:
-        return bandwavelengths[code]
+    newcode = bandrepf(code)
+    if newcode in bandwavelengths:
+        return bandwavelengths[newcode]
     return 0.

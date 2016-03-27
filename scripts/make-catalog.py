@@ -68,7 +68,7 @@ columnkey = [
     "dec",
     "instruments",
     "redshift",
-    "hvel",
+    "velocity",
     "lumdist",
     "claimedtype",
     "photolink",
@@ -193,6 +193,10 @@ sitemaptemplate = (
   </url>
   <url>
     <loc>https://sne.space/contribute</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sne.space/derivations</loc>
     <priority>0.7</priority>
   </url>
   <url>
