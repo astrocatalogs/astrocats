@@ -39,6 +39,7 @@ tasks = {
     "simbad":         {"update": False},
     "vizier":         {"update": False},
     "cccp":           {"update": False, "archived": True},
+    "anderson":       {"update": False},
     "suspect":        {"update": False},
     "cfa":            {"update": False},
     "ucb":            {"update": False},
@@ -664,9 +665,9 @@ def derive_and_sanitize():
     path = '../bibauthors.json'
     if os.path.isfile(path):
         with open(path, 'r') as f:
-            bibauthordict = json.loads(f.read())
+            bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
-        bibauthordict = {}
+        bibauthordict = OrderedDict()
 
     biberrordict = {
         "2012Sci..337..942D":"2012Sci...337..942D",
@@ -1665,6 +1666,26 @@ if do_task('vizier'):
 
 # CCCP
 if do_task('cccp'):
+    cccpbands = ['B', 'V', 'R', 'I']
+    for datafile in sorted(glob.glob("../sne-external/CCCP/apj407397*.txt"), key=lambda s: s.lower()):
+        with open(datafile,'r') as f:
+            tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+            for r, row in enumerate(tsvin):
+                if r == 0:
+                    continue
+                elif r == 1:
+                    name = 'SN' + row[0].split('SN ')[-1]
+                    name = add_event(name)
+                    source = add_source(name, bibcode = '2012ApJ...744...10K')
+                elif r >= 5:
+                    mjd = str(Decimal(row[0]) + 53000)
+                    for b, band in enumerate(cccpbands):
+                        if row[2*b + 1]:
+                            if not row[2*b + 2]:
+                                upplim = True
+                            add_photometry(name, time = mjd, band = band, magnitude = row[2*b + 1].strip('>'),
+                                e_magnitude = row[2*b + 2], upperlimit = (not row[2*b + 2]), source = source)
+
     if tasks['cccp']['archived']:
         with open('../sne-external/CCCP/sc_cccp.html', 'r') as f:
             html = f.read()
@@ -1680,7 +1701,6 @@ if do_task('cccp'):
     for link in links:
         if 'sc_sn' in link['href']:
             name = add_event(link.text.replace(' ', ''))
-            source = add_source(name, reference = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
 
             if tasks['cccp']['archived']:
                 with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
@@ -1709,9 +1729,36 @@ if do_task('cccp'):
                         html3 = response3.text
                         with open('../sne-external/CCCP/' + link2['href'].split('/')[-1], 'w') as f:
                             f.write(html3)
+                    source = add_source(name, reference = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
                     table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(",")] for x in list(filter(None, html3.split("\n")))]
                     for row in table:
                         add_photometry(name, time = str(Decimal(row[0]) + 53000), band = band, magnitude = row[1], e_magnitude = row[2], source = source)
+    journal_events()
+
+# Anderson 2014
+if do_task('anderson'):
+    for datafile in sorted(glob.glob("../sne-external/SNII_anderson2014/*.dat"), key=lambda s: s.lower()):
+        basename = os.path.basename(datafile)
+        if not is_number(basename[:2]):
+            continue
+        if basename == '0210_V.dat':
+            name = 'SN0210'
+        else:
+            name = ('SN20' if int(basename[:2]) < 50 else 'SN19') + basename.split('_')[0]
+        name = add_event(name)
+        source = add_source(name, bibcode = '2014ApJ...786...67A')
+
+        if name in ['SN1999ca','SN2003dq','SN2008aw']:
+            system = 'Swope'
+        else:
+            system = 'Landolt'
+
+        with open(datafile,'r') as f:
+            tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
+            for row in tsvin:
+                if not row[0]:
+                    continue
+                add_photometry(name, time = str(jd_to_mjd(Decimal(row[0]))), band = 'V', magnitude = row[1], e_magnitude = row[2], system = system, source = source)
     journal_events()
 
 # Suspect catalog
