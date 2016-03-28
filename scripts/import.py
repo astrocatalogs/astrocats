@@ -5,6 +5,7 @@ import glob
 import os
 import re
 import urllib
+import requests
 import calendar
 import sys
 import json
@@ -34,31 +35,32 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":       {"update": False},
-    "simbad":         {"update": False},
-    "vizier":         {"update": False},
-    "suspect":        {"update": False},
-    "cfa":            {"update": False},
-    "ucb":            {"update": False},
-    "sdss":           {"update": False},
-    "csp":            {"update": False},
-    "itep":           {"update": False},
-    "asiago":         {"update": False},
-    "rochester":      {"update": True },
-    "lennarz":        {"update": False},
-    "gaia":           {"update": False},
-    "ogle":           {"update": True },
-    "snls":           {"update": False},
-    "panstarrs":      {"update": False},
-    "nedd":           {"update": False},
-    "wiserepspectra": {"update": False},
-    "cfaiaspectra":   {"update": False},
-    "cfaibcspectra":  {"update": False},
-    "snlsspectra":    {"update": False},
-    "cspspectra":     {"update": False},
-    "ucbspectra":     {"update": False},
-    "suspectspectra": {"update": False},
-    "snfspectra":     {"update": False},
+    #"internal":       {"update": False},
+    #"simbad":         {"update": False},
+    #"vizier":         {"update": False},
+    "cccp":           {"update": False, "archived": True},
+    #"suspect":        {"update": False},
+    #"cfa":            {"update": False},
+    #"ucb":            {"update": False},
+    #"sdss":           {"update": False},
+    #"csp":            {"update": False},
+    #"itep":           {"update": False},
+    #"asiago":         {"update": False},
+    #"rochester":      {"update": True },
+    #"lennarz":        {"update": False},
+    #"gaia":           {"update": False},
+    #"ogle":           {"update": True },
+    #"snls":           {"update": False},
+    #"panstarrs":      {"update": False},
+    #"nedd":           {"update": False},
+    #"wiserepspectra": {"update": False},
+    #"cfaiaspectra":   {"update": False},
+    #"cfaibcspectra":  {"update": False},
+    #"snlsspectra":    {"update": False},
+    #"cspspectra":     {"update": False},
+    #"ucbspectra":     {"update": False},
+    #"suspectspectra": {"update": False},
+    #"snfspectra":     {"update": False},
     "writeevents":    {"update": True }
 }
 
@@ -1646,6 +1648,70 @@ if do_task('vizier'):
         elif "maglim" in row and is_number(row["maglim"]) and not isnan(float(row["maglim"])):
             add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = row["Filt"], magnitude = row["maglim"],
                            upperlimit = True, source = source)
+    journal_events()
+
+    # 2011ApJ...741...97D
+    result = Vizier.get_catalogs("J/ApJ/741/97/table2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['SN'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2011ApJ...741...97D")
+        add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], magnitude = row['mag'],
+                       e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
+    journal_events()
+
+# CCCP
+if do_task('cccp'):
+    if tasks['cccp']['archived']:
+        with open('../sne-external/CCCP/sc_cccp.html', 'r') as f:
+            html = f.read()
+    else:
+        session = requests.Session()
+        response = session.get("https://webhome.weizmann.ac.il/home/iair/sc_cccp.html")
+        html = response.text
+        with open('../sne-external/CCCP/sc_cccp.html', 'w') as f:
+            f.write(html)
+
+    soup = BeautifulSoup(html, "html5lib")
+    links = soup.body.findAll("a")
+    for link in links:
+        if 'sc_sn' in link['href']:
+            name = add_event(link.text.replace(' ', ''))
+            source = add_source(name, reference = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
+
+            if tasks['cccp']['archived']:
+                with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
+                    html2 = f.read()
+            else:
+                response2 = session.get("https://webhome.weizmann.ac.il/home/iair/" + link['href'])
+                html2 = response2.text
+                with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'w') as f:
+                    f.write(html2)
+
+            soup2 = BeautifulSoup(html2, "html5lib")
+            links2 = soup2.body.findAll("a")
+            for link2 in links2:
+                if ".txt" in link2['href'] and '_' in link2['href']:
+                    band = link2['href'].split('_')[1].split('.')[0].upper()
+                    if tasks['cccp']['archived']:
+                        fname = '../sne-external/CCCP/' + link2['href'].split('/')[-1]
+                        if not os.path.isfile(fname):
+                            continue
+                        with open(fname, 'r') as f:
+                            html3 = f.read()
+                    else:
+                        response3 = session.get("https://webhome.weizmann.ac.il/home/iair/cccp/" + link2['href'])
+                        if response3.status_code == 404:
+                            continue
+                        html3 = response3.text
+                        with open('../sne-external/CCCP/' + link2['href'].split('/')[-1], 'w') as f:
+                            f.write(html3)
+                    table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(",")] for x in list(filter(None, html3.split("\n")))]
+                    for row in table:
+                        add_photometry(name, time = str(Decimal(row[0]) + 53000), band = band, magnitude = row[1], e_magnitude = row[2], source = source)
     journal_events()
 
 # Suspect catalog
