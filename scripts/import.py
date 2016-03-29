@@ -951,16 +951,6 @@ if do_task('vizier'):
         add_quanta(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
-    # 2008AJ....136.2306H
-    result = Vizier.get_catalogs("J/ApJ/708/661/sn")
-    table = result[list(result.keys())[0]]
-    table.convert_bytestring_to_unicode(python3_only=True)
-    for row in table:
-        name = 'SDSS-II' + row['SNID']
-        name = add_event(name)
-        source = add_source(name, bibcode = '2008AJ....136.2306H')
-        add_quanta(name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
-
     # 2012ApJ...749...18B
     result = Vizier.get_catalogs("J/ApJ/749/18/table1")
     table = result[list(result.keys())[0]]
@@ -1012,6 +1002,18 @@ if do_task('vizier'):
         add_quanta(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
+    # 2008AJ....136.2306H
+    result = Vizier.get_catalogs("J/AJ/136/2306/sources")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = 'SDSS-II ' + str(row['SNID'])
+        name = add_event(name)
+        source = add_source(name, bibcode = '2008AJ....136.2306H')
+        add_quanta(name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
+        add_quanta(name, 'ra', row['RAJ2000'], source)
+        add_quanta(name, 'dec', row['DEJ2000'], source)
+
     # 2010ApJ...708..661D
     result = Vizier.get_catalogs("J/ApJ/708/661/sn")
     table = result[list(result.keys())[0]]
@@ -1055,6 +1057,7 @@ if do_task('vizier'):
         add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quanta(name, 'claimedtype', 'Ia', source)
 
     result = Vizier.get_catalogs("J/ApJ/795/44/table6")
     table = result[list(result.keys())[0]]
@@ -1203,6 +1206,7 @@ if do_task('vizier'):
         add_quanta(name, 'dec', row['DEJ2000'], source)
         add_quanta(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
         add_quanta(name, 'ebv', row['E_B-V_'], source)
+        add_quanta(name, 'claimedtype', 'Ia', source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -1223,6 +1227,7 @@ if do_task('vizier'):
     name = 'SN2213-1745'
     name = add_event(name)
     source = add_source(name, bibcode = "2012Natur.491..228C")
+    add_quanta(name, 'claimedtype', 'SLSN-R', source)
     for row in table:
         row = convert_aq_output(row)
         if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
@@ -1238,6 +1243,7 @@ if do_task('vizier'):
     name = 'SN1000+0216'
     name = add_event(name)
     source = add_source(name, bibcode = "2012Natur.491..228C")
+    add_quanta(name, 'claimedtype', 'SLSN-II?', source)
     for row in table:
         row = convert_aq_output(row)
         if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
@@ -1929,6 +1935,7 @@ if do_task('cfa'):
         name = add_event(name)
 
         source = add_source(name, bibcode = '2012ApJS..200...12H')
+        add_quanta(name, 'claimedtype', 'Ia', source)
         add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
             magnitude = row[6].strip(), e_magnitude = row[7].strip(), source = source)
     
