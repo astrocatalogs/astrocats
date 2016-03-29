@@ -815,7 +815,7 @@ def write_all_events(empty = False, gz = False):
             if deleteevent:
                 print('Deleting ' + name + ' (' + ct['value'] + ')')
                 os.system('cd ' + outdir + '; git rm ' + filename + '.json; cd ' + '../scripts')
-            continue
+                continue
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
 
