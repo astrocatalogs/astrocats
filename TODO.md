@@ -18,6 +18,7 @@ Other multiple SN datasets:
 * http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe)
 * http://arxiv.org/abs/1603.03823
 * http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
+* http://thesis.library.caltech.edu/6395/1/Kasliwal_PhD_Thesis.pdf
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Hagai's e-mail)
