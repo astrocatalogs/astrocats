@@ -323,7 +323,8 @@ else:
     md5dict = {}
 
 for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
-    if args.eventlist and os.path.splitext(os.path.basename(eventfile))[0] not in args.eventlist:
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
+    if args.eventlist and fileeventname not in args.eventlist:
         continue
 
     if args.travis and fcnt >= travislimit:
@@ -333,7 +334,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     md5s.append([eventfile, checksum])
 
     if eventfile.split('.')[-1] == 'gz':
-        with gzip.open(eventfile, 'r') as f:
+        with gzip.open(eventfile, 'rt') as f:
             filetext = f.read()
     else:
         with open(eventfile, 'r') as f:
@@ -343,7 +344,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     entry = next(reversed(catalog))
 
     eventname = entry
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0]
 
     if args.eventlist and eventname not in args.eventlist:
         continue
@@ -596,7 +596,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for spectrum in catalog[entry]['spectra']:
             spectrumdata = deepcopy(spectrum['data'])
             oldlen = len(spectrumdata)
-            specslice = ceil(float(len(spectrumdata))/50000)
+            specslice = ceil(float(len(spectrumdata))/10000)
             spectrumdata = spectrumdata[::specslice]
             spectrumdata = [x for x in spectrumdata if is_number(x[1]) and not isnan(float(x[1]))]
             specrange = range(len(spectrumdata))

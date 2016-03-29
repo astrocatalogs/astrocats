@@ -777,7 +777,7 @@ def derive_and_sanitize():
 def delete_old_event_files():
     # Delete all old event JSON files
     for folder in repofolders:
-        filelist = glob.glob("../" + folder + "/*.json")
+        filelist = glob.glob("../" + folder + "/*.json") + glob.glob("../" + folder + "/*.json.gz")
         for f in filelist:
             os.remove(f)
 
@@ -808,10 +808,11 @@ def write_all_events(empty = False, gz = False):
         with codecs.open(path, 'w', encoding='utf8') as f:
             f.write(jsonstring)
         if gz and os.path.getsize(path) > 90000000:
+            print('Compressing ' + name)
             with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
             os.remove(path)
-            os.system('cd ' + outdir + '; git add ' + filename + '.json.gz; cd ' + '../scripts')
+            os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
             #os.system('cd ' + outdir + '; git lfs track ' + filename + '.json; cd ' + '../scripts')
 
 def load_event_from_file(name = '', location = '', clean = False, delete = True):
@@ -887,7 +888,7 @@ if 'writeevents' in tasks:
     if args.update:
         files = []
         for rep in repofolders:
-            files += glob.glob('../' + rep + "/*.json")
+            files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
 
         for fi in files:
             name = os.path.basename(os.path.splitext(fi)[0])
@@ -2024,7 +2025,8 @@ if do_task('sdss'):
                 add_quanta(name, 'ra', row[-4], source, unit = 'floatdegrees')
                 add_quanta(name, 'dec', row[-2], source, unit = 'floatdegrees')
             if r == 1:
-                add_quanta(name, 'redshift', row[2], source, error = row[4], kind = 'heliocentric')
+                error = row[4] if float(row[4]) >= 0.0 else ''
+                add_quanta(name, 'redshift', row[2], source, error = error, kind = 'heliocentric')
             if r >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
