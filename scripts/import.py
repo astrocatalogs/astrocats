@@ -793,8 +793,6 @@ def write_all_events(empty = False, gz = False):
             print('Writing ' + name)
         filename = event_filename(name)
 
-        jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
-
         outdir = '../'
         if 'discoverdate' in events[name]:
             for r, year in enumerate(repoyears):
@@ -804,9 +802,27 @@ def write_all_events(empty = False, gz = False):
         else:
             outdir += str(repofolders[0])
 
+        # Delete non-SN events here without IAU designations (those with only banned types)
+        nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor']
+        if 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
+            deleteevent = False
+            for ct in events[name]['claimedtype']:
+                if ct['value'] not in nonsnetypes:
+                    deleteevent = False
+                    break
+                if ct['value'] in nonsnetypes:
+                    deleteevent = True
+            if deleteevent:
+                print('Deleting ' + name + ' (' + ct['value'] + ')')
+                os.system('cd ' + outdir + '; git rm ' + filename + '.json; cd ' + '../scripts')
+            continue
+
+        jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
+
         path = outdir + '/' + filename + '.json'
         with codecs.open(path, 'w', encoding='utf8') as f:
             f.write(jsonstring)
+
         if gz and os.path.getsize(path) > 90000000:
             print('Compressing ' + name)
             with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
@@ -837,6 +853,7 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True)
                 del events[name]
             events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
             name = next(reversed(events))
+            print('Loaded ' + name)
 
         if clean:
             clean_event(name)
