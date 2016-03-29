@@ -1989,7 +1989,7 @@ if do_task('ucb'):
     
 # Import SDSS
 if do_task('sdss'): 
-    with open('../sne-external/SDSS/2010apj...708..661d.txt', 'r') as f:
+    with open('../sne-external/SDSS/2010ApJ...708..661D.txt', 'r') as f:
         bibcodes2010 = f.read().split("\n")
     sdssbands = ['u', 'g', 'r', 'i', 'z']
     for fname in sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()):
