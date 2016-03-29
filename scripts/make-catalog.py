@@ -309,7 +309,7 @@ else:
 
 files = []
 for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json")
+    files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
 
 md5s = []
 md5 = hashlib.md5
@@ -332,8 +332,12 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
 
-    with open(eventfile, 'r') as f:
-        filetext = f.read()
+    if eventfile.split('.')[-1] == 'gz':
+        with gzip.open(eventfile, 'r') as f:
+            filetext = f.read()
+    else:
+        with open(eventfile, 'r') as f:
+            filetext = f.read()
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
