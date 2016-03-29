@@ -2763,7 +2763,7 @@ if do_task('wiserepspectra'):
                                 bibcode = unescape(urllib.parse.unquote(urllib.parse.unquote(result.group(1))).split('/')[-1])
 
                             if not bibcode:
-                                biblink = bs.find('a', {'title': 'Link to NASA ADS'})
+                                biblink = tr.find('a', {'title': 'Link to NASA ADS'})
                                 if biblink:
                                     bibcode = biblink.contents[0]
 
