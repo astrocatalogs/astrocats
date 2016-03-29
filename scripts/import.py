@@ -81,7 +81,7 @@ repoyears[0] -= 1
 typereps = {
     'CC':     ['CCSN'],
     'I P':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ia P':   ['Ia pec', 'Ia-pec', 'Iapec'],
+    'Ia P':   ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec'],
     'Ib P':   ['Ib pec', 'Ib-pec'],
     'Ic P':   ['Ic pec', 'Ic-pec'],
     'Ia/c':   ['Ic/Ia', 'Iac'],
@@ -951,6 +951,16 @@ if do_task('vizier'):
         add_quanta(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
+    # 2008AJ....136.2306H
+    result = Vizier.get_catalogs("J/ApJ/708/661/sn")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        name = 'SDSS-II' + row['SNID']
+        name = add_event(name)
+        source = add_source(name, bibcode = '2008AJ....136.2306H')
+        add_quanta(name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
+
     # 2012ApJ...749...18B
     result = Vizier.get_catalogs("J/ApJ/749/18/table1")
     table = result[list(result.keys())[0]]
@@ -1015,6 +1025,7 @@ if do_task('vizier'):
         name = add_event(name)
         source = add_source(name, bibcode = '2010ApJ...708..661D')
         add_alias(name, 'SDSS-II ' + str(row['SDSS-II']))
+        add_quanta(name, 'claimedtype', 'II P', source)
         add_quanta(name, 'ra', row['RAJ2000'], source)
         add_quanta(name, 'dec', row['DEJ2000'], source)
 
@@ -1971,10 +1982,18 @@ if do_task('ucb'):
     
 # Import SDSS
 if do_task('sdss'): 
+    with open('../sne-external/SDSS/2010apj...708..661d.txt', 'r') as f:
+        bibcodes2010 = f.read().split("\n")
     sdssbands = ['u', 'g', 'r', 'i', 'z']
     for fname in sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()):
         f = open(fname,'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
+
+        basename = os.path.basename(fname)
+        if basename in bibcodes2010:
+            bibcode = '2010ApJ...708..661D'
+        else:
+            bibcode = '2008AJ....136.2306H'
 
         for r, row in enumerate(tsvin):
             if r == 0:
@@ -1985,7 +2004,6 @@ if do_task('sdss'):
                 name = add_event(name)
                 add_alias(name, "SDSS-II " + row[3])
 
-                bibcode = '2008AJ....136.2306H'
                 source = add_source(name, bibcode = bibcode)
 
                 if row[5] != "RA:":

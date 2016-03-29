@@ -906,10 +906,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>sources</sup></th></tr>\n'
         for key in columnkey:
             if key in catalog[entry] and key not in eventignorekey and len(catalog[entry][key]) > 0:
-                newhtml = newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] + r'</td><td width=250px class="event-cell">'
-                
+                keyhtml = ''
                 if isinstance(catalog[entry][key], str):
-                    newhtml = newhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
+                    keyhtml = keyhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
                 else:
                     for r, row in enumerate(catalog[entry][key]):
                         if 'value' in row and 'source' in row:
@@ -920,13 +919,16 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + source
                                 else:
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
-                            newhtml = newhtml + (r'<br>' if r > 0 else '') + row['value']
+                            keyhtml = keyhtml + (r'<br>' if r > 0 else '') + row['value']
                             if ((key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]
                                 and catalog[entry]['maxband']):
-                                newhtml = newhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
-                            newhtml = newhtml + r'<sup>' + sourcehtml + r'</sup>'
+                                keyhtml = keyhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
+                            keyhtml = keyhtml + r'<sup>' + sourcehtml + r'</sup>'
                         elif isinstance(row, str):
-                            newhtml = newhtml + (r'<br>' if r > 0 else '') + row.strip()
+                            keyhtml = keyhtml + (r'<br>' if r > 0 else '') + row.strip()
+                if keyhtml:
+                    newhtml = (newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] +
+                        r'</td><td width=250px class="event-cell">' + keyhtml)
 
                 newhtml = newhtml + r'</td></tr>\n'
         newhtml = newhtml + r'</table><em>D = Derived value</em></div>\n\1'
