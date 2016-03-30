@@ -443,11 +443,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         tt = [  
                 ("Source ID", "@src"),
                 ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")",
-                 "@x{1.11}" + "<sub>-@xle{1}</sub><sup>+@xue{1}</sup>" if hastimeerrs else "")
+                 "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>" if hastimeerrs else ""))
              ]
-        tt += [("Apparent Magnitude", "@y{1.111}" + "&nbsp;±&nbsp;@err{1.11}" if hasABerrs else "")]
+        tt += [("Apparent Magnitude", "@y{1.111}" + ("&nbsp;±&nbsp;@err{1.11}" if hasABerrs else ""))]
         if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            tt += [("Absolute Magnitude", "@yabs{1.111}" + "&nbsp;±&nbsp;@err{1.11}" if hasABerrs else "")]
+            tt += [("Absolute Magnitude", "@yabs{1.111}" + ("&nbsp;±&nbsp;@err{1.11}" if hasABerrs else ""))]
         if len(list(filter(None, photoband))):
             tt += [("Band", "@desc")]
         if len(list(filter(None, photoinstru))):
