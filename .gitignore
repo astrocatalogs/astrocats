@@ -1,4 +1,7 @@
 .DS_Store
+scripts/__pycache__/
+*.py[cod]
+*.jpg
 *.gz
 *.csv
 *.html
@@ -11,6 +14,7 @@
 sne-internal
 sne-external
 sne-external-spectra
+sne-external-WISEREP
 sne-pre-1990
 sne-1990-1999
 sne-2000-2004

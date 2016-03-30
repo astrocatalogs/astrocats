@@ -1,10 +1,12 @@
 language: python
 python:
-    - "3.3"
-    - "3.4"
     - "3.5"
 notifications:
-    email: false
+    email:
+        on_failure: change
+        on_success: change
+git:
+    depth: 3
 
 # Setup anaconda
 before_install:
@@ -18,10 +20,23 @@ before_install:
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
     - pip install -r scripts/requirements.txt
-    - git clone git@github.com:astrotransients/sne-external-spectra.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-internal.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-external.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-spectra.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-WISEREP.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-pre-1990.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-1990-1999.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-2000-2004.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-2005-2009.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-2010-2014.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-2015-2019.git
 
 # Run test
 script:
     - cd scripts
-    - python import-external.py
-    - python make-sne-catalog.py
+    - echo "travis_fold:start:IMPORT Importing data"
+    - python import.py -tr
+    - echo "travis_fold:end:IMPORT Importing data done"
+    - echo "travis_fold:start:MAKE Making catalog"
+    - python make-catalog.py -tr
+    - echo "travis_fold:end:MAKE Making catalog done"
