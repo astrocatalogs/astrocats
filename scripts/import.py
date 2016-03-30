@@ -853,7 +853,8 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True)
                 del events[name]
             events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
             name = next(reversed(events))
-            print('Loaded ' + name)
+            if not args.travis:
+                print('Loaded ' + name)
 
         if clean:
             clean_event(name)
