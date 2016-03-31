@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 PATH=/opt/local/bin:/usr/local/bin:$PATH ; export PATH
 LD_LIBRARY_PATH=/usr/local/lib:/opt/local/lib ; export LD_LIBRARY_PATH
