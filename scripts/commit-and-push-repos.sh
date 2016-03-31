@@ -14,6 +14,7 @@ git pull
 git commit -a -m "$1"
 git push
 repos=($(awk -F= '{print $1}' rep-folders.txt))
+echo $repos
 echo ${repos[*]}
 cd ..
 for repo in ${repos[@]}; do
