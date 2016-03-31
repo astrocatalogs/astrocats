@@ -170,12 +170,12 @@ sourcekeys = [
 
 newfiletemplate = (
 '''{
-  "{0}":{
-    "name":"{0}",
-    "aliases":[
-      "{0}"
-    ]
-  }
+\t"{0}":{
+\t\t"name":"{0}",
+\t\t"aliases":[
+\t\t\t"{0}"
+\t\t]
+\t}
 }'''
 )
 
@@ -358,8 +358,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             + fileeventname + ".json' target='_blank'></a>")
     else:
         template = urllib.parse.quote(newfiletemplate.replace('{0}',eventname))
-        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/new/master/?filename="
-            + fileeventname + ".json&value=" + template + "' target='_blank'></a>")
+        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' onclick='eSN(\"" + entry + "\",\"" + fileeventname + "\")'></a>")
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
             catalog[entry]['discoverdate'][d]['value'] = catalog[entry]['discoverdate'][d]['value'].split('.')[0]

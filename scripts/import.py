@@ -95,7 +95,7 @@ typereps = {
     'Ia CSM': ['Ia-CSM', 'Ia-csm']
 }
 
-repbetterquanta = {
+repbetterquantity = {
     'redshift',
     'ebv',
     'velocity',
@@ -260,22 +260,27 @@ def get_source_by_alias(name, alias):
             return source
     raise(ValueError('Source alias not found!'))
 
-def add_photometry(name, timeunit = "MJD", time = "", telescope = "", instrument = "", band = "",
+def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
-                   observatory = ""):
+                   observatory = "", observer = ""):
     if not time or not magnitude:
         print('Warning: Time or AB mag not specified when adding photometry.\n')
-        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + magnitude + '"')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
     if not is_number(time) or not is_number(magnitude):
         print('Warning: Time or AB mag not numerical.\n')
-        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB mag: "' + magnitude + '"')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
     if e_magnitude and not is_number(e_magnitude):
         print('Warning: AB error not numerical.\n')
-        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB err: "' + e_magnitude + '"')
+        print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB error: "' + e_magnitude + '"')
+        return
+
+    if e_time and not is_number(e_time):
+        print('Warning: Time error not numerical.\n')
+        print('Name : "' + name + '", Time: "' + time + '", Time error: "' + e_time + '"')
         return
 
     # Look for duplicate data and don't add if duplicate
@@ -309,8 +314,12 @@ def add_photometry(name, timeunit = "MJD", time = "", telescope = "", instrument
         photoentry['telescope'] = telescope
     if observatory:
         photoentry['observatory'] = observatory
+    if observer:
+        photoentry['observer'] = observer
     if e_magnitude:
         photoentry['e_magnitude'] = str(e_magnitude)
+    if e_time:
+        photoentry['e_time'] = str(e_time)
     if source:
         photoentry['source'] = source
     if upperlimit:
@@ -375,9 +384,9 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error = '', unit = '', kind = ''):
-    if not quanta:
-        raise(ValueError('Quanta must be specified for add_quanta.'))
+def add_quantity(name, quantity, value, sources, forcereplacebetter = False, error = '', unit = '', kind = ''):
+    if not quantity:
+        raise(ValueError('Quanta must be specified for add_quantity.'))
     svalue = value.strip()
     serror = error.strip()
 
@@ -387,20 +396,20 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         raise(ValueError('Quanta error value must be a number and positive.'))
 
     #Set default units
-    if not unit and quanta == 'velocity':
+    if not unit and quantity == 'velocity':
         unit = 'km/s' 
-    if not unit and quanta == 'ra':
+    if not unit and quantity == 'ra':
         unit = 'hours'
-    if not unit and quanta == 'dec':
+    if not unit and quantity == 'dec':
         unit = 'degrees'
-    if not unit and quanta in ['lumdist', 'comovingdist']:
+    if not unit and quantity in ['lumdist', 'comovingdist']:
         unit = 'Mpc'
 
-    #Handle certain quanta
-    if quanta in ['velocity', 'redshift']:
+    #Handle certain quantity
+    if quantity in ['velocity', 'redshift']:
         if not is_number(value):
             return
-    if quanta == 'host':
+    if quantity == 'host':
         svalue = svalue.strip("()")
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
         svalue = svalue.replace("ARP", "ARP ")
@@ -438,7 +447,7 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                 if is_number(parttwo.strip()):
                     svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
         svalue = ' '.join(svalue.split())
-    elif quanta == 'claimedtype':
+    elif quantity == 'claimedtype':
         isq = False
         if '?' in svalue:
             isq = True
@@ -449,34 +458,34 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                 break
         if isq:
             svalue = svalue + '?'
-    elif quanta in ['ra', 'dec', 'galra', 'galdec']:
+    elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
         if unit == 'floatdegrees':
             deg = float('%g' % Decimal(svalue))
             sig = get_sig_digits(svalue)
-            if 'ra' in quanta:
+            if 'ra' in quantity:
                 flhours = deg / 360.0 * 24.0
                 hours = floor(flhours)
                 minutes = floor((flhours - hours) * 60.0)
                 seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
                 svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
-            elif 'dec' in quanta:
+            elif 'dec' in quantity:
                 fldeg = abs(deg)
                 degree = floor(fldeg)
                 minutes = floor((fldeg - degree) * 60.0)
                 seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
                 svalue = ('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
-        elif unit == 'nospace' and 'ra' in quanta:
+        elif unit == 'nospace' and 'ra' in quantity:
             svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + svalue[4:]) if len(svalue) > 4 else '')
-        elif unit == 'nospace' and 'dec' in quanta:
+        elif unit == 'nospace' and 'dec' in quantity:
             svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + svalue[5:]) if len(svalue) > 5 else '')
         else:
             svalue = svalue.replace(' ', ':')
-            if 'dec' in quanta:
+            if 'dec' in quantity:
                 valuesplit = svalue.split(':')
                 svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
-    elif quanta == 'maxdate' or quanta == 'discoverdate':
-        if quanta in events[name]:
-            for i, ct in enumerate(events[name][quanta]):
+    elif quantity == 'maxdate' or quantity == 'discoverdate':
+        if quantity in events[name]:
+            for i, ct in enumerate(events[name][quantity]):
                 # Only add dates if they have more information
                 if len(ct['value'].split('/')) > len(svalue.split('/')):
                     return
@@ -486,16 +495,16 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
     if serror:
         serror = '%g' % Decimal(serror)
 
-    if quanta in events[name]:
-        for i, ct in enumerate(events[name][quanta]):
+    if quantity in events[name]:
+        for i, ct in enumerate(events[name][quantity]):
             if ct['value'] == svalue and sources:
                 if 'kind' in ct and kind and ct['kind'] != kind:
                     return
                 for source in sources.split(','):
-                    if source not in events[name][quanta][i]['source'].split(','):
-                        events[name][quanta][i]['source'] += ',' + source
-                        if serror and 'error' not in events[name][quanta][i]:
-                            events[name][quanta][i]['error'] = serror
+                    if source not in events[name][quantity][i]['source'].split(','):
+                        events[name][quantity][i]['source'] += ',' + source
+                        if serror and 'error' not in events[name][quantity][i]:
+                            events[name][quantity][i]['error'] = serror
                 return
 
     quantaentry = OrderedDict()
@@ -508,11 +517,11 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
         quantaentry['kind'] = kind
     if unit:
         quantaentry['unit'] = unit
-    if (forcereplacebetter or quanta in repbetterquanta) and quanta in events[name]:
-        newquantas = []
+    if (forcereplacebetter or quantity in repbetterquantity) and quantity in events[name]:
+        newquantities = []
         isworse = True
-        if quanta in ['discoverdate', 'maxdate']:
-            for ct in events[name][quanta]:
+        if quantity in ['discoverdate', 'maxdate']:
+            for ct in events[name][quantity]:
                 ctsplit = ct['value'].split('/')
                 svsplit = svalue.split('/')
                 if len(ctsplit) < len(svsplit):
@@ -522,30 +531,30 @@ def add_quanta(name, quanta, value, sources, forcereplacebetter = False, error =
                     if max(2,get_sig_digits(ctsplit[-1].lstrip('0'))) < max(2,get_sig_digits(svsplit[-1].lstrip('0'))):
                         isworse = False
                         continue
-                newquantas.append(ct)
+                newquantities.append(ct)
         else:
             newsig = get_sig_digits(svalue)
-            for ct in events[name][quanta]:
+            for ct in events[name][quantity]:
                 if 'error' in ct:
                     if serror:
                         if float(serror) < float(ct['error']):
                             isworse = False
                             continue
-                    newquantas.append(ct)
+                    newquantities.append(ct)
                 else:
                     if serror:
                         isworse = False
                         continue
                     oldsig = get_sig_digits(ct['value'])
                     if oldsig >= newsig:
-                        newquantas.append(ct)
+                        newquantities.append(ct)
                     if newsig >= oldsig:
                         isworse = False
         if not isworse:
-            newquantas.append(quantaentry)
-        events[name][quanta] = newquantas
+            newquantities.append(quantaentry)
+        events[name][quantity] = newquantities
     else:
-        events[name].setdefault(quanta,[]).append(quantaentry)
+        events[name].setdefault(quantity,[]).append(quantaentry)
 
 def make_date_string(year, month = '', day = ''):
     if not year:
@@ -602,16 +611,16 @@ def set_first_max_light(name):
     if 'maxappmag' not in events[name]:
         (mldt, mlmag, mlband) = get_max_light(name)
         if mldt:
-            add_quanta(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), 'D')
+            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), 'D')
         if mlmag:
-            add_quanta(name, 'maxappmag', pretty_num(mlmag), 'D')
+            add_quantity(name, 'maxappmag', pretty_num(mlmag), 'D')
         if mlband:
-            add_quanta(name, 'maxband', mlband, 'D')
+            add_quantity(name, 'maxband', mlband, 'D')
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         fldt = get_first_light(name)
         if fldt:
-            add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
@@ -629,7 +638,7 @@ def set_first_max_light(name):
 
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
-            add_quanta(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
 
 prefkinds = ['heliocentric', 'cmb', 'host', '']
 def get_best_redshift(name):
@@ -690,7 +699,7 @@ def derive_and_sanitize():
             (bestz, bestkind, bestsig) = get_best_redshift(name)
             if bestsig > 0:
                 bestz = float(bestz)
-                add_quanta(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
+                add_quantity(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
                     ((bestz + 1.)**2. + 1.), sig = bestsig), 'D', kind = prefkinds[bestkind])
         elif 'velocity' in events[name] and 'redshift' not in events[name]:
             # Find the "best" velocity to use for this
@@ -702,7 +711,7 @@ def derive_and_sanitize():
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
-                add_quanta(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D', kind = 'heliocentric')
+                add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D', kind = 'heliocentric')
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
@@ -712,7 +721,7 @@ def derive_and_sanitize():
                     bestld = ld['value']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                add_quanta(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
+                add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
                     5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig), 'D')
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
@@ -720,13 +729,13 @@ def derive_and_sanitize():
             if bestsig > 0 and float(bestz) > 0.:
                 if 'lumdist' not in events[name]:
                     dl = cosmo.luminosity_distance(float(bestz))
-                    add_quanta(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D', kind = prefkinds[bestkind])
+                    add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D', kind = prefkinds[bestkind])
                     if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                        add_quanta(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
+                        add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
                             5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), 'D')
                 if 'comovingdist' not in events[name]:
                     dl = cosmo.comoving_distance(float(bestz))
-                    add_quanta(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
+                    add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: (float(x['time']),
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
@@ -831,11 +840,15 @@ def write_all_events(empty = False, gz = False):
             os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
             #os.system('cd ' + outdir + '; git lfs track ' + filename + '.json; cd ' + '../scripts')
 
+def copy_to_event(source, target):
+    # Will write this later
+    pass
+
 def load_event_from_file(name = '', location = '', clean = False, delete = True):
     if not name and not location:
         raise ValueError('Either event name or location must be specified to load event')
 
-    if location:
+    if location and not name:
         path = location
     else:
         indir = '../'
@@ -851,7 +864,16 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True)
         with open(path, 'r') as f:
             if name in events:
                 del events[name]
-            events.update(json.loads(f.read(), object_pairs_hook=OrderedDict))
+
+            newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
+            if location and name:
+                with open(path, 'r') as f2:
+                    newevent2 = json.loads(f2.read(), object_pairs_hook=OrderedDict)
+                copy_to_event(newevent, newevent2)
+                newevent = newevent2
+
+            events.update(newevent)
+
             name = next(reversed(events))
             if not args.travis:
                 print('Loaded ' + name)
@@ -918,8 +940,12 @@ if 'writeevents' in tasks:
 # Import data provided directly to OSC
 if do_task('internal'):
     for datafile in sorted(glob.glob("../sne-internal/*.json"), key=lambda s: s.lower()):
-        if not load_event_from_file(location = datafile, clean = True, delete = False):
-            raise IOError('Failed to find specified file.')
+        if args.update:
+            if not load_event_from_file(location = datafile, clean = True, delete = False, name = 'temporary'):
+                raise IOError('Failed to find specified file.')
+        else:
+            if not load_event_from_file(location = datafile, clean = True, delete = False):
+                raise IOError('Failed to find specified file.')
     journal_events()
 
 #if do_task('simbad'):
@@ -956,9 +982,9 @@ if do_task('vizier'):
         oldname = name
         name = add_event(name)
         source = add_source(name, bibcode = '2014MNRAS.444.3258M')
-        add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
-        add_quanta(name, 'ra', str(row['_RA']), source, unit = 'floatdegrees')
-        add_quanta(name, 'dec', str(row['_DE']), source, unit = 'floatdegrees')
+        add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
+        add_quantity(name, 'ra', str(row['_RA']), source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', str(row['_DE']), source, unit = 'floatdegrees')
     journal_events()
 
     # 2014MNRAS.438.1391P
@@ -969,9 +995,9 @@ if do_task('vizier'):
         name = row['SN']
         name = add_event(name)
         source = add_source(name, bibcode = '2014MNRAS.438.1391P')
-        add_quanta(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
     # 2012ApJ...749...18B
@@ -1001,12 +1027,12 @@ if do_task('vizier'):
         name = add_event(name)
         source = add_source(name, bibcode = '2010A&A...523A...7G')
         astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
-        add_quanta(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
-        add_quanta(name, 'ebv', str(row['E_B-V_']), source)
-        add_quanta(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
-        add_quanta(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+        add_quantity(name, 'ebv', str(row['E_B-V_']), source)
+        add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
+        add_quantity(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
     # 2004A&A...415..863G
@@ -1018,11 +1044,11 @@ if do_task('vizier'):
         name = add_event(name)
         source = add_source(name, bibcode = '2004A&A...415..863G')
         datesplit = row['Date'].split('-')
-        add_quanta(name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
-        add_quanta(name, 'host', 'Abell ' + str(row['Abell']), source)
-        add_quanta(name, 'claimedtype', row['Type'], source)
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
+        add_quantity(name, 'host', 'Abell ' + str(row['Abell']), source)
+        add_quantity(name, 'claimedtype', row['Type'], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
     # 2008AJ....136.2306H
@@ -1033,9 +1059,9 @@ if do_task('vizier'):
         name = 'SDSS-II ' + str(row['SNID'])
         name = add_event(name)
         source = add_source(name, bibcode = '2008AJ....136.2306H')
-        add_quanta(name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
 
     # 2010ApJ...708..661D
     result = Vizier.get_catalogs("J/ApJ/708/661/sn")
@@ -1050,9 +1076,9 @@ if do_task('vizier'):
         name = add_event(name)
         source = add_source(name, bibcode = '2010ApJ...708..661D')
         add_alias(name, 'SDSS-II ' + str(row['SDSS-II']))
-        add_quanta(name, 'claimedtype', 'II P', source)
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'claimedtype', 'II P', source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
 
     result = Vizier.get_catalogs("J/ApJ/708/661/table1")
     table = result[list(result.keys())[0]]
@@ -1064,7 +1090,7 @@ if do_task('vizier'):
             name = 'SN' + row['SN']
         name = add_event(name)
         source = add_source(name, bibcode = '2010ApJ...708..661D')
-        add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
+        add_quantity(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
     journal_events()
 
     # 2014ApJ...795...44R
@@ -1076,11 +1102,11 @@ if do_task('vizier'):
         name = add_event(name)
         source = add_source(name, bibcode = '2014ApJ...795...44R')
         astrot = astrotime(row['tdisc'], format='mjd').datetime
-        add_quanta(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
-        add_quanta(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
-        add_quanta(name, 'claimedtype', 'Ia', source)
+        add_quantity(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
+        add_quantity(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'claimedtype', 'Ia', source)
 
     result = Vizier.get_catalogs("J/ApJ/795/44/table6")
     table = result[list(result.keys())[0]]
@@ -1161,12 +1187,12 @@ if do_task('vizier'):
             for nam in names:
                 add_alias(name, nam.strip('()').strip())
                 if nam.strip()[:2] == 'SN':
-                    add_quanta(name, 'discoverdate', nam.strip()[2:], source)
+                    add_quantity(name, 'discoverdate', nam.strip()[2:], source)
 
-        add_quanta(name, 'claimedtype', 'SNR', source)
-        add_quanta(name, 'host', 'Milky Way', source)
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'claimedtype', 'SNR', source)
+        add_quantity(name, 'host', 'Milky Way', source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
     journal_events()
 
     # 2014MNRAS.442..844F
@@ -1178,8 +1204,8 @@ if do_task('vizier'):
         name = 'SN' + row['SN']
         name = add_event(name)
         source = add_source(name, bibcode = '2014MNRAS.442..844F')
-        add_quanta(name, 'redshift', str(row['zhost']), source, kind = 'host')
-        add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+        add_quantity(name, 'redshift', str(row['zhost']), source, kind = 'host')
+        add_quantity(name, 'ebv', str(row['E_B-V_']), source)
     journal_events()
 
     result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
@@ -1210,10 +1236,10 @@ if do_task('vizier'):
         name = add_event(name)
         add_alias(name, 'SN' + row['SN'])
         source = add_source(name, bibcode = '2012MNRAS.425.1789S')
-        add_quanta(name, 'host', row['Gal'], source)
+        add_quantity(name, 'host', row['Gal'], source)
         if is_number(row['cz']):
-            add_quanta(name, 'redshift', str(round_sig(float(row['cz'])*km/clight, sig = get_sig_digits(str(row['cz'])))), source, kind = 'heliocentric')
-        add_quanta(name, 'ebv', str(row['E_B-V_']), source)
+            add_quantity(name, 'redshift', str(round_sig(float(row['cz'])*km/clight, sig = get_sig_digits(str(row['cz'])))), source, kind = 'heliocentric')
+        add_quantity(name, 'ebv', str(row['E_B-V_']), source)
     journal_events()
 
     # 2015ApJS..219...13W
@@ -1225,11 +1251,11 @@ if do_task('vizier'):
         name = u'LSQ' + str(row['LSQ'])
         name = add_event(name)
         source = add_source(name, bibcode = "2015ApJS..219...13W")
-        add_quanta(name, 'ra', row['RAJ2000'], source)
-        add_quanta(name, 'dec', row['DEJ2000'], source)
-        add_quanta(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
-        add_quanta(name, 'ebv', row['E_B-V_'], source)
-        add_quanta(name, 'claimedtype', 'Ia', source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
+        add_quantity(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
+        add_quantity(name, 'ebv', row['E_B-V_'], source)
+        add_quantity(name, 'claimedtype', 'Ia', source)
     result = Vizier.get_catalogs("J/ApJS/219/13/table2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -1250,7 +1276,7 @@ if do_task('vizier'):
     name = 'SN2213-1745'
     name = add_event(name)
     source = add_source(name, bibcode = "2012Natur.491..228C")
-    add_quanta(name, 'claimedtype', 'SLSN-R', source)
+    add_quantity(name, 'claimedtype', 'SLSN-R', source)
     for row in table:
         row = convert_aq_output(row)
         if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
@@ -1266,7 +1292,7 @@ if do_task('vizier'):
     name = 'SN1000+0216'
     name = add_event(name)
     source = add_source(name, bibcode = "2012Natur.491..228C")
-    add_quanta(name, 'claimedtype', 'SLSN-II?', source)
+    add_quantity(name, 'claimedtype', 'SLSN-II?', source)
     for row in table:
         row = convert_aq_output(row)
         if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
@@ -1838,19 +1864,19 @@ if do_task('suspect'):
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
-            add_quanta(name, 'discoverdate', year, secondarysource)
-            add_quanta(name, 'host', names[1].split(':')[1].strip(), secondarysource)
+            add_quantity(name, 'discoverdate', year, secondarysource)
+            add_quantity(name, 'host', names[1].split(':')[1].strip(), secondarysource)
 
             redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
             if redshifts:
-                add_quanta(name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource, kind = 'heliocentric')
+                add_quantity(name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource, kind = 'heliocentric')
             hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
             #if hvels:
-            #    add_quanta(name, 'velocity', hvels[0].split(':')[1].strip().split(' ')[0],
+            #    add_quantity(name, 'velocity', hvels[0].split(':')[1].strip().split(' ')[0],
             #        secondarysource, kind = 'heliocentric')
             types = bandsoup.body.findAll(text=re.compile("Type"))
 
-            add_quanta(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], secondarysource)
+            add_quantity(name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], secondarysource)
 
         for r, row in enumerate(bandtable.findAll('tr')):
             if r == 0:
@@ -1898,7 +1924,7 @@ if do_task('cfa'):
         secondarysource = add_source(name, reference = secondaryname, url = secondaryurl, secondary = True)
 
         year = re.findall(r'\d+', name)[0]
-        add_quanta(name, 'discoverdate', year, secondarysource)
+        add_quantity(name, 'discoverdate', year, secondarysource)
 
         eventbands = list(eventparts[1])
 
@@ -1958,7 +1984,7 @@ if do_task('cfa'):
         name = add_event(name)
 
         source = add_source(name, bibcode = '2012ApJS..200...12H')
-        add_quanta(name, 'claimedtype', 'Ia', source)
+        add_quantity(name, 'claimedtype', 'Ia', source)
         add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
             magnitude = row[6].strip(), e_magnitude = row[7].strip(), source = source)
     
@@ -1993,7 +2019,7 @@ if do_task('ucb'):
         source = add_source(name, reference = reference, url = refurl, secondary = True)
 
         year = re.findall(r'\d+', name)[0]
-        add_quanta(name, 'discoverdate', year, source)
+        add_quantity(name, 'discoverdate', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
@@ -2038,13 +2064,13 @@ if do_task('sdss'):
 
                 if row[5] != "RA:":
                     year = re.findall(r'\d+', name)[0]
-                    add_quanta(name, 'discoverdate', year, source)
+                    add_quantity(name, 'discoverdate', year, source)
 
-                add_quanta(name, 'ra', row[-4], source, unit = 'floatdegrees')
-                add_quanta(name, 'dec', row[-2], source, unit = 'floatdegrees')
+                add_quantity(name, 'ra', row[-4], source, unit = 'floatdegrees')
+                add_quantity(name, 'dec', row[-2], source, unit = 'floatdegrees')
             if r == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
-                add_quanta(name, 'redshift', row[2], source, error = error, kind = 'heliocentric')
+                add_quantity(name, 'redshift', row[2], source, error = error, kind = 'heliocentric')
             if r >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
@@ -2092,11 +2118,11 @@ if do_task('gaia'):
         source = add_source(name, reference = reference, url = refurl)
 
         year = '20' + re.findall(r'\d+', name)[0]
-        add_quanta(name, 'discoverdate', year, source)
+        add_quantity(name, 'discoverdate', year, source)
 
-        add_quanta(name, 'ra', col[2].contents[0].strip(), source, unit = 'floatdegrees')
-        add_quanta(name, 'dec', col[3].contents[0].strip(), source, unit = 'floatdegrees')
-        add_quanta(name, 'claimedtype', classname.replace('SN', '').strip(), source)
+        add_quantity(name, 'ra', col[2].contents[0].strip(), source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', col[3].contents[0].strip(), source, unit = 'floatdegrees')
+        add_quantity(name, 'claimedtype', classname.replace('SN', '').strip(), source)
 
         photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
         with open(photfile, 'r') as f:
@@ -2133,14 +2159,14 @@ if do_task('csp'):
         source = add_source(name, reference = reference, url = refurl)
 
         year = re.findall(r'\d+', name)[0]
-        add_quanta(name, 'discoverdate', year, source)
+        add_quantity(name, 'discoverdate', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
-                    add_quanta(name, 'redshift', row[0].split(' ')[-1], source, kind = 'cmb')
-                    add_quanta(name, 'ra', row[1].split(' ')[-1], source)
-                    add_quanta(name, 'dec', row[2].split(' ')[-1], source)
+                    add_quantity(name, 'redshift', row[0].split(' ')[-1], source, kind = 'cmb')
+                    add_quantity(name, 'ra', row[1].split(' ')[-1], source)
+                    add_quantity(name, 'dec', row[2].split(' ')[-1], source)
                 continue
             for v, val in enumerate(row):
                 if v == 0:
@@ -2182,7 +2208,7 @@ if do_task('itep'):
             secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
 
             year = re.findall(r'\d+', name)[0]
-            add_quanta(name, 'discoverdate', year, secondarysource)
+            add_quantity(name, 'discoverdate', year, secondarysource)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
             source = add_source(name, bibcode = bibcode)
@@ -2229,11 +2255,11 @@ if do_task('asiago'):
             source = add_source(name, reference = reference, url = refurl, secondary = True)
 
             year = re.findall(r'\d+', name)[0]
-            add_quanta(name, 'discoverdate', year, source)
+            add_quantity(name, 'discoverdate', year, source)
 
             hostname = record[2]
-            galra = record[3]
-            galdec = record[4]
+            hostra = record[3]
+            hostdec = record[4]
             ra = record[5].strip(':')
             dec = record[6].strip(':')
             redvel = record[11].strip(':')
@@ -2257,7 +2283,7 @@ if do_task('asiago'):
                     daystr = dayarr[0]
                     datestring = datestring + '/' + daystr
 
-            add_quanta(name, datekey, datestring, source)
+            add_quantity(name, datekey + 'date', datestring, source)
 
             velocity = ''
             redshift = ''
@@ -2272,23 +2298,23 @@ if do_task('asiago'):
             claimedtype = record[17].replace(':', '').replace('*', '').strip()
 
             if (hostname != ''):
-                add_quanta(name, 'host', hostname, source)
+                add_quantity(name, 'host', hostname, source)
             if (claimedtype != ''):
-                add_quanta(name, 'claimedtype', claimedtype, source)
+                add_quantity(name, 'claimedtype', claimedtype, source)
             if (redshift != ''):
-                add_quanta(name, 'redshift', redshift, source, kind = 'host')
+                add_quantity(name, 'redshift', redshift, source, kind = 'host')
             if (velocity != ''):
-                add_quanta(name, 'velocity', velocity, source, kind = 'host')
-            if (galra != ''):
-                add_quanta(name, 'galra', galra, source, unit = 'nospace')
-            if (galdec != ''):
-                add_quanta(name, 'galdec', galdec, source, unit = 'nospace')
+                add_quantity(name, 'velocity', velocity, source, kind = 'host')
+            if (hostra != ''):
+                add_quantity(name, 'hostra', hostra, source, unit = 'nospace')
+            if (hostdec != ''):
+                add_quantity(name, 'hostdec', hostdec, source, unit = 'nospace')
             if (ra != ''):
-                add_quanta(name, 'ra', ra, source, unit = 'nospace')
+                add_quantity(name, 'ra', ra, source, unit = 'nospace')
             if (dec != ''):
-                add_quanta(name, 'dec', dec, source, unit = 'nospace')
+                add_quantity(name, 'dec', dec, source, unit = 'nospace')
             if (discoverer != ''):
-                add_quanta(name, 'discoverer', discoverer, source)
+                add_quantity(name, 'discoverer', discoverer, source)
     journal_events()
 
 if do_task('lennarz'): 
@@ -2306,32 +2332,32 @@ if do_task('lennarz'):
         source = add_source(name, bibcode = bibcode)
 
         if row['RAJ2000']:
-            add_quanta(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
         if row['DEJ2000']:
-            add_quanta(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
         if row['RAG']:
-            add_quanta(name, 'galra', row['RAG'], source)
+            add_quantity(name, 'hostra', row['RAG'], source)
         if row['DEG']:
-            add_quanta(name, 'galdec', row['DEG'], source)
+            add_quantity(name, 'hostdec', row['DEG'], source)
         if row['Gal']:
-            add_quanta(name, 'host', row['Gal'], source)
+            add_quantity(name, 'host', row['Gal'], source)
         if row['Type']:
             claimedtypes = row['Type'].split('|')
             for claimedtype in claimedtypes:
-                add_quanta(name, 'claimedtype', claimedtype.strip(' -'), source)
+                add_quantity(name, 'claimedtype', claimedtype.strip(' -'), source)
         if row['z']:
             if name != 'SN1985D':
-                add_quanta(name, 'redshift', row['z'], source, kind = 'host')
+                add_quantity(name, 'redshift', row['z'], source, kind = 'host')
         if row['Dist']:
             if row['e_Dist']:
-                add_quanta(name, 'lumdist', row['Dist'], source, error = row['e_Dist'], kind = 'host')
+                add_quantity(name, 'lumdist', row['Dist'], source, error = row['e_Dist'], kind = 'host')
             else:
-                add_quanta(name, 'lumdist', row['Dist'], source, kind = 'host')
+                add_quantity(name, 'lumdist', row['Dist'], source, kind = 'host')
 
         if row['Ddate']:
             datestring = row['Ddate'].replace('-', '/')
 
-            add_quanta(name, 'discoverdate', datestring, source)
+            add_quantity(name, 'discoverdate', datestring, source)
 
             if 'photometry' not in events[name]:
                 if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
@@ -2347,7 +2373,7 @@ if do_task('lennarz'):
         if row['Mdate']:
             datestring = row['Mdate'].replace('-', '/')
 
-            add_quanta(name, 'maxdate', datestring, source)
+            add_quantity(name, 'maxdate', datestring, source)
 
             if 'photometry' not in events[name]:
                 if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
@@ -2424,21 +2450,21 @@ if do_task('rochester'):
             secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             sources = ','.join(list(filter(None, [source, secondarysource])))
             if str(cols[1].contents[0]).strip() != 'unk':
-                add_quanta(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
+                add_quantity(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
-                add_quanta(name, 'host', str(cols[2].contents[0]).strip(), sources)
-            add_quanta(name, 'ra', str(cols[3].contents[0]).strip(), sources)
-            add_quanta(name, 'dec', str(cols[4].contents[0]).strip(), sources)
+                add_quantity(name, 'host', str(cols[2].contents[0]).strip(), sources)
+            add_quantity(name, 'ra', str(cols[3].contents[0]).strip(), sources)
+            add_quantity(name, 'dec', str(cols[4].contents[0]).strip(), sources)
             if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd').datetime
-                add_quanta(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
+                add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
                 if float(str(cols[8].contents[0]).strip()) <= 90.0 and name not in rochesterphotometryerrors:
                     add_photometry(name, time = str(astrot.mjd), magnitude = str(cols[8].contents[0]).strip(), source = sources)
             if cols[11].contents[0] != 'n/a' and name not in rochesterredshifterrors:
-                add_quanta(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
-            add_quanta(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
+                add_quantity(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
+            add_quantity(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
 
     if not args.update:
         vsnetfiles = ["latestsne.dat"]
@@ -2563,17 +2589,17 @@ if do_task('ogle'):
                 if name[:4] == 'OGLE':
                     if name[4] == '-':
                         if is_number(name[5:9]):
-                            add_quanta(name, 'discoverdate', name[5:9], sources)
+                            add_quantity(name, 'discoverdate', name[5:9], sources)
                     else:
                         if is_number(name[4:6]):
-                            add_quanta(name, 'discoverdate', '20' + name[4:6], sources)
+                            add_quantity(name, 'discoverdate', '20' + name[4:6], sources)
 
-                add_quanta(name, 'ra', ra, sources)
-                add_quanta(name, 'dec', dec, sources)
+                add_quantity(name, 'ra', ra, sources)
+                add_quantity(name, 'dec', dec, sources)
                 if claimedtype and claimedtype != '-':
-                    add_quanta(name, 'claimedtype', claimedtype, sources)
+                    add_quantity(name, 'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
-                    add_quanta(name, 'claimedtype', 'Candidate', sources)
+                    add_quantity(name, 'claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()
                     mjd = str(jd_to_mjd(Decimal(row[0])))
@@ -2624,7 +2650,7 @@ if do_task('panstarrs'):
             if len(namesplit) > 1:
                 add_alias(name, namesplit[0])
             source = add_source(name, bibcode = '2015MNRAS.449..451W')
-            add_quanta(name, 'claimedtype', row[1], source)
+            add_quantity(name, 'claimedtype', row[1], source)
             add_photometry(name, time = row[2], band = row[4], magnitude = row[3], source = source)
     journal_events()
 
@@ -2664,7 +2690,7 @@ if do_task('nedd'):
                 sources = ','.join([source, secondarysource])
             else:
                 sources = secondarysource
-            add_quanta(name, 'comovingdist', dist, sources)
+            add_quantity(name, 'comovingdist', dist, sources)
         #else:
         #    cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
         #    for name in events:
@@ -2678,7 +2704,7 @@ if do_task('nedd'):
         #                        sources = ','.join([source, secondarysource])
         #                    else:
         #                        sources = secondarysource
-        #                    add_quanta(name, 'comovingdist', dist, sources)
+        #                    add_quantity(name, 'comovingdist', dist, sources)
         #                    break
         oldhostname = hostname
     journal_events()
@@ -2814,8 +2840,8 @@ if do_task('wiserepspectra'):
                             else:
                                 sources = secondarysource
 
-                            add_quanta(name, 'claimedtype', claimedtype, secondarysource)
-                            add_quanta(name, 'redshift', redshift, secondarysource)
+                            add_quantity(name, 'claimedtype', claimedtype, secondarysource)
+                            add_quantity(name, 'redshift', redshift, secondarysource)
 
                             if not specpath:
                                 continue
@@ -2960,7 +2986,7 @@ if do_task('snlsspectra'):
         name = add_event(name)
         source = add_source(name, bibcode = "2009A&A...507...85B")
 
-        add_quanta(name, 'discoverdate', '20' + fileparts[1][:2], source)
+        add_quantity(name, 'discoverdate', '20' + fileparts[1][:2], source)
 
         f = open(fname,'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -2969,7 +2995,7 @@ if do_task('snlsspectra'):
             if row[0] == '@TELESCOPE':
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                add_quanta(name, 'redshift', row[1].strip(), source)
+                add_quantity(name, 'redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
@@ -3013,7 +3039,7 @@ if do_task('cspspectra'):
                 jd = row[1].strip()
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
-                add_quanta(name, 'redshift', row[1].strip(), source)
+                add_quantity(name, 'redshift', row[1].strip(), source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))
@@ -3078,9 +3104,9 @@ if do_task('ucbspectra'):
         source = add_source(name, bibcode = bibcode)
         secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
         sources = ','.join([source, secondarysource])
-        add_quanta(name, 'claimedtype', claimedtype, sources)
+        add_quantity(name, 'claimedtype', claimedtype, sources)
         if 'discoverdate' not in events[name] and name[:2] == 'SN' and is_number(name[2:6]):
-            add_quanta(name, 'discoverdate', name[2:6], sources)
+            add_quantity(name, 'discoverdate', name[2:6], sources)
 
         with open('../sne-external-spectra/UCB/' + filename) as f:
             specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
