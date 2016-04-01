@@ -35,34 +35,35 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":       {"update": False},
-    "simbad":         {"update": False},
-    "vizier":         {"update": False},
-    "cccp":           {"update": False, "archived": True},
-    "anderson":       {"update": False},
-    "suspect":        {"update": False},
-    "cfa":            {"update": False},
-    "ucb":            {"update": False},
-    "sdss":           {"update": False},
-    "csp":            {"update": False},
-    "itep":           {"update": False},
-    "asiago":         {"update": False},
-    "rochester":      {"update": True },
-    "lennarz":        {"update": False},
-    "gaia":           {"update": False},
-    "ogle":           {"update": True },
-    "snls":           {"update": False},
-    "panstarrs":      {"update": False},
-    "nedd":           {"update": False},
-    "wiserepspectra": {"update": False},
-    "cfaiaspectra":   {"update": False},
-    "cfaibcspectra":  {"update": False},
-    "snlsspectra":    {"update": False},
-    "cspspectra":     {"update": False},
-    "ucbspectra":     {"update": False},
-    "suspectspectra": {"update": False},
-    "snfspectra":     {"update": False},
-    "writeevents":    {"update": True }
+    "internal":         {"update": False},
+    "simbad":           {"update": False},
+    "vizier":           {"update": False},
+    "nicholl-04-01-16": {"update", False},
+    "cccp":             {"update": False, "archived": True},
+    "anderson":         {"update": False},
+    "suspect":          {"update": False},
+    "cfa":              {"update": False},
+    "ucb":              {"update": False},
+    "sdss":             {"update": False},
+    "csp":              {"update": False},
+    "itep":             {"update": False},
+    "asiago":           {"update": False},
+    "rochester":        {"update": True },
+    "lennarz":          {"update": False},
+    "gaia":             {"update": False},
+    "ogle":             {"update": True },
+    "snls":             {"update": False},
+    "panstarrs":        {"update": False},
+    "nedd":             {"update": False},
+    "wiserepspectra":   {"update": False},
+    "cfaiaspectra":     {"update": False},
+    "cfaibcspectra":    {"update": False},
+    "snlsspectra":      {"update": False},
+    "cspspectra":       {"update": False},
+    "ucbspectra":       {"update": False},
+    "suspectspectra":   {"update": False},
+    "snfspectra":       {"update": False},
+    "writeevents":      {"update": True }
 }
 
 clight = const.c.cgs.value
@@ -1730,6 +1731,47 @@ if do_task('vizier'):
                        e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
     journal_events()
 
+if do_task('nicholl-04-01-16'):
+    with open("../sne-external/Nicholl-04-01-16/bibcodes.json", 'r') as f:
+        bcs = json.loads(f.read())
+
+    for datafile in sorted(glob.glob("../sne-external/Nicholl-04-01-16/*.txt"), key=lambda s: s.lower()):
+        name = os.path.basename(datafile).split('_')[0]
+        name = add_event(name)
+        bibcode = ''
+        for bc in bcs:
+            if name in bcs[bc]:
+                bibcode = bc
+        if not bibcode:
+            raise(ValueError('Bibcode not found!'))
+        source = add_source(name, bibcode = bibcode)
+        with open(datafile,'r') as f:
+            tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
+            for r, row in enumerate(tsvin):
+                if not row:
+                    continue
+                if row[0][0] == '#' and row[0] != '#MJD':
+                    continue
+                if row[0] == '#MJD':
+                    bands = [x for x in row[1:] if x and 'err' not in x]
+                    continue
+                mjd = row[0]
+                if not is_number(mjd):
+                    continue
+                for v, val in enumerate(row[1:-1:2]):
+                    upperlimit = ''
+                    if '>' in val:
+                        upperlimit = True
+                    mag = val.strip('>')
+                    if not is_number(mag) or isnan(float(mag)) or float(mag) > 90.0:
+                        continue
+                    err = ''
+                    if is_number(row[v+2]) and not isnan(float(row[v+2])):
+                        err = row[v+2]
+                    add_photometry(name, time = mjd, band = bands[v], magnitude = mag,
+                        e_magnitude = err, upperlimit = upperlimit, source = source)
+    journal_events()
+
 # CCCP
 if do_task('cccp'):
     cccpbands = ['B', 'V', 'R', 'I']
@@ -2819,6 +2861,8 @@ if do_task('wiserepspectra'):
 
                             if name[:2] == 'sn':
                                 name = 'SN' + name[2:]
+                            if name[:3] == 'SSS' and name.count('-') > 1:
+                                name = name.replace('-', ':', 1)
                             name = get_preferred_name(name)
                             if oldname and name != oldname:
                                 journal_events()
