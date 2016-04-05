@@ -13,6 +13,7 @@ import codecs
 import resource
 import argparse
 import gzip
+import io
 import shutil
 from html import unescape
 from digits import *
@@ -22,6 +23,7 @@ from astroquery.simbad import Simbad
 from copy import deepcopy
 from astropy import constants as const
 from astropy import units as un
+from astropy.io import fits
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
@@ -38,7 +40,7 @@ tasks = {
     "internal":         {"update": False},
     "simbad":           {"update": False},
     "vizier":           {"update": False},
-    "nicholl-04-01-16": {"update", False},
+    "nicholl-04-01-16": {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
     "suspect":          {"update": False},
@@ -55,6 +57,7 @@ tasks = {
     "snls":             {"update": False},
     "panstarrs":        {"update": False},
     "nedd":             {"update": False},
+    "asiagospectra":    {"update": True},
     "wiserepspectra":   {"update": False},
     "cfaiaspectra":     {"update": False},
     "cfaibcspectra":    {"update": False},
@@ -485,6 +488,13 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                 valuesplit = svalue.split(':')
                 svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
     elif quantity == 'maxdate' or quantity == 'discoverdate':
+        # Make sure month and day have leading zeroes
+        sparts = svalue.split('/')
+        if len(sparts) >= 2:
+            svalue = sparts[0] + '/' + sparts[1].zfill(2)
+        if len(sparts) == 3:
+            svalue = svalue + '/' + sparts[2].zfill(2)
+
         if quantity in events[name]:
             for i, ct in enumerate(events[name][quantity]):
                 # Only add dates if they have more information
@@ -696,6 +706,8 @@ def derive_and_sanitize():
         set_first_max_light(name)
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
+        if 'claimedtype' not in events[name] and name[:2] == 'AT':
+            add_quantity(name, 'claimedtype', 'Candidate', 'D')
         if 'redshift' in events[name] and 'velocity' not in events[name]:
             (bestz, bestkind, bestsig) = get_best_redshift(name)
             if bestsig > 0:
@@ -1747,7 +1759,8 @@ if do_task('nicholl-04-01-16'):
         source = add_source(name, bibcode = bibcode)
         with open(datafile,'r') as f:
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
-            for r, row in enumerate(tsvin):
+            for r, rrow in enumerate(tsvin):
+                row = list(filter(None, rrow))
                 if not row:
                     continue
                 if row[0][0] == '#' and row[0] != '#MJD':
@@ -1758,7 +1771,7 @@ if do_task('nicholl-04-01-16'):
                 mjd = row[0]
                 if not is_number(mjd):
                     continue
-                for v, val in enumerate(row[1:-1:2]):
+                for v, val in enumerate(row[1::2]):
                     upperlimit = ''
                     if '>' in val:
                         upperlimit = True
@@ -1766,8 +1779,9 @@ if do_task('nicholl-04-01-16'):
                     if not is_number(mag) or isnan(float(mag)) or float(mag) > 90.0:
                         continue
                     err = ''
-                    if is_number(row[v+2]) and not isnan(float(row[v+2])):
-                        err = row[v+2]
+                    if is_number(row[2*v+2]) and not isnan(float(row[2*v+2])):
+                        err = row[2*v+2]
+                        print(v,mag,err)
                     add_photometry(name, time = mjd, band = bands[v], magnitude = mag,
                         e_magnitude = err, upperlimit = upperlimit, source = source)
     journal_events()
@@ -2751,6 +2765,93 @@ if do_task('nedd'):
         oldhostname = hostname
     journal_events()
 
+if do_task('asiagospectra'):
+    response = urllib.request.urlopen("http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990")
+    bs = BeautifulSoup(response, "html5lib")
+    trs = bs.findAll('tr')
+    for tr in trs:
+        tds = tr.findAll('td')
+        name = ''
+        host = ''
+        fitsurl = ''
+        source = ''
+        reference = ''
+        for tdi, td in enumerate(tds):
+            if tdi == 0:
+                butt = td.find('button')
+                if not butt:
+                    break
+                alias = butt.text.strip()
+                alias = alias.replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
+            elif tdi == 1:
+                name = td.text.strip().replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
+                if not name:
+                    name = alias
+                if is_number(name[:4]):
+                    name = 'SN' + name
+                name = add_event(name)
+                if alias != name:
+                    add_alias(name, alias)
+                reference = 'Asiago Supernova Catalogue'
+                refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
+                secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
+            elif tdi == 2:
+                host = td.text.strip()
+                if host == 'anonymous':
+                    host = ''
+            elif tdi == 3:
+                discoverer = td.text.strip()
+            elif tdi == 5:
+                ra = td.text.strip()
+            elif tdi == 6:
+                dec = td.text.strip()
+            elif tdi == 7:
+                claimedtype = td.text.strip()
+            elif tdi == 8:
+                redshift = td.text.strip()
+            elif tdi == 9:
+                epochstr = td.text.strip()
+                if epochstr:
+                    mjd = (astrotime(epochstr[:4] + '-' + epochstr[4:6] + '-' + str(floor(float(epochstr[6:]))).zfill(2)).mjd +
+                        float(epochstr[6:]) - floor(float(epochstr[6:])))
+                else:
+                    mjd = ''
+            elif tdi == 10:
+                refs = td.findAll('a')
+                source = ''
+                reference = ''
+                refurl = ''
+                for ref in refs:
+                    if ref.text != 'REF':
+                        reference = ref.text
+                        refurl = ref['href']
+                if reference:
+                    source = add_source(name, reference = reference, url = refurl)
+                sources = ','.join(list(filter(None, [source, secondarysource])))
+            elif tdi == 12:
+                fitslink = td.find('a')
+                if fitslink:
+                    fitsurl = fitslink['href']
+        if name:
+            add_quantity(name, 'claimedtype', claimedtype, sources)
+            add_quantity(name, 'ra', ra, sources)
+            add_quantity(name, 'dec', dec, sources)
+            add_quantity(name, 'redshift', redshift, sources)
+            add_quantity(name, 'discoverer', discoverer, sources)
+            add_quantity(name, 'host', host, sources)
+
+            #if fitsurl:
+            #    response = urllib.request.urlopen("http://sngroup.oapd.inaf.it./" + fitsurl)
+            #    compressed = io.BytesIO(response.read())
+            #    decompressed = gzip.GzipFile(fileobj=compressed)
+            #    hdulist = fits.open(decompressed)
+            #    scidata = hdulist[0].data
+            #    print(hdulist[0].header)
+
+            #    print(scidata[3])
+            #    sys.exit()
+    journal_events()
+
 if do_task('wiserepspectra'):
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
@@ -3186,6 +3287,15 @@ if do_task('suspectspectra'):
     with open('../sne-external-spectra/Suspect/sources.json', 'r') as f:
         sourcedict = json.loads(f.read())
 
+    with open('../sne-external-spectra/Suspect/filename-changes.txt', 'r') as f:
+        rows = f.readlines()
+        changedict = {}
+        for row in rows:
+            if not row or row[0] == "#":
+                continue
+            items = row.split(' ')
+            changedict[items[1]] = items[0]
+
     suspectcnt = 0
     folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
     for folder in folders:
@@ -3207,8 +3317,12 @@ if do_task('suspectspectra'):
             for spectrum in eventspectra:
                 sources = [secondarysource]
                 bibcode = ''
-                if spectrum in sourcedict:
-                    bibcode = sourcedict[spectrum]
+                if spectrum in changedict:
+                    specalias = changedict[spectrum]
+                else:
+                    specalias = spectrum
+                if specalias in sourcedict:
+                    bibcode = sourcedict[specalias]
                 elif name in sourcedict:
                     bibcode = sourcedict[name]
                 if bibcode:
