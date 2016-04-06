@@ -139,6 +139,8 @@ def ct_priority(name, attr):
     aliases = attr['source'].split(',')
     max_source_year = -10000
     for alias in aliases:
+        if alias == 'D':
+            continue
         source = get_source_by_alias(name, alias)
         if 'bibcode' in source:
             source_year = get_source_year(source)
