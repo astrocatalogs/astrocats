@@ -40,32 +40,32 @@ tasks = {
     "internal":         {"update": False},
     "simbad":           {"update": False},
     "vizier":           {"update": False},
-    "nicholl-04-01-16": {"update": False},
-    "cccp":             {"update": False, "archived": True},
-    "anderson":         {"update": False},
-    "suspect":          {"update": False},
-    "cfa":              {"update": False},
-    "ucb":              {"update": False},
-    "sdss":             {"update": False},
-    "csp":              {"update": False},
-    "itep":             {"update": False},
-    "asiago":           {"update": False},
-    "rochester":        {"update": True },
-    "lennarz":          {"update": False},
-    "gaia":             {"update": False},
-    "ogle":             {"update": True },
-    "snls":             {"update": False},
-    "panstarrs":        {"update": False},
-    "nedd":             {"update": False},
-    "asiagospectra":    {"update": True},
-    "wiserepspectra":   {"update": False},
-    "cfaiaspectra":     {"update": False},
-    "cfaibcspectra":    {"update": False},
-    "snlsspectra":      {"update": False},
-    "cspspectra":       {"update": False},
-    "ucbspectra":       {"update": False},
-    "suspectspectra":   {"update": False},
-    "snfspectra":       {"update": False},
+    #"nicholl-04-01-16": {"update": False},
+    #"cccp":             {"update": False, "archived": True},
+    #"anderson":         {"update": False},
+    #"suspect":          {"update": False},
+    #"cfa":              {"update": False},
+    #"ucb":              {"update": False},
+    #"sdss":             {"update": False},
+    #"csp":              {"update": False},
+    #"itep":             {"update": False},
+    #"asiago":           {"update": False},
+    #"rochester":        {"update": True },
+    #"lennarz":          {"update": False},
+    #"gaia":             {"update": False},
+    #"ogle":             {"update": True },
+    #"snls":             {"update": False},
+    #"panstarrs":        {"update": False},
+    #"nedd":             {"update": False},
+    #"asiagospectra":    {"update": True},
+    #"wiserepspectra":   {"update": False},
+    #"cfaiaspectra":     {"update": False},
+    #"cfaibcspectra":    {"update": False},
+    #"snlsspectra":      {"update": False},
+    #"cspspectra":       {"update": False},
+    #"ucbspectra":       {"update": False},
+    #"suspectspectra":   {"update": False},
+    #"snfspectra":       {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -580,12 +580,12 @@ def make_date_string(year, month = '', day = ''):
 
 def get_max_light(name):
     if 'photometry' not in events[name]:
-        return (None, None, None)
+        return (None, None, None, None)
 
-    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '') for x in events[name]['photometry'] if
+    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '', x['source']) for x in events[name]['photometry'] if
                   ('magnitude' in x and 'time' in x and 'timeunit' in x)]
     if not eventphoto:
-        return (None, None, None)
+        return (None, None, None, None)
 
     mlmag = None
     for mb in maxbands:
@@ -600,38 +600,41 @@ def get_max_light(name):
 
     mlindex = [x[2] for x in eventphoto].index(mlmag)
     mlband = eventphoto[mlindex][3]
+    mlsource = eventphoto[mlindex][4]
 
     if eventphoto[mlindex][0] == 'MJD':
         mlmjd = float(eventphoto[mlindex][1])
-        return (astrotime(mlmjd, format='mjd').datetime, mlmag, mlband)
+        return (astrotime(mlmjd, format='mjd').datetime, mlmag, mlband, mlsource)
     else:
-        return (None, mlmag, mlband)
+        return (None, mlmag, mlband, mlsource)
 
 def get_first_light(name):
     if 'photometry' not in events[name]:
-        return None
+        return (None, None)
 
-    eventtime = [Decimal(x['time']) for x in events[name]['photometry'] if 'upperlimit' not in x and 'timeunit' in x and x['timeunit'] == 'MJD']
-    if not eventtime:
-        return None
-    flindex = eventtime.index(min(eventtime))
-    flmjd = float(eventtime[flindex])
-    return astrotime(flmjd, format='mjd').datetime
+    eventphoto = [(Decimal(x['time']), x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x and 'timeunit' in x and x['timeunit'] == 'MJD']
+    if not eventphoto:
+        return (None, None)
+    flmag = min([x[0] for x in eventphoto])
+    flindex = [x[0] for x in eventphoto].index(flmag)
+    flmjd = float(eventphoto[flindex][0])
+    flsource = eventphoto[flindex][1]
+    return (astrotime(flmjd, format='mjd').datetime, flsource)
 
 def set_first_max_light(name):
     if 'maxappmag' not in events[name]:
-        (mldt, mlmag, mlband) = get_max_light(name)
+        (mldt, mlmag, mlband, mlsource) = get_max_light(name)
         if mldt:
-            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), 'D')
+            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), 'D,' + mlsource)
         if mlmag:
-            add_quantity(name, 'maxappmag', pretty_num(mlmag), 'D')
+            add_quantity(name, 'maxappmag', pretty_num(mlmag), 'D,' + mlsource)
         if mlband:
-            add_quantity(name, 'maxband', mlband, 'D')
+            add_quantity(name, 'maxband', mlband, 'D,' + mlsource)
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
-        fldt = get_first_light(name)
+        (fldt, flsource) = get_first_light(name)
         if fldt:
-            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + flsource)
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
@@ -646,10 +649,11 @@ def set_first_max_light(name):
 
                 if mjd < minspecmjd:
                     minspecmjd = mjd
+                    minspecsource = spectrum['source']
 
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
-            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D')
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
 
 prefkinds = ['heliocentric', 'cmb', 'host', '']
 def get_best_redshift(name):
