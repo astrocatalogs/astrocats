@@ -48,4 +48,4 @@ SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
 * Fermi SNR catalog - http://arxiv.org/abs/1511.06778
 * GALEX SNR catalog?
-* SNR remnants in LMC
+* SNR remnants in LMC - http://adsabs.harvard.edu/abs/2016A%26A...585A.162M
