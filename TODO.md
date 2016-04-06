@@ -51,3 +51,6 @@ SNR catalogs:
 * GALEX SNR catalog?
 * SNR remnants in SMC & LMC - http://adsabs.harvard.edu/abs/2010MNRAS.407.1301B
 * SNR remnants in LMC from Chandra - http://adsabs.harvard.edu/abs/2016A%26A...585A.162M
+
+####Known errors that need to be corrected:
+* SN1987G is a duplicate of SN1987D - https://heasarc.gsfc.nasa.gov/W3Browse/all/gcvsegsn.html
