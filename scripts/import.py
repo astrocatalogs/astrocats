@@ -57,7 +57,7 @@ tasks = {
     "snls":             {"update": False},
     "panstarrs":        {"update": False},
     "nedd":             {"update": False},
-    "asiagospectra":    {"update": True},
+    "asiagospectra":    {"update": True },
     "wiserepspectra":   {"update": False},
     "cfaiaspectra":     {"update": False},
     "cfaibcspectra":    {"update": False},
@@ -390,7 +390,9 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
 
 def add_quantity(name, quantity, value, sources, forcereplacebetter = False, error = '', unit = '', kind = ''):
     if not quantity:
-        raise(ValueError('Quanta must be specified for add_quantity.'))
+        raise(ValueError('Quantity must be specified for add_quantity.'))
+    if not sources:
+        raise(ValueError('Source must be specified for quantity before it is added.'))
     svalue = value.strip()
     serror = error.strip()
 
@@ -803,7 +805,7 @@ def delete_old_event_files():
         for f in filelist:
             os.remove(f)
 
-def write_all_events(empty = False, gz = False):
+def write_all_events(empty = False, gz = False, delete = False):
     # Write it all out!
     for name in events:
         if 'stub' in events[name]:
@@ -826,7 +828,7 @@ def write_all_events(empty = False, gz = False):
 
         # Delete non-SN events here without IAU designations (those with only banned types)
         nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor']
-        if 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
+        if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
             for ct in events[name]['claimedtype']:
                 if ct['value'] not in nonsnetypes:
@@ -3291,9 +3293,9 @@ if do_task('suspectspectra'):
         rows = f.readlines()
         changedict = {}
         for row in rows:
-            if not row or row[0] == "#":
+            if not row.strip() or row[0] == "#":
                 continue
-            items = row.split(' ')
+            items = row.strip().split(' ')
             changedict[items[1]] = items[0]
 
     suspectcnt = 0
@@ -3458,6 +3460,6 @@ for fi in files:
     name = add_event(name)
     derive_and_sanitize()
     if do_task('writeevents'): 
-        write_all_events(empty = True, gz = True)
+        write_all_events(empty = True, gz = True, delete = True)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
