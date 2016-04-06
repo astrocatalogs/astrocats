@@ -53,5 +53,8 @@ SNR catalogs:
 * SNR remnants in SMC & LMC - http://adsabs.harvard.edu/abs/2010MNRAS.407.1301B
 * SNR remnants in LMC from Chandra - http://adsabs.harvard.edu/abs/2016A%26A...585A.162M
 
+Online catalogs:
+* http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date
+
 ####Known errors that need to be corrected:
 * SN1987G is a duplicate of SN1987D - https://heasarc.gsfc.nasa.gov/W3Browse/all/gcvsegsn.html
