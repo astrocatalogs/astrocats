@@ -26,6 +26,7 @@ Other multiple SN datasets:
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
+* SN1979C - http://adsabs.harvard.edu/abs/1981ApJ...244..780B
 * SN1989B - http://adsabs.harvard.edu/abs/1990A%26A...237...79B (need to reacquire a few from original source)
 * SN1998bu - http://adsabs.harvard.edu/abs/2001ApJ...549L.215C (need to reacquire spectrum on 1999-01-23)
 * SN2008D - http://www.nature.com/nature/journal/v453/n7194/suppinfo/nature06997.html
