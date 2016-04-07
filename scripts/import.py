@@ -1763,6 +1763,7 @@ if do_task('vizier'):
     journal_events()
 
     # 2015MNRAS.448.1206M
+    # Note: Photometry from two SN can also be added from this source.
     result = Vizier.get_catalogs("J/MNRAS/448/1206/table3")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
