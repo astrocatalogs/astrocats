@@ -80,6 +80,7 @@ SNR catalogs:
 * GALEX SNR catalog?
 * SNR remnants in SMC & LMC - http://adsabs.harvard.edu/abs/2010MNRAS.407.1301B
 * SNR remnants in LMC from Chandra - http://adsabs.harvard.edu/abs/2016A%26A...585A.162M
+* GRBs (BATSE, Swift, FERMI). LGRBs are definitely SNe, should we considered SGRBs to be SNe?
 
 Online catalogs:
 * http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date
