@@ -66,6 +66,7 @@ tasks = {
     "ucbspectra":       {"update": False},
     "suspectspectra":   {"update": False},
     "snfspectra":       {"update": False},
+    "superfitspectra":  {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -344,7 +345,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
     # Don't add duplicate spectra
     if 'spectra' in events[name]:
         for spectrum in events[name]['spectra']:
-            if spectrum['filename'] == filename:
+            if 'filename' in spectrum and spectrum['filename'] == filename:
                 return
 
     if not waveunit:
@@ -3572,6 +3573,50 @@ if do_task('snfspectra'):
             if args.travis and snfcnt % travislimit == 0:
                 break
     journal_events()
+
+if do_task('superfitspectra'):
+    sfdirs = glob.glob('../sne-external/superfit/*')
+    for sfdir in sfdirs:
+        sffiles = sorted(glob.glob(sfdir + "/*.dat"))
+        lastname = ''
+        for sffile in sffiles:
+            basename = os.path.basename(sffile)
+            name = basename.split('.')[0]
+            if name[:2] == 'sn':
+                name = 'SN' + name[2:]
+            elif name[:3] == 'ptf':
+                name = 'PTF' + name[3:]
+
+            if 'theory' in name:
+                continue
+            if name in events and 'spectra' in events[name] and lastname != name:
+                continue
+            name = add_event(name)
+            epoch = basename.split('.')[1]
+            (mldt, mlmag, mlband, mlsource) = get_max_light(name)
+            if mldt:
+                epoff = Decimal(0.0) if epoch == 'max' else (Decimal(epoch[1:]) if epoch[0] == 'p' else -Decimal(epoch[1:]))
+            else:
+                epoff = ''
+
+            source = add_source(name, reference = 'Superfit', url = 'http://www.dahowell.com/superfit.html', secondary = True)
+
+            with open(sffile) as f:
+                rows = f.read().splitlines()
+            specdata = []
+            for row in rows:
+                if row.strip():
+                    specdata.append(list(filter(None,re.split('\t+|\s+', row, maxsplit=0))))
+            specdata = [[x.replace('D','E') for x in list(i)] for i in zip(*specdata)]
+            wavelengths = specdata[0]
+            fluxes = specdata[1]
+
+            mlmjd = str(Decimal(astrotime('-'.join([str(mldt.year), str(mldt.month), str(mldt.day)])).mjd) + epoff) if (epoff != '') else ''
+            add_spectrum(name, time = mlmjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
+                wavelengths = wavelengths, fluxes = fluxes, source = source)
+            
+            lastname = name
+        journal_events()
 
 files = []
 for rep in repofolders:
