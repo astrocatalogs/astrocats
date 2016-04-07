@@ -70,6 +70,7 @@ Other single SN datasets:
 * iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
 * PS1-13arp - http://adsabs.harvard.edu/abs/2015ApJ...804...28G
 * LSQ13zm - http://arxiv.org/abs/1604.00013
+* iPTF14atg - http://adsabs.harvard.edu/abs/2015Natur.521..328C
 * LSQ14bdq - http://iopscience.iop.org/article/10.1088/2041-8205/807/1/L18/meta
 * SN2015U - http://arxiv.org/abs/1603.04866
 
