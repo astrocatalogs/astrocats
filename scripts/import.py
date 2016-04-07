@@ -83,20 +83,21 @@ repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders))]
 repoyears[0] -= 1
 
 typereps = {
-    'CC':     ['CCSN'],
-    'I P':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ia P':   ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec'],
-    'Ib P':   ['Ib pec', 'Ib-pec'],
-    'Ic P':   ['Ic pec', 'Ic-pec'],
-    'Ia/c':   ['Ic/Ia', 'Iac'],
-    'Ib/c':   ['Ibc'],
-    'Ib/c P': ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
-    'II P':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
-    'II L':   ['IIL'],
-    'IIn P':  ['IIn pec', 'IIn-pec'],
-    'IIb P':  ['IIb-pec', 'IIb: pec'],
-    'not Ia': ['nIa'],
-    'Ia CSM': ['Ia-CSM', 'Ia-csm']
+    'CC':      ['CCSN'],
+    'I P':     ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
+    'Ia P':    ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec'],
+    'Ib P':    ['Ib pec', 'Ib-pec'],
+    'Ic P':    ['Ic pec', 'Ic-pec'],
+    'Ia/c':    ['Ic/Ia', 'Iac'],
+    'Ib/c':    ['Ibc'],
+    'Ib/c P':  ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
+    'II P':    ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
+    'II L':    ['IIL'],
+    'IIn P':   ['IIn pec', 'IIn-pec'],
+    'IIb P':   ['IIb-pec', 'IIb: pec'],
+    'not Ia':  ['nIa'],
+    'Ia CSM':  ['Ia-CSM', 'Ia-csm'],
+    'SLSN-Ic': ['SLSN Ic']
 }
 
 repbetterquantity = {
@@ -115,7 +116,9 @@ maxbands = [
 ]
 
 def event_attr_priority(attr):
-    if attr == 'photometry' or attr == 'spectra':
+    if attr == 'photometry':
+        return 'zzzzzzzy'
+    if attr == 'spectra':
         return 'zzzzzzzz'
     if attr == 'name':
         return 'aaaaaaaa'
@@ -126,14 +129,13 @@ def event_attr_priority(attr):
     return attr
 
 def frame_priority(attr):
+    frames = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host']
     if 'kind' in attr:
-        if attr['kind'] == 'heliocentric':
-            return 0
-        if attr['kind'] == 'cmb':
-            return 1
-        if attr['kind'] == 'host':
-            return 2
-    return 3
+        if attr['kind'] in frames:
+            return frames.index(attr['kind'])
+        else:
+            return len(frames)
+    return len(frames)
 
 def ct_priority(name, attr):
     aliases = attr['source'].split(',')
@@ -397,6 +399,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         raise(ValueError('Source must be specified for quantity before it is added.'))
     svalue = value.strip()
     serror = error.strip()
+    sunit = ''
 
     if not svalue or svalue == '--' or svalue == '-':
         return
@@ -491,6 +494,11 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
             if 'dec' in quantity:
                 valuesplit = svalue.split(':')
                 svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
+
+        if 'ra' in quantity:
+            sunit = 'hours'
+        elif 'dec' in quantity:
+            sunit = 'degrees'
     elif quantity == 'maxdate' or quantity == 'discoverdate':
         # Make sure month and day have leading zeroes
         sparts = svalue.split('/')
@@ -522,6 +530,9 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                             events[name][quantity][i]['error'] = serror
                 return
 
+    if not sunit:
+        sunit = unit
+
     quantaentry = OrderedDict()
     quantaentry['value'] = svalue
     if serror:
@@ -530,8 +541,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         quantaentry['source'] = sources
     if kind:
         quantaentry['kind'] = kind
-    if unit:
-        quantaentry['unit'] = unit
+    if sunit:
+        quantaentry['unit'] = sunit
     if (forcereplacebetter or quantity in repbetterquantity) and quantity in events[name]:
         newquantities = []
         isworse = True
@@ -1749,6 +1760,111 @@ if do_task('vizier'):
         source = add_source(name, bibcode = "2011ApJ...741...97D")
         add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], magnitude = row['mag'],
                        e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
+    journal_events()
+
+    # 2015MNRAS.448.1206M
+    result = Vizier.get_catalogs("J/MNRAS/448/1206/table3")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['Name'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2015MNRAS.448.1206M")
+        add_quantity(name, 'discoverdate', '20' + name[4:6], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'z', row['zsp'], source, kind = 'spectroscopic')
+        add_quantity(name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+        add_quantity(name, 'maxband', 'r', source)
+        add_quantity(name, 'claimedtype', 'Ia', source)
+    result = Vizier.get_catalogs("J/MNRAS/448/1206/table4")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['Name'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2015MNRAS.448.1206M")
+        add_quantity(name, 'discoverdate', '20' + name[4:6], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'z', row['zph'], source, error = row['e_zph'], kind = 'photometric')
+        add_quantity(name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+        add_quantity(name, 'maxband', 'r', source)
+        add_quantity(name, 'claimedtype', 'Ia?', source)
+    result = Vizier.get_catalogs("J/MNRAS/448/1206/table5")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['Name'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2015MNRAS.448.1206M")
+        add_quantity(name, 'discoverdate', '20' + name[4:6], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'z', row['zsp'], source, kind = 'spectroscopic')
+        add_quantity(name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+        add_quantity(name, 'maxband', 'r', source)
+        add_quantity(name, 'claimedtype', row['Type'], source)
+    result = Vizier.get_catalogs("J/MNRAS/448/1206/table6")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['Name'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2015MNRAS.448.1206M")
+        add_quantity(name, 'discoverdate', '20' + name[4:6], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+        add_quantity(name, 'maxband', 'r', source)
+        add_quantity(name, 'claimedtype', row['Type'], source)
+    result = Vizier.get_catalogs("J/MNRAS/448/1206/tablea2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['Name'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2015MNRAS.448.1206M")
+        add_quantity(name, 'discoverdate', '20' + name[4:6], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+        add_quantity(name, 'maxband', 'r', source)
+        add_quantity(name, 'claimedtype', row['Typesoft']+'?', source)
+        add_quantity(name, 'claimedtype', row['Typepsnid']+'?', source)
+    result = Vizier.get_catalogs("J/MNRAS/448/1206/tablea3")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        row = convert_aq_output(row)
+        name = str(row['Name'])
+        name = add_event(name)
+        source = add_source(name, bibcode = "2015MNRAS.448.1206M")
+        add_quantity(name, 'discoverdate', '20' + name[4:6], source)
+        add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+        add_quantity(name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+        add_quantity(name, 'maxband', 'r', source)
+        add_quantity(name, 'claimedtype', 'Candidate', source)
+    journal_events()
+
+    # 2012AJ....143..126B
+    result = Vizier.get_catalogs("J/AJ/143/126/table4")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    for row in table:
+        if not row['Wcl'] or row['Wcl'] == 'N':
+            continue
+        row = convert_aq_output(row)
+        name = str(row['SN']).replace(' ', '')
+        name = add_event(name)
+        source = add_source(name, bibcode = "2012AJ....143..126B")
+        add_quantity(name, 'claimedtype', 'Ia-' + row['Wcl'], source)
     journal_events()
 
 if do_task('nicholl-04-01-16'):
