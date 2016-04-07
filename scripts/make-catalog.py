@@ -1112,7 +1112,7 @@ if args.writecatalog and not args.eventlist:
         f.write(sitemapxml)
 
     # Ping Google to let them know sitemap has been updated
-    response = urllib.request.urlopen(googlepingurl)
+    #response = urllib.request.urlopen(googlepingurl)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())

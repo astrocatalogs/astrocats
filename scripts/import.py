@@ -3285,7 +3285,7 @@ if do_task('ucbspectra'):
 
             add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
                 wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
-                instrument = instrument, source = source, snr = snr, observer = observer, reducer = reducer)
+                instrument = instrument, source = sources, snr = snr, observer = observer, reducer = reducer)
             ucbspeccnt = ucbspeccnt + 1
             if args.travis and ucbspeccnt >= travislimit:
                 break
