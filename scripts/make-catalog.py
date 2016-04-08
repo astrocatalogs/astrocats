@@ -614,7 +614,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 hasepoch = True
 
             mjdmax = ''
-            if spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
+            if 'timeunit' in spectrum and spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
                 if 'maxdate' in catalog[entry]:
                     mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'].replace('/', '-')).mjd
                 if mjdmax:

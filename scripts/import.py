@@ -15,6 +15,7 @@ import argparse
 import gzip
 import io
 import shutil
+import warnings
 from html import unescape
 from digits import *
 from cdecimal import Decimal
@@ -37,36 +38,38 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":         {"update": False},
-    "simbad":           {"update": False},
-    "vizier":           {"update": False},
-    "nicholl-04-01-16": {"update": False},
-    "cccp":             {"update": False, "archived": True},
-    "anderson":         {"update": False},
-    "suspect":          {"update": False},
-    "cfa":              {"update": False},
-    "ucb":              {"update": False},
-    "sdss":             {"update": False},
-    "csp":              {"update": False},
-    "itep":             {"update": False},
-    "asiago":           {"update": False},
-    "rochester":        {"update": True },
-    "lennarz":          {"update": False},
-    "gaia":             {"update": False},
-    "ogle":             {"update": True },
-    "snls":             {"update": False},
-    "panstarrs":        {"update": False},
-    "nedd":             {"update": False},
-    "asiagospectra":    {"update": True },
-    "wiserepspectra":   {"update": False},
-    "cfaiaspectra":     {"update": False},
-    "cfaibcspectra":    {"update": False},
-    "snlsspectra":      {"update": False},
-    "cspspectra":       {"update": False},
-    "ucbspectra":       {"update": False},
-    "suspectspectra":   {"update": False},
-    "snfspectra":       {"update": False},
-    "superfitspectra":  {"update": False},
+    #"internal":         {"update": False},
+    #"simbad":           {"update": False},
+    #"vizier":           {"update": False},
+    #"nicholl-04-01-16": {"update": False},
+    #"cccp":             {"update": False, "archived": True},
+    #"anderson":         {"update": False},
+    #"suspect":          {"update": False},
+    #"cfa":              {"update": False},
+    #"ucb":              {"update": False},
+    #"sdss":             {"update": False},
+    #"csp":              {"update": False},
+    #"itep":             {"update": False},
+    #"asiago":           {"update": False},
+    #"rochester":        {"update": True },
+    #"lennarz":          {"update": False},
+    #"gaia":             {"update": False},
+    #"ogle":             {"update": True },
+    #"snls":             {"update": False},
+    #"panstarrs":        {"update": False},
+    #"psthreepi":        {"update": False, "archived": True},
+    "css":              {"update": False, "archived": True},
+    #"nedd":             {"update": False},
+    #"asiagospectra":    {"update": True },
+    #"wiserepspectra":   {"update": False},
+    #"cfaiaspectra":     {"update": False},
+    #"cfaibcspectra":    {"update": False},
+    #"snlsspectra":      {"update": False},
+    #"cspspectra":       {"update": False},
+    #"ucbspectra":       {"update": False},
+    #"suspectspectra":   {"update": False},
+    #"snfspectra":       {"update": False},
+    #"superfitspectra":  {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -599,7 +602,7 @@ def get_max_light(name):
         return (None, None, None, None)
 
     eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '', x['source']) for x in events[name]['photometry'] if
-                  ('magnitude' in x and 'time' in x and 'timeunit' in x)]
+                  ('magnitude' in x and 'time' in x and 'timeunit' in x and 'upperlimit' not in x)]
     if not eventphoto:
         return (None, None, None, None)
 
@@ -631,9 +634,9 @@ def get_first_light(name):
     eventphoto = [(Decimal(x['time']), x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x and 'timeunit' in x and x['timeunit'] == 'MJD']
     if not eventphoto:
         return (None, None)
-    flmag = min([x[0] for x in eventphoto])
-    flindex = [x[0] for x in eventphoto].index(flmag)
-    flmjd = float(eventphoto[flindex][0])
+    flmjd = min([x[0] for x in eventphoto])
+    flindex = [x[0] for x in eventphoto].index(flmjd)
+    flmjd = float(flmjd)
     flsource = eventphoto[flindex][1]
     return (astrotime(flmjd, format='mjd').datetime, flsource)
 
@@ -773,7 +776,7 @@ def derive_and_sanitize():
             events[name]['photometry'].sort(key=lambda x: (float(x['time']),
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
-            events[name]['spectra'].sort(key=lambda x: float(x['time']))
+            events[name]['spectra'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0))
         if 'sources' in events[name]:
             for source in events[name]['sources']:
                 if 'bibcode' in source:
@@ -2579,6 +2582,7 @@ if do_task('rochester'):
     # These are known to be in error on the Rochester page, so ignore them.
     rochesterredshifterrors = ['LSQ12bgl']
     rochesterphotometryerrors = ['SNF20080514-002']
+    rochestertypeerrors = ['SN1054A']
 
     for p, path in enumerate(rochesterpaths):
         if args.update and not rochesterupdate[p]:
@@ -2631,7 +2635,7 @@ if do_task('rochester'):
             source = add_source(name, reference = reference, url = refurl)
             secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
             sources = ','.join(list(filter(None, [source, secondarysource])))
-            if str(cols[1].contents[0]).strip() != 'unk':
+            if str(cols[1].contents[0]).strip() != 'unk' and name not in rochestertypeerrors:
                 add_quantity(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 add_quantity(name, 'host', str(cols[2].contents[0]).strip(), sources)
@@ -2834,6 +2838,263 @@ if do_task('panstarrs'):
             source = add_source(name, bibcode = '2015MNRAS.449..451W')
             add_quantity(name, 'claimedtype', row[1], source)
             add_photometry(name, time = row[2], band = row[4], magnitude = row[3], source = source)
+    journal_events()
+
+if do_task('psthreepi'):
+    response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
+    bs = BeautifulSoup(response, "html5lib")
+    div = bs.find('div', {"class":"pagination"})
+    offline = False
+    if not div:
+        offline = True
+    else:
+        links = div.findAll('a')
+        if not links:
+            offline = True
+
+    if offline:
+        warnings.warn("Pan-STARRS 3pi offline, using local files only.")
+        fname = '../sne-external/3pi/page01.html'
+        with open(fname, 'r') as f:
+            html = f.read()
+        bs = BeautifulSoup(html, "html5lib")
+        div = bs.find('div', {"class":"pagination"})
+        links = div.findAll('a')
+
+    numpages = int(links[-2].contents[0])
+    oldnumpages = len(glob.glob('../sne-external/3pi/page*'))
+    for page in range(1,numpages):
+        fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
+        if tasks['psthreepi']['archived'] and os.path.isfile(fname) and page < oldnumpages:
+            with open(fname, 'r') as f:
+                html = f.read()
+        elif not offline:
+            response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" + str(page) + "&sort=followup_flag_date")
+            with open(fname, 'w') as f:
+                html = response.read().decode('utf-8')
+                f.write(html)
+        else:
+            continue
+
+        bs = BeautifulSoup(html, "html5lib")
+        trs = bs.findAll('tr')
+        for tr in trs:
+            tds = tr.findAll('td')
+            if not tds:
+                continue
+            refs = []
+            aliases = []
+            ttype = ''
+            ctype = ''
+            for tdi, td in enumerate(tds):
+                if tdi == 0:
+                    psname = td.contents[0]
+                    pslink = psname['href']
+                    psname = psname.text
+                    print(psname)
+                elif tdi == 1:
+                    ra = td.contents[0]
+                elif tdi == 2:
+                    dec = td.contents[0]
+                elif tdi == 3:
+                    ttype = td.contents[0]
+                    if ttype != 'sn' and ttype != 'orphan':
+                        break
+                elif tdi == 5:
+                    if not td.contents:
+                        continue
+                    ctype = td.contents[0]
+                    if ctype == 'Observed':
+                        ctype = ''
+                elif tdi == 16:
+                    if td.contents:
+                        crossrefs = td.findAll('a')
+                        for cref in crossrefs:
+                            if 'atel' in cref.contents[0].lower():
+                                refs.append([cref.contents[0], cref['href']])
+                            elif is_number(cref.contents[0][:4]):
+                                continue
+                            else:
+                                aliases.append(cref.contents[0])
+
+            if ttype != 'sn' and ttype != 'orphan':
+                break
+
+            name = ''
+            for alias in aliases:
+                if alias[:2] == 'SN':
+                    name = alias
+            if not name:
+                name = psname
+            name = add_event(name)
+            sources = [add_source(name, reference = 'Pan-STARRS 3Pi', url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
+            for ref in refs:
+                sources.append(add_source(name, reference = ref[0], url = ref[1]))
+            source = ','.join(sources)
+            for alias in aliases:
+                add_alias(name, alias)
+            add_quantity(name, 'ra', ra, source)
+            add_quantity(name, 'dec', dec, source)
+            add_quantity(name, 'claimedtype', ctype, source)
+
+            fname2 = '../sne-external/3pi/candidate-' + pslink.rstrip('/').split('/')[-1] + '.html'
+            if tasks['psthreepi']['archived'] and os.path.isfile(fname2):
+                with open(fname2, 'r') as f:
+                    html2 = f.read()
+            elif not offline:
+                pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
+                with open(fname2, 'w') as f:
+                    response2 = urllib.request.urlopen(pslink)
+                    html2 = response2.read().decode('utf-8')
+                    f.write(html2)
+            else:
+                continue
+
+            bs2 = BeautifulSoup(html2, "html5lib")
+            scripts = bs2.findAll('script')
+            nslines = []
+            nslabels = []
+            for script in scripts:
+                if 'jslcdata.push' not in script.text:
+                    continue
+                slines = script.text.splitlines()
+                for line in slines:
+                    if 'jslcdata.push' in line:
+                        nslines.append(json.loads(line.strip().replace('jslcdata.push(','').replace(');','')))
+                    if 'jslabels.push' in line and 'blanks' not in line and 'non det' not in line:
+                        nslabels.append(json.loads(line.strip().replace('jslabels.push(','').replace(');',''))['label'])
+            for li, line in enumerate(nslines[:len(nslabels)]):
+                if not line:
+                    continue
+                for obs in line:
+                    add_photometry(name, time = obs[0], band = nslabels[li], magnitude = obs[1], e_magnitude = obs[2], source = source,
+                        telescope = 'Pan-STARRS1')
+            for li, line in enumerate(nslines[2*len(nslabels):]):
+                if not line:
+                    continue
+                for obs in line:
+                    add_photometry(name, time = obs[0], band = nslabels[li], magnitude = obs[1], upperlimit = True, source = source,
+                        telescope = 'Pan-STARRS1')
+            assoctab = bs2.find('table', {"class":"generictable"})
+            hostname = ''
+            redshift = ''
+            if assoctab:
+                trs = assoctab.findAll('tr')
+                headertds = [x.contents[0] for x in trs[1].findAll('td')]
+                tds = trs[1].findAll('td')
+                for tdi, td in enumerate(tds):
+                    if tdi == 1:
+                        hostname = td.contents[0].strip()
+                    elif tdi == 4:
+                        if 'z' in headertds:
+                            redshift = td.contents[0].strip()
+            # Skip galaxies with just SDSS id
+            if is_number(hostname):
+                continue
+            add_quantity(name, 'host', hostname, source)
+            if redshift:
+                add_quantity(name, 'redshift', redshift, source, kind = 'host')
+        journal_events()
+
+if do_task('css'):
+    response = urllib.request.urlopen("http://nesssi.cacr.caltech.edu/catalina/AllSN.html")
+    bs = BeautifulSoup(response, "html5lib")
+    trs = bs.findAll('tr')
+    for tr in trs:
+        tds = tr.findAll('td')
+        if not tds:
+            continue
+        refs = []
+        aliases = []
+        ttype = ''
+        ctype = ''
+        for tdi, td in enumerate(tds):
+            if tdi == 0:
+                cssname = td.contents[0].text.strip()
+            elif tdi == 1:
+                ra = td.contents[0]
+            elif tdi == 2:
+                dec = td.contents[0]
+            elif tdi == 11:
+                lclink = td.find('a')['onclick']
+                lclink = lclink.split("'")[1]
+            elif tdi == 13:
+                aliases = re.sub('[()]', '', re.sub('<[^<]+?>', '', td.contents[-1].strip()))
+                aliases = list(filter(None, aliases.split(' ')))
+
+        name = ''
+        validaliases = []
+        for alias in aliases:
+            if alias in ['SN', 'SDSS', 'mag']:
+                continue
+            if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
+                name = 'SN' + alias
+            lalias = alias.lower()
+            if (('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
+                ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
+                ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3)):
+                validaliases.append(alias)
+        if not name:
+            name = cssname
+        name = add_event(name)
+        sources = [add_source(name, bibcode = '2009ApJ...696..870D'),
+            add_source(name, reference = 'Catalina Sky Survey', url = 'http://nesssi.cacr.caltech.edu/catalina/AllSN.html')]
+        source = ','.join(sources)
+        for alias in validaliases:
+            add_alias(name, alias)
+        add_quantity(name, 'ra', ra, source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', dec, source, unit = 'floatdegrees')
+
+        fname2 = '../sne-external/css/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
+        if tasks['css']['archived'] and os.path.isfile(fname2):
+            with open(fname2, 'r') as f:
+                html2 = f.read()
+        else:
+            with open(fname2, 'w') as f:
+                response2 = urllib.request.urlopen(lclink)
+                html2 = response2.read().decode('utf-8')
+                f.write(html2)
+
+        lines = html2.splitlines()
+        for line in lines:
+            if 'javascript:showx' in line:
+                mjd = str(Decimal(re.search("showx\('(.*?)'\)", line).group(1).split('(')[0].strip()) + Decimal(53249.0))
+            else:
+                continue
+            if 'javascript:showy' in line:
+                mag = re.search("showy\('(.*?)'\)", line).group(1)
+            if 'javascript:showz' in line:
+                err = re.search("showz\('(.*?)'\)", line).group(1)
+            add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source,
+                telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
+        #for li, line in enumerate(nslines[2*len(nslabels):]):
+        #    if not line:
+        #        continue
+        #    for obs in line:
+        #        add_photometry(name, time = obs[0], band = nslabels[li], magnitude = obs[1], upperlimit = True, source = source,
+        #            telescope = 'Pan-STARRS1')
+        #assoctab = bs2.find('table', {"class":"generictable"})
+        #hostname = ''
+        #redshift = ''
+        #if assoctab:
+        #    trs = assoctab.findAll('tr')
+        #    headertds = [x.contents[0] for x in trs[1].findAll('td')]
+        #    tds = trs[1].findAll('td')
+        #    for tdi, td in enumerate(tds):
+        #        if tdi == 1:
+        #            hostname = td.contents[0].strip()
+        #        elif tdi == 4:
+        #            if 'z' in headertds:
+        #                redshift = td.contents[0].strip()
+        ## Skip galaxies with just SDSS id
+        #if is_number(hostname):
+        #    continue
+        #add_quantity(name, 'host', hostname, source)
+        #if redshift:
+        #    add_quantity(name, 'redshift', redshift, source, kind = 'host')
+        #cnt = cnt + 1
+        #if cnt >= 1:
+        #    break
     journal_events()
 
 if do_task('nedd'): 
@@ -3612,7 +3873,7 @@ if do_task('superfitspectra'):
             fluxes = specdata[1]
 
             mlmjd = str(Decimal(astrotime('-'.join([str(mldt.year), str(mldt.month), str(mldt.day)])).mjd) + epoff) if (epoff != '') else ''
-            add_spectrum(name, time = mlmjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
+            add_spectrum(name, timeunit = 'MJD' if mlmjd else '', time = mlmjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
                 wavelengths = wavelengths, fluxes = fluxes, source = source)
             
             lastname = name
