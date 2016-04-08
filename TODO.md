@@ -24,17 +24,74 @@ Other multiple SN datasets:
 * http://thesis.library.caltech.edu/6395/1/Kasliwal_PhD_Thesis.pdf
 * http://arxiv.org/abs/1603.08953
 * http://adsabs.harvard.edu/abs/2014A%26A...568A..19C (SN2013ez, SN2013fu)
+* http://adsabs.harvard.edu/abs/1997AJ....114.2054A (SN 1995al, 1997Y, 1997bp)
+* http://adsabs.harvard.edu/abs/2012A%26A...545L...7T (SN 2006V, 2006au)
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
 * SN1979C - http://adsabs.harvard.edu/abs/1981ApJ...244..780B
+* SN1983V - http://adsabs.harvard.edu/abs/1997ApJ...483..675C
+* SN1987A - http://adsabs.harvard.edu/abs/1996ApJ...467..435W
 * SN1989B - http://adsabs.harvard.edu/abs/1990A%26A...237...79B (need to reacquire a few from original source)
+* SN1991D - http://adsabs.harvard.edu/abs/2002MNRAS.336...91B
+* SN1991T - http://adsabs.harvard.edu/abs/1996MNRAS.281..263M
+* SN1992ar - http://adsabs.harvard.edu/abs/2000ApJ...529..661C
+* SN1993J - http://adsabs.harvard.edu/abs/2000AJ....120.1487M
+* SN1993J - http://adsabs.harvard.edu/abs/2000AJ....120.1499M
+* SN1994D - http://adsabs.harvard.edu/abs/1996MNRAS.281..263M
+* SN1995D - http://adsabs.harvard.edu/abs/1996PASJ...48...51S
+* SN1995N - http://adsabs.harvard.edu/abs/2002ApJ...572..350F
+* SN1995V - http://adsabs.harvard.edu/abs/1998MNRAS.299..150F
+* SN1996N - http://adsabs.harvard.edu/abs/1998A%26A...337..207S
+* SN1996cb - http://adsabs.harvard.edu/abs/1999AJ....117..736Q
+* SN1997X - http://adsabs.harvard.edu/abs/1998A%26A...333..159M
+* SN1997ab - http://adsabs.harvard.edu/abs/2000MmSAI..71..317S
+* SN1997eg - http://adsabs.harvard.edu/abs/2002MNRAS.330..844S
 * SN1998bu - http://adsabs.harvard.edu/abs/2001ApJ...549L.215C (need to reacquire spectrum on 1999-01-23)
+* SN1999E - http://adsabs.harvard.edu/abs/2003MNRAS.340..191R
+* SN1999aw - http://adsabs.harvard.edu/abs/2002AJ....124.2905S
+* SN1999by - http://adsabs.harvard.edu/abs/2002ApJ...568..791H
+* SN1999cq - http://adsabs.harvard.edu/abs/2000AJ....119.2303M
+* SN1999el - http://adsabs.harvard.edu/abs/2002ApJ...573..144D
+* SN1999em - http://adsabs.harvard.edu/abs/2003MNRAS.338..939E
+* SN1999dn - http://adsabs.harvard.edu/abs/2011MNRAS.411.2726B
+* SN2000cx - http://adsabs.harvard.edu/abs/2002ApJ...565..413R
+* SN2000ew - http://adsabs.harvard.edu/abs/2002PASJ...54..905G
+* SN2001el - http://adsabs.harvard.edu/abs/2005A%26A...443..649M
+* SN2002fk - http://adsabs.harvard.edu/abs/2014ApJ...789...89C
+* SN2003hx - http://adsabs.harvard.edu/abs/2008MNRAS.389..706M
+* SN2003ma - http://adsabs.harvard.edu/abs/2011ApJ...729...88R
+* SN2004dj - http://adsabs.harvard.edu/abs/2011A%26A...527A..61S
+* SN2004et - http://adsabs.harvard.edu/abs/2007MNRAS.381..280M
+* SN2004et - http://adsabs.harvard.edu/abs/2009ApJ...704..306K
+* SN2005am - http://adsabs.harvard.edu/abs/2005ApJ...635.1192B
+* SN2005df - http://adsabs.harvard.edu/abs/2015ApJ...806..107D
+* SN2005ke - http://adsabs.harvard.edu/abs/2014A%26A...572A..75K
+* SN2005hk - http://adsabs.harvard.edu/abs/2008ApJ...680..580S
+* SN2006bc - http://adsabs.harvard.edu/abs/2012ApJ...753..109G
+* SN2006gz - http://adsabs.harvard.edu/abs/2009ApJ...690.1745M
+* SN2007ax - http://adsabs.harvard.edu/abs/2008ApJ...683L..29K
+* SN2007gr - http://adsabs.harvard.edu/abs/2009A%26A...508..371H
+* SN2007gr - http://adsabs.harvard.edu/abs/2010MNRAS.408...87M
+* SN2007gr - http://adsabs.harvard.edu/abs/2014ApJ...790..120C
+* SN2007od - http://adsabs.harvard.edu/abs/2012MNRAS.422.1178I
+* SN2007pk - http://adsabs.harvard.edu/abs/2012ApJ...750..128P
+* SN2007qd - http://adsabs.harvard.edu/abs/2010ApJ...720..704M
+* SN2007if - http://adsabs.harvard.edu/abs/2010ApJ...715.1338Y
+* SN2007it - http://adsabs.harvard.edu/abs/2011ApJ...731...47A
+* SN2007ru - http://adsabs.harvard.edu/abs/2009ApJ...697..676S
+* SN2007uy - http://adsabs.harvard.edu/abs/2013MNRAS.434.2032R
 * SN2008D - http://www.nature.com/nature/journal/v453/n7194/suppinfo/nature06997.html
+* SN2008fz - http://adsabs.harvard.edu/abs/2010ApJ...718L.127D
+* SN2008ge - http://adsabs.harvard.edu/abs/2010AJ....140.1321F
 * SN2008in - http://adsabs.harvard.edu/abs/2011ApJ...736...76R
 * SN2009N - http://adsabs.harvard.edu/abs/2014MNRAS.438..368T
 * SN2009bw - http://adsabs.harvard.edu/abs/2012MNRAS.422.1122I
+* SN2009dc - http://adsabs.harvard.edu/abs/2009ApJ...707L.118Y
 * SN2009ib - http://adsabs.harvard.edu/abs/2015MNRAS.450.3137T
+* SN2009hd - http://adsabs.harvard.edu/abs/2011ApJ...742....6E
+* SN2009ig - http://adsabs.harvard.edu/abs/2012ApJ...744...38F
+* SN1009ig - http://adsabs.harvard.edu/abs/2013ApJ...777...40M
 * SN2009ip - http://mnras.oxfordjournals.org/content/453/4/3886.full
 * SN2009jf - http://adsabs.harvard.edu/abs/2011MNRAS.413.2583S
 * SN2009kf - http://adsabs.harvard.edu/abs/2010ApJ...717L..52B
@@ -72,6 +129,12 @@ Other single SN datasets:
 * iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
 * PS1-13arp - http://adsabs.harvard.edu/abs/2015ApJ...804...28G
 * LSQ13zm - http://arxiv.org/abs/1604.00013
+* SN2014J - http://adsabs.harvard.edu/abs/2014ApJ...795L...4K
+* SN2014J - http://adsabs.harvard.edu/abs/2014ApJ...784L..12G
+* SN2014J - http://adsabs.harvard.edu/abs/2015ApJ...804...66V
+* SN2014J - http://adsabs.harvard.edu/abs/2015ApJ...798...93T
+* SN2014J - http://adsabs.harvard.edu/abs/2015ApJ...798...39M
+* SN2014J - http://adsabs.harvard.edu/abs/2015MNRAS.451.4104J
 * iPTF14atg - http://adsabs.harvard.edu/abs/2015Natur.521..328C
 * LSQ14bdq - http://iopscience.iop.org/article/10.1088/2041-8205/807/1/L18/meta
 * SN2015U - http://arxiv.org/abs/1603.04866
