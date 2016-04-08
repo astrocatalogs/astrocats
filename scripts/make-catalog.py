@@ -588,7 +588,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         spectrumflux = []
         spectrumerrs = []
         spectrummjdmax = []
-        hasepoch = False
+        hasepoch = True
         hasmjdmax = False
         if 'redshift' in catalog[entry]:
             z = float(catalog[entry]['redshift'][0]['value'])
@@ -610,8 +610,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 spectrumerrs.append([float(spectrumdata[x][2]) for x in specrange])
                 spectrumerrs[-1] = [x if is_number(x) and not isnan(float(x)) else 0. for x in spectrumerrs[-1]]
 
-            if 'timeunit' in spectrum and 'time' in spectrum:
-                hasepoch = True
+            if 'timeunit' not in spectrum or 'time' not in spectrum:
+                hasepoch = False
 
             mjdmax = ''
             if 'timeunit' in spectrum and spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:

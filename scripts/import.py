@@ -274,7 +274,7 @@ def get_source_by_alias(name, alias):
 
 def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
-                   observatory = "", observer = ""):
+                   observatory = "", observer = "", host = False):
     if not time or not magnitude:
         print('Warning: Time or AB mag not specified when adding photometry.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -298,7 +298,8 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
-            if (photo['timeunit'] == timeunit and
+            if ('host' not in photo and not host and
+                photo['timeunit'] == timeunit and
                 Decimal(photo['time']) == Decimal(time) and
                 Decimal(photo['magnitude']) == Decimal(magnitude) and
                 (('band' not in photo and not band) or
@@ -336,6 +337,8 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
         photoentry['source'] = source
     if upperlimit:
         photoentry['upperlimit'] = upperlimit
+    if host:
+        photoentry['host'] = host
     events[name].setdefault('photometry',[]).append(photoentry)
 
 def trim_str_arr(arr, length = 10):
@@ -482,6 +485,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                 hours = floor(flhours)
                 minutes = floor((flhours - hours) * 60.0)
                 seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
+                if seconds > 60.0:
+                    raise(ValueError('Invalid seconds value for ' + quantity))
                 svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
             elif 'dec' in quantity:
                 fldeg = abs(deg)

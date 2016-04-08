@@ -41,7 +41,9 @@ bandcodes = [
     "W1",
     "W2",
     "pg",
-    "Mp"
+    "Mp",
+    "w",
+    "y"
 ]
 
 bandaliases = OrderedDict([
