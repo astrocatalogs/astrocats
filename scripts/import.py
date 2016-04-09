@@ -3354,7 +3354,7 @@ if do_task('wiserepspectra'):
                         if "Spec Type:</span>" in str(tr.contents) and produceoutput:
                             produceoutput = False
 
-                            if claimedtype == 'TDE' or claimedtype == 'Varstar':
+                            if claimedtype in ['TDE', 'Varstar']:
                                 continue
 
                             trstr = str(tr)
@@ -3400,7 +3400,8 @@ if do_task('wiserepspectra'):
                             else:
                                 sources = secondarysource
 
-                            add_quantity(name, 'claimedtype', claimedtype, secondarysource)
+                            if claimedtype not in ['Other']:
+                                add_quantity(name, 'claimedtype', claimedtype, secondarysource)
                             add_quantity(name, 'redshift', redshift, secondarysource)
 
                             if not specpath:
@@ -3664,7 +3665,8 @@ if do_task('ucbspectra'):
         source = add_source(name, bibcode = bibcode)
         secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
         sources = ','.join([source, secondarysource])
-        add_quantity(name, 'claimedtype', claimedtype, sources)
+        if claimedtype not in ['None']:
+            add_quantity(name, 'claimedtype', claimedtype, sources)
         if 'discoverdate' not in events[name] and name[:2] == 'SN' and is_number(name[2:6]):
             add_quantity(name, 'discoverdate', name[2:6], sources)
 

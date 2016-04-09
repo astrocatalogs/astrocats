@@ -381,7 +381,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     photoavail = 'photometry' in catalog[entry]
     # Must be two sigma above host magnitude, if host magnitude known, to add to phot count.
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and
-        (not hostmag or float(x['magnitude']) <= (hostmag - 2.0*hosterr))]) if photoavail else 0
+        (not hostmag or not x['includeshost'] or x['magnitude'] <= (hostmag - 2.0*hosterr))]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
 
     maxabsappoffset = 0.0
