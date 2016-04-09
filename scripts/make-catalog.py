@@ -366,8 +366,22 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for d, date in enumerate(catalog[entry]['maxdate']):
             catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][d]['value'].split('.')[0]
 
+    hostmag = ''
+    hosterr = ''
+    if 'photometry' in catalog[entry]:
+        for pi, photo in enumerate(catalog[entry]['photometry']):
+            if 'host' in photo and ('upperlimit' not in photo or not photo['upperlimit']):
+                hostmag = float(photo['magnitude'])
+                hosterr = float(photo['e_magnitude']) if 'e_magnitude' in photo else 0.0
+
+        # Delete the host magnitudes so they are not plotted as points
+        catalog[entry]['photometry'][:] = [x for x in catalog[entry]['photometry']
+            if 'host' not in x]
+
     photoavail = 'photometry' in catalog[entry]
-    numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x]) if photoavail else 0
+    # Must be two sigma above host magnitude, if host magnitude known, to add to phot count.
+    numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and
+        (not hostmag or float(x['magnitude']) <= (hostmag - 2.0*hosterr))]) if photoavail else 0
     catalog[entry]['numphoto'] = numphoto
 
     maxabsappoffset = 0.0
