@@ -39,6 +39,7 @@ Other single SN datasets:
 * SN1993J - http://adsabs.harvard.edu/abs/2000AJ....120.1487M
 * SN1993J - http://adsabs.harvard.edu/abs/2000AJ....120.1499M
 * SN1994D - http://adsabs.harvard.edu/abs/1996MNRAS.281..263M
+* SN1994D - http://adsabs.harvard.edu/abs/1998AJ....115.1096G, June 5th spectrum
 * SN1995D - http://adsabs.harvard.edu/abs/1996PASJ...48...51S
 * SN1995N - http://adsabs.harvard.edu/abs/2002ApJ...572..350F
 * SN1995V - http://adsabs.harvard.edu/abs/1998MNRAS.299..150F
