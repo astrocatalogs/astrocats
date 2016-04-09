@@ -170,12 +170,12 @@ sourcekeys = [
 
 newfiletemplate = (
 '''{
-  "{0}":{
-    "name":"{0}",
-    "aliases":[
-      "{0}"
-    ]
-  }
+\t"{0}":{
+\t\t"name":"{0}",
+\t\t"aliases":[
+\t\t\t"{0}"
+\t\t]
+\t}
 }'''
 )
 
@@ -358,8 +358,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             + fileeventname + ".json' target='_blank'></a>")
     else:
         template = urllib.parse.quote(newfiletemplate.replace('{0}',eventname))
-        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/new/master/?filename="
-            + fileeventname + ".json&value=" + template + "' target='_blank'></a>")
+        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' onclick='eSN(\"" + entry + "\",\"" + fileeventname + "\")'></a>")
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
             catalog[entry]['discoverdate'][d]['value'] = catalog[entry]['discoverdate'][d]['value'].split('.')[0]
@@ -589,7 +588,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         spectrumflux = []
         spectrumerrs = []
         spectrummjdmax = []
-        hasepoch = False
+        hasepoch = True
         hasmjdmax = False
         if 'redshift' in catalog[entry]:
             z = float(catalog[entry]['redshift'][0]['value'])
@@ -611,11 +610,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 spectrumerrs.append([float(spectrumdata[x][2]) for x in specrange])
                 spectrumerrs[-1] = [x if is_number(x) and not isnan(float(x)) else 0. for x in spectrumerrs[-1]]
 
-            if 'timeunit' in spectrum and 'time' in spectrum:
-                hasepoch = True
+            if 'timeunit' not in spectrum or 'time' not in spectrum:
+                hasepoch = False
 
             mjdmax = ''
-            if spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
+            if 'timeunit' in spectrum and spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
                 if 'maxdate' in catalog[entry]:
                     mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'].replace('/', '-')).mjd
                 if mjdmax:
@@ -1113,7 +1112,7 @@ if args.writecatalog and not args.eventlist:
         f.write(sitemapxml)
 
     # Ping Google to let them know sitemap has been updated
-    response = urllib.request.urlopen(googlepingurl)
+    #response = urllib.request.urlopen(googlepingurl)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
