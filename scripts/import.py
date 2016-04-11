@@ -2360,7 +2360,7 @@ if do_task('cpcs'):
 
     soup = BeautifulSoup(html, "html5lib")
     lastid = int(soup.findAll("table")[0].findAll('tr')[1].findAll('td')[0].contents[0])
-    for ai in range(lastid,1,-1):
+    for ai in range(lastid,20000,-1):
         fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
         if tasks['cpcs']['archived'] and os.path.isfile(fname):
             with open(fname, 'r') as f:

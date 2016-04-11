@@ -9,7 +9,8 @@ if [ $# -eq 0 ]
 	exit
 fi
 
-git pull
+./pull-repos.sh
+
 git commit -a -m "$1"
 git push
 repos=($(awk -F= '{print $1}' rep-folders.txt))
@@ -19,7 +20,6 @@ for repo in ${repos[@]}; do
 	echo ${repo}
 	cd ${repo}
 	pwd
-	git pull
 	git add -A
 	git commit -a -m "$1"
 	git lfs push origin master
