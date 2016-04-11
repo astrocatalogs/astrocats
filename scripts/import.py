@@ -42,6 +42,7 @@ tasks = {
     "simbad":           {"update": False},
     "vizier":           {"update": False},
     "nicholl-04-01-16": {"update": False},
+    "maggi-04-11-16":    {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
     "suspect":          {"update": False},
@@ -53,7 +54,8 @@ tasks = {
     "asiago":           {"update": False},
     "rochester":        {"update": True },
     "lennarz":          {"update": False},
-    "gaia":             {"update": False},
+    "gaia":             {"update": False, "archived": True},
+    "cpcs":             {"update": True,  "archived": True},
     "ogle":             {"update": True },
     "snls":             {"update": False},
     "panstarrs":        {"update": False},
@@ -1228,6 +1230,7 @@ if do_task('vizier'):
                   add_source(name, reference = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
 
         add_alias(name, row["SNR"].strip())
+        add_alias(name, 'MWSNR '+row["SNR"].strip('G '))
 
         if row["Names"]:
             names = row["Names"].split(',')
@@ -1236,7 +1239,6 @@ if do_task('vizier'):
                 if nam.strip()[:2] == 'SN':
                     add_quantity(name, 'discoverdate', nam.strip()[2:], source)
 
-        add_quantity(name, 'claimedtype', 'SNR', source)
         add_quantity(name, 'host', 'Milky Way', source)
         add_quantity(name, 'ra', row['RAJ2000'], source)
         add_quantity(name, 'dec', row['DEJ2000'], source)
@@ -1926,6 +1928,38 @@ if do_task('nicholl-04-01-16'):
                         e_magnitude = err, upperlimit = upperlimit, source = source)
     journal_events()
 
+# MC SNRs
+if do_task('maggi-04-11-16'):
+    with open('../sne-external/Maggi-04-11-16/LMCSNRs_OpenSNe.csv') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for row in tsvin:
+            print(row)
+            name = 'MCSNR ' + row[0]
+            name = add_event(name)
+            source = add_source(name, bibcode = '2016A&A...585A.162M')
+            if row[1] != 'noname':
+                add_alias(name, row[1])
+            add_quantity(name, 'ra', row[2], source)
+            add_quantity(name, 'dec', row[3], source)
+            add_quantity(name, 'host', 'LMC', source)
+            if row[4] == '1':
+                add_quantity(name, 'claimedtype', 'Ia', source)
+            elif row[4] == '2':
+                add_quantity(name, 'claimedtype', 'CC', source)
+    with open('../sne-external/Maggi-04-11-16/SMCSNRs_OpenSNe.csv') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for row in tsvin:
+            print(row)
+            name = 'MCSNR ' + row[0]
+            name = add_event(name)
+            source = add_source(name, reference = 'Pierre Maggi')
+            add_alias(name, row[1])
+            add_alias(name, row[2])
+            add_quantity(name, 'ra', row[3], source)
+            add_quantity(name, 'dec', row[4], source)
+            add_quantity(name, 'host', 'SMC', source)
+    journal_events()
+
 # CCCP
 if do_task('cccp'):
     cccpbands = ['B', 'V', 'R', 'I']
@@ -2284,56 +2318,71 @@ if do_task('sdss'):
 
 #Import GAIA
 if do_task('gaia'): 
-    #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
-    path = os.path.abspath('../sne-external/selected-gaia-science-alerts')
-    response = urllib.request.urlopen('file://' + path)
-    html = response.read()
-
-    soup = BeautifulSoup(html, "html5lib")
-    table = soup.findAll("table")[1]
-    for r, row in enumerate(table.findAll('tr')):
-        if r == 0:
+    response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv')
+    tsvin = csv.reader(response.read().decode('utf-8').splitlines(), delimiter=',', skipinitialspace=True)
+    reference = "Gaia Photometric Science Alerts"
+    refurl = "https://gaia.ac.uk/selected-gaia-science-alerts"
+    for ri, row in enumerate(tsvin):
+        if ri == 0 or not row:
             continue
-
-        col = row.findAll('td')
-        classname = col[7].contents[0]
-
-        if 'SN' not in classname:
+        if 'SN' not in row[7] and ('SN' not in row[9] or 'imposter' in row[9]):
             continue
-
-        links = row.findAll('a')
-        name = links[0].contents[0]
-
-        if name == 'Gaia15aaaa':
-            continue
-
-        name = add_event(name)
-
-        reference = "Gaia Photometric Science Alerts"
-        refurl = "https://gaia.ac.uk/selected-gaia-science-alerts"
+        name = add_event(row[0])
         source = add_source(name, reference = reference, url = refurl)
-
-        year = '20' + re.findall(r'\d+', name)[0]
+        year = '20' + re.findall(r'\d+', row[0])[0]
         add_quantity(name, 'discoverdate', year, source)
+        add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row[2], source, unit = 'floatdegrees')
+        if 'SN' in row[7]:
+            add_quantity(name, 'claimedtype', row[7].replace('SN', '').strip(), source)
 
-        add_quantity(name, 'ra', col[2].contents[0].strip(), source, unit = 'floatdegrees')
-        add_quantity(name, 'dec', col[3].contents[0].strip(), source, unit = 'floatdegrees')
-        add_quantity(name, 'claimedtype', classname.replace('SN', '').strip(), source)
+        fname = '../sne-external/GAIA/' + row[0] + '.csv'
+        if tasks['gaia']['archived'] and os.path.isfile(fname):
+            with open(fname, 'r') as f:
+                csvtxt = f.read()
+        else:
+            response = urllib.request.urlopen("http://gsaweb.ast.cam.ac.uk/alerts/alert/" + row[0] + "/lightcurve.csv")
+            with open(fname, 'w') as f:
+                csvtxt = response.read().decode('utf-8')
+                f.write(csvtxt)
 
-        photfile = '../sne-external/GAIA/GAIA-' + name + '.html'
-        with open(photfile, 'r') as f:
-            phottxt = f.read()
-
-        photsoup = BeautifulSoup(phottxt, "html5lib")
-        photodata = str(photsoup.contents[0]).split('\n')[2:-1]
-        for ph in photodata:
-            photo = ph.split(',')
-            mjd = str(jd_to_mjd(Decimal(photo[1].strip())))
-            magnitude = photo[2].strip()
+        tsvin2 = csv.reader(csvtxt.splitlines())
+        for ri2, row2 in enumerate(tsvin2):
+            if ri2 <= 1 or not row2:
+                continue
+            mjd = str(jd_to_mjd(Decimal(row2[1].strip())))
+            magnitude = row2[2].strip()
+            if magnitude == 'null':
+                continue
             e_magnitude = 0.
             telescope = 'GAIA'
             band = 'G'
             add_photometry(name, time = mjd, telescope = telescope, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+    journal_events()
+
+if do_task('cpcs'):
+    response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?offset=20&observed_only=1')
+    html = response.read()
+
+    soup = BeautifulSoup(html, "html5lib")
+    lastid = int(soup.findAll("table")[0].findAll('tr')[1].findAll('td')[0].contents[0])
+    for ai in range(lastid,20000,-1):
+        fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
+        if tasks['cpcs']['archived'] and os.path.isfile(fname):
+            with open(fname, 'r') as f:
+                jsonstr = f.read()
+        else:
+            session = requests.Session()
+            response = session.get("http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=" + str(ai) + "&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
+            with open(fname, 'w') as f:
+                jsonstr = response.text
+                f.write(jsonstr)
+
+        try:
+            cpcsalert = json.loads(jsonstr)
+        except:
+            continue
+        print('Parsed CPCS alert ' + str(ai))
     journal_events()
 
 # Import CSP
