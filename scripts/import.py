@@ -859,7 +859,7 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor']
+        nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'AGN / QSO', 'TDE', 'Varstar']
         if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
             for ct in events[name]['claimedtype']:
@@ -3353,9 +3353,6 @@ if do_task('wiserepspectra'):
                                         continue
                         if "Spec Type:</span>" in str(tr.contents) and produceoutput:
                             produceoutput = False
-
-                            if claimedtype in ['TDE', 'Varstar']:
-                                continue
 
                             trstr = str(tr)
                             result = re.search('redshift=(.*?)&amp;', trstr)
