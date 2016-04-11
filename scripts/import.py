@@ -42,7 +42,7 @@ tasks = {
     "simbad":           {"update": False},
     "vizier":           {"update": False},
     "nicholl-04-01-16": {"update": False},
-    "maggi-04-11-16":    {"update": False},
+    "maggi-04-11-16":   {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
     "suspect":          {"update": False},
@@ -2060,7 +2060,6 @@ if do_task('nicholl-04-01-16'):
                     err = ''
                     if is_number(row[2*v+2]) and not isnan(float(row[2*v+2])):
                         err = row[2*v+2]
-                        print(v,mag,err)
                     add_photometry(name, time = mjd, band = bands[v], magnitude = mag,
                         e_magnitude = err, upperlimit = upperlimit, source = source)
     journal_events()
@@ -2070,7 +2069,6 @@ if do_task('maggi-04-11-16'):
     with open('../sne-external/Maggi-04-11-16/LMCSNRs_OpenSNe.csv') as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in tsvin:
-            print(row)
             name = 'MCSNR ' + row[0]
             name = add_event(name)
             source = add_source(name, bibcode = '2016A&A...585A.162M')
@@ -2086,7 +2084,6 @@ if do_task('maggi-04-11-16'):
     with open('../sne-external/Maggi-04-11-16/SMCSNRs_OpenSNe.csv') as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in tsvin:
-            print(row)
             name = 'MCSNR ' + row[0]
             name = add_event(name)
             source = add_source(name, reference = 'Pierre Maggi')
