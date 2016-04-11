@@ -440,7 +440,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hastimeerrs = (len(list(filter(None, phototimelowererrs))) and len(list(filter(None, phototimeuppererrs))))
         hasABerrs = len(list(filter(None, photoABerrs)))
         tt = [  
-                ("Source ID", "@src"),
+                ("Source ID(s)", "@src"),
                 ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")",
                  "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>" if hastimeerrs else ""))
              ]
@@ -654,7 +654,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for f, flux in enumerate(spectrumscaled):
             spectrumscaled[f] = [x - y_offsets[f] for x in flux]
 
-        tt2 = []
+        tt2 = [ ("Source ID(s)", "@src") ]
         if 'redshift' in catalog[entry]:
             tt2 += [ ("λ (rest)", "@xrest{1.1} Å") ]
         tt2 += [
@@ -669,7 +669,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         if hasmjdmax:
             tt2 += [ ("Rest days to max", "@mjdmax{1.11}") ]
 
-        tt2 += [ ("Source", "@src") ]
         hover2 = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
