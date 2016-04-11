@@ -38,11 +38,11 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":         {"update": False},
+    "internal":         {"update": True},
     "simbad":           {"update": False},
     "vizier":           {"update": False},
     "nicholl-04-01-16": {"update": False},
-    "maggi-04-11-16":    {"update": False},
+    "maggi-04-11-16":   {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
     "suspect":          {"update": False},
@@ -208,7 +208,7 @@ def get_preferred_name(name):
     else:
         return name
 
-def event_filename(name):
+def get_event_filename(name):
     return(name.replace('/', '_'))
 
 def add_alias(name, alias):
@@ -297,6 +297,9 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
         print('Name : "' + name + '", Time: "' + time + '", Time error: "' + e_time + '"')
         return
 
+    if not source:
+        ValueError('Photometry must have source before being added!')
+
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
@@ -365,6 +368,10 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
     if not fluxunit:
         'Warning: No flux unit specified, not adding spectrum.'
         return
+
+    if not source:
+        ValueError('Spectrum must have source before being added!')
+
     spectrumentry = OrderedDict()
     if deredshifted != '':
         spectrumentry['deredshifted'] = deredshifted
@@ -717,6 +724,36 @@ def is_number(s):
 def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
+# Merge and remove duplicate events
+def merge_duplicates():
+    for name1 in list(events.keys()):
+        if name1 not in events:
+            continue
+        allnames1 = events[name1]["aliases"]
+        for name2 in list(events.keys()):
+            if name2 not in events:
+                continue
+            if name1 == name2:
+                continue
+            allnames2 = events[name2]["aliases"]
+            intersection = list(set(allnames1).intersection(allnames2))
+            if intersection:
+                print('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
+                load_event_from_file(name1, delete = True)
+                load_event_from_file(name2, delete = True)
+                iau1 = False
+                for an in allnames1:
+                    if len(an) >= 2 and an[:2] == 'SN':
+                        iau1 = True
+
+                if iau1:
+                    copy_to_event(name2, name1)
+                    del(events[name2])
+                else:
+                    copy_to_event(name1, name2)
+                    del(events[name1])
+                journal_events()
+
 def derive_and_sanitize():
     path = '../bibauthors.json'
     if os.path.isfile(path):
@@ -849,7 +886,7 @@ def write_all_events(empty = False, gz = False, delete = False):
                 del(events[name]['stub'])
         if not args.travis:
             print('Writing ' + name)
-        filename = event_filename(name)
+        filename = get_event_filename(name)
 
         outdir = '../'
         if 'discoverdate' in events[name]:
@@ -889,72 +926,172 @@ def write_all_events(empty = False, gz = False, delete = False):
             os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
             #os.system('cd ' + outdir + '; git lfs track ' + filename + '.json; cd ' + '../scripts')
 
-def copy_to_event(source, target):
-    # Will write this later
-    pass
+def null_field(obj, field):
+    return obj[field] if field in obj else ''
 
-def load_event_from_file(name = '', location = '', clean = False, delete = True):
+def copy_to_event(fromname, destname):
+    print('Copying ' + fromname + ' to event ' + destname)
+    newsourcealiases = {}
+    keys = list(sorted(events[fromname].keys(), key=lambda key: event_attr_priority(key)))
+    for key in keys:
+        if key == 'name':
+            add_alias(destname, events[fromname][key])
+        elif key == 'aliases':
+            for alias in events[fromname][key]:
+                add_alias(destname, alias)
+        elif key == 'sources':
+            for source in events[fromname][key]:
+                if 'bibcode' in source:
+                    newsourcealiases[source['alias']] = add_source(destname, bibcode = source['bibcode'])
+                else:
+                    newsourcealiases[source['alias']] = (add_source(destname,
+                        reference = source['name'] if 'name' in source else '',
+                        url = source['url'] if 'url' in source else ''))
+        else:
+            for item in events[fromname][key]:
+                isd = False
+                sources = []
+                if 'source' not in item:
+                    ValueError("Item has no source!")
+                for sid in item['source'].split(','):
+                    if sid == 'D':
+                        sources.append('D')
+                    elif sid in newsourcealiases:
+                        sources.append(newsourcealiases[sid])
+                    else:
+                        ValueError("Couldn't find source alias!")
+                sources = ','.join(sources)
+
+                if key == 'photometry':
+                    add_photometry(destname, timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
+                        e_time = null_field(item, "e_time"), telescope = null_field(item, "telescope"),
+                        instrument = null_field(item, "instrument"), band = null_field(item, "band"),
+                        magnitude = null_field(item, "magnitude"), e_magnitude = null_field(item, "e_magnitude"),
+                        source = sources, upperlimit = null_field(item, "upperlimit"), system = null_field(item, "system"),
+                        observatory = null_field(item, "observatory"), observer = null_field(item, "observer"),
+                        host = null_field(item, "host"))
+                elif key == 'spectra':
+                    add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), null_field(item, "wavelengths"),
+                        null_field(item, "fluxes"), timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
+                        instrument = null_field(item, "instrument"), deredshifted = null_field(item, "deredshifted"),
+                        dereddened = null_field(item, "dereddened"), errorunit = null_field(item, "errorunit"),
+                        errors = null_field(item, "errors"), source = sources, snr = null_field(item, "snr"),
+                        telescope = null_field(item, "telescope"), observer = null_field(item, "observer"),
+                        reducer = null_field(item, "reducer"), filename = null_field(item, "filename"),
+                        observatory = null_field(item, "observatory"))
+                else:
+                    add_quantity(destname, key, item['value'], sources, error = null_field(item, "error"),
+                        unit = null_field(item, "unit"), kind = null_field(item, "kind"))
+
+def load_event_from_file(name = '', location = '', clean = False, delete = True, append = False):
     if not name and not location:
         raise ValueError('Either event name or location must be specified to load event')
 
-    if location and not name:
+    path = ''
+    namepath = ''
+    if location:
         path = location
-    else:
+    if name:
         indir = '../'
-        path = ''
         for rep in repofolders:
-            newpath = indir + rep + '/' + name + '.json'
+            filename = get_event_filename(name)
+            newpath = indir + rep + '/' + filename + '.json'
             if os.path.isfile(newpath):
-                path = newpath
+                namepath = newpath
 
-    if not path:
+    if not path and not namepath:
         return False
     else:
-        with open(path, 'r') as f:
+        newevent = ''
+        newevent2 = ''
+        if path or namepath:
             if name in events:
                 del events[name]
 
-            newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
-            if location and name:
-                with open(path, 'r') as f2:
-                    newevent2 = json.loads(f2.read(), object_pairs_hook=OrderedDict)
-                copy_to_event(newevent, newevent2)
-                newevent = newevent2
+        if path and namepath:
+            with open(path, 'r') as f, open(namepath, 'r') as nf:
+                newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
+                newevent2 = json.loads(nf.read(), object_pairs_hook=OrderedDict)
+        elif path:
+            with open(path, 'r') as f:
+                newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
+        elif namepath:
+            with open(namepath, 'r') as f:
+                newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
-            events.update(newevent)
+        if newevent:
+            if clean:
+                newevent = clean_event(newevent)
+            name = next(reversed(newevent))
+            if append:
+                indir = '../'
+                for rep in repofolders:
+                    filename = get_event_filename(name)
+                    newpath = indir + rep + '/' + filename + '.json'
+                    if os.path.isfile(newpath):
+                        namepath = newpath
+                if namepath:
+                    with open(namepath, 'r') as f:
+                        newevent2 = json.loads(f.read(), object_pairs_hook=OrderedDict)
+                        namename = next(reversed(newevent2))
 
-            name = next(reversed(events))
+
+            if newevent2:
+                newevent = OrderedDict([['temp',newevent[name]]])
+                copy_to_event('temp', namename)
+            else:
+                events.update(newevent)
+
             if not args.travis:
                 print('Loaded ' + name)
 
-        if clean:
-            clean_event(name)
-        if 'writeevents' in tasks and delete:
-            os.remove(path)
+        if 'writeevents' in tasks and delete and namepath:
+            os.remove(namepath)
         return name
 
-def clean_event(name):
+def clean_event(dirtyevent):
     bibcodes = []
-    if 'name' not in events[name]:
-        events[name]['name'] = name
-    if 'aliases' not in events[name]:
-        add_alias(name, name)
-    if 'sources' in events[name]:
-        for s, source in enumerate(events[name]['sources']):
-            if 'bibcode' in source and 'name' not in source:
+    name = next(reversed(dirtyevent))
+
+    # This is very hacky and is only necessary because we don't have a proper 'Event' object yet.
+    events['temp'] = dirtyevent[name]
+
+    if 'name' not in events['temp']:
+        events['temp']['name'] = name
+    if 'aliases' not in events['temp']:
+        add_alias('temp', name)
+    if 'sources' in events['temp']:
+        # Rebuild the sources
+        newsources = []
+        oldsources = events['temp']['sources']
+        del(events['temp']['sources'])
+        for s, source in enumerate(oldsources):
+            if 'bibcode' in source:
                 bibcodes.append(source['bibcode'])
-        if bibcodes:
-            del events[name]['sources']
-            for bibcode in bibcodes:
-                add_source(name, bibcode = bibcode)
-    if 'photometry' in events[name]:
-        for p, photo in enumerate(events[name]['photometry']):
-            if photo['timeunit'] == 'JD':
-                events[name]['photometry'][p]['timeunit'] = 'MJD'
-                events[name]['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
-            if bibcodes and 'source' not in photo:
-                alias = add_source(name, bibcode = bibcodes[0])
-                events[name]['photometry'][p]['source'] = alias
+                add_source('temp', bibcode = source['bibcode'])
+            else:
+                add_source('temp', reference = source['name'], url = source['url'])
+
+    for key in list(events['temp'].keys()):
+        if key in ['name', 'aliases', 'sources']:
+            pass
+        elif key == 'photometry':
+            for p, photo in enumerate(events['temp']['photometry']):
+                if photo['timeunit'] == 'JD':
+                    events['temp']['photometry'][p]['timeunit'] = 'MJD'
+                    events['temp']['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
+                if bibcodes and 'source' not in photo:
+                    alias = add_source('temp', bibcode = bibcodes[0])
+                    events['temp']['photometry'][p]['source'] = alias
+        else:
+            for qi, quantity in enumerate(events['temp'][key]):
+                if bibcodes and 'source' not in quantity:
+                    alias = add_source('temp', bibcode = bibcodes[0])
+                    events['temp'][key][qi]['source'] = alias
+
+    cleanevent = events['temp']
+    del (events['temp'])
+    return OrderedDict([[name,cleanevent]])
 
 def do_task(task):
     dotask = task in tasks and (not args.update or tasks[task]['update'])
@@ -990,7 +1127,7 @@ if 'writeevents' in tasks:
 if do_task('internal'):
     for datafile in sorted(glob.glob("../sne-internal/*.json"), key=lambda s: s.lower()):
         if args.update:
-            if not load_event_from_file(location = datafile, clean = True, delete = False, name = 'temporary'):
+            if not load_event_from_file(location = datafile, clean = True, delete = False, append = True):
                 raise IOError('Failed to find specified file.')
         else:
             if not load_event_from_file(location = datafile, clean = True, delete = False):
@@ -1923,7 +2060,6 @@ if do_task('nicholl-04-01-16'):
                     err = ''
                     if is_number(row[2*v+2]) and not isnan(float(row[2*v+2])):
                         err = row[2*v+2]
-                        print(v,mag,err)
                     add_photometry(name, time = mjd, band = bands[v], magnitude = mag,
                         e_magnitude = err, upperlimit = upperlimit, source = source)
     journal_events()
@@ -1933,7 +2069,6 @@ if do_task('maggi-04-11-16'):
     with open('../sne-external/Maggi-04-11-16/LMCSNRs_OpenSNe.csv') as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in tsvin:
-            print(row)
             name = 'MCSNR ' + row[0]
             name = add_event(name)
             source = add_source(name, bibcode = '2016A&A...585A.162M')
@@ -1949,7 +2084,6 @@ if do_task('maggi-04-11-16'):
     with open('../sne-external/Maggi-04-11-16/SMCSNRs_OpenSNe.csv') as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in tsvin:
-            print(row)
             name = 'MCSNR ' + row[0]
             name = add_event(name)
             source = add_source(name, reference = 'Pierre Maggi')
@@ -2332,7 +2466,7 @@ if do_task('gaia'):
         year = '20' + re.findall(r'\d+', row[0])[0]
         add_quantity(name, 'discoverdate', year, source)
         add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
-        add_quantity(name, 'dec', row[2], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', row[3], source, unit = 'floatdegrees')
         if 'SN' in row[7]:
             add_quantity(name, 'claimedtype', row[7].replace('SN', '').strip(), source)
 
@@ -3955,6 +4089,8 @@ if do_task('superfitspectra'):
             
             lastname = name
         journal_events()
+
+merge_duplicates()
 
 files = []
 for rep in repofolders:
