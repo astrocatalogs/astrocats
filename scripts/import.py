@@ -276,13 +276,13 @@ def get_source_by_alias(name, alias):
 
 def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
-                   observatory = "", observer = "", host = False):
-    if not time or not magnitude:
+                   observatory = "", observer = "", host = False, includeshost = False):
+    if (not time and not host) or not magnitude:
         print('Warning: Time or AB mag not specified when adding photometry.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if not is_number(time) or not is_number(magnitude):
+    if (not host and not is_number(time)) or not is_number(magnitude):
         print('Warning: Time or AB mag not numerical.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
@@ -320,7 +320,8 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
 
     photoentry = OrderedDict()
     photoentry['timeunit'] = timeunit
-    photoentry['time'] = str(time)
+    if time:
+        photoentry['time'] = str(time)
     if band:
         photoentry['band'] = band
     if system:
@@ -344,6 +345,8 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
         photoentry['upperlimit'] = upperlimit
     if host:
         photoentry['host'] = host
+    if includeshost:
+        photoentry['includeshost'] = includeshost
     events[name].setdefault('photometry',[]).append(photoentry)
 
 def trim_str_arr(arr, length = 10):
@@ -647,7 +650,8 @@ def get_first_light(name):
     if 'photometry' not in events[name]:
         return (None, None)
 
-    eventphoto = [(Decimal(x['time']), x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x and 'timeunit' in x and x['timeunit'] == 'MJD']
+    eventphoto = [(Decimal(x['time']), x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x
+        and 'time' in x and 'timeunit' in x and x['timeunit'] == 'MJD']
     if not eventphoto:
         return (None, None)
     flmjd = min([x[0] for x in eventphoto])
@@ -819,7 +823,7 @@ def derive_and_sanitize():
                     dl = cosmo.comoving_distance(float(bestz))
                     add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
         if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: (float(x['time']),
+            events[name]['photometry'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0,
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0))
@@ -894,7 +898,7 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor']
+        nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'AGN / QSO', 'TDE', 'Varstar']
         if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
             for ct in events[name]['claimedtype']:
@@ -3190,6 +3194,8 @@ if do_task('psthreepi'):
         journal_events()
 
 if do_task('css'):
+    cssnameerrors = ['2011ax']
+
     response = urllib.request.urlopen("http://nesssi.cacr.caltech.edu/catalina/AllSN.html")
     bs = BeautifulSoup(response, "html5lib")
     trs = bs.findAll('tr')
@@ -3216,9 +3222,19 @@ if do_task('css'):
                 aliases = list(filter(None, aliases.split(' ')))
 
         name = ''
+        hostmag = ''
+        hostupper = False
         validaliases = []
-        for alias in aliases:
-            if alias in ['SN', 'SDSS', 'mag']:
+        for ai, alias in enumerate(aliases):
+            if alias in ['SN', 'SDSS']:
+                continue
+            if alias in cssnameerrors:
+                continue
+            if alias == 'mag':
+                if ai < len(aliases) - 1:
+                    if '>' in aliases[ai+1]:
+                        hostupper = True
+                    hostmag = aliases[ai+1].strip('>').replace(',', '.')
                 continue
             if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
                 name = 'SN' + alias
@@ -3237,6 +3253,11 @@ if do_task('css'):
             add_alias(name, alias)
         add_quantity(name, 'ra', ra, source, unit = 'floatdegrees')
         add_quantity(name, 'dec', dec, source, unit = 'floatdegrees')
+
+        if hostmag:
+            # 1.0 magnitude error based on Drake 2009 assertion that SN are only considered real if they are 2 mags brighter than host.
+            add_photometry(name, band = 'C', magnitude = hostmag, e_magnitude = 1.0, source = source, host = True,
+                telescope = 'Catalina Schmidt', upperlimit = hostupper)
 
         fname2 = '../sne-external/css/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
         if tasks['css']['archived'] and os.path.isfile(fname2):
@@ -3258,7 +3279,7 @@ if do_task('css'):
                 mag = re.search("showy\('(.*?)'\)", line).group(1)
             if 'javascript:showz' in line:
                 err = re.search("showz\('(.*?)'\)", line).group(1)
-            add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source,
+            add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source, includeshost = (float(err) > 0.0),
                 telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
         #for li, line in enumerate(nslines[2*len(nslabels):]):
         #    if not line:
@@ -3519,9 +3540,6 @@ if do_task('wiserepspectra'):
                         if "Spec Type:</span>" in str(tr.contents) and produceoutput:
                             produceoutput = False
 
-                            if claimedtype == 'TDE' or claimedtype == 'Varstar':
-                                continue
-
                             trstr = str(tr)
                             result = re.search('redshift=(.*?)&amp;', trstr)
                             redshift = ''
@@ -3565,7 +3583,8 @@ if do_task('wiserepspectra'):
                             else:
                                 sources = secondarysource
 
-                            add_quantity(name, 'claimedtype', claimedtype, secondarysource)
+                            if claimedtype not in ['Other']:
+                                add_quantity(name, 'claimedtype', claimedtype, secondarysource)
                             add_quantity(name, 'redshift', redshift, secondarysource)
 
                             if not specpath:
@@ -3829,7 +3848,8 @@ if do_task('ucbspectra'):
         source = add_source(name, bibcode = bibcode)
         secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
         sources = ','.join([source, secondarysource])
-        add_quantity(name, 'claimedtype', claimedtype, sources)
+        if claimedtype not in ['None']:
+            add_quantity(name, 'claimedtype', claimedtype, sources)
         if 'discoverdate' not in events[name] and name[:2] == 'SN' and is_number(name[2:6]):
             add_quantity(name, 'discoverdate', name[2:6], sources)
 
