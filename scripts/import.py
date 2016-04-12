@@ -60,8 +60,9 @@ tasks = {
     "ogle":             {"update": True },
     "snls":             {"update": False},
     "panstarrs":        {"update": False},
-    "psthreepi":        {"update": False, "archived": True},
-    "css":              {"update": False, "archived": True},
+    "psthreepi":        {"update": True,  "archived": True},
+    "crts":             {"update": True,  "archived": True},
+    "snhunt":           {"update": True,  "archived": True},
     "nedd":             {"update": False},
     "asiagospectra":    {"update": True },
     "wiserepspectra":   {"update": False},
@@ -3255,122 +3256,135 @@ if do_task('psthreepi'):
                 add_quantity(name, 'redshift', redshift, source, kind = 'host')
         journal_events()
 
-if do_task('css'):
-    cssnameerrors = ['2011ax']
+if do_task('crts'):
+    crtsnameerrors = ['2011ax']
 
-    response = urllib.request.urlopen("http://nesssi.cacr.caltech.edu/catalina/AllSN.html")
-    bs = BeautifulSoup(response, "html5lib")
-    trs = bs.findAll('tr')
-    for tr in trs:
-        tds = tr.findAll('td')
-        if not tds:
-            continue
-        refs = []
-        aliases = []
-        ttype = ''
-        ctype = ''
-        for tdi, td in enumerate(tds):
-            if tdi == 0:
-                cssname = td.contents[0].text.strip()
-            elif tdi == 1:
-                ra = td.contents[0]
-            elif tdi == 2:
-                dec = td.contents[0]
-            elif tdi == 11:
-                lclink = td.find('a')['onclick']
-                lclink = lclink.split("'")[1]
-            elif tdi == 13:
-                aliases = re.sub('[()]', '', re.sub('<[^<]+?>', '', td.contents[-1].strip()))
-                aliases = list(filter(None, aliases.split(' ')))
-
-        name = ''
-        hostmag = ''
-        hostupper = False
-        validaliases = []
-        for ai, alias in enumerate(aliases):
-            if alias in ['SN', 'SDSS']:
+    folders = ["catalina", "MLS", "SSS"]
+    for fold in folders:
+        response = urllib.request.urlopen("http://nesssi.cacr.caltech.edu/" + fold + "/AllSN.html")
+        bs = BeautifulSoup(response, "html5lib")
+        trs = bs.findAll('tr')
+        for tr in trs:
+            tds = tr.findAll('td')
+            if not tds:
                 continue
-            if alias in cssnameerrors:
-                continue
-            if alias == 'mag':
-                if ai < len(aliases) - 1:
-                    if '>' in aliases[ai+1]:
-                        hostupper = True
-                    hostmag = aliases[ai+1].strip('>').replace(',', '.')
-                continue
-            if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
-                name = 'SN' + alias
-            lalias = alias.lower()
-            if (('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
-                ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
-                ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3)):
-                validaliases.append(alias)
-        if not name:
-            name = cssname
-        name = add_event(name)
-        sources = [add_source(name, bibcode = '2009ApJ...696..870D'),
-            add_source(name, reference = 'Catalina Sky Survey', url = 'http://nesssi.cacr.caltech.edu/catalina/AllSN.html')]
-        source = ','.join(sources)
-        for alias in validaliases:
-            add_alias(name, alias)
-        add_quantity(name, 'ra', ra, source, unit = 'floatdegrees')
-        add_quantity(name, 'dec', dec, source, unit = 'floatdegrees')
+            refs = []
+            aliases = []
+            ttype = ''
+            ctype = ''
+            for tdi, td in enumerate(tds):
+                if tdi == 0:
+                    crtsname = td.contents[0].text.strip()
+                elif tdi == 1:
+                    ra = td.contents[0]
+                elif tdi == 2:
+                    dec = td.contents[0]
+                elif tdi == 11:
+                    lclink = td.find('a')['onclick']
+                    lclink = lclink.split("'")[1]
+                elif tdi == 13:
+                    aliases = re.sub('[()]', '', re.sub('<[^<]+?>', '', td.contents[-1].strip()))
+                    aliases = [x.strip('; ') for x in list(filter(None, aliases.split(' ')))]
 
-        if hostmag:
-            # 1.0 magnitude error based on Drake 2009 assertion that SN are only considered real if they are 2 mags brighter than host.
-            add_photometry(name, band = 'C', magnitude = hostmag, e_magnitude = 1.0, source = source, host = True,
-                telescope = 'Catalina Schmidt', upperlimit = hostupper)
+            name = ''
+            hostmag = ''
+            hostupper = False
+            validaliases = []
+            for ai, alias in enumerate(aliases):
+                if alias in ['SN', 'SDSS']:
+                    continue
+                if alias in crtsnameerrors:
+                    continue
+                if alias == 'mag':
+                    if ai < len(aliases) - 1:
+                        if '>' in aliases[ai+1]:
+                            hostupper = True
+                        hostmag = aliases[ai+1].strip('>').replace(',', '.')
+                    continue
+                if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
+                    name = 'SN' + alias
+                lalias = alias.lower()
+                if (('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
+                    ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
+                    ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3)):
+                    validaliases.append(alias)
+            if not name:
+                name = crtsname
+            name = add_event(name)
+            sources = [add_source(name, bibcode = '2009ApJ...696..870D'),
+                add_source(name, reference = 'Catalina Sky Survey', url = 'http://nesssi.cacr.caltech.edu/catalina/AllSN.html')]
+            source = ','.join(sources)
+            for alias in validaliases:
+                add_alias(name, alias)
+            add_quantity(name, 'ra', ra, source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', dec, source, unit = 'floatdegrees')
 
-        fname2 = '../sne-external/css/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
-        if tasks['css']['archived'] and os.path.isfile(fname2):
-            with open(fname2, 'r') as f:
-                html2 = f.read()
-        else:
-            with open(fname2, 'w') as f:
-                response2 = urllib.request.urlopen(lclink)
-                html2 = response2.read().decode('utf-8')
-                f.write(html2)
+            if hostmag:
+                # 1.0 magnitude error based on Drake 2009 assertion that SN are only considered real if they are 2 mags brighter than host.
+                add_photometry(name, band = 'C', magnitude = hostmag, e_magnitude = 1.0, source = source, host = True,
+                    telescope = 'Catalina Schmidt', upperlimit = hostupper)
 
-        lines = html2.splitlines()
-        for line in lines:
-            if 'javascript:showx' in line:
-                mjd = str(Decimal(re.search("showx\('(.*?)'\)", line).group(1).split('(')[0].strip()) + Decimal(53249.0))
+            fname2 = '../sne-external/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
+            if tasks['crts']['archived'] and os.path.isfile(fname2):
+                with open(fname2, 'r') as f:
+                    html2 = f.read()
             else:
-                continue
-            if 'javascript:showy' in line:
-                mag = re.search("showy\('(.*?)'\)", line).group(1)
-            if 'javascript:showz' in line:
-                err = re.search("showz\('(.*?)'\)", line).group(1)
-            add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source, includeshost = (float(err) > 0.0),
-                telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
-        #for li, line in enumerate(nslines[2*len(nslabels):]):
-        #    if not line:
-        #        continue
-        #    for obs in line:
-        #        add_photometry(name, time = obs[0], band = nslabels[li], magnitude = obs[1], upperlimit = True, source = source,
-        #            telescope = 'Pan-STARRS1')
-        #assoctab = bs2.find('table', {"class":"generictable"})
-        #hostname = ''
-        #redshift = ''
-        #if assoctab:
-        #    trs = assoctab.findAll('tr')
-        #    headertds = [x.contents[0] for x in trs[1].findAll('td')]
-        #    tds = trs[1].findAll('td')
-        #    for tdi, td in enumerate(tds):
-        #        if tdi == 1:
-        #            hostname = td.contents[0].strip()
-        #        elif tdi == 4:
-        #            if 'z' in headertds:
-        #                redshift = td.contents[0].strip()
-        ## Skip galaxies with just SDSS id
-        #if is_number(hostname):
-        #    continue
-        #add_quantity(name, 'host', hostname, source)
-        #if redshift:
-        #    add_quantity(name, 'redshift', redshift, source, kind = 'host')
-        #cnt = cnt + 1
-        #if cnt >= 1:
-        #    break
+                with open(fname2, 'w') as f:
+                    response2 = urllib.request.urlopen(lclink)
+                    html2 = response2.read().decode('utf-8')
+                    f.write(html2)
+
+            lines = html2.splitlines()
+            for line in lines:
+                if 'javascript:showx' in line:
+                    mjd = str(Decimal(re.search("showx\('(.*?)'\)", line).group(1).split('(')[0].strip()) + Decimal(53249.0))
+                else:
+                    continue
+                if 'javascript:showy' in line:
+                    mag = re.search("showy\('(.*?)'\)", line).group(1)
+                if 'javascript:showz' in line:
+                    err = re.search("showz\('(.*?)'\)", line).group(1)
+                add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source, includeshost = (float(err) > 0.0),
+                    telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
+    journal_events()
+
+if do_task('snhunt'):
+    response = urllib.request.urlopen('http://nesssi.cacr.caltech.edu/catalina/current.html')
+    text = response.read().decode('utf-8').splitlines()
+    findtable = False
+    for ri, row in enumerate(text):
+        if 'Supernova Discoveries' in row:
+            findtable = True
+        if findtable and '<table' in row:
+            tstart = ri+1
+        if findtable and '</table>' in row:
+            tend = ri-1
+    tablestr = '<html><body><table>'
+    for row in text[tstart:tend]:
+        if row[:3] == 'tr>':
+            tablestr = tablestr + '<tr>' + row[3:]
+        else:
+            tablestr = tablestr + row
+    tablestr = tablestr + '</table></body></html>'
+    bs = BeautifulSoup(tablestr, 'html5lib')
+    trs = bs.find('table').findAll('tr')
+    for tr in trs:
+        cols = [str(x.text) for x in tr.findAll('td')]
+        if not cols:
+            continue
+        name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '')
+        name = add_event(name)
+        source = add_source(name, reference = 'Supernova Hunt', url = 'http://nesssi.cacr.caltech.edu/catalina/current.html')
+        host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
+        add_quantity(name, 'host', host, source)
+        add_quantity(name, 'ra', cols[2], source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', cols[3], source, unit = 'floatdegrees')
+        dd = cols[0]
+        discoverdate = dd[:4] + '/' + dd[4:6] + '/' + dd[6:8]
+        add_quantity(name, 'discoverdate', discoverdate, source)
+        discoverers = cols[5].split('/')
+        for discoverer in discoverers:
+            add_quantity(name, 'discoverer', discoverer, source)
     journal_events()
 
 if do_task('nedd'): 
