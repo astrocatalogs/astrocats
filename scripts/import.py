@@ -2496,6 +2496,7 @@ if do_task('gaia'):
             add_photometry(name, time = mjd, telescope = telescope, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
     journal_events()
 
+# Import CPCS (currently not being added to catalog, need event names to do this)
 if do_task('cpcs'):
     response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?offset=20&observed_only=1')
     html = response.read()
