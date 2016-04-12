@@ -751,12 +751,16 @@ def merge_duplicates():
                 load1 = load_event_from_file(name1, delete = True)
                 load2 = load_event_from_file(name2, delete = True)
                 if load1 and load2:
-                    iau1 = False
+                    priority1 = 0
+                    priority2 = 0
                     for an in allnames1:
                         if len(an) >= 2 and an[:2] == 'SN':
-                            iau1 = True
+                            priority1 = priority1 + 1
+                    for an in allnames2:
+                        if len(an) >= 2 and an[:2] == 'SN':
+                            priority2 = priority2 + 1
 
-                    if iau1:
+                    if priority1 > priority2:
                         copy_to_event(name2, name1)
                         del(events[name2])
                     else:

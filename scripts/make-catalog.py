@@ -351,13 +351,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    datalink = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
-        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/edit/master/"
-            + fileeventname + ".json' target='_blank'></a>")
+        catalog[entry]['download'] = 'e'
     else:
-        template = urllib.parse.quote(newfiletemplate.replace('{0}',eventname))
-        catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' onclick='eSN(\"" + entry + "\",\"" + fileeventname + "\")'></a>")
+        catalog[entry]['download'] = ''
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
             catalog[entry]['discoverdate'][d]['value'] = catalog[entry]['discoverdate'][d]['value'].split('.')[0]
@@ -390,14 +387,12 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     plotlink = "sne/" + fileeventname + "/"
     if photoavail:
         catalog[entry]['photoplot'] = plotlink
-        photolink = "<a class='lci' href='" + plotlink + "' target='_blank'></a> "
-        catalog[entry]['photolink'] = photolink + str(numphoto)
+        catalog[entry]['photolink'] = str(numphoto)
     spectraavail = 'spectra' in catalog[entry]
     catalog[entry]['numspectra'] = len(catalog[entry]['spectra']) if spectraavail else 0
     if spectraavail:
         catalog[entry]['spectraplot'] = plotlink
-        speclink = "<a class='sci' href='" + plotlink + "' target='_blank'></a> "
-        catalog[entry]['spectralink'] = speclink + str(len(catalog[entry]['spectra']))
+        catalog[entry]['spectralink'] = str(len(catalog[entry]['spectra']))
 
     prange = list(range(len(catalog[entry]['photometry']))) if 'photometry' in catalog[entry] else []
     
@@ -862,17 +857,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             hostimgs.append([eventname, 'None'])
 
-    if hasimage:
-        hostlink = "<a class='hhi' href='" + plotlink + "' target='_blank'></a>"
-    else:
-        hostlink = "<a class='nhi' href='" + plotlink + "' target='_blank'></a>"
-
-    if 'host' not in catalog[entry]:
-        if hasimage:
-            catalog[entry]['host'] = [{'value':hostlink}]
-    else:
-        catalog[entry]['host'][0]['value'] = hostlink + " " + catalog[entry]['host'][0]['value']
-
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
         if photoavail and spectraavail:
@@ -1016,10 +1000,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             ssources = sorted(list(lsourcedict.values()), key=lambda x: x['count'], reverse=True)
             if ssources:
                 seemorelink = ''
-                if len(ssources) > 3:
-                    seemorelink = "<br><a href='sne/" + fileeventname + "/'>(See full list)</a>"
-                catalog[entry]['references'] = ', '.join(["<a href='http://adsabs.harvard.edu/abs/" + y['bibcode'] + "'>" + y['bibcode'] + "</a>"
-                    for y in ssources[:3]]) + seemorelink
+                catalog[entry]['references'] = ','.join([y['bibcode'] for y in ssources[:5]])
 
         lcspye.append(catalog[entry]['numphoto'] >= 5 and catalog[entry]['numspectra'] >  0)
         lconly.append(catalog[entry]['numphoto'] >= 5 and catalog[entry]['numspectra'] == 0)
