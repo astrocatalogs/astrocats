@@ -2786,7 +2786,7 @@ if do_task('tns'):
 
     for page in range(maxpages):
         fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.html'
-        if tasks['tns']['archived'] and os.path.isfile(fname):# and page != maxpages:
+        if tasks['tns']['archived'] and os.path.isfile(fname) and page != maxpages:
             with open(fname, 'r') as f:
                 csvtxt = f.read()
         else:
