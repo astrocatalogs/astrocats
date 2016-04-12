@@ -28,7 +28,7 @@ from astropy.io import fits
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo
 from collections import OrderedDict
-from math import log10, floor, sqrt, isnan
+from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
@@ -52,9 +52,10 @@ tasks = {
     "csp":              {"update": False},
     "itep":             {"update": False},
     "asiago":           {"update": False},
+    "tns":              {"update": True,  "archived": True},
     "rochester":        {"update": True },
     "lennarz":          {"update": False},
-    "gaia":             {"update": False, "archived": True},
+    "gaia":             {"update": True,  "archived": True},
     "cpcs":             {"update": True,  "archived": True},
     "ogle":             {"update": True },
     "snls":             {"update": False},
@@ -134,14 +135,14 @@ def event_attr_priority(attr):
         return 'aaaaaaac'
     return attr
 
+prefkinds = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', '']
 def frame_priority(attr):
-    frames = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host']
     if 'kind' in attr:
-        if attr['kind'] in frames:
-            return frames.index(attr['kind'])
+        if attr['kind'] in prefkinds:
+            return prefkinds.index(attr['kind'])
         else:
-            return len(frames)
-    return len(frames)
+            return len(prefkinds)
+    return len(prefkinds)
 
 def ct_priority(name, attr):
     aliases = attr['source'].split(',')
@@ -276,7 +277,7 @@ def get_source_by_alias(name, alias):
 
 def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
-                   observatory = "", observer = "", host = False, includeshost = False):
+                   observatory = "", observer = "", host = False, includeshost = False, survey = ""):
     if (not time and not host) or not magnitude:
         print('Warning: Time or AB mag not specified when adding photometry.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -327,6 +328,8 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
     if system:
         photoentry['system'] = system
     photoentry['magnitude'] = str(magnitude)
+    if survey:
+        photoentry['survey'] = survey
     if instrument:
         photoentry['instrument'] = instrument
     if telescope:
@@ -698,7 +701,6 @@ def set_first_max_light(name):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
 
-prefkinds = ['heliocentric', 'cmb', 'host', '']
 def get_best_redshift(name):
     bestsig = -1
     bestkind = 10
@@ -975,7 +977,7 @@ def copy_to_event(fromname, destname):
                         magnitude = null_field(item, "magnitude"), e_magnitude = null_field(item, "e_magnitude"),
                         source = sources, upperlimit = null_field(item, "upperlimit"), system = null_field(item, "system"),
                         observatory = null_field(item, "observatory"), observer = null_field(item, "observer"),
-                        host = null_field(item, "host"))
+                        host = null_field(item, "host"), survey = null_field(item, "survey"))
                 elif key == 'spectra':
                     add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), null_field(item, "data"),
                         timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
@@ -2773,6 +2775,62 @@ if do_task('lennarz'):
                     mjd = str(astrotime(datestr).mjd)
                     add_photometry(name, time = mjd, band = row['Mband'], magnitude = row['Mmag'], source = source)
     f.close()
+    journal_events()
+
+if do_task('tns'):
+    session = requests.Session()
+    response = session.get("https://wis-tns.weizmann.ac.il/search?&isTNS_AT=yes&num_page=1&format=html&sort=desc&order=id&format=csv&page=0")
+    csvtxt = response.text
+    maxid = csvtxt.splitlines()[1].split(",")[0].strip('"')
+    maxpages = ceil((int(maxid) - 10000)/1000.)
+
+    for page in range(maxpages):
+        fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.html'
+        if tasks['tns']['archived'] and os.path.isfile(fname):# and page != maxpages:
+            with open(fname, 'r') as f:
+                csvtxt = f.read()
+        else:
+            with open(fname, 'w') as f:
+                session = requests.Session()
+                response = session.get("https://wis-tns.weizmann.ac.il/search?&isTNS_AT=yes&num_page=1000&format=html&edit[type]=&edit[objname]=&edit[id]=&sort=asc&order=id&display[redshift]=1&display[hostname]=1&display[host_redshift]=1&display[source_group_name]=1&display[programs_name]=1&display[internal_name]=1&display[isTNS_AT]=1&display[public]=1&display[end_pop_period]=0&display[spectra_count]=1&display[discoverymag]=1&display[discmagfilter]=1&display[discoverydate]=1&display[discoverer]=1&display[sources]=1&display[bibcode]=1&format=csv&page=" + str(page))
+                csvtxt = response.text
+                f.write(csvtxt)
+
+        tsvin = csv.reader(csvtxt.splitlines(), delimiter=',')
+        for ri, row in enumerate(tsvin):
+            if ri == 0:
+                continue
+            if row[4] and 'SN' not in row[4]:
+                continue
+            name = row[1].replace(' ', '')
+            name = add_event(name)
+            source = add_source(name, reference = 'Transient Name Server', url = 'https://wis-tns.weizmann.ac.il')
+            if row[2]:
+                add_quantity(name, 'ra', row[2], source)
+            if row[3]:
+                add_quantity(name, 'dec', row[3], source)
+            if row[4]:
+                add_quantity(name, 'claimedtype', row[4].replace('SN', '').strip(), source)
+            if row[5]:
+                add_quantity(name, 'redshift', row[5], source, kind = 'spectroscopic')
+            if row[6]:
+                add_quantity(name, 'host', row[6], source)
+            if row[7]:
+                add_quantity(name, 'redshift', row[7], source, kind = 'host')
+            if row[8]:
+                add_quantity(name, 'discoverer', row[8], source)
+            if row[9]:
+                observers = row[9].split(',')
+                for observer in observers:
+                    add_quantity(name, 'observer', observer.strip(), source)
+            if row[10]:
+                add_alias(name, row[10])
+            if row[8] and row[14] and row[15] and row[16]:
+                survey = row[8]
+                magnitude = row[14]
+                band = row[15].split('-')[0]
+                mjd = astrotime(row[16]).mjd
+                add_photometry(name, time = mjd, magnitude = magnitude, band = band, survey = survey, source = source)
     journal_events()
 
 if do_task('rochester'): 
