@@ -38,40 +38,40 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":         {"update": True},
-    "simbad":           {"update": False},
-    "vizier":           {"update": False},
-    "nicholl-04-01-16": {"update": False},
-    "maggi-04-11-16":   {"update": False},
-    "cccp":             {"update": False, "archived": True},
-    "anderson":         {"update": False},
-    "suspect":          {"update": False},
-    "cfa":              {"update": False},
-    "ucb":              {"update": False},
-    "sdss":             {"update": False},
-    "csp":              {"update": False},
-    "itep":             {"update": False},
-    "asiago":           {"update": False},
+    #"internal":         {"update": True},
+    #"simbad":           {"update": False},
+    #"vizier":           {"update": False},
+    #"nicholl-04-01-16": {"update": False},
+    #"maggi-04-11-16":   {"update": False},
+    #"cccp":             {"update": False, "archived": True},
+    #"anderson":         {"update": False},
+    #"suspect":          {"update": False},
+    #"cfa":              {"update": False},
+    #"ucb":              {"update": False},
+    #"sdss":             {"update": False},
+    #"csp":              {"update": False},
+    #"itep":             {"update": False},
+    #"asiago":           {"update": False},
     "rochester":        {"update": True },
-    "lennarz":          {"update": False},
+    #"lennarz":          {"update": False},
     "gaia":             {"update": False, "archived": True},
-    "cpcs":             {"update": True,  "archived": True},
-    "ogle":             {"update": True },
-    "snls":             {"update": False},
-    "panstarrs":        {"update": False},
-    "psthreepi":        {"update": False, "archived": True},
-    "css":              {"update": False, "archived": True},
-    "nedd":             {"update": False},
-    "asiagospectra":    {"update": True },
-    "wiserepspectra":   {"update": False},
-    "cfaiaspectra":     {"update": False},
-    "cfaibcspectra":    {"update": False},
-    "snlsspectra":      {"update": False},
-    "cspspectra":       {"update": False},
-    "ucbspectra":       {"update": False},
-    "suspectspectra":   {"update": False},
-    "snfspectra":       {"update": False},
-    "superfitspectra":  {"update": False},
+    #"cpcs":             {"update": True,  "archived": True},
+    #"ogle":             {"update": True },
+    #"snls":             {"update": False},
+    #"panstarrs":        {"update": False},
+    #"psthreepi":        {"update": False, "archived": True},
+    #"css":              {"update": False, "archived": True},
+    #"nedd":             {"update": False},
+    #"asiagospectra":    {"update": True },
+    #"wiserepspectra":   {"update": False},
+    #"cfaiaspectra":     {"update": False},
+    #"cfaibcspectra":    {"update": False},
+    #"snlsspectra":      {"update": False},
+    #"cspspectra":       {"update": False},
+    #"ucbspectra":       {"update": False},
+    #"suspectspectra":   {"update": False},
+    #"snfspectra":       {"update": False},
+    #"superfitspectra":  {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -726,32 +726,34 @@ def convert_aq_output(row):
 
 # Merge and remove duplicate events
 def merge_duplicates():
-    for name1 in list(events.keys()):
+    keys = list(sorted(list(events.keys())))
+    for n1, name1 in enumerate(keys):
         if name1 not in events:
             continue
         allnames1 = events[name1]["aliases"]
-        for name2 in list(events.keys()):
-            if name2 not in events:
-                continue
-            if name1 == name2:
+        for name2 in keys[n1+1:]:
+            if name2 not in events or name1 == name2:
                 continue
             allnames2 = events[name2]["aliases"]
             intersection = list(set(allnames1).intersection(allnames2))
             if intersection:
                 print('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
-                load_event_from_file(name1, delete = True)
-                load_event_from_file(name2, delete = True)
-                iau1 = False
-                for an in allnames1:
-                    if len(an) >= 2 and an[:2] == 'SN':
-                        iau1 = True
+                load1 = load_event_from_file(name1, delete = True)
+                load2 = load_event_from_file(name2, delete = True)
+                if load1 and load2:
+                    iau1 = False
+                    for an in allnames1:
+                        if len(an) >= 2 and an[:2] == 'SN':
+                            iau1 = True
 
-                if iau1:
-                    copy_to_event(name2, name1)
-                    del(events[name2])
+                    if iau1:
+                        copy_to_event(name2, name1)
+                        del(events[name2])
+                    else:
+                        copy_to_event(name1, name2)
+                        del(events[name1])
                 else:
-                    copy_to_event(name1, name2)
-                    del(events[name1])
+                    print ('Duplicate already deleted')
                 journal_events()
 
 def derive_and_sanitize():
