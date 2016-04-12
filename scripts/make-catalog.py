@@ -351,7 +351,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     print(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
-    catalog[entry]['name'] = "<a href='https://sne.space/sne/" + fileeventname + "/' target='_blank'>" + catalog[entry]['name'] + "</a>"
     datalink = "<a class='dci' title='Download Data' href='" + linkdir + fileeventname + ".json' download></a>"
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
         catalog[entry]['download'] = (datalink + "<a class='eci' title='Edit Data' href='https://github.com/astrocatalogs/sne-internal/edit/master/"

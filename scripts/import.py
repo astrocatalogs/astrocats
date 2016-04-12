@@ -356,7 +356,7 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
 def trim_str_arr(arr, length = 10):
     return [str(round_sig(float(x), length)) if (len(x) > length and len(str(round_sig(float(x), length))) < len(x)) else x for x in arr]
 
-def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
+def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", timeunit = "", time = "", instrument = "",
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "", telescope = "",
     observer = "", reducer = "", filename = "", observatory = "", data = ""):
 
@@ -373,6 +373,9 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
     if not fluxunit:
         'Warning: No flux unit specified, not adding spectrum.'
         return
+
+    if not data or (not wavelengths or not fluxes):
+        ValueError('Spectrum must have wavelengths and fluxes set, or data set.')
 
     if not source:
         ValueError('Spectrum must have source before being added!')
@@ -980,7 +983,7 @@ def copy_to_event(fromname, destname):
                         observatory = null_field(item, "observatory"), observer = null_field(item, "observer"),
                         host = null_field(item, "host"), survey = null_field(item, "survey"))
                 elif key == 'spectra':
-                    add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), null_field(item, "data"),
+                    add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), data = null_field(item, "data"),
                         timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
                         instrument = null_field(item, "instrument"), deredshifted = null_field(item, "deredshifted"),
                         dereddened = null_field(item, "dereddened"), errorunit = null_field(item, "errorunit"),
