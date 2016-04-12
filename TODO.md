@@ -113,7 +113,7 @@ Other single SN datasets:
 * SN2012au - http://adsabs.harvard.edu/abs/2013ApJ...770L..38M, http://adsabs.harvard.edu/abs/2013ApJ...772L..17T
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B, http://adsabs.harvard.edu/abs/2014ApJ...787..139D
 * SN2012bz - http://www.aanda.org/articles/aa/full_html/2014/06/aa23387-14/aa23387-14.html
-* SN2012dn - http://adsabs.harvard.edu/abs/2014MNRAS.443.1663C
+* SN2012dn - http://adsabs.harvard.edu/abs/2014MNRAS.443.1663C, http://arxiv.org/abs/1604.02800
 * SN2013ab - http://adsabs.harvard.edu/abs/2015MNRAS.450.2373B
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013cq - http://adsabs.harvard.edu/abs/2014A%26A...567A..29M
