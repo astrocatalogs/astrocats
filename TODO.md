@@ -1,7 +1,6 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
 Multiple SN datasets on VizieR:
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/AJ/143/126
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (Data in text files attached to catalog)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/A%2bA/415/863 (Data in text files attached to catalog)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources (Data in text files attached to catalog)
