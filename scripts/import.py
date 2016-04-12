@@ -354,7 +354,8 @@ def trim_str_arr(arr, length = 10):
 
 def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", time = "", instrument = "",
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "", telescope = "",
-    observer = "", reducer = "", filename = "", observatory = ""):
+    observer = "", reducer = "", filename = "", observatory = "", data = ""):
+
 
     # Don't add duplicate spectra
     if 'spectra' in events[name]:
@@ -398,15 +399,18 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths, fluxes, timeunit = "", t
 
     spectrumentry['waveunit'] = waveunit
     spectrumentry['fluxunit'] = fluxunit
-    if errors and max([float(x) for x in errors]) > 0.:
-        if not errorunit:
-            'Warning: No error unit specified, not adding spectrum.'
-            return
-        spectrumentry['errorunit'] = errorunit
-        data = [trim_str_arr(wavelengths), trim_str_arr(fluxes), trim_str_arr(errors)]
+    if data:
+        spectrumentry['data'] = data
     else:
-        data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
-    spectrumentry['data'] = [list(i) for i in zip(*data)]
+        if errors and max([float(x) for x in errors]) > 0.:
+            if not errorunit:
+                'Warning: No error unit specified, not adding spectrum.'
+                return
+            spectrumentry['errorunit'] = errorunit
+            data = [trim_str_arr(wavelengths), trim_str_arr(fluxes), trim_str_arr(errors)]
+        else:
+            data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
+        spectrumentry['data'] = [list(i) for i in zip(*data)]
     if source:
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
@@ -973,11 +977,11 @@ def copy_to_event(fromname, destname):
                         observatory = null_field(item, "observatory"), observer = null_field(item, "observer"),
                         host = null_field(item, "host"))
                 elif key == 'spectra':
-                    add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), null_field(item, "wavelengths"),
-                        null_field(item, "fluxes"), timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
+                    add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), null_field(item, "data"),
+                        timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
                         instrument = null_field(item, "instrument"), deredshifted = null_field(item, "deredshifted"),
                         dereddened = null_field(item, "dereddened"), errorunit = null_field(item, "errorunit"),
-                        errors = null_field(item, "errors"), source = sources, snr = null_field(item, "snr"),
+                        source = sources, snr = null_field(item, "snr"),
                         telescope = null_field(item, "telescope"), observer = null_field(item, "observer"),
                         reducer = null_field(item, "reducer"), filename = null_field(item, "filename"),
                         observatory = null_field(item, "observatory"))
