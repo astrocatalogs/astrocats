@@ -16,7 +16,7 @@ Other multiple SN datasets:
 * http://mnras.oxfordjournals.org/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
 * http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
 * http://adsabs.harvard.edu/abs/2014arXiv1401.3317S (SDSS SNe light curves, broken link - http://sdssdp62.fnal.gov/sdsssn/DataRelease/index.html)
-* http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe)
+* http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe, but counts not magnitudes)
 * http://arxiv.org/abs/1603.03823
 * http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
 * http://thesis.library.caltech.edu/6395/1/Kasliwal_PhD_Thesis.pdf
