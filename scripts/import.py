@@ -169,15 +169,14 @@ def get_source_year(source):
 def add_event(name, load = True, delete = True):
     if name not in events or 'stub' in events[name]:
         newname = name
-        matches = []
+        match = ''
         if name not in events:
             for event in events:
                 if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
-                    matches.append(event)
-            if len(matches) > 1:
-                raise(ValueError('Error, multiple matches to event, need event merging'))
-            elif len(matches) == 1:
-                newname = matches[0]
+                    match = event
+                    break
+            if match:
+                newname = match
 
         if load:
             newname = load_event_from_file(name = newname, delete = delete)
@@ -186,8 +185,8 @@ def add_event(name, load = True, delete = True):
                     raise(ValueError('Failed to find event file for stubbed event'))
                 return newname
 
-        if len(matches) == 1:
-            return matches[0]
+        if match:
+            return match
 
         events[name] = OrderedDict()
         events[name]['name'] = name
@@ -203,9 +202,7 @@ def get_preferred_name(name):
         matches = []
         for event in events:
             if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
-                matches.append(event)
-        if len(matches) == 1:
-            return matches[0]
+                return event
         return name
     else:
         return name
@@ -510,7 +507,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                 seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
                 if seconds > 60.0:
                     raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
+                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 2).zfill(2)
             elif 'dec' in quantity:
                 fldeg = abs(deg)
                 degree = floor(fldeg)
@@ -518,7 +515,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                 seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
                 if seconds > 60.0:
                     raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = ('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 3).zfill(2)
+                svalue = ('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 2).zfill(2)
         elif unit == 'nospace' and 'ra' in quantity:
             svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + svalue[4:]) if len(svalue) > 4 else '')
         elif unit == 'nospace' and 'dec' in quantity:
@@ -733,6 +730,70 @@ def is_number(s):
 
 def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
+
+def set_preferred_names():
+    for name in list(sorted(list(events.keys()))):
+        if name not in events:
+            continue
+        newname = ''
+        if len(events[name]['aliases']) <= 1:
+            continue
+        if (name[:2] == 'SN' and ((is_number(name[2:6]) and not is_number(name[6:])) or
+                                  (is_number(name[2:5]) and not is_number(name[5:])))):
+            continue
+        ealiases = events[name]['aliases']
+        for alias in ealiases:
+            if (alias[:2] == 'SN' and ((is_number(alias[2:6]) and not is_number(alias[6:])) or
+                                       (is_number(alias[2:5]) and not is_number(alias[5:])))):
+                newname = alias
+                break
+        if not newname and 'discoverer' in events[name]:
+            discoverer = ','.join(x['value'].upper() for x in events[name]['discoverer'])
+            if 'ASAS' in discoverer:
+                for alias in ealiases:
+                    if 'ASASSN' in alias.upper():
+                        newname = alias
+                        break
+            if not newname and 'OGLE' in discoverer:
+                for alias in ealiases:
+                    if 'OGLE' in alias.upper():
+                        newname = alias
+                        break
+            if not newname and 'CRTS' in discoverer:
+                for alias in ealiases:
+                    if True in [x in alias.upper() for x in ['CSS', 'MLS', 'SSS', 'SNHUNT']]:
+                        newname = alias
+                        break
+            if not newname and 'PS1' in discoverer:
+                for alias in ealiases:
+                    if 'PS1' in alias.upper():
+                        newname = alias
+                        break
+            if not newname and 'PTF' in discoverer:
+                for alias in ealiases:
+                    if 'PTF' in alias.upper():
+                        newname = alias
+                        break
+            if not newname and 'GAIA' in discoverer:
+                for alias in ealiases:
+                    if 'GAIA' in alias.upper():
+                        newname = alias
+                        break
+        if not newname:
+            for alias in ealiases:
+                # Always prefer another alias over PSN
+                if name[:3] == 'PSN':
+                    newname = alias
+                    break
+        if newname and name != newname:
+            # Make sure new name doesn't already exist
+            if load_event_from_file(newname):
+                continue
+            if load_event_from_file(name, delete = True):
+                print('Changing event name (' + name + ') to preferred name (' + newname + ').')
+                events[newname] = events[name]
+                del(events[name])
+                journal_events()
 
 # Merge and remove duplicate events
 def merge_duplicates():
@@ -2512,12 +2573,35 @@ if do_task('gaia'):
 
 # Import CPCS (currently not being added to catalog, need event names to do this)
 if do_task('cpcs'):
-    response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?offset=20&observed_only=1')
-    html = response.read()
+    session = requests.Session()
+    response = session.get("http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
+    alertindex = json.loads(response.text, object_pairs_hook=OrderedDict)
+    ids = [x["id"] for x in alertindex]
 
-    soup = BeautifulSoup(html, "html5lib")
-    lastid = int(soup.findAll("table")[0].findAll('tr')[1].findAll('td')[0].contents[0])
-    for ai in range(lastid,20000,-1):
+    for i, ai in enumerate(ids):
+        name = alertindex[i]['ivorn'].split('/')[-1].strip()
+        # Skip a few weird entries
+        if name == 'ASASSNli':
+            continue
+        # Just use a whitelist for now since naming seems inconsistent
+        if True in [x in name.upper() for x in ['GAIA', 'OGLE', 'ASASSN', 'MASTER', 'OTJ', 'PS1', 'IPTF']]:
+            name = name.replace('Verif', '').replace('_', ' ')
+            if 'ASASSN' in name and name[6] != '-':
+                name = 'ASASSN-' + name[6:]
+            if 'MASTEROTJ' in name:
+                name = name.replace('MASTEROTJ', 'MASTER OT J')
+            if 'OTJ' in name:
+                name = name.replace('OTJ', 'MASTER OT J')
+            if 'IPTF' in name[:4].upper():
+                name = 'iPTF' + name[4:]
+            name = add_event(name)
+        else:
+            continue
+
+        source = add_source(name, reference = 'Cambridge Photometric Calibration Server', url = 'http://gsaweb.ast.cam.ac.uk/followup/')
+        add_quantity(name, 'ra', str(alertindex[i]['ra']), source, unit = 'floatdegrees')
+        add_quantity(name, 'dec', str(alertindex[i]['dec']), source, unit = 'floatdegrees')
+
         fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
         if tasks['cpcs']['archived'] and os.path.isfile(fname):
             with open(fname, 'r') as f:
@@ -2533,7 +2617,14 @@ if do_task('cpcs'):
             cpcsalert = json.loads(jsonstr)
         except:
             continue
-        print('Parsed CPCS alert ' + str(ai))
+
+        mjds = [round_sig(x, sig=9) for x in cpcsalert['mjd']]
+        mags = [round_sig(x, sig=6) for x in cpcsalert['mag']]
+        errs = [round_sig(x, sig=6) for x in cpcsalert['magerr']]
+        bnds = cpcsalert['filter']
+        obs  = cpcsalert['observatory']
+        for mi, mjd in enumerate(mjds):
+            add_photometry(name, time = mjd, magnitude = mags[mi], e_magnitude = errs[mi], band = bnds[mi], observatory = obs[mi], source = source)
     journal_events()
 
 # Import CSP
@@ -2886,6 +2977,8 @@ if do_task('rochester'):
             if not name:
                 if not sn:
                     continue
+                if sn[:8] == 'MASTER J':
+                    sn = sn.replace('MASTER J', 'MASTER OT J')
                 name = add_event(sn)
 
             add_alias(name, sn)
@@ -2893,8 +2986,10 @@ if do_task('rochester'):
             if cols[14].contents:
                 if aka == 'SNR G1.9+0.3':
                     aka = 'G001.9+00.3'
-                if aka[:3] == 'PS1' and aka[3] != '-':
-                    aka = 'PS1-' + aka[3:]
+                if aka[:4] == 'PS1 ':
+                    aka = 'PS1-' + aka[4:]
+                if aka[:8] == 'MASTER J':
+                    aka = aka.replace('MASTER J', 'MASTER OT J')
                 add_alias(name, aka)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
@@ -2932,6 +3027,8 @@ if do_task('rochester'):
                     name = 'SN' + name
                 if name[:4] == 'PSNJ':
                     name = 'PSN J' + name[4:]
+                if name[:9] == 'MASTEROTJ':
+                    name = name.replace('MASTEROTJ', 'MASTER OT J')
                 name = add_event(name)
                 if not is_number(row[1]):
                     continue
@@ -3199,7 +3296,10 @@ if do_task('psthreepi'):
                 sources.append(add_source(name, reference = ref[0], url = ref[1]))
             source = ','.join(sources)
             for alias in aliases:
-                add_alias(name, alias)
+                newalias = alias
+                if alias[:3] in ['CSS', 'SSS', 'MLS']:
+                    newalias = alias.replace('-', ':', 1)
+                add_alias(name, newalias)
             add_quantity(name, 'ra', ra, source)
             add_quantity(name, 'dec', dec, source)
             add_quantity(name, 'claimedtype', ctype, source)
@@ -3391,6 +3491,7 @@ if do_task('snhunt'):
         add_quantity(name, 'discoverdate', discoverdate, source)
         discoverers = cols[5].split('/')
         for discoverer in discoverers:
+            add_quantity(name, 'discoverer', 'CRTS', source)
             add_quantity(name, 'discoverer', discoverer, source)
     journal_events()
 
@@ -3645,6 +3746,8 @@ if do_task('wiserepspectra'):
                                 name = 'SN' + name[2:]
                             if name[:3] == 'SSS' and name.count('-') > 1:
                                 name = name.replace('-', ':', 1)
+                            if name[:7] == 'MASTERJ':
+                                name = name.replace('MASTERJ', 'MASTER OT J')
                             name = get_preferred_name(name)
                             if oldname and name != oldname:
                                 journal_events()
@@ -4176,6 +4279,7 @@ if do_task('superfitspectra'):
         journal_events()
 
 merge_duplicates()
+set_preferred_names()
 
 files = []
 for rep in repofolders:
