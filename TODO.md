@@ -137,5 +137,8 @@ SNR catalogs:
 Online catalogs:
 * No known missing online catalogs at this time.
 
+####Data that likely exists but no known source
+* SN2009ac has a very well-sampled light curve but no typing.
+
 ####Known errors that need to be corrected:
 * No known errors at this time.
