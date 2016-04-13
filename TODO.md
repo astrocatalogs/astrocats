@@ -141,4 +141,4 @@ Online catalogs:
 * SN2009ac has a very well-sampled light curve but no typing.
 
 ####Known errors that need to be corrected:
-* No known errors at this time.
+* SN2009dc mis-labeled as SN2009ac in ITEP (fixed but not until next run).
