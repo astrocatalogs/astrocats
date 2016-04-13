@@ -56,7 +56,6 @@ tasks = {
     "rochester":        {"update": True },
     "lennarz":          {"update": False},
     "gaia":             {"update": True,  "archived": True},
-    "cpcs":             {"update": True,  "archived": True},
     "ogle":             {"update": True },
     "snls":             {"update": False},
     "panstarrs":        {"update": False},
@@ -64,16 +63,17 @@ tasks = {
     "crts":             {"update": True,  "archived": True},
     "snhunt":           {"update": True,  "archived": True},
     "nedd":             {"update": False},
-    "asiagospectra":    {"update": True },
-    "wiserepspectra":   {"update": False},
-    "cfaiaspectra":     {"update": False},
-    "cfaibcspectra":    {"update": False},
-    "snlsspectra":      {"update": False},
-    "cspspectra":       {"update": False},
-    "ucbspectra":       {"update": False},
-    "suspectspectra":   {"update": False},
-    "snfspectra":       {"update": False},
-    "superfitspectra":  {"update": False},
+    "cpcs":             {"update": True,  "archived": True},
+    #"asiagospectra":    {"update": True },
+    #"wiserepspectra":   {"update": False},
+    #"cfaiaspectra":     {"update": False},
+    #"cfaibcspectra":    {"update": False},
+    #"snlsspectra":      {"update": False},
+    #"cspspectra":       {"update": False},
+    #"ucbspectra":       {"update": False},
+    #"suspectspectra":   {"update": False},
+    #"snfspectra":       {"update": False},
+    #"superfitspectra":  {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -196,6 +196,14 @@ def add_event(name, load = True, delete = True):
         return name
     else:
         return name
+
+def event_exists(name):
+    if name in events:
+        return True
+    for ev in events:
+        if name in events[ev]['aliases']:
+            return True
+    return False
 
 def get_preferred_name(name):
     if name not in events:
@@ -875,6 +883,15 @@ def derive_and_sanitize():
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
                 add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D', kind = 'heliocentric')
+        if 'comovingdist' not in events[name] and 'nedd' in tasks:
+            reference = "NED-D"
+            refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
+            if 'host' in events[name]:
+                for host in events[name]['host']:
+                    if host['value'] in nedddict:
+                        print ('found host: ' + host['value'])
+                        secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
+                        add_quantity(name, 'comovingdist', median(nedddict[host['value']]), sources, kind = 'host')
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
@@ -2571,62 +2588,6 @@ if do_task('gaia'):
             add_photometry(name, time = mjd, telescope = telescope, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
     journal_events()
 
-# Import CPCS (currently not being added to catalog, need event names to do this)
-if do_task('cpcs'):
-    session = requests.Session()
-    response = session.get("http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
-    alertindex = json.loads(response.text, object_pairs_hook=OrderedDict)
-    ids = [x["id"] for x in alertindex]
-
-    for i, ai in enumerate(ids):
-        name = alertindex[i]['ivorn'].split('/')[-1].strip()
-        # Skip a few weird entries
-        if name == 'ASASSNli':
-            continue
-        # Just use a whitelist for now since naming seems inconsistent
-        if True in [x in name.upper() for x in ['GAIA', 'OGLE', 'ASASSN', 'MASTER', 'OTJ', 'PS1', 'IPTF']]:
-            name = name.replace('Verif', '').replace('_', ' ')
-            if 'ASASSN' in name and name[6] != '-':
-                name = 'ASASSN-' + name[6:]
-            if 'MASTEROTJ' in name:
-                name = name.replace('MASTEROTJ', 'MASTER OT J')
-            if 'OTJ' in name:
-                name = name.replace('OTJ', 'MASTER OT J')
-            if 'IPTF' in name[:4].upper():
-                name = 'iPTF' + name[4:]
-            name = add_event(name)
-        else:
-            continue
-
-        source = add_source(name, reference = 'Cambridge Photometric Calibration Server', url = 'http://gsaweb.ast.cam.ac.uk/followup/')
-        add_quantity(name, 'ra', str(alertindex[i]['ra']), source, unit = 'floatdegrees')
-        add_quantity(name, 'dec', str(alertindex[i]['dec']), source, unit = 'floatdegrees')
-
-        fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
-        if tasks['cpcs']['archived'] and os.path.isfile(fname):
-            with open(fname, 'r') as f:
-                jsonstr = f.read()
-        else:
-            session = requests.Session()
-            response = session.get("http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=" + str(ai) + "&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
-            with open(fname, 'w') as f:
-                jsonstr = response.text
-                f.write(jsonstr)
-
-        try:
-            cpcsalert = json.loads(jsonstr)
-        except:
-            continue
-
-        mjds = [round_sig(x, sig=9) for x in cpcsalert['mjd']]
-        mags = [round_sig(x, sig=6) for x in cpcsalert['mag']]
-        errs = [round_sig(x, sig=6) for x in cpcsalert['magerr']]
-        bnds = cpcsalert['filter']
-        obs  = cpcsalert['observatory']
-        for mi, mjd in enumerate(mjds):
-            add_photometry(name, time = mjd, magnitude = mags[mi], e_magnitude = errs[mi], band = bnds[mi], observatory = obs[mi], source = source)
-    journal_events()
-
 # Import CSP
 if do_task('csp'): 
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
@@ -3500,16 +3461,15 @@ if do_task('nedd'):
     data = csv.reader(f, delimiter=',', quotechar='"')
     reference = "NED-D"
     refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-    oldhostname = ''
+    nedddict = {}
     for r, row in enumerate(data):
         if r <= 12:
             continue
         hostname = row[3]
-        #if hostname == oldhostname:
-        #    continue
         distmod = row[4]
         moderr = row[5]
         dist = row[6]
+        error = row[7]
         #disterr = ''
         #if moderr:
         #    sig = get_sig_digits(moderr)
@@ -3523,6 +3483,10 @@ if do_task('nedd'):
                 name = hostname[3:]
         elif hostname[:5] == 'SNLS ':
             name = 'SNLS-' + hostname[5:].split()[0]
+        else:
+            cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
+            neddict.setdefault(cleanhost,[]).append(Decimal(dist))
+
         if name:
             name = add_event(name)
             secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
@@ -3531,23 +3495,69 @@ if do_task('nedd'):
                 sources = ','.join([source, secondarysource])
             else:
                 sources = secondarysource
-            add_quantity(name, 'comovingdist', dist, sources)
-        #else:
-        #    cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
-        #    for name in events:
-        #        if 'host' in events[name]:
-        #            for host in events[name]['host']:
-        #                if host['value'] == cleanhost:
-        #                    print ('found host: ' + cleanhost)
-        #                    secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
-        #                    if bibcode:
-        #                        source = add_source(name, bibcode = bibcode)
-        #                        sources = ','.join([source, secondarysource])
-        #                    else:
-        #                        sources = secondarysource
-        #                    add_quantity(name, 'comovingdist', dist, sources)
-        #                    break
-        oldhostname = hostname
+            add_quantity(name, 'comovingdist', dist, sources, error = error)
+    journal_events()
+
+# Import CPCS (currently not being added to catalog, need event names to do this)
+if do_task('cpcs'):
+    session = requests.Session()
+    response = session.get("http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
+    alertindex = json.loads(response.text, object_pairs_hook=OrderedDict)
+    ids = [x["id"] for x in alertindex]
+
+    for i, ai in enumerate(ids):
+        name = alertindex[i]['ivorn'].split('/')[-1].strip()
+        # Skip a few weird entries
+        if name == 'ASASSNli':
+            continue
+        # Just use a whitelist for now since naming seems inconsistent
+        if True in [x in name.upper() for x in ['GAIA', 'OGLE', 'ASASSN', 'MASTER', 'OTJ', 'PS1', 'IPTF']]:
+            name = name.replace('Verif', '').replace('_', ' ')
+            if 'ASASSN' in name and name[6] != '-':
+                name = 'ASASSN-' + name[6:]
+            if 'MASTEROTJ' in name:
+                name = name.replace('MASTEROTJ', 'MASTER OT J')
+            if 'OTJ' in name:
+                name = name.replace('OTJ', 'MASTER OT J')
+            if 'IPTF' in name[:4].upper():
+                name = 'iPTF' + name[4:]
+            # Only add events that are classified as SN.
+            if event_exists(name):
+                continue
+            name = add_event(name)
+        else:
+            continue
+
+        secondarysource = add_source(name, reference = 'Cambridge Photometric Calibration Server', url = 'http://gsaweb.ast.cam.ac.uk/followup/', secondary = True)
+        add_quantity(name, 'ra', str(alertindex[i]['ra']), secondarysource, unit = 'floatdegrees')
+        add_quantity(name, 'dec', str(alertindex[i]['dec']), secondarysource, unit = 'floatdegrees')
+
+        alerturl = "http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=" + str(ai)
+        source = add_source(name, reference = 'CPCS Alert ' + str(ai), url = alerturl)
+        fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
+        if tasks['cpcs']['archived'] and os.path.isfile(fname):
+            with open(fname, 'r') as f:
+                jsonstr = f.read()
+        else:
+            session = requests.Session()
+            response = session.get(alerturl + "&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
+            with open(fname, 'w') as f:
+                jsonstr = response.text
+                f.write(jsonstr)
+
+        try:
+            cpcsalert = json.loads(jsonstr)
+        except:
+            continue
+
+        mjds = [round_sig(x, sig=9) for x in cpcsalert['mjd']]
+        mags = [round_sig(x, sig=6) for x in cpcsalert['mag']]
+        errs = [round_sig(x, sig=6) for x in cpcsalert['magerr']]
+        bnds = cpcsalert['filter']
+        obs  = cpcsalert['observatory']
+        for mi, mjd in enumerate(mjds):
+            add_photometry(name, time = mjd, magnitude = mags[mi], e_magnitude = errs[mi],
+                band = bnds[mi], observatory = obs[mi], source = ','.join([source,secondarysource]))
     journal_events()
 
 if do_task('asiagospectra'):
@@ -4244,6 +4254,8 @@ if do_task('superfitspectra'):
             name = basename.split('.')[0]
             if name[:2] == 'sn':
                 name = 'SN' + name[2:]
+                if len(name) == 7:
+                    name = name[:6] + name[6].upper()
             elif name[:3] == 'ptf':
                 name = 'PTF' + name[3:]
 

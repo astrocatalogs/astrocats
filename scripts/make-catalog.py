@@ -902,7 +902,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             linkdir + fileeventname + r'.json" download>' + r'Click to download all data for ' + eventname + ' in JSON format' +
             r'</a></div>\n\1', html)
 
-        newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>sources</sup></th></tr>\n'
+        newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
         for key in columnkey:
             if key in catalog[entry] and key not in eventignorekey and len(catalog[entry][key]) > 0:
                 keyhtml = ''
