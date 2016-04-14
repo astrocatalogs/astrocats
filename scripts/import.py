@@ -16,6 +16,7 @@ import gzip
 import io
 import shutil
 import warnings
+import statistics
 from html import unescape
 from digits import *
 from cdecimal import Decimal
@@ -26,7 +27,7 @@ from astropy import constants as const
 from astropy import units as un
 from astropy.io import fits
 from astropy.time import Time as astrotime
-from astropy.cosmology import Planck15 as cosmo
+from astropy.cosmology import Planck15 as cosmo, z_at_value
 from collections import OrderedDict
 from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
@@ -64,16 +65,16 @@ tasks = {
     "snhunt":           {"update": True,  "archived": True},
     "nedd":             {"update": False},
     "cpcs":             {"update": True,  "archived": True},
-    #"asiagospectra":    {"update": True },
-    #"wiserepspectra":   {"update": False},
-    #"cfaiaspectra":     {"update": False},
-    #"cfaibcspectra":    {"update": False},
-    #"snlsspectra":      {"update": False},
-    #"cspspectra":       {"update": False},
-    #"ucbspectra":       {"update": False},
-    #"suspectspectra":   {"update": False},
-    #"snfspectra":       {"update": False},
-    #"superfitspectra":  {"update": False},
+    "asiagospectra":    {"update": True },
+    "wiserepspectra":   {"update": False},
+    "cfaiaspectra":     {"update": False},
+    "cfaibcspectra":    {"update": False},
+    "snlsspectra":      {"update": False},
+    "cspspectra":       {"update": False},
+    "ucbspectra":       {"update": False},
+    "suspectspectra":   {"update": False},
+    "snfspectra":       {"update": False},
+    "superfitspectra":  {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -476,6 +477,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         svalue = svalue.replace("UGC", "UGC ")
         if len(svalue) > 4 and (svalue[:4] == "PGC "):
             svalue = svalue[:4] + svalue[4:].lstrip(" 0")
+        if len(svalue) > 4 and (svalue[:4] == "UGC "):
+            svalue = svalue[:4] + svalue[4:].lstrip(" 0")
         if len(svalue) > 5 and (svalue[:5] == "MCG +" or svalue[:5] == "MCG -"):
             svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
         if len(svalue) > 5 and svalue[:5] == "CGCG ":
@@ -814,8 +817,7 @@ def merge_duplicates():
             if name2 not in events or name1 == name2:
                 continue
             allnames2 = events[name2]["aliases"]
-            intersection = list(set(allnames1).intersection(allnames2))
-            if intersection:
+            if any(i in allnames1 for i in allnames2):
                 print('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
                 load1 = load_event_from_file(name1, delete = True)
                 load2 = load_event_from_file(name2, delete = True)
@@ -866,13 +868,7 @@ def derive_and_sanitize():
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'claimedtype' not in events[name] and name[:2] == 'AT':
             add_quantity(name, 'claimedtype', 'Candidate', 'D')
-        if 'redshift' in events[name] and 'velocity' not in events[name]:
-            (bestz, bestkind, bestsig) = get_best_redshift(name)
-            if bestsig > 0:
-                bestz = float(bestz)
-                add_quantity(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
-                    ((bestz + 1.)**2. + 1.), sig = bestsig), 'D', kind = prefkinds[bestkind])
-        elif 'velocity' in events[name] and 'redshift' not in events[name]:
+        if 'redshift' not in events[name] and 'velocity' in events[name]:
             # Find the "best" velocity to use for this
             bestsig = 0
             for hv in events[name]['velocity']:
@@ -883,15 +879,15 @@ def derive_and_sanitize():
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
                 add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D', kind = 'heliocentric')
-        if 'comovingdist' not in events[name] and 'nedd' in tasks:
+        if 'redshift' not in events[name] and 'nedd' in tasks and 'host' in events[name]:
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-            if 'host' in events[name]:
-                for host in events[name]['host']:
-                    if host['value'] in nedddict:
-                        print ('found host: ' + host['value'])
-                        secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
-                        add_quantity(name, 'comovingdist', median(nedddict[host['value']]), sources, kind = 'host')
+            for host in events[name]['host']:
+                if host['value'] in nedddict:
+                    secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
+                    meddist = statistics.median(nedddict[host['value']])
+                    redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(meddist) * un.Mpc), sig = get_sig_digits(str(meddist)))
+                    add_quantity(name, 'redshift', redshift, secondarysource, kind = 'host')
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
@@ -906,16 +902,21 @@ def derive_and_sanitize():
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
             (bestz, bestkind, bestsig) = get_best_redshift(name)
-            if bestsig > 0 and float(bestz) > 0.:
-                if 'lumdist' not in events[name]:
-                    dl = cosmo.luminosity_distance(float(bestz))
-                    add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D', kind = prefkinds[bestkind])
-                    if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                        add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
-                            5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), 'D')
-                if 'comovingdist' not in events[name]:
-                    dl = cosmo.comoving_distance(float(bestz))
-                    add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
+            if bestsig > 0:
+                bestz = float(bestz)
+                if 'velocity' not in events[name]:
+                    add_quantity(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
+                        ((bestz + 1.)**2. + 1.), sig = bestsig), 'D', kind = prefkinds[bestkind])
+                if bestz > 0.:
+                    if 'lumdist' not in events[name]:
+                        dl = cosmo.luminosity_distance(bestz)
+                        add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), 'D', kind = prefkinds[bestkind])
+                        if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
+                            add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
+                                5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), 'D')
+                    if 'comovingdist' not in events[name]:
+                        dl = cosmo.comoving_distance(bestz)
+                        add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0,
                 x['band'] if 'band' in x else '', float(x['magnitude'])))
@@ -992,7 +993,7 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        nonsnetypes = ['Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'AGN / QSO', 'TDE', 'Varstar']
+        nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'AGN / QSO', 'TDE', 'Varstar', 'Star']
         if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
             for ct in events[name]['claimedtype']:
@@ -3216,7 +3217,6 @@ if do_task('psthreepi'):
                     psname = td.contents[0]
                     pslink = psname['href']
                     psname = psname.text
-                    print(psname)
                 elif tdi == 1:
                     ra = td.contents[0]
                 elif tdi == 2:
@@ -3469,11 +3469,6 @@ if do_task('nedd'):
         distmod = row[4]
         moderr = row[5]
         dist = row[6]
-        error = row[7]
-        #disterr = ''
-        #if moderr:
-        #    sig = get_sig_digits(moderr)
-        #    disterr = pretty_num(1.0e-6*(10.0**(0.2*(5.0 + float(distmod))) * (10.0**(0.2*float(moderr)) - 1.0)), sig = sig)
         bibcode = unescape(row[8])
         name = ''
         if hostname[:3] == 'SN ':
@@ -3485,7 +3480,11 @@ if do_task('nedd'):
             name = 'SNLS-' + hostname[5:].split()[0]
         else:
             cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
-            neddict.setdefault(cleanhost,[]).append(Decimal(dist))
+            if True in [x in cleanhost for x in ['UGC', 'PGC', 'IC']]:
+                cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
+            if 'ESO' in cleanhost:
+                cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
+            nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
 
         if name:
             name = add_event(name)
@@ -3495,7 +3494,7 @@ if do_task('nedd'):
                 sources = ','.join([source, secondarysource])
             else:
                 sources = secondarysource
-            add_quantity(name, 'comovingdist', dist, sources, error = error)
+            add_quantity(name, 'comovingdist', dist, sources)
     journal_events()
 
 # Import CPCS (currently not being added to catalog, need event names to do this)
@@ -3552,7 +3551,7 @@ if do_task('cpcs'):
 
         mjds = [round_sig(x, sig=9) for x in cpcsalert['mjd']]
         mags = [round_sig(x, sig=6) for x in cpcsalert['mag']]
-        errs = [round_sig(x, sig=6) for x in cpcsalert['magerr']]
+        errs = [round_sig(x, sig=6) if (is_number(x) and float(x) > 0.0) else '' for x in cpcsalert['magerr']]
         bnds = cpcsalert['filter']
         obs  = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
