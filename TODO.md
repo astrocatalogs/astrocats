@@ -29,6 +29,7 @@ Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
 * SN1979C - http://adsabs.harvard.edu/abs/1981ApJ...244..780B
 * SN1983V - http://adsabs.harvard.edu/abs/1997ApJ...483..675C
+* SN1986G - http://adsabs.harvard.edu/abs/2002AJ....124..417H, May 7th spectrum
 * SN1987A - http://adsabs.harvard.edu/abs/1996ApJ...467..435W
 * SN1989B - http://adsabs.harvard.edu/abs/1990A%26A...237...79B (need to reacquire a few from original source)
 * SN1991D - http://adsabs.harvard.edu/abs/2002MNRAS.336...91B
@@ -37,6 +38,7 @@ Other single SN datasets:
 * SN1993J - http://adsabs.harvard.edu/abs/2000AJ....120.1487M
 * SN1993J - http://adsabs.harvard.edu/abs/2000AJ....120.1499M
 * SN1994D - http://adsabs.harvard.edu/abs/1996MNRAS.281..263M
+* SN1994D - http://adsabs.harvard.edu/abs/1998AJ....115.1096G, June 5th spectrum
 * SN1995D - http://adsabs.harvard.edu/abs/1996PASJ...48...51S
 * SN1995N - http://adsabs.harvard.edu/abs/2002ApJ...572..350F
 * SN1995V - http://adsabs.harvard.edu/abs/1998MNRAS.299..150F
