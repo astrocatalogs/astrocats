@@ -223,8 +223,12 @@ def add_alias(name, alias):
     if 'aliases' in events[name]:
         if alias not in events[name]['aliases']:
             events[name].setdefault('aliases',[]).append(alias)
+            if alias != name:
+                print('Added alias for ' + name + ': ' + alias)
     else:
         events[name]['aliases'] = [alias]
+        if alias != name:
+            print('Added alias for ' + name + ': ' + alias)
 
 def snname(string):
     newstring = string.replace(' ', '').upper()
@@ -993,18 +997,19 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'AGN / QSO', 'TDE', 'Varstar', 'Star']
+        nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter',
+                       'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO']
+        nonsnetypes = [x.upper() for x in nonsnetypes]
         if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
             for ct in events[name]['claimedtype']:
-                if ct['value'] not in nonsnetypes:
+                if ct['value'].upper() not in nonsnetypes:
                     deleteevent = False
                     break
-                if ct['value'] in nonsnetypes:
+                if ct['value'].upper() in nonsnetypes:
                     deleteevent = True
             if deleteevent:
                 print('Deleting ' + name + ' (' + ct['value'] + ')')
-                os.system('cd ' + outdir + '; git rm ' + filename + '.json; cd ' + '../scripts')
                 continue
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
@@ -1019,7 +1024,6 @@ def write_all_events(empty = False, gz = False, delete = False):
                 shutil.copyfileobj(f_in, f_out)
             os.remove(path)
             os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
-            #os.system('cd ' + outdir + '; git lfs track ' + filename + '.json; cd ' + '../scripts')
 
 def null_field(obj, field):
     return obj[field] if field in obj else ''
@@ -2554,16 +2558,27 @@ if do_task('gaia'):
     for ri, row in enumerate(tsvin):
         if ri == 0 or not row:
             continue
-        if 'SN' not in row[7] and ('SN' not in row[9] or 'imposter' in row[9]):
-            continue
         name = add_event(row[0])
         source = add_source(name, reference = reference, url = refurl)
         year = '20' + re.findall(r'\d+', row[0])[0]
         add_quantity(name, 'discoverdate', year, source)
         add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
         add_quantity(name, 'dec', row[3], source, unit = 'floatdegrees')
-        if 'SN' in row[7]:
-            add_quantity(name, 'claimedtype', row[7].replace('SN', '').strip(), source)
+        if row[7] and row[7] != 'unknown':
+            add_quantity(name, 'claimedtype', row[7].replace('SNe', '').replace('SN', '').strip(), source)
+        elif (True in [x in row[9].upper() for x in ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
+            add_quantity(name, 'claimedtype', 'Candidate', source)
+
+        if 'aka' in row[9].replace('gakaxy','galaxy').lower() and 'AKARI' not in row[9]:
+            commentsplit = (row[9].replace('_', ' ').replace('MLS ', 'MLS').replace('CSS ', 'CSS').
+                replace('SN iPTF', 'iPTF').replace('SN ', 'SN').replace('AT ', 'AT').split())
+            for csi, cs in enumerate(commentsplit):
+                if 'aka' in cs.lower() and csi < len(commentsplit) - 1:
+                    alias = commentsplit[csi+1].strip('(),:.').replace('PSNJ', 'PSN J')
+                    if alias[:6] == 'ASASSN' and alias[6] != '-':
+                        alias = 'ASASSN-' + alias[6:]
+                    add_alias(name, alias)
+                    break
 
         fname = '../sne-external/GAIA/' + row[0] + '.csv'
         if tasks['gaia']['archived'] and os.path.isfile(fname):
