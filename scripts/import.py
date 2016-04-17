@@ -39,7 +39,7 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":         {"update": True},
+    "internal":         {"update": False},
     "simbad":           {"update": False},
     "vizier":           {"update": False},
     "nicholl-04-01-16": {"update": False},
@@ -883,7 +883,7 @@ def derive_and_sanitize():
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
                 add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), 'D', kind = 'heliocentric')
-        if 'redshift' not in events[name] and 'nedd' in tasks and 'host' in events[name]:
+        if 'redshift' not in events[name] and do_task('nedd') and 'host' in events[name]:
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
@@ -1136,6 +1136,7 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True,
 
 
             if newevent2:
+                # Needs to be fixed
                 newevent = OrderedDict([['temp',newevent[name]]])
                 copy_to_event('temp', namename)
             else:
@@ -2602,6 +2603,8 @@ if do_task('gaia'):
             telescope = 'GAIA'
             band = 'G'
             add_photometry(name, time = mjd, telescope = telescope, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+        if args.update:
+            journal_events()
     journal_events()
 
 # Import CSP
@@ -2907,6 +2910,8 @@ if do_task('tns'):
                 band = row[15].split('-')[0]
                 mjd = astrotime(row[16]).mjd
                 add_photometry(name, time = mjd, magnitude = magnitude, band = band, survey = survey, source = source)
+            if args.update:
+                journal_events()
     journal_events()
 
 if do_task('rochester'): 
@@ -2990,6 +2995,8 @@ if do_task('rochester'):
             if cols[11].contents[0] != 'n/a' and name not in rochesterredshifterrors:
                 add_quantity(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
             add_quantity(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
+            if args.update:
+                journal_events()
 
     if not args.update:
         vsnetfiles = ["latestsne.dat"]
@@ -3139,6 +3146,8 @@ if do_task('ogle'):
                         e_magnitude = ''
                         upperlimit = True
                     add_photometry(name, time = mjd, band = 'I', magnitude = magnitude, e_magnitude = e_magnitude, source = sources, upperlimit = upperlimit)
+                if args.update:
+                    journal_events()
         journal_events()
 
 if do_task('snls'): 
@@ -3337,6 +3346,8 @@ if do_task('psthreepi'):
             add_quantity(name, 'host', hostname, source)
             if redshift:
                 add_quantity(name, 'redshift', redshift, source, kind = 'host')
+            if args.update:
+                journal_events()
         journal_events()
 
 if do_task('crts'):
@@ -3429,6 +3440,8 @@ if do_task('crts'):
                     err = re.search("showz\('(.*?)'\)", line).group(1)
                 add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source, includeshost = (float(err) > 0.0),
                     telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
+            if args.update:
+                journal_events()
     journal_events()
 
 if do_task('snhunt'):
@@ -3469,6 +3482,8 @@ if do_task('snhunt'):
         for discoverer in discoverers:
             add_quantity(name, 'discoverer', 'CRTS', source)
             add_quantity(name, 'discoverer', discoverer, source)
+        if args.update:
+            journal_events()
     journal_events()
 
 if do_task('nedd'): 
@@ -3477,10 +3492,13 @@ if do_task('nedd'):
     reference = "NED-D"
     refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
     nedddict = {}
+    oldhostname = ''
     for r, row in enumerate(data):
         if r <= 12:
             continue
         hostname = row[3]
+        if args.update and oldhostname != hostname:
+            journal_events()
         distmod = row[4]
         moderr = row[5]
         dist = row[6]
@@ -3510,6 +3528,7 @@ if do_task('nedd'):
             else:
                 sources = secondarysource
             add_quantity(name, 'comovingdist', dist, sources)
+        oldhostname = hostname
     journal_events()
 
 # Import CPCS (currently not being added to catalog, need event names to do this)
@@ -3572,6 +3591,8 @@ if do_task('cpcs'):
         for mi, mjd in enumerate(mjds):
             add_photometry(name, time = mjd, magnitude = mags[mi], e_magnitude = errs[mi],
                 band = bnds[mi], observatory = obs[mi], source = ','.join([source,secondarysource]))
+        if args.update:
+            journal_events()
     journal_events()
 
 if do_task('asiagospectra'):
