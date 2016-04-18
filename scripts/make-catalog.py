@@ -1136,3 +1136,10 @@ if args.writecatalog and not args.eventlist:
 
     with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
+
+    names = OrderedDict()
+    for ev in catalog:
+        names[ev['name']] = ev['aliases']
+    jsonstring = json.dumps(names, separators=(',',':'))
+    with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)

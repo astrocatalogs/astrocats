@@ -219,15 +219,15 @@ def get_preferred_name(name):
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-def add_alias(name, alias):
+def add_alias(name, alias, verbose = False):
     if 'aliases' in events[name]:
         if alias not in events[name]['aliases']:
             events[name].setdefault('aliases',[]).append(alias)
-            if alias != name:
+            if verbose and alias != name:
                 print('Added alias for ' + name + ': ' + alias)
     else:
         events[name]['aliases'] = [alias]
-        if alias != name:
+        if verbose and alias != name:
             print('Added alias for ' + name + ': ' + alias)
 
 def snname(string):
@@ -3191,16 +3191,22 @@ if do_task('panstarrs'):
     journal_events()
 
 if do_task('psthreepi'):
-    response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
-    bs = BeautifulSoup(response, "html5lib")
-    div = bs.find('div', {"class":"pagination"})
     offline = False
-    if not div:
+    try:
+        response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
+    except:
         offline = True
-    else:
-        links = div.findAll('a')
-        if not links:
+
+    if not offline:
+        bs = BeautifulSoup(response, "html5lib")
+        div = bs.find('div', {"class":"pagination"})
+        offline = False
+        if not div:
             offline = True
+        else:
+            links = div.findAll('a')
+            if not links:
+                offline = True
 
     if offline:
         warnings.warn("Pan-STARRS 3pi offline, using local files only.")
