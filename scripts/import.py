@@ -3399,7 +3399,7 @@ if do_task('crts'):
                     if ai < len(aliases) - 1:
                         if '>' in aliases[ai+1]:
                             hostupper = True
-                        hostmag = aliases[ai+1].strip('>').replace(',', '.')
+                        hostmag = aliases[ai+1].strip('>~').replace(',', '.')
                     continue
                 if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
                     name = 'SN' + alias
@@ -3795,7 +3795,7 @@ if do_task('wiserepspectra'):
 
                             if name[:2] == 'sn':
                                 name = 'SN' + name[2:]
-                            if name[:3] == 'SSS' and name.count('-') > 1:
+                            if name[:3] in ['CSS', 'SSS', 'MLS'] and name.count('-') > 1:
                                 name = name.replace('-', ':', 1)
                             if name[:7] == 'MASTERJ':
                                 name = name.replace('MASTERJ', 'MASTER OT J')

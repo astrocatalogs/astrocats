@@ -822,25 +822,29 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
 
-                response = urllib.request.urlopen(url)
-                bandsoup = BeautifulSoup(response, "html5lib")
-                images = bandsoup.findAll('img')
-                imgname = ''
-                for image in images:
-                    if "Quicklook RGB image" in image.get('alt', ''):
-                        imgname = image.get('src', '').split('/')[-1]
-
-                if imgname:
-                    try:
-                        response = urllib.request.urlopen('http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname)
-                    except:
-                        hasimage = False
-                    else:
-                        with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
-                            f.write(response.read())
-                        imgsrc = 'DSS'
-                else:
+                try:
+                    response = urllib.request.urlopen(url)
+                except:
                     hasimage = False
+                else:
+                    bandsoup = BeautifulSoup(response, "html5lib")
+                    images = bandsoup.findAll('img')
+                    imgname = ''
+                    for image in images:
+                        if "Quicklook RGB image" in image.get('alt', ''):
+                            imgname = image.get('src', '').split('/')[-1]
+
+                    if imgname:
+                        try:
+                            response = urllib.request.urlopen('http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname)
+                        except:
+                            hasimage = False
+                        else:
+                            with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
+                                f.write(response.read())
+                            imgsrc = 'DSS'
+                    else:
+                        hasimage = False
 
         if hasimage:
             if imgsrc == 'SDSS':
