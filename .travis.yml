@@ -24,6 +24,8 @@ install:
     - git clone --depth=1 git://github.com/astrocatalogs/sne-external.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-external-spectra.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-external-WISEREP.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-radio.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-xray.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-pre-1990.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-1990-1999.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-2000-2004.git
