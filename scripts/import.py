@@ -44,6 +44,7 @@ tasks = {
     "vizier":           {"update": False},
     "nicholl-04-01-16": {"update": False},
     "maggi-04-11-16":   {"update": False},
+    "galbany-04-18-16": {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
     "suspect":          {"update": False},
@@ -2192,6 +2193,65 @@ if do_task('maggi-04-11-16'):
             add_quantity(name, 'ra', row[3], source)
             add_quantity(name, 'dec', row[4], source)
             add_quantity(name, 'host', 'SMC', source)
+    journal_events()
+
+if do_task('galbany-04-18-16'):
+    folders = next(os.walk('../sne-external/galbany-04-18-16/'))[1]
+    bibcode = '2016AJ....151...33G'
+    for folder in folders:
+        infofiles = glob.glob("../sne-external/galbany-04-18-16/" + folder + "/*.info")
+        photfiles = glob.glob("../sne-external/galbany-04-18-16/" + folder + "/*.out*")
+
+        zhel = ''
+        zcmb = ''
+        zerr = ''
+        for path in infofiles:
+            with open(path, 'r') as f:
+                lines = f.read().splitlines()
+                for line in lines:
+                    splitline = line.split(':')
+                    field = splitline[0].strip().lower()
+                    value = splitline[1].strip()
+                    if field == 'name':
+                        name = value[:6].upper() + (value[6].upper() if len(value) == 7 else value[6:])
+                        name = add_event(name)
+                        source = add_source(name, bibcode = bibcode)
+                    elif field == 'type':
+                        claimedtype = value.replace('SN', '')
+                        add_quantity(name, 'claimedtype', claimedtype, source)
+                    elif field == 'zhel':
+                        zhel = value
+                    elif field == 'redshift_error':
+                        zerr = value
+                    elif field == 'zcmb':
+                        zcmb = value
+                    elif field == 'ra':
+                        add_quantity(name, 'ra', value, source, unit = 'floatdegrees')
+                    elif field == 'dec':
+                        add_quantity(name, 'dec', value, source, unit = 'floatdegrees')
+                    elif field == 'host':
+                        add_quantity(name, 'host', value.replace('- ', '-').replace('G ', 'G'), source)
+                    elif field == 'e(b-v)_mw':
+                        add_quantity(name, 'ebv', value, source)
+
+        add_quantity(name, 'redshift', zhel, source, error = zerr, kind = 'heliocentric')
+        add_quantity(name, 'redshift', zcmb, source, error = zerr, kind = 'cmb')
+
+        for path in photfiles:
+            with open(path, 'r') as f:
+                band = ''
+                lines = f.read().splitlines()
+                for li, line in enumerate(lines):
+                    if li in [0, 2, 3]:
+                        continue
+                    if li == 1:
+                        band = line.split(':')[-1].strip()
+                    else:
+                        cols = list(filter(None, line.split()))
+                        if not cols:
+                            continue
+                        add_photometry(name, time = cols[0], magnitude = cols[1], e_magnitude = cols[2],
+                                       band = band, system = cols[3], telescope = cols[4], source = source)
     journal_events()
 
 # CCCP
