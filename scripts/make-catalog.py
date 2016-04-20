@@ -152,7 +152,7 @@ titles = [
 ]
 
 photokeys = [
-    'timeunit',
+    'u_time',
     'time',
     'band',
     'instrument',
@@ -449,7 +449,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         hasABerrs = len(list(filter(None, photoABerrs)))
         tt = [  
                 ("Source ID(s)", "@src"),
-                ("Epoch (" + catalog[entry]['photometry'][0]['timeunit'] + ")",
+                ("Epoch (" + catalog[entry]['photometry'][0]['u_time'] + ")",
                  "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>" if hastimeerrs else ""))
              ]
         tt += [("Apparent Magnitude", "@y{1.111}" + ("&nbsp;±&nbsp;@err{1.11}" if hasABerrs else ""))]
@@ -466,7 +466,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         min_y_range = 0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))])
         max_y_range = -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])
 
-        p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['timeunit'] + ')',
+        p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + ')',
             y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
             x_range = (min_x_range, max_x_range), y_range = (min_y_range, max_y_range),
             title_text_font_size='16pt', title_text_font = 'futura')
@@ -617,11 +617,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                 spectrumerrs.append([float(spectrumdata[x][2]) for x in specrange])
                 spectrumerrs[-1] = [x if is_number(x) and not isnan(float(x)) else 0. for x in spectrumerrs[-1]]
 
-            if 'timeunit' not in spectrum or 'time' not in spectrum:
+            if 'u_time' not in spectrum or 'time' not in spectrum:
                 hasepoch = False
 
             mjdmax = ''
-            if 'timeunit' in spectrum and spectrum['timeunit'] == 'MJD' and 'redshift' in catalog[entry]:
+            if 'u_time' in spectrum and spectrum['u_time'] == 'MJD' and 'redshift' in catalog[entry]:
                 if 'maxdate' in catalog[entry]:
                     mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'].replace('/', '-')).mjd
                 if mjdmax:
@@ -671,7 +671,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                ]
 
         if hasepoch:
-            tt2 += [ ("Epoch (" + spectrum['timeunit'] + ")", "@epoch{1.11}") ]
+            tt2 += [ ("Epoch (" + spectrum['u_time'] + ")", "@epoch{1.11}") ]
 
         if hasmjdmax:
             tt2 += [ ("Rest days to max", "@mjdmax{1.11}") ]

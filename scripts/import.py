@@ -39,43 +39,45 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":         {"update": False},
-    "simbad":           {"update": False},
-    "vizier":           {"update": False},
-    "nicholl-04-01-16": {"update": False},
-    "maggi-04-11-16":   {"update": False},
-    "galbany-04-18-16": {"update": False},
-    "cccp":             {"update": False, "archived": True},
-    "anderson":         {"update": False},
-    "suspect":          {"update": False},
-    "cfa":              {"update": False},
-    "ucb":              {"update": False},
-    "sdss":             {"update": False},
-    "csp":              {"update": False},
-    "itep":             {"update": False},
-    "asiago":           {"update": False},
-    "tns":              {"update": True,  "archived": True},
-    "rochester":        {"update": True },
-    "lennarz":          {"update": False},
-    "gaia":             {"update": True,  "archived": True},
-    "ogle":             {"update": True },
-    "snls":             {"update": False},
-    "panstarrs":        {"update": False},
-    "psthreepi":        {"update": True,  "archived": True},
-    "crts":             {"update": True,  "archived": True},
-    "snhunt":           {"update": True,  "archived": True},
-    "nedd":             {"update": False},
-    "cpcs":             {"update": True,  "archived": True},
-    "asiagospectra":    {"update": True },
-    "wiserepspectra":   {"update": False},
-    "cfaiaspectra":     {"update": False},
-    "cfaibcspectra":    {"update": False},
-    "snlsspectra":      {"update": False},
-    "cspspectra":       {"update": False},
-    "ucbspectra":       {"update": False},
-    "suspectspectra":   {"update": False},
-    "snfspectra":       {"update": False},
-    "superfitspectra":  {"update": False},
+    #"internal":         {"update": False},
+    "radio":            {"update": False},
+    #"xray":             {"update": False},
+    #"simbad":           {"update": False},
+    #"vizier":           {"update": False},
+    #"nicholl-04-01-16": {"update": False},
+    #"maggi-04-11-16":   {"update": False},
+    #"galbany-04-18-16": {"update": False},
+    #"cccp":             {"update": False, "archived": True},
+    #"anderson":         {"update": False},
+    #"suspect":          {"update": False},
+    #"cfa":              {"update": False},
+    #"ucb":              {"update": False},
+    #"sdss":             {"update": False},
+    #"csp":              {"update": False},
+    #"itep":             {"update": False},
+    #"asiago":           {"update": False},
+    #"tns":              {"update": True,  "archived": True},
+    #"rochester":        {"update": True },
+    #"lennarz":          {"update": False},
+    #"gaia":             {"update": True,  "archived": True},
+    #"ogle":             {"update": True },
+    #"snls":             {"update": False},
+    #"panstarrs":        {"update": False},
+    #"psthreepi":        {"update": True,  "archived": True},
+    #"crts":             {"update": True,  "archived": True},
+    #"snhunt":           {"update": True,  "archived": True},
+    #"nedd":             {"update": False},
+    #"cpcs":             {"update": True,  "archived": True},
+    #"asiagospectra":    {"update": True },
+    #"wiserepspectra":   {"update": False},
+    #"cfaiaspectra":     {"update": False},
+    #"cfaibcspectra":    {"update": False},
+    #"snlsspectra":      {"update": False},
+    #"cspspectra":       {"update": False},
+    #"ucbspectra":       {"update": False},
+    #"suspectspectra":   {"update": False},
+    #"snfspectra":       {"update": False},
+    #"superfitspectra":  {"update": False},
     "writeevents":      {"update": True }
 }
 
@@ -287,27 +289,34 @@ def get_source_by_alias(name, alias):
             return source
     raise(ValueError('Source alias not found!'))
 
-def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "", instrument = "", band = "",
+def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
-                   observatory = "", observer = "", host = False, includeshost = False, survey = ""):
-    if (not time and not host) or not magnitude:
-        print('Warning: Time or AB mag not specified when adding photometry.\n')
+                   observatory = "", observer = "", host = False, includeshost = False, survey = "",
+                   flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", unit = "", frequency = "",
+                   u_frequency = ""):
+    if (not time and not host) or (not magnitude and not flux and not fluxdensity):
+        print('Warning: Time or brightness not specified when adding photometry, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if (not host and not is_number(time)) or not is_number(magnitude):
-        print('Warning: Time or AB mag not numerical.\n')
+    if (not host and not is_number(time)) or (not is_number(magnitude) and not is_number(flux) and not is_number(fluxdensity)):
+        print('Warning: Time or brightness not numerical, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if e_magnitude and not is_number(e_magnitude):
-        print('Warning: AB error not numerical.\n')
+    if (e_magnitude and not is_number(e_magnitude)) or (flux and not is_number(e_flux)) or (fluxdensity and not is_number(e_fluxdensity)):
+        print('Warning: Brightness error not numerical, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB error: "' + e_magnitude + '"')
         return
 
     if e_time and not is_number(e_time):
-        print('Warning: Time error not numerical.\n')
+        print('Warning: Time error not numerical, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Time error: "' + e_time + '"')
+        return
+
+    if (flux or fluxdensity) and (not unit or (not frequency and not band)):
+        print('Warning: Unit and band/frequency must be set when adding photometry by flux or flux density, not adding.')
+        print('Name : "' + name + '", Time: "' + time)
         return
 
     if not source:
@@ -317,57 +326,87 @@ def add_photometry(name, timeunit = "MJD", time = "", e_time = "", telescope = "
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
             if ('host' not in photo and not host and
-                photo['timeunit'] == timeunit and
+                photo['u_time'] == u_time and
                 Decimal(photo['time']) == Decimal(time) and
-                Decimal(photo['magnitude']) == Decimal(magnitude) and
+                (('magnitude' not in photo and not magnitude) or
+                 ('magnitude' in photo and Decimal(photo['magnitude']) == Decimal(magnitude)) or
+                 ('magnitude' in photo and not magnitude)) and
+                (('flux' not in photo and not flux) or
+                 ('flux' in photo and Decimal(photo['flux']) == Decimal(flux)) or
+                 ('flux' in photo and not flux)) and
+                (('fluxdensity' not in photo and not fluxdensity) or
+                 ('fluxdensity' in photo and Decimal(photo['fluxdensity']) == Decimal(fluxdensity)) or
+                 ('fluxdensity' in photo and not fluxdensity)) and
                 (('band' not in photo and not band) or
                  ('band' in photo and photo['band'] == band) or
                  ('band' in photo and not band)) and
                 (('e_magnitude' not in photo and not e_magnitude) or
                  ('e_magnitude' in photo and e_magnitude and Decimal(photo['e_magnitude']) == Decimal(e_magnitude)) or
                  ('e_magnitude' in photo and not e_magnitude)) and
+                (('e_flux' not in photo and not e_flux) or
+                 ('e_flux' in photo and e_flux and Decimal(photo['e_flux']) == Decimal(e_flux)) or
+                 ('e_flux' in photo and not e_flux)) and
+                (('e_fluxdensity' not in photo and not e_fluxdensity) or
+                 ('e_fluxdensity' in photo and e_fluxdensity and Decimal(photo['e_fluxdensity']) == Decimal(e_fluxdensity)) or
+                 ('e_fluxdensity' in photo and not e_fluxdensity)) and
                 (('system' not in photo and not system) or
                  ('system' in photo and photo['system'] == system) or
                  ('system' in photo and not system))):
                 return
 
     photoentry = OrderedDict()
-    photoentry['timeunit'] = timeunit
     if time:
         photoentry['time'] = str(time)
+    if e_time:
+        photoentry['e_time'] = str(e_time)
+    if u_time:
+        photoentry['u_time'] = u_time
     if band:
         photoentry['band'] = band
     if system:
         photoentry['system'] = system
-    photoentry['magnitude'] = str(magnitude)
-    if survey:
-        photoentry['survey'] = survey
-    if instrument:
-        photoentry['instrument'] = instrument
-    if telescope:
-        photoentry['telescope'] = telescope
-    if observatory:
-        photoentry['observatory'] = observatory
-    if observer:
-        photoentry['observer'] = observer
+    if magnitude:
+        photoentry['magnitude'] = str(magnitude)
     if e_magnitude:
         photoentry['e_magnitude'] = str(e_magnitude)
-    if e_time:
-        photoentry['e_time'] = str(e_time)
-    if source:
-        photoentry['source'] = source
+    if frequency:
+        photoentry['frequency'] = frequency
+    if u_frequency:
+        photoentry['u_frequency'] = u_frequency
+    if flux:
+        photoentry['flux'] = str(flux)
+    if e_flux:
+        photoentry['e_flux'] = str(e_flux)
+    if fluxdensity:
+        photoentry['fluxdensity'] = str(fluxdensity)
+    if e_fluxdensity:
+        photoentry['e_fluxdensity'] = str(e_fluxdensity)
+    if unit:
+        photoentry['unit'] = str(unit)
     if upperlimit:
         photoentry['upperlimit'] = upperlimit
     if host:
         photoentry['host'] = host
     if includeshost:
         photoentry['includeshost'] = includeshost
+    if observer:
+        photoentry['observer'] = observer
+    if survey:
+        photoentry['survey'] = survey
+    if observatory:
+        photoentry['observatory'] = observatory
+    if telescope:
+        photoentry['telescope'] = telescope
+    if instrument:
+        photoentry['instrument'] = instrument
+    if source:
+        photoentry['source'] = source
     events[name].setdefault('photometry',[]).append(photoentry)
 
 def trim_str_arr(arr, length = 10):
     return [str(round_sig(float(x), length)) if (len(x) > length and len(str(round_sig(float(x), length))) < len(x)) else x for x in arr]
 
-def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", timeunit = "", time = "", instrument = "",
+def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time = "", time = "", instrument = "",
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "", telescope = "",
     observer = "", reducer = "", filename = "", observatory = "", data = ""):
 
@@ -402,8 +441,8 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", timeun
         spectrumentry['telescope'] = telescope
     if observatory:
         spectrumentry['observatory'] = observatory
-    if timeunit:
-        spectrumentry['timeunit'] = timeunit
+    if u_time:
+        spectrumentry['u_time'] = u_time
     if time:
         spectrumentry['time'] = time
     if snr:
@@ -644,8 +683,8 @@ def get_max_light(name):
     if 'photometry' not in events[name]:
         return (None, None, None, None)
 
-    eventphoto = [(x['timeunit'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '', x['source']) for x in events[name]['photometry'] if
-                  ('magnitude' in x and 'time' in x and 'timeunit' in x and 'upperlimit' not in x)]
+    eventphoto = [(x['u_time'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '', x['source']) for x in events[name]['photometry'] if
+                  ('magnitude' in x and 'time' in x and 'u_time' in x and 'upperlimit' not in x)]
     if not eventphoto:
         return (None, None, None, None)
 
@@ -675,7 +714,7 @@ def get_first_light(name):
         return (None, None)
 
     eventphoto = [(Decimal(x['time']), x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x
-        and 'time' in x and 'timeunit' in x and x['timeunit'] == 'MJD']
+        and 'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
     if not eventphoto:
         return (None, None)
     flmjd = min([x[0] for x in eventphoto])
@@ -702,10 +741,10 @@ def set_first_max_light(name):
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
         for spectrum in events[name]['spectra']:
-            if 'time' in spectrum and 'timeunit' in spectrum:
-                if spectrum['timeunit'] == 'MJD':
+            if 'time' in spectrum and 'u_time' in spectrum:
+                if spectrum['u_time'] == 'MJD':
                     mjd = float(spectrum['time'])
-                elif spectrum['timeunit'] == 'JD':
+                elif spectrum['u_time'] == 'JD':
                     mjd = float(jd_to_mjd(Decimal(spectrum['time'])))
                 else:
                     continue
@@ -924,7 +963,7 @@ def derive_and_sanitize():
                         add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0,
-                x['band'] if 'band' in x else '', float(x['magnitude'])))
+                x['band'] if 'band' in x else '', float(x['magnitude']) if 'magnitude' in x else ''))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0))
         if 'sources' in events[name]:
@@ -1063,7 +1102,7 @@ def copy_to_event(fromname, destname):
                 sources = ','.join(sources)
 
                 if key == 'photometry':
-                    add_photometry(destname, timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
+                    add_photometry(destname, u_time = null_field(item, "u_time"), time = null_field(item, "time"),
                         e_time = null_field(item, "e_time"), telescope = null_field(item, "telescope"),
                         instrument = null_field(item, "instrument"), band = null_field(item, "band"),
                         magnitude = null_field(item, "magnitude"), e_magnitude = null_field(item, "e_magnitude"),
@@ -1072,7 +1111,7 @@ def copy_to_event(fromname, destname):
                         host = null_field(item, "host"), survey = null_field(item, "survey"))
                 elif key == 'spectra':
                     add_spectrum(destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), data = null_field(item, "data"),
-                        timeunit = null_field(item, "timeunit"), time = null_field(item, "time"),
+                        u_time = null_field(item, "u_time"), time = null_field(item, "time"),
                         instrument = null_field(item, "instrument"), deredshifted = null_field(item, "deredshifted"),
                         dereddened = null_field(item, "dereddened"), errorunit = null_field(item, "errorunit"),
                         source = sources, snr = null_field(item, "snr"),
@@ -1178,8 +1217,8 @@ def clean_event(dirtyevent):
             pass
         elif key == 'photometry':
             for p, photo in enumerate(events['temp']['photometry']):
-                if photo['timeunit'] == 'JD':
-                    events['temp']['photometry'][p]['timeunit'] = 'MJD'
+                if photo['u_time'] == 'JD':
+                    events['temp']['photometry'][p]['u_time'] = 'MJD'
                     events['temp']['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
                 if bibcodes and 'source' not in photo:
                     alias = add_source('temp', bibcode = bibcodes[0])
@@ -1233,6 +1272,22 @@ if do_task('internal'):
         else:
             if not load_event_from_file(location = datafile, clean = True, delete = False):
                 raise IOError('Failed to find specified file.')
+    journal_events()
+
+if do_task('radio'):
+    for datafile in sorted(glob.glob("../sne-external-radio/*.txt"), key=lambda s: s.lower()):
+        name = add_event(os.path.basename(datafile).split('.')[0])
+        with open(datafile, 'r') as f:
+            for li, line in enumerate(f.read().splitlines()):
+                if li == 0:
+                    source = add_source(name, bibcode = line.split()[-1])
+                elif li in [1,2,3]:
+                    continue
+                else:
+                    cols = list(filter(None, line.split()))
+                    add_photometry(name, time = cols[0], frequency = cols[2], u_frequency = 'GHz', flux = cols[3],
+                        e_flux = cols[4], unit = 'µJy', instrument = cols[5],
+                        upperlimit = (True if cols[6].lower() == 'true' else False), source = source)
     journal_events()
 
 #if do_task('simbad'):
@@ -2490,7 +2545,7 @@ if do_task('cfa'):
                             tuout = tu
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
-                            add_photometry(name, timeunit = tuout, time = mjd, band = eventbands[(v-1)//2], magnitude = row[v], e_magnitude = row[v+1], source = secondarysource + ',' + source)
+                            add_photometry(name, u_time = tuout, time = mjd, band = eventbands[(v-1)//2], magnitude = row[v], e_magnitude = row[v+1], source = secondarysource + ',' + source)
         f.close()
 
     # Hicken 2012
@@ -2509,7 +2564,7 @@ if do_task('cfa'):
 
         source = add_source(name, bibcode = '2012ApJS..200...12H')
         add_quantity(name, 'claimedtype', 'Ia', source)
-        add_photometry(name, timeunit = 'MJD', time = row[2].strip(), band = row[1].strip(),
+        add_photometry(name, u_time = 'MJD', time = row[2].strip(), band = row[1].strip(),
             magnitude = row[6].strip(), e_magnitude = row[7].strip(), source = source)
     
     # Bianco 2014
@@ -2520,7 +2575,7 @@ if do_task('cfa'):
         name = add_event(name)
 
         source = add_source(name, bibcode = '2014ApJS..213...19B')
-        add_photometry(name, timeunit = 'MJD', time = row[2], band = row[1], magnitude = row[3],
+        add_photometry(name, u_time = 'MJD', time = row[2], band = row[1], magnitude = row[3],
             e_magnitude = row[4], telescope = row[5], system = "Standard", source = source)
     f.close()
     journal_events()
@@ -3917,7 +3972,7 @@ if do_task('wiserepspectra'):
                                     fluxunit = 'Uncalibrated'
 
                                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = fluxunit, errors = errors, errorunit = fluxunit, wavelengths = wavelengths,
-                                    fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer,
+                                    fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = sources, observer = observer, reducer = reducer,
                                     filename = specfile)
                                 wiserepcnt = wiserepcnt + 1
 
@@ -3965,7 +4020,7 @@ if do_task('cfaiaspectra'):
             fluxes = data[1]
             errors = data[2]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
-                wavelengths = wavelengths, fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument,
+                wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument,
                 errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
             if args.travis and fi >= travislimit:
                 break
@@ -4001,7 +4056,7 @@ if do_task('cfaibcspectra'):
             wavelengths = data[0]
             fluxes = data[1]
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths, filename = filename,
-                fluxes = fluxes, timeunit = 'MJD', time = time, instrument = instrument, source = source,
+                fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
             if args.travis and fi >= travislimit:
                 break
@@ -4047,7 +4102,7 @@ if do_task('snlsspectra'):
         errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-            fluxes = fluxes, timeunit = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', telescope = telescope, source = source,
+            fluxes = fluxes, u_time = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', telescope = telescope, source = source,
             filename = filename)
         if args.travis and fi >= travislimit:
             break
@@ -4088,7 +4143,7 @@ if do_task('cspspectra'):
         wavelengths = specdata[0]
         fluxes = specdata[1]
 
-        add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
+        add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
             fluxes = fluxes, telescope = telescope, instrument = instrument, source = source, deredshifted = True, filename = filename)
         if args.travis and fi >= travislimit:
             break
@@ -4172,7 +4227,7 @@ if do_task('ucbspectra'):
             if not list(filter(None, errors)):
                 errors = ''
 
-            add_spectrum(name = name, timeunit = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
+            add_spectrum(name = name, u_time = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
                 wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
                 instrument = instrument, source = sources, snr = snr, observer = observer, reducer = reducer)
             ucbspeccnt = ucbspeccnt + 1
@@ -4254,7 +4309,7 @@ if do_task('suspectspectra'):
                 if haserrors:
                     errors = specdata[2]
 
-                add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
+                add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                     fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources, filename = spectrum)
                 suspectcnt = suspectcnt + 1
                 if args.travis and suspectcnt % travislimit == 0:
@@ -4336,7 +4391,7 @@ if do_task('snfspectra'):
             if haserrors:
                 errors = specdata[2]
 
-            add_spectrum(name = name, timeunit = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
+            add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
                 wavelengths = wavelengths, fluxes = fluxes, errors = errors, observer = observer, observatory = observatory,
                 telescope = telescope, instrument = instrument,
                 errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources, filename = filename)
@@ -4385,7 +4440,7 @@ if do_task('superfitspectra'):
             fluxes = specdata[1]
 
             mlmjd = str(Decimal(astrotime('-'.join([str(mldt.year), str(mldt.month), str(mldt.day)])).mjd) + epoff) if (epoff != '') else ''
-            add_spectrum(name, timeunit = 'MJD' if mlmjd else '', time = mlmjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
+            add_spectrum(name, u_time = 'MJD' if mlmjd else '', time = mlmjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
                 wavelengths = wavelengths, fluxes = fluxes, source = source)
             
             lastname = name
