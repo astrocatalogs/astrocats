@@ -28,7 +28,7 @@ from astropy import units as un
 from astropy.io import fits
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo, z_at_value
-from collections import OrderedDict
+from collections import OrderedDict, Sequence
 from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
@@ -41,7 +41,7 @@ args = parser.parse_args()
 tasks = {
     #"internal":         {"update": False},
     "radio":            {"update": False},
-    #"xray":             {"update": False},
+    "xray":             {"update": False},
     #"simbad":           {"update": False},
     #"vizier":           {"update": False},
     #"nicholl-04-01-16": {"update": False},
@@ -83,6 +83,8 @@ tasks = {
 
 clight = const.c.cgs.value
 km = (1.0 * un.km).cgs.value
+planckh = const.h.cgs.value
+keV = (1.0 * un.keV).cgs.value
 travislimit = 10
 
 eventnames = []
@@ -292,19 +294,21 @@ def get_source_by_alias(name, alias):
 def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
                    observatory = "", observer = "", host = False, includeshost = False, survey = "",
-                   flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", unit = "", frequency = "",
-                   u_frequency = ""):
-    if (not time and not host) or (not magnitude and not flux and not fluxdensity):
+                   flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
+                   u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
+                   e_unabsorbedflux = ""):
+    if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         print('Warning: Time or brightness not specified when adding photometry, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if (not host and not is_number(time)) or (not is_number(magnitude) and not is_number(flux) and not is_number(fluxdensity)):
+    if (not host and not is_number(time)) or (not is_number(magnitude) and not is_number(flux) and not is_number(fluxdensity) and not is_number(counts)):
         print('Warning: Time or brightness not numerical, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if (e_magnitude and not is_number(e_magnitude)) or (flux and not is_number(e_flux)) or (fluxdensity and not is_number(e_fluxdensity)):
+    if (not upperlimit and ((e_magnitude and not is_number(e_magnitude)) or (flux and not is_number(e_flux)) or
+        (fluxdensity and not is_number(e_fluxdensity)) or (counts and not is_number(e_counts)))):
         print('Warning: Brightness error not numerical, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB error: "' + e_magnitude + '"')
         return
@@ -314,7 +318,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         print('Name : "' + name + '", Time: "' + time + '", Time error: "' + e_time + '"')
         return
 
-    if (flux or fluxdensity) and (not unit or (not frequency and not band)):
+    if (flux or fluxdensity) and ((not u_flux and not u_fluxdensity) or (not frequency and not band)):
         print('Warning: Unit and band/frequency must be set when adding photometry by flux or flux density, not adding.')
         print('Name : "' + name + '", Time: "' + time)
         return
@@ -325,30 +329,46 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
-            if ('host' not in photo and not host and
-                photo['u_time'] == u_time and
-                Decimal(photo['time']) == Decimal(time) and
+            if (('host' not in photo and not host) and
+                (photo['u_time'] == u_time) and
+                ((isinstance(photo['time'], str) and isinstance(time, str) and Decimal(photo['time']) == Decimal(time)) or
+                 (isinstance(photo['time'], list) and isinstance(time, list) and photo['time'] == time)) and
                 (('magnitude' not in photo and not magnitude) or
                  ('magnitude' in photo and Decimal(photo['magnitude']) == Decimal(magnitude)) or
                  ('magnitude' in photo and not magnitude)) and
                 (('flux' not in photo and not flux) or
                  ('flux' in photo and Decimal(photo['flux']) == Decimal(flux)) or
                  ('flux' in photo and not flux)) and
+                (('unabsorbedflux' not in photo and not unabsorbedflux) or
+                 ('unabsorbedflux' in photo and Decimal(photo['unabsorbedflux']) == Decimal(unabsorbedflux)) or
+                 ('unabsorbedflux' in photo and not unabsorbedflux)) and
                 (('fluxdensity' not in photo and not fluxdensity) or
                  ('fluxdensity' in photo and Decimal(photo['fluxdensity']) == Decimal(fluxdensity)) or
                  ('fluxdensity' in photo and not fluxdensity)) and
+                (('counts' not in photo and not counts) or
+                 ('counts' in photo and Decimal(photo['counts']) == Decimal(counts)) or
+                 ('counts' in photo and not counts)) and
                 (('band' not in photo and not band) or
                  ('band' in photo and photo['band'] == band) or
                  ('band' in photo and not band)) and
+                (('photonindex' not in photo and not photonindex) or
+                 ('photonindex' in photo and photo['photonindex'] == photonindex) or
+                 ('photonindex' in photo and not photonindex)) and
                 (('e_magnitude' not in photo and not e_magnitude) or
                  ('e_magnitude' in photo and e_magnitude and Decimal(photo['e_magnitude']) == Decimal(e_magnitude)) or
                  ('e_magnitude' in photo and not e_magnitude)) and
                 (('e_flux' not in photo and not e_flux) or
                  ('e_flux' in photo and e_flux and Decimal(photo['e_flux']) == Decimal(e_flux)) or
                  ('e_flux' in photo and not e_flux)) and
+                (('e_unabsorbedflux' not in photo and not e_unabsorbedflux) or
+                 ('e_unabsorbedflux' in photo and e_unabsorbedflux and Decimal(photo['e_unabsorbedflux']) == Decimal(e_unabsorbedflux)) or
+                 ('e_unabsorbedflux' in photo and not e_unabsorbedflux)) and
                 (('e_fluxdensity' not in photo and not e_fluxdensity) or
                  ('e_fluxdensity' in photo and e_fluxdensity and Decimal(photo['e_fluxdensity']) == Decimal(e_fluxdensity)) or
                  ('e_fluxdensity' in photo and not e_fluxdensity)) and
+                (('e_counts' not in photo and not e_counts) or
+                 ('e_counts' in photo and e_counts and Decimal(photo['e_counts']) == Decimal(e_counts)) or
+                 ('e_counts' in photo and not e_counts)) and
                 (('system' not in photo and not system) or
                  ('system' in photo and photo['system'] == system) or
                  ('system' in photo and not system))):
@@ -356,7 +376,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
 
     photoentry = OrderedDict()
     if time:
-        photoentry['time'] = str(time)
+        photoentry['time'] = time if isinstance(time, list) or isinstance(time, str) else str(time)
     if e_time:
         photoentry['e_time'] = str(e_time)
     if u_time:
@@ -370,19 +390,31 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
     if e_magnitude:
         photoentry['e_magnitude'] = str(e_magnitude)
     if frequency:
-        photoentry['frequency'] = frequency
+        photoentry['frequency'] = frequency if isinstance(frequency, list) or isinstance(frequency, str) else str(frequency)
     if u_frequency:
         photoentry['u_frequency'] = u_frequency
     if flux:
         photoentry['flux'] = str(flux)
     if e_flux:
         photoentry['e_flux'] = str(e_flux)
+    if unabsorbedflux:
+        photoentry['unabsorbedflux'] = str(unabsorbedflux)
+    if e_unabsorbedflux:
+        photoentry['e_unabsorbedflux'] = str(e_unabsorbedflux)
+    if u_flux:
+        photoentry['u_flux'] = str(u_flux)
+    if photonindex:
+        photoentry['photonindex'] = str(photonindex)
     if fluxdensity:
         photoentry['fluxdensity'] = str(fluxdensity)
     if e_fluxdensity:
         photoentry['e_fluxdensity'] = str(e_fluxdensity)
-    if unit:
-        photoentry['unit'] = str(unit)
+    if u_fluxdensity:
+        photoentry['u_fluxdensity'] = str(u_fluxdensity)
+    if counts:
+        photoentry['counts'] = str(counts)
+    if e_counts:
+        photoentry['e_counts'] = str(e_counts)
     if upperlimit:
         photoentry['upperlimit'] = upperlimit
     if host:
@@ -399,6 +431,8 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         photoentry['telescope'] = telescope
     if instrument:
         photoentry['instrument'] = instrument
+    if nhmw:
+        photoentry['nhmw'] = nhmw
     if source:
         photoentry['source'] = source
     events[name].setdefault('photometry',[]).append(photoentry)
@@ -713,7 +747,8 @@ def get_first_light(name):
     if 'photometry' not in events[name]:
         return (None, None)
 
-    eventphoto = [(Decimal(x['time']), x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x
+    eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else Decimal(min(float(y) for y in x['time'])),
+        x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x
         and 'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
     if not eventphoto:
         return (None, None)
@@ -775,13 +810,6 @@ def jd_to_mjd(jd):
 
 def utf8(x):
     return str(x, 'utf-8')
-
-def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
 
 def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
@@ -962,7 +990,8 @@ def derive_and_sanitize():
                         dl = cosmo.comoving_distance(bestz)
                         add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), 'D')
         if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0,
+            events[name]['photometry'].sort(key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
+                min([float(y) for y in x['time']])) if 'time' in x else 0.0,
                 x['band'] if 'band' in x else '', float(x['magnitude']) if 'magnitude' in x else ''))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0))
@@ -1285,9 +1314,26 @@ if do_task('radio'):
                     continue
                 else:
                     cols = list(filter(None, line.split()))
-                    add_photometry(name, time = cols[0], frequency = cols[2], u_frequency = 'GHz', flux = cols[3],
-                        e_flux = cols[4], unit = 'µJy', instrument = cols[5],
-                        upperlimit = (True if cols[6].lower() == 'true' else False), source = source)
+                    add_photometry(name, time = cols[0], frequency = cols[2], u_frequency = 'GHz', fluxdensity = cols[3],
+                        e_fluxdensity = cols[4], u_fluxdensity = 'µJy', instrument = cols[5], source = source)
+    journal_events()
+
+if do_task('xray'):
+    for datafile in sorted(glob.glob("../sne-external-xray/*.txt"), key=lambda s: s.lower()):
+        name = add_event(os.path.basename(datafile).split('.')[0])
+        with open(datafile, 'r') as f:
+            for li, line in enumerate(f.read().splitlines()):
+                if li == 0:
+                    source = add_source(name, bibcode = line.split()[-1])
+                elif li in [1,2,3]:
+                    continue
+                else:
+                    cols = list(filter(None, line.split()))
+                    add_photometry(name, time = cols[:2],
+                        frequency = [str(round_sig(float(x)*keV/planckh, get_sig_digits(x)+1)) for x in cols[2:4]],
+                        u_frequency = 'Hz', counts = cols[4], flux = cols[6], unabsorbedflux = cols[8], u_flux = 'ergs/s/cm^2',
+                        photonindex = cols[15], instrument = cols[17], nhmw = cols[11],
+                        upperlimit = (float(cols[5]) < 0), source = source)
     journal_events()
 
 #if do_task('simbad'):

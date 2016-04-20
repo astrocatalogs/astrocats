@@ -12,8 +12,15 @@ def pretty_num(x, sig=4):
     return str('%g'%(round_sig(x, sig)))
 
 def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
+    if isinstance(s, list) and not isinstance(s, str):
+        try:
+            [float(x) for x in s]
+            return True
+        except ValueError:
+            return False
+    else:
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
