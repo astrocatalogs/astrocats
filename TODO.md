@@ -140,7 +140,7 @@ Online catalogs:
 * No known missing online catalogs at this time.
 
 ####Data that likely exists but no known source
-* SN2009ac has a very well-sampled light curve but no typing.
+* Any SNe with a typing but no spectrum likely has a spectrum.
 
 ####Known errors that need to be corrected:
-* SN2009dc mis-labeled as SN2009ac in ITEP (fixed but not until next run).
+* No known errors at this time.
