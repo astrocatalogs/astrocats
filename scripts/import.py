@@ -296,7 +296,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                    observatory = "", observer = "", host = False, includeshost = False, survey = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
                    u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
-                   e_unabsorbedflux = ""):
+                   e_unabsorbedflux = "", energy = "", u_energy = ""):
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         print('Warning: Time or brightness not specified when adding photometry, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -318,7 +318,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         print('Name : "' + name + '", Time: "' + time + '", Time error: "' + e_time + '"')
         return
 
-    if (flux or fluxdensity) and ((not u_flux and not u_fluxdensity) or (not frequency and not band)):
+    if (flux or fluxdensity) and ((not u_flux and not u_fluxdensity) or (not frequency and not band and not energy)):
         print('Warning: Unit and band/frequency must be set when adding photometry by flux or flux density, not adding.')
         print('Name : "' + name + '", Time: "' + time)
         return
@@ -348,6 +348,12 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                 (('counts' not in photo and not counts) or
                  ('counts' in photo and Decimal(photo['counts']) == Decimal(counts)) or
                  ('counts' in photo and not counts)) and
+                (('energy' not in photo and not energy) or
+                 ('energy' in photo and Decimal(photo['energy']) == Decimal(energy)) or
+                 ('energy' in photo and not energy)) and
+                (('frequency' not in photo and not frequency) or
+                 ('frequency' in photo and Decimal(photo['frequency']) == Decimal(frequency)) or
+                 ('frequency' in photo and not frequency)) and
                 (('band' not in photo and not band) or
                  ('band' in photo and photo['band'] == band) or
                  ('band' in photo and not band)) and
@@ -393,6 +399,10 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         photoentry['frequency'] = frequency if isinstance(frequency, list) or isinstance(frequency, str) else str(frequency)
     if u_frequency:
         photoentry['u_frequency'] = u_frequency
+    if energy:
+        photoentry['energy'] = energy if isinstance(energy, list) or isinstance(energy, str) else str(energy)
+    if u_energy:
+        photoentry['u_energy'] = u_energy
     if flux:
         photoentry['flux'] = str(flux)
     if e_flux:
@@ -1330,8 +1340,8 @@ if do_task('xray'):
                 else:
                     cols = list(filter(None, line.split()))
                     add_photometry(name, time = cols[:2],
-                        frequency = [str(round_sig(float(x)*keV/planckh, get_sig_digits(x)+1)) for x in cols[2:4]],
-                        u_frequency = 'Hz', counts = cols[4], flux = cols[6], unabsorbedflux = cols[8], u_flux = 'ergs/s/cm^2',
+                        energy = cols[2:4], u_energy = 'keV', counts = cols[4], flux = cols[6],
+                        unabsorbedflux = cols[8], u_flux = 'ergs/s/cm^2',
                         photonindex = cols[15], instrument = cols[17], nhmw = cols[11],
                         upperlimit = (float(cols[5]) < 0), source = source)
     journal_events()
