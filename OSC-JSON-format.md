@@ -112,7 +112,7 @@ Photometry and spectra are stored in a similar way, but have different and many 
 | :--- | :--- | :---
 | `time` | Time of observation | yes
 | `e_time` | Error in the time | yes
-| `timeunit` | Unit for time | yes
+| `u_time` | Unit for time | yes
 | `magnitude` | Apparent magnitude | no
 | `e_magnitude` | Error in the magnitude | yes
 | `band` | Photometric band filter used | yes
@@ -131,7 +131,7 @@ For spectra:
 | `time` | Time of observation | yes
 | `e_time` | Error in the time | yes
 | `data` | Nx2 or Nx3 array of wavelengths, fluxes, and (optionally) errors | no
-| `timeunit` | Unit for time | yes
+| `u_time` | Unit for time | yes
 | `waveunit` | Unit for wavelength | no
 | `fluxunit` | Unit for fluxes | no
 | `snr` | Signal to noise ratio | yes
