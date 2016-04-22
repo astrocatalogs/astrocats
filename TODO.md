@@ -25,9 +25,14 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2014A%26A...568A..19C (SN2013ez, SN2013fu)
 * http://adsabs.harvard.edu/abs/1997AJ....114.2054A (SN 1995al, 1997Y, 1997bp)
 * http://adsabs.harvard.edu/abs/2012A%26A...545L...7T (SN 2006V, 2006au)
+* http://www.jstor.org/stable/984985?seq=1#page_scan_tab_contents
+* http://adsabs.harvard.edu/abs/1979AcC.....8....5F (Lists references for many historical LCs)
+* http://adsabs.harvard.edu/abs/2012MNRAS.425.1007B (IR photometry for about a dozen PTF events)
+* http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
+* SN1978K: http://adsabs.harvard.edu/abs/1993ApJ...416..167R (Table 1)
 * SN1979C - http://adsabs.harvard.edu/abs/1981ApJ...244..780B
 * SN1983V - http://adsabs.harvard.edu/abs/1997ApJ...483..675C
 * SN1986G - http://adsabs.harvard.edu/abs/2002AJ....124..417H, May 7th spectrum
