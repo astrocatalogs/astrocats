@@ -18,7 +18,7 @@ with open('../catalog.min.json', 'r') as f:
             if len(datesplit) >= 2:
                 discoveryear += float(datesplit[1])/12.
             if len(datesplit) >= 3:
-                discoveryear += float(datesplit[2])/30.
+                discoveryear += float(datesplit[2])/(12.*30.)
             catalog[i]['discoverdate'] = discoveryear
 
     catalog1 = catalog
