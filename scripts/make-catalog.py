@@ -385,9 +385,9 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         catalog[entry]['photometry'][:] = [x for x in catalog[entry]['photometry']
             if 'host' not in x]
 
-    photoavail = any(['magnitude' in x for x in catalog[entry]['photometry']])
-    radioavail = any(['fluxdensity' in x for x in catalog[entry]['photometry']])
-    xrayavail = any(['counts' in x for x in catalog[entry]['photometry']])
+    photoavail = 'photometry' in catalog[entry] and any(['magnitude' in x for x in catalog[entry]['photometry']])
+    radioavail = 'photometry' in catalog[entry] and any(['fluxdensity' in x for x in catalog[entry]['photometry']])
+    xrayavail = 'photometry' in catalog[entry] and any(['counts' in x for x in catalog[entry]['photometry']])
     # Must be two sigma above host magnitude, if host magnitude known, to add to phot count.
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'magnitude' in x and
         (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0*hosterr))]) if photoavail else 0

@@ -3966,7 +3966,7 @@ if do_task('wiserepspectra'):
 
                             if name[:2] == 'sn':
                                 name = 'SN' + name[2:]
-                            if name[:3] in ['CSS', 'SSS', 'MLS'] and name.count('-') > 1:
+                            if name[:3] in ['CSS', 'SSS', 'MLS'] and ':' not in name:
                                 name = name.replace('-', ':', 1)
                             if name[:7] == 'MASTERJ':
                                 name = name.replace('MASTERJ', 'MASTER OT J')
