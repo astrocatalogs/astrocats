@@ -885,6 +885,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             p3.add_layout(LinearAxis(axis_label = "Isotropic Luminosity at ν (ergs s⁻¹)", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
+        p3.yaxis[1].formatter.precision = 1
         p3.add_tools(hover)
 
         xs = []
@@ -1050,6 +1051,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         p4.yaxis.axis_label_text_font_size = '12pt'
         p4.xaxis.major_label_text_font_size = '8pt'
         p4.yaxis.major_label_text_font_size = '8pt'
+        p4.yaxis[0].formatter.precision = 1
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -1067,6 +1069,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             p4.add_layout(LinearAxis(axis_label = "Luminosity in band (ergs s⁻¹)", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
+        p4.yaxis[1].formatter.precision = 1
         p4.add_tools(hover)
 
         xs = []

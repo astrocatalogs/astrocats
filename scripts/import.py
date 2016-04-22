@@ -57,8 +57,8 @@ tasks = {
     "itep":             {"update": False},
     "asiago":           {"update": False},
     "tns":              {"update": True,  "archived": True},
-    "rochester":        {"update": True },
     "lennarz":          {"update": False},
+    "rochester":        {"update": True },
     "gaia":             {"update": True,  "archived": True},
     "ogle":             {"update": True },
     "snls":             {"update": False},
@@ -111,7 +111,9 @@ typereps = {
     'IIb P':   ['IIb-pec', 'IIb: pec'],
     'not Ia':  ['nIa'],
     'Ia CSM':  ['Ia-CSM', 'Ia-csm'],
-    'SLSN-Ic': ['SLSN Ic']
+    'SLSN-Ic': ['SLSN Ic', 'SL-Ic'],
+    'SLSN-I':  ['SLSN I', 'SL-I'],
+    'SLSN-II': ['SLSN II', 'SL-II']
 }
 
 repbetterquantity = {
@@ -1077,7 +1079,7 @@ def write_all_events(empty = False, gz = False, delete = False):
 
         # Delete non-SN events here without IAU designations (those with only banned types)
         nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter',
-                       'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO']
+                       'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV']
         nonsnetypes = [x.upper() for x in nonsnetypes]
         if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
@@ -2819,6 +2821,7 @@ if do_task('csp'):
 # Import ITEP
 if do_task('itep'): 
     itepphotometryerrors = ['SN1995N']
+    itepbadsources = ['2004ApJ...602..571B']
 
     needsbib = []
     with open("../sne-external/itep-refs.txt",'r') as f:
@@ -2854,7 +2857,7 @@ if do_task('itep'):
             needsbib.append(reference)
             source = add_source(name, reference = reference) if reference else ''
 
-        if name not in itepphotometryerrors:
+        if name not in itepphotometryerrors and bibcode not in itepbadsources:
             add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = secondarysource + ',' + source)
     f.close()
     
@@ -2984,7 +2987,7 @@ if do_task('lennarz'):
             for claimedtype in claimedtypes:
                 add_quantity(name, 'claimedtype', claimedtype.strip(' -'), source)
         if row['z']:
-            if name != 'SN1985D':
+            if name not in ['SN1985D', 'SN2004cq']:
                 add_quantity(name, 'redshift', row['z'], source, kind = 'host')
         if row['Dist']:
             if row['e_Dist']:
@@ -3091,8 +3094,8 @@ if do_task('rochester'):
     rochesterupdate = [False, True]
 
     # These are known to be in error on the Rochester page, so ignore them.
-    rochesterredshifterrors = ['LSQ12bgl']
-    rochesterphotometryerrors = ['SNF20080514-002']
+    rochesterredshifterrors = ['LSQ12bgl','LSQ12axx']
+    rochesterphotometryerrors = ['SNF20080514-002','SN1998ev']
     rochestertypeerrors = ['SN1054A']
 
     for p, path in enumerate(rochesterpaths):
@@ -3161,7 +3164,8 @@ if do_task('rochester'):
                 add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-                if float(str(cols[8].contents[0]).strip()) <= 90.0 and name not in rochesterphotometryerrors:
+                if (float(str(cols[8].contents[0]).strip()) <= 90.0 and name not in rochesterphotometryerrors and
+                    not any('GRB' in x for x in events[name]['aliases'])):
                     add_photometry(name, time = str(astrot.mjd), magnitude = str(cols[8].contents[0]).strip(), source = sources)
             if cols[11].contents[0] != 'n/a' and name not in rochesterredshifterrors:
                 add_quantity(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
