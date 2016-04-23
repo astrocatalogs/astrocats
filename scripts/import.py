@@ -50,6 +50,7 @@ tasks = {
     "pessto-dr1":       {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
+    "stromlo":          {"update": False},
     "suspect":          {"update": False},
     "cfa":              {"update": False},
     "ucb":              {"update": False},
@@ -299,7 +300,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                    observatory = "", observer = "", host = False, includeshost = False, survey = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
                    u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
-                   e_unabsorbedflux = "", energy = "", u_energy = ""):
+                   e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = ""):
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         print('Warning: Time or brightness not specified when adding photometry, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -398,6 +399,10 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         photoentry['magnitude'] = str(magnitude)
     if e_magnitude:
         photoentry['e_magnitude'] = str(e_magnitude)
+    if e_lower_magnitude:
+        photoentry['e_lower_magnitude'] = str(e_lower_magnitude)
+    if e_upper_magnitude:
+        photoentry['e_upper_magnitude'] = str(e_upper_magnitude)
     if frequency:
         photoentry['frequency'] = frequency if isinstance(frequency, list) or isinstance(frequency, str) else str(frequency)
     if u_frequency:
@@ -1511,6 +1516,10 @@ if do_task('vizier'):
         add_quantity(name, 'claimedtype', row['Type'], source)
         add_quantity(name, 'ra', row['RAJ2000'], source)
         add_quantity(name, 'dec', row['DEJ2000'], source)
+        if row['zSN']:
+            add_quantity(name, 'redshift', str(row['zSN']), source, kind = 'spectroscopic')
+        else:
+            add_quantity(name, 'redshift', str(row['zCl']), source, kind = 'cluster')
     journal_events()
 
     # 2008AJ....136.2306H
@@ -2545,6 +2554,28 @@ if do_task('anderson'):
                 if not row[0]:
                     continue
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row[0]))), band = 'V', magnitude = row[1], e_magnitude = row[2], system = system, source = source)
+    journal_events()
+
+if do_task('stromlo'):
+    stromlobands = ['B','V','R','I','VM','RM']
+    with open('../sne-external/J_A+A_415_863-1/photometry.csv', 'r') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for row in tsvin:
+            name = row[0]
+            name = add_event(name)
+            source = add_source(name, bibcode = "2004A&A...415..863G")
+            mjd = str(jd_to_mjd(Decimal(row[1])))
+            for ri, ci in enumerate(range(2,len(row),3)):
+                if not row[ci]:
+                    continue
+                band = stromlobands[ri]
+                upperlimit = True if (not row[ci+1] and row[ci+2]) else False
+                e_upper_magnitude = str(abs(Decimal(row[ci+1]))) if row[ci+1] else ''
+                e_lower_magnitude = str(abs(Decimal(row[ci+2]))) if row[ci+2] else ''
+                add_photometry(name, time = mjd, band = band, magnitude = row[ci],
+                    e_upper_magnitude = e_upper_magnitude, e_lower_magnitude = e_lower_magnitude,
+                    upperlimit = upperlimit, telescope = 'MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO',
+                    instrument = 'MaCHO' if band in ['VM', 'RM'] else '', source = source)
     journal_events()
 
 # Suspect catalog

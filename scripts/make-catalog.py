@@ -470,33 +470,36 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         phototime = [float(x['time']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         phototimelowererrs = [float(x['e_lower_time']) if ('e_lower_time' in x and 'e_upper_time' in x)
             else (float(x['e_time']) if 'e_time' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
-        phototimeuppererrs = [float(x['e_upper_time']) if ('e_lower_time' in x and 'e_upper_time' in x) in x
+        phototimeuppererrs = [float(x['e_upper_time']) if ('e_lower_time' in x and 'e_upper_time' in x)
             else (float(x['e_time']) if 'e_time' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoAB = [float(x['magnitude']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
-        photoABerrs = [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoABlowererrs = [float(x['e_lower_magnitude']) if ('e_lower_magnitude' in x)
+            else (float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
+        photoABuppererrs = [float(x['e_upper_magnitude']) if ('e_upper_magnitude' in x)
+            else (float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoband = [(x['band'] if 'band' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoinstru = [(x['instrument'] if 'instrument' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
         phototype = [(x['upperlimit'] if 'upperlimit' in x else False) for x in catalog[entry]['photometry'] if 'magnitude' in x]
 
         hastimeerrs = (len(list(filter(None, phototimelowererrs))) and len(list(filter(None, phototimeuppererrs))))
-        hasABerrs = len(list(filter(None, photoABerrs)))
+        hasABerrs = (len(list(filter(None, photoABlowererrs))) and len(list(filter(None, photoABuppererrs))))
         tt = [  
                 ("Source ID(s)", "@src"),
                 ("Epoch (" + catalog[entry]['photometry'][0]['u_time'] + ")",
                  "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>" if hastimeerrs else ""))
              ]
-        tt += [("Apparent Magnitude", "@y{1.111}" + ("&nbsp;±&nbsp;@err{1.11}" if hasABerrs else ""))]
+        tt += [("Apparent Magnitude", "@y{1.111}" + ("<sub>-@lerr{1.11}</sub><sup>+@uerr{1.11}</sup>" if hasABerrs else ""))]
         if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            tt += [("Absolute Magnitude", "@yabs{1.111}" + ("&nbsp;±&nbsp;@err{1.11}" if hasABerrs else ""))]
+            tt += [("Absolute Magnitude", "@yabs{1.111}" + ("<sub>-@lerr{1.11}</sub><sup>+@uerr{1.11}</sup>" if hasABerrs else ""))]
         if len(list(filter(None, photoband))):
             tt += [("Band", "@desc")]
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
         hover = HoverTool(tooltips = tt)
 
-        min_y_range = 0.5 + max([x + y for x, y in list(zip(photoAB, photoABerrs))])
-        max_y_range = -0.5 + min([x - y for x, y in list(zip(photoAB, photoABerrs))])
+        min_y_range = 0.5 + max([x + y for x, y in list(zip(photoAB, photoABuppererrs))])
+        max_y_range = -0.5 + min([x - y for x, y in list(zip(photoAB, photoABlowererrs))])
 
         p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + ')',
             y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
@@ -533,11 +536,12 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         err_xs = []
         err_ys = []
 
-        for x, y, xlowerr, xupperr, yerr in list(zip(phototime, photoAB, phototimelowererrs, phototimeuppererrs, photoABerrs)):
+        for x, y, xlowerr, xupperr, ylowerr, yupperr in list(zip(phototime, photoAB, phototimelowererrs,
+            phototimeuppererrs, photoABlowererrs, photoABuppererrs)):
             xs.append(x)
             ys.append(y)
             err_xs.append((x - xlowerr, x + xupperr))
-            err_ys.append((y - yerr, y + yerr))
+            err_ys.append((y - ylowerr, y + yupperr))
 
         bandset = set(photoband)
         bandset = [i for (j, i) in sorted(list(zip(list(map(bandaliasf, bandset)), bandset)))]
@@ -546,11 +550,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             bandname = bandaliasf(band)
             indb = [i for i, j in enumerate(photoband) if j == band]
             indt = [i for i, j in enumerate(phototype) if not j]
-            # Should always have upper error if have lower error.
             indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
             indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
-            indney = [i for i, j in enumerate(photoABerrs) if j == 0.]
-            indyey = [i for i, j in enumerate(photoABerrs) if j > 0.]
+            indney = [i for i, j in enumerate(photoABuppererrs) if j == 0.]
+            indyey = [i for i, j in enumerate(photoABuppererrs) if j > 0.]
             indne = set(indb).intersection(indt).intersection(indney).intersection(indnex)
             indye = set(indb).intersection(indt).intersection(set(indyey).union(indyex))
 
@@ -559,7 +562,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             data = dict(
                 x = [phototime[i] for i in indne],
                 y = [photoAB[i] for i in indne],
-                err = [photoABerrs[i] for i in indne],
+                lerr = [photoABlowererrs[i] for i in indne],
+                uerr = [photoABuppererrs[i] for i in indne],
                 desc = [photoband[i] for i in indne],
                 instr = [photoinstru[i] for i in indne],
                 src = [photosource[i] for i in indne]
@@ -576,7 +580,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             data = dict(
                 x = [phototime[i] for i in indye],
                 y = [photoAB[i] for i in indye],
-                err = [photoABerrs[i] for i in indye],
+                lerr = [photoABlowererrs[i] for i in indye],
+                uerr = [photoABuppererrs[i] for i in indye],
                 desc = [photoband[i] for i in indye],
                 instr = [photoinstru[i] for i in indye],
                 src = [photosource[i] for i in indye]
@@ -599,7 +604,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             data = dict(
                 x = [phototime[i] for i in ind],
                 y = [photoAB[i] for i in ind],
-                err = [photoABerrs[i] for i in ind],
+                lerr = [photoABlowererrs[i] for i in ind],
+                uerr = [photoABuppererrs[i] for i in ind],
                 desc = [photoband[i] for i in ind],
                 instr = [photoinstru[i] for i in ind],
                 src = [photosource[i] for i in ind]

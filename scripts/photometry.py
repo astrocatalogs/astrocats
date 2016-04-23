@@ -47,7 +47,9 @@ bandcodes = [
     "Z",
     "F110W",
     "F775W",
-    "F850LP"
+    "F850LP",
+    "VM",
+    "RM"
 ]
 
 bandaliases = OrderedDict([
