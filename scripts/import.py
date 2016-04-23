@@ -47,6 +47,7 @@ tasks = {
     "nicholl-04-01-16": {"update": False},
     "maggi-04-11-16":   {"update": False},
     "galbany-04-18-16": {"update": False},
+    "pessto-dr1":       {"update": False},
     "cccp":             {"update": False, "archived": True},
     "anderson":         {"update": False},
     "suspect":          {"update": False},
@@ -144,7 +145,7 @@ def event_attr_priority(attr):
         return 'aaaaaaac'
     return attr
 
-prefkinds = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', '']
+prefkinds = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', 'cluster', '']
 def frame_priority(attr):
     if 'kind' in attr:
         if attr['kind'] in prefkinds:
@@ -1370,6 +1371,67 @@ if do_task('xray'):
 if do_task('vizier'):
     Vizier.ROW_LIMIT = -1
 
+    # 2012ApJ...746...85S
+    result = Vizier.get_catalogs("J/ApJ/746/85/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    oldname = ''
+    for row in table:
+        name = row['Name'].replace('SCP', 'SCP-')
+        name = add_event(name)
+        source = add_source(name, bibcode = "2012ApJ...746...85S")
+        if row['f_Name']:
+            add_quantity(name, 'claimedtype', 'Ia', source)
+        if row['z']:
+            add_quantity(name, 'redshift', str(row['z']), source, kind = 'spectroscopic')
+        else:
+            add_quantity(name, 'redshift', str(row['zCl']), source, kind = 'cluster')
+        add_quantity(name, 'ebv', str(row['E_B-V_']), source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
+
+    result = Vizier.get_catalogs("J/ApJ/746/85/table2")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    oldname = ''
+    for row in table:
+        name = row['Name'].replace('SCP', 'SCP-')
+        flux = Decimal(float(row['Flux']))
+        if flux <= 0.0:
+            continue
+        err = Decimal(float(row['e_Flux']))
+        zp = Decimal(float(row['Zero']))
+        sig = get_sig_digits(str(row['Flux']))+1
+        magnitude = pretty_num(zp-Decimal(2.5)*(flux.log10()), sig = sig)
+        e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig = sig)
+        if float(e_magnitude) > 5.0:
+            continue
+        name = add_event(name)
+        source = add_source(name, bibcode = "2012ApJ...746...85S")
+        add_photometry(name, time = str(row['MJD']), band = row['Filter'], instrument = row['Inst'],
+            magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+
+    # 2004ApJ...602..571B
+    result = Vizier.get_catalogs("J/ApJ/602/571/table8")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    oldname = ''
+    for row in table:
+        name = 'SN'+row['SN']
+        flux = Decimal(float(row['Flux']))
+        if flux <= 0.0:
+            continue
+        err = Decimal(float(row['e_Flux']))
+        sig = get_sig_digits(str(row['Flux']))+1
+        magnitude = pretty_num(Decimal(25.0)-Decimal(2.5)*(flux.log10()), sig = sig)
+        e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig = sig)
+        if float(e_magnitude) > 5.0:
+            continue
+        name = add_event(name)
+        source = add_source(name, bibcode = "2004ApJ...602..571B")
+        add_photometry(name, time = str(row['MJD']), band = row['Filt'],
+            magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+    
     # 2014MNRAS.444.3258M
     result = Vizier.get_catalogs("J/MNRAS/444/3258/SNe")
     table = result[list(result.keys())[0]]
@@ -2367,6 +2429,27 @@ if do_task('galbany-04-18-16'):
                                        band = band, system = cols[3], telescope = cols[4], source = source)
     journal_events()
 
+if do_task('pessto-dr1'):
+    with open("../sne-external/PESSTO_MPHOT.csv", 'r') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for ri, row in enumerate(tsvin):
+            if ri == 0:
+                bands = [x.split('_')[0] for x in row[3::2]]
+                systems = [x.split('_')[1].capitalize().replace('Ab', 'AB') for x in row[3::2]]
+                print(bands)
+                print(systems)
+                continue
+            name = row[1]
+            name = add_event(name)
+            source = add_source(name, bibcode = "2015A&A...579A..40S")
+            for hi, ci in enumerate(range(3,len(row)-1,2)):
+                if not row[ci]:
+                    continue
+                add_photometry(name, time = row[2], magnitude = row[ci], e_magnitude = row[ci+1],
+                    band = bands[hi], system = systems[hi], telescope = 'Swift' if systems[hi] == 'Swift' else '',
+                    source = source)
+    journal_events()
+
 # CCCP
 if do_task('cccp'):
     cccpbands = ['B', 'V', 'R', 'I']
@@ -3339,11 +3422,12 @@ if do_task('snls'):
             source = add_source(name, bibcode = '2010A&A...523A...7G')
             band = row[1]
             mjd = row[2]
-            sig = get_sig_digits(flux.split('E')[0])
+            sig = get_sig_digits(flux.split('E')[0])+1
             # Conversion comes from SNLS-Readme
             # NOTE: Datafiles available for download suggest different zeropoints than 30, need to inquire.
             magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
-            e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
+            e_magnitude = pretty_num(2.5*log10(1.0 + float(err)/float(flux)), sig = sig)
+            #e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
             add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
     journal_events()
 

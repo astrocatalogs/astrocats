@@ -43,7 +43,11 @@ bandcodes = [
     "pg",
     "Mp",
     "w",
-    "y"
+    "y",
+    "Z",
+    "F110W",
+    "F775W",
+    "F850LP"
 ]
 
 bandaliases = OrderedDict([
@@ -108,6 +112,9 @@ seed(101)
 #bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
 bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
 shuffle(bandcolors)
+bandcolors2 = cubehelix.perceptual_rainbow_16.hex_colors
+shuffle(bandcolors2)
+bandcolors = bandcolors + bandcolors2
 bandcolordict = dict(list(zip(bandcodes,bandcolors)))
 
 radiocolors = wesanderson.Zissou_5.hex_colors

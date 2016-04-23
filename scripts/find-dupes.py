@@ -97,7 +97,7 @@ with open('../catalog.min.json', 'r') as f:
                 continue
 
             distdeg = math.sqrt(pow(radeg1 - radeg2, 2) + pow(decdeg1 - decdeg2, 2))
-            if distdeg < 2./3600.:
+            if distdeg < 3./3600.:
                 if discoveryear1 and discoveryear2:
                     if abs(discoveryear1 - discoveryear2) <= 0.5:
                         print(name1 + ' has a close coordinate and date match to ' + name2 + " [" + str(distdeg) + ', ' +
