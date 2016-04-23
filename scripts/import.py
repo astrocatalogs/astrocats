@@ -3134,7 +3134,7 @@ if do_task('rochester'):
                 if not sn:
                     continue
                 if sn[:8] == 'MASTER J':
-                    sn = sn.replace('MASTER J', 'MASTER OT J')
+                    sn = sn.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
                 name = add_event(sn)
 
             add_alias(name, sn)
@@ -3145,7 +3145,7 @@ if do_task('rochester'):
                 if aka[:4] == 'PS1 ':
                     aka = 'PS1-' + aka[4:]
                 if aka[:8] == 'MASTER J':
-                    aka = aka.replace('MASTER J', 'MASTER OT J')
+                    aka = aka.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
                 add_alias(name, aka)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
@@ -3465,6 +3465,7 @@ if do_task('psthreepi'):
                 newalias = alias
                 if alias[:3] in ['CSS', 'SSS', 'MLS']:
                     newalias = alias.replace('-', ':', 1)
+                newalias = newalias.replace('PSNJ', 'PSN J')
                 add_alias(name, newalias)
             add_quantity(name, 'ra', ra, source)
             add_quantity(name, 'dec', dec, source)
@@ -3649,7 +3650,7 @@ if do_task('snhunt'):
         cols = [str(x.text) for x in tr.findAll('td')]
         if not cols:
             continue
-        name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '')
+        name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         name = add_event(name)
         source = add_source(name, reference = 'Supernova Hunt', url = 'http://nesssi.cacr.caltech.edu/catalina/current.html')
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
