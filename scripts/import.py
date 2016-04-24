@@ -1083,8 +1083,8 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter',
-                       'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV']
+        nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar',
+                       'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
         nonsnetypes = [x.upper() for x in nonsnetypes]
         if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
             deleteevent = False
@@ -1374,6 +1374,24 @@ if do_task('xray'):
 # Import primary data sources from Vizier
 if do_task('vizier'):
     Vizier.ROW_LIMIT = -1
+
+    # 2012ApJS..200...12H
+    result = Vizier.get_catalogs("J/ApJS/200/12/table1")
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    oldname = ''
+    for row in table:
+        name = row['SN']
+        if is_number(name[:4]):
+            name = 'SN' + name
+        name = add_event(name)
+        source = add_source(name, bibcode = "2012ApJS..200...12H")
+        add_quantity(name, 'host', row['Gal'], source)
+        add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
+        add_quantity(name, 'redshift', str(row['zCMB']), source, kind = 'cmb')
+        add_quantity(name, 'ebv', str(row['E_B-V_']), source)
+        add_quantity(name, 'ra', row['RAJ2000'], source)
+        add_quantity(name, 'dec', row['DEJ2000'], source)
 
     # 2012ApJ...746...85S
     result = Vizier.get_catalogs("J/ApJ/746/85/table1")
@@ -3697,6 +3715,7 @@ if do_task('crts'):
                 if (('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
                     ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
                     ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3)):
+                    alias = alias.replace('SNHunt', 'SNhunt')
                     validaliases.append(alias)
             if not name:
                 name = crtsname
