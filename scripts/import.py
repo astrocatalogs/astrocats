@@ -201,8 +201,7 @@ def add_event(name, load = True, delete = True):
         events[name] = OrderedDict()
         events[name]['name'] = name
         add_alias(name, name)
-        if not args.travis:
-            print('Added new event ' + name)
+        print('Added new event ' + name)
         return name
     else:
         return name
