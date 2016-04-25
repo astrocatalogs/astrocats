@@ -463,15 +463,17 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
 
     spectrumentry = OrderedDict()
 
-    # Don't add duplicate spectra
     if 'spectra' in events[name]:
-        for spectrum in events[name]['spectra']:
+        for si, spectrum in enumerate(events[name]['spectra']):
             if 'filename' in spectrum and spectrum['filename'] == filename:
                 # Copy exclude info
                 if 'exclude' in spectrum:
                     spectrumentry['exclude'] = spectrum['exclude']
+                # Don't add duplicate spectra
                 if 'data' in spectrum:
                     return
+                del(events[name]['spectra'][si])
+                break
 
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
