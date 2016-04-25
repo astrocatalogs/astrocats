@@ -461,12 +461,17 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "", telescope = "",
     observer = "", reducer = "", filename = "", observatory = "", data = ""):
 
+    spectrumentry = OrderedDict()
 
     # Don't add duplicate spectra
     if 'spectra' in events[name]:
         for spectrum in events[name]['spectra']:
             if 'filename' in spectrum and spectrum['filename'] == filename:
-                return
+                # Copy exclude info
+                if 'exclude' in spectrum:
+                    spectrumentry['exclude'] = spectrum['exclude']
+                if 'data' in spectrum:
+                    return
 
     if not waveunit:
         'Warning: No error unit specified, not adding spectrum.'
@@ -481,7 +486,6 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
     if not source:
         ValueError('Spectrum must have source before being added!')
 
-    spectrumentry = OrderedDict()
     if deredshifted != '':
         spectrumentry['deredshifted'] = deredshifted
     if dereddened != '':
@@ -552,7 +556,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         if not is_number(value):
             return
     if quantity == 'host':
-        svalue = svalue.strip("()")
+        svalue = svalue.strip("()").replace('  ', ' ')
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
         svalue = svalue.replace("ARP", "ARP ")
         svalue = svalue.replace("CGCG", "CGCG ")
@@ -1386,7 +1390,8 @@ if do_task('vizier'):
             name = 'SN' + name
         name = add_event(name)
         source = add_source(name, bibcode = "2012ApJS..200...12H")
-        add_quantity(name, 'host', row['Gal'], source)
+        if '[' not in row['Gal']:
+            add_quantity(name, 'host', row['Gal'].replace('_', ' '), source)
         add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
         add_quantity(name, 'redshift', str(row['zCMB']), source, kind = 'cmb')
         add_quantity(name, 'ebv', str(row['E_B-V_']), source)
@@ -1674,7 +1679,7 @@ if do_task('vizier'):
         if row["Names"]:
             names = row["Names"].split(',')
             for nam in names:
-                add_alias(name, nam.strip('()').strip())
+                add_alias(name, nam.replace('Vela (XYZ)', 'Vela').strip('()').strip())
                 if nam.strip()[:2] == 'SN':
                     add_quantity(name, 'discoverdate', nam.strip()[2:], source)
 
@@ -4046,6 +4051,7 @@ if do_task('wiserepspectra'):
                                     elif tdi == 5:
                                         claimedtype = re.sub('<[^<]+?>', '', str(td.contents[0])).strip()
                                         if claimedtype == 'SN':
+                                            claimedtype = ''
                                             continue
                                         if claimedtype[:3] == 'SN ':
                                             claimedtype = claimedtype[3:].strip()

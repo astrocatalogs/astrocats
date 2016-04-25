@@ -1206,12 +1206,13 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             try:
                 response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
-                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G')
+                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G', timeout = 60)
+                resptxt = response.read()
             except:
                 hasimage = False
             else:
                 with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
-                    f.write(response.read())
+                    f.write(resptxt)
                 imgsrc = 'SDSS'
 
             if hasimage and filecmp.cmp(outdir + fileeventname + '-host.jpg', outdir + 'missing.jpg'):
@@ -1225,11 +1226,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
 
                 try:
-                    response = urllib.request.urlopen(url)
+                    response = urllib.request.urlopen(url, timeout = 60)
+                    bandsoup = BeautifulSoup(response, "html5lib")
                 except:
                     hasimage = False
                 else:
-                    bandsoup = BeautifulSoup(response, "html5lib")
                     images = bandsoup.findAll('img')
                     imgname = ''
                     for image in images:
