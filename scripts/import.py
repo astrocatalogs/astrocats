@@ -100,6 +100,7 @@ repoyears[0] -= 1
 
 typereps = {
     'CC':      ['CCSN'],
+    'Ia':      ['Ia-norm', 'Ia- norm'],
     'I P':     ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
     'Ia P':    ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec'],
     'Ib P':    ['Ib pec', 'Ib-pec'],
@@ -107,15 +108,18 @@ typereps = {
     'Ia/c':    ['Ic/Ia', 'Iac'],
     'Ib/c':    ['Ibc'],
     'Ib/c P':  ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
-    'II P':    ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P'],
+    'II P':    ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P', 'II-Pec'],
     'II L':    ['IIL'],
     'IIn P':   ['IIn pec', 'IIn-pec'],
     'IIb P':   ['IIb-pec', 'IIb: pec'],
-    'not Ia':  ['nIa'],
+    'nIa':     ['nIa'],
     'Ia CSM':  ['Ia-CSM', 'Ia-csm'],
     'SLSN-Ic': ['SLSN Ic', 'SL-Ic'],
     'SLSN-I':  ['SLSN I', 'SL-I'],
-    'SLSN-II': ['SLSN II', 'SL-II']
+    'SLSN-II': ['SLSN II', 'SL-II'],
+    'Ia-91bg': ['Ia-pec (1991bg)', 'Ia-91bg-like'],
+    'Ia-91T':  ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like'],
+    'Ia-02cx': ['Ia-02cx-like']
 }
 
 repbetterquantity = {
@@ -264,6 +268,10 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
 
         reference = bibcode
         url = "http://adsabs.harvard.edu/abs/" + bibcode
+
+    reference = reference.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
+    reference = ' '.join(reference.split())
+
     if 'sources' not in events[name] or (reference not in [x['name'] for x in events[name]['sources']] and
         not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]):
         source = str(nsources + 1)
@@ -466,6 +474,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
     if 'spectra' in events[name]:
         for si, spectrum in enumerate(events[name]['spectra']):
             if 'filename' in spectrum and spectrum['filename'] == filename:
+                print(filename)
                 # Copy exclude info
                 if 'exclude' in spectrum:
                     spectrumentry['exclude'] = spectrum['exclude']
@@ -555,9 +564,11 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
 
     #Handle certain quantity
     if quantity in ['velocity', 'redshift']:
-        if not is_number(value):
+        if not is_number(svalue):
             return
     if quantity == 'host':
+        if is_number(svalue):
+            return
         svalue = svalue.strip("()").replace('  ', ' ')
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
         svalue = svalue.replace("ARP", "ARP ")
@@ -619,7 +630,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                 seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
                 if seconds > 60.0:
                     raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 2).zfill(2)
+                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1))
             elif 'dec' in quantity:
                 fldeg = abs(deg)
                 degree = floor(fldeg)
@@ -627,16 +638,19 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
                 seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
                 if seconds > 60.0:
                     raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = ('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' + str(minutes).zfill(2) + ':' + pretty_num(seconds, sig = sig - 2).zfill(2)
+                svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
+                    str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1)))
         elif unit == 'nospace' and 'ra' in quantity:
-            svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + svalue[4:]) if len(svalue) > 4 else '')
+            svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
         elif unit == 'nospace' and 'dec' in quantity:
-            svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + svalue[5:]) if len(svalue) > 5 else '')
+            svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
         else:
             svalue = svalue.replace(' ', ':')
             if 'dec' in quantity:
                 valuesplit = svalue.split(':')
-                svalue = ('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) + ':' + ':'.join(valuesplit[1:]) if len(valuesplit) > 1 else ''
+                svalue = (('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) +
+                    (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
+                    (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
 
         if 'ra' in quantity:
             sunit = 'hours'
@@ -2469,8 +2483,6 @@ if do_task('pessto-dr1'):
             if ri == 0:
                 bands = [x.split('_')[0] for x in row[3::2]]
                 systems = [x.split('_')[1].capitalize().replace('Ab', 'AB') for x in row[3::2]]
-                print(bands)
-                print(systems)
                 continue
             name = row[1]
             name = add_event(name)

@@ -24,3 +24,9 @@ def is_number(s):
             return True
         except ValueError:
             return False
+
+def zpad(val, n = 2):
+    bits = val.split('.')
+    if len(bits) != 2:
+        return val.zfill(n)
+    return "%s.%s" % (bits[0].zfill(n), bits[1])
