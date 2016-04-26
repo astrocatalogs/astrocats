@@ -39,48 +39,50 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    "internal":         {"update": False},
-    "radio":            {"update": False},
-    "xray":             {"update": False},
-    "simbad":           {"update": False},
-    "vizier":           {"update": False},
-    "nicholl-04-01-16": {"update": False},
-    "maggi-04-11-16":   {"update": False},
-    "galbany-04-18-16": {"update": False},
-    "pessto-dr1":       {"update": False},
-    "cccp":             {"update": False, "archived": True},
-    "anderson":         {"update": False},
-    "stromlo":          {"update": False},
-    "suspect":          {"update": False},
-    "cfa":              {"update": False},
-    "ucb":              {"update": False},
-    "sdss":             {"update": False},
-    "csp":              {"update": False},
-    "itep":             {"update": False},
-    "asiago":           {"update": False},
-    "tns":              {"update": True,  "archived": True},
-    "rochester":        {"update": True },
-    "lennarz":          {"update": False},
-    "gaia":             {"update": True,  "archived": True},
-    "ogle":             {"update": True },
-    "snls":             {"update": False},
-    "panstarrs":        {"update": False},
-    "psthreepi":        {"update": True,  "archived": True},
-    "crts":             {"update": True,  "archived": True},
-    "snhunt":           {"update": True,  "archived": True},
-    "nedd":             {"update": False},
-    "cpcs":             {"update": True,  "archived": True},
-    "asiagospectra":    {"update": True },
-    "wiserepspectra":   {"update": False},
-    "cfaiaspectra":     {"update": False},
-    "cfaibcspectra":    {"update": False},
-    "snlsspectra":      {"update": False},
-    "cspspectra":       {"update": False},
-    "ucbspectra":       {"update": False},
-    "suspectspectra":   {"update": False},
-    "snfspectra":       {"update": False},
-    "superfitspectra":  {"update": False},
-    "writeevents":      {"update": True }
+    "internal":            {"update": False},
+    "radio":               {"update": False},
+    "xray":                {"update": False},
+    "simbad":              {"update": False},
+    "vizier":              {"update": False},
+    "nicholl-04-01-16":    {"update": False},
+    "maggi-04-11-16":      {"update": False},
+    "galbany-04-18-16":    {"update": False},
+    "pessto-dr1":          {"update": False},
+    "scp":                 {"update": False},
+    "2006ApJ...645..841N": {"update": False},
+    "cccp":                {"update": False, "archived": True},
+    "anderson":            {"update": False},
+    "stromlo":             {"update": False},
+    "suspect":             {"update": False},
+    "cfa":                 {"update": False},
+    "ucb":                 {"update": False},
+    "sdss":                {"update": False},
+    "csp":                 {"update": False},
+    "itep":                {"update": False},
+    "asiago":              {"update": False},
+    "tns":                 {"update": True,  "archived": True},
+    "rochester":           {"update": True },
+    "lennarz":             {"update": False},
+    "gaia":                {"update": True,  "archived": True},
+    "ogle":                {"update": True },
+    "snls":                {"update": False},
+    "panstarrs":           {"update": False},
+    "psthreepi":           {"update": True,  "archived": True},
+    "crts":                {"update": True,  "archived": True},
+    "snhunt":              {"update": True,  "archived": True},
+    "nedd":                {"update": False},
+    "cpcs":                {"update": True,  "archived": True},
+    "asiagospectra":       {"update": True },
+    "wiserepspectra":      {"update": False},
+    "cfaiaspectra":        {"update": False},
+    "cfaibcspectra":       {"update": False},
+    "snlsspectra":         {"update": False},
+    "cspspectra":          {"update": False},
+    "ucbspectra":          {"update": False},
+    "suspectspectra":      {"update": False},
+    "snfspectra":          {"update": False},
+    "superfitspectra":     {"update": False},
+    "writeevents":         {"update": True }
 }
 
 clight = const.c.cgs.value
@@ -180,9 +182,19 @@ def get_source_year(source):
             return -10000
     raise(ValueError('No bibcode available for source!'))
 
+def name_clean(name):
+    newname = name
+    if newname.startswith('MASJ'):
+        newname = newname.replace('MASJ', 'MASTER OT J')
+    if newname.startswith('PSNJ'):
+        newname = newname.replace('PSNJ', 'PSN J')
+    if newname.startswith('PSN20J'):
+        newname = newname.replace('PSN20J', 'PSN J')
+    return newname
+
 def add_event(name, load = True, delete = True):
     if name not in events or 'stub' in events[name]:
-        newname = name
+        newname = name_clean(name)
         match = ''
         if name not in events:
             for event in events:
@@ -232,15 +244,16 @@ def get_event_filename(name):
     return(name.replace('/', '_'))
 
 def add_alias(name, alias, verbose = False):
+    newalias = name_clean(alias)
     if 'aliases' in events[name]:
-        if alias not in events[name]['aliases']:
-            events[name].setdefault('aliases',[]).append(alias)
-            if verbose and alias != name:
-                print('Added alias for ' + name + ': ' + alias)
+        if newalias not in events[name]['aliases']:
+            events[name].setdefault('aliases',[]).append(newalias)
+            if verbose and newalias != name:
+                print('Added alias for ' + name + ': ' + newalias)
     else:
-        events[name]['aliases'] = [alias]
-        if verbose and alias != name:
-            print('Added alias for ' + name + ': ' + alias)
+        events[name]['aliases'] = [newalias]
+        if verbose and newalias != name:
+            print('Added alias for ' + name + ': ' + newalias)
 
 def snname(string):
     newstring = string.replace(' ', '').upper()
@@ -587,15 +600,15 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         svalue = svalue.replace("PGC", "PGC ")
         svalue = svalue.replace("SDSS", "SDSS ")
         svalue = svalue.replace("UGC", "UGC ")
-        if len(svalue) > 4 and (svalue[:4] == "PGC "):
+        if len(svalue) > 4 and svalue.startswith("PGC "):
             svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-        if len(svalue) > 4 and (svalue[:4] == "UGC "):
+        if len(svalue) > 4 and svalue.startswith("UGC "):
             svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-        if len(svalue) > 5 and (svalue[:5] == "MCG +" or svalue[:5] == "MCG -"):
+        if len(svalue) > 5 and svalue.startswith(("MCG +", "MCG -")):
             svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
-        if len(svalue) > 5 and svalue[:5] == "CGCG ":
+        if len(svalue) > 5 and svalue.startswith("CGCG "):
             svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
-        if (len(svalue) > 1 and svalue[0] == "E") or (len(svalue) > 3 and svalue[:3] == 'ESO'):
+        if (len(svalue) > 1 and svalue.startswith("E")) or (len(svalue) > 3 and svalue.startswith('ESO')):
             if svalue[0] == "E":
                 esplit = svalue[1:].split("-")
             else:
@@ -858,8 +871,8 @@ def set_preferred_names():
         newname = ''
         if len(events[name]['aliases']) <= 1:
             continue
-        if (name[:2] == 'SN' and ((is_number(name[2:6]) and not is_number(name[6:])) or
-                                  (is_number(name[2:5]) and not is_number(name[5:])))):
+        if (name.startswith('SN') and ((is_number(name[2:6]) and not is_number(name[6:])) or
+                                       (is_number(name[2:5]) and not is_number(name[5:])))):
             continue
         ealiases = events[name]['aliases']
         for alias in ealiases:
@@ -902,7 +915,7 @@ def set_preferred_names():
         if not newname:
             for alias in ealiases:
                 # Always prefer another alias over PSN
-                if name[:3] == 'PSN':
+                if name.startswith('PSN'):
                     newname = alias
                     break
         if newname and name != newname:
@@ -973,9 +986,41 @@ def derive_and_sanitize():
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
         set_first_max_light(name)
+        if 'discoverdate' not in events[name]:
+            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF']
+            for alias in events[name]['aliases']:
+                for prefix in prefixes:
+                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
+                        discoverdate = '20' + alias.replace(prefix, '')[:2]
+                        print ('Added discoverdate from name: ' + discoverdate)
+                        add_quantity(name, 'discoverdate', discoverdate, '1')
+                        break
+                if 'discoverdate' in events[name]:
+                    break
+        if 'ra' not in events[name] or 'dec' not in events[name]:
+            prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J']
+            for alias in events[name]['aliases']:
+                for prefix in prefixes:
+                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:6]):
+                        noprefix = alias.split(':')[-1].replace(prefix, '').replace('.', '')
+                        decsign = '+' if '+' in noprefix else '-'
+                        noprefix = noprefix.replace('+','|').replace('-','|')
+                        nops = noprefix.split('|')
+                        if len(nops) < 2:
+                            continue
+                        rastr = nops[0]
+                        decstr = nops[1]
+                        ra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '') 
+                        dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
+                        print ('Added ra/dec from name: ' + ra + ' ' + dec)
+                        add_quantity(name, 'ra', ra, '1')
+                        add_quantity(name, 'dec', ra, '1')
+                        break
+                if 'ra' in events[name]:
+                    break
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
-        if 'claimedtype' not in events[name] and name[:2] == 'AT':
+        if 'claimedtype' not in events[name] and name.startswith('AT'):
             add_quantity(name, 'claimedtype', 'Candidate', 'D')
         if 'redshift' not in events[name] and 'velocity' in events[name]:
             # Find the "best" velocity to use for this
@@ -1106,8 +1151,11 @@ def write_all_events(empty = False, gz = False, delete = False):
         nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar',
                        'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
         nonsnetypes = [x.upper() for x in nonsnetypes]
-        if delete and 'claimedtype' in events[name] and not (name[:2] == 'SN' and is_number(name[2:6])):
+        nonsneprefixes = ('PNVJ', 'PNV J')
+        if delete and 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
             deleteevent = False
+            if name.startswith(nonsneprefixes):
+                deleteevent = True
             for ct in events[name]['claimedtype']:
                 if ct['value'].upper() not in nonsnetypes:
                     deleteevent = False
@@ -2495,6 +2543,42 @@ if do_task('pessto-dr1'):
                     source = source)
     journal_events()
 
+if do_task('scp'):
+    with open("../sne-external/SCP09.csv", 'r') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for ri, row in enumerate(tsvin):
+            if ri == 0:
+                continue
+            name = row[0]
+            name = add_event(name)
+            source = add_source(name, reference = 'Supernova Cosmology Project', url = 'http://supernova.lbl.gov/2009ClusterSurvey/')
+            if row[1]:
+                add_alias(name, row[1])
+            if row[2]:
+                add_quantity(name, 'redshift', row[2], source, kind = 'spectroscopic' if row[3] == 'sn' else 'host')
+            if row[4]:
+                add_quantity(name, 'redshift', row[2], source, kind = 'cluster')
+            if row[6]:
+                claimedtype = row[6].replace('SN ', '')
+                kind = ('spectroscopic/light curve' if 'a' in row[7] and 'c' in row[7] else
+                    'spectroscopic' if 'a' in row[7] else 'light curve' if 'c' in row[7] else '')
+                if claimedtype != '?':
+                    add_quantity(name, 'claimedtype', claimedtype, source, kind = kind)
+            print(events[name])
+    journal_events()
+
+if do_task('2006ApJ...645..841N'):
+    with open("../sne-external/2006ApJ...645..841N-table3.csv", 'r') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for ri, row in enumerate(tsvin):
+            name = 'SNLS-' + row[0]
+            name = add_event(name)
+            source = add_source(name, bibcode = '2006ApJ...645..841N')
+            add_quantity(name, 'redshift', row[1], source, kind = 'spectroscopic')
+            astrot = astrotime(float(row[4]) + 2450000., format = 'jd').datetime
+            add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+    journal_events()
+
 # CCCP
 if do_task('cccp'):
     cccpbands = ['B', 'V', 'R', 'I']
@@ -2532,6 +2616,7 @@ if do_task('cccp'):
     for link in links:
         if 'sc_sn' in link['href']:
             name = add_event(link.text.replace(' ', ''))
+            source = add_source(name, reference = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
 
             if tasks['cccp']['archived']:
                 with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
@@ -2560,7 +2645,6 @@ if do_task('cccp'):
                         html3 = response3.text
                         with open('../sne-external/CCCP/' + link2['href'].split('/')[-1], 'w') as f:
                             f.write(html3)
-                    source = add_source(name, reference = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
                     table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(",")] for x in list(filter(None, html3.split("\n")))]
                     for row in table:
                         add_photometry(name, time = str(Decimal(row[0]) + 53000), band = band, magnitude = row[1], e_magnitude = row[2], source = source)
@@ -2627,7 +2711,7 @@ if do_task('suspect'):
         basesplit = basename.split('-')
         name = basesplit[1]
         name = add_event(name)
-        if name[:2] == 'SN' and is_number(name[2:]):
+        if name.startswith('SN') and is_number(name[2:]):
             name = name + 'A'
         band = basesplit[3].split('.')[0]
         ei = int(basesplit[2])
@@ -3334,11 +3418,13 @@ if do_task('rochester'):
                 name = row[0].strip()
                 if name[:4].isdigit():
                     name = 'SN' + name
-                if name[:4] == 'PSNJ':
+                if name.startswith('PSNJ'):
                     name = 'PSN J' + name[4:]
-                if name[:9] == 'MASTEROTJ':
+                if name.startswith('MASTEROTJ'):
                     name = name.replace('MASTEROTJ', 'MASTER OT J')
                 name = add_event(name)
+                secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+
                 if not is_number(row[1]):
                     continue
                 year = row[1][:4]
@@ -3357,8 +3443,6 @@ if do_task('rochester'):
                 if float(str(cols[8].contents[0]).strip()) >= 90.0:
                     continue
 
-                secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-                band = row[2].lstrip('1234567890.')
                 if len(row) >= 4:
                     if is_number(row[3]):
                         e_magnitude = row[3]
@@ -3375,6 +3459,9 @@ if do_task('rochester'):
                         sources = ','.join([source,secondarysource])
                 else:
                     sources = secondarysource
+
+                band = row[2].lstrip('1234567890.')
+
                 add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = sources)
             f.close()
     journal_events()
@@ -3445,7 +3532,7 @@ if do_task('ogle'):
                     sources.append(add_source(name, reference = atelref, url = atelurl))
                 sources = ','.join(sources)
 
-                if name[:4] == 'OGLE':
+                if name.startswith('OGLE'):
                     if name[4] == '-':
                         if is_number(name[5:9]):
                             add_quantity(name, 'discoverdate', name[5:9], sources)
@@ -3506,7 +3593,7 @@ if do_task('panstarrs'):
                 continue
             namesplit = row[0].split('/')
             name = namesplit[-1]
-            if name[:2] == 'SN':
+            if name.startswith('SN'):
                 name = name.replace(' ', '')
             name = add_event(name)
             if len(namesplit) > 1:
@@ -3838,12 +3925,12 @@ if do_task('nedd'):
         dist = row[6]
         bibcode = unescape(row[8])
         name = ''
-        if hostname[:3] == 'SN ':
+        if hostname.startswith('SN '):
             if is_number(hostname[3:7]):
                 name = 'SN' + hostname[3:]
             else:
                 name = hostname[3:]
-        elif hostname[:5] == 'SNLS ':
+        elif hostname.startswith('SNLS '):
             name = 'SNLS-' + hostname[5:].split()[0]
         else:
             cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
@@ -3886,7 +3973,7 @@ if do_task('cpcs'):
                 name = name.replace('MASTEROTJ', 'MASTER OT J')
             if 'OTJ' in name:
                 name = name.replace('OTJ', 'MASTER OT J')
-            if 'IPTF' in name[:4].upper():
+            if name.upper().startswith('IPTF'):
                 name = 'iPTF' + name[4:]
             # Only add events that are classified as SN.
             if event_exists(name):
@@ -3949,6 +4036,8 @@ if do_task('asiagospectra'):
                 alias = alias.replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
             elif tdi == 1:
                 name = td.text.strip().replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
+                if name.startswith('SN '):
+                    name = 'SN' + name[3:]
                 if not name:
                     name = alias
                 if is_number(name[:4]):
@@ -4122,12 +4211,14 @@ if do_task('wiserepspectra'):
                                 if biblink:
                                     bibcode = biblink.contents[0]
 
-                            if name[:2] == 'sn':
+                            if name.startswith('sn'):
                                 name = 'SN' + name[2:]
-                            if name[:3] in ['CSS', 'SSS', 'MLS'] and ':' not in name:
+                            if name.startswith(('CSS', 'SSS', 'MLS')) and ':' not in name:
                                 name = name.replace('-', ':', 1)
-                            if name[:7] == 'MASTERJ':
+                            if name.startswith('MASTERJ'):
                                 name = name.replace('MASTERJ', 'MASTER OT J')
+                            if name.startswith('PSNJ'):
+                                name = name.replace('PSNJ', 'PSN J')
                             name = get_preferred_name(name)
                             if oldname and name != oldname:
                                 journal_events()
@@ -4201,9 +4292,9 @@ if do_task('cfaiaspectra'):
     oldname = ''
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIa/" + name
-        if name[:2] == 'sn' and is_number(name[2:6]):
+        if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        if name[:3] == 'snf' and is_number(name[3:7]):
+        if name.startswith('snf') and is_number(name[3:7]):
             name = 'SNF' + name[3:]
         name = get_preferred_name(name)
         if oldname and name != oldname:
@@ -4216,7 +4307,7 @@ if do_task('cfaiaspectra'):
         for fi, fname in enumerate(sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
-            if name[:2] == "SN" and is_number(name[2:6]):
+            if name.startswith("SN") and is_number(name[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
@@ -4244,7 +4335,7 @@ if do_task('cfaibcspectra'):
     oldname = ''
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
-        if name[:2] == 'sn' and is_number(name[2:6]):
+        if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = get_preferred_name(name)
         if oldname and name != oldname:
@@ -4382,12 +4473,12 @@ if do_task('ucbspectra'):
             elif d == 4:
                 filename = td.contents[0].strip()
                 name = filename.split('-')[0]
-                if name[:2].upper() == 'SN':
+                if name.upper().startswith('SN'):
                     name = name[:2].upper() + name[2:]
                     if len(name) == 7:
                         name = name[:6] + name[6].upper()
-                if name[:3] == 'ptf':
-                    name = name[:3].upper() + name[3:]
+                if name.upper().startswith('PTF'):
+                    name = 'PTF' + name[3:]
             elif d == 5:
                 epoch = td.contents[0].strip()
                 year = epoch[:4]
@@ -4416,7 +4507,7 @@ if do_task('ucbspectra'):
         sources = ','.join([source, secondarysource])
         if claimedtype not in ['None']:
             add_quantity(name, 'claimedtype', claimedtype, sources)
-        if 'discoverdate' not in events[name] and name[:2] == 'SN' and is_number(name[2:6]):
+        if 'discoverdate' not in events[name] and name.startswith('SN') and is_number(name[2:6]):
             add_quantity(name, 'discoverdate', name[2:6], sources)
 
         with open('../sne-external-spectra/UCB/' + filename) as f:
@@ -4622,11 +4713,11 @@ if do_task('superfitspectra'):
         for sffile in sffiles:
             basename = os.path.basename(sffile)
             name = basename.split('.')[0]
-            if name[:2] == 'sn':
+            if name.starswith('sn'):
                 name = 'SN' + name[2:]
                 if len(name) == 7:
                     name = name[:6] + name[6].upper()
-            elif name[:3] == 'ptf':
+            elif name.startswith('ptf'):
                 name = 'PTF' + name[3:]
 
             if 'theory' in name:
