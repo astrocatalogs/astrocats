@@ -4724,7 +4724,7 @@ if do_task('superfitspectra'):
         for sffile in sffiles:
             basename = os.path.basename(sffile)
             name = basename.split('.')[0]
-            if name.starswith('sn'):
+            if name.startswith('sn'):
                 name = 'SN' + name[2:]
                 if len(name) == 7:
                     name = name[:6] + name[6].upper()
