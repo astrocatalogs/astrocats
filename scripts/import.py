@@ -997,6 +997,17 @@ def derive_and_sanitize():
                         break
                 if 'discoverdate' in events[name]:
                     break
+        if 'discoverdate' not in events[name]:
+            prefixes = ['AT', 'SN']
+            for alias in events[name]['aliases']:
+                for prefix in prefixes:
+                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]):
+                        discoverdate = alias.replace(prefix, '')[:4]
+                        print ('Added discoverdate from name: ' + discoverdate)
+                        add_quantity(name, 'discoverdate', discoverdate, '1')
+                        break
+                if 'discoverdate' in events[name]:
+                    break
         if 'ra' not in events[name] or 'dec' not in events[name]:
             prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J']
             for alias in events[name]['aliases']:
