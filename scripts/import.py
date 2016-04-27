@@ -205,20 +205,20 @@ def add_event(name, load = True, delete = True):
                 newname = match
 
         if load:
-            newname = load_event_from_file(name = newname, delete = delete)
-            if newname:
-                if 'stub' in events[newname]:
+            loadedname = load_event_from_file(name = newname, delete = delete)
+            if loadedname:
+                if 'stub' in events[loadedname]:
                     raise(ValueError('Failed to find event file for stubbed event'))
-                return newname
+                return loadedname
 
         if match:
             return match
 
-        events[name] = OrderedDict()
-        events[name]['name'] = name
-        add_alias(name, name)
-        print('Added new event ' + name)
-        return name
+        events[newname] = OrderedDict()
+        events[newname]['name'] = newname
+        add_alias(newname, newname)
+        print('Added new event ' + newname)
+        return newname
     else:
         return name
 
@@ -987,7 +987,7 @@ def derive_and_sanitize():
     for name in events:
         set_first_max_light(name)
         if 'discoverdate' not in events[name]:
-            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF']
+            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-']
             for alias in events[name]['aliases']:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
@@ -1159,20 +1159,21 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar',
-                       'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
-        nonsnetypes = [x.upper() for x in nonsnetypes]
-        nonsneprefixes = ('PNVJ', 'PNV J')
-        if delete and 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
+        if delete:
             deleteevent = False
+            nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar',
+                           'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
+            nonsnetypes = [x.upper() for x in nonsnetypes]
+            nonsneprefixes = ('PNVJ', 'PNV J')
             if name.startswith(nonsneprefixes):
                 deleteevent = True
-            for ct in events[name]['claimedtype']:
-                if ct['value'].upper() not in nonsnetypes:
-                    deleteevent = False
-                    break
-                if ct['value'].upper() in nonsnetypes:
-                    deleteevent = True
+            if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
+                for ct in events[name]['claimedtype']:
+                    if ct['value'].upper() not in nonsnetypes:
+                        deleteevent = False
+                        break
+                    if ct['value'].upper() in nonsnetypes:
+                        deleteevent = True
             if deleteevent:
                 print('Deleting ' + name + ' (' + ct['value'] + ')')
                 continue
@@ -2560,7 +2561,7 @@ if do_task('scp'):
         for ri, row in enumerate(tsvin):
             if ri == 0:
                 continue
-            name = row[0]
+            name = row[0].replace('SCP', 'SCP-')
             name = add_event(name)
             source = add_source(name, reference = 'Supernova Cosmology Project', url = 'http://supernova.lbl.gov/2009ClusterSurvey/')
             if row[1]:
@@ -2575,7 +2576,6 @@ if do_task('scp'):
                     'spectroscopic' if 'a' in row[7] else 'light curve' if 'c' in row[7] else '')
                 if claimedtype != '?':
                     add_quantity(name, 'claimedtype', claimedtype, source, kind = kind)
-            print(events[name])
     journal_events()
 
 if do_task('2006ApJ...645..841N'):
