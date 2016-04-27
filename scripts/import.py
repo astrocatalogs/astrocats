@@ -190,6 +190,10 @@ def name_clean(name):
         newname = newname.replace('PSNJ', 'PSN J')
     if newname.startswith('PSN20J'):
         newname = newname.replace('PSN20J', 'PSN J')
+    if newname.startswith('ASASSN') and newname[6] != '-':
+        newname = newname.replace('ASASSN', 'ASASSN-')
+    if newname.startswith('ROTSE3J'):
+        newname = newname.replace('ROTSE3J', 'ROTSE3 J')
     return newname
 
 def add_event(name, load = True, delete = True):

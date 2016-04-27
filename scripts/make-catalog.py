@@ -152,12 +152,11 @@ titles = [
     "J2000 Right Ascension (h:m:s)",
     "J2000 Declination (d:m:s)",
     "List of Instruments and Bands",
-    "Milky Way Reddening",
     "Redshift",
     "Heliocentric velocity (km/s)",
     "Luminosity distance (Mpc)",
     "Claimed Type",
-    "E(B-V)",
+    "Milky Way Reddening",
     "Photometry",
     "Spectra",
     "Radio",
@@ -1573,3 +1572,11 @@ if args.writecatalog and not args.eventlist:
     jsonstring = json.dumps(names, separators=(',',':'))
     with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
+
+    safefiles = [os.path.basename(x) for x in files]
+    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json']
+
+    for myfile in glob.glob('../*.json'):
+        if not os.path.basename(myfile) in safefiles:
+            print ('Deleting orphan ' + myfile)
+            os.remove(myfile)
