@@ -1166,7 +1166,8 @@ def write_all_events(empty = False, gz = False, delete = False):
             nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J')
             if name.startswith(nonsneprefixes):
-                deleteevent = True
+                print('Deleting ' + name + ', non-SNe prefix.')
+                continue
             if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
                 for ct in events[name]['claimedtype']:
                     if ct['value'].upper() not in nonsnetypes:
@@ -1174,9 +1175,9 @@ def write_all_events(empty = False, gz = False, delete = False):
                         break
                     if ct['value'].upper() in nonsnetypes:
                         deleteevent = True
-            if deleteevent:
-                print('Deleting ' + name + ' (' + ct['value'] + ')')
-                continue
+                if deleteevent:
+                    print('Deleting ' + name + ' (' + ct['value'] + ').')
+                    continue
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
 
