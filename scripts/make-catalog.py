@@ -1351,6 +1351,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                             if ((key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]
                                 and catalog[entry]['maxband']):
                                 keyhtml = keyhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
+                            if 'error' in row:
+                                keyhtml = keyhtml + r' ± ' + row['error']
                             keyhtml = keyhtml + r'<sup>' + sourcehtml + r'</sup>'
                         elif isinstance(row, str):
                             keyhtml = keyhtml + (r'<br>' if r > 0 else '') + row.strip()
@@ -1574,7 +1576,7 @@ if args.writecatalog and not args.eventlist:
         f.write(jsonstring)
 
     safefiles = [os.path.basename(x) for x in files]
-    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json']
+    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'bibauthors.json', 'extinctions.json']
 
     for myfile in glob.glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:

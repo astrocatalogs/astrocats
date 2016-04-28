@@ -22,12 +22,14 @@ from digits import *
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
+from astroquery.irsa_dust import IrsaDust
 from copy import deepcopy
 from astropy import constants as const
 from astropy import units as un
 from astropy.io import fits
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo, z_at_value
+from astropy.coordinates import SkyCoord as coord
 from collections import OrderedDict, Sequence
 from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
@@ -68,10 +70,12 @@ tasks = {
     "snls":                {"update": False},
     "panstarrs":           {"update": False},
     "psthreepi":           {"update": True,  "archived": True},
+    "psmds":               {"update": False},
     "crts":                {"update": True,  "archived": True},
     "snhunt":              {"update": True,  "archived": True},
     "nedd":                {"update": False},
     "cpcs":                {"update": True,  "archived": True},
+    "ptf":                 {"update": False},
     "asiagospectra":       {"update": True },
     "wiserepspectra":      {"update": False},
     "cfaiaspectra":        {"update": False},
@@ -560,6 +564,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         raise(ValueError('Quantity must be specified for add_quantity.'))
     if not sources:
         raise(ValueError('Source must be specified for quantity before it is added.'))
+    if not isinstance(svalue, str) and (not isinstance(svalue, list) or not isinstance(svalue[0], str)):
+        raise(ValueError('Quantity must be a string or an array of strings.'))
     svalue = value.strip()
     serror = error.strip()
     sunit = ''
@@ -580,7 +586,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         unit = 'Mpc'
 
     #Handle certain quantity
-    if quantity in ['velocity', 'redshift']:
+    if quantity in ['velocity', 'redshift', 'ebv', 'lumdist', 'comovingdist']:
         if not is_number(svalue):
             return
     if quantity == 'host':
@@ -968,13 +974,6 @@ def merge_duplicates():
                 journal_events()
 
 def derive_and_sanitize():
-    path = '../bibauthors.json'
-    if os.path.isfile(path):
-        with open(path, 'r') as f:
-            bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        bibauthordict = OrderedDict()
-
     biberrordict = {
         "2012Sci..337..942D":"2012Sci...337..942D",
         "2012MNRAS.420.1135":"2012MNRAS.420.1135S",
@@ -1033,6 +1032,15 @@ def derive_and_sanitize():
                         break
                 if 'ra' in events[name]:
                     break
+        if ('ra' in events[name] and 'dec' in events[name] and 
+            (not 'host' in events[name] or not any([x['value'] == 'Milky Way' for x in events[name]['host']]))):
+            if name not in extinctionsdict:
+                result = IrsaDust.get_query_table(events[name]['ra'][0]['value'] + " " + events[name]['dec'][0]['value'], section = 'ebv')
+                ebv = result['ext SandF mean'][0]
+                ebverr = result['ext SandF std'][0]
+                extinctionsdict[name] = [ebv, ebverr]
+            source = add_source(name, bibcode = '2011ApJ...737..103S')
+            add_quantity(name, 'ebv', str(extinctionsdict[name][0]), source, error = str(extinctionsdict[name][1]))
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'claimedtype' not in events[name] and name.startswith('AT'):
@@ -1130,9 +1138,6 @@ def derive_and_sanitize():
 
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
 
-    jsonstring = json.dumps(bibauthordict, indent='\t', separators=(',', ':'), ensure_ascii=False)
-    with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
-        f.write(jsonstring)
 
 def delete_old_event_files():
     # Delete all old event JSON files
@@ -1475,7 +1480,7 @@ if do_task('vizier'):
             add_quantity(name, 'host', row['Gal'].replace('_', ' '), source)
         add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
         add_quantity(name, 'redshift', str(row['zCMB']), source, kind = 'cmb')
-        add_quantity(name, 'ebv', str(row['E_B-V_']), source)
+        add_quantity(name, 'ebv', str(row['E_B-V_']), source, error = str(row['e_E_B-V_']) if row['e_E_B-V_'] else '')
         add_quantity(name, 'ra', row['RAJ2000'], source)
         add_quantity(name, 'dec', row['DEJ2000'], source)
 
@@ -3786,6 +3791,22 @@ if do_task('psthreepi'):
                 journal_events()
         journal_events()
 
+if do_task('psmds'):
+    with open('../sne-external/MDS/apj506838t1_mrt.txt') as f:
+        for ri, row in enumerate(f.read().splitlines()):
+            if ri < 35:
+                continue
+            cols = [x.strip() for x in row.split(',')]
+            name = add_event(cols[0])
+            source = add_source(name, bibcode = '2015ApJ...799..208S')
+            add_quantity(name, 'ra', cols[1], source)
+            add_quantity(name, 'dec', cols[2], source)
+            astrot = astrotime(cols[3], format='jd').datetime
+            add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+            add_quantity(name, 'redshift', cols[4], source, kind = 'spectroscopic')
+            add_quantity(name, 'claimedtype', 'II P', source)
+    journal_events()
+
 if do_task('crts'):
     crtsnameerrors = ['2011ax']
 
@@ -4030,6 +4051,12 @@ if do_task('cpcs'):
                 band = bnds[mi], observatory = obs[mi], source = ','.join([source,secondarysource]))
         if args.update:
             journal_events()
+    journal_events()
+
+if do_task('ptf'):
+    with open('../sne-external/PTF/old-ptf-events.csv') as f:
+        for suffix in f.read().splitlines():
+            name = add_event('PTF' + suffix)
     journal_events()
 
 if do_task('asiagospectra'):
@@ -4774,6 +4801,19 @@ files = []
 for rep in repofolders:
     files += glob.glob('../' + rep + "/*.json")
 
+path = '../bibauthors.json'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+else:
+    bibauthordict = OrderedDict()
+path = '../extinctions.json'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        extinctionsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+else:
+    extinctionsdict = OrderedDict()
+
 for fi in files:
     events = OrderedDict()
     name = os.path.basename(os.path.splitext(fi)[0])
@@ -4781,5 +4821,12 @@ for fi in files:
     derive_and_sanitize()
     if do_task('writeevents'): 
         write_all_events(empty = True, gz = True, delete = True)
+
+jsonstring = json.dumps(bibauthordict, indent='\t', separators=(',', ':'), ensure_ascii=False)
+with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
+    f.write(jsonstring)
+jsonstring = json.dumps(extinctionsdict, indent='\t', separators=(',', ':'), ensure_ascii=False)
+with codecs.open('../extinctions.json', 'w', encoding='utf8') as f:
+    f.write(jsonstring)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
