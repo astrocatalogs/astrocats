@@ -27,7 +27,6 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2012MNRAS.425.1007B (IR photometry for about a dozen PTF events)
 * http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
 * http://adsabs.harvard.edu/abs/2006ApJ...645..841N (SNLS LCs)
-* http://arxiv.org/pdf/1604.08207.pdf
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
