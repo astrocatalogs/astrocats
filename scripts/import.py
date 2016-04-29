@@ -41,51 +41,51 @@ parser.add_argument('--travis', '-tr', dest='travis', help='Run import script in
 args = parser.parse_args()
 
 tasks = {
-    #"internal":            {"update": False},
-    #"radio":               {"update": False},
-    #"xray":                {"update": False},
-    #"simbad":              {"update": False},
-    #"vizier":              {"update": False},
-    #"nicholl-04-01-16":    {"update": False},
-    #"maggi-04-11-16":      {"update": False},
-    #"galbany-04-18-16":    {"update": False},
-    #"pessto-dr1":          {"update": False},
-    #"scp":                 {"update": False},
-    #"2006ApJ...645..841N": {"update": False},
-    #"cccp":                {"update": False, "archived": True},
-    #"anderson":            {"update": False},
-    #"stromlo":             {"update": False},
-    #"suspect":             {"update": False},
-    #"cfa":                 {"update": False},
-    #"ucb":                 {"update": False},
-    #"sdss":                {"update": False},
-    #"csp":                 {"update": False},
-    #"itep":                {"update": False},
-    #"asiago":              {"update": False},
-    #"tns":                 {"update": True,  "archived": True},
-    #"rochester":           {"update": True },
-    #"lennarz":             {"update": False},
-    #"gaia":                {"update": True,  "archived": True},
-    #"ogle":                {"update": True },
-    #"snls":                {"update": False},
-    #"panstarrs":           {"update": False},
-    #"psthreepi":           {"update": True,  "archived": True},
-    #"psmds":               {"update": False},
-    #"crts":                {"update": True,  "archived": True},
-    #"snhunt":              {"update": True,  "archived": True},
-    #"nedd":                {"update": False},
-    #"cpcs":                {"update": True,  "archived": True},
+    "internal":            {"update": False},
+    "radio":               {"update": False},
+    "xray":                {"update": False},
+    "simbad":              {"update": False},
+    "vizier":              {"update": False},
+    "nicholl-04-01-16":    {"update": False},
+    "maggi-04-11-16":      {"update": False},
+    "galbany-04-18-16":    {"update": False},
+    "pessto-dr1":          {"update": False},
+    "scp":                 {"update": False},
+    "2006ApJ...645..841N": {"update": False},
+    "cccp":                {"update": False, "archived": True},
+    "anderson":            {"update": False},
+    "stromlo":             {"update": False},
+    "suspect":             {"update": False},
+    "cfa":                 {"update": False},
+    "ucb":                 {"update": False},
+    "sdss":                {"update": False},
+    "csp":                 {"update": False},
+    "itep":                {"update": False},
+    "asiago":              {"update": False},
+    "tns":                 {"update": True,  "archived": True},
+    "rochester":           {"update": True },
+    "lennarz":             {"update": False},
+    "gaia":                {"update": True,  "archived": True},
+    "ogle":                {"update": True },
+    "snls":                {"update": False},
+    "panstarrs":           {"update": False},
+    "psthreepi":           {"update": True,  "archived": True},
+    "psmds":               {"update": False},
+    "crts":                {"update": True,  "archived": True},
+    "snhunt":              {"update": True,  "archived": True},
+    "nedd":                {"update": False},
+    "cpcs":                {"update": True,  "archived": True},
     "ptf":                 {"update": False},
-    #"asiagospectra":       {"update": True },
-    #"wiserepspectra":      {"update": False},
-    #"cfaiaspectra":        {"update": False},
-    #"cfaibcspectra":       {"update": False},
-    #"snlsspectra":         {"update": False},
-    #"cspspectra":          {"update": False},
-    #"ucbspectra":          {"update": False},
-    #"suspectspectra":      {"update": False},
-    #"snfspectra":          {"update": False},
-    #"superfitspectra":     {"update": False},
+    "asiagospectra":       {"update": True },
+    "wiserepspectra":      {"update": False},
+    "cfaiaspectra":        {"update": False},
+    "cfaibcspectra":       {"update": False},
+    "snlsspectra":         {"update": False},
+    "cspspectra":          {"update": False},
+    "ucbspectra":          {"update": False},
+    "suspectspectra":      {"update": False},
+    "snfspectra":          {"update": False},
+    "superfitspectra":     {"update": False},
     "writeevents":         {"update": True }
 }
 
@@ -198,6 +198,8 @@ def name_clean(name):
         newname = newname.replace('ASASSN', 'ASASSN-')
     if newname.startswith('ROTSE3J'):
         newname = newname.replace('ROTSE3J', 'ROTSE3 J')
+    if newname.startswith('SNHunt'):
+        newname = newname.replace('SNHunt', 'SNhunt')
     return newname
 
 def add_event(name, load = True, delete = True):
@@ -4084,8 +4086,7 @@ if do_task('ptf'):
             add_quantity(name, 'dec', cols[2], source)
             add_quantity(name, 'claimedtype', 'SLSN-' + cols[3], source)
             add_quantity(name, 'redshift', cols[4], source, kind = 'spectroscopic')
-            astrot = astrotime(float(cols[6]), format='mjd').datetime
-            add_quantity(name, 'maxdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+            add_quantity(name, 'maxdate', cols[6].replace('-', '/'), source)
             add_quantity(name, 'ebv', cols[7], source, kind = 'spectroscopic')
             name = add_event('PTF' + suffix)
     journal_events()

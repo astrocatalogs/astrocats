@@ -1576,7 +1576,7 @@ if args.writecatalog and not args.eventlist:
         f.write(jsonstring)
 
     safefiles = [os.path.basename(x) for x in files]
-    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'bibauthors.json', 'extinctions.json']
+    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'bibauthors.json', 'extinctions.json', 'dupes.json']
 
     for myfile in glob.glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:

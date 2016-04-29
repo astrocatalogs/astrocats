@@ -3,7 +3,11 @@
 import json
 import re
 import math
+import codecs
+from collections import OrderedDict
 from astropy.time import Time as astrotime
+
+dupes = OrderedDict()
 
 with open('../catalog.min.json', 'r') as f:
     filetext = f.read()
@@ -104,3 +108,11 @@ with open('../catalog.min.json', 'r') as f:
                               str(abs(discoveryear1) - abs(discoveryear2)) + ']')
                 else:
                     print(name1 + ' has a close coordinate match to ' + name2 + " [" + str(distdeg) + "]")
+                dupes[name1] = OrderedDict([('name1',name1), ('name2',name2), ('ra1',ra1), ('dec1',dec1),
+                    ('ra2',ra2), ('dec2',dec2), ('distdeg',str(distdeg))])
+
+# Convert to array since that's what datatables expects
+dupes = list(dupes.values())
+jsonstring = json.dumps(dupes, indent='\t', separators=(',', ':'), ensure_ascii=False)
+with open('../dupes.json', 'w') as f:
+    f.write(jsonstring)
