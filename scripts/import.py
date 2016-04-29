@@ -946,11 +946,11 @@ def merge_duplicates():
     for n1, name1 in enumerate(keys):
         if name1 not in events:
             continue
-        allnames1 = events[name1]["aliases"]
+        allnames1 = events[name1]["aliases"] + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else [])
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
-            allnames2 = events[name2]["aliases"]
+            allnames2 = events[name2]["aliases"] + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else [])
             if any(i in allnames1 for i in allnames2):
                 print('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
                 load1 = load_event_from_file(name1, delete = True)

@@ -102,14 +102,20 @@ with open('../catalog.min.json', 'r') as f:
 
             distdeg = math.sqrt(pow(radeg1 - radeg2, 2) + pow(decdeg1 - decdeg2, 2))
             if distdeg < 3./3600.:
+                diffyear = ''
                 if discoveryear1 and discoveryear2:
-                    if abs(discoveryear1 - discoveryear2) <= 0.5:
+                    diffyear = abs(discoveryear1 - discoveryear2)
+                    if diffyear <= 0.5:
                         print(name1 + ' has a close coordinate and date match to ' + name2 + " [" + str(distdeg) + ', ' +
-                              str(abs(discoveryear1) - abs(discoveryear2)) + ']')
+                              str(diffyear) + ']')
                 else:
                     print(name1 + ' has a close coordinate match to ' + name2 + " [" + str(distdeg) + "]")
+                if not name1.startswith('SN') and name2.startswith('SN'):
+                    name1,name2 = name2,name1
+                    ra1,ra2 = ra2,ra1
+                    dec1,dec2 = dec2,dec1
                 dupes[name1] = OrderedDict([('name1',name1), ('name2',name2), ('ra1',ra1), ('dec1',dec1),
-                    ('ra2',ra2), ('dec2',dec2), ('distdeg',str(distdeg))])
+                    ('ra2',ra2), ('dec2',dec2), ('distdeg',str(distdeg)), ('diffyear',str(diffyear))])
 
 # Convert to array since that's what datatables expects
 dupes = list(dupes.values())
