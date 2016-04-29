@@ -3493,6 +3493,7 @@ if do_task('ogle'):
     basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
     oglenames = []
     ogleupdate = [True, False, False, False, False]
+    oglepositionerrors = ['OGLE-2015-SN-078']
     for b, bn in enumerate(basenames):
         if args.update and not ogleupdate[b]:
             continue
@@ -3563,8 +3564,9 @@ if do_task('ogle'):
                         if is_number(name[4:6]):
                             add_quantity(name, 'discoverdate', '20' + name[4:6], sources)
 
-                add_quantity(name, 'ra', ra, sources)
-                add_quantity(name, 'dec', dec, sources)
+                if name not in oglepositionerrors:
+                    add_quantity(name, 'ra', ra, sources)
+                    add_quantity(name, 'dec', dec, sources)
                 if claimedtype and claimedtype != '-':
                     add_quantity(name, 'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
