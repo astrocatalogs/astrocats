@@ -683,10 +683,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         prunedwave = []
         prunedscaled = []
         for i in reversed(range(nspec)):
+            ri = nspec-i-1
             prunedwave.append([])
             prunedscaled.append([])
             if 'exclude' in catalog[entry]['spectra'][i]:
-                for wi, wave in enumerate(spectrumwave):
+                for wi, wave in enumerate(spectrumwave[i]):
                     exclude = False
                     for exclusion in catalog[entry]['spectra'][i]['exclude']:
                         if 'below' in exclusion:
@@ -696,8 +697,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                             if wave >= float(exclusion['above']):
                                 exclude = True
                     if not exclude:
-                        prunedwave[i].append(wave)
-                        prunedscaled[i].append(spectrumscaled[i][wi])
+                        prunedwave[ri].append(wave)
+                        prunedscaled[ri].append(spectrumscaled[i][wi])
 
             y_offsets[i] = y_height
             if (i-1 >= 0 and 'time' in catalog[entry]['spectra'][i] and 'time' in catalog[entry]['spectra'][i-1]
@@ -705,11 +706,14 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                     ydiff = 0
             else:
                 if 'exclude' in catalog[entry]['spectra'][i]:
-                    ydiff = 0.8*(max(prunedscaled[i]) - min(prunedscaled[i]))
+                    ydiff = 0.8*(max(prunedscaled[ri]) - min(prunedscaled[ri]))
                 else:
                     ydiff = 0.8*(max(spectrumscaled[i]) - min(spectrumscaled[i]))
             spectrumscaled[i] = [j + y_height for j in spectrumscaled[i]]
             y_height += ydiff
+
+        prunedwave = reversed(prunedwave)
+        prunedscaled = reversed(prunedscaled)
 
         maxsw = max(map(max, spectrumwave))
         minsw = min(map(min, spectrumwave))
