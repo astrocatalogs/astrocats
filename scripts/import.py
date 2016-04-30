@@ -75,7 +75,7 @@ tasks = {
     "snhunt":              {"update": True,  "archived": True},
     "nedd":                {"update": False},
     "cpcs":                {"update": True,  "archived": True},
-    "ptf":                 {"update": False},
+    "ptf":                 {"update": False, "archived": False},
     "asiagospectra":       {"update": True },
     "wiserepspectra":      {"update": False},
     "cfaiaspectra":        {"update": False},
@@ -200,6 +200,8 @@ def name_clean(name):
         newname = newname.replace('ROTSE3J', 'ROTSE3 J')
     if newname.startswith('SNHunt'):
         newname = newname.replace('SNHunt', 'SNhunt')
+    if newname.startswith('snf'):
+        newname = newname.replace('snf', 'SNF')
     return newname
 
 def add_event(name, load = True, delete = True):
@@ -1175,7 +1177,7 @@ def write_all_events(empty = False, gz = False, delete = False):
             nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar',
                            'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
             nonsnetypes = [x.upper() for x in nonsnetypes]
-            nonsneprefixes = ('PNVJ', 'PNV J')
+            nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
             if name.startswith(nonsneprefixes):
                 print('Deleting ' + name + ', non-SNe prefix.')
                 continue
@@ -4058,8 +4060,28 @@ if do_task('cpcs'):
     journal_events()
 
 if do_task('ptf'):
-    response = urllib.request.urlopen("http://wiserep.weizmann.ac.il/objects/list")
-    bs = BeautifulSoup(response, "html5lib")
+    #response = urllib.request.urlopen("http://wiserep.weizmann.ac.il/objects/list")
+    #bs = BeautifulSoup(response, "html5lib")
+    #select = bs.find('select', {"name":"objid"})
+    #options = select.findAll('option')
+    #for option in options:
+    #    print(option.text)
+    #    name = option.text
+    #    if ((name.startswith('PTF') and is_number(name[3:5])) or
+    #        name.startswith('PTFS') or name.startswith('iPTF')):
+    #        name = add_event(name)
+
+    if tasks['ptf']['archived']:
+        with open('../sne-external/PTF/update.html', 'r') as f:
+            html = f.read()
+    else:
+        session = requests.Session()
+        response = session.get("http://wiserep.weizmann.ac.il/spectra/update")
+        html = response.text
+        with open('../sne-external/PTF/update.html', 'w') as f:
+            f.write(html)
+
+    bs = BeautifulSoup(html, "html5lib")
     select = bs.find('select', {"name":"objid"})
     options = select.findAll('option')
     for option in options:
@@ -4067,7 +4089,14 @@ if do_task('ptf'):
         name = option.text
         if ((name.startswith('PTF') and is_number(name[3:5])) or
             name.startswith('PTFS') or name.startswith('iPTF')):
-            name = add_event(name)
+            if '(' in name:
+                alias = name.split('(')[0].strip(' ')
+                name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
+                name = add_event(name)
+                add_alias(name, alias)
+            else:
+                name = add_event(name)
+    
     with open('../sne-external/PTF/old-ptf-events.csv') as f:
         for suffix in f.read().splitlines():
             name = add_event('PTF' + suffix)
@@ -4369,6 +4398,7 @@ if do_task('cfaiaspectra'):
     oldname = ''
     for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
         fullpath = "../sne-external-spectra/CfA_SNIa/" + name
+        origname = name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
         if name.startswith('snf') and is_number(name[3:7]):
@@ -4384,11 +4414,13 @@ if do_task('cfaiaspectra'):
         for fi, fname in enumerate(sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
-            if name.startswith("SN") and is_number(name[2:6]):
+            if origname.startswith("sn") and is_number(origname[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
                 instrument = fileparts[2].split('.')[0]
+                print(origname)
+                print(fileparts[1])
             else:
                 year = fileparts[2][:4]
                 month = fileparts[2][4:6]

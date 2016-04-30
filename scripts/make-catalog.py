@@ -680,13 +680,34 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         y_height = 0.
         y_offsets = [0. for x in range(nspec)]
+        prunedwave = []
+        prunedscaled = []
         for i in reversed(range(nspec)):
+            prunedwave.append([])
+            prunedscaled.append([])
+            if 'exclude' in catalog[entry]['spectra'][i]:
+                for wi, wave in enumerate(spectrumwave):
+                    exclude = False
+                    for exclusion in catalog[entry]['spectra'][i]['exclude']:
+                        if 'below' in exclusion:
+                            if wave <= float(exclusion['below']):
+                                exclude = True
+                        elif 'above' in exclusion:
+                            if wave >= float(exclusion['above']):
+                                exclude = True
+                    if not exclude:
+                        prunedwave[i].append(wave)
+                        prunedscaled[i].append(spectrumscaled[i][wi])
+
             y_offsets[i] = y_height
             if (i-1 >= 0 and 'time' in catalog[entry]['spectra'][i] and 'time' in catalog[entry]['spectra'][i-1]
                 and catalog[entry]['spectra'][i]['time'] == catalog[entry]['spectra'][i-1]['time']):
                     ydiff = 0
             else:
-                ydiff = 0.8*(max(spectrumscaled[i]) - min(spectrumscaled[i]))
+                if 'exclude' in catalog[entry]['spectra'][i]:
+                    ydiff = 0.8*(max(prunedscaled[i]) - min(prunedscaled[i]))
+                else:
+                    ydiff = 0.8*(max(spectrumscaled[i]) - min(spectrumscaled[i]))
             spectrumscaled[i] = [j + y_height for j in spectrumscaled[i]]
             y_height += ydiff
 
