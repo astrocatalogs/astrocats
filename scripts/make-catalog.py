@@ -1,7 +1,6 @@
 #!/usr/local/bin/python3.5
 
 import csv
-import glob
 import sys
 import os
 import re
@@ -16,6 +15,7 @@ import requests
 import urllib.request
 import urllib.parse
 import filecmp
+from glob import glob
 from photometry import *
 from digits import *
 from datetime import datetime
@@ -324,7 +324,7 @@ else:
 
 files = []
 for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
+    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
 md5s = []
 md5 = hashlib.md5
@@ -1601,9 +1601,9 @@ if args.writecatalog and not args.eventlist:
         f.write(jsonstring)
 
     safefiles = [os.path.basename(x) for x in files]
-    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'bibauthors.json', 'extinctions.json', 'dupes.json']
+    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json']
 
-    for myfile in glob.glob('../*.json'):
+    for myfile in glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:
             print ('Deleting orphan ' + myfile)
             os.remove(myfile)
