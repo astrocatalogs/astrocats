@@ -211,6 +211,10 @@ sitemaptemplate = (
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://sne.space/find-duplicates</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://sne.space/derivations</loc>
     <priority>0.7</priority>
   </url>
@@ -220,6 +224,10 @@ sitemaptemplate = (
   </url>
   <url>
     <loc>https://sne.space/download</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sne.space/bibliography</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -1561,7 +1569,7 @@ if args.writecatalog and not args.eventlist:
         f.write(sitemapxml)
 
     # Ping Google to let them know sitemap has been updated
-    #response = urllib.request.urlopen(googlepingurl)
+    response = urllib.request.urlopen(googlepingurl)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())

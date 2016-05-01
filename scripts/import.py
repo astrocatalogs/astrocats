@@ -124,8 +124,9 @@ typereps = {
     'SLSN-I':  ['SLSN I', 'SL-I'],
     'SLSN-II': ['SLSN II', 'SL-II'],
     'Ia-91bg': ['Ia-pec (1991bg)', 'Ia-91bg-like'],
-    'Ia-91T':  ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like'],
-    'Ia-02cx': ['Ia-02cx-like']
+    'Ia-91T':  ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like', 'Ia 91T-like'],
+    'Ia-02cx': ['Ia-02cx-like'],
+    'Ib-Ca':   ['Ib - Ca-rich']
 }
 
 repbetterquantity = {
@@ -296,6 +297,9 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
 
     reference = reference.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
     reference = ' '.join(reference.split())
+
+    if reference and not bibcode and 'ATel ' in reference:
+        bibcode = 
 
     if 'sources' not in events[name] or (reference not in [x['name'] for x in events[name]['sources']] and
         not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]):
@@ -637,6 +641,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         svalue = ' '.join(svalue.split())
     elif quantity == 'claimedtype':
         isq = False
+        svalue = svalue.replace('young', '')
         if '?' in svalue:
             isq = True
             svalue = svalue.strip(' ?')
@@ -1609,7 +1614,8 @@ if do_task('vizier'):
         add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
         add_quantity(name, 'ebv', str(row['E_B-V_']), source)
         add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
-        add_quantity(name, 'claimedtype', row['Type'].replace('*', '?').replace('SN','').replace('(pec)',' P'), source)
+        add_quantity(name, 'claimedtype', (row['Type'].replace('*', '?').replace('SN','')
+            .replace('(pec)',' P').replace('Ia? P?', 'Ia P?')), source)
         add_quantity(name, 'ra', row['RAJ2000'], source)
         add_quantity(name, 'dec', row['DEJ2000'], source)
     journal_events()

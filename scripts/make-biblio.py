@@ -5,6 +5,9 @@ import re
 import os
 import math
 import codecs
+import urllib
+import requests
+from html import unescape
 from glob import glob
 from tqdm import tqdm
 from collections import OrderedDict
@@ -21,11 +24,20 @@ def get_event_filename(name):
 with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
 
+path = '../bibauthors.json'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+else:
+    bibauthordict = OrderedDict()
+
 files = []
 for rep in repfolders:
     files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
-for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
+    #if fcnt > 100:
+    #    break
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
 
     if eventfile.split('.')[-1] == 'gz':
@@ -42,11 +54,83 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         for source in item['sources']:
             if 'bibcode' in source:
                 bc = source['bibcode']
-                if bc in biblio:
-                    biblio[bc]['events'].append(item['name'])
+                if bc not in biblio:
+                    tqdm.write(bc)
+
+                    authors = ''
+                    if bc in bibauthordict:
+                        authors = bibauthordict[bc]
+                    #adsquery = ('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=ALL&version=1&bibcode=' +
+                    #            urllib.parse.quote(bc) + '&data_type=Custom&format=%25m')
+                    #response = urllib.request.urlopen(adsquery)
+                    #html = response.read().decode('utf-8')
+                    #hsplit = html.split("\n")
+                    #if len(hsplit) > 5:
+                    #    authors = hsplit[5]
+                    #    if ',' in authors:
+                    #        authors = unescape(authors.replace(' & ', ' '))
+                    #    else:
+                    #        authors = unescape(authors.replace(' & ', ', '))
+                    #else:
+                    #    authors = ''
+                    #tqdm.write(authors)
+                    #biblio[bc] = OrderedDict([('bibcode', bc), ('events', [item['name']]), ('authors', authors)])
+                    biblio[bc] = OrderedDict([('authors', authors), ('bibcode', bc), ('events', []), ('eventdates', []),
+                        ('types', []), ('photocount', 0), ('spectracount', 0), ('metacount', 0)])
+
+                biblio[bc]['events'].append(item['name'])
+
+                if 'discoverdate' in item and item['discoverdate']:
+                    datestr = item['discoverdate'][0]['value'].replace('/', '-')
+                    if datestr.count('-') == 1:
+                        datestr += '-01'
+                    elif datestr.count('-') == 0:
+                        datestr += '-01-01'
+                    try:
+                        biblio[bc]['eventdates'].append(astrotime(datestr, format = 'isot').unix)
+                    except:
+                        biblio[bc]['eventdates'].append(float("inf"))
                 else:
-                    print(bc)
-                    biblio[bc] = OrderedDict([('bibcode', bc), ('events', [item['name']])])
+                    biblio[bc]['eventdates'].append(float("inf"))
+
+                if 'claimedtype' in item:
+                    cts = []
+                    for ct in item['claimedtype']:
+                        cts.append(ct['value'].strip('?'))
+                    biblio[bc]['types'] = list(set(biblio[bc]['types']).union(cts))
+
+                if 'photometry' in item:
+                    bcalias = source['alias']
+                    lc = 0
+                    for photo in item['photometry']:
+                        if bcalias in photo['source'].split(','):
+                            lc += 1
+                    biblio[bc]['photocount'] += lc
+                    #if lc > 0:
+                    #    tqdm.write(str(lc))
+
+                if 'spectra' in item:
+                    bcalias = source['alias']
+                    lc = 0
+                    for spectra in item['spectra']:
+                        if bcalias in spectra['source'].split(','):
+                            lc += 1
+                    biblio[bc]['spectracount'] += lc
+                    #if lc > 0:
+                    #    tqdm.write(str(lc))
+
+                for key in list(item.keys()):
+                    lc = 0
+                    if key in ['name', 'aliases', 'sources', 'photometry', 'spectra']:
+                        continue
+                    for quantum in item[key]:
+                        if bcalias in quantum['source'].split(','):
+                            lc += 1
+                    biblio[bc]['metacount'] += lc
+
+for bc in biblio:
+    biblio[bc]['events'] = [x for (y,x) in sorted(zip(biblio[bc]['eventdates'], biblio[bc]['events']))]
+    del(biblio[bc]['eventdates'])
 
 # Convert to array since that's what datatables expects
 biblio = list(biblio.values())
