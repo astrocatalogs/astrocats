@@ -298,9 +298,6 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
     reference = reference.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
     reference = ' '.join(reference.split())
 
-    if reference and not bibcode and 'ATel ' in reference:
-        bibcode = 
-
     if 'sources' not in events[name] or (reference not in [x['name'] for x in events[name]['sources']] and
         not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]):
         source = str(nsources + 1)
