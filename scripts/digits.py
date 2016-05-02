@@ -11,6 +11,20 @@ def round_sig(x, sig=4):
 def pretty_num(x, sig=4):
     return str('%g'%(round_sig(x, sig)))
 
+def is_integer(s):
+    if isinstance(s, list) and not isinstance(s, str):
+        try:
+            [int(x) for x in s]
+            return True
+        except ValueError:
+            return False
+    else:
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+
 def is_number(s):
     if isinstance(s, list) and not isinstance(s, str):
         try:

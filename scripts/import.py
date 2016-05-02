@@ -63,7 +63,7 @@ tasks = {
     "itep":                {"update": False},
     "asiago":              {"update": False},
     "tns":                 {"update": True,  "archived": True},
-    "rochester":           {"update": True },
+    "rochester":           {"update": True,  "archived": False },
     "lennarz":             {"update": False},
     "gaia":                {"update": True,  "archived": True},
     "ogle":                {"update": True },
@@ -293,10 +293,19 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
             raise(ValueError('Bibcode must be exactly 19 characters long'))
 
         reference = bibcode
-        url = "http://adsabs.harvard.edu/abs/" + bibcode
 
     reference = reference.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
     reference = ' '.join(reference.split())
+
+    if reference.startswith('ATel ') and not bibcode:
+        atelnum = reference.split()[-1]
+        if is_number(atelnum) and atelnum in atelsdict:
+            bibcode = atelsdict[atelnum]
+
+    if reference.startswith('CBET ') and not bibcode:
+        cbetnum = reference.split()[-1]
+        if is_number(cbetnum) and cbetnum in cbetsdict:
+            bibcode = cbetsdict[cbetnum]
 
     if 'sources' not in events[name] or (reference not in [x['name'] for x in events[name]['sources']] and
         not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]):
@@ -1405,6 +1414,19 @@ def clear_events():
     global events
     events = OrderedDict((k, OrderedDict((('name', events[k]['name']), ('aliases', events[k]['aliases']), ('stub', True)))) for k in events)
 
+path = '../atels.json'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        atelsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+else:
+    atelsdict = OrderedDict()
+path = '../cbets.json'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        cbetsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+else:
+    cbetsdict = OrderedDict()
+
 # Either load stubs of each event (if updating) or delete all event files (if starting fresh)
 if 'writeevents' in tasks:
     if args.update:
@@ -1694,6 +1716,7 @@ if do_task('vizier'):
     journal_events()
 
     # 2014ApJ...795...44R
+    restpositionerrors = ['SN2010fl']
     result = Vizier.get_catalogs("J/ApJ/795/44/ps1_snIa")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -1704,8 +1727,9 @@ if do_task('vizier'):
         astrot = astrotime(row['tdisc'], format='mjd').datetime
         add_quantity(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
         add_quantity(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
-        add_quantity(name, 'ra', row['RAJ2000'], source)
-        add_quantity(name, 'dec', row['DEJ2000'], source)
+        if name not in restpositionerrors:
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
         add_quantity(name, 'claimedtype', 'Ia', source)
 
     result = Vizier.get_catalogs("J/ApJ/795/44/table6")
@@ -3366,7 +3390,6 @@ if do_task('tns'):
 
 if do_task('rochester'): 
     rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html', 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
-    #rochesterpaths = ['file://'+os.path.abspath('../sne-external/snredshiftall.html'), 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     rochesterupdate = [False, True]
 
     # These are known to be in error on the Rochester page, so ignore them.
@@ -3377,6 +3400,24 @@ if do_task('rochester'):
     for p, path in enumerate(rochesterpaths):
         if args.update and not rochesterupdate[p]:
             continue
+
+        filepath = '../sne-external/rochester/' + os.path.basename(path)
+
+        if tasks['rochester']['archived']:
+            with open(filepath, 'r') as f:
+                html = f.read()
+        else:
+            try:
+                session = requests.Session()
+                response = session.get(path, timeout = 120)
+                html = response.text
+            except:
+                with open(filepath, 'r') as f:
+                    html = f.read()
+            else:
+                with open(filepath, 'w') as f:
+                    f.write(html)
+
         response = urllib.request.urlopen(path)
         html = response.read()
 

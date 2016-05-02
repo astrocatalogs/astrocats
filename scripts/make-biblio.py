@@ -37,7 +37,12 @@ files = []
 for rep in repfolders:
     files += glob('../' + rep + "/*.json")# + glob('../' + rep + "/*.json.gz")
 
-ads.config.token = 'l6RBl7PhlWZTb2TKZVtGNBfK35CTY0Mmt2m9ZbPo'
+path = 'ads.key'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        ads.config.token = f.read().splitlines()[0]
+else:
+    raise(IOError('Cannot find ads.key, please generate one at https://ui.adsabs.harvard.edu/#user/settings/token and place it in this file.'))
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 100:
