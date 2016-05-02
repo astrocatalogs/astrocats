@@ -22,16 +22,19 @@ with open('../catalog.min.json', 'r') as f:
     newcatalog = []
     skipnames = []
     for i, item in enumerate(catalog):
-        if 'discoverdate' in item and item['discoverdate']:
-            date = item['discoverdate'][0]['value'].replace('/', '-')
+        if 'maxdate' in item and item['maxdate']:
+            date = item['maxdate'][0]['value'].replace('/', '-')
             datesplit = date.split('-')
             if len(datesplit) >= 1:
-                discoveryear = float(datesplit[0])
+                if '<' in datesplit[0]:
+                    print(item['name'])
+                    datesplit[0] = datesplit[0].strip('<')
+                maxyear = float(datesplit[0])
             if len(datesplit) >= 2:
-                discoveryear += float(datesplit[1])/12.
+                maxyear += float(datesplit[1])/12.
             if len(datesplit) >= 3:
-                discoveryear += float(datesplit[2])/(12.*30.)
-            catalog[i]['discoverdate'] = discoveryear
+                maxyear += float(datesplit[2])/(12.*30.)
+            catalog[i]['maxdate'] = maxyear
         if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
             ra = item['ra'][0]['value']
             dec = item['dec'][0]['value']
@@ -53,9 +56,9 @@ with open('../catalog.min.json', 'r') as f:
         name1 = item1['name']
         aliases = item1['aliases']
 
-        discoveryear1 = None
-        if 'discoverdate' in item1 and item1['discoverdate']:
-            discoveryear1 = item1['discoverdate']
+        maxyear1 = None
+        if 'maxdate' in item1 and item1['maxdate']:
+            maxyear1 = item1['maxdate']
 
         for item2 in newcatalog2[:]:
             name2 = item2['name']
@@ -63,9 +66,9 @@ with open('../catalog.min.json', 'r') as f:
                 newcatalog2.remove(item2)
                 continue
 
-            discoveryear2 = None
-            if 'discoverdate' in item2 and item2['discoverdate']:
-                discoveryear2 = item2['discoverdate']
+            maxyear2 = None
+            if 'maxdate' in item2 and item2['maxdate']:
+                maxyear2 = item2['maxdate']
 
             ra1 = item1['ra']
             ra2 = item2['ra']
@@ -83,17 +86,19 @@ with open('../catalog.min.json', 'r') as f:
             else:
                 distdeg = math.hypot((radeg1 - radeg2), (decdeg1 - decdeg2))
                 if distdeg < 10./3600.:
-                    if discoveryear1 and discoveryear2:
-                        diffyear = abs(discoveryear1 - discoveryear2)
+                    if maxyear1 and maxyear2:
+                        diffyear = abs(maxyear1 - maxyear2)
                         if diffyear <= 2.0:
                             tqdm.write(name1 + ' has a close coordinate and date match to ' + name2 + " [" + str(distdeg) + ', ' +
                                   str(diffyear) + ']')
                         else:
-                            continue
+                            tqdm.write(name1 + ' has a close coordinate, but significantly different date, to ' + name2 + " [" + str(distdeg) + ', ' +
+                                  str(diffyear) + ']')
+                            #continue
                     else:
                         tqdm.write(name1 + ' has a close coordinate match to ' + name2 + " [" + str(distdeg) + "]")
                     if (not name1.startswith('SN') and name2.startswith('SN') or
-                        (discoveryear1 and discoveryear2 and discoveryear2 < discoveryear1 and not name1.startswith('SN'))):
+                        (maxyear1 and maxyear2 and maxyear2 < maxyear1 and not name1.startswith('SN'))):
                         name1,name2 = name2,name1
                         ra1,ra2 = ra2,ra1
                         dec1,dec2 = dec2,dec1

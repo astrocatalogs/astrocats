@@ -203,6 +203,14 @@ def name_clean(name):
         newname = newname.replace('SNHunt', 'SNhunt')
     if newname.startswith('snf'):
         newname = newname.replace('snf', 'SNF')
+    if newname.startswith(['MASTER OT J', 'ROTSE3 J']):
+        prefix = newname.split('J')[0]
+        coords = newname.split('J')[-1]
+        decsign = '+' if '+' in coords else '-'
+        coordsplit = coords.replace('+','-').split('-')
+        if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6
+            newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
+                decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
     return newname
 
 def add_event(name, load = True, delete = True):
@@ -3396,6 +3404,7 @@ if do_task('rochester'):
     rochesterredshifterrors = ['LSQ12bgl','LSQ12axx']
     rochesterphotometryerrors = ['SNF20080514-002','SN1998ev']
     rochestertypeerrors = ['SN1054A']
+    rochestercoordinateerrors = ['MASTER OT J095321.02+202721.2']
 
     for p, path in enumerate(rochesterpaths):
         if args.update and not rochesterupdate[p]:
@@ -3474,8 +3483,9 @@ if do_task('rochester'):
                 add_quantity(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 add_quantity(name, 'host', str(cols[2].contents[0]).strip(), sources)
-            add_quantity(name, 'ra', str(cols[3].contents[0]).strip(), sources)
-            add_quantity(name, 'dec', str(cols[4].contents[0]).strip(), sources)
+            if name not in rochestercoordinateerrors:
+                add_quantity(name, 'ra', str(cols[3].contents[0]).strip(), sources)
+                add_quantity(name, 'dec', str(cols[4].contents[0]).strip(), sources)
             if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd').datetime
                 add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
