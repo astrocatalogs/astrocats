@@ -332,7 +332,8 @@ else:
 
 files = []
 for rep in repfolders:
-    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
+    #files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
+    files += glob('../' + rep + "/*.json")
 
 md5s = []
 md5 = hashlib.md5

@@ -996,13 +996,25 @@ def derive_and_sanitize():
     for name in events:
         set_first_max_light(name)
         if 'discoverdate' not in events[name]:
+            prefixes = ['MLS', 'SSS', 'CSS']
+            for alias in events[name]['aliases']:
+                for prefix in prefixes:
+                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
+                        discoverdate = '/'.join(['20' + alias.replace(prefix, '')[:2],
+                            alias.replace(prefix, '')[2:4], alias.replace(prefix, '')[4:6]])
+                        print ('Added discoverdate from name: ' + discoverdate)
+                        add_quantity(name, 'discoverdate', discoverdate, 'D')
+                        break
+                if 'discoverdate' in events[name]:
+                    break
+        if 'discoverdate' not in events[name]:
             prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-']
             for alias in events[name]['aliases']:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         print ('Added discoverdate from name: ' + discoverdate)
-                        add_quantity(name, 'discoverdate', discoverdate, '1')
+                        add_quantity(name, 'discoverdate', discoverdate, 'D')
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1013,7 +1025,7 @@ def derive_and_sanitize():
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]):
                         discoverdate = alias.replace(prefix, '')[:4]
                         print ('Added discoverdate from name: ' + discoverdate)
-                        add_quantity(name, 'discoverdate', discoverdate, '1')
+                        add_quantity(name, 'discoverdate', discoverdate, 'D')
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1200,12 +1212,14 @@ def write_all_events(empty = False, gz = False, delete = False):
         with codecs.open(path, 'w', encoding='utf8') as f:
             f.write(jsonstring)
 
-        if gz and os.path.getsize(path) > 90000000:
-            print('Compressing ' + name)
+        if gz:
+            if not args.travis:
+                print('Compressing ' + name)
             with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
                 shutil.copyfileobj(f_in, f_out)
-            os.remove(path)
-            os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
+            if os.path.getsize(path) > 90000000:
+                os.remove(path)
+                os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
 
 def null_field(obj, field):
     return obj[field] if field in obj else ''

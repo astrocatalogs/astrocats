@@ -7,6 +7,8 @@ import math
 import codecs
 import urllib
 import requests
+import ads
+import gzip
 from html import unescape
 from glob import glob
 from tqdm import tqdm
@@ -33,7 +35,9 @@ else:
 
 files = []
 for rep in repfolders:
-    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
+    files += glob('../' + rep + "/*.json")# + glob('../' + rep + "/*.json.gz")
+
+ads.config.token = 'l6RBl7PhlWZTb2TKZVtGNBfK35CTY0Mmt2m9ZbPo'
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 100:
@@ -60,22 +64,13 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                     authors = ''
                     if bc in bibauthordict:
                         authors = bibauthordict[bc]
-                    #adsquery = ('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=ALL&version=1&bibcode=' +
-                    #            urllib.parse.quote(bc) + '&data_type=Custom&format=%25m')
-                    #response = urllib.request.urlopen(adsquery)
-                    #html = response.read().decode('utf-8')
-                    #hsplit = html.split("\n")
-                    #if len(hsplit) > 5:
-                    #    authors = hsplit[5]
-                    #    if ',' in authors:
-                    #        authors = unescape(authors.replace(' & ', ' '))
-                    #    else:
-                    #        authors = unescape(authors.replace(' & ', ', '))
-                    #else:
-                    #    authors = ''
-                    #tqdm.write(authors)
-                    #biblio[bc] = OrderedDict([('bibcode', bc), ('events', [item['name']]), ('authors', authors)])
-                    biblio[bc] = OrderedDict([('authors', authors), ('bibcode', bc), ('events', []), ('eventdates', []),
+
+                    allauthors = list(ads.SearchQuery(bibcode=bc))
+                    if allauthors and allauthors[0].author:
+                        allauthors = allauthors[0].author
+                    else:
+                        allauthors = []
+                    biblio[bc] = OrderedDict([('authors', authors), ('allauthors', allauthors), ('bibcode', bc), ('events', []), ('eventdates', []),
                         ('types', []), ('photocount', 0), ('spectracount', 0), ('metacount', 0)])
 
                 biblio[bc]['events'].append(item['name'])
