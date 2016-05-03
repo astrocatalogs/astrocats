@@ -24,7 +24,8 @@ with open('../catalog.min.json', 'r') as f:
     for i, item in enumerate(catalog):
         if 'maxdate' in item and item['maxdate']:
             date = item['maxdate'][0]['value'].replace('/', '-')
-            datesplit = date.split('-')
+            negdate = date.startswith('-')
+            datesplit = date.lstrip('-').split('-')
             if len(datesplit) >= 1:
                 if '<' in datesplit[0]:
                     print(item['name'])
@@ -34,6 +35,8 @@ with open('../catalog.min.json', 'r') as f:
                 maxyear += float(datesplit[1])/12.
             if len(datesplit) >= 3:
                 maxyear += float(datesplit[2])/(12.*30.)
+            if negdate:
+                maxyear = -maxyear
             catalog[i]['maxdate'] = maxyear
         if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
             ra = item['ra'][0]['value']

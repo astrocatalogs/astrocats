@@ -105,28 +105,31 @@ repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders))]
 repoyears[0] -= 1
 
 typereps = {
-    'CC':      ['CCSN'],
-    'Ia':      ['Ia-norm', 'Ia- norm'],
-    'I P':     ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ia P':    ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec'],
-    'Ib P':    ['Ib pec', 'Ib-pec'],
-    'Ic P':    ['Ic pec', 'Ic-pec'],
-    'Ia/c':    ['Ic/Ia', 'Iac'],
-    'Ib/c':    ['Ibc'],
-    'Ib/c P':  ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
-    'II P':    ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p', 'II-pec', 'II P pec', 'II-P', 'II-Pec'],
-    'II L':    ['IIL'],
-    'IIn P':   ['IIn pec', 'IIn-pec'],
-    'IIb P':   ['IIb-pec', 'IIb: pec'],
-    'nIa':     ['nIa'],
-    'Ia CSM':  ['Ia-CSM', 'Ia-csm'],
-    'SLSN-Ic': ['SLSN Ic', 'SL-Ic'],
-    'SLSN-I':  ['SLSN I', 'SL-I'],
-    'SLSN-II': ['SLSN II', 'SL-II'],
-    'Ia-91bg': ['Ia-pec (1991bg)', 'Ia-91bg-like'],
-    'Ia-91T':  ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like', 'Ia 91T-like'],
-    'Ia-02cx': ['Ia-02cx-like'],
-    'Ib-Ca':   ['Ib - Ca-rich']
+    'CC':       ['CCSN'],
+    'Ia':       ['Ia-norm', 'Ia- norm'],
+    'I P':      ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
+    'Ia P':     ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec', 'Ia-Pec'],
+    'Ib P':     ['Ib pec', 'Ib-pec'],
+    'Ic P':     ['Ic pec', 'Ic-pec'],
+    'Ia/c':     ['Ic/Ia', 'Iac'],
+    'Ib/c':     ['Ibc'],
+    'Ib/c P':   ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
+    'II P':     ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p',
+                 'II-pec', 'II P pec', 'II-P', 'II-Pec', 'IIP-pec'],
+    'II L':     ['IIL'],
+    'IIn':      ['II n'],
+    'IIn P':    ['IIn pec', 'IIn-pec'],
+    'IIb P':    ['IIb-pec', 'IIb: pec', 'IIb pec'],
+    'nIa':      ['nIa'],
+    'Ia CSM':   ['Ia-CSM', 'Ia-csm'],
+    'SLSN-Ic':  ['SLSN Ic', 'SL-Ic'],
+    'SLSN-I':   ['SLSN I', 'SL-I'],
+    'SLSN-II':  ['SLSN II', 'SL-II'],
+    'Ia-91bg':  ['Ia-pec (1991bg)', 'Ia-91bg-like', 'Ia-91bg like'],
+    'Ia-91T':   ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like', 'Ia 91T-like'],
+    'Ia-02cx':  ['Ia-02cx-like'],
+    'Ib-Ca':    ['Ib - Ca-rich'],
+    'II P-97D': ['IIP-pec 1997D']
 }
 
 repbetterquantity = {
@@ -203,14 +206,19 @@ def name_clean(name):
         newname = newname.replace('SNHunt', 'SNhunt')
     if newname.startswith('snf'):
         newname = newname.replace('snf', 'SNF')
-    if newname.startswith(['MASTER OT J', 'ROTSE3 J']):
+    if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
         prefix = newname.split('J')[0]
         coords = newname.split('J')[-1]
         decsign = '+' if '+' in coords else '-'
         coordsplit = coords.replace('+','-').split('-')
-        if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6
+        if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
             newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
                 decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
+    if newname.startswith('SN') and is_number(newname[2:6]) and len(newname) == 7 and newname[6].islower():
+        newname = 'SN' + newname[2:6] + newname[6].upper()
+    elif (newname.startswith('SN') and is_number(newname[2:6]) and
+        (len(newname) == 8 or len(newname) == 9) and newname[6:].isupper()):
+        newname = 'SN' + newname[2:6] + newname[6:].lower()
     return newname
 
 def add_event(name, load = True, delete = True):
@@ -303,6 +311,7 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
         reference = bibcode
 
     reference = reference.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
+    reference = reference.replace('CBET', 'CBET ')
     reference = ' '.join(reference.split())
 
     if reference.startswith('ATel ') and not bibcode:
@@ -581,7 +590,8 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
-def add_quantity(name, quantity, value, sources, forcereplacebetter = False, error = '', unit = '', kind = ''):
+def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
+    lowerlimit = '', upperlimit = '', error = '', unit = '', kind = ''):
     if not quantity:
         raise(ValueError('Quantity must be specified for add_quantity.'))
     if not sources:
@@ -746,6 +756,10 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, err
         quantaentry['kind'] = kind
     if sunit:
         quantaentry['unit'] = sunit
+    if lowerlimit:
+        quantaentry['lowerlimit'] = lowerlimit
+    if upperlimit:
+        quantaentry['upperlimit'] = upperlimit
     if (forcereplacebetter or quantity in repbetterquantity) and quantity in events[name]:
         newquantities = []
         isworse = True
@@ -3177,6 +3191,7 @@ if do_task('itep'):
 
 # Now import the Asiago catalog
 if do_task('asiago'): 
+    asiagopositionerrors = ['SN2011in', 'SN2012ac', 'SN2012at', 'SN2013bz']
     #response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
     path = os.path.abspath('../sne-external/asiago-cat.php')
     response = urllib.request.urlopen('file://' + path)
@@ -3258,9 +3273,9 @@ if do_task('asiago'):
                 add_quantity(name, 'hostra', hostra, source, unit = 'nospace')
             if (hostdec != ''):
                 add_quantity(name, 'hostdec', hostdec, source, unit = 'nospace')
-            if (ra != ''):
+            if (ra != '' and name not in asiagopositionerrors):
                 add_quantity(name, 'ra', ra, source, unit = 'nospace')
-            if (dec != ''):
+            if (dec != '' and name not in asiagopositionerrors):
                 add_quantity(name, 'dec', dec, source, unit = 'nospace')
             if (discoverer != ''):
                 add_quantity(name, 'discoverer', discoverer, source)
@@ -3404,7 +3419,7 @@ if do_task('rochester'):
     rochesterredshifterrors = ['LSQ12bgl','LSQ12axx']
     rochesterphotometryerrors = ['SNF20080514-002','SN1998ev']
     rochestertypeerrors = ['SN1054A']
-    rochestercoordinateerrors = ['MASTER OT J095321.02+202721.2']
+    rochestercoordinateerrors = ['MASTER OT J095321.02+202721.2', 'SN1996D', 'SN1998ew', 'SN2003an']
 
     for p, path in enumerate(rochesterpaths):
         if args.update and not rochesterupdate[p]:
@@ -4185,7 +4200,8 @@ if do_task('ptf'):
             add_quantity(name, 'dec', cols[2], source)
             add_quantity(name, 'claimedtype', 'SLSN-' + cols[3], source)
             add_quantity(name, 'redshift', cols[4], source, kind = 'spectroscopic')
-            add_quantity(name, 'maxdate', cols[6].replace('-', '/'), source)
+            maxdate = cols[6].replace('-', '/')
+            add_quantity(name, 'maxdate', maxdate.lstrip('<'), source, upperlimit = maxdate.startswith('<'))
             add_quantity(name, 'ebv', cols[7], source, kind = 'spectroscopic')
             name = add_event('PTF' + suffix)
     journal_events()
