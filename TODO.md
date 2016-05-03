@@ -136,7 +136,7 @@ Other single SN datasets:
 * LSQ14bdq - http://iopscience.iop.org/article/10.1088/2041-8205/807/1/L18/meta
 * SN2015H - http://adsabs.harvard.edu/abs/2016A%26A...589A..89M
 * SN2015U - http://arxiv.org/abs/1603.04866
-* SN2015gn - http://arxiv.org/abs/1603.04748
+* SN2015bn - http://arxiv.org/abs/1603.04748
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
