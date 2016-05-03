@@ -1,12 +1,8 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
 Multiple SN datasets on VizieR:
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/AJ/143/126
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/MNRAS/448/1206 - PS1 metadata
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (Data in text files attached to catalog)
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/A%2bA/415/863 (Data in text files attached to catalog)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources (Data in text files attached to catalog)
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/746/85 (Needs conversion from flux to magnitude)
 
 Single SN dataset on VizieR:
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107 (Use dust-corrected or not?)
@@ -18,7 +14,7 @@ Other multiple SN datasets:
 * http://mnras.oxfordjournals.org/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
 * http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
 * http://adsabs.harvard.edu/abs/2014arXiv1401.3317S (SDSS SNe light curves, broken link - http://sdssdp62.fnal.gov/sdsssn/DataRelease/index.html)
-* http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe)
+* http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe, but counts not magnitudes)
 * http://arxiv.org/abs/1603.03823
 * http://arxiv.org/abs/1603.05657 (KSN2011a, KSN2011d)
 * http://thesis.library.caltech.edu/6395/1/Kasliwal_PhD_Thesis.pdf
@@ -26,9 +22,15 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2014A%26A...568A..19C (SN2013ez, SN2013fu)
 * http://adsabs.harvard.edu/abs/1997AJ....114.2054A (SN 1995al, 1997Y, 1997bp)
 * http://adsabs.harvard.edu/abs/2012A%26A...545L...7T (SN 2006V, 2006au)
+* http://www.jstor.org/stable/984985?seq=1#page_scan_tab_contents
+* http://adsabs.harvard.edu/abs/1979AcC.....8....5F (Lists references for many historical LCs)
+* http://adsabs.harvard.edu/abs/2012MNRAS.425.1007B (IR photometry for about a dozen PTF events)
+* http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
+* http://adsabs.harvard.edu/abs/2006ApJ...645..841N (SNLS LCs)
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
+* SN1978K - http://adsabs.harvard.edu/abs/1993ApJ...416..167R (Table 1)
 * SN1979C - http://adsabs.harvard.edu/abs/1981ApJ...244..780B
 * SN1983V - http://adsabs.harvard.edu/abs/1997ApJ...483..675C
 * SN1986G - http://adsabs.harvard.edu/abs/2002AJ....124..417H, May 7th spectrum
@@ -64,8 +66,7 @@ Other single SN datasets:
 * SN2003hx - http://adsabs.harvard.edu/abs/2008MNRAS.389..706M
 * SN2003ma - http://adsabs.harvard.edu/abs/2011ApJ...729...88R
 * SN2004dj - http://adsabs.harvard.edu/abs/2011A%26A...527A..61S
-* SN2004et - http://adsabs.harvard.edu/abs/2007MNRAS.381..280M
-* SN2004et - http://adsabs.harvard.edu/abs/2009ApJ...704..306K
+* SN2004et - http://adsabs.harvard.edu/abs/2007MNRAS.381..280M, http://adsabs.harvard.edu/abs/2009ApJ...704..306K
 * SN2005am - http://adsabs.harvard.edu/abs/2005ApJ...635.1192B
 * SN2005df - http://adsabs.harvard.edu/abs/2015ApJ...806..107D
 * SN2005ke - http://adsabs.harvard.edu/abs/2014A%26A...572A..75K
@@ -73,9 +74,7 @@ Other single SN datasets:
 * SN2006bc - http://adsabs.harvard.edu/abs/2012ApJ...753..109G
 * SN2006gz - http://adsabs.harvard.edu/abs/2009ApJ...690.1745M
 * SN2007ax - http://adsabs.harvard.edu/abs/2008ApJ...683L..29K
-* SN2007gr - http://adsabs.harvard.edu/abs/2009A%26A...508..371H
-* SN2007gr - http://adsabs.harvard.edu/abs/2010MNRAS.408...87M
-* SN2007gr - http://adsabs.harvard.edu/abs/2014ApJ...790..120C
+* SN2007gr - http://adsabs.harvard.edu/abs/2009A%26A...508..371H, http://adsabs.harvard.edu/abs/2010MNRAS.408...87M, http://adsabs.harvard.edu/abs/2014ApJ...790..120C
 * SN2007od - http://adsabs.harvard.edu/abs/2012MNRAS.422.1178I
 * SN2007pk - http://adsabs.harvard.edu/abs/2012ApJ...750..128P
 * SN2007qd - http://adsabs.harvard.edu/abs/2010ApJ...720..704M
@@ -92,8 +91,7 @@ Other single SN datasets:
 * SN2009dc - http://adsabs.harvard.edu/abs/2009ApJ...707L.118Y
 * SN2009ib - http://adsabs.harvard.edu/abs/2015MNRAS.450.3137T
 * SN2009hd - http://adsabs.harvard.edu/abs/2011ApJ...742....6E
-* SN2009ig - http://adsabs.harvard.edu/abs/2012ApJ...744...38F
-* SN1009ig - http://adsabs.harvard.edu/abs/2013ApJ...777...40M
+* SN2009ig - http://adsabs.harvard.edu/abs/2012ApJ...744...38F, http://adsabs.harvard.edu/abs/2013ApJ...777...40M
 * SN2009ip - http://mnras.oxfordjournals.org/content/453/4/3886.full
 * SN2009jf - http://adsabs.harvard.edu/abs/2011MNRAS.413.2583S
 * SN2009kf - http://adsabs.harvard.edu/abs/2010ApJ...717L..52B
@@ -119,7 +117,7 @@ Other single SN datasets:
 * SN2012au - http://adsabs.harvard.edu/abs/2013ApJ...770L..38M, http://adsabs.harvard.edu/abs/2013ApJ...772L..17T
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B, http://adsabs.harvard.edu/abs/2014ApJ...787..139D
 * SN2012bz - http://www.aanda.org/articles/aa/full_html/2014/06/aa23387-14/aa23387-14.html
-* SN2012dn - http://adsabs.harvard.edu/abs/2014MNRAS.443.1663C
+* SN2012dn - http://adsabs.harvard.edu/abs/2014MNRAS.443.1663C, http://arxiv.org/abs/1604.02800
 * SN2013ab - http://adsabs.harvard.edu/abs/2015MNRAS.450.2373B
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013cq - http://adsabs.harvard.edu/abs/2014A%26A...567A..29M
@@ -131,12 +129,7 @@ Other single SN datasets:
 * iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
 * PS1-13arp - http://adsabs.harvard.edu/abs/2015ApJ...804...28G
 * LSQ13zm - http://arxiv.org/abs/1604.00013
-* SN2014J - http://adsabs.harvard.edu/abs/2014ApJ...795L...4K
-* SN2014J - http://adsabs.harvard.edu/abs/2014ApJ...784L..12G
-* SN2014J - http://adsabs.harvard.edu/abs/2015ApJ...804...66V
-* SN2014J - http://adsabs.harvard.edu/abs/2015ApJ...798...93T
-* SN2014J - http://adsabs.harvard.edu/abs/2015ApJ...798...39M
-* SN2014J - http://adsabs.harvard.edu/abs/2015MNRAS.451.4104J
+* SN2014J - http://adsabs.harvard.edu/abs/2014ApJ...795L...4K, http://adsabs.harvard.edu/abs/2014ApJ...784L..12G, http://adsabs.harvard.edu/abs/2015ApJ...804...66V, http://adsabs.harvard.edu/abs/2015ApJ...798...93T, http://adsabs.harvard.edu/abs/2015ApJ...798...39M, http://adsabs.harvard.edu/abs/2015MNRAS.451.4104J
 * iPTF14atg - http://adsabs.harvard.edu/abs/2015Natur.521..328C
 * LSQ14bdq - http://iopscience.iop.org/article/10.1088/2041-8205/807/1/L18/meta
 * SN2015U - http://arxiv.org/abs/1603.04866
@@ -145,12 +138,13 @@ SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
 * Fermi SNR catalog - http://arxiv.org/abs/1511.06778
 * GALEX SNR catalog?
-* SNR remnants in SMC & LMC - http://adsabs.harvard.edu/abs/2010MNRAS.407.1301B
-* SNR remnants in LMC from Chandra - http://adsabs.harvard.edu/abs/2016A%26A...585A.162M
 * GRBs (BATSE, Swift, FERMI). LGRBs are definitely SNe, should we considered SGRBs to be SNe?
 
 Online catalogs:
-* http://star.pst.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date
+* No known missing online catalogs at this time.
+
+####Data that likely exists but no known source
+* Any SNe with a typing but no spectrum likely has a spectrum.
 
 ####Known errors that need to be corrected:
-* SN1987G is a duplicate of SN1987D - https://heasarc.gsfc.nasa.gov/W3Browse/all/gcvsegsn.html
+* No known errors at this time.

@@ -1,4 +1,4 @@
-from palettable import cubehelix
+from palettable import cubehelix, colorbrewer, wesanderson
 from collections import OrderedDict
 from random import shuffle, seed, randint, uniform
 
@@ -43,7 +43,13 @@ bandcodes = [
     "pg",
     "Mp",
     "w",
-    "y"
+    "y",
+    "Z",
+    "F110W",
+    "F775W",
+    "F850LP",
+    "VM",
+    "RM"
 ]
 
 bandaliases = OrderedDict([
@@ -96,12 +102,30 @@ bandwavelengths = {
     "W2"     : 192.8
 }
 
+radiocodes = [
+    "5.9"
+]
+xraycodes = [
+    "0.3 - 10",
+    "0.5 - 8"
+]
+
 seed(101)
 #bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
 bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
 shuffle(bandcolors)
-
+bandcolors2 = cubehelix.perceptual_rainbow_16.hex_colors
+shuffle(bandcolors2)
+bandcolors = bandcolors + bandcolors2
 bandcolordict = dict(list(zip(bandcodes,bandcolors)))
+
+radiocolors = wesanderson.Zissou_5.hex_colors
+shuffle(radiocolors)
+radiocolordict = dict(list(zip(radiocodes,radiocolors)))
+
+xraycolors = colorbrewer.sequential.Oranges_9.hex_colors[2:]
+shuffle(xraycolors)
+xraycolordict = dict(list(zip(xraycodes,xraycolors)))
 
 def bandrepf(code):
     for rep in bandreps:
@@ -113,6 +137,16 @@ def bandcolorf(code):
     newcode = bandrepf(code)
     if newcode in bandcolordict:
         return bandcolordict[newcode]
+    return 'black'
+
+def radiocolorf(code):
+    if code in radiocolordict:
+        return radiocolordict[code]
+    return 'black'
+
+def xraycolorf(code):
+    if code in xraycolordict:
+        return xraycolordict[code]
     return 'black'
 
 def bandaliasf(code):

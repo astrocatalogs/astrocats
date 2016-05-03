@@ -11,9 +11,36 @@ def round_sig(x, sig=4):
 def pretty_num(x, sig=4):
     return str('%g'%(round_sig(x, sig)))
 
+def is_integer(s):
+    if isinstance(s, list) and not isinstance(s, str):
+        try:
+            [int(x) for x in s]
+            return True
+        except ValueError:
+            return False
+    else:
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+
 def is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
+    if isinstance(s, list) and not isinstance(s, str):
+        try:
+            [float(x) for x in s]
+            return True
+        except ValueError:
+            return False
+    else:
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
+
+def zpad(val, n = 2):
+    bits = val.split('.')
+    if len(bits) != 2:
+        return val.zfill(n)
+    return "%s.%s" % (bits[0].zfill(n), bits[1])
