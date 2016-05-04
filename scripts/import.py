@@ -373,9 +373,6 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
                    u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
                    e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = ""):
-    if is_erroneous(name, 'photometry', sources):
-        return
-
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         print('Warning: Time or brightness not specified when adding photometry, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -404,6 +401,9 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
 
     if not source:
         ValueError('Photometry must have source before being added!')
+
+    if is_erroneous(name, 'photometry', source):
+        return
 
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
@@ -537,7 +537,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "", telescope = "",
     observer = "", reducer = "", filename = "", observatory = "", data = ""):
 
-    if is_erroneous(name, 'spectra', sources):
+    if is_erroneous(name, 'spectra', source):
         return
 
     spectrumentry = OrderedDict()
