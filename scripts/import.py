@@ -82,7 +82,7 @@ tasks = {
     "cfaibcspectra":       {"update": False},
     "snlsspectra":         {"update": False},
     "cspspectra":          {"update": False},
-    "ucbspectra":          {"update": False},
+    "ucbspectra":          {"update": False, "archived": True},
     "suspectspectra":      {"update": False},
     "snfspectra":          {"update": False},
     "superfitspectra":     {"update": False},
@@ -193,19 +193,25 @@ def get_source_year(source):
 def name_clean(name):
     newname = name
     if newname.startswith('MASJ'):
-        newname = newname.replace('MASJ', 'MASTER OT J')
+        newname = newname.replace('MASJ', 'MASTER OT J', 1)
     if newname.startswith('PSNJ'):
-        newname = newname.replace('PSNJ', 'PSN J')
+        newname = newname.replace('PSNJ', 'PSN J', 1)
     if newname.startswith('PSN20J'):
-        newname = newname.replace('PSN20J', 'PSN J')
+        newname = newname.replace('PSN20J', 'PSN J', 1)
     if newname.startswith('ASASSN') and newname[6] != '-':
-        newname = newname.replace('ASASSN', 'ASASSN-')
+        newname = newname.replace('ASASSN', 'ASASSN-', 1)
     if newname.startswith('ROTSE3J'):
-        newname = newname.replace('ROTSE3J', 'ROTSE3 J')
+        newname = newname.replace('ROTSE3J', 'ROTSE3 J', 1)
     if newname.startswith('SNHunt'):
-        newname = newname.replace('SNHunt', 'SNhunt')
+        newname = newname.replace('SNHunt', 'SNhunt', 1)
+    if newname.startswith('ptf'):
+        newname = newname.replace('ptf', 'PTF', 1)
+    if newname.startswith('PTF '):
+        newname = newname.replace('PTF ', 'PTF', 1)
+    if newname.startswith('iPTF '):
+        newname = newname.replace('iPTF ', 'iPTF', 1)
     if newname.startswith('snf'):
-        newname = newname.replace('snf', 'SNF')
+        newname = newname.replace('snf', 'SNF', 1)
     if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
         prefix = newname.split('J')[0]
         coords = newname.split('J')[-1]
@@ -214,6 +220,8 @@ def name_clean(name):
         if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
             newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
                 decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
+    if newname.startswith('SN ') and is_number(newname[3:7]) and len(newname) > 7:
+        newname = newname.replace('SN ', 'SN', 1)
     if newname.startswith('SN') and is_number(newname[2:6]) and len(newname) == 7 and newname[6].islower():
         newname = 'SN' + newname[2:6] + newname[6].upper()
     elif (newname.startswith('SN') and is_number(newname[2:6]) and
@@ -222,12 +230,13 @@ def name_clean(name):
     return newname
 
 def add_event(name, load = True, delete = True):
-    if name not in events or 'stub' in events[name]:
-        newname = name_clean(name)
+    newname = name_clean(name)
+    if newname not in events or 'stub' in events[newname]:
         match = ''
-        if name not in events:
+        if newname not in events:
             for event in events:
-                if len(events[event]['aliases']) > 1 and name in events[event]['aliases']:
+                if (len(events[event]['aliases']) > 1 and newname in events[event]['aliases'] and
+                    ('distinctfrom' not in events[event] or newname not in events[event]['distinctfrom'])):
                     match = event
                     break
             if match:
@@ -246,10 +255,11 @@ def add_event(name, load = True, delete = True):
         events[newname] = OrderedDict()
         events[newname]['name'] = newname
         add_alias(newname, newname)
-        print('Added new event ' + newname)
+        if 'stub' not in events[newname]:
+            print('Added new event ' + newname)
         return newname
     else:
-        return name
+        return newname
 
 def event_exists(name):
     if name in events:
@@ -602,12 +612,14 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
 def is_erroneous(name, field, sources):
     if 'errors' in events[name]:
         for alias in sources.split(','):
-            source = get_source_by_alias(alias)
+            if alias == 'D':
+                continue
+            source = get_source_by_alias(name, alias)
             if ('bibcode' in source and source['bibcode'] in
-                [x['id'] for x in events[name]['errors'] if x['idtype'] == 'bibcode' and x['quantity'] == field]):
+                [x['id'] for x in events[name]['errors'] if x['sourcekind'] == 'bibcode' and x['quantity'] == field]):
                     return True
             if ('name' in source and source['name'] in
-                [x['id'] for x in events[name]['errors'] if x['idtype'] == 'name' and x['quantity'] == field]):
+                [x['id'] for x in events[name]['errors'] if x['sourcekind'] == 'name' and x['quantity'] == field]):
                     return True
     return False
 
@@ -1019,10 +1031,10 @@ def merge_duplicates():
                     priority1 = 0
                     priority2 = 0
                     for an in allnames1:
-                        if len(an) >= 2 and an[:2] == 'SN':
+                        if len(an) >= 2 and an.startswith(('SN', 'AT')):
                             priority1 = priority1 + 1
                     for an in allnames2:
-                        if len(an) >= 2 and an[:2] == 'SN':
+                        if len(an) >= 2 and an.startswith(('SN', 'AT')):
                             priority2 = priority2 + 1
 
                     if priority1 > priority2:
@@ -1101,8 +1113,8 @@ def derive_and_sanitize():
                         ra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '') 
                         dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                         print ('Added ra/dec from name: ' + ra + ' ' + dec)
-                        add_quantity(name, 'ra', ra, '1')
-                        add_quantity(name, 'dec', ra, '1')
+                        add_quantity(name, 'ra', ra, 'D')
+                        add_quantity(name, 'dec', ra, 'D')
                         break
                 if 'ra' in events[name]:
                     break
@@ -4672,90 +4684,101 @@ if do_task('cspspectra'):
             break
     journal_events()
 
-if do_task('ucbspectra'): 
+if do_task('ucbspectra'):
     secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
     secondaryrefurl = "http://heracles.astro.berkeley.edu/sndb/info"
+    ucbspectracnt = 0
 
-    path = os.path.abspath('../sne-external-spectra/UCB/sndb.html')
-    response = urllib.request.urlopen('file://' + path)
+    filepath = '../sne-external-spectra/UCB/allpub.json'
+    try:
+        session = requests.Session()
+        response = session.get("http://heracles.astro.berkeley.edu/sndb/download?id=allpub")
+        jsontxt = response.text
+    except:
+        with open(filepath, 'r') as f:
+            jsontxt = f.read()
+    else:
+        with open(filepath, 'w') as f:
+            f.write(jsontxt)
 
-    soup = BeautifulSoup(response.read(), "html5lib")
-    ucbspeccnt = 0
+    spectra = json.loads(jsontxt)
+    spectra = sorted(spectra, key = lambda k: k['ObjName'])
     oldname = ''
-    for t, tr in enumerate(soup.findAll('tr')):
-        if t == 0:
-            continue
-        for d, td in enumerate(tr.findAll('td')):
-            if d == 2:
-                claimedtype = td.contents[0].strip()
-            elif d == 4:
-                filename = td.contents[0].strip()
-                name = filename.split('-')[0]
-                if name.upper().startswith('SN'):
-                    name = name[:2].upper() + name[2:]
-                    if len(name) == 7:
-                        name = name[:6] + name[6].upper()
-                if name.upper().startswith('PTF'):
-                    name = 'PTF' + name[3:]
-            elif d == 5:
-                epoch = td.contents[0].strip()
-                year = epoch[:4]
-                month = epoch[4:6]
-                day = epoch[6:]
-                sig = get_sig_digits(day) + 5
-                mjd = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
-            elif d == 7:
-                instrument = '' if td.contents[0].strip() == 'None' else td.contents[0].strip()
-            elif d == 9:
-                snr = td.contents[0].strip()
-            elif d == 10:
-                observerreducer = td.contents[0].strip().split('|')
-                observer = '' if observerreducer[0].strip() == 'None' else observerreducer[0].strip()
-                reducer = '' if observerreducer[1].strip() == 'None' else observerreducer[1].strip()
-            elif d == 11:
-                bibcode = unescape(td.findAll('a')[0].contents[0])
+    for spectrum in spectra:
+        name = spectrum["ObjName"]
+        name = add_event(name)
 
-        name = get_preferred_name(name)
+        secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
+        sources = [secondarysource]
+        if spectrum["Reference"]:
+            sources += [add_source(name, bibcode = spectrum["Reference"])]
+        sources = ','.join(sources)
+
+        if spectrum["SNID_Subtype"] and spectrum["SNID_Subtype"] != "NoneType":
+            add_quantity(name, 'claimedtype', spectrum["SNID_Subtype"], sources)
+        if spectrum["DiscDate"]:
+            add_quantity(name, 'discoverdate', spectrum["DiscDate"].replace('-', '/'), sources)
+        if spectrum["HostName"]:
+            add_quantity(name, 'host', spectrum["HostName"], sources)
+        if spectrum["UT_Date"]:
+            epoch = str(spectrum["UT_Date"])
+            year = epoch[:4]
+            month = epoch[4:6]
+            day = epoch[6:]
+            sig = get_sig_digits(day) + 5
+            mjd = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
+        filename = spectrum["Filename"] if spectrum["Filename"] else ''
+        instrument = spectrum["Instrument"] if spectrum["Instrument"] else ''
+        reducer = spectrum["Reducer"] if spectrum["Reducer"] else ''
+        observer = spectrum["Observer"] if spectrum["Observer"] else ''
+        snr = str(spectrum["SNR"]) if spectrum["SNR"] else ''
+
+        if not filename:
+            raise(ValueError('Filename not found for SNDB spectrum!'))
+        if not spectrum["SpecID"]:
+            raise(ValueError('ID not found for SNDB spectrum!'))
+
+        filepath = '../sne-external-spectra/UCB/' + filename
+        if tasks['ucbspectra']['archived'] and os.path.isfile(filepath):
+            with open(filepath, 'r') as f:
+                spectxt = f.read()
+        else:
+            session = requests.Session()
+            response = session.get("http://heracles.astro.berkeley.edu/sndb/download?id=ds:" + str(spectrum["SpecID"]))
+            spectxt = response.text
+            with open(filepath, 'w') as f:
+                f.write(spectxt)
+
+        specdata = list(csv.reader(spectxt.splitlines(), delimiter=' ', skipinitialspace=True))
+        startrow = 0
+        for row in specdata:
+            if row[0][0] == '#':
+                startrow += 1
+            else:
+                break
+        specdata = specdata[startrow:]
+
+        haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+        specdata = [list(i) for i in zip(*specdata)]
+
+        wavelengths = specdata[0]
+        fluxes = specdata[1]
+        errors = ''
+        if haserrors:
+            errors = specdata[2]
+
+        if not list(filter(None, errors)):
+            errors = ''
+
+        add_spectrum(name = name, u_time = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
+            wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
+            instrument = instrument, source = sources, snr = snr, observer = observer, reducer = reducer,
+            deredshifted = ('-noz' in filename))
+        ucbspectracnt = ucbspectracnt + 1
+        if args.travis and ucbspectracnt >= travislimit:
+            break
         if oldname and name != oldname:
             journal_events()
-        oldname = name
-        name = add_event(name)
-        source = add_source(name, bibcode = bibcode)
-        secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
-        sources = ','.join([source, secondarysource])
-        if claimedtype not in ['None']:
-            add_quantity(name, 'claimedtype', claimedtype, sources)
-        if 'discoverdate' not in events[name] and name.startswith('SN') and is_number(name[2:6]):
-            add_quantity(name, 'discoverdate', name[2:6], sources)
-
-        with open('../sne-external-spectra/UCB/' + filename) as f:
-            specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
-            startrow = 0
-            for row in specdata:
-                if row[0][0] == '#':
-                    startrow += 1
-                else:
-                    break
-            specdata = specdata[startrow:]
-
-            haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
-            specdata = [list(i) for i in zip(*specdata)]
-
-            wavelengths = specdata[0]
-            fluxes = specdata[1]
-            errors = ''
-            if haserrors:
-                errors = specdata[2]
-
-            if not list(filter(None, errors)):
-                errors = ''
-
-            add_spectrum(name = name, u_time = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
-                wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
-                instrument = instrument, source = sources, snr = snr, observer = observer, reducer = reducer)
-            ucbspeccnt = ucbspeccnt + 1
-            if args.travis and ucbspeccnt >= travislimit:
-                break
     journal_events()
 
 if do_task('suspectspectra'): 
