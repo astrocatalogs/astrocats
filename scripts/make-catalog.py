@@ -15,6 +15,7 @@ import requests
 import urllib.request
 import urllib.parse
 import filecmp
+from tqdm import tqdm
 from glob import glob
 from photometry import *
 from digits import *
@@ -346,7 +347,7 @@ if os.path.isfile(outdir + 'md5s.json'):
 else:
     md5dict = {}
 
-for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
     if args.eventlist and fileeventname not in args.eventlist:
         continue
@@ -372,7 +373,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
-    print(eventfile + ' [' + checksum + ']')
+    tqdm.write(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
@@ -1502,12 +1503,12 @@ if args.writecatalog and not args.eventlist:
     catalog = catalogcopy
 
     #Write the MD5 checksums
-    jsonstring = json.dumps(md5s, separators=(',',':'))
+    jsonstring = json.dumps(md5s, indent='\t', separators=(',',':'))
     with open(outdir + 'md5s.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
     #Write the host image info
-    jsonstring = json.dumps(hostimgs, separators=(',',':'))
+    jsonstring = json.dumps(hostimgs, indent='\t', separators=(',',':'))
     with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 

@@ -274,6 +274,9 @@ def get_event_filename(name):
 
 def add_alias(name, alias, verbose = False):
     newalias = name_clean(alias)
+    if 'distinctfrom' in events[name]:
+        if newalias in events[name]['distinctfrom']:
+            return
     if 'aliases' in events[name]:
         if newalias not in events[name]['aliases']:
             events[name].setdefault('aliases',[]).append(newalias)
@@ -360,6 +363,9 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
                    u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
                    e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = ""):
+    if is_erroneous(name, 'photometry', sources):
+        return
+
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         print('Warning: Time or brightness not specified when adding photometry, not adding.\n')
         print('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -521,6 +527,9 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
     deredshifted = "", dereddened = "", errorunit = "", errors = "", source = "", snr = "", telescope = "",
     observer = "", reducer = "", filename = "", observatory = "", data = ""):
 
+    if is_erroneous(name, 'spectra', sources):
+        return
+
     spectrumentry = OrderedDict()
 
     if 'spectra' in events[name]:
@@ -590,6 +599,18 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
         spectrumentry['source'] = source
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
+def is_erroneous(name, field, sources):
+    if 'errors' in events[name]:
+        for alias in sources.split(','):
+            source = get_source_by_alias(alias)
+            if ('bibcode' in source and source['bibcode'] in
+                [x['id'] for x in events[name]['errors'] if x['idtype'] == 'bibcode' and x['quantity'] == field]):
+                    return True
+            if ('name' in source and source['name'] in
+                [x['id'] for x in events[name]['errors'] if x['idtype'] == 'name' and x['quantity'] == field]):
+                    return True
+    return False
+
 def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     lowerlimit = '', upperlimit = '', error = '', unit = '', kind = ''):
     if not quantity:
@@ -598,6 +619,10 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         raise(ValueError('Source must be specified for quantity before it is added.'))
     if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
         raise(ValueError('Quantity must be a string or an array of strings.'))
+
+    if is_erroneous(name, quantity, sources):
+        return
+
     svalue = value.strip()
     serror = error.strip()
     sunit = ''
@@ -1244,11 +1269,11 @@ def write_all_events(empty = False, gz = False, delete = False):
             f.write(jsonstring)
 
         if gz:
-            if not args.travis:
-                print('Compressing ' + name)
-            with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
             if os.path.getsize(path) > 90000000:
+                if not args.travis:
+                    print('Compressing ' + name)
+                with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
                 os.remove(path)
                 os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
 

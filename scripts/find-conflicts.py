@@ -29,7 +29,7 @@ with open('rep-folders.txt', 'r') as f:
 
 files = []
 for rep in repfolders:
-    files += glob('../' + rep + "/*.json.gz")# + glob('../' + rep + "/*.json.gz")
+    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 100:
@@ -60,23 +60,25 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             continue
         for quantum in item[key]:
             if key == 'ra':
-                ras.append(quantum['value'])
-                rasources.append([])
+                newsources = []
                 for alias in quantum['source'].split(','):
                     for source in item['sources']:
                         if source['alias'] == alias:
-                            rasources[-1].append({'idtype':'bibcode' if 'bibcode' in source else 'name',
+                            newsources.append({'idtype':'bibcode' if 'bibcode' in source else 'name',
                                 'id':source['bibcode'] if 'bibcode' in source else source['name']})
-                rasources[-1] = {'idtype':','.join([x['idtype'] for x in rasources[-1]]), 'id':','.join([x['id'] for x in rasources[-1]])}
+                if newsources:
+                    ras.append(quantum['value'])
+                    rasources.append({'idtype':','.join([x['idtype'] for x in newsources]), 'id':','.join([x['id'] for x in newsources])})
             elif key == 'dec':
-                decs.append(quantum['value'])
-                decsources.append([])
+                newsources = []
                 for alias in quantum['source'].split(','):
                     for source in item['sources']:
                         if source['alias'] == alias:
-                            decsources[-1].append({'idtype':'bibcode' if 'bibcode' in source else 'name',
+                            newsources.append({'idtype':'bibcode' if 'bibcode' in source else 'name',
                                 'id':source['bibcode'] if 'bibcode' in source else source['name']})
-                decsources[-1] = {'idtype':','.join([x['idtype'] for x in decsources[-1]]), 'id':','.join([x['id'] for x in decsources[-1]])}
+                if newsources:
+                    decs.append(quantum['value'])
+                    decsources.append({'idtype':','.join([x['idtype'] for x in newsources]), 'id':','.join([x['id'] for x in newsources])})
             elif key == 'redshift':
                 newsources = []
                 for alias in quantum['source'].split(','):
@@ -91,14 +93,18 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     edit = True if os.path.isfile('../sne-internal/' + get_event_filename(item['name']) + '.json') else False
 
     if ras and decs and item['name'] not in ['SN1996D', 'SN1998ew', 'SN2003an', 'SN2011in', 'SN2012ac', 'SN2012ht', 'SN2013bz']:
+        oralen = len(ras)
+        odeclen = len(decs)
         if len(ras) > len(decs):
             decs = decs + [decs[0] for x in range(len(ras) - len(decs))]
         elif len(ras) < len(decs):
             ras = ras + [ras[0] for x in range(len(decs) - len(ras))]
 
         coo = coord(ras, decs, unit = (un.hourangle, un.deg))
-        radegs = coo.ra.deg[:len(ras)]
-        decdegs = coo.dec.deg[:len(decs)]
+        ras = ras[:oralen]
+        decs = decs[:odeclen]
+        radegs = coo.ra.deg[:oralen]
+        decdegs = coo.dec.deg[:odeclen]
 
         if len(radegs) > 1:
             maxradiff = max([abs((radegs[i+1]-radegs[i])/radegs[i+1]) for i in range(len(radegs)-1)])

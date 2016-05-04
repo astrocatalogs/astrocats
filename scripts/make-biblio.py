@@ -35,7 +35,7 @@ else:
 
 files = []
 for rep in repfolders:
-    files += glob('../' + rep + "/*.json")# + glob('../' + rep + "/*.json.gz")
+    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
 path = 'ads.key'
 if os.path.isfile(path):
@@ -121,7 +121,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
 
                 for key in list(item.keys()):
                     lc = 0
-                    if key in ['name', 'aliases', 'sources', 'photometry', 'spectra']:
+                    if key in ['name', 'aliases', 'sources', 'photometry', 'spectra', 'distinctfrom']:
                         continue
                     for quantum in item[key]:
                         if bcalias in quantum['source'].split(','):
