@@ -121,7 +121,7 @@ typereps = {
     'IIn P':    ['IIn pec', 'IIn-pec'],
     'IIb P':    ['IIb-pec', 'IIb: pec', 'IIb pec'],
     'nIa':      ['nIa'],
-    'Ia CSM':   ['Ia-CSM', 'Ia-csm'],
+    'Ia CSM':   ['Ia-CSM', 'Ia-csm', 'Ia-csm'],
     'SLSN-Ic':  ['SLSN Ic', 'SL-Ic'],
     'SLSN-I':   ['SLSN I', 'SL-I'],
     'SLSN-II':  ['SLSN II', 'SL-II'],
@@ -129,7 +129,8 @@ typereps = {
     'Ia-91T':   ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like', 'Ia 91T-like'],
     'Ia-02cx':  ['Ia-02cx-like'],
     'Ib-Ca':    ['Ib - Ca-rich'],
-    'II P-97D': ['IIP-pec 1997D']
+    'II P-97D': ['IIP-pec 1997D'],
+    'Ic BL':    ['Ic-broad'],
 }
 
 repbetterquantity = {
@@ -210,6 +211,8 @@ def name_clean(name):
         newname = newname.replace('PTF ', 'PTF', 1)
     if newname.startswith('iPTF '):
         newname = newname.replace('iPTF ', 'iPTF', 1)
+    if newname.startswith('SNF') and is_number(newname[3:]) and len(newname) >= 11:
+        newname = 'SNF' + newname[3:11] + '-' + newname[11:]
     if newname.startswith('snf'):
         newname = newname.replace('snf', 'SNF', 1)
     if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
@@ -325,6 +328,7 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
 
     reference = reference.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
     reference = reference.replace('CBET', 'CBET ')
+    reference = reference.replace('IAUC', 'IAUC ')
     reference = ' '.join(reference.split())
 
     if reference.startswith('ATel ') and not bibcode:
@@ -336,6 +340,11 @@ def add_source(name, reference = '', url = '', bibcode = '', secondary = ''):
         cbetnum = reference.split()[-1]
         if is_number(cbetnum) and cbetnum in cbetsdict:
             bibcode = cbetsdict[cbetnum]
+
+    if reference.startswith('IAUC ') and not bibcode:
+        cbetnum = reference.split()[-1]
+        if is_number(cbetnum) and cbetnum in iaucsdict:
+            bibcode = iaucsdict[cbetnum]
 
     if 'sources' not in events[name] or (reference not in [x['name'] for x in events[name]['sources']] and
         not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]):
@@ -1256,7 +1265,7 @@ def write_all_events(empty = False, gz = False, delete = False):
         # Delete non-SN events here without IAU designations (those with only banned types)
         if delete:
             deleteevent = False
-            nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar',
+            nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
                            'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
             nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
@@ -1485,6 +1494,12 @@ if os.path.isfile(path):
         cbetsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
 else:
     cbetsdict = OrderedDict()
+path = '../iaucs.json'
+if os.path.isfile(path):
+    with open(path, 'r') as f:
+        iaucsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+else:
+    iaucsdict = OrderedDict()
 
 # Either load stubs of each event (if updating) or delete all event files (if starting fresh)
 if 'writeevents' in tasks:
@@ -3088,7 +3103,7 @@ if do_task('gaia'):
     response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv')
     tsvin = csv.reader(response.read().decode('utf-8').splitlines(), delimiter=',', skipinitialspace=True)
     reference = "Gaia Photometric Science Alerts"
-    refurl = "https://gaia.ac.uk/selected-gaia-science-alerts"
+    refurl = "http://gsaweb.ast.cam.ac.uk/alerts/alertsindex"
     for ri, row in enumerate(tsvin):
         if ri == 0 or not row:
             continue
@@ -4718,8 +4733,9 @@ if do_task('ucbspectra'):
             sources += [add_source(name, bibcode = spectrum["Reference"])]
         sources = ','.join(sources)
 
-        if spectrum["SNID_Subtype"] and spectrum["SNID_Subtype"] != "NoneType":
-            add_quantity(name, 'claimedtype', spectrum["SNID_Subtype"], sources)
+        if spectrum["SNID_Subtype"] and spectrum["SNID_Subtype"].strip() != "NoMatch":
+            for ct in spectrum["SNID_Subtype"].strip().split(','):
+                add_quantity(name, 'claimedtype', ct.replace('-norm', '').strip(), sources)
         if spectrum["DiscDate"]:
             add_quantity(name, 'discoverdate', spectrum["DiscDate"].replace('-', '/'), sources)
         if spectrum["HostName"]:
