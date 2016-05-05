@@ -333,8 +333,7 @@ else:
 
 files = []
 for rep in repfolders:
-    #files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
-    files += glob('../' + rep + "/*.json")
+    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
 md5s = []
 md5 = hashlib.md5
@@ -891,7 +890,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             tt += [("Frequency (" + photoufreq[0] + ")", "@desc")]
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
-        hover = HoverTool(tooltips = tt)
+        hover3 = HoverTool(tooltips = tt)
 
         if photoavail:
             x_range = p1.x_range
@@ -931,7 +930,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
             p3.yaxis[1].formatter.precision = 1
-        p3.add_tools(hover)
+        p3.add_tools(hover3)
 
         xs = []
         ys = []
@@ -1074,7 +1073,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             tt += [("Frequency (" + photouener[0] + ")", "@desc")]
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
-        hover = HoverTool(tooltips = tt)
+        hover4 = HoverTool(tooltips = tt)
 
         if photoavail:
             x_range = p1.x_range
@@ -1115,7 +1114,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
         p4.yaxis[1].formatter.precision = 1
-        p4.add_tools(hover)
+        p4.add_tools(hover4)
 
         xs = []
         ys = []

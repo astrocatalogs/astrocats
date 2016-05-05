@@ -4709,7 +4709,7 @@ if do_task('ucbspectra'):
     filepath = '../sne-external-spectra/UCB/allpub.json'
     try:
         session = requests.Session()
-        response = session.get("http://heracles.astro.berkeley.edu/sndb/download?id=allpub")
+        response = session.get("http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec")
         jsontxt = response.text
     except:
         with open(filepath, 'r') as f:
@@ -4970,6 +4970,7 @@ if do_task('superfitspectra'):
     for sfdir in sfdirs:
         sffiles = sorted(glob.glob(sfdir + "/*.dat"))
         lastname = ''
+        oldname = ''
         for sffile in sffiles:
             basename = os.path.basename(sffile)
             name = basename.split('.')[0]
@@ -4984,6 +4985,9 @@ if do_task('superfitspectra'):
                 continue
             if name in events and 'spectra' in events[name] and lastname != name:
                 continue
+            if oldname and name != oldname:
+                journal_events()
+            oldname = name
             name = add_event(name)
             epoch = basename.split('.')[1]
             (mldt, mlmag, mlband, mlsource) = get_max_light(name)
