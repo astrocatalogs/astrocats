@@ -1018,6 +1018,7 @@ def set_preferred_names():
             if load_event_from_file(name, delete = True):
                 print('Changing event name (' + name + ') to preferred name (' + newname + ').')
                 events[newname] = events[name]
+                events[newname]['name'] = newname
                 del(events[name])
                 journal_events()
 
