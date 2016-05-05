@@ -1514,16 +1514,17 @@ if do_task('internal'):
 if do_task('radio'):
     for datafile in sorted(glob.glob("../sne-external-radio/*.txt"), key=lambda s: s.lower()):
         name = add_event(os.path.basename(datafile).split('.')[0])
+        radiosourcedict = OrderedDict()
         with open(datafile, 'r') as f:
-            for li, line in enumerate(f.read().splitlines()):
-                if li == 0:
-                    source = add_source(name, bibcode = line.split()[-1])
-                elif li in [1,2,3]:
+            for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
+                if line.startswith('(') and li <= len(radiosourcedict):
+                    radiosourcedict[line.split()[0]] = add_source(name, bibcode = line.split()[-1])
+                elif li in [x + len(radiosourcedict) for x in range(3)]:
                     continue
                 else:
                     cols = list(filter(None, line.split()))
                     add_photometry(name, time = cols[0], frequency = cols[2], u_frequency = 'GHz', fluxdensity = cols[3],
-                        e_fluxdensity = cols[4], u_fluxdensity = 'µJy', instrument = cols[5], source = source)
+                        e_fluxdensity = cols[4], u_fluxdensity = 'µJy', instrument = cols[5], source = radiosourcedict[cols[6]])
     journal_events()
 
 if do_task('xray'):
@@ -4706,6 +4707,9 @@ if do_task('ucbspectra'):
     oldname = ''
     for spectrum in spectra:
         name = spectrum["ObjName"]
+        if oldname and name != oldname:
+            journal_events()
+        oldname = name
         name = add_event(name)
 
         secondarysource = add_source(name, reference = secondaryreference, url = secondaryrefurl, secondary = True)
@@ -4777,8 +4781,6 @@ if do_task('ucbspectra'):
         ucbspectracnt = ucbspectracnt + 1
         if args.travis and ucbspectracnt >= travislimit:
             break
-        if oldname and name != oldname:
-            journal_events()
     journal_events()
 
 if do_task('suspectspectra'): 

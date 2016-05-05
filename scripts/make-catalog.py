@@ -930,7 +930,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             p3.add_layout(LinearAxis(axis_label = "Isotropic Luminosity at ν (ergs s⁻¹)", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
-        p3.yaxis[1].formatter.precision = 1
+            p3.yaxis[1].formatter.precision = 1
         p3.add_tools(hover)
 
         xs = []
