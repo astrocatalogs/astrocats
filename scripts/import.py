@@ -4736,9 +4736,10 @@ if do_task('cfaiaspectra'):
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
+            sources = uniq_cdl([source, add_source(name, bibcode = '2012AJ....143..126B'), add_source(name, bibcode = '2008AJ....135.1598M')])
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
                 wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument,
-                errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = source, dereddened = False, deredshifted = False)
+                errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
             if args.travis and fi >= travislimit:
                 break
     journal_events()
@@ -4773,8 +4774,9 @@ if do_task('cfaibcspectra'):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
+            sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-                fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = source,
+                fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = sources,
                 dereddened = False, deredshifted = False)
             if args.travis and fi >= travislimit:
                 break
@@ -5140,7 +5142,7 @@ if do_task('snfspectra'):
     journal_events()
 
 if do_task('superfitspectra'):
-    sfdirs = glob.glob('../sne-external/superfit/*')
+    sfdirs = glob.glob('../sne-external-spectra/superfit/*')
     for sfdir in sfdirs:
         sffiles = sorted(glob.glob(sfdir + "/*.dat"))
         lastname = ''
@@ -5157,8 +5159,10 @@ if do_task('superfitspectra'):
 
             if 'theory' in name:
                 continue
-            if name in events and 'spectra' in events[name] and lastname != name:
-                continue
+            if event_exists(name):
+                prefname = get_preferred_name(name)
+                if 'spectra' in events[prefname] and lastname != prefname:
+                    continue
             if oldname and name != oldname:
                 journal_events()
             oldname = name
