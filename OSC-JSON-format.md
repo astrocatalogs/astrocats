@@ -8,20 +8,15 @@ Each supernova is contained with a single JSON file that contains a single objec
 }
 ```
 
-To comply with the standard, the object should contain a `name` key and an `aliases` array, where the `name` key should be identical to the primary object name. The aliases array should also contain the supernova's name, as well as any other names the supernova is known by:
+To comply with the standard, the object should contain a `name` key, where the `name` key should be identical to the object field name:
 
 ```JSON
 {
 	"SN1987A":{
-		"name":"SN1987A",
-		"aliases":[
-			"SN1987A"
-		]
+		"name":"SN1987A"
 	}
 }
 ```
-
-There is also another field `distinctfrom`, which like the `aliases` field is an array of names, but instead refers to other events the supernovae is *not* associated with, usually very nearby supernovae that may be confused with the given supernova.
 
 As JSON is a serialized format, *field order does not matter*, but the OSC's import scripts will automatically organize the data in the output JSON files to make them more readable (for instance we sort photometry and spectra within each file by date, the data quantity fields by name, etc.).
 
@@ -92,6 +87,9 @@ Currently, the OSC explicitly tracks the following quantities for each event, if
 
 | Quantity | Description | Kinds
 | :--- | :--- | :---
+| `alias` | Other names this supernova goes by |
+| `distinctfrom` | Names of events SN is *not* associated with, usually very nearby supernovae that may be confused with the given supernova. |
+| `error` | Known errors in sources of data that are ignored on import |
 | `ra` | Right ascension of supernova in hours (`hh:mm:ss`) |
 | `dec` | Declination of supernova in degrees |
 | `discoverdate` | Date that the supernova was first observed |
