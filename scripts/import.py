@@ -76,16 +76,16 @@ tasks = {
     "nedd":                {"update": False},
     "cpcs":                {"update": True,  "archived": True},
     "ptf":                 {"update": False, "archived": False},
-    #"asiagospectra":       {"update": True },
-    #"wiserepspectra":      {"update": False},
-    #"cfaiaspectra":        {"update": False},
-    #"cfaibcspectra":       {"update": False},
-    #"snlsspectra":         {"update": False},
-    #"cspspectra":          {"update": False},
-    #"ucbspectra":          {"update": False, "archived": True},
-    #"suspectspectra":      {"update": False},
-    #"snfspectra":          {"update": False},
-    #"superfitspectra":     {"update": False},
+    "asiagospectra":       {"update": True },
+    "wiserepspectra":      {"update": False},
+    "cfaiaspectra":        {"update": False},
+    "cfaibcspectra":       {"update": False},
+    "snlsspectra":         {"update": False},
+    "cspspectra":          {"update": False},
+    "ucbspectra":          {"update": False, "archived": True},
+    "suspectspectra":      {"update": False},
+    "snfspectra":          {"update": False},
+    "superfitspectra":     {"update": False},
     "writeevents":         {"update": True }
 }
 
@@ -291,7 +291,7 @@ def event_exists(name):
     if name in events:
         return True
     for ev in events:
-        if name in get_aliases(name):
+        if name in get_aliases(ev):
             return True
     return False
 
