@@ -299,7 +299,7 @@ def get_preferred_name(name):
     if name not in events:
         matches = []
         for event in events:
-            aliases = get_aliases(name)
+            aliases = get_aliases(event)
             if len(aliases) > 1 and name in aliases:
                 return event
         return name
