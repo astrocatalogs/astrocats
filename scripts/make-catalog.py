@@ -62,7 +62,7 @@ mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 columnkey = [
     "check",
     "name",
-    "aliases",
+    "alias",
     "discoverdate",
     "maxdate",
     "maxappmag",
@@ -188,7 +188,7 @@ newfiletemplate = (
 '''{
 \t"{0}":{
 \t\t"name":"{0}",
-\t\t"aliases":[
+\t\t"alias":[
 \t\t\t"{0}"
 \t\t]
 \t}
@@ -752,7 +752,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         if hasmjdmax:
             tt2 += [ ("Rest days to max", "@mjdmax{1.11}") ]
 
-        hover2 = HoverTool(tooltips = tt2)
+        hover = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
             y_axis_label=label_format('Flux (scaled)' + (' + offset'
@@ -767,7 +767,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         p2.yaxis.axis_label_text_font_size = '12pt'
         p2.xaxis.major_label_text_font_size = '8pt'
         p2.yaxis.major_label_text_font_size = '8pt'
-        p2.add_tools(hover2)
+        p2.add_tools(hover)
 
         sources = []
         for i in range(len(spectrumwave)):
@@ -890,7 +890,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             tt += [("Frequency (" + photoufreq[0] + ")", "@desc")]
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
-        hover3 = HoverTool(tooltips = tt)
+        hover = HoverTool(tooltips = tt)
 
         if photoavail:
             x_range = p1.x_range
@@ -930,7 +930,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
             p3.yaxis[1].formatter.precision = 1
-        p3.add_tools(hover3)
+        p3.add_tools(hover)
 
         xs = []
         ys = []
@@ -1073,7 +1073,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             tt += [("Frequency (" + photouener[0] + ")", "@desc")]
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
-        hover4 = HoverTool(tooltips = tt)
+        hover = HoverTool(tooltips = tt)
 
         if photoavail:
             x_range = p1.x_range
@@ -1114,7 +1114,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
         p4.yaxis[1].formatter.precision = 1
-        p4.add_tools(hover4)
+        p4.add_tools(hover)
 
         xs = []
         ys = []
@@ -1441,7 +1441,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     if args.writecatalog:
         # Construct array for Bishop's webpage
         # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift (helio), redshift (host), r.a., dec., # obs., link
-        snepages.append([entry, ",".join(catalog[entry]['aliases']), get_first_value(entry, 'maxappmag'), get_first_value(entry, 'maxdate'),
+        snepages.append([entry, ",".join([x['value'] for x in catalog[entry]['alias']]), get_first_value(entry, 'maxappmag'), get_first_value(entry, 'maxdate'),
             get_first_value(entry, 'claimedtype'), get_first_value(entry, 'redshift'), get_first_kind(entry, 'redshift'),
             get_first_value(entry, 'ra'), get_first_value(entry, 'dec'), catalog[entry]['numphoto'], 'https://sne.space/' + plotlink])
 
@@ -1610,7 +1610,7 @@ if args.writecatalog and not args.eventlist:
 
     names = OrderedDict()
     for ev in catalog:
-        names[ev['name']] = ev['aliases']
+        names[ev['name']] = [x['value'] for x in ev['alias']]
     jsonstring = json.dumps(names, separators=(',',':'))
     with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
         f.write(jsonstring)

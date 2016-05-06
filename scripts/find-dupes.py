@@ -65,11 +65,11 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         newitem['maxyear'] = maxyear
     if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
         newitem['name'] = item['name']
-        newitem['aliases'] = item['aliases']
+        newitem['aliases'] = [x['value'] for x in item['aliases']]
         newitem['ra'] = item['ra'][0]['value']
         newitem['dec'] = item['dec'][0]['value']
         if 'distinctfrom' in item:
-            newitem['distinctfrom'] = item['distinctfrom']
+            newitem['distinctfrom'] = [x['value'] for x in item['distinctfrom']]
         newcatalog.append(newitem)
 
 coo = coord([x['ra'] for x in newcatalog], [x['dec'] for x in newcatalog], unit = (un.hourangle, un.deg))
@@ -84,7 +84,6 @@ newcatalog2 = deepcopy(newcatalog)
 
 for item1 in tqdm(newcatalog):
     name1 = item1['name']
-    aliases = item1['aliases']
 
     maxyear1 = None
     if 'maxyear' in item1 and item1['maxyear']:
