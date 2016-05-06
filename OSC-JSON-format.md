@@ -88,7 +88,7 @@ Currently, the OSC explicitly tracks the following quantities for each event, if
 | Quantity | Description | Kinds
 | :--- | :--- | :---
 | `alias` | Other names this supernova goes by |
-| `distinctfrom` | Names of events SN is *not* associated with, usually very nearby supernovae that may be confused with the given supernova. |
+| `distinctfrom` | Names of events SN is *not* associated with, usually very nearby supernovae that may be confused with the given supernova |
 | `error` | Known errors in sources of data that are ignored on import |
 | `ra` | Right ascension of supernova in hours (`hh:mm:ss`) |
 | `dec` | Declination of supernova in degrees |
