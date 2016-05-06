@@ -4447,12 +4447,12 @@ if do_task('asiagospectra'):
                 if is_number(name[:4]):
                     name = 'SN' + name
                 name = add_event(name)
-                if alias != name:
-                    add_quantity(name, 'alias', alias, source)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = add_source(name, reference = reference, url = refurl, secondary = True)
                 add_quantity(name, 'alias', name, secondarysource)
+                if alias != name:
+                    add_quantity(name, 'alias', alias, secondarysource)
             elif tdi == 2:
                 host = td.text.strip()
                 if host == 'anonymous':
