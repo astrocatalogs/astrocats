@@ -4773,7 +4773,7 @@ if do_task('cfaibcspectra'):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
-            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths, filename = filename,
+            add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
                 fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = source,
                 dereddened = False, deredshifted = False)
             if args.travis and fi >= travislimit:
