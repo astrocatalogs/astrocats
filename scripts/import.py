@@ -1360,13 +1360,14 @@ def copy_to_event(fromname, destname):
     newsourcealiases = {}
     keys = list(sorted(events[fromname].keys(), key=lambda key: event_attr_priority(key)))
 
-    for source in events[fromname]['sources']:
-        if 'bibcode' in source:
-            newsourcealiases[source['alias']] = add_source(destname, bibcode = source['bibcode'])
-        else:
-            newsourcealiases[source['alias']] = (add_source(destname,
-                reference = source['name'] if 'name' in source else '',
-                url = source['url'] if 'url' in source else ''))
+    if 'sources' in events[fromname]:
+        for source in events[fromname]['sources']:
+            if 'bibcode' in source:
+                newsourcealiases[source['alias']] = add_source(destname, bibcode = source['bibcode'])
+            else:
+                newsourcealiases[source['alias']] = (add_source(destname,
+                    reference = source['name'] if 'name' in source else '',
+                    url = source['url'] if 'url' in source else ''))
 
     for key in keys:
         if key not in ['name', 'sources']:
