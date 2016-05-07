@@ -54,7 +54,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     zsources = []
     for key in list(item.keys()):
         lc = 0
-        if key in ['name', 'aliases', 'sources', 'photometry', 'spectra']:
+        if key in ['name', 'sources', 'photometry', 'spectra']:
             continue
         if len(item[key]) == 1:
             continue
@@ -110,20 +110,20 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             maxradiff = max([abs((radegs[i+1]-radegs[i])/radegs[i+1]) for i in range(len(radegs)-1)])
             if maxradiff > 0.01:
                 tqdm.write('R.A. difference greater than a % for ' + item['name'])
-                conflicts.append(OrderedDict([('name', item['name']), ('aliases', item['aliases']), ('edit',edit),
+                conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                     ('quantity', 'ra'), ('difference', str(round_sig(maxradiff))), ('values', ras), ('sources', rasources)]))
         if len(decdegs) > 1:
             maxdecdiff = max([abs((decdegs[i+1]-decdegs[i])/decdegs[i+1]) for i in range(len(decdegs)-1)])
             if maxdecdiff > 0.01:
                 tqdm.write('Dec. difference greater than a % for ' + item['name'])
-                conflicts.append(OrderedDict([('name', item['name']), ('aliases', item['aliases']), ('edit',edit),
+                conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                     ('quantity', 'dec'), ('difference', str(round_sig(maxdecdiff))), ('values', decs), ('sources', decsources)]))
 
     if zs:
         maxzdiff = max([abs((zs[i+1]-zs[i])/zs[i+1]) for i in range(len(zs)-1)])
         if maxzdiff > 0.01:
             tqdm.write('Redshift difference greater than a % for ' + item['name'])
-            conflicts.append(OrderedDict([('name', item['name']), ('aliases', item['aliases']), ('edit',edit),
+            conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                 ('quantity', 'redshift'), ('difference', str(round_sig(maxzdiff))), ('values', zs), ('sources', zsources)]))
 
 # Convert to array since that's what datatables expects

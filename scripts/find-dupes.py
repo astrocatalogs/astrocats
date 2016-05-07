@@ -65,7 +65,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         newitem['maxyear'] = maxyear
     if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
         newitem['name'] = item['name']
-        newitem['aliases'] = [x['value'] for x in item['aliases']]
+        newitem['alias'] = [x['value'] for x in item['alias']]
         newitem['ra'] = item['ra'][0]['value']
         newitem['dec'] = item['dec'][0]['value']
         if 'distinctfrom' in item:
@@ -95,8 +95,8 @@ for item1 in tqdm(newcatalog):
             newcatalog2.remove(item2)
             continue
 
-        aliases1 = item1['aliases']
-        aliases2 = item2['aliases']
+        aliases1 = item1['alias']
+        aliases2 = item2['alias']
 
         distinctfrom1 = item1['distinctfrom'] if 'distinctfrom' in item1 else []
         distinctfrom2 = item2['distinctfrom'] if 'distinctfrom' in item2 else []
