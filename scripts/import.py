@@ -64,8 +64,8 @@ tasks = OrderedDict([
     ("csp",             {"nicename":"CSP photometry",           "update": False}),
     ("itep",            {"nicename":"ITEP",                     "update": False}),
     ("asiago",          {"nicename":"Asiago metadata",          "update": False}),
-    ("tns",             {"nicename":"TNS metadata",             "update": True,  "archived": True}),
-    ("rochester",       {"nicename":"Latest Supernovae",        "update": True,  "archived": False }),
+    #("tns",             {"nicename":"TNS metadata",             "update": True,  "archived": True}),
+    #("rochester",       {"nicename":"Latest Supernovae",        "update": True,  "archived": False }),
     ("lennarz",         {"nicename":"Lennarz",                  "update": False}),
     ("gaia",            {"nicename":"GAIA",                     "update": True,  "archived": True}),
     ("ogle",            {"nicename":"%pre OGLE",                "update": True,  "archived": True}),
@@ -265,7 +265,7 @@ def get_aliases(name, includename = True):
 
 def add_event(name, load = True, delete = True, source = '', loadifempty = True):
     if loadifempty and args.update and not len(events):
-        load_old_events()
+        load_stubs()
 
     newname = name_clean(name)
     if newname not in events or 'stub' in events[newname]:
@@ -437,7 +437,8 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         for photo in events[name]['photometry']:
             if ((('host' not in photo and not host) or ('host' in photo and host)) and
                 (('u_time' not in photo and not u_time) or (photo['u_time'] == u_time)) and
-                ((isinstance(photo['time'], str) and isinstance(time, str) and Decimal(photo['time']) == Decimal(time)) or
+                (('time' not in photo and not time) or
+                 (isinstance(photo['time'], str) and isinstance(time, str) and Decimal(photo['time']) == Decimal(time)) or
                  (isinstance(photo['time'], list) and isinstance(time, list) and photo['time'] == time)) and
                 (('magnitude' not in photo and not magnitude) or
                  ('magnitude' in photo and Decimal(photo['magnitude']) == Decimal(magnitude)) or
@@ -869,21 +870,21 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
 
 def load_cached_url(url, filepath, timeout = 120):
     filemd5 = ''
-    if os.path.isfile(filepath):
+    filetxt = ''
+    if not args.refresh and os.path.isfile(filepath):
         with open(filepath, 'r') as f:
             filetxt = f.read()
             if args.update:
                 filemd5 = md5(filetxt.encode('utf-8')).hexdigest()
-                tprint(filemd5)
 
     try:
         session = requests.Session()
         response = session.get(url, timeout = timeout)
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
-        tprint(newmd5)
+        tprint('"' + filemd5 + '", "' + newmd5 + '"')
         if args.update and newmd5 == filemd5:
-            tprint('Skipping file, local and remote copies identical.')
+            tprint('Skipping file in "' + currenttask + '," local and remote copies identical.')
             return False
     except:
         return filetxt
@@ -1582,10 +1583,11 @@ def clean_event(dirtyevent):
 def has_task(task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
-def do_task(currenttask, task, quiet = False):
-    dotask = has_task(task) and currenttask == task
+def do_task(checktask, task, quiet = False):
+    global currenttask
+    dotask = has_task(task) and checktask == task
     if dotask and not quiet:
-        currenttask = (tasks[task]['nicename'] if tasks[task]['nicename'] else task).replace('%pre', 'Updating ' if args.update else 'Loading ')
+        currenttask = (tasks[task]['nicename'] if tasks[task]['nicename'] else task).replace('%pre', 'Updating' if args.update else 'Loading')
     return dotask
 
 def journal_events(clear = True):
@@ -1598,16 +1600,28 @@ def clear_events():
     global events
     events = OrderedDict((k, OrderedDict([['name', events[k]['name']]] + ([['alias', events[k]['alias']]] if 'alias' in events[k] else []) + [['stub', True]])) for k in events)
 
-def load_old_events():
-    currenttask = 'Loading all events'
+def load_stubs():
+    currenttask = 'Loading event stubs'
     files = []
+
     for rep in repofolders:
         files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
 
-    for fi in tq(files):
-        name = os.path.basename(os.path.splitext(fi)[0])
-        name = add_event(name, delete = False, loadifempty = False)
-        events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
+    try:
+        namepath = '../names.min.json'
+        with open(namepath, 'r') as f:
+            names = json.loads(f.read(), object_pairs_hook=OrderedDict)
+        for fi in tq(files):
+            name = os.path.basename(os.path.splitext(fi)[0])
+            if name not in names:
+                name = name.replace("_", "/")
+            events[name] = OrderedDict(([['name', name], ['alias', [OrderedDict(([['value', x]])) for x in names[name]]], ['stub', True]]))
+    except:
+        events = OrderedDict()
+        for fi in tq(files):
+            name = os.path.basename(os.path.splitext(fi)[0])
+            name = add_event(name, delete = False, loadifempty = False)
+            events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
 
 path = '../atels.json'
 if os.path.isfile(path):
@@ -3299,8 +3313,11 @@ for task in tasks:
     
     #Import GAIA
     if do_task(task, 'gaia'): 
-        response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv')
-        tsvin = csv.reader(response.read().decode('utf-8').splitlines(), delimiter=',', skipinitialspace=True)
+        fname = '../sne-external/GAIA/alerts.csv'
+        csvtxt = load_cached_url('http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
+        if not csvtxt:
+            continue
+        tsvin = csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True)
         reference = "Gaia Photometric Science Alerts"
         refurl = "http://gsaweb.ast.cam.ac.uk/alerts/alertsindex"
         for ri, row in enumerate(tq(tsvin)):
@@ -3613,13 +3630,15 @@ for task in tasks:
     
     if do_task(task, 'tns'):
         session = requests.Session()
-        response = session.get("https://wis-tns.weizmann.ac.il/search?&isTNS_AT=yes&num_page=1&format=html&sort=desc&order=id&format=csv&page=0")
-        csvtxt = response.text
+        csvtxt = load_cached_url("https://wis-tns.weizmann.ac.il/search?&isTNS_AT=yes&num_page=1&format=html&sort=desc&order=id&format=csv&page=0",
+            "../sne-external/TNS/index.csv")
+        if not csvtxt:
+            continue
         maxid = csvtxt.splitlines()[1].split(",")[0].strip('"')
         maxpages = ceil((int(maxid) - 10000)/1000.)
     
         for page in tq(range(maxpages)):
-            fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.html'
+            fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.csv'
             if tasks['tns']['archived'] and os.path.isfile(fname) and page != maxpages:
                 with open(fname, 'r') as f:
                     csvtxt = f.read()
@@ -3685,24 +3704,9 @@ for task in tasks:
                 continue
     
             filepath = '../sne-external/rochester/' + os.path.basename(path)
-    
-            if tasks['rochester']['archived']:
-                with open(filepath, 'r') as f:
-                    html = f.read()
-            else:
-                try:
-                    session = requests.Session()
-                    response = session.get(path, timeout = 120)
-                    html = response.text
-                except:
-                    with open(filepath, 'r') as f:
-                        html = f.read()
-                else:
-                    with open(filepath, 'w') as f:
-                        f.write(html)
-    
-            response = urllib.request.urlopen(path)
-            html = response.read()
+            html = load_cached_url(path, filepath)
+            if not html:
+                continue
     
             soup = BeautifulSoup(html, "html5lib")
             rows = soup.findAll('tr')
@@ -3978,26 +3982,23 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'psthreepi'):
+        fname = '../sne-external/3pi/page01.html'
+        html = load_cached_url("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date", fname)
+        if not html:
+            continue
+
+        bs = BeautifulSoup(html, "html5lib")
+        div = bs.find('div', {"class":"pagination"})
         offline = False
-        try:
-            response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
-        except:
+        if not div:
             offline = True
-    
-        if not offline:
-            bs = BeautifulSoup(response, "html5lib")
-            div = bs.find('div', {"class":"pagination"})
-            offline = False
-            if not div:
+        else:
+            links = div.findAll('a')
+            if not links:
                 offline = True
-            else:
-                links = div.findAll('a')
-                if not links:
-                    offline = True
     
         if offline:
             warnings.warn("Pan-STARRS 3pi offline, using local files only.")
-            fname = '../sne-external/3pi/page01.html'
             with open(fname, 'r') as f:
                 html = f.read()
             bs = BeautifulSoup(html, "html5lib")
@@ -4167,8 +4168,10 @@ for task in tasks:
     
         folders = ["catalina", "MLS", "SSS"]
         for fold in tq(folders):
-            response = urllib.request.urlopen("http://nesssi.cacr.caltech.edu/" + fold + "/AllSN.html")
-            bs = BeautifulSoup(response, "html5lib")
+            html = load_cached_url("http://nesssi.cacr.caltech.edu/" + fold + "/AllSN.html", '../sne-external/CRTS/' + fold + '.html')
+            if not html:
+                continue
+            bs = BeautifulSoup(html, "html5lib")
             trs = bs.findAll('tr')
             for tr in tq(trs):
                 tds = tr.findAll('td')
@@ -4258,8 +4261,10 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'snhunt'):
-        response = urllib.request.urlopen('http://nesssi.cacr.caltech.edu/catalina/current.html')
-        text = response.read().decode('utf-8').splitlines()
+        html = load_cached_url('http://nesssi.cacr.caltech.edu/catalina/current.html', '../sne-external/SNhunt/current.html')
+        if not html:
+            continue
+        text = html.splitlines()
         findtable = False
         for ri, row in enumerate(text):
             if 'Supernova Discoveries' in row:
@@ -4346,11 +4351,13 @@ for task in tasks:
             oldhostname = hostname
         journal_events()
     
-    # Import CPCS (currently not being added to catalog, need event names to do this)
+    # Import CPCS
     if do_task(task, 'cpcs'):
-        session = requests.Session()
-        response = session.get("http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6")
-        alertindex = json.loads(response.text, object_pairs_hook=OrderedDict)
+        jsontxt = load_cached_url("http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6",
+            "../sne-external/CPCS/index.json")
+        if not jsontxt:
+            continue
+        alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
         ids = [x["id"] for x in alertindex]
     
         for i, ai in enumerate(tq(ids)):
@@ -4476,8 +4483,10 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'asiagospectra'):
-        response = urllib.request.urlopen("http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990")
-        bs = BeautifulSoup(response, "html5lib")
+        html = load_cached_url("http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990", "../sne-external-spectra/Asiago/spectra.html")
+        if not html:
+            continue
+        bs = BeautifulSoup(html, "html5lib")
         trs = bs.findAll('tr')
         for tr in tq(trs):
             tds = tr.findAll('td')
@@ -5239,6 +5248,10 @@ for task in tasks:
                 
                 lastname = name
             journal_events()
+
+if args.update and not len(events):
+    tprint('No sources changed, event files unchanged in update.')
+    sys.exit()
 
 merge_duplicates()
 set_preferred_names()

@@ -35,7 +35,11 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             filetext = f.read()
 
     item = json.loads(filetext, object_pairs_hook=OrderedDict)
-    item = item[list(item.keys())[0]]
+    namekey = list(item.keys())[0]
+    item = item[namekey]
+
+    if namekey != item['name']:
+        tqdm.write(namekey + ' has different name from its key ' + item['name'])
 
     if 'spectra' in item:
         eventswithspectra += 1
