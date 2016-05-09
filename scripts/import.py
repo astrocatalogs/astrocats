@@ -39,10 +39,11 @@ from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--update', '-u',  dest='update',  help='Only update catalog using live sources.',    default=False, action='store_true')
-parser.add_argument('--verbose', '-v', dest='verbose', help='Print more messages to the screen.',         default=False, action='store_true')
-parser.add_argument('--refresh', '-r', dest='refresh', help='Ignore most task caches.',                   default=False, action='store_true')
-parser.add_argument('--travis', '-tr', dest='travis',  help='Run import script in test mode for Travis.', default=False, action='store_true')
+parser.add_argument('--update', '-u',       dest='update',      help='Only update catalog using live sources.',    default=False, action='store_true')
+parser.add_argument('--verbose', '-v',      dest='verbose',     help='Print more messages to the screen.',         default=False, action='store_true')
+parser.add_argument('--refresh', '-r',      dest='refresh',     help='Ignore most task caches.',                   default=False, action='store_true')
+parser.add_argument('--full-refresh', '-f', dest='fullrefresh', help='Ignore all task caches.',                    default=False, action='store_true')
+parser.add_argument('--travis', '-tr',      dest='travis',      help='Run import script in test mode for Travis.', default=False, action='store_true')
 args = parser.parse_args()
 
 tasks = OrderedDict([
@@ -64,8 +65,8 @@ tasks = OrderedDict([
     ("csp",             {"nicename":"CSP photometry",           "update": False}),
     ("itep",            {"nicename":"ITEP",                     "update": False}),
     ("asiago",          {"nicename":"Asiago metadata",          "update": False}),
-    #("tns",             {"nicename":"TNS metadata",             "update": True,  "archived": True}),
-    #("rochester",       {"nicename":"Latest Supernovae",        "update": True,  "archived": False }),
+    ("tns",             {"nicename":"TNS metadata",             "update": True,  "archived": True}),
+    ("rochester",       {"nicename":"Latest Supernovae",        "update": True,  "archived": False }),
     ("lennarz",         {"nicename":"Lennarz",                  "update": False}),
     ("gaia",            {"nicename":"GAIA",                     "update": True,  "archived": True}),
     ("ogle",            {"nicename":"%pre OGLE",                "update": True,  "archived": True}),
@@ -1607,21 +1608,21 @@ def load_stubs():
     for rep in repofolders:
         files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
 
-    try:
-        namepath = '../names.min.json'
-        with open(namepath, 'r') as f:
-            names = json.loads(f.read(), object_pairs_hook=OrderedDict)
-        for fi in tq(files):
-            name = os.path.basename(os.path.splitext(fi)[0])
-            if name not in names:
-                name = name.replace("_", "/")
-            events[name] = OrderedDict(([['name', name], ['alias', [OrderedDict(([['value', x]])) for x in names[name]]], ['stub', True]]))
-    except:
-        events = OrderedDict()
-        for fi in tq(files):
-            name = os.path.basename(os.path.splitext(fi)[0])
-            name = add_event(name, delete = False, loadifempty = False)
-            events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
+    #try:
+    #    namepath = '../names.min.json'
+    #    with open(namepath, 'r') as f:
+    #        names = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    #    for fi in tq(files):
+    #        name = os.path.basename(os.path.splitext(fi)[0])
+    #        if name not in names:
+    #            name = name.replace("_", "/")
+    #        events[name] = OrderedDict(([['name', name], ['alias', [OrderedDict(([['value', x]])) for x in names[name]]], ['stub', True]]))
+    #except:
+    #    events = OrderedDict()
+    for fi in tq(files):
+        name = os.path.basename(os.path.splitext(fi)[0])
+        name = add_event(name, delete = False, loadifempty = False)
+        events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
 
 path = '../atels.json'
 if os.path.isfile(path):
@@ -3347,7 +3348,7 @@ for task in tasks:
                         break
     
             fname = '../sne-external/GAIA/' + row[0] + '.csv'
-            if not args.refresh and tasks['gaia']['archived'] and os.path.isfile(fname):
+            if not args.fullrefresh and tasks['gaia']['archived'] and os.path.isfile(fname):
                 with open(fname, 'r') as f:
                     csvtxt = f.read()
             else:
@@ -3910,7 +3911,7 @@ for task in tasks:
                     dec = radec[1]
     
                     fname = '../sne-external/OGLE/' + datafnames[ec]
-                    if not args.refresh and tasks['ogle']['archived'] and os.path.isfile(fname):
+                    if not args.fullrefresh and tasks['ogle']['archived'] and os.path.isfile(fname):
                         with open(fname, 'r') as f:
                             csvtxt = f.read()
                     else:
@@ -4009,7 +4010,7 @@ for task in tasks:
         oldnumpages = len(glob.glob('../sne-external/3pi/page*'))
         for page in tq(range(1,numpages)):
             fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
-            if not args.refresh and tasks['psthreepi']['archived'] and os.path.isfile(fname) and page < oldnumpages:
+            if not args.fullrefresh and tasks['psthreepi']['archived'] and os.path.isfile(fname) and page < oldnumpages:
                 with open(fname, 'r') as f:
                     html = f.read()
             elif not offline:
@@ -4235,7 +4236,7 @@ for task in tasks:
                         telescope = 'Catalina Schmidt', upperlimit = hostupper)
     
                 fname2 = '../sne-external/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
-                if not args.refresh and tasks['crts']['archived'] and os.path.isfile(fname2):
+                if not args.fullrefresh and tasks['crts']['archived'] and os.path.isfile(fname2):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
@@ -4247,7 +4248,10 @@ for task in tasks:
                 lines = html2.splitlines()
                 for line in lines:
                     if 'javascript:showx' in line:
-                        mjd = str(Decimal(re.search("showx\('(.*?)'\)", line).group(1).split('(')[0].strip()) + Decimal(53249.0))
+                        mjdstr = re.search("showx\('(.*?)'\)", line).group(1).split('(')[0].strip()
+                        if not is_number(mjdstr):
+                            continue
+                        mjd = str(Decimal(mjdstr) + Decimal(53249.0))
                     else:
                         continue
                     if 'javascript:showy' in line:
@@ -5276,7 +5280,7 @@ else:
 for fi in tqdm(files, desc = 'Sanitizing and deriving quantities for events'):
     events = OrderedDict()
     name = os.path.basename(os.path.splitext(fi)[0])
-    name = add_event(name)
+    name = add_event(name, loadifempty = False)
     derive_and_sanitize()
     if has_task('writeevents'): 
         write_all_events(empty = True, gz = True, delete = True)
