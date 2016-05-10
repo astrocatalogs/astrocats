@@ -19,6 +19,7 @@ from tqdm import tqdm
 from glob import glob
 from photometry import *
 from digits import *
+from repos import *
 from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
@@ -238,12 +239,6 @@ sitemaptemplate = (
 {0}</urlset>'''
 )
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
-
-repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
-repyears[0] -= 1
-
 if len(columnkey) != len(header):
     raise(ValueError('Header not same length as key list.'))
     sys.exit(0)
@@ -274,17 +269,6 @@ coldict = dict(list(zip(list(range(len(columnkey))),columnkey)))
 
 def utf8(x):
     return str(x, 'utf-8')
-
-def get_rep_folder(entry):
-    if 'discoverdate' not in entry:
-        return repfolders[0]
-    if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
-        raise(ValueError('Discovery year is not a number!'))
-        sys.exit()
-    for r, repyear in enumerate(repyears):
-        if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repyear:
-            return repfolders[r]
-    return repfolders[0]
 
 def label_format(label):
     newlabel = label.replace('Angstrom', 'Å')
@@ -331,9 +315,7 @@ if os.path.isfile(outdir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = []
-for rep in repfolders:
-    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
+files = repo_file_list(bones = False)
 
 md5s = []
 md5 = hashlib.md5
@@ -1619,7 +1601,7 @@ if args.writecatalog and not args.eventlist:
     safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json',
         'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json']
 
-    for myfile in glob('../*.json'):
+    for myfile in glob.glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:
             print ('Deleting orphan ' + myfile)
             os.remove(myfile)

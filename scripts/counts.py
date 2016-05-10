@@ -3,6 +3,7 @@
 import json
 import os
 import gzip
+from repos import *
 from glob import glob
 from tqdm import tqdm
 from collections import OrderedDict
@@ -10,12 +11,7 @@ from collections import OrderedDict
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
-
-files = []
-for rep in repfolders:
-    files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
+files = repo_file_list(bones = False)
 
 spectracount = 0
 photocount = 0

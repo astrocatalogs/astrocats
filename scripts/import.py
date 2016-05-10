@@ -1,7 +1,6 @@
 #!/usr/local/bin/python3.5
 
 import csv
-import glob
 import os
 import re
 import urllib
@@ -18,10 +17,12 @@ import shutil
 import warnings
 import statistics
 import warnings
+import glob
 from hashlib import md5
 from tqdm import tqdm, trange
 from html import unescape
 from digits import *
+from repos import *
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
@@ -47,47 +48,47 @@ parser.add_argument('--travis', '-tr',      dest='travis',      help='Run import
 args = parser.parse_args()
 
 tasks = OrderedDict([
-    ("deleteoldevents", {"nicename":"Deleting old events",      "update": False}),
-    ("internal",        {"nicename":"metadata and photometry",  "update": False}),
-    ("radio",           {"nicename":"radio data",               "update": False}),
-    ("xray",            {"nicename":"X-ray data",               "update": False}),
-    ("simbad",          {"nicename":"SIMBAD",                   "update": False}),
-    ("vizier",          {"nicename":"VizieR",                   "update": False}),
-    ("donations",       {"nicename":"donations",                "update": False}),
-    ("pessto-dr1",      {"nicename":"PESSTO DR1",               "update": False}),
-    ("scp",             {"nicename":"SCP",                      "update": False}),
-    ("ascii",           {"nicename":"ASCII",                    "update": False}),
-    ("cccp",            {"nicename":"CCCP",                     "update": False, "archived": True}),
-    ("suspect",         {"nicename":"SUSPECT",                  "update": False}),
-    ("cfa",             {"nicename":"CfA archive photometry",   "update": False}),
-    ("ucb",             {"nicename":"UCB photometry",           "update": False}),
-    ("sdss",            {"nicename":"SDSS photometry",          "update": False}),
-    ("csp",             {"nicename":"CSP photometry",           "update": False}),
-    ("itep",            {"nicename":"ITEP",                     "update": False}),
-    ("asiago",          {"nicename":"Asiago metadata",          "update": False}),
-    ("tns",             {"nicename":"TNS metadata",             "update": True,  "archived": True}),
-    ("rochester",       {"nicename":"Latest Supernovae",        "update": True,  "archived": False }),
-    ("lennarz",         {"nicename":"Lennarz",                  "update": False}),
-    ("gaia",            {"nicename":"GAIA",                     "update": True,  "archived": True}),
-    ("ogle",            {"nicename":"%pre OGLE",                "update": True,  "archived": True}),
-    ("snls",            {"nicename":"%pre SNLS",                "update": False}),
-    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",       "update": True,  "archived": True}),
-    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",      "update": False}),
-    ("crts",            {"nicename":"%pre CRTS",                "update": True,  "archived": True}),
-    ("snhunt",          {"nicename":"%pre SNhunt",              "update": True,  "archived": True}),
-    ("nedd",            {"nicename":"%pre NED-D",               "update": False}),
-    ("cpcs",            {"nicename":"%pre CPCS",                "update": True,  "archived": True}),
-    ("ptf",             {"nicename":"%pre PTF",                 "update": False, "archived": False}),
-    ("asiagospectra",   {"nicename":"%pre Asiago spectra",      "update": True }),
-    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",     "update": False}),
-    ("cfaspectra",      {"nicename":"%pre CfA archive spectra", "update": False}),
-    ("snlsspectra",     {"nicename":"%pre SNLS spectra",        "update": False}),
-    ("cspspectra",      {"nicename":"%pre CSP spectra",         "update": False}),
-    ("ucbspectra",      {"nicename":"%pre UCB spectra",         "update": True, "archived": True}),
-    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",     "update": False}),
-    ("snfspectra",      {"nicename":"%pre SNH spectra",         "update": False}),
-    ("superfitspectra", {"nicename":"%pre Superfit spectra",    "update": False}),
-    ("writeevents",     {"nicename":"%pre writing events",      "update": True })
+    ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
+    ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
+    ("radio",           {"nicename":"%pre radio data",              "update": False}),
+    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+    ("donations",       {"nicename":"%pre donations",               "update": False}),
+    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
+    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False}),
+    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+    ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": True}),
+    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": True}),
+    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": True}),
+    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": True}),
+    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": True}),
+    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": True}),
+    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True, "archived": True}),
+    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    ("writeevents",     {"nicename":"%pre writing events",          "update": True })
 ])
 
 oscbibcode = '2016arXiv160501054G'
@@ -103,11 +104,7 @@ eventnames = []
 events = OrderedDict()
 currenttask = ''
 
-with open('rep-folders.txt', 'r') as f:
-    repofolders = f.read().splitlines()
-
-repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders))]
-repoyears[0] -= 1
+warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
 typereps = {
     'CC':       ['CCSN'],
@@ -883,7 +880,6 @@ def load_cached_url(url, filepath, timeout = 120):
         response = session.get(url, timeout = timeout)
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
-        tprint('"' + filemd5 + '", "' + newmd5 + '"')
         if args.update and newmd5 == filemd5:
             tprint('Skipping file in "' + currenttask + '," local and remote copies identical.')
             return False
@@ -1330,12 +1326,11 @@ def derive_and_sanitize():
 
 def delete_old_event_files():
     # Delete all old event JSON files
-    for folder in repofolders:
-        filelist = glob.glob("../" + folder + "/*.json") + glob.glob("../" + folder + "/*.json.gz")
-        for f in filelist:
-            os.remove(f)
+    files = repo_file_list()
+    for f in files:
+        os.remove(f)
 
-def write_all_events(empty = False, gz = False, delete = False):
+def write_all_events(empty = False, gz = False, bury = False):
     # Write it all out!
     for name in events:
         if 'stub' in events[name]:
@@ -1357,25 +1352,25 @@ def write_all_events(empty = False, gz = False, delete = False):
             outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
-        if delete:
-            deleteevent = False
+        if bury:
+            buryevent = False
             nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
                            'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
             nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
             if name.startswith(nonsneprefixes):
-                tprint('Deleting ' + name + ', non-SNe prefix.')
+                tprint('Burying ' + name + ', non-SNe prefix.')
                 continue
             if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
                 for ct in events[name]['claimedtype']:
                     if ct['value'].upper() not in nonsnetypes:
-                        deleteevent = False
+                        buryevent = False
                         break
                     if ct['value'].upper() in nonsnetypes:
-                        deleteevent = True
-                if deleteevent:
-                    tprint('Deleting ' + name + ' (' + ct['value'] + ').')
-                    continue
+                        buryevent = True
+                if buryevent:
+                    tprint('Burying ' + name + ' (' + ct['value'] + ').')
+                    outdir = '../sne-boneyard'
 
         jsonstring = json.dumps({name:events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
 
@@ -1603,10 +1598,8 @@ def clear_events():
 
 def load_stubs():
     currenttask = 'Loading event stubs'
-    files = []
 
-    for rep in repofolders:
-        files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
+    files = repo_file_list()
 
     #try:
     #    namepath = '../names.min.json'
@@ -1722,7 +1715,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         oldname = ''
-        for row in table:
+        for row in tq(table):
             name = row['SN']
             if is_number(name[:4]):
                 name = 'SN' + name
@@ -1742,7 +1735,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         oldname = ''
-        for row in table:
+        for row in tq(table):
             name = row['Name'].replace('SCP', 'SCP-')
             name = add_event(name)
             source = add_source(name, bibcode = "2012ApJ...746...85S")
@@ -1761,7 +1754,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         oldname = ''
-        for row in table:
+        for row in tq(table):
             name = row['Name'].replace('SCP', 'SCP-')
             flux = Decimal(float(row['Flux']))
             if flux <= 0.0:
@@ -1784,7 +1777,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         oldname = ''
-        for row in table:
+        for row in tq(table):
             name = 'SN'+row['SN']
             flux = Decimal(float(row['Flux']))
             if flux <= 0.0:
@@ -1806,7 +1799,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         oldname = ''
-        for row in table:
+        for row in tq(table):
             name = row['SN']
             if name == oldname:
                 continue
@@ -1823,7 +1816,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/438/1391/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = row['SN']
             name = add_event(name)
             source = add_source(name, bibcode = '2014MNRAS.438.1391P')
@@ -1837,7 +1830,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/749/18/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = row['Name'].replace(' ','')
             name = add_event(name)
             source = add_source(name, bibcode = '2012ApJ...749...18B')
@@ -1856,7 +1849,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/A+A/523/A7/table9")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = 'SNLS-' + row['SNLS']
             name = add_event(name)
             source = add_source(name, bibcode = '2010A&A...523A...7G')
@@ -1875,7 +1868,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/A+A/415/863/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = 'SN' + row['SN']
             name = add_event(name)
             source = add_source(name, bibcode = '2004A&A...415..863G')
@@ -1896,7 +1889,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/AJ/136/2306/sources")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = 'SDSS-II ' + str(row['SNID'])
             name = add_event(name)
             source = add_source(name, bibcode = '2008AJ....136.2306H')
@@ -1909,7 +1902,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/708/661/sn")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = row['SN']
             if not name:
                 name = 'SDSS-II ' + str(row['SDSS-II'])
@@ -1926,7 +1919,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/708/661/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             if row['f_SN'] == 'a':
                 name = 'SDSS-II ' + str(row['SN'])
             else:
@@ -1942,7 +1935,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/795/44/ps1_snIa")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = row['SN']
             name = add_event(name)
             source = add_source(name, bibcode = '2014ApJ...795...44R')
@@ -1958,7 +1951,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/795/44/table6")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             name = row['SN']
             name = add_event(name)
             source = add_source(name, bibcode = '2014ApJ...795...44R')
@@ -1983,7 +1976,7 @@ for task in tasks:
                 else:
                     ii189refdict[r+1] = row[2]
     
-        for row in table:
+        for row in tq(table):
             if row['band'][0] == '(':
                 continue
             name = 'SN' + row['SN']
@@ -2007,7 +2000,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
     
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = ''
             if row["Names"]:
@@ -2049,7 +2042,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/442/844/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = 'SN' + row['SN']
             name = add_event(name)
@@ -2062,7 +2055,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/442/844/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = 'SN' + str(row['SN'])
             name = add_event(name)
@@ -2082,7 +2075,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/425/1789/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = ''.join(row['SimbadName'].split(' '))
             name = add_event(name)
@@ -2099,7 +2092,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJS/219/13/table3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = u'LSQ' + str(row['LSQ'])
             name = add_event(name)
@@ -2113,7 +2106,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJS/219/13/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = 'LSQ' + row['LSQ']
             name = add_event(name)
@@ -2133,7 +2126,7 @@ for task in tasks:
         source = add_source(name, bibcode = "2012Natur.491..228C")
         add_quantity(name, 'alias', name, source)
         add_quantity(name, 'claimedtype', 'SLSN-R', source)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
                 add_photometry(name, time = row["MJDg_"], band = "g'", magnitude = row["g_mag"], e_magnitude = row["e_g_mag"], source = source)
@@ -2150,7 +2143,7 @@ for task in tasks:
         source = add_source(name, bibcode = "2012Natur.491..228C")
         add_quantity(name, 'alias', name, source)
         add_quantity(name, 'claimedtype', 'SLSN-II?', source)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
                 add_photometry(name, time = row["MJDg_"], band = "g'", magnitude = row["g_mag"], e_magnitude = row["e_g_mag"], source = source)
@@ -2164,7 +2157,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/other/Nat/474.484/tables1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2181,7 +2174,7 @@ for task in tasks:
         name = add_event(name)
         source = add_source(name, bibcode = "2011ApJ...736..159G")
         add_quantity(name, 'alias', name, source)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], telescope = row['Tel'], magnitude = row['mag'],
                            e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
@@ -2195,7 +2188,7 @@ for task in tasks:
         name = add_event(name)
         source = add_source(name, bibcode = "2012ApJ...760L..33B")
         add_quantity(name, 'alias', name, source)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             # Fixing a typo in VizieR table
             if str(row['JD']) == '2455151.456':
@@ -2212,7 +2205,7 @@ for task in tasks:
         name = add_event(name)
         source = add_source(name, bibcode = "2013ApJ...769...39S")
         add_quantity(name, 'alias', name, source)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             instrument = ''
             telescope = ''
@@ -2233,7 +2226,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/394/2266/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "U", magnitude = row["Umag"],
@@ -2257,7 +2250,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/394/2266/table3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "B", magnitude = row["Bmag"],
@@ -2272,7 +2265,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/394/2266/table4")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "J", magnitude = row["Jmag"],
@@ -2293,7 +2286,7 @@ for task in tasks:
         name = add_event(name)
         source = add_source(name, bibcode = "2013AJ....145...99A")
         add_quantity(name, 'alias', name, source)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
                 add_photometry(name, time = row["MJD"], band = "B", magnitude = row["Bmag"],
@@ -2321,7 +2314,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/729/143/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             add_photometry(name, time = row['MJD'], band = 'ROTSE', telescope = 'ROTSE', magnitude = row['mag'],
                            e_magnitude = row['e_mag'] if not row['l_mag'] else '', upperlimit = (row['l_mag'] == '<'), source = source)
@@ -2329,7 +2322,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/729/143/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
                 add_photometry(name, time = row["MJD"], telescope = "PAIRITEL", band = "J", magnitude = row["Jmag"],
@@ -2344,7 +2337,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/729/143/table4")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             add_photometry(name, time = row['MJD'], band = row['Filt'], telescope = 'P60', magnitude = row['mag'],
                            e_magnitude = row['e_mag'], source = source)
@@ -2352,7 +2345,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/729/143/table5")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             add_photometry(name, time = row['MJD'], band = row['Filt'], instrument = 'UVOT', telescope = 'Swift', magnitude = row['mag'],
                            e_magnitude = row['e_mag'], source = source)
@@ -2367,7 +2360,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/728/14/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
@@ -2385,7 +2378,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/728/14/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "u_mag" in row and is_number(row["u_mag"]) and not isnan(float(row["u_mag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "u'", magnitude = row["u_mag"],
@@ -2406,7 +2399,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/728/14/table3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             if "Ymag" in row and is_number(row["Ymag"]) and not isnan(float(row["Ymag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "Y", magnitude = row["Ymag"],
@@ -2428,7 +2421,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/PAZh/37/837/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2455000))
             if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
@@ -2457,7 +2450,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/433/1871/table3a")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2456000))
             if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
@@ -2479,7 +2472,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/433/1871/table3b")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2456000))
             if "gmag" in row and is_number(row["gmag"]) and not isnan(float(row["gmag"])):
@@ -2505,7 +2498,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/AJ/148/1/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = row['MJD']
             if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
@@ -2524,7 +2517,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/AJ/148/1/table3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = row['MJD']
             if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
@@ -2549,7 +2542,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/AJ/148/1/table5")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = row['MJD']
             if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
@@ -2575,7 +2568,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/805/74/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             mjd = row['MJD']
             if "mag" in row and is_number(row["mag"]) and not isnan(float(row["mag"])):
@@ -2590,7 +2583,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/ApJ/741/97/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['SN'])
             name = add_event(name)
@@ -2605,7 +2598,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/448/1206/table3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2621,7 +2614,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/448/1206/table4")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2637,7 +2630,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/448/1206/table5")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2653,7 +2646,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/448/1206/table6")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2668,7 +2661,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/448/1206/tablea2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2684,7 +2677,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/MNRAS/448/1206/tablea3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             row = convert_aq_output(row)
             name = str(row['Name'])
             name = add_event(name)
@@ -2702,7 +2695,7 @@ for task in tasks:
         result = Vizier.get_catalogs("J/AJ/143/126/table4")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in table:
+        for row in tq(table):
             if not row['Wcl'] or row['Wcl'] == 'N':
                 continue
             row = convert_aq_output(row)
@@ -3376,7 +3369,7 @@ for task in tasks:
     # Import CSP
     if do_task(task, 'csp'): 
         cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-        for fname in ta(sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower())):
+        for fname in tq(sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower())):
             f = open(fname,'r')
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
     
@@ -3851,7 +3844,7 @@ for task in tasks:
             if args.update and not ogleupdate[b]:
                 continue
     
-            filepath = '../sne-external/OGLE/' + bn + '-' + 'transients.html'
+            filepath = '../sne-external/OGLE-' + bn.replace('/', '-') + '-transients.html'
             htmltxt = load_cached_url('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/transients.html', filepath)
             if not htmltxt:
                 continue
@@ -3865,7 +3858,7 @@ for task in tasks:
                 if a.has_attr('href'):
                     if '.dat' in a['href']:
                         datalinks.append('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
-                        datafnames.append(bn + '-' + a['href'].replace('/', '-'))
+                        datafnames.append(bn.replace('/', '-') + '-' + a['href'].replace('/', '-'))
     
             ec = -1
             reference = 'OGLE-IV Transient Detection System'
@@ -5260,9 +5253,7 @@ if args.update and not len(events):
 merge_duplicates()
 set_preferred_names()
 
-files = []
-for rep in repofolders:
-    files += glob.glob('../' + rep + "/*.json")
+files = repo_file_list()
 
 path = '../bibauthors.json'
 if os.path.isfile(path):
@@ -5283,7 +5274,7 @@ for fi in tqdm(files, desc = 'Sanitizing and deriving quantities for events'):
     name = add_event(name, loadifempty = False)
     derive_and_sanitize()
     if has_task('writeevents'): 
-        write_all_events(empty = True, gz = True, delete = True)
+        write_all_events(empty = True, gz = True, bury = True)
 
 jsonstring = json.dumps(bibauthordict, indent='\t', separators=(',', ':'), ensure_ascii=False)
 with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
