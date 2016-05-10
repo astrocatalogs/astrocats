@@ -141,7 +141,7 @@ Other single SN datasets:
 * SN2015U - http://arxiv.org/abs/1603.04866
 * SN2015bn - http://arxiv.org/abs/1603.04748
 * iPTF15dtg - http://arxiv.org/abs/1605.02491
-* PTF13efv (SNhunt273) - http://arxiv.org/abs/1605.02450
+* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
