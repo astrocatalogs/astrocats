@@ -8,6 +8,16 @@ bandreps = {
     'W2':     ['uvw2', 'UVW2', 'Uw2', 'w2', 'uw2']
 }
 
+# Some bands are uniquely tied to an instrument/telescope/system, add this info here.
+bandmeta = {
+    'M2':     {'telescope': 'Swift', 'instrument': 'UVOT', 'system': 'Swift'},
+    'W1':     {'telescope': 'Swift', 'instrument': 'UVOT', 'system': 'Swift'},
+    'W2':     {'telescope': 'Swift', 'instrument': 'UVOT', 'system': 'Swift'},
+    'F110W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F775W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F850LP': {'telescope': 'Hubble', 'instrument': 'WFC3'}
+}
+
 bandcodes = [
     "u",
     "g",
@@ -166,3 +176,9 @@ def bandwavef(code):
     if newcode in bandwavelengths:
         return bandwavelengths[newcode]
     return 0.
+
+def bandmetaf(band, field):
+    if band in bandmeta:
+        if field in bandmeta[band]:
+            return bandmeta[band][field]
+    return ''

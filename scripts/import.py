@@ -17,6 +17,7 @@ import shutil
 import warnings
 import statistics
 import warnings
+from photometry import *
 from tq import *
 from glob import glob
 from hashlib import md5
@@ -423,6 +424,20 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
     if is_erroneous(name, 'photometry', source):
         return
 
+    # Do some basic homogenization
+    sband = bandaliasf(band)
+
+    sinstrument = instrument
+    ssystem = system
+    stelescope = telescope
+
+    if not sinstrument:
+        sinstrument = bandmetaf(sband, 'instrument')
+    if not stelescope:
+        stelescope = bandmetaf(sband, 'telescope')
+    if not ssystem:
+        ssystem = bandmetaf(sband, 'system')
+
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
@@ -452,9 +467,9 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                 (('frequency' not in photo and not frequency) or
                  ('frequency' in photo and Decimal(photo['frequency']) == Decimal(frequency)) or
                  ('frequency' in photo and not frequency)) and
-                (('band' not in photo and not band) or
-                 ('band' in photo and photo['band'] == band) or
-                 ('band' in photo and not band)) and
+                (('band' not in photo and not sband) or
+                 ('band' in photo and photo['band'] == sband) or
+                 ('band' in photo and not sband)) and
                 (('photonindex' not in photo and not photonindex) or
                  ('photonindex' in photo and photo['photonindex'] == photonindex) or
                  ('photonindex' in photo and not photonindex)) and
@@ -473,9 +488,9 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                 (('e_counts' not in photo and not e_counts) or
                  ('e_counts' in photo and e_counts and Decimal(photo['e_counts']) == Decimal(e_counts)) or
                  ('e_counts' in photo and not e_counts)) and
-                (('system' not in photo and not system) or
-                 ('system' in photo and photo['system'] == system) or
-                 ('system' in photo and not system))):
+                (('system' not in photo and not ssystem) or
+                 ('system' in photo and photo['system'] == ssystem) or
+                 ('system' in photo and not ssystem))):
                 return
 
     photoentry = OrderedDict()
@@ -485,10 +500,10 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         photoentry['e_time'] = str(e_time)
     if u_time:
         photoentry['u_time'] = u_time
-    if band:
-        photoentry['band'] = band
-    if system:
-        photoentry['system'] = system
+    if sband:
+        photoentry['band'] = sband
+    if ssystem:
+        photoentry['system'] = ssystem
     if magnitude:
         photoentry['magnitude'] = str(magnitude)
     if e_magnitude:
@@ -539,10 +554,10 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         photoentry['survey'] = survey
     if observatory:
         photoentry['observatory'] = observatory
-    if telescope:
-        photoentry['telescope'] = telescope
-    if instrument:
-        photoentry['instrument'] = instrument
+    if stelescope:
+        photoentry['telescope'] = stelescope
+    if sinstrument:
+        photoentry['instrument'] = sinstrument
     if nhmw:
         photoentry['nhmw'] = nhmw
     if source:
@@ -681,6 +696,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
             return
     if quantity == 'host':
         if is_number(svalue):
+            return
+        if svalue.lower() in ['anonymous']:
             return
         svalue = svalue.strip("()").replace('  ', ' ')
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
@@ -1793,7 +1810,14 @@ for task in tasks:
             name = add_event(name)
             source = add_source(name, bibcode = "2004ApJ...602..571B")
             add_quantity(name, 'alias', name, source)
-            add_photometry(name, time = str(row['MJD']), band = row['Filt'],
+            band = row['Filt']
+            system = ''
+            telescope = ''
+            if band in ['R', 'I']:
+                system = 'Cousins'
+            if band == 'Z':
+                telescope = 'Subaru'
+            add_photometry(name, time = str(row['MJD']), band = band, system = system, telescope = telescope,
                 magnitude = magnitude, e_magnitude = e_magnitude, source = source)
         
         # 2014MNRAS.444.3258M
@@ -1844,7 +1868,7 @@ for task in tasks:
             e_magnitude = '' if e_magnitude == '--' else e_magnitude
             upperlimit = True if row['l_mag'] == '>' else False
             add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, instrument = 'UVOT',
-                source = source, upperlimit = upperlimit, telescope = 'Swift')
+                source = source, upperlimit = upperlimit, telescope = 'Swift', system = 'Swift')
         journal_events()
     
         # 2010A&A...523A...7G
@@ -1960,7 +1984,7 @@ for task in tasks:
             add_quantity(name, 'alias', name, source)
             if row['mag'] != '--':
                 add_photometry(name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
-                    e_magnitude = str(row['e_mag']), source = source, system = 'AB')
+                    e_magnitude = str(row['e_mag']), source = source, system = 'AB', telescope = 'PS1', instrument = 'PS1')
         journal_events()
     
         # 1990A&AS...82..145C
@@ -2063,14 +2087,11 @@ for task in tasks:
             name = add_event(name)
             source = add_source(name, bibcode = "2014MNRAS.442..844F")
             add_quantity(name, 'alias', name, source)
-            if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
-                add_photometry(name, time = row['MJD'], band = 'B', magnitude = row['Bmag'], e_magnitude = row['e_Bmag'], source = source)
-            if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
-                add_photometry(name, time = row['MJD'], band = 'V', magnitude = row['Vmag'], e_magnitude = row['e_Vmag'], source = source)
-            if 'Rmag' in row and is_number(row['Rmag']) and not isnan(float(row['Rmag'])):
-                add_photometry(name, time = row['MJD'], band = 'R', magnitude = row['Rmag'], e_magnitude = row['e_Rmag'], source = source)
-            if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
-                add_photometry(name, time = row['MJD'], band = 'I', magnitude = row['Imag'], e_magnitude = row['e_Imag'], source = source)
+            for band in ['B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row['MJD'], band = band, magnitude = row[bandtag],
+                        e_magnitude = row['e_' + bandtag], source = source, telescope = 'KAIT', instrument = 'KAIT')
         journal_events()
     
         # 2012MNRAS.425.1789S
@@ -2130,12 +2151,11 @@ for task in tasks:
         add_quantity(name, 'claimedtype', 'SLSN-R', source)
         for row in tq(table):
             row = convert_aq_output(row)
-            if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
-                add_photometry(name, time = row["MJDg_"], band = "g'", magnitude = row["g_mag"], e_magnitude = row["e_g_mag"], source = source)
-            if "r_mag" in row and is_number(row["r_mag"]) and not isnan(float(row["r_mag"])):
-                add_photometry(name, time = row["MJDr_"], band = "r'", magnitude = row["r_mag"], e_magnitude = row["e_r_mag"], source = source)
-            if "i_mag" in row and is_number(row["i_mag"]) and not isnan(float(row["i_mag"])):
-                add_photometry(name, time = row["MJDi_"], band = "i'", magnitude = row["i_mag"], e_magnitude = row["e_i_mag"], source = source)
+            for band in ['g', 'r', 'i']:
+                bandtag = band + '_mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD" + band + "_"], band = band + "'", magnitude = row[bandtag],
+                        e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/other/Nat/491.228/tablef2")
         table = result[list(result.keys())[0]]
@@ -2147,12 +2167,11 @@ for task in tasks:
         add_quantity(name, 'claimedtype', 'SLSN-II?', source)
         for row in tq(table):
             row = convert_aq_output(row)
-            if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
-                add_photometry(name, time = row["MJDg_"], band = "g'", magnitude = row["g_mag"], e_magnitude = row["e_g_mag"], source = source)
-            if "r_mag" in row and is_number(row["r_mag"]) and not isnan(float(row["r_mag"])):
-                add_photometry(name, time = row["MJDr_"], band = "r'", magnitude = row["r_mag"], e_magnitude = row["e_r_mag"], source = source)
-            if "i_mag" in row and is_number(row["i_mag"]) and not isnan(float(row["i_mag"])):
-                add_photometry(name, time = row["MJDi_"], band = "i'", magnitude = row["i_mag"], e_magnitude = row["e_i_mag"], source = source)
+            for band in ['g', 'r', 'i']:
+                bandtag = band + '_mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD" + band + "_"], band = band + "'", magnitude = row[bandtag],
+                        e_magnitude = row["e_" + bandtag], source = source)
         journal_events()
     
         # 2011Natur.474..484Q
@@ -2165,7 +2184,8 @@ for task in tasks:
             name = add_event(name)
             source = add_source(name, bibcode = "2011Natur.474..484Q")
             add_quantity(name, 'alias', name, source)
-            add_photometry(name, time = row['MJD'], band = row['Filt'], telescope = row['Tel'], magnitude = row['mag'], e_magnitude = row['e_mag'], source = source)
+            add_photometry(name, time = row['MJD'], band = row['Filt'], telescope = row['Tel'],
+                magnitude = row['mag'], e_magnitude = row['e_mag'], source = source)
         journal_events()
     
         # 2011ApJ...736..159G
@@ -2230,21 +2250,12 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table):
             row = convert_aq_output(row)
-            if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "U", magnitude = row["Umag"],
-                               e_magnitude = (row["e_Umag"] if row['l_Umag'] != '>' else ''), source = source, upperlimit = (row['l_Umag'] == '>'))
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "B", magnitude = row["Bmag"],
-                               e_magnitude = (row["e_Bmag"] if row['l_Bmag'] != '>' else ''), source = source, upperlimit = (row['l_Bmag'] == '>'))
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "V", magnitude = row["Vmag"],
-                               e_magnitude = (row["e_Vmag"] if row['l_Vmag'] != '>' else ''), source = source, upperlimit = (row['l_Vmag'] == '>'))
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "R", magnitude = row["Rmag"],
-                               e_magnitude = (row["e_Rmag"] if row['l_Rmag'] != '>' else ''), source = source, upperlimit = (row['l_Rmag'] == '>'))
-            if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "I", magnitude = row["Imag"],
-                               e_magnitude = (row["e_Imag"] if row['l_Imag'] != '>' else ''), source = source, upperlimit = (row['l_Imag'] == '>'))
+            for band in ['U', 'B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = band, magnitude = row[bandtag],
+                        e_magnitude = (row["e_" + bandtag] if row['l_' + bandtag] != '>' else ''),
+                        source = source, upperlimit = (row['l_' + bandtag] == '>'))
             if "zmag" in row and is_number(row["zmag"]) and not isnan(float(row["zmag"])):
                 add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "z", magnitude = row["zmag"],
                                e_magnitude = row["e_zmag"], source = source)
@@ -2254,30 +2265,23 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table):
             row = convert_aq_output(row)
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "B", magnitude = row["Bmag"],
-                               e_magnitude = (row["e_Bmag"] if row['l_Bmag'] != '>' else ''), source = source, upperlimit = (row['l_Bmag'] == '>'))
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "V", magnitude = row["Vmag"],
-                               e_magnitude = (row["e_Vmag"] if row['l_Vmag'] != '>' else ''), source = source, upperlimit = (row['l_Vmag'] == '>'))
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "R", magnitude = row["Rmag"],
-                               e_magnitude = (row["e_Rmag"] if row['l_Rmag'] != '>' else ''), source = source, upperlimit = (row['l_Rmag'] == '>'))
+            for band in ['B', 'V', 'R']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = band, magnitude = row[bandtag],
+                        e_magnitude = (row["e_" + bandtag] if row['l_' + bandtag] != '>' else ''),
+                        source = source, upperlimit = (row['l_' + bandtag] == '>'))
     
         result = Vizier.get_catalogs("J/MNRAS/394/2266/table4")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table):
             row = convert_aq_output(row)
-            if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "J", magnitude = row["Jmag"],
-                               e_magnitude = row["e_Jmag"], source = source)
-            if "Hmag" in row and is_number(row["Hmag"]) and not isnan(float(row["Hmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "H", magnitude = row["Hmag"],
-                               e_magnitude = row["e_Hmag"], source = source)
-            if "Kmag" in row and is_number(row["Kmag"]) and not isnan(float(row["Kmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "K", magnitude = row["Kmag"],
-                               e_magnitude = row["e_Kmag"], source = source)
+            for band in ['J', 'H', 'K']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
         journal_events()
     
         # 2013AJ....145...99A
@@ -2706,6 +2710,41 @@ for task in tasks:
             source = add_source(name, bibcode = "2012AJ....143..126B")
             add_quantity(name, 'alias', name, source)
             add_quantity(name, 'claimedtype', 'Ia-' + row['Wcl'], source)
+        journal_events()
+
+        # 2015ApJS..220....9F
+        for viztab in ['1', '2']:
+            result = Vizier.get_catalogs("J/ApJS/220/9/table" + viztab)
+            table = result[list(result.keys())[0]]
+            table.convert_bytestring_to_unicode(python3_only=True)
+            for row in tq(table):
+                row = convert_aq_output(row)
+                name = add_event(row['SN'])
+                source = add_source(name, bibcode = "2015ApJS..220....9F")
+                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'claimedtype', row['Type'], source)
+                add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+                add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+                if '?' not in row['Host']:
+                    add_quantity(name, 'host', row['Host'].replace('_', ' '), source)
+                kind = ''
+                if 'Host' in row['n_z']:
+                    kind = 'host'
+                elif 'Spectrum' in row['n_z']:
+                    kind = 'spectroscopic'
+                add_quantity(name, 'redshift', row['z'], source, error = row['e_z'], kind = kind)
+
+        result = Vizier.get_catalogs("J/ApJS/220/9/table8")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table):
+            row = convert_aq_output(row)
+            name = add_event(row['SN'])
+            source = add_source(name, bibcode = "2015ApJS..220....9F")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'claimedtype', row['Type'], source)
+            add_photometry(name, time = row['MJD'], band = row['Band'], magnitude = row['mag'],
+                e_magnitude = row["e_mag"], telescope = row["Tel"], source = source)
         journal_events()
     
     if do_task(task, 'donations'):
@@ -3390,6 +3429,7 @@ for task in tasks:
         journal_events()
     
     # Import CSP
+    # VizieR catalogs exist for this: J/AJ/139/519, J/AJ/142/156. Should replace eventually.
     if do_task(task, 'csp'): 
         cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
         for fname in tq(sorted(glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower())):
@@ -3404,8 +3444,9 @@ for task in tasks:
             name = add_event(name)
     
             reference = "Carnegie Supernova Project"
+            refbib = "2010AJ....139..519C"
             refurl = "http://csp.obs.carnegiescience.edu/data"
-            source = add_source(name, reference = reference, url = refurl)
+            source = add_source(name, bibcode = refbib, reference = reference, url = refurl)
             add_quantity(name, 'alias', name, source)
     
             year = re.findall(r'\d+', name)[0]
@@ -4985,8 +5026,8 @@ for task in tasks:
                 sources += [add_source(name, bibcode = spectrum["Reference"])]
             sources = uniq_cdl(sources)
     
-            if spectrum["SNID_Subtype"] and spectrum["SNID_Subtype"].strip() != "NoMatch":
-                for ct in spectrum["SNID_Subtype"].strip().split(','):
+            if spectrum["Type"] and spectrum["Type"].strip() != "NoMatch":
+                for ct in spectrum["Type"].strip().split(','):
                     add_quantity(name, 'claimedtype', ct.replace('-norm', '').strip(), sources)
             if spectrum["DiscDate"]:
                 add_quantity(name, 'discoverdate', spectrum["DiscDate"].replace('-', '/'), sources)
