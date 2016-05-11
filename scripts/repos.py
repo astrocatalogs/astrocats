@@ -1,5 +1,5 @@
-import glob
 import sys
+from glob import glob
 from digits import *
 
 with open('rep-folders.txt', 'r') as f:
@@ -13,7 +13,7 @@ def repo_file_list(bones = True):
     for rep in repofolders:
         if not bones and 'boneyard' in rep:
             continue
-        files += glob.glob('../' + rep + "/*.json") + glob.glob('../' + rep + "/*.json.gz")
+        files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
     return files
 
 def get_rep_folder(entry):

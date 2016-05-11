@@ -3,9 +3,9 @@ from collections import OrderedDict
 from random import shuffle, seed, randint, uniform
 
 bandreps = {
-    'M2':     ['uvm2', 'UVM2', 'Um2', 'um2'],
-    'W1':     ['uvw1', 'UVW1', 'Uw1', 'uw1'],
-    'W2':     ['uvw2', 'UVW2', 'Uw2', 'uw2']
+    'M2':     ['uvm2', 'UVM2', 'Um2', 'm2', 'um2'],
+    'W1':     ['uvw1', 'UVW1', 'Uw1', 'w1', 'uw1'],
+    'W2':     ['uvw2', 'UVW2', 'Uw2', 'w2', 'uw2']
 }
 
 bandcodes = [

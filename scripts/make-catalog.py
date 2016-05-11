@@ -20,6 +20,7 @@ from glob import glob
 from photometry import *
 from digits import *
 from repos import *
+from events import *
 from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
@@ -339,12 +340,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
 
-    if eventfile.split('.')[-1] == 'gz':
-        with gzip.open(eventfile, 'rt') as f:
-            filetext = f.read()
-    else:
-        with open(eventfile, 'r') as f:
-            filetext = f.read()
+    filetext = get_event_text(eventfile)
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
@@ -428,6 +424,11 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             if i < len(instrulist) - 1:
                 instruments += ', '
 
+        # Now add bands without attached instrument
+        obandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '')
+            if 'instrument' not in catalog[entry]['photometry'][x] else "" for x in prange}) if _f], key=lambda y: (bandwavef(y), y))
+        if obandlist:
+            instruments += ", " + ", ".join(obandlist)
         catalog[entry]['instruments'] = instruments
     else:
         bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band']
@@ -1601,7 +1602,7 @@ if args.writecatalog and not args.eventlist:
     safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json',
         'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json']
 
-    for myfile in glob.glob('../*.json'):
+    for myfile in glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:
             print ('Deleting orphan ' + myfile)
             os.remove(myfile)

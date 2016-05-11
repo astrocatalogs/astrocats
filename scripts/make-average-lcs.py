@@ -3,7 +3,8 @@
 import json
 import re
 import sys
-import glob
+from glob import glob
+from repos import *
 from photometry import *
 from digits import *
 from bokeh.plotting import Figure, show, save, reset_output
@@ -31,12 +32,7 @@ outdir = "../"
 
 averagetype = "Ia P"
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
-
-files = []
-for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json")
+files = repo_file_list(bones = False)
 
 for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     #if fcnt > 2000:

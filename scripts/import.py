@@ -17,9 +17,9 @@ import shutil
 import warnings
 import statistics
 import warnings
-import glob
+from tq import *
+from glob import glob
 from hashlib import md5
-from tqdm import tqdm, trange
 from html import unescape
 from digits import *
 from repos import *
@@ -57,7 +57,7 @@ tasks = OrderedDict([
     ("donations",       {"nicename":"%pre donations",               "update": False}),
     ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
     ("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+    ("ascii",           {"nicename":"%pre ASCII",                   "update": True}),
     ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
     ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
     ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
@@ -150,15 +150,6 @@ maxbands = [
     ['R', 'r']       # if not, R-like bands
 ]
 
-def tq(li, leave = True):
-    return tqdm(list(li), desc = currenttask, leave = leave)
-
-def tprint(string):
-    try:
-        tqdm.write(string)
-    except:
-        print(string)
-
 def uniq_cdl(values):
     return ','.join(list(set(values)))
 
@@ -242,6 +233,8 @@ def name_clean(name):
         if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
             newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
                 decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
+    if newname.startswith('sn') and is_number(newname[2:6]) and len(newname) > 6:
+        newname = newname.replace('sn', 'SN', 1)
     if newname.startswith('SN ') and is_number(newname[3:7]) and len(newname) > 7:
         newname = newname.replace('SN ', 'SN', 1)
     if newname.startswith('SN') and is_number(newname[2:6]) and len(newname) == 7 and newname[6].islower():
@@ -777,6 +770,14 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
             sunit = 'hours'
         elif 'dec' in quantity:
             sunit = 'degrees'
+
+        # Correct case of arcseconds = 60.0.
+        valuesplit = svalue.split(':')
+        if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
+            svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
+
+        # Strip trailing dots.
+        svalue = svalue.rstrip('.')
     elif quantity == 'maxdate' or quantity == 'discoverdate':
         # Make sure month and day have leading zeroes
         sparts = svalue.split('/')
@@ -866,7 +867,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     else:
         events[name].setdefault(quantity,[]).append(quantaentry)
 
-def load_cached_url(url, filepath, timeout = 120):
+def load_cached_url(url, filepath, timeout = 120, write = True):
     filemd5 = ''
     filetxt = ''
     if not args.refresh and os.path.isfile(filepath):
@@ -886,8 +887,9 @@ def load_cached_url(url, filepath, timeout = 120):
     except:
         return filetxt
     else:
-        with open(filepath, 'w') as f:
-            f.write(txt)
+        if write:
+            with open(filepath, 'w') as f:
+                f.write(txt)
     return txt
 
 def make_date_string(year, month = '', day = ''):
@@ -1642,7 +1644,7 @@ for task in tasks:
 
     # Import data provided directly to OSC
     if do_task(task, 'internal'):
-        for datafile in tq(sorted(glob.glob("../sne-internal/*.json"), key=lambda s: s.lower())):
+        for datafile in tq(sorted(glob("../sne-internal/*.json"), key=lambda s: s.lower())):
             if args.update:
                 if not load_event_from_file(location = datafile, clean = True, delete = False, append = True):
                     raise IOError('Failed to find specified file.')
@@ -1652,7 +1654,7 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'radio'):
-        for datafile in tq(sorted(glob.glob("../sne-external-radio/*.txt"), key=lambda s: s.lower())):
+        for datafile in tq(sorted(glob("../sne-external-radio/*.txt"), key=lambda s: s.lower())):
             name = add_event(os.path.basename(datafile).split('.')[0])
             radiosourcedict = OrderedDict()
             with open(datafile, 'r') as f:
@@ -1670,7 +1672,7 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'xray'):
-        for datafile in tq(sorted(glob.glob("../sne-external-xray/*.txt"), key=lambda s: s.lower())):
+        for datafile in tq(sorted(glob("../sne-external-xray/*.txt"), key=lambda s: s.lower())):
             name = add_event(os.path.basename(datafile).split('.')[0])
             with open(datafile, 'r') as f:
                 for li, line in enumerate(f.read().splitlines()):
@@ -2711,7 +2713,7 @@ for task in tasks:
         with open("../sne-external/Nicholl-04-01-16/bibcodes.json", 'r') as f:
             bcs = json.loads(f.read())
     
-        for datafile in sorted(glob.glob("../sne-external/Nicholl-04-01-16/*.txt"), key=lambda s: s.lower()):
+        for datafile in sorted(glob("../sne-external/Nicholl-04-01-16/*.txt"), key=lambda s: s.lower()):
             name = os.path.basename(datafile).split('_')[0]
             name = add_event(name)
             bibcode = ''
@@ -2785,8 +2787,8 @@ for task in tasks:
         folders = next(os.walk('../sne-external/galbany-04-18-16/'))[1]
         bibcode = '2016AJ....151...33G'
         for folder in folders:
-            infofiles = glob.glob("../sne-external/galbany-04-18-16/" + folder + "/*.info")
-            photfiles = glob.glob("../sne-external/galbany-04-18-16/" + folder + "/*.out*")
+            infofiles = glob("../sne-external/galbany-04-18-16/" + folder + "/*.info")
+            photfiles = glob("../sne-external/galbany-04-18-16/" + folder + "/*.out*")
     
             zhel = ''
             zcmb = ''
@@ -2889,7 +2891,7 @@ for task in tasks:
         # 2006ApJ...645..841N
         with open("../sne-external/2006ApJ...645..841N-table3.csv", 'r') as f:
             tsvin = csv.reader(f, delimiter=',')
-            for ri, row in enumerate(tsvin):
+            for ri, row in enumerate(tq(tsvin)):
                 name = 'SNLS-' + row[0]
                 name = add_event(name)
                 source = add_source(name, bibcode = '2006ApJ...645..841N')
@@ -2900,7 +2902,7 @@ for task in tasks:
         journal_events()
     
         # Anderson 2014
-        for datafile in sorted(glob.glob("../sne-external/SNII_anderson2014/*.dat"), key=lambda s: s.lower()):
+        for datafile in tq(sorted(glob("../sne-external/SNII_anderson2014/*.dat"), key=lambda s: s.lower())):
             basename = os.path.basename(datafile)
             if not is_number(basename[:2]):
                 continue
@@ -2929,7 +2931,7 @@ for task in tasks:
         stromlobands = ['B','V','R','I','VM','RM']
         with open('../sne-external/J_A+A_415_863-1/photometry.csv', 'r') as f:
             tsvin = csv.reader(f, delimiter=',')
-            for row in tsvin:
+            for row in tq(tsvin):
                 name = row[0]
                 name = add_event(name)
                 source = add_source(name, bibcode = "2004A&A...415..863G")
@@ -2951,7 +2953,7 @@ for task in tasks:
         # 2015MNRAS.449..451W
         with open("../sne-external/2015MNRAS.449..451W.dat", 'r') as f:
             data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-            for r, row in enumerate(data):
+            for r, row in enumerate(tq(data)):
                 if r == 0:
                     continue
                 namesplit = row[0].split('/')
@@ -2966,11 +2968,32 @@ for task in tasks:
                 add_quantity(name, 'claimedtype', row[1], source)
                 add_photometry(name, time = row[2], band = row[4], magnitude = row[3], source = source)
         journal_events()
-    
+
+        # 2014ApJ...787..157P
+        files = glob("../sne-external/2014ApJ...787..157P/*")
+        for fi in files:
+            bn = os.path.basename(fi)
+            fisplit = bn.split('_')
+            name = add_event(fisplit[0])
+            source = add_source(name, bibcode = '2014ApJ...787..157P')
+            add_quantity(name, 'alias', name, source)
+            band = fisplit[1].replace('bb', 'B').replace('vv', 'V').replace('uu', 'U')
+            if 'bollc' in band:
+                continue
+            with open(fi, 'r') as f:
+                lines = filter(None, [x.split() for x in f.read().splitlines()])
+                for row in lines:
+                    mjd = round_sig(astrotime(2450000.+float(row[0]), format='jd').mjd, sig = 7)
+                    if not is_number(row[1]):
+                        continue
+                    add_photometry(name, time = mjd, band = band, magnitude = row[1], e_magnitude = row[2], source = source,
+                        telescope = 'Swift', system = 'Swift', instrument = 'UVOT')
+        journal_events()
+
     # CCCP
     if do_task(task, 'cccp'):
         cccpbands = ['B', 'V', 'R', 'I']
-        for datafile in sorted(glob.glob("../sne-external/CCCP/apj407397*.txt"), key=lambda s: s.lower()):
+        for datafile in sorted(glob("../sne-external/CCCP/apj407397*.txt"), key=lambda s: s.lower()):
             with open(datafile,'r') as f:
                 tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
                 for r, row in enumerate(tsvin):
@@ -3048,7 +3071,7 @@ for task in tasks:
             for row in tsvin:
                 suspectrefdict[row[0]] = row[1]
     
-        for datafile in tq(sorted(glob.glob("../sne-external/SUSPECT/*.html"), key=lambda s: s.lower())):
+        for datafile in tq(sorted(glob("../sne-external/SUSPECT/*.html"), key=lambda s: s.lower())):
             basename = os.path.basename(datafile)
             basesplit = basename.split('-')
             name = basesplit[1]
@@ -3112,7 +3135,7 @@ for task in tasks:
     
     # CfA data
     if do_task(task, 'cfa'): 
-        for fname in tq(sorted(glob.glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower())):
+        for fname in tq(sorted(glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower())):
             f = open(fname,'r')
             tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
             csv_data = []
@@ -3220,7 +3243,7 @@ for task in tasks:
     
     # Now import the UCB SNDB
     if do_task(task, 'ucb'): 
-        for fname in tq(sorted(glob.glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower())):
+        for fname in tq(sorted(glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower())):
             f = open(fname,'r')
             tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
     
@@ -3260,7 +3283,7 @@ for task in tasks:
         with open('../sne-external/SDSS/2010ApJ...708..661D.txt', 'r') as f:
             bibcodes2010 = f.read().split("\n")
         sdssbands = ['u', 'g', 'r', 'i', 'z']
-        for fname in tq(sorted(glob.glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower())):
+        for fname in tq(sorted(glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower())):
             f = open(fname,'r')
             tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
     
@@ -3369,7 +3392,7 @@ for task in tasks:
     # Import CSP
     if do_task(task, 'csp'): 
         cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-        for fname in tq(sorted(glob.glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower())):
+        for fname in tq(sorted(glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower())):
             f = open(fname,'r')
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
     
@@ -3976,8 +3999,8 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'psthreepi'):
-        fname = '../sne-external/3pi/page01.html'
-        html = load_cached_url("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date", fname)
+        fname = '../sne-external/3pi/page00.html'
+        html = load_cached_url("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date", fname, write = False)
         if not html:
             continue
 
@@ -3998,9 +4021,12 @@ for task in tasks:
             bs = BeautifulSoup(html, "html5lib")
             div = bs.find('div', {"class":"pagination"})
             links = div.findAll('a')
+        else:
+            with open(fname, 'w') as f:
+                f.write(html)
     
         numpages = int(links[-2].contents[0])
-        oldnumpages = len(glob.glob('../sne-external/3pi/page*'))
+        oldnumpages = len(glob('../sne-external/3pi/page*'))
         for page in tq(range(1,numpages)):
             fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
             if not args.fullrefresh and tasks['psthreepi']['archived'] and os.path.isfile(fname) and page < oldnumpages:
@@ -4307,7 +4333,7 @@ for task in tasks:
         data = csv.reader(f, delimiter=',', quotechar='"')
         reference = "NED-D"
         refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-        nedddict = {}
+        nedddict = OrderedDict()
         oldhostname = ''
         for r, row in enumerate(data):
             if r <= 12:
@@ -4595,7 +4621,7 @@ for task in tasks:
     
         oldname = ''
         for folder in tq(sorted(next(os.walk("../sne-external-WISEREP"))[1], key=lambda s: s.lower())):
-            files = glob.glob("../sne-external-WISEREP/" + folder + '/*')
+            files = glob("../sne-external-WISEREP/" + folder + '/*')
             for fname in tq(files):
                 if '.html' in fname:
                     lfiles = deepcopy(files)
@@ -4776,7 +4802,7 @@ for task in tasks:
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
             source = add_source(name, reference = reference, url = refurl, secondary = True)
             add_quantity(name, 'alias', name, source)
-            for fi, fname in enumerate(sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower())):
+            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('-')
                 if origname.startswith("sn") and is_number(origname[2:6]):
@@ -4819,7 +4845,7 @@ for task in tasks:
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
             source = add_source(name, reference = reference, url = refurl, secondary = True)
             add_quantity(name, 'alias', name, source)
-            for fi, fname in enumerate(sorted(glob.glob(fullpath + '/*'), key=lambda s: s.lower())):
+            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('-')
                 instrument = ''
@@ -4851,7 +4877,7 @@ for task in tasks:
             datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
     
         oldname = ''
-        for fi, fname in enumerate(sorted(glob.glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower())):
+        for fi, fname in enumerate(sorted(glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('_')
             name = 'SNLS-' + fileparts[1]
@@ -4891,7 +4917,7 @@ for task in tasks:
     
     if do_task(task, 'cspspectra'): 
         oldname = ''
-        for fi, fname in enumerate(sorted(glob.glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower())):
+        for fi, fname in enumerate(sorted(glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             sfile = filename.split('.')
             if sfile[1] == 'txt':
@@ -5128,7 +5154,7 @@ for task in tasks:
             bibcode = bibcodes[name]
             source = add_source(name, bibcode = bibcode)
             sources = uniq_cdl([source,secondarysource])
-            eventspectra = glob.glob('../sne-external-spectra/SNFactory/'+eventfolder+'/*.dat')
+            eventspectra = glob('../sne-external-spectra/SNFactory/'+eventfolder+'/*.dat')
             for spectrum in eventspectra:
                 filename = os.path.basename(spectrum)
                 with open(spectrum) as f:
@@ -5194,9 +5220,9 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'superfitspectra'):
-        sfdirs = glob.glob('../sne-external-spectra/superfit/*')
+        sfdirs = glob('../sne-external-spectra/superfit/*')
         for sfdir in sfdirs:
-            sffiles = sorted(glob.glob(sfdir + "/*.dat"))
+            sffiles = sorted(glob(sfdir + "/*.dat"))
             lastname = ''
             oldname = ''
             for sffile in sffiles:

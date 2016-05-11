@@ -2,7 +2,10 @@
 
 import json
 import sys
-import glob
+from tq import *
+from repos import *
+from events import *
+from glob import glob
 from bokeh.plotting import Figure, reset_output
 from bokeh.models import (HoverTool, ColumnDataSource)
 from bokeh.resources import CDN
@@ -34,19 +37,13 @@ colors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
           cubehelix.perceptual_rainbow_16.hex_colors)
 shuffle(colors)
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
+files = repo_file_list(bones = False)
 
-files = []
-for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json")
-
-for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 20:
     #    break
 
-    with open(eventfile, 'r') as f:
-        filetext = f.read()
+    filetext = get_event_text(eventfile)
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
@@ -63,7 +60,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         else:
             sntypes.append('Unknown')
 
-        print(thisevent['name'])
+        tprint(thisevent['name'])
         c = coord(ra=thisevent['ra'][0]['value'], dec=thisevent['dec'][0]['value'], unit=(un.hourangle, un.deg))
         snnames.append(thisevent['name'])
         rarad = c.ra.radian - pi
