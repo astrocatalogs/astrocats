@@ -6,7 +6,6 @@ Donated datasets:
 Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (Data in text files attached to catalog)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources (Data in text files attached to catalog)
-* http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJS/220/9 (CfAIR2: 94 Ia; 4 Iax)
 
 Single SN dataset on VizieR:
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107 (Use dust-corrected or not?)
