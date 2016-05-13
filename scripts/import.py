@@ -24,6 +24,7 @@ from hashlib import md5
 from html import unescape
 from digits import *
 from repos import *
+from events import *
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
