@@ -8,3 +8,6 @@ def get_event_text(eventfile):
         with open(eventfile, 'r') as f:
             filetext = f.read()
     return filetext
+
+def get_event_filename(name):
+    return(name.replace('/', '_'))

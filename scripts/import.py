@@ -111,7 +111,7 @@ typereps = {
     'CC':       ['CCSN'],
     'Ia':       ['Ia-norm', 'Ia- norm'],
     'I P':      ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ia P':     ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec', 'Ia-Pec'],
+    'Ia P':     ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec', 'Ia-Pec', 'Iap'],
     'Ib P':     ['Ib pec', 'Ib-pec'],
     'Ic P':     ['Ic pec', 'Ic-pec'],
     'Ia/c':     ['Ic/Ia', 'Iac'],
@@ -130,7 +130,7 @@ typereps = {
     'SLSN-II':  ['SLSN II', 'SL-II'],
     'Ia-91bg':  ['Ia-pec (1991bg)', 'Ia-91bg-like', 'Ia-91bg like'],
     'Ia-91T':   ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like', 'Ia 91T-like'],
-    'Ia-02cx':  ['Ia-02cx-like'],
+    'Ia-02cx':  ['Ia-02cx-like', 'Iax'],
     'Ib-Ca':    ['Ib - Ca-rich'],
     'II P-97D': ['IIP-pec 1997D'],
     'Ic BL':    ['Ic-broad'],
@@ -311,9 +311,6 @@ def get_preferred_name(name):
     else:
         return name
 
-def get_event_filename(name):
-    return(name.replace('/', '_'))
-
 def snname(string):
     newstring = string.replace(' ', '').upper()
     if (newstring[:2] == "SN"):
@@ -425,7 +422,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         return
 
     # Do some basic homogenization
-    sband = bandaliasf(band)
+    sband = bandrepf(band)
 
     sinstrument = instrument
     ssystem = system
@@ -1374,7 +1371,7 @@ def write_all_events(empty = False, gz = False, bury = False):
         if bury:
             buryevent = False
             nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
-                           'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac']
+                           'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star']
             nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
             if name.startswith(nonsneprefixes):

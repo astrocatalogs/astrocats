@@ -3,9 +3,10 @@ from collections import OrderedDict
 from random import shuffle, seed, randint, uniform
 
 bandreps = {
-    'M2':     ['uvm2', 'UVM2', 'Um2', 'm2', 'um2'],
-    'W1':     ['uvw1', 'UVW1', 'Uw1', 'w1', 'uw1'],
-    'W2':     ['uvw2', 'UVW2', 'Uw2', 'w2', 'uw2']
+    'Ks': ['K_s'],
+    'M2': ['uvm2', 'UVM2', 'Um2', 'm2', 'um2'],
+    'W1': ['uvw1', 'UVW1', 'Uw1', 'w1', 'uw1'],
+    'W2': ['uvw2', 'UVW2', 'Uw2', 'w2', 'uw2']
 }
 
 # Some bands are uniquely tied to an instrument/telescope/system, add this info here.
@@ -59,7 +60,8 @@ bandcodes = [
     "F775W",
     "F850LP",
     "VM",
-    "RM"
+    "RM",
+    "Ks"
 ]
 
 bandaliases = OrderedDict([
