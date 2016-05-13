@@ -39,7 +39,7 @@ shuffle(colors)
 
 files = repo_file_list(bones = False)
 
-for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
+for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 20:
     #    break
 
@@ -89,9 +89,9 @@ tt = [
 hover = HoverTool(tooltips = tt)
 
 p1 = Figure(title='Supernova Positions', x_axis_label='Right Ascension (deg)',
-    y_axis_label='Declination (deg)', tools = tools, plot_width = 1200, plot_height = 600, #responsive = True,
-    x_range = (-1.2*(2.0**1.5), 1.2*2.0**1.5), y_range = (-1.2*sqrt(2.0), 1.2*sqrt(2.0)),
-    title_text_font_size='20pt', webgl = True)
+    y_axis_label='Declination (deg)', tools = tools, plot_width = 980, plot_height = 563, #responsive = True,
+    x_range = (-1.05*(2.0**1.5), 1.3*2.0**1.5), y_range = (-1.5*sqrt(2.0), 1.2*sqrt(2.0)),
+    title_text_font_size='20pt', min_border_bottom = 0, min_border_left = 0, min_border = 0)
 p1.axis.visible = None
 p1.outline_line_color = None
 p1.xgrid.grid_line_color = None
@@ -134,12 +134,13 @@ for ci, ct in enumerate(claimedtypes):
     else:
         tcolor = colors[ci]
         falpha = 1.0
-    p1.circle('x', 'y', source = source, color=tcolor, fill_alpha=falpha, legend=ct, size=3)
+    p1.circle('x', 'y', source = source, color=tcolor, fill_alpha=falpha, legend=ct, size=2)
 
 p1.legend.label_text_font_size = '7pt'
 p1.legend.label_width = 20
 p1.legend.label_height = 10
 p1.legend.glyph_height = 10
+p1.legend.legend_spacing = 2
 
 html = file_html(p1, CDN, 'Supernova locations')
 

@@ -1471,7 +1471,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                         r'</td><td width=250px class="event-cell">' + keyhtml)
 
                 newhtml = newhtml + r'</td></tr>\n'
-        newhtml = newhtml + r'</table><em>D = Derived value</em></div>\n\1'
+        newhtml = newhtml + r'</table></div>\n\1'
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
         if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
