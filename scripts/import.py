@@ -148,7 +148,7 @@ repbetterquantity = {
 
 maxbands = [
     ['B', 'b', 'g'], # B-like bands first
-    ['V'],           # if not, V-like bands
+    ['V', 'G'],      # if not, V-like bands
     ['R', 'r']       # if not, R-like bands
 ]
 
