@@ -15,9 +15,14 @@ import requests
 import urllib.request
 import urllib.parse
 import filecmp
+import inflect
+from cdecimal import Decimal
+from tqdm import tqdm
 from glob import glob
 from photometry import *
 from digits import *
+from repos import *
+from events import *
 from datetime import datetime
 from astropy.time import Time as astrotime
 from astropy.coordinates import SkyCoord as coord
@@ -44,6 +49,9 @@ parser.add_argument('--test', '-te',              dest='test',         help='Tes
 parser.add_argument('--travis', '-tr',            dest='travis',       help='Set some options when using Travis', default=False, action='store_true')
 args = parser.parse_args()
 
+infl = inflect.engine()
+infl.defnoun("spectrum", "spectra")
+
 outdir = "../"
 
 travislimit = 1000
@@ -61,7 +69,7 @@ mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 columnkey = [
     "check",
     "name",
-    "aliases",
+    "alias",
     "discoverdate",
     "maxdate",
     "maxappmag",
@@ -131,10 +139,10 @@ eventpageheader = [
     r"<em>d</em><sub>L</sub> (Mpc)",
     "Claimed Type",
     "E(B-V)",
-    "# Phot. Det.",
-    "# Spectra",
-    "# Radio Det.",
-    "# X-ray Det.",
+    "Photometry",
+    "Spectra",
+    "Radio",
+    "X-ray",
     "References",
     "Download",
     ""
@@ -187,7 +195,7 @@ newfiletemplate = (
 '''{
 \t"{0}":{
 \t\t"name":"{0}",
-\t\t"aliases":[
+\t\t"alias":[
 \t\t\t"{0}"
 \t\t]
 \t}
@@ -237,12 +245,6 @@ sitemaptemplate = (
 {0}</urlset>'''
 )
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
-
-repyears = [int(repfolders[x][-4:]) for x in range(len(repfolders))]
-repyears[0] -= 1
-
 if len(columnkey) != len(header):
     raise(ValueError('Header not same length as key list.'))
     sys.exit(0)
@@ -273,17 +275,6 @@ coldict = dict(list(zip(list(range(len(columnkey))),columnkey)))
 
 def utf8(x):
     return str(x, 'utf-8')
-
-def get_rep_folder(entry):
-    if 'discoverdate' not in entry:
-        return repfolders[0]
-    if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
-        raise(ValueError('Discovery year is not a number!'))
-        sys.exit()
-    for r, repyear in enumerate(repyears):
-        if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repyear:
-            return repfolders[r]
-    return repfolders[0]
 
 def label_format(label):
     newlabel = label.replace('Angstrom', 'Å')
@@ -330,10 +321,7 @@ if os.path.isfile(outdir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = []
-for rep in repfolders:
-    #files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
-    files += glob('../' + rep + "/*.json")
+files = repo_file_list(bones = False)
 
 md5s = []
 md5 = hashlib.md5
@@ -346,7 +334,7 @@ if os.path.isfile(outdir + 'md5s.json'):
 else:
     md5dict = {}
 
-for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
     if args.eventlist and fileeventname not in args.eventlist:
         continue
@@ -357,12 +345,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     checksum = md5(open(eventfile, 'rb').read()).hexdigest()
     md5s.append([eventfile, checksum])
 
-    if eventfile.split('.')[-1] == 'gz':
-        with gzip.open(eventfile, 'rt') as f:
-            filetext = f.read()
-    else:
-        with open(eventfile, 'r') as f:
-            filetext = f.read()
+    filetext = get_event_text(eventfile)
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
@@ -372,7 +355,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
-    print(eventfile + ' [' + checksum + ']')
+    tqdm.write(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
@@ -401,6 +384,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     photoavail = 'photometry' in catalog[entry] and any(['magnitude' in x for x in catalog[entry]['photometry']])
     radioavail = 'photometry' in catalog[entry] and any(['fluxdensity' in x for x in catalog[entry]['photometry']])
     xrayavail = 'photometry' in catalog[entry] and any(['counts' in x for x in catalog[entry]['photometry']])
+    spectraavail = 'spectra' in catalog[entry]
+
     # Must be two sigma above host magnitude, if host magnitude known, to add to phot count.
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'magnitude' in x and
         (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0*hosterr))]) if photoavail else 0
@@ -409,10 +394,45 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0*hosterr))]) if photoavail else 0
     numxray = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'counts' in x and
         (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0*hosterr))]) if photoavail else 0
+    numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
+
+    redshiftfactor = (1.0 / (1.0 + float(catalog[entry]['redshift'][0]['value']))) if ('redshift' in catalog[entry]) else 1.0
+
+    mjdmax = ''
+    if 'maxdate' in catalog[entry]:
+        datestr = catalog[entry]['maxdate'][0]['value']
+        datesplit = datestr.split('/')
+        if len(datesplit) < 2:
+            datestr += "/01"
+        if len(datesplit) < 3:
+            datestr += "/01"
+        try:
+            mjdmax = astrotime(datestr.replace('/', '-')).mjd
+        except:
+            pass
+
+    minphotoep = ''
+    maxphotoep = ''
+    if mjdmax:
+        photoeps = [(Decimal(x['time']) - Decimal(mjdmax + 0.5))*Decimal(redshiftfactor) for x in catalog[entry]['photometry']
+            if 'upperlimit' not in x and 'includeshost' not in x and 'magnitude' in x and 'time' in x] if photoavail else []
+        if photoeps:
+            minphotoep = pretty_num(float(min(photoeps)), sig = 3)
+            maxphotoep = pretty_num(float(max(photoeps)), sig = 3)
+
+    minspectraep = ''
+    maxspectraep = ''
+    if mjdmax:
+        spectraeps = ([(Decimal(x['time']) - Decimal(mjdmax + 0.5))*Decimal(redshiftfactor) for x in catalog[entry]['spectra'] if 'time' in x]
+            if spectraavail else [])
+        if spectraeps:
+            minspectraep = pretty_num(float(min(spectraeps)), sig = 3)
+            maxspectraep = pretty_num(float(max(spectraeps)), sig = 3)
 
     catalog[entry]['numphoto'] = numphoto
     catalog[entry]['numradio'] = numradio
     catalog[entry]['numxray'] = numxray
+    catalog[entry]['numspectra'] = numspectra
 
     distancemod = 0.0
     if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
@@ -420,15 +440,15 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     plotlink = "sne/" + fileeventname + "/"
     if photoavail:
-        catalog[entry]['photolink'] = str(numphoto)
+        catalog[entry]['photolink'] = (str(numphoto) +
+            ((',' + minphotoep + ',' + maxphotoep) if (minphotoep and maxphotoep and minphotoep != maxphotoep) else ''))
     if radioavail:
         catalog[entry]['radiolink'] = str(numradio)
     if xrayavail:
         catalog[entry]['xraylink'] = str(numxray)
-    spectraavail = 'spectra' in catalog[entry]
-    catalog[entry]['numspectra'] = len(catalog[entry]['spectra']) if spectraavail else 0
     if spectraavail:
-        catalog[entry]['spectralink'] = str(len(catalog[entry]['spectra']))
+        catalog[entry]['spectralink'] = (str(numspectra) +
+            ((',' + minspectraep + ',' + maxspectraep) if (minspectraep and maxspectraep and minspectraep != maxspectraep) else ''))
 
     prange = list(range(len(catalog[entry]['photometry']))) if 'photometry' in catalog[entry] else []
     
@@ -446,6 +466,11 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if i < len(instrulist) - 1:
                 instruments += ', '
 
+        # Now add bands without attached instrument
+        obandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band'] if 'band' in catalog[entry]['photometry'][x] else '')
+            if 'instrument' not in catalog[entry]['photometry'][x] else "" for x in prange}) if _f], key=lambda y: (bandwavef(y), y))
+        if obandlist:
+            instruments += ", " + ", ".join(obandlist)
         catalog[entry]['instruments'] = instruments
     else:
         bandlist = sorted([_f for _f in list({bandshortaliasf(catalog[entry]['photometry'][x]['band']
@@ -476,8 +501,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
         x_buffer = 0.1*(max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
 
-        min_x_range = -x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))])
-        max_x_range = x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])
+        min_x_range = -0.5*x_buffer + min([x - y for x, y in list(zip(phototime, phototimeuppererrs))])
+        max_x_range = 2.0*x_buffer + max([x + y for x, y in list(zip(phototime, phototimelowererrs))])
 
     if photoavail and dohtml and args.writehtml:
         phototime = [float(x['time']) for x in catalog[entry]['photometry'] if 'magnitude' in x]
@@ -514,7 +539,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         min_y_range = 0.5 + max([x + y for x, y in list(zip(photoAB, photoABuppererrs))])
         max_y_range = -0.5 + min([x - y for x, y in list(zip(photoAB, photoABlowererrs))])
 
-        p1 = Figure(title='Photometry for ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + ')',
+        p1 = Figure(title='Photometry for ' + eventname,
             y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
             x_range = (min_x_range, max_x_range), y_range = (min_y_range, max_y_range),
             title_text_font_size='16pt', title_text_font = 'futura')
@@ -522,26 +547,34 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         p1.yaxis.axis_label_text_font = 'futura'
         p1.xaxis.major_label_text_font = 'futura'
         p1.yaxis.major_label_text_font = 'futura'
-        p1.xaxis.axis_label_text_font_size = '12pt'
-        p1.yaxis.axis_label_text_font_size = '12pt'
+        p1.xaxis.axis_label_text_font_size = '11pt'
+        p1.yaxis.axis_label_text_font_size = '11pt'
         p1.xaxis.major_label_text_font_size = '8pt'
         p1.yaxis.major_label_text_font_size = '8pt'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
 
-
         p1.extra_x_ranges = {"gregorian date": Range1d(start=min_x_date, end=max_x_date)}
-        p1.add_layout(DatetimeAxis(axis_label = "Time (Gregorian Date)", major_label_text_font_size = '8pt',
-            major_label_text_font = 'futura', axis_label_text_font = 'futura',
-            x_range_name = "gregorian date", axis_label_text_font_size = '12pt'), 'above')
+        p1.add_layout(DatetimeAxis(major_label_text_font_size = '8pt', axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + '/Gregorian)',
+            major_label_text_font = 'futura', axis_label_text_font = 'futura', major_tick_in = 0,
+            x_range_name = "gregorian date", axis_label_text_font_size = '11pt'), 'below')
+
+        if mjdmax:
+            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
+            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
+            p1.extra_x_ranges["time since max"] = Range1d(start=min_xm_range, end=max_xm_range)
+            p1.add_layout(LinearAxis(axis_label = "Time since max (Rest frame days)", major_label_text_font_size = '8pt',
+                major_label_text_font = 'futura', axis_label_text_font = 'futura',
+                x_range_name = "time since max", axis_label_text_font_size = '11pt'), 'above')
+
         if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
             min_y_absmag = min_y_range - distancemod
             max_y_absmag = max_y_range - distancemod
             p1.extra_y_ranges = {"abs mag": Range1d(start=min_y_absmag, end=max_y_absmag)}
             p1.add_layout(LinearAxis(axis_label = "Absolute Magnitude", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
-                y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
+                y_range_name = "abs mag", axis_label_text_font_size = '11pt'), 'right')
         p1.add_tools(hover)
 
         xs = []
@@ -647,7 +680,6 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         spectrumerrs = []
         spectrummjdmax = []
         hasepoch = True
-        hasmjdmax = False
         if 'redshift' in catalog[entry]:
             z = float(catalog[entry]['redshift'][0]['value'])
         for spectrum in catalog[entry]['spectra']:
@@ -671,33 +703,21 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if 'u_time' not in spectrum or 'time' not in spectrum:
                 hasepoch = False
 
-            mjdmax = ''
-            if 'u_time' in spectrum and spectrum['u_time'] == 'MJD' and 'redshift' in catalog[entry]:
-                if 'maxdate' in catalog[entry]:
-                    mjdmax = astrotime(catalog[entry]['maxdate'][0]['value'].replace('/', '-')).mjd
-                if mjdmax:
-                    hasmjdmax = True
-                    mjdmax = (float(spectrum['time']) - mjdmax) / (1.0 + float(catalog[entry]['redshift'][0]['value']))
-                    spectrummjdmax.append(mjdmax)
+            if 'u_time' in spectrum and spectrum['u_time'] == 'MJD' and 'redshift' in catalog[entry] and mjdmax:
+                specmjd = (float(spectrum['time']) - mjdmax) * redshiftfactor
+                spectrummjdmax.append(specmjd)
 
         nspec = len(catalog[entry]['spectra'])
         
-        spectrumscaled = deepcopy(spectrumflux)
-        for f, flux in enumerate(spectrumscaled):
-            std = numpy.std(flux)
-            spectrumscaled[f] = [x/std for x in flux]
-
-        y_height = 0.
-        y_offsets = [0. for x in range(nspec)]
         prunedwave = []
-        prunedscaled = []
+        prunedflux = []
         for i in reversed(range(nspec)):
             ri = nspec-i-1
             prunedwave.append([])
-            prunedscaled.append([])
-            if 'exclude' in catalog[entry]['spectra'][i]:
-                for wi, wave in enumerate(spectrumwave[i]):
-                    exclude = False
+            prunedflux.append([])
+            for wi, wave in enumerate(spectrumwave[i]):
+                exclude = False
+                if 'exclude' in catalog[entry]['spectra'][i]:
                     for exclusion in catalog[entry]['spectra'][i]['exclude']:
                         if 'below' in exclusion:
                             if wave <= float(exclusion['below']):
@@ -705,37 +725,42 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
                         elif 'above' in exclusion:
                             if wave >= float(exclusion['above']):
                                 exclude = True
-                    if not exclude:
-                        prunedwave[ri].append(wave)
-                        prunedscaled[ri].append(spectrumscaled[i][wi])
+                if not exclude:
+                    prunedwave[ri].append(wave)
+                    prunedflux[ri].append(spectrumflux[i][wi])
 
+        prunedwave = list(reversed(prunedwave))
+        prunedflux = list(reversed(prunedflux))
+
+        prunedscaled = deepcopy(prunedflux)
+        for f, flux in enumerate(prunedscaled):
+            std = numpy.std(flux)
+            prunedscaled[f] = [x/std for x in flux]
+
+        y_height = 0.
+        y_offsets = [0. for x in range(nspec)]
+        for i in reversed(range(nspec)):
             y_offsets[i] = y_height
             if (i-1 >= 0 and 'time' in catalog[entry]['spectra'][i] and 'time' in catalog[entry]['spectra'][i-1]
                 and catalog[entry]['spectra'][i]['time'] == catalog[entry]['spectra'][i-1]['time']):
                     ydiff = 0
             else:
-                if 'exclude' in catalog[entry]['spectra'][i]:
-                    ydiff = 0.8*(max(prunedscaled[ri]) - min(prunedscaled[ri]))
-                else:
-                    ydiff = 0.8*(max(spectrumscaled[i]) - min(spectrumscaled[i]))
-            spectrumscaled[i] = [j + y_height for j in spectrumscaled[i]]
+                ydiff = 0.8*(max(prunedscaled[i]) - min(prunedscaled[i]))
+            prunedscaled[i] = [j + y_height for j in prunedscaled[i]]
             y_height += ydiff
 
-        prunedwave = reversed(prunedwave)
-        prunedscaled = reversed(prunedscaled)
-
-        maxsw = max(map(max, spectrumwave))
-        minsw = min(map(min, spectrumwave))
-        maxfl = max(map(max, spectrumscaled))
-        minfl = min(map(min, spectrumscaled))
-        maxfldiff = max(map(operator.sub, list(map(max, spectrumscaled)), list(map(min, spectrumscaled))))
+        maxsw = max(list(map(max, prunedwave)))
+        minsw = min(list(map(min, prunedwave)))
+        maxfl = max(list(map(max, prunedscaled)))
+        minfl = min(list(map(min, prunedscaled)))
+        maxfldiff = max(map(operator.sub, list(map(max, prunedscaled)), list(map(min, prunedscaled))))
         x_buffer = 0.0 #0.1*(maxsw - minsw)
         x_range = [-x_buffer + minsw, x_buffer + maxsw]
         y_buffer = 0.1*maxfldiff
         y_range = [-y_buffer + minfl, y_buffer + maxfl]
 
-        for f, flux in enumerate(spectrumscaled):
-            spectrumscaled[f] = [x - y_offsets[f] for x in flux]
+        for f, flux in enumerate(prunedscaled):
+            prunedscaled[f] = [x - y_offsets[f] for x in flux]
 
         tt2 = [ ("Source ID(s)", "@src") ]
         if 'redshift' in catalog[entry]:
@@ -749,10 +774,10 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         if hasepoch:
             tt2 += [ ("Epoch (" + spectrum['u_time'] + ")", "@epoch{1.11}") ]
 
-        if hasmjdmax:
+        if mjdmax:
             tt2 += [ ("Rest days to max", "@mjdmax{1.11}") ]
 
-        hover2 = HoverTool(tooltips = tt2)
+        hover = HoverTool(tooltips = tt2)
 
         p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
             y_axis_label=label_format('Flux (scaled)' + (' + offset'
@@ -763,31 +788,31 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         p2.yaxis.axis_label_text_font = 'futura'
         p2.xaxis.major_label_text_font = 'futura'
         p2.yaxis.major_label_text_font = 'futura'
-        p2.xaxis.axis_label_text_font_size = '12pt'
-        p2.yaxis.axis_label_text_font_size = '12pt'
+        p2.xaxis.axis_label_text_font_size = '11pt'
+        p2.yaxis.axis_label_text_font_size = '11pt'
         p2.xaxis.major_label_text_font_size = '8pt'
         p2.yaxis.major_label_text_font_size = '8pt'
-        p2.add_tools(hover2)
+        p2.add_tools(hover)
 
         sources = []
-        for i in range(len(spectrumwave)):
-            sl = len(spectrumscaled[i])
+        for i in range(len(prunedwave)):
+            sl = len(prunedscaled[i])
 
             data = dict(
-                x0 = spectrumwave[i],
-                y0 = spectrumscaled[i],
+                x0 = prunedwave[i],
+                y0 = prunedscaled[i],
                 yorig = spectrumflux[i],
                 fluxunit = [label_format(catalog[entry]['spectra'][i]['fluxunit'])]*sl,
-                x = spectrumwave[i],
-                y = [y_offsets[i] + j for j in spectrumscaled[i]],
+                x = prunedwave[i],
+                y = [y_offsets[i] + j for j in prunedscaled[i]],
                 src = [catalog[entry]['spectra'][i]['source']]*sl
             )
             if 'redshift' in catalog[entry]:
-                data['xrest'] = [x/(1.0 + z) for x in spectrumwave[i]]
+                data['xrest'] = [x/(1.0 + z) for x in prunedwave[i]]
             if hasepoch:
-                data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in spectrumscaled[i]]
-            if hasmjdmax:
-                data['mjdmax'] = [spectrummjdmax[i] for j in spectrumscaled[i]]
+                data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in prunedscaled[i]]
+            if mjdmax and spectrummjdmax:
+                data['mjdmax'] = [spectrummjdmax[i] for j in prunedscaled[i]]
             sources.append(ColumnDataSource(data))
             p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2, line_join='round')
 
@@ -796,7 +821,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             maxredw = maxsw/(1.0 + z)
             p2.extra_x_ranges = {"other wavelength": Range1d(start=minredw, end=maxredw)}
             p2.add_layout(LinearAxis(axis_label ="Restframe Wavelength (Å)",
-                x_range_name="other wavelength", axis_label_text_font_size = '12pt',
+                x_range_name="other wavelength", axis_label_text_font_size = '11pt',
                 axis_label_text_font = 'futura',
                 major_label_text_font_size = '8pt', major_label_text_font = 'futura'), 'above')
 
@@ -900,7 +925,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         max_y_range = max([x + y for x, y in list(zip(photofd, photofderrs))])
         [min_y_range, max_y_range] = [min_y_range - 0.1*(max_y_range-min_y_range), max_y_range + 0.1*(max_y_range-min_y_range)]
 
-        p3 = Figure(title='Radio Observations of ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + ')',
+        p3 = Figure(title='Radio Observations of ' + eventname, 
             y_axis_label = 'Flux Density (µJy)', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
             x_range = x_range, y_range = (min_y_range, max_y_range),
             title_text_font_size='16pt', title_text_font = 'futura')
@@ -908,8 +933,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         p3.yaxis.axis_label_text_font = 'futura'
         p3.xaxis.major_label_text_font = 'futura'
         p3.yaxis.major_label_text_font = 'futura'
-        p3.xaxis.axis_label_text_font_size = '12pt'
-        p3.yaxis.axis_label_text_font_size = '12pt'
+        p3.xaxis.axis_label_text_font_size = '11pt'
+        p3.yaxis.axis_label_text_font_size = '11pt'
         p3.xaxis.major_label_text_font_size = '8pt'
         p3.yaxis.major_label_text_font_size = '8pt'
 
@@ -918,9 +943,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
 
         p3.extra_x_ranges = {"gregorian date": Range1d(start=min_x_date, end=max_x_date)}
-        p3.add_layout(DatetimeAxis(axis_label = "Time (Gregorian Date)", major_label_text_font_size = '8pt',
-            major_label_text_font = 'futura', axis_label_text_font = 'futura',
-            x_range_name = "gregorian date", axis_label_text_font_size = '12pt'), 'above')
+        p3.add_layout(DatetimeAxis(major_label_text_font_size = '8pt', axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + '/Gregorian)',
+            major_label_text_font = 'futura', axis_label_text_font = 'futura', major_tick_in = 0,
+            x_range_name = "gregorian date", axis_label_text_font_size = '11pt'), 'below')
+
+        if mjdmax:
+            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
+            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
+            p3.extra_x_ranges["time since max"] = Range1d(start=min_xm_range, end=max_xm_range)
+            p3.add_layout(LinearAxis(axis_label = "Time since max (Rest frame days)", major_label_text_font_size = '8pt',
+                major_label_text_font = 'futura', axis_label_text_font = 'futura',
+                x_range_name = "time since max", axis_label_text_font_size = '11pt'), 'above')
+
         if distancemod:
             min_y_absmag = min([(x - y)*(areacorr*float(z)*((1.0*un.GHz).cgs.value)) for x, y, z in list(zip(photofd, photofderrs, photofreq))])
             max_y_absmag = max([(x + y)*(areacorr*float(z)*((1.0*un.GHz).cgs.value)) for x, y, z in list(zip(photofd, photofderrs, photofreq))])
@@ -928,8 +962,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             p3.extra_y_ranges = {"abs mag": Range1d(start=min_y_absmag, end=max_y_absmag)}
             p3.add_layout(LinearAxis(axis_label = "Isotropic Luminosity at ν (ergs s⁻¹)", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
-                y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
-        p3.yaxis[1].formatter.precision = 1
+                y_range_name = "abs mag", axis_label_text_font_size = '11pt'), 'right')
+            p3.yaxis[1].formatter.precision = 1
         p3.add_tools(hover)
 
         xs = []
@@ -1083,7 +1117,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         max_y_range = max([x + y for x, y in list(zip(photofl, photoflerrs))])
         [min_y_range, max_y_range] = [min_y_range - 0.1*(max_y_range-min_y_range), max_y_range + 0.1*(max_y_range-min_y_range)]
 
-        p4 = Figure(title='X-ray Observations of ' + eventname, x_axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + ')',
+        p4 = Figure(title='X-ray Observations of ' + eventname,
             y_axis_label = 'Flux (ergs s⁻¹ cm⁻²)', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
             x_range = x_range, y_range = (min_y_range, max_y_range),
             title_text_font_size='16pt', title_text_font = 'futura')
@@ -1091,8 +1125,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         p4.yaxis.axis_label_text_font = 'futura'
         p4.xaxis.major_label_text_font = 'futura'
         p4.yaxis.major_label_text_font = 'futura'
-        p4.xaxis.axis_label_text_font_size = '12pt'
-        p4.yaxis.axis_label_text_font_size = '12pt'
+        p4.xaxis.axis_label_text_font_size = '11pt'
+        p4.yaxis.axis_label_text_font_size = '11pt'
         p4.xaxis.major_label_text_font_size = '8pt'
         p4.yaxis.major_label_text_font_size = '8pt'
         p4.yaxis[0].formatter.precision = 1
@@ -1102,9 +1136,18 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
 
         p4.extra_x_ranges = {"gregorian date": Range1d(start=min_x_date, end=max_x_date)}
-        p4.add_layout(DatetimeAxis(axis_label = "Time (Gregorian Date)", major_label_text_font_size = '8pt',
-            major_label_text_font = 'futura', axis_label_text_font = 'futura',
-            x_range_name = "gregorian date", axis_label_text_font_size = '12pt'), 'above')
+        p4.add_layout(DatetimeAxis(major_label_text_font_size = '8pt', axis_label='Time (' + catalog[entry]['photometry'][0]['u_time'] + '/Gregorian)',
+            major_label_text_font = 'futura', axis_label_text_font = 'futura', major_tick_in = 0,
+            x_range_name = "gregorian date", axis_label_text_font_size = '11pt'), 'below')
+
+        if mjdmax:
+            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
+            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
+            p4.extra_x_ranges["time since max"] = Range1d(start=min_xm_range, end=max_xm_range)
+            p4.add_layout(LinearAxis(axis_label = "Time since max (Rest frame days)", major_label_text_font_size = '8pt',
+                major_label_text_font = 'futura', axis_label_text_font = 'futura',
+                x_range_name = "time since max", axis_label_text_font_size = '11pt'), 'above')
+
         if distancemod:
             min_y_absmag = min([(x - y)*areacorr for x, y in list(zip(photofl, photoflerrs))])
             max_y_absmag = max([(x + y)*areacorr for x, y in list(zip(photofl, photoflerrs))])
@@ -1112,7 +1155,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             p4.extra_y_ranges = {"abs mag": Range1d(start=min_y_absmag, end=max_y_absmag)}
             p4.add_layout(LinearAxis(axis_label = "Luminosity in band (ergs s⁻¹)", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
-                y_range_name = "abs mag", axis_label_text_font_size = '12pt'), 'right')
+                y_range_name = "abs mag", axis_label_text_font_size = '11pt'), 'right')
         p4.yaxis[1].formatter.precision = 1
         p4.add_tools(hover)
 
@@ -1354,6 +1397,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
         html = re.sub(r'(\<\/title\>)', r'''\1\n
             <base target="_parent" />\n
             <link rel="stylesheet" href="event.css" type="text/css">\n
+            <script type="text/javascript" src="scripts/marks.js" type="text/css"></script>\n
             <script type="text/javascript">\n
                 if(top==self)\n
                 this.location="''' + eventname + '''"\n
@@ -1370,32 +1414,64 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
             if key in catalog[entry] and key not in eventignorekey and len(catalog[entry][key]) > 0:
                 keyhtml = ''
                 if isinstance(catalog[entry][key], str):
-                    keyhtml = keyhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
+                    if key in ['photolink', 'spectralink', 'radiolink', 'xraylink']:
+                        keysplit = catalog[entry][key].split(',')
+                        if keysplit:
+                            num = int(keysplit[0])
+                            keyhtml = keyhtml + keysplit[0] + ' ' + (infl.plural('spectrum', num) if key == 'spectralink' else infl.plural('detection', num))
+                            if len(keysplit) == 3:
+                                keyhtml = keyhtml + '<br>[' + keysplit[1] + ' – ' + keysplit[2] + ' days from max]'
+                    else:
+                        keyhtml = keyhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
                 else:
                     for r, row in enumerate(catalog[entry][key]):
                         if 'value' in row and 'source' in row:
                             sources = [str(x) for x in sorted([x.strip() for x in row['source'].split(',')], key=lambda x: float(x) if is_number(x) else float("inf"))]
                             sourcehtml = ''
+                            sourcecsv = ','.join(sources)
                             for s, source in enumerate(sources):
                                 if source == 'D':
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + source
                                 else:
                                     sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
-                            keyhtml = keyhtml + (r'<br>' if r > 0 else '') + row['value']
+                            keyhtml = keyhtml + (r'<br>' if r > 0 else '')
+                            keyhtml = keyhtml + "<div class='singletooltip'>"
+                            keyhtml = keyhtml + row['value']
                             if ((key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]
                                 and catalog[entry]['maxband']):
                                 keyhtml = keyhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
                             if 'error' in row:
                                 keyhtml = keyhtml + r' ± ' + row['error']
+
+                            # Mark erroneous button
+                            sourceids = []
+                            idtypes = []
+                            for alias in row['source'].split(','):
+                                for source in catalog[entry]['sources']:
+                                    if source['alias'] == alias:
+                                        if 'bibcode' in source:
+                                            sourceids.append(source['bibcode'])
+                                            idtypes.append('bibcode')
+                                        else:
+                                            sourceids.append(source['name'])
+                                            idtypes.append('name')
+                            if not sourceids or not idtypes:
+                                raise(ValueError('Unable to find associated source by alias!'))
+                            edit = "true" if os.path.isfile('../sne-internal/' + get_event_filename(entry) + '.json') else "false"
+                            keyhtml = (keyhtml + "<span class='singletooltiptext'><button class='singlemarkerror' type='button' onclick='markError(\"" +
+                                entry + "\", \"" + key + "\", \"" + ','.join(idtypes) +
+                                "\", \"" + ','.join(sourceids) + "\", \"" + edit + "\")'>Flag as erroneous</button></span>");
                             keyhtml = keyhtml + r'<sup>' + sourcehtml + r'</sup>'
+                            keyhtml = keyhtml + "</div>"
                         elif isinstance(row, str):
                             keyhtml = keyhtml + (r'<br>' if r > 0 else '') + row.strip()
+
                 if keyhtml:
                     newhtml = (newhtml + r'<tr><td class="event-cell">' + eventpageheader[key] +
                         r'</td><td width=250px class="event-cell">' + keyhtml)
 
                 newhtml = newhtml + r'</td></tr>\n'
-        newhtml = newhtml + r'</table><em>D = Derived value</em></div>\n\1'
+        newhtml = newhtml + r'</table></div>\n\1'
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
         if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
@@ -1441,7 +1517,7 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     if args.writecatalog:
         # Construct array for Bishop's webpage
         # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift (helio), redshift (host), r.a., dec., # obs., link
-        snepages.append([entry, ",".join(catalog[entry]['aliases']), get_first_value(entry, 'maxappmag'), get_first_value(entry, 'maxdate'),
+        snepages.append([entry, ",".join([x['value'] for x in catalog[entry]['alias']]), get_first_value(entry, 'maxappmag'), get_first_value(entry, 'maxdate'),
             get_first_value(entry, 'claimedtype'), get_first_value(entry, 'redshift'), get_first_kind(entry, 'redshift'),
             get_first_value(entry, 'ra'), get_first_value(entry, 'dec'), catalog[entry]['numphoto'], 'https://sne.space/' + plotlink])
 
@@ -1502,12 +1578,12 @@ if args.writecatalog and not args.eventlist:
     catalog = catalogcopy
 
     #Write the MD5 checksums
-    jsonstring = json.dumps(md5s, separators=(',',':'))
+    jsonstring = json.dumps(md5s, indent='\t', separators=(',',':'))
     with open(outdir + 'md5s.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
     #Write the host image info
-    jsonstring = json.dumps(hostimgs, separators=(',',':'))
+    jsonstring = json.dumps(hostimgs, indent='\t', separators=(',',':'))
     with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
@@ -1610,14 +1686,14 @@ if args.writecatalog and not args.eventlist:
 
     names = OrderedDict()
     for ev in catalog:
-        names[ev['name']] = ev['aliases']
+        names[ev['name']] = [x['value'] for x in ev['alias']]
     jsonstring = json.dumps(names, separators=(',',':'))
     with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
     safefiles = [os.path.basename(x) for x in files]
-    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json',
-        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json']
+    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json',
+        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json']
 
     for myfile in glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:

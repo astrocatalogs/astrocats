@@ -2,7 +2,10 @@
 
 import json
 import sys
-import glob
+from tq import *
+from repos import *
+from events import *
+from glob import glob
 from bokeh.plotting import Figure, reset_output
 from bokeh.models import (HoverTool, ColumnDataSource)
 from bokeh.resources import CDN
@@ -34,36 +37,35 @@ colors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
           cubehelix.perceptual_rainbow_16.hex_colors)
 shuffle(colors)
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
+files = repo_file_list(bones = False)
 
-files = []
-for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json")
-
-for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 20:
     #    break
 
-    with open(eventfile, 'r') as f:
-        filetext = f.read()
+    filetext = get_event_text(eventfile)
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
 
     if 'ra' in thisevent and 'dec' in thisevent:
         if 'claimedtype' in thisevent and thisevent['claimedtype']:
-            thistype = thisevent['claimedtype'][0]['value'].replace('?', '').replace('*', '')
-            if thistype in ('', 'QSO', 'AGN', 'Nova', 'Galaxy', 'CV'):
-                continue
-            elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate'):
-                sntypes.append('Unknown')
-            else:
-                sntypes.append(thistype)
+            for ct in [x['value'] for x in thisevent['claimedtype']]:
+                thistype = ct.replace('?', '').replace('*', '')
+                nonsnetypes = [x.lower() for x in ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
+                               'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star']]
+                if thistype.lower() in nonsnetypes:
+                    continue
+                elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate', 'nIa'):
+                    sntypes.append('Unknown')
+                    break
+                else:
+                    sntypes.append(thistype)
+                    break
         else:
             sntypes.append('Unknown')
 
-        print(thisevent['name'])
+        tprint(thisevent['name'])
         c = coord(ra=thisevent['ra'][0]['value'], dec=thisevent['dec'][0]['value'], unit=(un.hourangle, un.deg))
         snnames.append(thisevent['name'])
         rarad = c.ra.radian - pi
@@ -92,9 +94,9 @@ tt = [
 hover = HoverTool(tooltips = tt)
 
 p1 = Figure(title='Supernova Positions', x_axis_label='Right Ascension (deg)',
-    y_axis_label='Declination (deg)', tools = tools, plot_width = 1200, plot_height = 600, #responsive = True,
-    x_range = (-1.2*(2.0**1.5), 1.2*2.0**1.5), y_range = (-1.2*sqrt(2.0), 1.2*sqrt(2.0)),
-    title_text_font_size='20pt', webgl = True)
+    y_axis_label='Declination (deg)', tools = tools, plot_width = 980, plot_height = 720, #responsive = True,
+    x_range = (-1.05*(2.0**1.5), 1.3*2.0**1.5), y_range = (-2.0*sqrt(2.0), 1.2*sqrt(2.0)),
+    title_text_font_size='20pt', min_border_bottom = 0, min_border_left = 0, min_border = 0)
 p1.axis.visible = None
 p1.outline_line_color = None
 p1.xgrid.grid_line_color = None
@@ -137,12 +139,13 @@ for ci, ct in enumerate(claimedtypes):
     else:
         tcolor = colors[ci]
         falpha = 1.0
-    p1.circle('x', 'y', source = source, color=tcolor, fill_alpha=falpha, legend=ct, size=3)
+    p1.circle('x', 'y', source = source, color=tcolor, fill_alpha=falpha, legend=ct, size=2)
 
 p1.legend.label_text_font_size = '7pt'
 p1.legend.label_width = 20
 p1.legend.label_height = 10
 p1.legend.glyph_height = 10
+p1.legend.legend_spacing = 2
 
 html = file_html(p1, CDN, 'Supernova locations')
 

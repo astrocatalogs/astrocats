@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3.5
 
-import json
 import glob
+from glob import glob
 from collections import OrderedDict
 
 outdir = "../"
@@ -11,7 +11,7 @@ with open('rep-folders.txt', 'r') as f:
 
 files = []
 for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json")
+    files += glob('../' + rep + "/*.json")
 
 for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     with open(eventfile, 'r') as f:

@@ -6,6 +6,14 @@ LD_LIBRARY_PATH=/usr/local/lib:/opt/local/lib ; export LD_LIBRARY_PATH
 
 cd /var/www/html/sne/sne/scripts
 ./import.py -u
-./make-catalog.py
-stamp=$(date +"%Y-%m-%d %k:%M")
-./commit-and-push-repos.sh "Auto update: $stamp"
+SNEUPDATE=$?
+echo $SNEUPDATE
+if [[ $SNEUPDATE == 0 ]]; then
+	./make-catalog.py &
+	./find-dupes.py &
+	./find-conflicts.py &
+	./make-biblio.py &
+	./hammertime.py &
+	#stamp=$(date +"%Y-%m-%d %k:%M")
+	#./commit-and-push-repos.sh "Auto update: $stamp"
+fi

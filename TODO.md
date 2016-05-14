@@ -1,5 +1,8 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
+Donated datasets:
+* 2016arXiv160304748N ("nicholl-05-03-16" in sne-external)
+
 Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (Data in text files attached to catalog)
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/other/NewA/20.30/sources (Data in text files attached to catalog)
@@ -8,6 +11,7 @@ Single SN dataset on VizieR:
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107 (Use dust-corrected or not?)
 
 Other multiple SN datasets:
+* http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
 * http://adsabs.harvard.edu/abs/1999AJ....117..725F (1979C, 1980K)
 * http://iopscience.iop.org/article/10.1088/0004-637X/743/2/114/meta (PS1-10awh, PS1-10ky)
 * http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta (PTF11rks, SN2011ke, SN2011kf, SN2012il)
@@ -25,8 +29,8 @@ Other multiple SN datasets:
 * http://www.jstor.org/stable/984985?seq=1#page_scan_tab_contents
 * http://adsabs.harvard.edu/abs/1979AcC.....8....5F (Lists references for many historical LCs)
 * http://adsabs.harvard.edu/abs/2012MNRAS.425.1007B (IR photometry for about a dozen PTF events)
-* http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
 * http://adsabs.harvard.edu/abs/2006ApJ...645..841N (SNLS LCs)
+* http://adsabs.harvard.edu/abs/2014ApJ...784..105W
 * http://adsabs.harvard.edu/abs/2016arXiv160105955F (Late-time Iax spectra)
 * http://adsabs.harvard.edu/abs/2016ApJ...819...35A (rapid risers)
 
@@ -137,6 +141,8 @@ Other single SN datasets:
 * SN2015H - http://adsabs.harvard.edu/abs/2016A%26A...589A..89M
 * SN2015U - http://arxiv.org/abs/1603.04866
 * SN2015bn - http://arxiv.org/abs/1603.04748
+* iPTF15dtg - http://arxiv.org/abs/1605.02491
+* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/

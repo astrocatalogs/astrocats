@@ -3,7 +3,11 @@
 import json
 import re
 import sys
-import glob
+import codecs
+from tq import *
+from glob import glob
+from repos import *
+from events import *
 from photometry import *
 from digits import *
 from bokeh.plotting import Figure, show, save, reset_output
@@ -29,21 +33,18 @@ tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
 outdir = "../"
 
-averagetype = "Ia P"
+averagetype = "Ia"
 
-with open('rep-folders.txt', 'r') as f:
-    repfolders = f.read().splitlines()
+files = repo_file_list(bones = False)
 
-files = []
-for rep in repfolders:
-    files += glob.glob('../' + rep + "/*.json")
+def photo_cut(x):
+    return ('magnitude' in x and 'time' in x and 'includeshost' not in x)
 
-for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
+for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     #if fcnt > 2000:
     #    break
 
-    with open(eventfile, 'r') as f:
-        filetext = f.read()
+    filetext = get_event_text(eventfile)
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
@@ -70,22 +71,26 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
 
     distmod = float(thisevent['maxappmag'][0]['value']) - float(thisevent['maxabsmag'][0]['value'])
 
-    print(thisevent['name'])
+    tprint(thisevent['name'])
 
-    prange = list(range(len(thisevent['photometry']))) if 'photometry' in thisevent else []
+    prange = list(range(len([x for x in thisevent['photometry'] if photo_cut(x)]))) if 'photometry' in thisevent else []
 
-    phototime += [float(x['time'][:-1] + str(randint(0,9)) if x['time'][-1] != '.' else x['time'] + '.' + str(randint(0,9))) - maxdate
-                  for x in thisevent['photometry'] if 'magnitude' in x]
+    if len(prange) <= 3:
+        continue
+
+    phototime += [float(x['time'][:-1] + str(0*randint(0,9)) if x['time'][-1] != '.' else x['time'] + '.' + str(0*randint(0,9))) - maxdate
+                  for x in thisevent['photometry'] if photo_cut(x)]
     phototimelowererrs += [float(x['e_lower_time']) if ('e_lower_time' in x and 'e_upper_time' in x)
-        else (float(x['e_time']) if 'e_time' in x else 0.) for x in thisevent['photometry'] if 'magnitude' in x]
+        else (float(x['e_time']) if 'e_time' in x else 0.) for x in thisevent['photometry'] if photo_cut(x)]
     phototimeuppererrs += [float(x['e_upper_time']) if ('e_lower_time' in x and 'e_upper_time' in x) in x
-        else (float(x['e_time']) if 'e_time' in x else 0.) for x in thisevent['photometry'] if 'magnitude' in x]
-    photoAB += [float(x['magnitude'] + str(randint(0,9)) if '.' in x['magnitude'] else x['magnitude'] + '.' + str(randint(0,9))) - distmod for x in thisevent['photometry'] if 'magnitude' in x]
-    photoABerrs += [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in thisevent['photometry'] if 'magnitude' in x]
-    photoband += [(x['band'] if 'band' in x else '') for x in thisevent['photometry'] if 'magnitude' in x]
-    photoinstru += [(x['instrument'] if 'instrument' in x else '') for x in thisevent['photometry'] if 'magnitude' in x]
+        else (float(x['e_time']) if 'e_time' in x else 0.) for x in thisevent['photometry'] if photo_cut(x)]
+    photoAB += [float(x['magnitude'] + str(0*randint(0,9)) if '.' in x['magnitude'] else x['magnitude'] + '.' +
+        str(0*randint(0,9))) - distmod for x in thisevent['photometry'] if photo_cut(x)]
+    photoABerrs += [(float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in thisevent['photometry'] if photo_cut(x)]
+    photoband += [(x['band'] if 'band' in x else '') for x in thisevent['photometry'] if photo_cut(x)]
+    photoinstru += [(x['instrument'] if 'instrument' in x else '') for x in thisevent['photometry'] if photo_cut(x)]
     photoevent += [thisevent['name'] for x in prange]
-    phototype += [(x['upperlimit'] if 'upperlimit' in x else False) for x in thisevent['photometry'] if 'magnitude' in x]
+    phototype += [(x['upperlimit'] if 'upperlimit' in x else False) for x in thisevent['photometry'] if photo_cut(x)]
 
 bandset = set(photoband)
 bandset = [i for (j, i) in sorted(list(zip(list(map(bandaliasf, bandset)), bandset)))]
