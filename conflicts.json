@@ -953,7 +953,7 @@
 				"source":"1,2,4,6,5,7,8,10"
 			}
 		],
-		"edit":false,
+		"edit":true,
 		"quantity":"redshift",
 		"difference":"3.054",
 		"values":[
@@ -1599,7 +1599,7 @@
 				"source":"1,3,5,4,6"
 			}
 		],
-		"edit":false,
+		"edit":true,
 		"quantity":"redshift",
 		"difference":"9.0",
 		"values":[
@@ -13153,7 +13153,7 @@
 		"alias":[
 			{
 				"value":"AT2016amv",
-				"source":"1,4"
+				"source":"1,4,3"
 			},
 			{
 				"value":"PS16anl",
@@ -13205,7 +13205,7 @@
 		"alias":[
 			{
 				"value":"AT2016amv",
-				"source":"1,4"
+				"source":"1,4,3"
 			},
 			{
 				"value":"PS16anl",
@@ -14518,7 +14518,7 @@
 				"source":"2,1,3,5"
 			}
 		],
-		"edit":false,
+		"edit":true,
 		"quantity":"redshift",
 		"difference":"0.9074",
 		"values":[
@@ -14626,7 +14626,7 @@
 				"source":"1"
 			}
 		],
-		"edit":false,
+		"edit":true,
 		"quantity":"redshift",
 		"difference":"3.944",
 		"values":[

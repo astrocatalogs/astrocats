@@ -104,7 +104,6 @@ travislimit = 10
 
 eventnames = []
 events = OrderedDict()
-currenttask = ''
 
 warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
@@ -1351,6 +1350,8 @@ def delete_old_event_files():
 def write_all_events(empty = False, gz = False, bury = False):
     # Write it all out!
     for name in events:
+        if '.json' in name:
+            sys.exit(1)
         if 'stub' in events[name]:
             if not empty:
                 continue
@@ -1956,7 +1957,6 @@ for task in tasks:
         journal_events()
     
         # 2014ApJ...795...44R
-        restpositionerrors = ['SN2010fl']
         result = Vizier.get_catalogs("J/ApJ/795/44/ps1_snIa")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
@@ -1968,9 +1968,8 @@ for task in tasks:
             astrot = astrotime(row['tdisc'], format='mjd').datetime
             add_quantity(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
             add_quantity(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
-            if name not in restpositionerrors:
-                add_quantity(name, 'ra', row['RAJ2000'], source)
-                add_quantity(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
             add_quantity(name, 'claimedtype', 'Ia', source)
     
         result = Vizier.get_catalogs("J/ApJ/795/44/table6")
@@ -3470,7 +3469,6 @@ for task in tasks:
     
     # Import ITEP
     if do_task(task, 'itep'): 
-        itepphotometryerrors = ['SN1995N']
         itepbadsources = ['2004ApJ...602..571B']
     
         needsbib = []
@@ -3508,7 +3506,7 @@ for task in tasks:
                 needsbib.append(reference)
                 source = add_source(name, reference = reference) if reference else ''
     
-            if name not in itepphotometryerrors and bibcode not in itepbadsources:
+            if bibcode not in itepbadsources:
                 add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = secondarysource + ',' + source)
         f.close()
         
@@ -3520,7 +3518,6 @@ for task in tasks:
     
     # Now import the Asiago catalog
     if do_task(task, 'asiago'): 
-        asiagopositionerrors = ['SN2011in', 'SN2012ac', 'SN2012at', 'SN2013bz']
         #response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
         path = os.path.abspath('../sne-external/asiago-cat.php')
         response = urllib.request.urlopen('file://' + path)
@@ -3604,9 +3601,9 @@ for task in tasks:
                     add_quantity(name, 'hostra', hostra, source, unit = 'nospace')
                 if (hostdec != ''):
                     add_quantity(name, 'hostdec', hostdec, source, unit = 'nospace')
-                if (ra != '' and name not in asiagopositionerrors):
+                if (ra != ''):
                     add_quantity(name, 'ra', ra, source, unit = 'nospace')
-                if (dec != '' and name not in asiagopositionerrors):
+                if (dec != ''):
                     add_quantity(name, 'dec', dec, source, unit = 'nospace')
                 if (discoverer != ''):
                     add_quantity(name, 'discoverer', discoverer, source)
@@ -3750,12 +3747,6 @@ for task in tasks:
         rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html', 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
         rochesterupdate = [False, True]
     
-        # These are known to be in error on the Rochester page, so ignore them.
-        rochesterredshifterrors = ['LSQ12bgl','LSQ12axx']
-        rochesterphotometryerrors = ['SNF20080514-002','SN1998ev']
-        rochestertypeerrors = ['SN1054A']
-        rochestercoordinateerrors = ['MASTER OT J095321.02+202721.2', 'SN1996D', 'SN1998ew', 'SN2003an']
-    
         for p, path in enumerate(tq(rochesterpaths)):
             if args.update and not rochesterupdate[p]:
                 continue
@@ -3816,22 +3807,21 @@ for task in tasks:
                         aka = aka.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
                     add_quantity(name, 'alias', aka, source)
     
-                if str(cols[1].contents[0]).strip() != 'unk' and name not in rochestertypeerrors:
+                if str(cols[1].contents[0]).strip() != 'unk':
                     add_quantity(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
                 if str(cols[2].contents[0]).strip() != 'anonymous':
                     add_quantity(name, 'host', str(cols[2].contents[0]).strip(), sources)
-                if name not in rochestercoordinateerrors:
-                    add_quantity(name, 'ra', str(cols[3].contents[0]).strip(), sources)
-                    add_quantity(name, 'dec', str(cols[4].contents[0]).strip(), sources)
+                add_quantity(name, 'ra', str(cols[3].contents[0]).strip(), sources)
+                add_quantity(name, 'dec', str(cols[4].contents[0]).strip(), sources)
                 if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                     astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd').datetime
                     add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
                 if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                     astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-                    if (float(str(cols[8].contents[0]).strip()) <= 90.0 and name not in rochesterphotometryerrors and
+                    if (float(str(cols[8].contents[0]).strip()) <= 90.0 and
                         not any('GRB' in x for x in get_aliases(name))):
                         add_photometry(name, time = str(astrot.mjd), magnitude = str(cols[8].contents[0]).strip(), source = sources)
-                if cols[11].contents[0] != 'n/a' and name not in rochesterredshifterrors:
+                if cols[11].contents[0] != 'n/a':
                     add_quantity(name, 'redshift', str(cols[11].contents[0]).strip(), sources)
                 add_quantity(name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
                 if args.update:
@@ -3902,7 +3892,6 @@ for task in tasks:
         basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
         oglenames = []
         ogleupdate = [True, False, False, False, False]
-        oglepositionerrors = ['OGLE-2015-SN-078']
         for b, bn in enumerate(tq(basenames)):
             if args.update and not ogleupdate[b]:
                 continue
@@ -3991,9 +3980,8 @@ for task in tasks:
                             if is_number(name[4:6]):
                                 add_quantity(name, 'discoverdate', '20' + name[4:6], sources)
     
-                    if name not in oglepositionerrors:
-                        add_quantity(name, 'ra', ra, sources)
-                        add_quantity(name, 'dec', dec, sources)
+                    add_quantity(name, 'ra', ra, sources)
+                    add_quantity(name, 'dec', dec, sources)
                     if claimedtype and claimedtype != '-':
                         add_quantity(name, 'claimedtype', claimedtype, sources)
                     elif 'SN' not in name and 'claimedtype' not in events[name]:
