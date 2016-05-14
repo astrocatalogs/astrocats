@@ -50,13 +50,18 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     if 'ra' in thisevent and 'dec' in thisevent:
         if 'claimedtype' in thisevent and thisevent['claimedtype']:
-            thistype = thisevent['claimedtype'][0]['value'].replace('?', '').replace('*', '')
-            if thistype in ('', 'QSO', 'AGN', 'Nova', 'Galaxy', 'CV'):
-                continue
-            elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate'):
-                sntypes.append('Unknown')
-            else:
-                sntypes.append(thistype)
+            for ct in [x['value'] for x in thisevent['claimedtype']]:
+                thistype = ct.replace('?', '').replace('*', '')
+                nonsnetypes = [x.lower() for x in ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
+                               'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star']]
+                if thistype.lower() in nonsnetypes:
+                    continue
+                elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate', 'nIa'):
+                    sntypes.append('Unknown')
+                    break
+                else:
+                    sntypes.append(thistype)
+                    break
         else:
             sntypes.append('Unknown')
 
@@ -89,8 +94,8 @@ tt = [
 hover = HoverTool(tooltips = tt)
 
 p1 = Figure(title='Supernova Positions', x_axis_label='Right Ascension (deg)',
-    y_axis_label='Declination (deg)', tools = tools, plot_width = 980, plot_height = 563, #responsive = True,
-    x_range = (-1.05*(2.0**1.5), 1.3*2.0**1.5), y_range = (-1.5*sqrt(2.0), 1.2*sqrt(2.0)),
+    y_axis_label='Declination (deg)', tools = tools, plot_width = 980, plot_height = 720, #responsive = True,
+    x_range = (-1.05*(2.0**1.5), 1.3*2.0**1.5), y_range = (-2.0*sqrt(2.0), 1.2*sqrt(2.0)),
     title_text_font_size='20pt', min_border_bottom = 0, min_border_left = 0, min_border = 0)
 p1.axis.visible = None
 p1.outline_line_color = None

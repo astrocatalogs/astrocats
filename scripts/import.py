@@ -59,7 +59,7 @@ tasks = OrderedDict([
     ("donations",       {"nicename":"%pre donations",               "update": False}),
     ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
     ("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    ("ascii",           {"nicename":"%pre ASCII",                   "update": True}),
+    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
     ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
     ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
     ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
@@ -886,7 +886,7 @@ def load_cached_url(url, filepath, timeout = 120, write = True):
     filemd5 = ''
     filetxt = ''
     if not args.refresh and os.path.isfile(filepath):
-        with open(filepath, 'r') as f:
+        with codecs.open(filepath, 'r', encoding='utf8') as f:
             filetxt = f.read()
             if args.update:
                 filemd5 = md5(filetxt.encode('utf-8')).hexdigest()
@@ -896,14 +896,15 @@ def load_cached_url(url, filepath, timeout = 120, write = True):
         response = session.get(url, timeout = timeout)
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
+        #tprint(filemd5 + ":" + newmd5)
         if args.update and newmd5 == filemd5:
-            tprint('Skipping file in "' + currenttask + '," local and remote copies identical.')
+            tprint('Skipping file in "' + currenttask + '," local and remote copies identical [' + newmd5 + '].')
             return False
     except:
         return filetxt
     else:
         if write:
-            with open(filepath, 'w') as f:
+            with codecs.open(filepath, 'w', encoding='utf8') as f:
                 f.write(txt)
     return txt
 
@@ -1630,7 +1631,7 @@ def load_stubs():
     #except:
     #    events = OrderedDict()
     for fi in tq(files):
-        name = os.path.basename(os.path.splitext(fi)[0])
+        name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         name = add_event(name, delete = False, loadifempty = False)
         events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
 
@@ -4054,6 +4055,8 @@ for task in tasks:
                 offline = True
     
         if offline:
+            if args.update:
+                continue
             warnings.warn("Pan-STARRS 3pi offline, using local files only.")
             with open(fname, 'r') as f:
                 html = f.read()
@@ -5313,7 +5316,7 @@ for task in tasks:
 
 if args.update and not len(events):
     tprint('No sources changed, event files unchanged in update.')
-    sys.exit()
+    sys.exit(1)
 
 merge_duplicates()
 set_preferred_names()
@@ -5335,7 +5338,7 @@ else:
 
 for fi in tqdm(files, desc = 'Sanitizing and deriving quantities for events'):
     events = OrderedDict()
-    name = os.path.basename(os.path.splitext(fi)[0])
+    name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
     name = add_event(name, loadifempty = False)
     derive_and_sanitize()
     if has_task('writeevents'): 
@@ -5349,3 +5352,5 @@ with codecs.open('../extinctions.json', 'w', encoding='utf8') as f:
     f.write(jsonstring)
 
 print("Memory used (MBs on Mac, GBs on Linux): " + "{:,}".format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
+
+sys.exit(0)
