@@ -640,14 +640,14 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
     events[name].setdefault('spectra',[]).append(spectrumentry)
 
 def is_erroneous(name, field, sources):
-    if 'error' in events[name]:
+    if 'errors' in events[name]:
         for alias in sources.split(','):
             source = get_source_by_alias(name, alias)
             if ('bibcode' in source and source['bibcode'] in
-                [x['extra'] for x in events[name]['error'] if x['kind'] == 'bibcode' and x['value'] == field]):
+                [x['extra'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['value'] == field]):
                     return True
             if ('name' in source and source['name'] in
-                [x['extra'] for x in events[name]['error'] if x['kind'] == 'name' and x['value'] == field]):
+                [x['extra'] for x in events[name]['errors'] if x['kind'] == 'name' and x['value'] == field]):
                     return True
     return False
 
