@@ -142,7 +142,29 @@ Other single SN datasets:
 * SN2015U - http://arxiv.org/abs/1603.04866
 * SN2015bn - http://arxiv.org/abs/1603.04748
 * iPTF15dtg - http://arxiv.org/abs/1605.02491
-* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450
+* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450* 
+
+Spectra to recover that were donated to SuSpect (bad wavelength solutions, etc):
+* 2000E_20000130_3274_7356_00.dat
+* 2000E_20000131_3274_7349_00.dat
+* 2000E_20000603_3257_6994_00.dat
+* 2000E_20000604_3258_6926_00.dat
+* 2000E_20000605_3258_7040_00.dat
+* 2004aw_20040421_5227_22727_01.dat
+* 2004aw_20040421_13915_24565_00.dat
+* 2004dt_20040912_3600_9052_00.dat
+* 2007C_20070620_3005_10406_00.dat
+* 2008S_20080205_3129_8255_00.dat
+* 2008S_20080211_4953_10052_00.dat
+* 2008S_20080227_4841_10187_00.dat
+* 2008S_20080304_3340_8981_00.dat
+* 2008S_20080307_4796_9637_00.dat
+* 2008S_20080401_3496_7532_00.dat
+* 2008S_20080405_6109_6658_00.dat
+* 2008S_20080519_5215_7984_00.dat
+* 1986G_19860507_3403_5581_00.dat
+* 1986G_19860507_3403_7176_00.dat
+* 1986G_19870122_3600_9390_00.dat
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
