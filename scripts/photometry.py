@@ -69,10 +69,7 @@ bandaliases = OrderedDict([
     ("g_SDSS", "g (SDSS)"),
     ("r_SDSS", "r (SDSS)"),
     ("i_SDSS", "i (SDSS)"),
-    ("z_SDSS", "z (SDSS)"),
-    ("M2"  , "M2 (UVOT)"),
-    ("W1"  , "W1 (UVOT)"),
-    ("W2"  , "W2 (UVOT)")
+    ("z_SDSS", "z (SDSS)")
 ])
 
 bandshortaliases = OrderedDict([

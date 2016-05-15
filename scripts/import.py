@@ -1428,7 +1428,7 @@ def copy_to_event(fromname, destname):
                 newsourcealiases[source['alias']] = add_source(destname, bibcode = source['bibcode'])
             else:
                 newsourcealiases[source['alias']] = (add_source(destname,
-                    reference = source['name'] if 'name' in source else '',
+                    refname = source['name'] if 'name' in source else '',
                     url = source['url'] if 'url' in source else ''))
 
     for key in keys:
