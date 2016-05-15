@@ -165,6 +165,8 @@ Spectra to recover that were donated to SuSpect (bad wavelength solutions, etc):
 * 1986G_19860507_3403_5581_00.dat
 * 1986G_19860507_3403_7176_00.dat
 * 1986G_19870122_3600_9390_00.dat
+* 1997br_19970508_3304_9979_00.dat
+* 1997cn_19970616_3249_9646_00.dat
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
