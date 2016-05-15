@@ -17,14 +17,9 @@ import shutil
 import warnings
 import statistics
 import warnings
-from photometry import *
-from tq import *
 from glob import glob
 from hashlib import md5
 from html import unescape
-from digits import *
-from repos import *
-from events import *
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
@@ -40,6 +35,11 @@ from collections import OrderedDict, Sequence
 from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
+from photometry import *
+from tq import *
+from digits import *
+from repos import *
+from events import *
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--update', '-u',       dest='update',      help='Only update catalog using live sources.',    default=False, action='store_true')
@@ -208,6 +208,8 @@ def name_clean(name):
         newname = newname.replace('MASJ', 'MASTER OT J', 1)
     if newname.startswith('PSNJ'):
         newname = newname.replace('PSNJ', 'PSN J', 1)
+    if newname.startswith('TCPJ'):
+        newname = newname.replace('TCPJ', 'TCP J', 1)
     if newname.startswith('PSN20J'):
         newname = newname.replace('PSN20J', 'PSN J', 1)
     if newname.startswith('ASASSN') and newname[6] != '-':
@@ -644,10 +646,10 @@ def is_erroneous(name, field, sources):
         for alias in sources.split(','):
             source = get_source_by_alias(name, alias)
             if ('bibcode' in source and source['bibcode'] in
-                [x['extra'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['value'] == field]):
+                [x['value'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['extra'] == field]):
                     return True
             if ('name' in source and source['name'] in
-                [x['extra'] for x in events[name]['errors'] if x['kind'] == 'name' and x['value'] == field]):
+                [x['value'] for x in events[name]['errors'] if x['kind'] == 'name' and x['extra'] == field]):
                     return True
     return False
 
@@ -5021,7 +5023,7 @@ for task in tasks:
             if spectrum["DiscDate"]:
                 add_quantity(name, 'discoverdate', spectrum["DiscDate"].replace('-', '/'), sources)
             if spectrum["HostName"]:
-                add_quantity(name, 'host', spectrum["HostName"], sources)
+                add_quantity(name, 'host', urllib.parse.unquote(spectrum["HostName"]).replace('*', ''), sources)
             if spectrum["UT_Date"]:
                 epoch = str(spectrum["UT_Date"])
                 year = epoch[:4]

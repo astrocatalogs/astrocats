@@ -273,6 +273,10 @@ def event_filename(name):
 
 coldict = dict(list(zip(list(range(len(columnkey))),columnkey)))
 
+def touch(fname, times=None):
+    with open(fname, 'a'):
+        os.utime(fname, times)
+
 def utf8(x):
     return str(x, 'utf-8')
 
@@ -295,6 +299,13 @@ def get_first_value(name, field):
 def get_first_kind(name, field):
     return (catalog[name][field][0]['kind'] if field in catalog[name] and
         catalog[name][field] and 'kind' in catalog[name][field][0] else '')
+
+def md5file(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 catalog = OrderedDict()
 catalogcopy = OrderedDict()
@@ -324,7 +335,6 @@ else:
 files = repo_file_list(bones = False)
 
 md5s = []
-md5 = hashlib.md5
 if os.path.isfile(outdir + 'md5s.json'):
     with open(outdir + 'md5s.json', 'r') as f:
         filetext = f.read()
@@ -342,7 +352,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     if args.travis and fcnt >= travislimit:
         break
 
-    checksum = md5(open(eventfile, 'rb').read()).hexdigest()
+    checksum = md5file(eventfile)
     md5s.append([eventfile, checksum])
 
     filetext = get_event_text(eventfile)
@@ -1478,18 +1488,21 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Sources of data</h3><table class="event-table"><tr><th width=30px class="event-cell">ID</th><th class="event-cell">Source</th></tr>\n'
             for source in catalog[entry]['sources']:
                 url = ''
-                if 'url' in source:
-                    url = source['url']
-                elif 'bibcode' in source:
+                if 'bibcode' in source:
                     url = 'http://adsabs.harvard.edu/abs/' + source['bibcode']
+
+                alturl = ''
+                if 'url' in source:
+                    alturl = source['url']
 
                 hasurlnobib = ('url' in source and 'bibcode' not in source)
                 newhtml = (newhtml + r'<tr><td class="event-cell" id="source' + source['alias'] + '">' + source['alias'] +
-                    r'</td><td width=250px class="event-cell">' + (('<a href="' + source['url'] + '">') if hasurlnobib else '') +
+                    r'</td><td width=250px class="event-cell">' + (('<a href="' + alturl + '">') if hasurlnobib else '') +
                     source['name'].encode('ascii', 'xmlcharrefreplace').decode("utf-8") +
                     (r'</a>' if hasurlnobib else '') +
-                    ((r'<br>\n' + (('<a href="' + url + '">') if url else '') + source['bibcode'] +
-                    (r'</a>' if url else '')) if 'bibcode' in source and source['name'] != source['bibcode'] else '') +
+                    ((r'<br>\n[' + (('<a href="' + url + '">') if url else '') + source['bibcode'] +
+                    (r'</a>' if url else '') + ']') if 'bibcode' in source and source['name'] != source['bibcode'] else '') +
+                    ((r'<br><a href="' + alturl + '">' + 'Source webpage</a>\n') if alturl and not hasurlnobib else '') +
                     r'</td></tr>\n')
             newhtml = newhtml + r'</table><em>Sources are presented in order of importation, not in order of importance.</em></div>\n'
 
@@ -1501,7 +1514,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
 
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
-        with open(outdir + fileeventname + ".html", "w") as fff:
+        with gzip.open(outdir + fileeventname + ".html.gz", 'wt') as fff:
+            touch(outdir + fileeventname + ".html")
             fff.write(html)
 
     # Necessary to clear Bokeh state
@@ -1609,15 +1623,15 @@ if args.writecatalog and not args.eventlist:
         csvout.writerow(['Has spectra only', sum(sponly)])
         csvout.writerow(['No light curve or spectra', sum(lcspno)])
 
-    with open(outdir + 'hasphoto.html' + testsuffix, 'w') as f:
+    with open(outdir + 'info-snippets/hasphoto.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(sum(hasalc)))
-    with open(outdir + 'hasspectra.html' + testsuffix, 'w') as f:
+    with open(outdir + 'info-snippets/hasspectra.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(sum(hasasp)))
-    with open(outdir + 'snecount.html' + testsuffix, 'w') as f:
+    with open(outdir + 'info-snippets/snecount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(len(catalog)))
-    with open(outdir + 'photocount.html' + testsuffix, 'w') as f:
+    with open(outdir + 'info-snippets/photocount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(totalphoto))
-    with open(outdir + 'spectracount.html' + testsuffix, 'w') as f:
+    with open(outdir + 'info-snippets/spectracount.html' + testsuffix, 'w') as f:
         f.write("{:,}".format(totalspectra))
 
     ctypedict = dict()
@@ -1665,7 +1679,7 @@ if args.writecatalog and not args.eventlist:
     with open(outdir + 'catalog.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
-    with open(outdir + 'catalog.html' + testsuffix, 'w') as f:
+    with open(outdir + 'table-templates/catalog.html' + testsuffix, 'w') as f:
         f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
         f.write('\t<thead>\n')
         f.write('\t\t<tr>\n')
@@ -1692,7 +1706,7 @@ if args.writecatalog and not args.eventlist:
         f.write(jsonstring)
 
     safefiles = [os.path.basename(x) for x in files]
-    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json',
+    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json', 'errata.json',
         'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json']
 
     for myfile in glob('../*.json'):
