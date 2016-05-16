@@ -335,25 +335,27 @@ def add_source(name, refname = '', reference = '', url = '', bibcode = '', secon
 
         refname = bibcode
 
-    refname = refname.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
-    refname = refname.replace('CBET', 'CBET ')
-    refname = refname.replace('IAUC', 'IAUC ')
-    refname = ' '.join(refname.split())
 
-    if refname.startswith('ATel ') and not bibcode:
+    if refname.upper().startswith('ATEL') and not bibcode:
+        refname = refname.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
+        refname = ' '.join(refname.split())
         atelnum = refname.split()[-1]
         if is_number(atelnum) and atelnum in atelsdict:
             bibcode = atelsdict[atelnum]
 
-    if refname.startswith('CBET ') and not bibcode:
+    if refname.upper().startswith('CBET ') and not bibcode:
+        refname = refname.replace('CBET', 'CBET ')
+        refname = ' '.join(refname.split())
         cbetnum = refname.split()[-1]
         if is_number(cbetnum) and cbetnum in cbetsdict:
             bibcode = cbetsdict[cbetnum]
 
-    if refname.startswith('IAUC ') and not bibcode:
-        cbetnum = refname.split()[-1]
-        if is_number(cbetnum) and cbetnum in iaucsdict:
-            bibcode = iaucsdict[cbetnum]
+    if refname.upper().startswith('IAUC ') and not bibcode:
+        refname = refname.replace('IAUC', 'IAUC ')
+        refname = ' '.join(refname.split())
+        iaucnum = refname.split()[-1]
+        if is_number(iaucnum) and iaucnum in iaucsdict:
+            bibcode = iaucsdict[iaucnum]
 
     if 'sources' not in events[name] or (refname not in [x['name'] for x in events[name]['sources']] and
         (not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']])):
@@ -1168,7 +1170,8 @@ def derive_and_sanitize():
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
                         discoverdate = '/'.join(['20' + alias.replace(prefix, '')[:2],
                             alias.replace(prefix, '')[2:4], alias.replace(prefix, '')[4:6]])
-                        print ('Added discoverdate from name: ' + discoverdate)
+                        if args.verbose:
+                            tprint ('Added discoverdate from name: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
@@ -1180,7 +1183,8 @@ def derive_and_sanitize():
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
-                        print ('Added discoverdate from name: ' + discoverdate)
+                        if args.verbose:
+                            tprint ('Added discoverdate from name: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
@@ -1193,7 +1197,8 @@ def derive_and_sanitize():
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]):
                         discoverdate = '/'.join([alias.replace(prefix, '')[:4],
                             alias.replace(prefix, '')[4:6], alias.replace(prefix, '')[6:8]])
-                        print ('Added discoverdate from name: ' + discoverdate)
+                        if args.verbose:
+                            tprint ('Added discoverdate from name: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
@@ -1205,7 +1210,8 @@ def derive_and_sanitize():
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]):
                         discoverdate = alias.replace(prefix, '')[:4]
-                        print ('Added discoverdate from name: ' + discoverdate)
+                        if args.verbose:
+                            tprint ('Added discoverdate from name: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
@@ -1226,7 +1232,8 @@ def derive_and_sanitize():
                         decstr = nops[1]
                         ra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '') 
                         dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
-                        print ('Added ra/dec from name: ' + ra + ' ' + dec)
+                        if args.verbose:
+                            tprint ('Added ra/dec from name: ' + ra + ' ' + dec)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'ra', ra, source)
                         add_quantity(name, 'dec', ra, source)
@@ -1337,8 +1344,8 @@ def derive_and_sanitize():
             for source in events[name]['sources']:
                 if 'bibcode' in source and source['bibcode'] in bibauthordict and bibauthordict[source['bibcode']]:
                     source['reference'] = bibauthordict[source['bibcode']]
-                    if 'name' not in source and source['reference']:
-                        source['name'] = source['reference']
+                    if 'name' not in source and source['bibcode']:
+                        source['name'] = source['bibcode']
         if 'redshift' in events[name]:
             events[name]['redshift'] = list(sorted(events[name]['redshift'], key=lambda key: frame_priority(key)))
         if 'velocity' in events[name]:
@@ -1424,12 +1431,11 @@ def copy_to_event(fromname, destname):
 
     if 'sources' in events[fromname]:
         for source in events[fromname]['sources']:
-            if 'bibcode' in source:
-                newsourcealiases[source['alias']] = add_source(destname, bibcode = source['bibcode'])
-            else:
-                newsourcealiases[source['alias']] = (add_source(destname,
-                    refname = source['name'] if 'name' in source else '',
-                    url = source['url'] if 'url' in source else ''))
+            newsourcealiases[source['alias']] = (add_source(destname,
+                bibcode = source['bibcode'] if 'bibcode' in source else '',
+                refname = source['name'] if 'name' in source else '',
+                reference = source['reference'] if 'reference' in source else '',
+                url = source['url'] if 'url' in source else ''))
 
     for key in keys:
         if key not in ['name', 'sources']:
