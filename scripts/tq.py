@@ -1,9 +1,6 @@
 from tqdm import tqdm, trange
 
-currenttask = ''
-
-def tq(li, leave = True):
-    global currenttask
+def tq(li, currenttask, leave = True):
     return tqdm(list(li), desc = currenttask, leave = leave)
 
 def tprint(string):

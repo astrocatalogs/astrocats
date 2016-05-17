@@ -527,7 +527,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             else (float(x['e_magnitude']) if 'e_magnitude' in x else 0.) for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoband = [(x['band'] if 'band' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
         photoinstru = [(x['instrument'] if 'instrument' in x else '') for x in catalog[entry]['photometry'] if 'magnitude' in x]
-        photosource = [', '.join(str(j) for j in sorted(int(i) for i in catalog[entry]['photometry'][x]['source'].split(','))) for x in prange]
+        photosource = [', '.join(str(j) for j in sorted(int(i) for i in x['source'].split(',')))
+            for x in catalog[entry]['photometry'] if 'magnitude' in x]
         phototype = [(x['upperlimit'] if 'upperlimit' in x else False) for x in catalog[entry]['photometry'] if 'magnitude' in x]
 
         hastimeerrs = (len(list(filter(None, phototimelowererrs))) and len(list(filter(None, phototimeuppererrs))))
