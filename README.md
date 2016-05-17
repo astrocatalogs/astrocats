@@ -19,3 +19,9 @@ To contribute data to the repository, please read our [contribution guide](https
 ## Format of Data Files ##
 
 The data files are in [JSON format](http://www.json.org/), a detailed description of the particular structure we have chosen is available [here](https://github.com/astrocatalogs/sne/blob/master/OSC-JSON-format.md).
+
+## Installing and Running OSC Import Script ##
+
+If you are interested in reproducing the catalog on your own machine, installation can be done by following the `install:` subsection in the [.travis.yml](https://github.com/astrocatalogs/sne/blob/master/.travis.yml) file, which installs all required modules via pip and clones all required input repositories. The OSC software is run in Python 3.5 and is not tested for compatability with Python 2. 
+
+After installing, navigate to the scripts folder and execute the import script, `./import.py`, and the import process will begin. The first time you run the import may take over a day as the caches of many sources will need to be built from scratch (particularly the host images); typical run time for the import is a few hours, and in update mode (`./import.py -u`), typical runtime is less than an hour. Runtime can be reduced significantly by commenting out tasks in the task array near the top of the `import.py` file; the slowest import steps tend to be spectra imports so if you're just interested in testing you may want to comment these tasks out first.
