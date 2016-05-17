@@ -24,9 +24,10 @@ The data files are in [JSON format](http://www.json.org/), a detailed descriptio
 
 If you are interested in reproducing the catalog on your own machine, installation can be done by following the `install:` subsection in the [.travis.yml](https://github.com/astrocatalogs/sne/blob/master/.travis.yml) file, which installs all required modules via pip and clones all required input repositories. The OSC software is run in Python 3.5 and is not tested for compatability with Python 2. 
 
-After installing, navigate to the [scripts](https://github.com/astrocatalogs/sne/blob/master/scripts) folder and execute the import script
+After installing, navigate to the [scripts](https://github.com/astrocatalogs/sne/blob/master/scripts) folder and execute the import script,
 
 ```shell
+cd scripts
 ./import.py
 ```
 
