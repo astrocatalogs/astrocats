@@ -32,3 +32,7 @@ cd scripts
 ```
 
 and the import process will begin. The first time you run the import may take over a day as the caches of many sources will need to be built from scratch (particularly the host images); typical run time for the import is a few hours, and in update mode (`./import.py -u`), typical runtime is less than an hour. Runtime can be reduced significantly by commenting out tasks in the task array near the top of the `import.py` file; the slowest import steps tend to be spectra imports so if you're just interested in testing you may want to comment these tasks out first.
+
+## Using the Collected OSC Data ##
+
+There are several scripts in the [scripts](https://github.com/astrocatalogs/sne/blob/master/scripts) folder that use the produced datafiles to generate various data products, print out metrics, etc. The first command you should probably run is [repo-status.sh](https://github.com/astrocatalogs/sne/blob/master/scripts/repo-status.sh), which will highlight changes in the output JSON files relative to the last pushed changes to these files. If the import ran successfully, these changes should be minimal and only consist of the most recent supernovae. Changes to the output repositories can be reverted by running the [reset-repos.sh](https://github.com/astrocatalogs/sne/blob/master/scripts/reset-repos.sh) script. Don't be afraid to play around with the data!
