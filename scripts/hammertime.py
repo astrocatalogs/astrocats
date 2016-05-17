@@ -39,7 +39,7 @@ shuffle(colors)
 
 files = repo_file_list(bones = False)
 
-for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
+for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()), "Collecting positions")):
     #if fcnt > 20:
     #    break
 

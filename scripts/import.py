@@ -1238,7 +1238,7 @@ def derive_and_sanitize():
                             tprint ('Added ra/dec from name: ' + ra + ' ' + dec)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'ra', ra, source)
-                        add_quantity(name, 'dec', ra, source)
+                        add_quantity(name, 'dec', dec, source)
                         break
                 if 'ra' in events[name]:
                     break
