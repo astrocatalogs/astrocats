@@ -47,6 +47,7 @@ parser.add_argument('--verbose', '-v',      dest='verbose',     help='Print more
 parser.add_argument('--refresh', '-r',      dest='refresh',     help='Ignore most task caches.',                   default=False, action='store_true')
 parser.add_argument('--full-refresh', '-f', dest='fullrefresh', help='Ignore all task caches.',                    default=False, action='store_true')
 parser.add_argument('--travis', '-tr',      dest='travis',      help='Run import script in test mode for Travis.', default=False, action='store_true')
+parser.add_argument('--refreshlist', '-rl', dest='refreshlist', help='Comma-delimited list of caches to clear.',   default='')
 args = parser.parse_args()
 
 tasks = OrderedDict([
@@ -86,7 +87,7 @@ tasks = OrderedDict([
     ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
     ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
     ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True, "archived": True}),
+    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
     ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
     ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
     ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
@@ -154,7 +155,7 @@ maxbands = [
 ]
 
 def uniq_cdl(values):
-    return ','.join(list(set(values)))
+    return ','.join(list(OrderedDict.fromkeys(values).keys()))
 
 def event_attr_priority(attr):
     if attr == 'photometry':
@@ -1613,6 +1614,11 @@ def clean_event(dirtyevent):
 
 def has_task(task):
     return task in tasks and (not args.update or tasks[task]['update'])
+
+def archived_task(task):
+    if 'archived' in tasks[task] and tasks[task]['archived'] and task not in args.refreshlist.split(','):
+        return True
+    return False
 
 def do_task(checktask, task, quiet = False):
     global currenttask
@@ -3095,7 +3101,7 @@ for task in tasks:
                                 add_photometry(name, time = mjd, band = band, magnitude = row[2*b + 1].strip('>'),
                                     e_magnitude = row[2*b + 2], upperlimit = (not row[2*b + 2]), source = source)
     
-        if tasks['cccp']['archived']:
+        if archived_task('cccp'):
             with open('../sne-external/CCCP/sc_cccp.html', 'r') as f:
                 html = f.read()
         else:
@@ -3113,7 +3119,7 @@ for task in tasks:
                 source = add_source(name, refname = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
                 add_quantity(name, 'alias', name, source)
     
-                if tasks['cccp']['archived']:
+                if archived_task('cccp'):
                     with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
                         html2 = f.read()
                 else:
@@ -3127,7 +3133,7 @@ for task in tasks:
                 for link2 in links2:
                     if ".txt" in link2['href'] and '_' in link2['href']:
                         band = link2['href'].split('_')[1].split('.')[0].upper()
-                        if tasks['cccp']['archived']:
+                        if archived_task('cccp'):
                             fname = '../sne-external/CCCP/' + link2['href'].split('/')[-1]
                             if not os.path.isfile(fname):
                                 continue
@@ -3446,7 +3452,7 @@ for task in tasks:
                         break
     
             fname = '../sne-external/GAIA/' + row[0] + '.csv'
-            if not args.fullrefresh and tasks['gaia']['archived'] and os.path.isfile(fname):
+            if not args.fullrefresh and archived_task('gaia') and os.path.isfile(fname):
                 with open(fname, 'r') as f:
                     csvtxt = f.read()
             else:
@@ -3738,7 +3744,7 @@ for task in tasks:
     
         for page in tq(range(maxpages), currenttask):
             fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.csv'
-            if tasks['tns']['archived'] and os.path.isfile(fname) and page != maxpages:
+            if archived_task('tns') and os.path.isfile(fname) and page != maxpages:
                 with open(fname, 'r') as f:
                     csvtxt = f.read()
             else:
@@ -3838,10 +3844,9 @@ for task in tasks:
                 refurl = cols[12].findAll('a')[0]['href'].strip()
                 source = add_source(name, refname = reference, url = refurl)
                 secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
-                add_quantity(name, 'alias', name, secondarysource)
                 sources = uniq_cdl(list(filter(None, [source, secondarysource])))
-    
-                add_quantity(name, 'alias', sn, source)
+                add_quantity(name, 'alias', name, sources)
+                add_quantity(name, 'alias', sn, sources)
     
                 if cols[14].contents:
                     if aka == 'SNR G1.9+0.3':
@@ -3850,7 +3855,7 @@ for task in tasks:
                         aka = 'PS1-' + aka[4:]
                     if aka[:8] == 'MASTER J':
                         aka = aka.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
-                    add_quantity(name, 'alias', aka, source)
+                    add_quantity(name, 'alias', aka, sources)
     
                 if str(cols[1].contents[0]).strip() != 'unk':
                     add_quantity(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
@@ -4001,7 +4006,7 @@ for task in tasks:
                     dec = radec[1]
     
                     fname = '../sne-external/OGLE/' + datafnames[ec]
-                    if not args.fullrefresh and tasks['ogle']['archived'] and os.path.isfile(fname):
+                    if not args.fullrefresh and archived_task('ogle') and os.path.isfile(fname):
                         with open(fname, 'r') as f:
                             csvtxt = f.read()
                     else:
@@ -4104,7 +4109,7 @@ for task in tasks:
         oldnumpages = len(glob('../sne-external/3pi/page*'))
         for page in tq(range(1,numpages), currenttask):
             fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
-            if not args.fullrefresh and tasks['psthreepi']['archived'] and os.path.isfile(fname) and page < oldnumpages:
+            if not args.fullrefresh and archived_task('psthreepi') and os.path.isfile(fname) and page < oldnumpages:
                 with open(fname, 'r') as f:
                     html = f.read()
             elif not offline:
@@ -4181,7 +4186,7 @@ for task in tasks:
                 add_quantity(name, 'claimedtype', ctype, source)
     
                 fname2 = '../sne-external/3pi/candidate-' + pslink.rstrip('/').split('/')[-1] + '.html'
-                if tasks['psthreepi']['archived'] and os.path.isfile(fname2):
+                if archived_task('psthreepi') and os.path.isfile(fname2):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 elif not offline:
@@ -4335,7 +4340,7 @@ for task in tasks:
                         telescope = 'Catalina Schmidt', upperlimit = hostupper)
     
                 fname2 = '../sne-external/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
-                if not args.fullrefresh and tasks['crts']['archived'] and os.path.isfile(fname2):
+                if not args.fullrefresh and archived_task('crts') and os.path.isfile(fname2):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
@@ -4494,7 +4499,7 @@ for task in tasks:
             alerturl = "http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=" + str(ai)
             source = add_source(name, refname = 'CPCS Alert ' + str(ai), url = alerturl)
             fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
-            if tasks['cpcs']['archived'] and os.path.isfile(fname):
+            if archived_task('cpcs') and os.path.isfile(fname):
                 with open(fname, 'r') as f:
                     jsonstr = f.read()
             else:
@@ -4533,7 +4538,7 @@ for task in tasks:
         #        name.startswith('PTFS') or name.startswith('iPTF')):
         #        name = add_event(name)
     
-        if tasks['ptf']['archived']:
+        if archived_task('ptf'):
             with open('../sne-external/PTF/update.html', 'r') as f:
                 html = f.read()
         else:
@@ -5091,7 +5096,7 @@ for task in tasks:
                 raise(ValueError('ID not found for SNDB spectrum!'))
     
             filepath = '../sne-external-spectra/UCB/' + filename
-            if tasks['ucbspectra']['archived'] and os.path.isfile(filepath):
+            if archived_task('ucbspectra') and os.path.isfile(filepath):
                 with open(filepath, 'r') as f:
                     spectxt = f.read()
             else:
