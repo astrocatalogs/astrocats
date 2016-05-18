@@ -2909,7 +2909,8 @@ for task in tasks:
         for fi in tq(files, currenttask):
             name = os.path.basename(fi).split('_')[0]
             name = add_event(name)
-            source = add_source(name, refname = 'Swift Supernovae', url = 'http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
+            source = add_source(name, refname = 'Swift Supernovae', bibcode = '2014Ap&SS.354...89B',
+                url = 'http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
             add_quantity(name, 'alias', name, source)
             with open(fi, 'r') as f:
                 lines = f.read().splitlines()
@@ -4047,7 +4048,8 @@ for task in tasks:
                         if e_magnitude == '-1' or float(e_magnitude) > 10.0:
                             e_magnitude = ''
                             upperlimit = True
-                        add_photometry(name, time = mjd, band = 'I', magnitude = magnitude, e_magnitude = e_magnitude, source = sources, upperlimit = upperlimit)
+                        add_photometry(name, time = mjd, band = 'I', magnitude = magnitude, e_magnitude = e_magnitude,
+                            system = 'Vega', source = sources, upperlimit = upperlimit)
                     if args.update:
                         journal_events()
             journal_events()
