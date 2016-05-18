@@ -2928,7 +2928,7 @@ for task in tasks:
                     upp = '' if not isupp else True
                     add_photometry(name, time = mjd, magnitude = mag, e_magnitude = e_mag,
                                    upperlimit = upp, band = band, source = source,
-                                   telescope = 'Swift', system = 'Swift', instrument = 'UVOT')
+                                   telescope = 'Swift', system = 'Swift', instrument = 'UVOT', system = 'Vega')
         journal_events()
     
     if do_task(task, 'pessto-dr1'):
