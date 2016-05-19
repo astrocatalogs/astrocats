@@ -1052,7 +1052,7 @@ def set_preferred_names():
                 newname = alias
                 break
         if not newname and 'discoverer' in events[name]:
-            discoverer = ','.join(x['value'].upper() for x in events[name]['discoverer'])
+            discoverer = ','.join([x['value'].upper() for x in events[name]['discoverer']])
             if 'ASAS' in discoverer:
                 for alias in aliases:
                     if 'ASASSN' in alias.upper():
@@ -1392,7 +1392,7 @@ def write_all_events(empty = False, gz = False, bury = False):
         if bury:
             buryevent = False
             nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
-                           'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star']
+                           'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star', 'Fake']
             nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
             if name.startswith(nonsneprefixes):
@@ -1680,9 +1680,9 @@ else:
 
 for task in tasks:
     if do_task(task, 'deleteoldevents'):
+        currenttask = 'Deleting old events'
         delete_old_event_files()
 
-    currenttask = 'Deleting old events.'
     # Import data provided directly to OSC
     if do_task(task, 'internal'):
         for datafile in tq(sorted(glob("../sne-internal/*.json"), key=lambda s: s.lower()), currenttask):
@@ -2929,7 +2929,42 @@ for task in tasks:
                     upp = '' if not isupp else True
                     add_photometry(name, time = mjd, magnitude = mag, e_magnitude = e_mag,
                                    upperlimit = upp, band = band, source = source,
-                                   telescope = 'Swift', system = 'Swift', instrument = 'UVOT', system = 'Vega')
+                                   telescope = 'Swift', instrument = 'UVOT', system = 'Vega')
+        journal_events()
+
+        # Nicholl 05-03-16
+        files = glob("../sne-external/nicholl-05-03-16/*.txt")
+        name = add_event('SN2015bn')
+        source = add_source(name, bibcode = '2016arXiv160304748N')
+        add_quantity(name, 'alias', name, source)
+        add_quantity(name, 'alias', 'PS15ae', source)
+        for fi in tq(files, currenttask):
+            telescope = os.path.basename(fi).split('_')[1]
+            with open(fi, 'r') as f:
+                lines = f.read().splitlines()
+                for li, line in enumerate(lines):
+                    if not line or (line[0] == '#' and li != 0):
+                        continue
+                    cols = list(filter(None, line.split()))
+                    if not cols:
+                        continue
+                    if li == 0:
+                        bands = cols[1:]
+                        continue
+
+                    mjd = cols[0]
+                    for ci, col in enumerate(cols[1::2]):
+                        if not is_number(col):
+                            continue
+
+                        emag = cols[2*ci+1]
+                        upp = ''
+                        if not is_number(emag):
+                            emag = ''
+                            upp = True
+                        add_photometry(name, time = mjd, magnitude = col, e_magnitude = emag,
+                                       upperlimit = upp, band = bands[ci], source = source,
+                                       telescope = telescope, instrument = 'UVOT' if telescope == 'Swift' else '')
         journal_events()
     
     if do_task(task, 'pessto-dr1'):
