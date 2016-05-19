@@ -2957,7 +2957,7 @@ for task in tasks:
                         if not is_number(col):
                             continue
 
-                        emag = cols[2*ci+1]
+                        emag = cols[2*ci+2]
                         upp = ''
                         if not is_number(emag):
                             emag = ''
