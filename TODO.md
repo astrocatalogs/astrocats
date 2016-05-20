@@ -109,6 +109,7 @@ Other single SN datasets:
 * SN2010ev - http://adsabs.harvard.edu/abs/2016arXiv160107863G
 * SN2010jl - http://adsabs.harvard.edu/abs/2014ApJ...797..118F, http://adsabs.harvard.edu/abs/2014ApJ...781...42O
 * SN2010mb - http://adsabs.harvard.edu/abs/2014ApJ...785...37B
+* SN2010X - http://adsabs.harvard.edu/abs/2010ApJ...723L..98K
 * PS1-10afx - http://adsabs.harvard.edu/abs/2013ApJ...767..162C
 * PS1-10bzj - http://adsabs.harvard.edu/abs/2013ApJ...771...97L
 * SN2011ay - http://adsabs.harvard.edu/abs/2015MNRAS.453.2103S
@@ -131,6 +132,7 @@ Other single SN datasets:
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D, http://adsabs.harvard.edu/abs/2015ApJ...807...59H
 * SN2013en - http://adsabs.harvard.edu/abs/2015MNRAS.452..838L
 * SN2013hx - Inserra+ 2013 in prep.?
+* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450
 * iPTF13ajg - http://iopscience.iop.org/article/10.1088/0004-637X/797/1/24/meta
 * iPTF13asv - http://adsabs.harvard.edu/abs/2016arXiv160100686C
 * iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
@@ -144,7 +146,6 @@ Other single SN datasets:
 * SN2015U - http://arxiv.org/abs/1603.04866
 * SN2015bn - http://arxiv.org/abs/1603.04748
 * iPTF15dtg - http://arxiv.org/abs/1605.02491
-* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450* 
 
 Spectra to recover that were donated to SuSpect (bad wavelength solutions, etc):
 * 2000E_20000130_3274_7356_00.dat
