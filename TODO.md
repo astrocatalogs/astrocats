@@ -1,7 +1,7 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
 Donated datasets:
-* 2016arXiv160304748N ("nicholl-05-03-16" in sne-external)
+* None to add at this time.
 
 Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (Data in text files attached to catalog)
