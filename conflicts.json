@@ -12496,14 +12496,18 @@
 		"alias":[
 			{
 				"value":"SN2014be",
-				"source":"1,2,3,4"
+				"source":"1,2,3,4,5"
+			},
+			{
+				"value":"PSN J16093512+4226304",
+				"source":"1"
 			},
 			{
 				"value":"iPTF14axw",
-				"source":"2,3"
+				"source":"3,4,2"
 			}
 		],
-		"edit":false,
+		"edit":true,
 		"quantity":"redshift",
 		"difference":"0.01389",
 		"values":[

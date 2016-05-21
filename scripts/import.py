@@ -83,6 +83,7 @@ tasks = OrderedDict([
     ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": True}),
     ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
     ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
     ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
     ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
     ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
@@ -193,7 +194,6 @@ def ct_priority(name, attr):
     vaguetypes = ['CC', 'I']
     if attr['value'] in vaguetypes:
         return -max_source_year
-    return -max_source_year
     for alias in aliases:
         if alias == 'D':
             continue
@@ -4687,6 +4687,73 @@ for task in tasks:
                             band = band, observatory = 'CTIO', telescope = 'Blanco 4m', instrument = 'DECam',
                             upperlimit = True if float(jsontxt['snr'][i]) <= 3.0 else '', source = sources)
         journal_events()
+
+    if do_task(task, 'asassn'):
+        html = load_cached_url("http://www.astronomy.ohio-state.edu/~assassin/sn_list.html", "../sne-external/ASASSN/sn_list.html")
+        if not html:
+            continue
+        bs = BeautifulSoup(html, "html5lib")
+        trs = bs.find('table').findAll('tr')
+        for tri, tr in enumerate(tq(trs, currenttask)):
+            name = ''
+            source = ''
+            ra = ''
+            dec = ''
+            redshift = ''
+            hostoff = ''
+            claimedtype = ''
+            host = ''
+            atellink = ''
+            typelink = ''
+            if tri == 0:
+                continue
+            tds = tr.findAll('td')
+            for tdi, td in enumerate(tds):
+                if tdi == 1:
+                    name = add_event(td.text.strip())
+                    atellink = td.find('a')
+                    if atellink:
+                        atellink = atellink['href']
+                    else:
+                        atellink = ''
+                if tdi == 2:
+                    discdate = td.text.replace('-', '/')
+                if tdi == 3:
+                    ra = td.text
+                if tdi == 4:
+                    dec = td.text
+                if tdi == 5:
+                    redshift = td.text
+                if tdi == 8:
+                    hostoff = td.text
+                if tdi == 9:
+                    claimedtype = td.text
+                    typelink = td.find('a')
+                    if typelink:
+                        typelink = typelink['href']
+                    else:
+                        typelink = ''
+                if tdi == 10:
+                    host = td.text
+
+            sources = [add_source(name, url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html', refname = 'ASAS-SN Supernovae')]
+            typesources = sources[:]
+            if atellink:
+                sources.append(add_source(name, refname = 'ATel ' + atellink.split('=')[-1], url = atellink))
+            if typelink:
+                typesources.append(add_source(name, refname = 'ATel ' + typelink.split('=')[-1], url = typelink))
+            sources = ','.join(sources)
+            typesources = ','.join(typesources)
+            add_quantity(name, 'alias', name, sources)
+            add_quantity(name, 'discoverdate', discdate, sources)
+            add_quantity(name, 'ra', ra, sources, unit = 'floatdegrees')
+            add_quantity(name, 'dec', dec, sources, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', redshift, sources)
+            add_quantity(name, 'hostoffset', hostoff, sources, unit = 'arcseconds')
+            for ct in claimedtype.split('/'):
+                add_quantity(name, 'claimedtype', ct, typesources)
+            add_quantity(name, 'host', host, sources)
+        journal_events()
     
     if do_task(task, 'asiagospectra'):
         html = load_cached_url("http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990", "../sne-external-spectra/Asiago/spectra.html")
@@ -5455,13 +5522,13 @@ for task in tasks:
                 lastname = name
             journal_events()
 
-    if do_task('mergeduplicates'):
+    if do_task(task, 'mergeduplicates'):
         if args.update and not len(events):
             tprint('No sources changed, event files unchanged in update.')
             sys.exit(1)
         merge_duplicates()
 
-    if do_task('setprefnames'):
+    if do_task(task, 'setprefnames'):
         set_preferred_names()
 
 files = repo_file_list()

@@ -547,8 +547,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             tt += [("Instrument", "@instr")]
         hover = HoverTool(tooltips = tt)
 
-        min_y_range = 0.5 + max([x + y for x, y in list(zip(photoAB, photoABuppererrs))])
-        max_y_range = -0.5 + min([x - y for x, y in list(zip(photoAB, photoABlowererrs))])
+        min_y_range = 0.5 + max([(x + y) if not z else x for x, y, z in list(zip(photoAB, photoABuppererrs, phototype))])
+        max_y_range = -0.5 + min([(x - y) if not z else x for x, y, z in list(zip(photoAB, photoABlowererrs, phototype))])
 
         p1 = Figure(title='Photometry for ' + eventname,
             y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
