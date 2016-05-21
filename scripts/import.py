@@ -4733,7 +4733,7 @@ for task in tasks:
                         typelink = typelink['href']
                     else:
                         typelink = ''
-                if tdi == 10:
+                if tdi == 12:
                     host = td.text
 
             sources = [add_source(name, url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html', refname = 'ASAS-SN Supernovae')]
@@ -4751,8 +4751,10 @@ for task in tasks:
             add_quantity(name, 'redshift', redshift, sources)
             add_quantity(name, 'hostoffset', hostoff, sources, unit = 'arcseconds')
             for ct in claimedtype.split('/'):
-                add_quantity(name, 'claimedtype', ct, typesources)
-            add_quantity(name, 'host', host, sources)
+                if ct != 'Unk':
+                    add_quantity(name, 'claimedtype', ct, typesources)
+            if host != 'Uncatalogued':
+                add_quantity(name, 'host', host, sources)
         journal_events()
     
     if do_task(task, 'asiagospectra'):

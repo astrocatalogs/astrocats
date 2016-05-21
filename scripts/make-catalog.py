@@ -1692,7 +1692,7 @@ if args.writecatalog and not args.eventlist:
         for h in header:
             f.write('\t\t\t<th class="' + h + '" title="' + titles[h] + '">' + header[h] + '</th>\n')
         f.write('\t\t</tr>\n')
-        f.write('\t</thead>\n')
+        f.write('\t</tfoot>\n')
         f.write('</table>\n')
 
     with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
