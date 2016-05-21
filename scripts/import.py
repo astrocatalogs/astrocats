@@ -92,7 +92,9 @@ tasks = OrderedDict([
     ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
     ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
     ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    ("writeevents",     {"nicename":"%pre writing events",          "update": True })
+    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": True }),
+    ("setprefnames",    {"nicename":"Setting preferred names",      "update": True }),
+    ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
 oscbibcode = '2016arXiv160501054G'
@@ -345,7 +347,6 @@ def add_source(name, refname = '', reference = '', url = '', bibcode = '', secon
 
         refname = bibcode
 
-
     if refname.upper().startswith('ATEL') and not bibcode:
         refname = refname.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
         refname = ' '.join(refname.split())
@@ -353,14 +354,14 @@ def add_source(name, refname = '', reference = '', url = '', bibcode = '', secon
         if is_number(atelnum) and atelnum in atelsdict:
             bibcode = atelsdict[atelnum]
 
-    if refname.upper().startswith('CBET ') and not bibcode:
+    if refname.upper().startswith('CBET') and not bibcode:
         refname = refname.replace('CBET', 'CBET ')
         refname = ' '.join(refname.split())
         cbetnum = refname.split()[-1]
         if is_number(cbetnum) and cbetnum in cbetsdict:
             bibcode = cbetsdict[cbetnum]
 
-    if refname.upper().startswith('IAUC ') and not bibcode:
+    if refname.upper().startswith('IAUC') and not bibcode:
         refname = refname.replace('IAUC', 'IAUC ')
         refname = ' '.join(refname.split())
         iaucnum = refname.split()[-1]
@@ -1111,6 +1112,7 @@ def set_preferred_names():
 
 # Merge and remove duplicate events
 def merge_duplicates():
+    currenttask = 'Merging duplicate events'
     keys = list(sorted(list(events.keys())))
     for n1, name1 in enumerate(tq(keys[:], currenttask)):
         if name1 not in events:
@@ -5453,12 +5455,14 @@ for task in tasks:
                 lastname = name
             journal_events()
 
-if args.update and not len(events):
-    tprint('No sources changed, event files unchanged in update.')
-    sys.exit(1)
+    if do_task('mergeduplicates'):
+        if args.update and not len(events):
+            tprint('No sources changed, event files unchanged in update.')
+            sys.exit(1)
+        merge_duplicates()
 
-merge_duplicates()
-set_preferred_names()
+    if do_task('setprefnames'):
+        set_preferred_names()
 
 files = repo_file_list()
 

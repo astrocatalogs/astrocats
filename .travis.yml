@@ -19,7 +19,7 @@ before_install:
     - conda update -q conda
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
-    - pip install -r scripts/requirements.txt
+    - pip install -r requirements.txt
     - git clone --depth=1 git://github.com/astrocatalogs/sne-internal.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-external.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-external-spectra.git
