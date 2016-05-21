@@ -82,6 +82,7 @@ tasks = OrderedDict([
     ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
     ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": True}),
     ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
     ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
     ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
     ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
@@ -187,6 +188,10 @@ def alias_priority(name, attr):
 def ct_priority(name, attr):
     aliases = attr['source'].split(',')
     max_source_year = -10000
+    vaguetypes = ['CC', 'I']
+    if attr['value'] in vaguetypes:
+        return -max_source_year
+    return -max_source_year
     for alias in aliases:
         if alias == 'D':
             continue
@@ -209,6 +214,8 @@ def name_clean(name):
     newname = name
     if newname.startswith('MASJ'):
         newname = newname.replace('MASJ', 'MASTER OT J', 1)
+    if newname.startswith('MASTER') and is_number(newname[7]):
+        newname = newname.replace('MASTER', 'MASTER OT J', 1)
     if newname.startswith('PSNJ'):
         newname = newname.replace('PSNJ', 'PSN J', 1)
     if newname.startswith('TCPJ'):
@@ -327,7 +334,7 @@ def snname(string):
 
     return newstring
 
-def add_source(name, refname = '', reference = '', url = '', bibcode = '', secondary = ''):
+def add_source(name, refname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
     nsources = len(events[name]['sources']) if 'sources' in events[name] else 0
     if not refname:
         if not bibcode:
@@ -371,6 +378,8 @@ def add_source(name, refname = '', reference = '', url = '', bibcode = '', secon
             newsource['reference'] = reference
         if bibcode:
             newsource['bibcode'] = bibcode
+        if acknowledgment:
+            newsource['acknowledgment'] = acknowledgment
         newsource['alias'] =  source
         if secondary:
             newsource['secondary'] = True
@@ -4625,6 +4634,56 @@ for task in tasks:
                 add_quantity(name, 'maxdate', maxdate.lstrip('<'), source, upperlimit = maxdate.startswith('<'))
                 add_quantity(name, 'ebv', cols[7], source, kind = 'spectroscopic')
                 name = add_event('PTF' + suffix)
+        journal_events()
+
+    if do_task(task, 'des'):
+        html = load_cached_url("https://portal.nersc.gov/des-sn/transients/", "../sne-external/DES/transients.html")
+        if not html:
+            continue
+        bs = BeautifulSoup(html, "html5lib")
+        trs = bs.find('tbody').findAll('tr')
+        for tri, tr in enumerate(tq(trs, currenttask)):
+            name = ''
+            source = ''
+            if tri == 0:
+                continue
+            tds = tr.findAll('td')
+            for tdi, td in enumerate(tds):
+                if tdi == 0:
+                    name = add_event(td.text.strip())
+                if tdi == 1:
+                    (ra, dec) = [x.strip() for x in td.text.split('\xa0')]
+                if tdi == 6:
+                    atellink = td.find('a')
+                    if atellink:
+                        atellink = atellink['href']
+                    else:
+                        atellink = ''
+
+            sources = [add_source(name, url = 'https://portal.nersc.gov/des-sn/', refname = 'DES Bright Transients',
+                acknowledgment = 'http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause')]
+            if atellink:
+                sources.append(add_source(name, refname = 'ATel ' + atellink.split('=')[-1], url = atellink))
+            sources += [add_source(name, bibcode = '2012ApJ...753..152B'),
+                add_source(name, bibcode = '2015AJ....150..150F'),
+                add_source(name, bibcode = '2015AJ....150...82G'),
+                add_source(name, bibcode = '2015AJ....150..172K')]
+            sources = ','.join(sources)
+            add_quantity(name, 'alias', name, sources)
+            add_quantity(name, 'ra', ra, sources)
+            add_quantity(name, 'dec', dec, sources)
+
+            html2 = load_cached_url("https://portal.nersc.gov/des-sn/transients/" + name, "../sne-external/DES/" + name + ".html")
+            if not html2:
+                continue
+            lines = html2.splitlines()
+            for line in lines:
+                if 'var data = ' in line:
+                    jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
+                    for i, band in enumerate(jsontxt['band']):
+                        add_photometry(name, time = jsontxt['mjd'][i], magnitude = jsontxt['mag'][i], e_magnitude = jsontxt['mag_error'][i],
+                            band = band, observatory = 'CTIO', telescope = 'Blanco 4m', instrument = 'DECam',
+                            upperlimit = True if float(jsontxt['snr'][i]) <= 3.0 else '', source = sources)
         journal_events()
     
     if do_task(task, 'asiagospectra'):
