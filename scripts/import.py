@@ -242,7 +242,7 @@ def name_clean(name):
         newname = newname.replace('snf', 'SNF', 1)
     if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
         prefix = newname.split('J')[0]
-        coords = newname.split('J')[-1]
+        coords = newname.split('J')[-1].strip()
         decsign = '+' if '+' in coords else '-'
         coordsplit = coords.replace('+','-').split('-')
         if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
@@ -4077,8 +4077,9 @@ for task in tasks:
                             if is_number(name[4:6]):
                                 add_quantity(name, 'discoverdate', '20' + name[4:6], sources)
     
-                    add_quantity(name, 'ra', ra, sources)
-                    add_quantity(name, 'dec', dec, sources)
+                    # RA and Dec from OGLE pages currently not reliable
+                    #add_quantity(name, 'ra', ra, sources)
+                    #add_quantity(name, 'dec', dec, sources)
                     if claimedtype and claimedtype != '-':
                         add_quantity(name, 'claimedtype', claimedtype, sources)
                     elif 'SN' not in name and 'claimedtype' not in events[name]:
