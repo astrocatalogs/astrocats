@@ -117,19 +117,20 @@ warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.
 typereps = {
     'CC':       ['CCSN'],
     'Ia':       ['Ia-norm', 'Ia- norm'],
-    'I P':      ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ia P':     ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec', 'Ia-Pec', 'Iap'],
-    'Ib P':     ['Ib pec', 'Ib-pec'],
-    'Ic P':     ['Ic pec', 'Ic-pec'],
+    'I Pec':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
+    'Ia Pec':   ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec', 'Ia-Pec', 'Iap'],
+    'Ib Pec':   ['Ib pec', 'Ib-pec'],
+    'Ic Pec':   ['Ic pec', 'Ic-pec'],
     'Ia/c':     ['Ic/Ia', 'Iac'],
     'Ib/c':     ['Ibc'],
-    'Ib/c P':   ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
-    'II P':     ['II pec', 'IIpec', 'II Pec', 'IIPec', 'IIP', 'IIp', 'II p',
-                 'II-pec', 'II P pec', 'II-P', 'II-Pec', 'IIP-pec'],
+    'Ib/c Pec': ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
+    'II P':     ['IIP', 'IIp', 'II p', 'II-P'],
+    'II Pec':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'II-pec', 'II-Pec'],
+    'II P Pec': ['IIP-pec'],
     'II L':     ['IIL'],
     'IIn':      ['II n'],
-    'IIn P':    ['IIn pec', 'IIn-pec'],
-    'IIb P':    ['IIb-pec', 'IIb: pec', 'IIb pec'],
+    'IIn Pec':  ['IIn pec', 'IIn-pec'],
+    'IIb Pec':  ['IIb-pec', 'IIb: pec', 'IIb pec'],
     'nIa':      ['nIa'],
     'Ia CSM':   ['Ia-CSM', 'Ia-csm', 'Ia-csm'],
     'SLSN-Ic':  ['SLSN Ic', 'SL-Ic'],
@@ -418,8 +419,8 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if (not upperlimit and ((e_magnitude and not is_number(e_magnitude)) or (flux and not is_number(e_flux)) or
-        (fluxdensity and not is_number(e_fluxdensity)) or (counts and not is_number(e_counts)))):
+    if (not upperlimit and ((e_magnitude and not is_number(e_magnitude)) or (e_flux and not is_number(e_flux)) or
+        (e_fluxdensity and not is_number(e_fluxdensity)) or (e_counts and not is_number(e_counts)))):
         warnings.warn('Brightness error not numerical, not adding.')
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB error: "' + e_magnitude + '"')
         return
@@ -1379,8 +1380,6 @@ def delete_old_event_files():
 def write_all_events(empty = False, gz = False, bury = False):
     # Write it all out!
     for name in events:
-        if '.json' in name:
-            sys.exit(1)
         if 'stub' in events[name]:
             if not empty:
                 continue
@@ -1666,7 +1665,13 @@ def load_stubs():
     #except:
     #    events = OrderedDict()
     for fi in tq(files, currenttask):
-        name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
+        fname = fi
+        if '.gz' in fi:
+            fname = fi.replace('.gz', '')
+            with gzip.open(fi, 'rb') as f_in, open(fname, 'wb') as f_out:
+                shutil.copyfileobj(f_in, f_out)
+            os.remove(fi)
+        name = os.path.basename(os.path.splitext(fname)[0]).replace('.json', '')
         name = add_event(name, delete = False, loadifempty = False)
         events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
 
@@ -4122,7 +4127,8 @@ for task in tasks:
                 magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
                 e_magnitude = pretty_num(2.5*log10(1.0 + float(err)/float(flux)), sig = sig)
                 #e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
-                add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+                add_photometry(name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, counts = flux,
+                    e_counts = err, source = source)
         journal_events()
     
     if do_task(task, 'psthreepi'):

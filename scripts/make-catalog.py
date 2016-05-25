@@ -393,7 +393,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
 
     photoavail = 'photometry' in catalog[entry] and any(['magnitude' in x for x in catalog[entry]['photometry']])
     radioavail = 'photometry' in catalog[entry] and any(['fluxdensity' in x for x in catalog[entry]['photometry']])
-    xrayavail = 'photometry' in catalog[entry] and any(['counts' in x for x in catalog[entry]['photometry']])
+    xrayavail = 'photometry' in catalog[entry] and any(['counts' in x and 'magnitude' not in x for x in catalog[entry]['photometry']])
     spectraavail = 'spectra' in catalog[entry]
 
     # Must be two sigma above host magnitude, if host magnitude known, to add to phot count.
