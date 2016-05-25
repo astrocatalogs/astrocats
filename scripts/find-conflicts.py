@@ -45,9 +45,11 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     ras = []
     decs = []
     zs = []
+    cts = []
     rasources = []
     decsources = []
     zsources = []
+    ctsources = []
     for key in list(item.keys()):
         lc = 0
         if key in ['name', 'sources', 'photometry', 'spectra']:
@@ -85,6 +87,16 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 if newsources:
                     zs.append(float(quantum['value']))
                     zsources.append({'idtype':','.join([x['idtype'] for x in newsources]), 'id':','.join([x['id'] for x in newsources])})
+            elif key == 'claimedtype':
+                newsources = []
+                for alias in quantum['source'].split(','):
+                    for source in item['sources']:
+                        if source['alias'] == alias:
+                            newsources.append({'idtype':'bibcode' if 'bibcode' in source else 'name',
+                                'id':source['bibcode'] if 'bibcode' in source else source['name']})
+                if newsources:
+                    cts.append(quantum['value'])
+                    ctsources.append({'idtype':','.join([x['idtype'] for x in newsources]), 'id':','.join([x['id'] for x in newsources])})
                 
     edit = True if os.path.isfile('../sne-internal/' + get_event_filename(item['name']) + '.json') else False
 
@@ -121,6 +133,16 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             tqdm.write('Redshift difference greater than a % for ' + item['name'])
             conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                 ('quantity', 'redshift'), ('difference', str(round_sig(maxzdiff))), ('values', zs), ('sources', zsources)]))
+
+    if cts:
+        typei = any(((x.startswith('I') and (len(x) == 1 or x[1] != 'I')) or
+                     (x.startswith('SLSN-I') and (len(x) == 6 or x[6] != 'I'))) for x in cts)
+        typeii = any((x.startswith(('II', 'SLSN-II')) or x == 'CC') for x in cts)
+        ntypei = any(x == 'nIa' for x in cts)
+        if (typei and typeii) or (typei and ntypei):
+            tqdm.write('Conflicting supernova typings for ' + item['name'])
+            conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
+                ('quantity', 'claimedtype'), ('difference', ''), ('values', cts), ('sources', ctsources)]))
 
 # Convert to array since that's what datatables expects
 jsonstring = json.dumps(conflicts, indent='\t', separators=(',', ':'), ensure_ascii=False)
