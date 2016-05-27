@@ -53,49 +53,49 @@ args = parser.parse_args()
 
 tasks = OrderedDict([
     ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
-    ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
-    ("radio",           {"nicename":"%pre radio data",              "update": False}),
-    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
-    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
-    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
-    ("donations",       {"nicename":"%pre donations",               "update": False}),
-    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
-    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
-    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
-    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
-    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False}),
-    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
-    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
-    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
-    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
-    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
-    ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
-    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": True}),
-    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": True}),
-    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
-    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": True}),
-    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": True}),
-    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": True}),
-    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": True}),
-    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
-    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
-    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    #("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
+    #("radio",           {"nicename":"%pre radio data",              "update": False}),
+    #("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+    #("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+    #("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+    #("donations",       {"nicename":"%pre donations",               "update": False}),
+    #("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+    #("scp",             {"nicename":"%pre SCP",                     "update": False}),
+    #("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+    #("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+    #("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+    #("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+    #("ucb",             {"nicename":"%pre UCB photometry",          "update": False}),
+    #("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+    #("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+    #("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+    #("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+    #("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+    #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+    #("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    #("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": True}),
+    #("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": True}),
+    #("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+    #("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": True}),
+    #("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    #("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": True}),
+    #("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": True}),
+    #("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+    #("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": True}),
+    #("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    #("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+    #("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+    #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
     ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+    #("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    #("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    #("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+    #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    #("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    #("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
@@ -115,8 +115,10 @@ events = OrderedDict()
 
 warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
-typereps = json.loads('type-synonyms.json', object_pairs_hook=OrderedDict)
-sourcereps = json.loads('source-synonyms.json', object_pairs_hook=OrderedDict)
+with open('type-synonyms.json', 'r') as f:
+    typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
+with open('source-synonyms.json', 'r') as f:
+    sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
 repbetterquantity = {
     'redshift',
@@ -5011,89 +5013,89 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'cfaspectra'): 
-        # Ia spectra
-        oldname = ''
-        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()), currenttask):
-            fullpath = "../sne-external-spectra/CfA_SNIa/" + name
-            origname = name
-            if name.startswith('sn') and is_number(name[2:6]):
-                name = 'SN' + name[2:]
-            if name.startswith('snf') and is_number(name[3:7]):
-                name = 'SNF' + name[3:]
-            name = get_preferred_name(name)
-            if oldname and name != oldname:
-                journal_events()
-            oldname = name
-            name = add_event(name)
-            reference = 'CfA Supernova Archive'
-            refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True)
-            add_quantity(name, 'alias', name, source)
-            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
-                filename = os.path.basename(fname)
-                fileparts = filename.split('-')
-                if origname.startswith("sn") and is_number(origname[2:6]):
-                    year = fileparts[1][:4]
-                    month = fileparts[1][4:6]
-                    day = fileparts[1][6:]
-                    instrument = fileparts[2].split('.')[0]
-                else:
-                    year = fileparts[2][:4]
-                    month = fileparts[2][4:6]
-                    day = fileparts[2][6:]
-                    instrument = fileparts[3].split('.')[0]
-                time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-                f = open(fname,'r')
-                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
-                data = [list(i) for i in zip(*data)]
-                wavelengths = data[0]
-                fluxes = data[1]
-                errors = data[2]
-                sources = uniq_cdl([source, add_source(name, bibcode = '2012AJ....143..126B'), add_source(name, bibcode = '2008AJ....135.1598M')])
-                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
-                    wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
-                    errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
-                if args.travis and fi >= travislimit:
-                    break
-        journal_events()
+        ## Ia spectra
+        #oldname = ''
+        #for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()), currenttask):
+        #    fullpath = "../sne-external-spectra/CfA_SNIa/" + name
+        #    origname = name
+        #    if name.startswith('sn') and is_number(name[2:6]):
+        #        name = 'SN' + name[2:]
+        #    if name.startswith('snf') and is_number(name[3:7]):
+        #        name = 'SNF' + name[3:]
+        #    name = get_preferred_name(name)
+        #    if oldname and name != oldname:
+        #        journal_events()
+        #    oldname = name
+        #    name = add_event(name)
+        #    reference = 'CfA Supernova Archive'
+        #    refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+        #    source = add_source(name, refname = reference, url = refurl, secondary = True)
+        #    add_quantity(name, 'alias', name, source)
+        #    for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
+        #        filename = os.path.basename(fname)
+        #        fileparts = filename.split('-')
+        #        if origname.startswith("sn") and is_number(origname[2:6]):
+        #            year = fileparts[1][:4]
+        #            month = fileparts[1][4:6]
+        #            day = fileparts[1][6:]
+        #            instrument = fileparts[2].split('.')[0]
+        #        else:
+        #            year = fileparts[2][:4]
+        #            month = fileparts[2][4:6]
+        #            day = fileparts[2][6:]
+        #            instrument = fileparts[3].split('.')[0]
+        #        time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+        #        f = open(fname,'r')
+        #        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        #        data = [list(i) for i in zip(*data)]
+        #        wavelengths = data[0]
+        #        fluxes = data[1]
+        #        errors = data[2]
+        #        sources = uniq_cdl([source, add_source(name, bibcode = '2012AJ....143..126B'), add_source(name, bibcode = '2008AJ....135.1598M')])
+        #        add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
+        #            wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
+        #            errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
+        #        if args.travis and fi >= travislimit:
+        #            break
+        #journal_events()
     
-        # Ibc spectra
-        oldname = ''
-        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()), currenttask):
-            fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
-            if name.startswith('sn') and is_number(name[2:6]):
-                name = 'SN' + name[2:]
-            name = get_preferred_name(name)
-            if oldname and name != oldname:
-                journal_events()
-            oldname = name
-            name = add_event(name)
-            reference = 'CfA Supernova Archive'
-            refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True)
-            add_quantity(name, 'alias', name, source)
-            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
-                filename = os.path.basename(fname)
-                fileparts = filename.split('-')
-                instrument = ''
-                year = fileparts[1][:4]
-                month = fileparts[1][4:6]
-                day = fileparts[1][6:].split('.')[0]
-                if len(fileparts) > 2:
-                    instrument = fileparts[-1].split('.')[0]
-                time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-                f = open(fname,'r')
-                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
-                data = [list(i) for i in zip(*data)]
-                wavelengths = data[0]
-                fluxes = data[1]
-                sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
-                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-                    fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
-                    dereddened = False, deredshifted = False)
-                if args.travis and fi >= travislimit:
-                    break
-        journal_events()
+        ## Ibc spectra
+        #oldname = ''
+        #for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()), currenttask):
+        #    fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
+        #    if name.startswith('sn') and is_number(name[2:6]):
+        #        name = 'SN' + name[2:]
+        #    name = get_preferred_name(name)
+        #    if oldname and name != oldname:
+        #        journal_events()
+        #    oldname = name
+        #    name = add_event(name)
+        #    reference = 'CfA Supernova Archive'
+        #    refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+        #    source = add_source(name, refname = reference, url = refurl, secondary = True)
+        #    add_quantity(name, 'alias', name, source)
+        #    for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
+        #        filename = os.path.basename(fname)
+        #        fileparts = filename.split('-')
+        #        instrument = ''
+        #        year = fileparts[1][:4]
+        #        month = fileparts[1][4:6]
+        #        day = fileparts[1][6:].split('.')[0]
+        #        if len(fileparts) > 2:
+        #            instrument = fileparts[-1].split('.')[0]
+        #        time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+        #        f = open(fname,'r')
+        #        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        #        data = [list(i) for i in zip(*data)]
+        #        wavelengths = data[0]
+        #        fluxes = data[1]
+        #        sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
+        #        add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
+        #            fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
+        #            dereddened = False, deredshifted = False)
+        #        if args.travis and fi >= travislimit:
+        #            break
+        #journal_events()
 
         # Other spectra
         oldname = ''
@@ -5114,9 +5116,8 @@ for task in tasks:
                 if not os.path.isfile(fname):
                     continue
                 filename = os.path.basename(fname)
-                if not filename.startswith('sn') or not filename.endswith('flm'):
-                    continue
-                if 'dered' in filename:
+                if (not filename.startswith('sn') or not filename.endswith('flm') or
+                    any(x in filename for x in ['-interp', '-z', '-dered', '-obj', '-gal'])):
                     continue
                 print(filename)
                 fileparts = filename.split('.')[0].split('-')
@@ -5134,7 +5135,7 @@ for task in tasks:
                 data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 data = [list(i) for i in zip(*data)]
                 wavelengths = data[0]
-                fluxes = data[1]
+                fluxes = [str(Decimal(x)*Decimal(1.0e-15)) for x in data[1]]
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
                     fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = source,
                     dereddened = False, deredshifted = False)
