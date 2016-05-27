@@ -102,6 +102,11 @@ tasks = OrderedDict([
 oscbibcode = '2016arXiv160501054G'
 oscname = 'The Open Supernova Catalog'
 oscurl = 'https://sne.space'
+
+cfaack = ("This research has made use of the CfA Supernova Archive, "
+          "which is funded in part by the National Science Foundation "
+          "through grant AST 0907903.")
+
 clight = const.c.cgs.value
 km = (1.0 * un.km).cgs.value
 planckh = const.h.cgs.value
@@ -3259,7 +3264,7 @@ for task in tasks:
             name = add_event(name)
             secondaryname = 'CfA Supernova Archive'
             secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            secondarysource = add_source(name, refname = secondaryname, url = secondaryurl, secondary = True)
+            secondarysource = add_source(name, refname = secondaryname, url = secondaryurl, secondary = True, acknowledgment = cfaack)
             add_quantity(name, 'alias', name, secondarysource)
     
             year = re.findall(r'\d+', name)[0]
@@ -5013,89 +5018,89 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'cfaspectra'): 
-        ## Ia spectra
-        #oldname = ''
-        #for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()), currenttask):
-        #    fullpath = "../sne-external-spectra/CfA_SNIa/" + name
-        #    origname = name
-        #    if name.startswith('sn') and is_number(name[2:6]):
-        #        name = 'SN' + name[2:]
-        #    if name.startswith('snf') and is_number(name[3:7]):
-        #        name = 'SNF' + name[3:]
-        #    name = get_preferred_name(name)
-        #    if oldname and name != oldname:
-        #        journal_events()
-        #    oldname = name
-        #    name = add_event(name)
-        #    reference = 'CfA Supernova Archive'
-        #    refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        #    source = add_source(name, refname = reference, url = refurl, secondary = True)
-        #    add_quantity(name, 'alias', name, source)
-        #    for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
-        #        filename = os.path.basename(fname)
-        #        fileparts = filename.split('-')
-        #        if origname.startswith("sn") and is_number(origname[2:6]):
-        #            year = fileparts[1][:4]
-        #            month = fileparts[1][4:6]
-        #            day = fileparts[1][6:]
-        #            instrument = fileparts[2].split('.')[0]
-        #        else:
-        #            year = fileparts[2][:4]
-        #            month = fileparts[2][4:6]
-        #            day = fileparts[2][6:]
-        #            instrument = fileparts[3].split('.')[0]
-        #        time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-        #        f = open(fname,'r')
-        #        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
-        #        data = [list(i) for i in zip(*data)]
-        #        wavelengths = data[0]
-        #        fluxes = data[1]
-        #        errors = data[2]
-        #        sources = uniq_cdl([source, add_source(name, bibcode = '2012AJ....143..126B'), add_source(name, bibcode = '2008AJ....135.1598M')])
-        #        add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
-        #            wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
-        #            errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
-        #        if args.travis and fi >= travislimit:
-        #            break
-        #journal_events()
+        # Ia spectra
+        oldname = ''
+        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()), currenttask):
+            fullpath = "../sne-external-spectra/CfA_SNIa/" + name
+            origname = name
+            if name.startswith('sn') and is_number(name[2:6]):
+                name = 'SN' + name[2:]
+            if name.startswith('snf') and is_number(name[3:7]):
+                name = 'SNF' + name[3:]
+            name = get_preferred_name(name)
+            if oldname and name != oldname:
+                journal_events()
+            oldname = name
+            name = add_event(name)
+            reference = 'CfA Supernova Archive'
+            refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
+            add_quantity(name, 'alias', name, source)
+            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
+                filename = os.path.basename(fname)
+                fileparts = filename.split('-')
+                if origname.startswith("sn") and is_number(origname[2:6]):
+                    year = fileparts[1][:4]
+                    month = fileparts[1][4:6]
+                    day = fileparts[1][6:]
+                    instrument = fileparts[2].split('.')[0]
+                else:
+                    year = fileparts[2][:4]
+                    month = fileparts[2][4:6]
+                    day = fileparts[2][6:]
+                    instrument = fileparts[3].split('.')[0]
+                time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+                f = open(fname,'r')
+                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+                data = [list(i) for i in zip(*data)]
+                wavelengths = data[0]
+                fluxes = data[1]
+                errors = data[2]
+                sources = uniq_cdl([source, add_source(name, bibcode = '2012AJ....143..126B'), add_source(name, bibcode = '2008AJ....135.1598M')])
+                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
+                    wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
+                    errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
+                if args.travis and fi >= travislimit:
+                    break
+        journal_events()
     
-        ## Ibc spectra
-        #oldname = ''
-        #for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()), currenttask):
-        #    fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
-        #    if name.startswith('sn') and is_number(name[2:6]):
-        #        name = 'SN' + name[2:]
-        #    name = get_preferred_name(name)
-        #    if oldname and name != oldname:
-        #        journal_events()
-        #    oldname = name
-        #    name = add_event(name)
-        #    reference = 'CfA Supernova Archive'
-        #    refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        #    source = add_source(name, refname = reference, url = refurl, secondary = True)
-        #    add_quantity(name, 'alias', name, source)
-        #    for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
-        #        filename = os.path.basename(fname)
-        #        fileparts = filename.split('-')
-        #        instrument = ''
-        #        year = fileparts[1][:4]
-        #        month = fileparts[1][4:6]
-        #        day = fileparts[1][6:].split('.')[0]
-        #        if len(fileparts) > 2:
-        #            instrument = fileparts[-1].split('.')[0]
-        #        time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-        #        f = open(fname,'r')
-        #        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
-        #        data = [list(i) for i in zip(*data)]
-        #        wavelengths = data[0]
-        #        fluxes = data[1]
-        #        sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
-        #        add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-        #            fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
-        #            dereddened = False, deredshifted = False)
-        #        if args.travis and fi >= travislimit:
-        #            break
-        #journal_events()
+        # Ibc spectra
+        oldname = ''
+        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()), currenttask):
+            fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
+            if name.startswith('sn') and is_number(name[2:6]):
+                name = 'SN' + name[2:]
+            name = get_preferred_name(name)
+            if oldname and name != oldname:
+                journal_events()
+            oldname = name
+            name = add_event(name)
+            reference = 'CfA Supernova Archive'
+            refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
+            add_quantity(name, 'alias', name, source)
+            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
+                filename = os.path.basename(fname)
+                fileparts = filename.split('-')
+                instrument = ''
+                year = fileparts[1][:4]
+                month = fileparts[1][4:6]
+                day = fileparts[1][6:].split('.')[0]
+                if len(fileparts) > 2:
+                    instrument = fileparts[-1].split('.')[0]
+                time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+                f = open(fname,'r')
+                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+                data = [list(i) for i in zip(*data)]
+                wavelengths = data[0]
+                fluxes = data[1]
+                sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
+                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
+                    fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
+                    dereddened = False, deredshifted = False)
+                if args.travis and fi >= travislimit:
+                    break
+        journal_events()
 
         # Other spectra
         oldname = ''
@@ -5110,7 +5115,7 @@ for task in tasks:
             name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True)
+            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
             add_quantity(name, 'alias', name, source)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 if not os.path.isfile(fname):
