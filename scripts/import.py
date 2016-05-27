@@ -115,35 +115,8 @@ events = OrderedDict()
 
 warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
-typereps = {
-    'CC':       ['CCSN'],
-    'Ia':       ['Ia-norm', 'Ia- norm'],
-    'I Pec':    ['I pec', 'I-pec', 'I Pec', 'I-Pec'],
-    'Ia Pec':   ['Ia pec', 'Ia-pec', 'Iapec', 'IaPec', 'Ia-Pec', 'Iap'],
-    'Ib Pec':   ['Ib pec', 'Ib-pec'],
-    'Ic Pec':   ['Ic pec', 'Ic-pec'],
-    'Ia/c':     ['Ic/Ia', 'Iac'],
-    'Ib/c':     ['Ibc'],
-    'Ib/c Pec': ['Ib/c-pec', 'Ibc pec', 'Ib/c pec'],
-    'II P':     ['IIP', 'IIp', 'II p', 'II-P'],
-    'II Pec':   ['II pec', 'IIpec', 'II Pec', 'IIPec', 'II-pec', 'II-Pec'],
-    'II P Pec': ['IIP-pec'],
-    'II L':     ['IIL'],
-    'IIn':      ['II n'],
-    'IIn Pec':  ['IIn pec', 'IIn-pec'],
-    'IIb Pec':  ['IIb-pec', 'IIb: pec', 'IIb pec'],
-    'nIa':      ['nIa'],
-    'Ia CSM':   ['Ia-CSM', 'Ia-csm', 'Ia-csm'],
-    'SLSN-Ic':  ['SLSN Ic', 'SL-Ic'],
-    'SLSN-I':   ['SLSN I', 'SL-I'],
-    'SLSN-II':  ['SLSN II', 'SL-II'],
-    'Ia-91bg':  ['Ia-pec (1991bg)', 'Ia-91bg-like', 'Ia-91bg like'],
-    'Ia-91T':   ['Ia-pec 1991T', 'Ia-91T-like', 'Ia-91T like', 'Ia 91T-like'],
-    'Ia-02cx':  ['Ia-02cx-like', 'Iax'],
-    'Ib-Ca':    ['Ib - Ca-rich'],
-    'II P-97D': ['IIP-pec 1997D'],
-    'Ic BL':    ['Ic-broad'],
-}
+typereps = json.loads('type-synonyms.json', object_pairs_hook=OrderedDict)
+sourcereps = json.loads('source-synonyms.json', object_pairs_hook=OrderedDict)
 
 repbetterquantity = {
     'redshift',
@@ -238,10 +211,10 @@ def name_clean(name):
         newname = newname.replace('PTF ', 'PTF', 1)
     if newname.startswith('iPTF '):
         newname = newname.replace('iPTF ', 'iPTF', 1)
-    if newname.startswith('SNF') and is_number(newname[3:]) and len(newname) >= 12:
-        newname = 'SNF' + newname[3:11] + '-' + newname[11:]
     if newname.startswith('snf'):
         newname = newname.replace('snf', 'SNF', 1)
+    if newname.startswith('SNF') and is_number(newname[3:]) and len(newname) >= 12:
+        newname = 'SNF' + newname[3:11] + '-' + newname[11:]
     if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
         prefix = newname.split('J')[0]
         coords = newname.split('J')[-1].strip()
@@ -373,6 +346,11 @@ def add_source(name, refname = '', reference = '', url = '', bibcode = '', secon
         iaucnum = refname.split()[-1]
         if is_number(iaucnum) and iaucnum in iaucsdict:
             bibcode = iaucsdict[iaucnum]
+
+    for rep in sourcereps:
+        if refname in sourcereps[rep]:
+            refname = rep
+            break
 
     if 'sources' not in events[name] or (refname not in [x['name'] for x in events[name]['sources']] and
         (not bibcode or bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']])):
@@ -3826,11 +3804,12 @@ for task in tasks:
                     add_photometry(name, time = mjd, magnitude = magnitude, band = band, survey = survey, source = source)
                 if row[16]:
                     date = row[16].split()[0].replace('-', '/')
-                    time = row[16].split()[1]
-                    if time != '00:00:00':
-                        ts = time.split(':')
-                        date += pretty_num(timedelta(hours = int(ts[0]), minutes = int(ts[1]), seconds = int(ts[2])).total_seconds()/(24*60*60), sig=6).lstrip('0')
-                    add_quantity(name, 'discoverdate', date, source)
+                    if date != '0000/00/00':
+                        time = row[16].split()[1]
+                        if time != '00:00:00':
+                            ts = time.split(':')
+                            date += pretty_num(timedelta(hours = int(ts[0]), minutes = int(ts[1]), seconds = int(ts[2])).total_seconds()/(24*60*60), sig=6).lstrip('0')
+                        add_quantity(name, 'discoverdate', date, source)
                 if args.update:
                     journal_events()
         journal_events()
@@ -5063,7 +5042,7 @@ for task in tasks:
                     month = fileparts[2][4:6]
                     day = fileparts[2][6:]
                     instrument = fileparts[3].split('.')[0]
-                time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+                time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
                 f = open(fname,'r')
                 data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 data = [list(i) for i in zip(*data)]
@@ -5072,7 +5051,7 @@ for task in tasks:
                 errors = data[2]
                 sources = uniq_cdl([source, add_source(name, bibcode = '2012AJ....143..126B'), add_source(name, bibcode = '2008AJ....135.1598M')])
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
-                    wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument,
+                    wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
                     errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
                 if args.travis and fi >= travislimit:
                     break
@@ -5102,7 +5081,7 @@ for task in tasks:
                 day = fileparts[1][6:].split('.')[0]
                 if len(fileparts) > 2:
                     instrument = fileparts[-1].split('.')[0]
-                time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+                time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
                 f = open(fname,'r')
                 data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 data = [list(i) for i in zip(*data)]
@@ -5110,7 +5089,7 @@ for task in tasks:
                 fluxes = data[1]
                 sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-                    fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = sources,
+                    fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
                     dereddened = False, deredshifted = False)
                 if args.travis and fi >= travislimit:
                     break
@@ -5150,14 +5129,14 @@ for task in tasks:
                     if is_number(year) and is_number(month) and is_number(day):
                         if len(fileparts) > 2:
                             instrument = fileparts[-1]
-                        time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+                        time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
                 f = open(fname,'r')
                 data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 data = [list(i) for i in zip(*data)]
                 wavelengths = data[0]
                 fluxes = data[1]
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-                    fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = source,
+                    fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = source,
                     dereddened = False, deredshifted = False)
                 if args.travis and fi >= travislimit:
                     break

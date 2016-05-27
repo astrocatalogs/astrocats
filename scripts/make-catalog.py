@@ -714,7 +714,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             if 'u_time' not in spectrum or 'time' not in spectrum:
                 hasepoch = False
 
-            if 'u_time' in spectrum and spectrum['u_time'] == 'MJD' and 'redshift' in catalog[entry] and mjdmax:
+            if 'u_time' in spectrum and 'time' in spectrum and spectrum['u_time'] == 'MJD' and 'redshift' in catalog[entry] and mjdmax:
                 specmjd = (float(spectrum['time']) - mjdmax) * redshiftfactor
                 spectrummjdmax.append(specmjd)
 
@@ -822,8 +822,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 data['xrest'] = [x/(1.0 + z) for x in prunedwave[i]]
             if hasepoch:
                 data['epoch'] = [catalog[entry]['spectra'][i]['time'] for j in prunedscaled[i]]
-            if mjdmax and spectrummjdmax:
-                data['mjdmax'] = [spectrummjdmax[i] for j in prunedscaled[i]]
+                if mjdmax and spectrummjdmax:
+                    data['mjdmax'] = [spectrummjdmax[i] for j in prunedscaled[i]]
             sources.append(ColumnDataSource(data))
             p2.line('x', 'y', source=sources[i], color=mycolors[i % len(mycolors)], line_width=2, line_join='round')
 
