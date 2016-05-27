@@ -3753,7 +3753,7 @@ for task in tasks:
     
     if do_task(task, 'tns'):
         session = requests.Session()
-        csvtxt = load_cached_url("https://wis-tns.weizmann.ac.il/search?&isTNS_AT=yes&num_page=1&format=html&sort=desc&order=id&format=csv&page=0",
+        csvtxt = load_cached_url("https://wis-tns.weizmann.ac.il/search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0",
             "../sne-external/TNS/index.csv")
         if not csvtxt:
             continue
@@ -3762,7 +3762,7 @@ for task in tasks:
     
         for page in tq(range(maxpages), currenttask):
             fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.csv'
-            if archived_task('tns') and os.path.isfile(fname) and page != maxpages:
+            if archived_task('tns') and os.path.isfile(fname) and page < 7:
                 with open(fname, 'r') as f:
                     csvtxt = f.read()
             else:
