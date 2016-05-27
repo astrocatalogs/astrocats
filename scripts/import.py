@@ -17,6 +17,7 @@ import shutil
 import warnings
 import statistics
 import warnings
+from datetime import timedelta
 from glob import glob
 from hashlib import md5
 from html import unescape
@@ -93,8 +94,8 @@ tasks = OrderedDict([
     ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
     ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
     ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": True }),
-    ("setprefnames",    {"nicename":"Setting preferred names",      "update": True }),
+    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
@@ -214,7 +215,7 @@ def get_source_year(source):
     raise(ValueError('No bibcode available for source!'))
 
 def name_clean(name):
-    newname = name
+    newname = name.strip()
     if newname.startswith('MASJ'):
         newname = newname.replace('MASJ', 'MASTER OT J', 1)
     if newname.startswith('MASTER') and is_number(newname[7]):
@@ -249,6 +250,10 @@ def name_clean(name):
         if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
             newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
                 decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
+    if len(newname) <= 4 and is_number(newname):
+        newname = 'SN' + newname + 'A'
+    if len(newname) > 4 and is_number(newname[:4]) and not is_number(newname[4:]):
+        newname = 'SN' + newname
     if newname.startswith('sn') and is_number(newname[2:6]) and len(newname) > 6:
         newname = newname.replace('sn', 'SN', 1)
     if newname.startswith('SN ') and is_number(newname[3:7]) and len(newname) > 7:
@@ -403,6 +408,12 @@ def get_source_by_alias(name, alias):
             return source
     raise(ValueError('Source alias not found!'))
 
+def same_tag_str(photo, val, tag):
+    return ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and photo[tag] == val))
+
+def same_tag_num(photo, val, tag):
+    return ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and Decimal(photo[tag]) == Decimal(val)))
+
 def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
                    observatory = "", observer = "", host = False, includeshost = False, survey = "",
@@ -419,8 +430,8 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
         return
 
-    if (not upperlimit and ((e_magnitude and not is_number(e_magnitude)) or (e_flux and not is_number(e_flux)) or
-        (e_fluxdensity and not is_number(e_fluxdensity)) or (e_counts and not is_number(e_counts)))):
+    if ((e_magnitude and not is_number(e_magnitude)) or (e_flux and not is_number(e_flux)) or
+        (e_fluxdensity and not is_number(e_fluxdensity)) or (e_counts and not is_number(e_counts))):
         warnings.warn('Brightness error not numerical, not adding.')
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB error: "' + e_magnitude + '"')
         return
@@ -458,57 +469,27 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
     # Look for duplicate data and don't add if duplicate
     if 'photometry' in events[name]:
         for photo in events[name]['photometry']:
-            if (
-                (('band' not in photo and not sband) or
-                 ('band' in photo and photo['band'] == sband) or
-                 ('band' in photo and not sband)) and
-                (('u_time' not in photo and not u_time) or (photo['u_time'] == u_time)) and
-                (('time' not in photo and not time) or (time and 'time' in photo and
-                 ((isinstance(photo['time'], str) and isinstance(time, str) and Decimal(photo['time']) == Decimal(time)) or
-                  (isinstance(photo['time'], list) and isinstance(time, list) and photo['time'] == time)))) and
-                (('magnitude' not in photo and not magnitude) or
-                 ('magnitude' in photo and Decimal(photo['magnitude']) == Decimal(magnitude)) or
-                 ('magnitude' in photo and not magnitude)) and
+            if (same_tag_str(photo, sband, 'band') and
+                same_tag_str(photo, u_time, 'u_time') and
+                (('time' not in photo and not time) or 
+                 (time and 'time' in photo and
+                  ((isinstance(photo['time'], str) and isinstance(time, str) and Decimal(photo['time']) == Decimal(time)) or
+                   (isinstance(photo['time'], list) and isinstance(time, list) and photo['time'] == time)))) and
+                same_tag_num(photo, magnitude, 'magnitude') and
                 (('host' not in photo and not host) or ('host' in photo and host)) and
-                (('flux' not in photo and not flux) or
-                 ('flux' in photo and Decimal(photo['flux']) == Decimal(flux)) or
-                 ('flux' in photo and not flux)) and
-                (('unabsorbedflux' not in photo and not unabsorbedflux) or
-                 ('unabsorbedflux' in photo and Decimal(photo['unabsorbedflux']) == Decimal(unabsorbedflux)) or
-                 ('unabsorbedflux' in photo and not unabsorbedflux)) and
-                (('fluxdensity' not in photo and not fluxdensity) or
-                 ('fluxdensity' in photo and Decimal(photo['fluxdensity']) == Decimal(fluxdensity)) or
-                 ('fluxdensity' in photo and not fluxdensity)) and
-                (('counts' not in photo and not counts) or
-                 ('counts' in photo and Decimal(photo['counts']) == Decimal(counts)) or
-                 ('counts' in photo and not counts)) and
-                (('energy' not in photo and not energy) or
-                 ('energy' in photo and Decimal(photo['energy']) == Decimal(energy)) or
-                 ('energy' in photo and not energy)) and
-                (('frequency' not in photo and not frequency) or
-                 ('frequency' in photo and Decimal(photo['frequency']) == Decimal(frequency)) or
-                 ('frequency' in photo and not frequency)) and
-                (('photonindex' not in photo and not photonindex) or
-                 ('photonindex' in photo and photo['photonindex'] == photonindex) or
-                 ('photonindex' in photo and not photonindex)) and
-                (('e_magnitude' not in photo and not e_magnitude) or
-                 ('e_magnitude' in photo and e_magnitude and Decimal(photo['e_magnitude']) == Decimal(e_magnitude)) or
-                 ('e_magnitude' in photo and not e_magnitude)) and
-                (('e_flux' not in photo and not e_flux) or
-                 ('e_flux' in photo and e_flux and Decimal(photo['e_flux']) == Decimal(e_flux)) or
-                 ('e_flux' in photo and not e_flux)) and
-                (('e_unabsorbedflux' not in photo and not e_unabsorbedflux) or
-                 ('e_unabsorbedflux' in photo and e_unabsorbedflux and Decimal(photo['e_unabsorbedflux']) == Decimal(e_unabsorbedflux)) or
-                 ('e_unabsorbedflux' in photo and not e_unabsorbedflux)) and
-                (('e_fluxdensity' not in photo and not e_fluxdensity) or
-                 ('e_fluxdensity' in photo and e_fluxdensity and Decimal(photo['e_fluxdensity']) == Decimal(e_fluxdensity)) or
-                 ('e_fluxdensity' in photo and not e_fluxdensity)) and
-                (('e_counts' not in photo and not e_counts) or
-                 ('e_counts' in photo and e_counts and Decimal(photo['e_counts']) == Decimal(e_counts)) or
-                 ('e_counts' in photo and not e_counts)) and
-                (('system' not in photo and not ssystem) or
-                 ('system' in photo and photo['system'] == ssystem) or
-                 ('system' in photo and not ssystem))
+                same_tag_num(photo, flux, 'flux') and
+                same_tag_num(photo, unabsorbedflux, 'unabsorbedflux') and
+                same_tag_num(photo, fluxdensity, 'fluxdensity') and
+                same_tag_num(photo, counts, 'counts') and
+                same_tag_num(photo, energy, 'energy') and
+                same_tag_num(photo, frequency, 'frequency') and
+                same_tag_num(photo, photonindex, 'photonindex') and
+                same_tag_num(photo, e_magnitude, 'e_magnitude') and
+                same_tag_num(photo, e_flux, 'e_flux') and
+                same_tag_num(photo, e_unabsorbedflux, 'e_unabsorbedflux') and
+                same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
+                same_tag_num(photo, e_counts, 'e_counts') and
+                same_tag_str(photo, ssystem, 'system')
                 ):
                 return
 
@@ -716,7 +697,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     if quantity == 'host':
         if is_number(svalue):
             return
-        if svalue.lower() in ['anonymous']:
+        if svalue.lower() in ['anonymous', 'anon.', 'anon']:
             return
         svalue = svalue.strip("()").replace('  ', ' ')
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
@@ -3792,7 +3773,7 @@ for task in tasks:
         if not csvtxt:
             continue
         maxid = csvtxt.splitlines()[1].split(",")[0].strip('"')
-        maxpages = ceil((int(maxid) - 10000)/1000.)
+        maxpages = ceil(int(maxid)/1000.)
     
         for page in tq(range(maxpages), currenttask):
             fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.csv'
@@ -3802,7 +3783,7 @@ for task in tasks:
             else:
                 with open(fname, 'w') as f:
                     session = requests.Session()
-                    response = session.get("https://wis-tns.weizmann.ac.il/search?&isTNS_AT=yes&num_page=1000&format=html&edit[type]=&edit[objname]=&edit[id]=&sort=asc&order=id&display[redshift]=1&display[hostname]=1&display[host_redshift]=1&display[source_group_name]=1&display[programs_name]=1&display[internal_name]=1&display[isTNS_AT]=1&display[public]=1&display[end_pop_period]=0&display[spectra_count]=1&display[discoverymag]=1&display[discmagfilter]=1&display[discoverydate]=1&display[discoverer]=1&display[sources]=1&display[bibcode]=1&format=csv&page=" + str(page))
+                    response = session.get("https://wis-tns.weizmann.ac.il/search?&num_page=1000&format=html&edit[type]=&edit[objname]=&edit[id]=&sort=asc&order=id&display[redshift]=1&display[hostname]=1&display[host_redshift]=1&display[source_group_name]=1&display[programs_name]=1&display[internal_name]=1&display[isTNS_AT]=1&display[public]=1&display[end_pop_period]=0&display[spectra_count]=1&display[discoverymag]=1&display[discmagfilter]=1&display[discoverydate]=1&display[discoverer]=1&display[sources]=1&display[bibcode]=1&format=csv&page=" + str(page))
                     csvtxt = response.text
                     f.write(csvtxt)
     
@@ -3816,9 +3797,9 @@ for task in tasks:
                 name = add_event(name)
                 source = add_source(name, refname = 'Transient Name Server', url = 'https://wis-tns.weizmann.ac.il')
                 add_quantity(name, 'alias', name, source)
-                if row[2]:
+                if row[2] and row[2] != '00:00:00.00':
                     add_quantity(name, 'ra', row[2], source)
-                if row[3]:
+                if row[3] and row[3] != '+00:00:00.00':
                     add_quantity(name, 'dec', row[3], source)
                 if row[4]:
                     add_quantity(name, 'claimedtype', row[4].replace('SN', '').strip(), source)
@@ -3830,10 +3811,11 @@ for task in tasks:
                     add_quantity(name, 'redshift', row[7], source, kind = 'host')
                 if row[8]:
                     add_quantity(name, 'discoverer', row[8], source)
-                if row[9]:
-                    observers = row[9].split(',')
-                    for observer in observers:
-                        add_quantity(name, 'observer', observer.strip(), source)
+                # Currently, all events listing all possible observers. TNS bug?
+                #if row[9]:
+                #    observers = row[9].split(',')
+                #    for observer in observers:
+                #        add_quantity(name, 'observer', observer.strip(), source)
                 if row[10]:
                     add_quantity(name, 'alias', row[10], source)
                 if row[8] and row[14] and row[15] and row[16]:
@@ -3842,6 +3824,13 @@ for task in tasks:
                     band = row[15].split('-')[0]
                     mjd = astrotime(row[16]).mjd
                     add_photometry(name, time = mjd, magnitude = magnitude, band = band, survey = survey, source = source)
+                if row[16]:
+                    date = row[16].split()[0].replace('-', '/')
+                    time = row[16].split()[1]
+                    if time != '00:00:00':
+                        ts = time.split(':')
+                        date += pretty_num(timedelta(hours = int(ts[0]), minutes = int(ts[1]), seconds = int(ts[2])).total_seconds()/(24*60*60), sig=6).lstrip('0')
+                    add_quantity(name, 'discoverdate', date, source)
                 if args.update:
                     journal_events()
         journal_events()
@@ -5045,7 +5034,7 @@ for task in tasks:
     if do_task(task, 'cfaspectra'): 
         # Ia spectra
         oldname = ''
-        for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()):
+        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIa"))[1], key=lambda s: s.lower()), currenttask):
             fullpath = "../sne-external-spectra/CfA_SNIa/" + name
             origname = name
             if name.startswith('sn') and is_number(name[2:6]):
@@ -5091,7 +5080,7 @@ for task in tasks:
     
         # Ibc spectra
         oldname = ''
-        for name in sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()):
+        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_SNIbc"))[1], key=lambda s: s.lower()), currenttask):
             fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
             if name.startswith('sn') and is_number(name[2:6]):
                 name = 'SN' + name[2:]
@@ -5122,6 +5111,53 @@ for task in tasks:
                 sources = uniq_cdl([source, add_source(name, bibcode = '2014AJ....147...99M')])
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
                     fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = sources,
+                    dereddened = False, deredshifted = False)
+                if args.travis and fi >= travislimit:
+                    break
+        journal_events()
+
+        # Other spectra
+        oldname = ''
+        for name in tq(sorted(next(os.walk("../sne-external-spectra/CfA_Extra"))[1], key=lambda s: s.lower()), currenttask):
+            fullpath = "../sne-external-spectra/CfA_Extra/" + name
+            if name.startswith('sn') and is_number(name[2:6]):
+                name = 'SN' + name[2:]
+            name = get_preferred_name(name)
+            if oldname and name != oldname:
+                journal_events()
+            oldname = name
+            name = add_event(name)
+            reference = 'CfA Supernova Archive'
+            refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
+            source = add_source(name, refname = reference, url = refurl, secondary = True)
+            add_quantity(name, 'alias', name, source)
+            for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
+                if not os.path.isfile(fname):
+                    continue
+                filename = os.path.basename(fname)
+                if not filename.startswith('sn') or not filename.endswith('flm'):
+                    continue
+                if 'dered' in filename:
+                    continue
+                print(filename)
+                fileparts = filename.split('.')[0].split('-')
+                instrument = ''
+                time = ''
+                if len(fileparts) > 1:
+                    year = fileparts[1][:4]
+                    month = fileparts[1][4:6]
+                    day = fileparts[1][6:]
+                    if is_number(year) and is_number(month) and is_number(day):
+                        if len(fileparts) > 2:
+                            instrument = fileparts[-1]
+                        time = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day))
+                f = open(fname,'r')
+                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+                data = [list(i) for i in zip(*data)]
+                wavelengths = data[0]
+                fluxes = data[1]
+                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
+                    fluxes = fluxes, u_time = 'MJD', time = time, instrument = instrument, source = source,
                     dereddened = False, deredshifted = False)
                 if args.travis and fi >= travislimit:
                     break
@@ -5325,10 +5361,10 @@ for task in tasks:
     
         suspectcnt = 0
         folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
-        for folder in folders:
+        for folder in tq(folders, currenttask):
             eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
             oldname = ''
-            for eventfolder in eventfolders:
+            for eventfolder in tq(eventfolders, currenttask):
                 name = eventfolder
                 if is_number(name[:4]):
                     name = 'SN' + name
