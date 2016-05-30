@@ -118,7 +118,7 @@ Other single SN datasets:
 * SN2011ht - http://adsabs.harvard.edu/abs/2013MNRAS.431.2599M
 * SN2011kl - http://adsabs.harvard.edu/abs/2015Natur.523..189G
 * PTF11iqb - http://adsabs.harvard.edu/abs/2015MNRAS.449.1876S
-* PS1-11ap - http://mnras.oxfordjournals.org/content/437/1/656.full
+* PS1-11ap - http://mnras.oxfordjournals.org/content/437/1/656.full (Missing spectra)
 * SN2012ap - http://adsabs.harvard.edu/abs/2015RAA....15..225L
 * SN2012au - http://adsabs.harvard.edu/abs/2013ApJ...770L..38M, http://adsabs.harvard.edu/abs/2013ApJ...772L..17T
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B, http://adsabs.harvard.edu/abs/2014ApJ...787..139D
