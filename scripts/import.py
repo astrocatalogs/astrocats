@@ -17,7 +17,7 @@ import shutil
 import warnings
 import statistics
 import warnings
-from datetime import timedelta
+from datetime import timedelta, datetime
 from glob import glob
 from hashlib import md5
 from html import unescape
@@ -73,15 +73,15 @@ tasks = OrderedDict([
     ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
     ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
     ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": True}),
-    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": True}),
+    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
+    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
     ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
-    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": True}),
+    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
     ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": True}),
-    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": True}),
+    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
+    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
     ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": True}),
+    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
     ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
     ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
     ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
@@ -1601,7 +1601,8 @@ def has_task(task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
 def archived_task(task):
-    if 'archived' in tasks[task] and tasks[task]['archived'] and task not in args.refreshlist.split(','):
+    if ('archived' in tasks[task] and tasks[task]['archived'] and
+        task not in args.refreshlist.split(',') and not args.fullrefresh):
         return True
     return False
 
@@ -3084,26 +3085,109 @@ for task in tasks:
                 add_photometry(name, time = row[2], band = row[4], magnitude = row[3], source = source)
         journal_events()
 
-        # 2014ApJ...787..157P
-        #files = glob("../sne-external/2014ApJ...787..157P/*")
-        #for fi in files:
-        #    bn = os.path.basename(fi)
-        #    fisplit = bn.split('_')
-        #    name = add_event(fisplit[0])
-        #    source = add_source(name, bibcode = '2014ApJ...787..157P')
-        #    add_quantity(name, 'alias', name, source)
-        #    band = fisplit[1].replace('bb', 'B').replace('vv', 'V').replace('uu', 'U')
-        #    if 'bollc' in band:
-        #        continue
-        #    with open(fi, 'r') as f:
-        #        lines = filter(None, [x.split() for x in f.read().splitlines()])
-        #        for row in lines:
-        #            mjd = round_sig(astrotime(2450000.+float(row[0]), format='jd').mjd, sig = 7)
-        #            if not is_number(row[1]):
-        #                continue
-        #            add_photometry(name, time = mjd, band = band, magnitude = row[1], e_magnitude = row[2], source = source,
-        #                telescope = 'Swift', system = 'Swift', instrument = 'UVOT')
-        #journal_events()
+        # 2016MNRAS.459.1039T
+        with open("../sne-external/2016MNRAS.459.1039T.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            name = add_event('LSQ13zm')
+            source = add_source(name, bibcode = '2016MNRAS.459.1039T')
+            add_quantity(name, 'alias', name, source)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    bands = [x.replace('(err)', '') for x in row[3:-1]]
+                    continue
+                mjd = row[1]
+                mags = [re.sub(r'\([^)]*\)', '', x) for x in row[3:-1]]
+                upps = [True if '>' in x else '' for x in mags]
+                mags = [x.replace('>', '') for x in mags]
+                errs = [x[x.find("(")+1:x.find(")")] if "(" in x else '' for x in row[3:-1]]
+                for mi, mag in enumerate(mags):
+                    if not is_number(mag):
+                        continue
+                    add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                        instrument = row[-1], upperlimit = upps[mi], source = source)
+        journal_events()
+
+        # 2015ApJ...804...28G
+        with open("../sne-external/2015ApJ...804...28G.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            name = add_event('PS1-13arp')
+            source = add_source(name, bibcode = '2015ApJ...804...28G')
+            add_quantity(name, 'alias', name, source)
+            for r, row in enumerate(tq(data, currenttask)):
+                if r == 0:
+                    continue    
+                mjd = row[1]
+                mag = row[3]
+                upp = True if '<' in mag else ''
+                mag = mag.replace('<', '')
+                err = row[4] if is_number(row[4]) else ''
+                ins = row[5]
+                add_photometry(name, time = mjd, band = row[0], magnitude = mag, e_magnitude = err,
+                    instrument = ins, upperlimit = upp, source = source)
+        journal_events()
+
+        # 2016ApJ...819...35A
+        with open("../sne-external/2016ApJ...819...35A.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue    
+                name = add_event(row[0])
+                source = add_source(name, bibcode = '2016ApJ...819...35A')
+                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'ra', row[1], source)
+                add_quantity(name, 'dec', row[2], source)
+                add_quantity(name, 'redshift', row[3], source)
+                add_quantity(name, 'discoverdate', datetime.strptime(row[4], '%Y %b %d').isoformat().replace('-', '/'), source)
+        journal_events()
+
+        # 2014ApJ...784..105W
+        with open("../sne-external/2014ApJ...784..105W.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue    
+                name = add_event(row[0])
+                source = add_source(name, bibcode = '2014ApJ...784..105W')
+                add_quantity(name, 'alias', name, source)
+                mjd = row[1]
+                band = row[2]
+                mag = row[3]
+                err = row[4]
+                add_photometry(name, time = mjd, band = row[2], magnitude = mag, e_magnitude = err,
+                    instrument = 'WHIRC', telescope = 'WIYN 3.5 m', observatory = 'NOAO',
+                    system = 'WHIRC', source = source)
+        journal_events()
+
+        # 2012MNRAS.425.1007B
+        with open("../sne-external/2012MNRAS.425.1007B.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    bands = row[2:]
+                    continue    
+                name = add_event(row[0])
+                source = add_source(name, bibcode = '2012MNRAS.425.1007B')
+                add_quantity(name, 'alias', name, source)
+                mjd = row[1]
+                mags = [x.split('±')[0].strip() for x in row[2:]] 
+                errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[2:]] 
+                if row[0] == 'PTF09dlc':
+                    ins = 'HAWK-I'
+                    tel = 'VLT 8.1m'
+                    obs = 'ESO'
+                else:
+                    ins = 'NIRI'
+                    tel = 'Gemini North 8.2m'
+                    obs = 'Gemini'
+                    
+                for mi, mag in enumerate(mags):
+                    if not is_number(mag):
+                        continue
+                    add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                        instrument = ins, telescope = tel, observatory = obs,
+                        system = 'Natural', source = source)
+        journal_events()
 
     # CCCP
     if do_task(task, 'cccp'):
