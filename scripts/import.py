@@ -394,10 +394,16 @@ def get_source_by_alias(name, alias):
     raise(ValueError('Source alias not found!'))
 
 def same_tag_str(photo, val, tag):
-    return ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and photo[tag] == val))
+    issame = ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and photo[tag] == val))
+    return issame
 
-def same_tag_num(photo, val, tag):
-    return ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and Decimal(photo[tag]) == Decimal(val)))
+def same_tag_num(photo, val, tag, canbelist = False):
+    issame = ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and
+        ((not canbelist and Decimal(photo[tag]) == Decimal(val)) or
+         (canbelist and
+            ((isinstance(photo[tag], str) and isinstance(val, str) and Decimal(photo[tag]) == Decimal(val)) or
+             (isinstance(photo[tag], list) and isinstance(val, list) and photo[tag] == val))))))
+    return issame
 
 def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
@@ -456,10 +462,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         for photo in events[name]['photometry']:
             if (same_tag_str(photo, sband, 'band') and
                 same_tag_str(photo, u_time, 'u_time') and
-                (('time' not in photo and not time) or 
-                 (time and 'time' in photo and
-                  ((isinstance(photo['time'], str) and isinstance(time, str) and Decimal(photo['time']) == Decimal(time)) or
-                   (isinstance(photo['time'], list) and isinstance(time, list) and photo['time'] == time)))) and
+                same_tag_num(photo, time, 'time', canbelist = True) and
                 same_tag_num(photo, magnitude, 'magnitude') and
                 (('host' not in photo and not host) or ('host' in photo and host)) and
                 same_tag_num(photo, flux, 'flux') and
@@ -470,10 +473,16 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                 same_tag_num(photo, frequency, 'frequency') and
                 same_tag_num(photo, photonindex, 'photonindex') and
                 same_tag_num(photo, e_magnitude, 'e_magnitude') and
+                same_tag_num(photo, e_lower_magnitude, 'e_lower_magnitude') and
+                same_tag_num(photo, e_upper_magnitude, 'e_upper_magnitude') and
                 same_tag_num(photo, e_flux, 'e_flux') and
                 same_tag_num(photo, e_unabsorbedflux, 'e_unabsorbedflux') and
                 same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
                 same_tag_num(photo, e_counts, 'e_counts') and
+                same_tag_num(photo, u_flux, 'u_flux') and
+                same_tag_num(photo, u_fluxdensity, 'u_fluxdensity') and
+                same_tag_num(photo, u_frequency, 'u_frequency') and
+                same_tag_num(photo, u_energy, 'u_energy') and
                 same_tag_str(photo, ssystem, 'system')
                 ):
                 return
@@ -4245,13 +4254,13 @@ for task in tasks:
                     if not line:
                         continue
                     for obs in line:
-                        add_photometry(name, time = obs[0], band = nslabels[li], magnitude = obs[1], e_magnitude = obs[2], source = source,
+                        add_photometry(name, time = str(obs[0]), band = nslabels[li], magnitude = str(obs[1]), e_magnitude = str(obs[2]), source = source,
                             telescope = 'Pan-STARRS1')
                 for li, line in enumerate(nslines[2*len(nslabels):]):
                     if not line:
                         continue
                     for obs in line:
-                        add_photometry(name, time = obs[0], band = nslabels[li], magnitude = obs[1], upperlimit = True, source = source,
+                        add_photometry(name, time = str(obs[0]), band = nslabels[li], magnitude = str(obs[1]), upperlimit = True, source = source,
                             telescope = 'Pan-STARRS1')
                 assoctab = bs2.find('table', {"class":"generictable"})
                 hostname = ''
@@ -5124,7 +5133,6 @@ for task in tasks:
                 if (not filename.startswith('sn') or not filename.endswith('flm') or
                     any(x in filename for x in ['-interp', '-z', '-dered', '-obj', '-gal'])):
                     continue
-                print(filename)
                 fileparts = filename.split('.')[0].split('-')
                 instrument = ''
                 time = ''
