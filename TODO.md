@@ -14,9 +14,8 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
 * http://adsabs.harvard.edu/abs/1999AJ....117..725F (1979C, 1980K)
 * http://iopscience.iop.org/article/10.1088/0004-637X/743/2/114/meta (PS1-10awh, PS1-10ky)
-* http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta (PTF11rks, SN2011ke, SN2011kf, SN2012il)
 * http://mnras.oxfordjournals.org/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
-* http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
+* http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810, SN2013dg)
 * http://adsabs.harvard.edu/abs/2014arXiv1401.3317S (SDSS SNe light curves, broken link - http://sdssdp62.fnal.gov/sdsssn/DataRelease/index.html)
 * http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe, but counts not magnitudes)
 * http://arxiv.org/abs/1603.03823
@@ -26,9 +25,7 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2014A%26A...568A..19C (SN2013ez, SN2013fu)
 * http://adsabs.harvard.edu/abs/1997AJ....114.2054A (SN 1995al, 1997Y, 1997bp)
 * http://adsabs.harvard.edu/abs/2012A%26A...545L...7T (SN 2006V, 2006au)
-* http://www.jstor.org/stable/984985?seq=1#page_scan_tab_contents
 * http://adsabs.harvard.edu/abs/1979AcC.....8....5F (Lists references for many historical LCs)
-* http://adsabs.harvard.edu/abs/2012MNRAS.425.1007B (IR photometry for about a dozen PTF events)
 * http://adsabs.harvard.edu/abs/2006ApJ...645..841N (SNLS LCs)
 * http://adsabs.harvard.edu/abs/2016arXiv160105955F (Late-time Iax spectra)
 * http://adsabs.harvard.edu/abs/2016ApJ...819...35A (rapid risers)
