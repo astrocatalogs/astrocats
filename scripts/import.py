@@ -65,7 +65,7 @@ tasks = OrderedDict([
     ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
     ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
     ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False}),
+    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
     ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
     ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
     ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
@@ -3440,27 +3440,56 @@ for task in tasks:
         f.close()
         journal_events()
     
-    # Now import the UCB SNDB
-    if do_task(task, 'ucb'): 
-        for fname in tq(sorted(glob("../sne-external/SNDB/*.dat"), key=lambda s: s.lower()), currenttask):
-            f = open(fname,'r')
-            tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
+    # New UCB import
+    if do_task(task, 'ucb'):
+        secondaryreference = "UCB Filippenko Group's Supernova Database (SNDB)"
+        secondaryrefurl = "http://heracles.astro.berkeley.edu/sndb/info"
+        secondaryrefbib = "2012MNRAS.425.1789S"
     
-            eventname = os.path.basename(os.path.splitext(fname)[0])
+        jsontxt = load_cached_url("http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot",
+            '../sne-external-spectra/UCB/allpub.json')
+        if not jsontxt:
+            continue
     
-            eventparts = eventname.split('.')
-    
-            name = snname(eventparts[0])
+        photom = json.loads(jsontxt)
+        photom = sorted(photom, key = lambda k: k['ObjName'])
+        for phot in tq(photom, currenttask = currenttask):
+            name = phot["ObjName"]
             name = add_event(name)
     
-            reference = "UCB Filippenko Group's Supernova Database (SNDB)"
-            refurl = "http://heracles.astro.berkeley.edu/sndb/info"
-            refbib = "2012MNRAS.425.1789S"
-            source = add_source(name, refname = reference, url = refurl, bibcode = refbib, secondary = True)
-            add_quantity(name, 'alias', name, source)
+            secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondaryrefbib, secondary = True)
+            add_quantity(name, 'alias', name, secondarysource)
+            sources = [secondarysource]
+            if phot["Reference"]:
+                sources += [add_source(name, bibcode = phot["Reference"])]
+            sources = uniq_cdl(sources)
     
-            year = re.findall(r'\d+', name)[0]
-            add_quantity(name, 'discoverdate', year, source)
+            if phot["Type"] and phot["Type"].strip() != "NoMatch":
+                for ct in phot["Type"].strip().split(','):
+                    add_quantity(name, 'claimedtype', ct.replace('-norm', '').strip(), sources)
+            if phot["DiscDate"]:
+                add_quantity(name, 'discoverdate', phot["DiscDate"].replace('-', '/'), sources)
+            if phot["HostName"]:
+                add_quantity(name, 'host', urllib.parse.unquote(phot["HostName"]).replace('*', ''), sources)
+            filename = phot["Filename"] if phot["Filename"] else ''
+    
+            if not filename:
+                raise(ValueError('Filename not found for SNDB phot!'))
+            if not phot["PhotID"]:
+                raise(ValueError('ID not found for SNDB phot!'))
+    
+            filepath = '../sne-external/SNDB/' + filename
+            if archived_task('ucb') and os.path.isfile(filepath):
+                with open(filepath, 'r') as f:
+                    phottxt = f.read()
+            else:
+                session = requests.Session()
+                response = session.get("http://heracles.astro.berkeley.edu/sndb/download?id=dp:" + str(phot["PhotID"]))
+                phottxt = response.text
+                with open(filepath, 'w') as f:
+                    f.write(phottxt)
+    
+            tsvin = csv.reader(phottxt.splitlines(), delimiter=' ', skipinitialspace=True)
     
             for r, row in enumerate(tsvin):
                 if len(row) > 0 and row[0] == "#":
@@ -3473,8 +3502,8 @@ for task in tasks:
                 band = row[4]
                 telescope = row[5]
                 add_photometry(name, time = mjd, telescope = telescope, band = band, magnitude = magnitude,
-                    e_magnitude = e_magnitude, source = source)
-            f.close()
+                    e_magnitude = e_magnitude, source = sources)
+
         journal_events()
         
     # Import SDSS
