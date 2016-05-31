@@ -64,6 +64,9 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         newitem['alias'] = [x['value'] for x in item['alias']]
         newitem['ra'] = item['ra'][0]['value']
         newitem['dec'] = item['dec'][0]['value']
+        # Temporary fix for David's typo
+        #if newitem['dec'].count('.') == 2:
+        #    newitem['dec'] = newitem['dec'][:newitem['dec'].rfind('.')]
         if 'distinctfrom' in item:
             newitem['distinctfrom'] = [x['value'] for x in item['distinctfrom']]
         newcatalog.append(newitem)
@@ -135,9 +138,10 @@ for item1 in tqdm(newcatalog):
                         #continue
                 else:
                     tqdm.write(name1 + ' has a close coordinate match to ' + name2 + " [" + str(distdeg) + "]")
-                if (not name1.startswith('SN') and name2.startswith('SN') or
-                    (maxyear1 and maxyear2 and maxyear2 < maxyear1 and not name1.startswith('SN'))):
+                if (not name1.startswith(('SN', 'AT')) and name2.startswith(('SN', 'AT')) or
+                    (maxyear1 and maxyear2 and maxyear2 < maxyear1 and not name1.startswith(('SN', 'AT')))):
                     name1,name2 = name2,name1
+                    aliases1,aliases2 = aliases2,aliases1
                     ra1,ra2 = ra2,ra1
                     dec1,dec2 = dec2,dec1
             else:

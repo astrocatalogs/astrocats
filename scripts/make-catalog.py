@@ -16,6 +16,7 @@ import urllib.request
 import urllib.parse
 import filecmp
 import inflect
+import warnings
 from cdecimal import Decimal
 from tqdm import tqdm
 from glob import glob
@@ -1275,71 +1276,74 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     if 'ra' in catalog[entry] and 'dec' in catalog[entry] and args.collecthosts:
         snra = catalog[entry]['ra'][0]['value']
         sndec = catalog[entry]['dec'][0]['value']
-        c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
-
-        if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
-            if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
-                sdssimagescale = max(0.05,0.04125/float(catalog[entry]['lumdist'][0]['value']))
-            else:
-                sdssimagescale = max(0.05,20.6265/float(catalog[entry]['lumdist'][0]['value']))
+        try:
+            c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
+        except:
+            warnings.warn('Malformed angle for event ' + entry + '.')
         else:
-            if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
-                sdssimagescale = 0.0006
+            if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
+                if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                    sdssimagescale = max(0.05,0.04125/float(catalog[entry]['lumdist'][0]['value']))
+                else:
+                    sdssimagescale = max(0.05,20.6265/float(catalog[entry]['lumdist'][0]['value']))
             else:
-                sdssimagescale = 0.3
-        dssimagescale = 0.13889*sdssimagescale
-        #At the moment, no way to check if host is in SDSS footprint without comparing to empty image, which is only possible at fixed angular resolution.
-        sdssimagescale = 0.3
+                if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                    sdssimagescale = 0.0006
+                else:
+                    sdssimagescale = 0.3
+            dssimagescale = 0.13889*sdssimagescale
+            #At the moment, no way to check if host is in SDSS footprint without comparing to empty image, which is only possible at fixed angular resolution.
+            sdssimagescale = 0.3
 
-        imgsrc = ''
-        hasimage = True
-        if eventname in hostimgdict:
-            imgsrc = hostimgdict[eventname]
-        else:
-            try:
-                response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
-                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G', timeout = 60)
-                resptxt = response.read()
-            except:
-                hasimage = False
+            imgsrc = ''
+            hasimage = True
+            if eventname in hostimgdict:
+                imgsrc = hostimgdict[eventname]
             else:
-                with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
-                    f.write(resptxt)
-                imgsrc = 'SDSS'
-
-            if hasimage and filecmp.cmp(outdir + fileeventname + '-host.jpg', outdir + 'missing.jpg'):
-                hasimage = False
-
-            if not hasimage:
-                hasimage = True
-                url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
-                       "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=" + str(dssimagescale) + "&float=on&scaling=Log&resolver=SIMBAD-NED" +
-                       "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
-                       "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
-
                 try:
-                    response = urllib.request.urlopen(url, timeout = 60)
-                    bandsoup = BeautifulSoup(response, "html5lib")
+                    response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
+                        + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G', timeout = 60)
+                    resptxt = response.read()
                 except:
                     hasimage = False
                 else:
-                    images = bandsoup.findAll('img')
-                    imgname = ''
-                    for image in images:
-                        if "Quicklook RGB image" in image.get('alt', ''):
-                            imgname = image.get('src', '').split('/')[-1]
+                    with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
+                        f.write(resptxt)
+                    imgsrc = 'SDSS'
 
-                    if imgname:
-                        try:
-                            response = urllib.request.urlopen('http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname)
-                        except:
-                            hasimage = False
-                        else:
-                            with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
-                                f.write(response.read())
-                            imgsrc = 'DSS'
-                    else:
+                if hasimage and filecmp.cmp(outdir + fileeventname + '-host.jpg', outdir + 'missing.jpg'):
+                    hasimage = False
+
+                if not hasimage:
+                    hasimage = True
+                    url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
+                           "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=" + str(dssimagescale) + "&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                           "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
+                           "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
+
+                    try:
+                        response = urllib.request.urlopen(url, timeout = 60)
+                        bandsoup = BeautifulSoup(response, "html5lib")
+                    except:
                         hasimage = False
+                    else:
+                        images = bandsoup.findAll('img')
+                        imgname = ''
+                        for image in images:
+                            if "Quicklook RGB image" in image.get('alt', ''):
+                                imgname = image.get('src', '').split('/')[-1]
+
+                        if imgname:
+                            try:
+                                response = urllib.request.urlopen('http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname)
+                            except:
+                                hasimage = False
+                            else:
+                                with open(outdir + fileeventname + '-host.jpg', 'wb') as f:
+                                    f.write(response.read())
+                                imgsrc = 'DSS'
+                        else:
+                            hasimage = False
 
         if hasimage:
             if imgsrc == 'SDSS':

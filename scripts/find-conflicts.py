@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3.5
 
-import ujson
+import json
 import re
 import os
 import math
@@ -39,7 +39,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         with open(eventfile, 'r') as f:
             filetext = f.read()
 
-    item = ujson.loads(filetext, object_pairs_hook=OrderedDict)
+    item = json.loads(filetext, object_pairs_hook=OrderedDict)
     item = item[list(item.keys())[0]]
 
     ras = []
@@ -145,6 +145,6 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 ('quantity', 'claimedtype'), ('difference', ''), ('values', cts), ('sources', ctsources)]))
 
 # Convert to array since that's what datatables expects
-jsonstring = ujson.dumps(conflicts, indent='\t', separators=(',', ':'), ensure_ascii=False)
+jsonstring = json.dumps(conflicts, indent='\t', separators=(',', ':'), ensure_ascii=False)
 with open('../conflicts.json', 'w') as f:
     f.write(jsonstring)

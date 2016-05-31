@@ -14,7 +14,6 @@ import argparse
 import gzip
 import io
 import shutil
-import warnings
 import statistics
 import warnings
 from datetime import timedelta, datetime
@@ -46,6 +45,7 @@ parser.add_argument('--update', '-u',       dest='update',      help='Only updat
 parser.add_argument('--verbose', '-v',      dest='verbose',     help='Print more messages to the screen.',         default=False, action='store_true')
 parser.add_argument('--refresh', '-r',      dest='refresh',     help='Ignore most task caches.',                   default=False, action='store_true')
 parser.add_argument('--full-refresh', '-f', dest='fullrefresh', help='Ignore all task caches.',                    default=False, action='store_true')
+parser.add_argument('--archived', '-a',     dest='archived',    help='Always use task caches.',                    default=False, action='store_true')
 parser.add_argument('--travis', '-tr',      dest='travis',      help='Run import script in test mode for Travis.', default=False, action='store_true')
 parser.add_argument('--refreshlist', '-rl', dest='refreshlist', help='Comma-delimited list of caches to clear.',   default='')
 args = parser.parse_args()
@@ -194,15 +194,21 @@ def get_source_year(source):
     raise(ValueError('No bibcode available for source!'))
 
 def name_clean(name):
-    newname = name.strip()
+    newname = name.strip(' ;,*')
     if newname.startswith('MASJ'):
         newname = newname.replace('MASJ', 'MASTER OT J', 1)
     if newname.startswith('MASTER') and is_number(newname[7]):
         newname = newname.replace('MASTER', 'MASTER OT J', 1)
+    if newname.startswith('MASTER OT J ') and is_number(newname[7]):
+        newname = newname.replace('MASTER OT J ', 'MASTER OT J', 1)
+    if newname.startswith('Psn'):
+        newname = newname.replace('Psn', 'PSN', 1)
     if newname.startswith('PSNJ'):
         newname = newname.replace('PSNJ', 'PSN J', 1)
     if newname.startswith('TCPJ'):
         newname = newname.replace('TCPJ', 'TCP J', 1)
+    if newname.startswith('SMTJ'):
+        newname = newname.replace('SMTJ', 'SMT J', 1)
     if newname.startswith('PSN20J'):
         newname = newname.replace('PSN20J', 'PSN J', 1)
     if newname.startswith('ASASSN') and newname[6] != '-':
@@ -217,6 +223,10 @@ def name_clean(name):
         newname = newname.replace('PTF ', 'PTF', 1)
     if newname.startswith('iPTF '):
         newname = newname.replace('iPTF ', 'iPTF', 1)
+    if newname.startswith('SNHunt'):
+        newname = newname.replace('SNHunt', 'SNhunt', 1)
+    if newname.startswith('PESSTOESO'):
+        newname = newname.replace('PESSTOESO', 'PESSTO ESO ', 1)
     if newname.startswith('snf'):
         newname = newname.replace('snf', 'SNF', 1)
     if newname.startswith('SNF') and is_number(newname[3:]) and len(newname) >= 12:
@@ -229,6 +239,8 @@ def name_clean(name):
         if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
             newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
                 decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
+    if newname.startswith('Gaia ') and is_number(newname[3:4]) and len(newname) > 5:
+        newname = newname.replace('Gaia ', 'Gaia', 1)
     if len(newname) <= 4 and is_number(newname):
         newname = 'SN' + newname + 'A'
     if len(newname) > 4 and is_number(newname[:4]) and not is_number(newname[4:]):
@@ -242,6 +254,8 @@ def name_clean(name):
     elif (newname.startswith('SN') and is_number(newname[2:6]) and
         (len(newname) == 8 or len(newname) == 9) and newname[6:].isupper()):
         newname = 'SN' + newname[2:6] + newname[6:].lower()
+
+    newname = (' '.join(newname.split())).strip()
     return newname
 
 def get_aliases(name, includename = True):
@@ -1605,6 +1619,8 @@ def has_task(task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
 def archived_task(task):
+    if 'archived' in tasks[task] and args.archived:
+        return True
     if ('archived' in tasks[task] and tasks[task]['archived'] and
         task not in args.refreshlist.split(',') and not args.fullrefresh):
         return True
@@ -3142,7 +3158,8 @@ for task in tasks:
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'redshift', row[3], source)
-                add_quantity(name, 'discoverdate', datetime.strptime(row[4], '%Y %b %d').isoformat().replace('-', '/'), source)
+                add_quantity(name, 'discoverdate',
+                    datetime.strptime(row[4], '%Y %b %d').isoformat().split('T')[0].replace('-', '/'), source)
         journal_events()
 
         # 2014ApJ...784..105W
@@ -3981,6 +3998,9 @@ for task in tasks:
                         aka = 'SN' + aka
                         name = add_event(aka)
     
+                ra = str(cols[3].contents[0]).strip()
+                dec = str(cols[4].contents[0]).strip()
+
                 sn = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
                 if is_number(sn.strip('?')):
                     sn = 'SN' + sn.strip('?') + 'A'
@@ -3991,6 +4011,8 @@ for task in tasks:
                         continue
                     if sn[:8] == 'MASTER J':
                         sn = sn.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
+                    if 'POSSIBLE' in sn.upper() and ra and dec:
+                        sn = 'PSN J' + ra.replace(':', '').replace('.', '') + dec.replace(':', '').replace('.', '')
                     name = add_event(sn)
     
                 reference = cols[12].findAll('a')[0].contents[0].strip()
@@ -4014,8 +4036,8 @@ for task in tasks:
                     add_quantity(name, 'claimedtype', str(cols[1].contents[0]).strip(' :,'), sources)
                 if str(cols[2].contents[0]).strip() != 'anonymous':
                     add_quantity(name, 'host', str(cols[2].contents[0]).strip(), sources)
-                add_quantity(name, 'ra', str(cols[3].contents[0]).strip(), sources)
-                add_quantity(name, 'dec', str(cols[4].contents[0]).strip(), sources)
+                add_quantity(name, 'ra', ra, sources)
+                add_quantity(name, 'dec', dec, sources)
                 if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                     astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd').datetime
                     add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
