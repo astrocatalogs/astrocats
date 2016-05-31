@@ -31,7 +31,6 @@ from astropy import units as un
 from astropy.io import fits
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo, z_at_value
-from astropy.coordinates import SkyCoord as coord
 from collections import OrderedDict, Sequence
 from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
@@ -1233,12 +1232,17 @@ def derive_and_sanitize():
         if ('ra' in events[name] and 'dec' in events[name] and 
             (not 'host' in events[name] or not any([x['value'] == 'Milky Way' for x in events[name]['host']]))):
             if name not in extinctionsdict:
-                result = IrsaDust.get_query_table(events[name]['ra'][0]['value'] + " " + events[name]['dec'][0]['value'], section = 'ebv')
-                ebv = result['ext SandF mean'][0]
-                ebverr = result['ext SandF std'][0]
-                extinctionsdict[name] = [ebv, ebverr]
-            source = add_source(name, bibcode = '2011ApJ...737..103S')
-            add_quantity(name, 'ebv', str(extinctionsdict[name][0]), source, error = str(extinctionsdict[name][1]))
+                try:
+                    result = IrsaDust.get_query_table(events[name]['ra'][0]['value'] + " " + events[name]['dec'][0]['value'], section = 'ebv')
+                except:
+                    warnings.warn("Coordinate lookup for " + name + " failed in IRSA.")
+                else:
+                    ebv = result['ext SandF mean'][0]
+                    ebverr = result['ext SandF std'][0]
+                    extinctionsdict[name] = [ebv, ebverr]
+            if name in extinctionsdict:
+                source = add_source(name, bibcode = '2011ApJ...737..103S')
+                add_quantity(name, 'ebv', str(extinctionsdict[name][0]), source, error = str(extinctionsdict[name][1]))
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'claimedtype' not in events[name] and name.startswith('AT'):
