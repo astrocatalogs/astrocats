@@ -1159,6 +1159,12 @@ def derive_and_sanitize():
             else:
                 source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                 add_quantity(name, 'alias', name, source)
+
+        if (name.startswith('SN') and is_number(name[2:6]) and 'discoverdate' in events[name] and
+            int(events[name]['discoverdate'][0]['value'].split('/')[0]) >= 2016 and not any(['AT' in x for x in aliases])):
+            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            add_quantity(name, 'alias', 'AT' + name[2:], source)
+
         events[name]['alias'] = list(sorted(events[name]['alias'], key=lambda key: alias_priority(name, key)))
         aliases = get_aliases(name)
 
