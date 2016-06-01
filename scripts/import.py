@@ -199,7 +199,7 @@ def name_clean(name):
         newname = newname.replace('MASJ', 'MASTER OT J', 1)
     if newname.startswith('MASTER') and is_number(newname[7]):
         newname = newname.replace('MASTER', 'MASTER OT J', 1)
-    if newname.startswith('MASTER OT J ') and is_number(newname[7]):
+    if newname.startswith('MASTER OT J '):
         newname = newname.replace('MASTER OT J ', 'MASTER OT J', 1)
     if newname.startswith('Psn'):
         newname = newname.replace('Psn', 'PSN', 1)
@@ -694,9 +694,9 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
 
     #Handle certain quantity
     if quantity == 'alias':
-        newalias = name_clean(svalue)
+        svalue = name_clean(svalue)
         if 'distinctfrom' in events[name]:
-            if newalias in [x['value'] for x in events[name]['distinctfrom']]:
+            if svalue in [x['value'] for x in events[name]['distinctfrom']]:
                 return
     if quantity in ['velocity', 'redshift', 'ebv', 'lumdist', 'comovingdist']:
         if not is_number(svalue):
@@ -1035,6 +1035,8 @@ def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
 def set_preferred_names():
+    if not len(events):
+        load_stubs()
     for name in list(sorted(list(events.keys()))):
         if name not in events:
             continue
@@ -1101,6 +1103,8 @@ def set_preferred_names():
 
 # Merge and remove duplicate events
 def merge_duplicates():
+    if not len(events):
+        load_stubs()
     currenttask = 'Merging duplicate events'
     keys = list(sorted(list(events.keys())))
     for n1, name1 in enumerate(tq(keys[:], currenttask)):
@@ -1409,7 +1413,7 @@ def write_all_events(empty = False, gz = False, bury = False):
                 continue
             if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
                 for ct in events[name]['claimedtype']:
-                    if ct['value'].upper() not in nonsnetypes:
+                    if ct['value'].upper() not in nonsnetypes and ct['value'].upper() != 'CANDIDATE':
                         buryevent = False
                         break
                     if ct['value'].upper() in nonsnetypes:
@@ -1482,6 +1486,9 @@ def copy_to_event(fromname, destname):
                         telescope = null_field(item, "telescope"), observer = null_field(item, "observer"),
                         reducer = null_field(item, "reducer"), filename = null_field(item, "filename"),
                         observatory = null_field(item, "observatory"))
+                elif key == 'errors':
+                    add_quantity(destname, key, item['value'], sources,
+                        kind = null_field(item, "kind"), extra = null_field(item, "extra"))
                 else:
                     add_quantity(destname, key, item['value'], sources, error = null_field(item, "error"),
                         unit = null_field(item, "unit"), kind = null_field(item, "kind"))
@@ -4036,6 +4043,8 @@ for task in tasks:
                         aka = 'PS1-' + aka[4:]
                     if aka[:8] == 'MASTER J':
                         aka = aka.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
+                    if 'POSSIBLE' in aka.upper() and ra and dec:
+                        aka = 'PSN J' + ra.replace(':', '').replace('.', '') + dec.replace(':', '').replace('.', '')
                     add_quantity(name, 'alias', aka, sources)
     
                 if str(cols[1].contents[0]).strip() != 'unk':
@@ -5310,7 +5319,7 @@ for task in tasks:
             datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
     
         oldname = ''
-        for fi, fname in enumerate(sorted(glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower())):
+        for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()), currenttask = currenttask)):
             filename = os.path.basename(fname)
             fileparts = filename.split('_')
             name = 'SNLS-' + fileparts[1]
@@ -5350,7 +5359,7 @@ for task in tasks:
     
     if do_task(task, 'cspspectra'): 
         oldname = ''
-        for fi, fname in enumerate(sorted(glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower())):
+        for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()), currenttask = currenttask)):
             filename = os.path.basename(fname)
             sfile = filename.split('.')
             if sfile[1] == 'txt':
@@ -5404,7 +5413,7 @@ for task in tasks:
         spectra = json.loads(jsontxt)
         spectra = sorted(spectra, key = lambda k: k['ObjName'])
         oldname = ''
-        for spectrum in spectra:
+        for spectrum in tq(spectra, currenttask = currenttask):
             name = spectrum["ObjName"]
             if oldname and name != oldname:
                 journal_events()
@@ -5654,11 +5663,11 @@ for task in tasks:
     
     if do_task(task, 'superfitspectra'):
         sfdirs = glob('../sne-external-spectra/superfit/*')
-        for sfdir in sfdirs:
+        for sfdir in tq(sfdirs, currenttask = currenttask):
             sffiles = sorted(glob(sfdir + "/*.dat"))
             lastname = ''
             oldname = ''
-            for sffile in sffiles:
+            for sffile in tq(sffiles, currenttask = currenttask):
                 basename = os.path.basename(sffile)
                 name = basename.split('.')[0]
                 if name.startswith('sn'):
