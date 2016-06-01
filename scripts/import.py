@@ -675,6 +675,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
 
     svalue = value.strip()
     serror = error.strip()
+    skind = kind.strip()
     sunit = ''
 
     if not svalue or svalue == '--' or svalue == '-':
@@ -704,26 +705,29 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     if quantity == 'host':
         if is_number(svalue):
             return
-        if svalue.lower() in ['anonymous', 'anon.', 'anon']:
+        if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
             return
-        svalue = svalue.strip("()").replace('  ', ' ')
-        svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ")
-        svalue = svalue.replace("ARP", "ARP ")
-        svalue = svalue.replace("CGCG", "CGCG ")
-        svalue = svalue.replace("HOLM", "HOLM ")
-        svalue = svalue.replace("IC", "IC ")
-        svalue = svalue.replace("Intergal.", "Intergalactic")
-        svalue = svalue.replace("MCG+", "MCG +")
-        svalue = svalue.replace("MCG-", "MCG -")
-        svalue = svalue.replace("M+", "MCG +")
-        svalue = svalue.replace("M-", "MCG -")
-        svalue = svalue.replace("MGC ", "MCG ")
-        svalue = svalue.replace("Mrk", "MRK")
-        svalue = svalue.replace("MRK", "MRK ")
-        svalue = svalue.replace("NGC", "NGC ")
-        svalue = svalue.replace("PGC", "PGC ")
-        svalue = svalue.replace("SDSS", "SDSS ")
-        svalue = svalue.replace("UGC", "UGC ")
+        if svalue.startswith('M ') and is_number(svalue[2:]):
+            svalue.replace('M ', 'M', 1)
+        svalue = svalue.strip("()").replace('  ', ' ', 1)
+        svalue = svalue.replace("Abell", "Abell ", 1)
+        svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
+        svalue = svalue.replace("ARP", "ARP ", 1)
+        svalue = svalue.replace("CGCG", "CGCG ", 1)
+        svalue = svalue.replace("HOLM", "HOLM ", 1)
+        svalue = svalue.replace("IC", "IC ", 1)
+        svalue = svalue.replace("Intergal.", "Intergalactic", 1)
+        svalue = svalue.replace("MCG+", "MCG +", 1)
+        svalue = svalue.replace("MCG-", "MCG -", 1)
+        svalue = svalue.replace("M+", "MCG +", 1)
+        svalue = svalue.replace("M-", "MCG -", 1)
+        svalue = svalue.replace("MGC ", "MCG ", 1)
+        svalue = svalue.replace("Mrk", "MRK", 1)
+        svalue = svalue.replace("MRK", "MRK ", 1)
+        svalue = svalue.replace("NGC", "NGC ", 1)
+        svalue = svalue.replace("PGC", "PGC ", 1)
+        svalue = svalue.replace("SDSS", "SDSS ", 1)
+        svalue = svalue.replace("UGC", "UGC ", 1)
         if len(svalue) > 4 and svalue.startswith("PGC "):
             svalue = svalue[:4] + svalue[4:].lstrip(" 0")
         if len(svalue) > 4 and svalue.startswith("UGC "):
@@ -745,6 +749,9 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
                 if is_number(parttwo.strip()):
                     svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
         svalue = ' '.join(svalue.split())
+
+        if not skind and svalue.startswith('Abell') and is_number(svalue[5:]):
+            skind = 'cluster'
     elif quantity == 'claimedtype':
         isq = False
         svalue = svalue.replace('young', '')
@@ -824,7 +831,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     if quantity in events[name]:
         for i, ct in enumerate(events[name][quantity]):
             if ct['value'] == svalue and sources:
-                if 'kind' in ct and kind and ct['kind'] != kind:
+                if 'kind' in ct and skind and ct['kind'] != skind:
                     return
                 for source in sources.split(','):
                     if source not in events[name][quantity][i]['source'].split(','):
@@ -842,8 +849,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         quantaentry['error'] = serror
     if sources:
         quantaentry['source'] = sources
-    if kind:
-        quantaentry['kind'] = kind
+    if skind:
+        quantaentry['kind'] = skind
     if sunit:
         quantaentry['unit'] = sunit
     if lowerlimit:
@@ -3968,6 +3975,7 @@ for task in tasks:
                 if row[16]:
                     date = row[16].split()[0].replace('-', '/')
                     if date != '0000/00/00':
+                        date = date.replace('/00', '')
                         time = row[16].split()[1]
                         if time != '00:00:00':
                             ts = time.split(':')
@@ -4354,7 +4362,7 @@ for task in tasks:
                                     aliases.append(cref.contents[0])
     
                 if ttype != 'sn' and ttype != 'orphan':
-                    break
+                    continue
     
                 name = ''
                 for alias in aliases:

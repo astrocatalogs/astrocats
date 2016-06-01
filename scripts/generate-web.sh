@@ -10,4 +10,5 @@ cd /var/www/html/sne/sne/scripts
 ./find-conflicts.py &
 ./make-biblio.py &
 ./make-errata.py &
+./make-host-catalog.py &
 ./hammertime.py &

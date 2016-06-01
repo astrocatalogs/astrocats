@@ -1711,7 +1711,7 @@ if args.writecatalog and not args.eventlist:
 
     safefiles = [os.path.basename(x) for x in files]
     safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json', 'errata.json',
-        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json']
+        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json', 'hosts.json']
 
     for myfile in glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:
