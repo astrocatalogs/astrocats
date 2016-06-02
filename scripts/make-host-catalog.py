@@ -38,7 +38,7 @@ for rep in repfolders:
     files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
-    #if fcnt > 100:
+    #if fcnt > 1000:
     #    break
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
 
@@ -68,9 +68,27 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             #tqdm.write(hn)
 
             hosts[hn] = OrderedDict([('host', hns), ('events', []), ('eventdates', []),
-                ('types', []), ('photocount', 0), ('spectracount', 0)])
+                ('types', []), ('photocount', 0), ('spectracount', 0), ('lumdist', ''), ('redshift', '')])
 
         hosts[hn]['events'].append(item['name'])
+
+        if (not hosts[hn]['lumdist'] or '*' in hosts[hn]['lumdist']) and 'lumdist' in item:
+            ldkinds = [x['kind'] if 'kind' in x else '' for x in item['lumdist']]
+            try:
+                ind = ldkinds.index('host')
+            except ValueError:
+                hosts[hn]['lumdist'] = item['lumdist'][0]['value'] + '*'
+            else:
+                hosts[hn]['lumdist'] = item['lumdist'][ind]['value']
+
+        if (not hosts[hn]['redshift'] or '*' in hosts[hn]['redshift']) and 'redshift' in item:
+            zkinds = [x['kind'] if 'kind' in x else '' for x in item['redshift']]
+            try:
+                ind = zkinds.index('host')
+            except ValueError:
+                hosts[hn]['redshift'] = item['redshift'][0]['value'] + '*'
+            else:
+                hosts[hn]['redshift'] = item['redshift'][ind]['value']
 
         if 'discoverdate' in item and item['discoverdate']:
             datestr = item['discoverdate'][0]['value'].replace('/', '-')
@@ -100,14 +118,15 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             hosts[hn]['spectracount'] += len(item['spectra'])
 
 curtime = time.time()
-centrate = 1.0/(100.0*365.25*24.0*60.0*60.0)
+centrate = 100.0*365.25*24.0*60.0*60.0
 
 for hn in hosts:
-    finitedates = sorted([x for x in hosts[hn]['eventdates'] if x != float("inf")] + [curtime])
-    datediffs = [(finitedates[i+1] - x)*centrate for i, x in enumerate(finitedates[:-1])]
-    if len(datediffs) >= 2:
-        hosts[hn]['rate'] = (pretty_num(1.0/statistics.mean(datediffs)) + ',' +
-            pretty_num(1.0/(statistics.mean(datediffs)*sqrt(float(len(datediffs))))))
+    finitedates = sorted([x for x in hosts[hn]['eventdates'] if x != float("inf")])
+    if len(finitedates) >= 2:
+        datediff = curtime - finitedates[0]
+        lamb = float(len(finitedates))/(curtime - finitedates[0])*centrate
+        hosts[hn]['rate'] = (pretty_num(lamb, sig = 3) + ',' +
+            pretty_num(lamb/sqrt(float(len(finitedates))), sig = 3))
     else:
         hosts[hn]['rate'] = ''
     hosts[hn]['events'] = [x for (y,x) in sorted(zip(hosts[hn]['eventdates'], hosts[hn]['events']))]

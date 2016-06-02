@@ -65,8 +65,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         newitem['ra'] = item['ra'][0]['value']
         newitem['dec'] = item['dec'][0]['value']
         # Temporary fix for David's typo
-        #if newitem['dec'].count('.') == 2:
-        #    newitem['dec'] = newitem['dec'][:newitem['dec'].rfind('.')]
+        if newitem['dec'].count('.') == 2:
+            newitem['dec'] = newitem['dec'][:newitem['dec'].rfind('.')]
         if 'distinctfrom' in item:
             newitem['distinctfrom'] = [x['value'] for x in item['distinctfrom']]
         newcatalog.append(newitem)
