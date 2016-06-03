@@ -18,7 +18,6 @@ import filecmp
 import inflect
 import warnings
 from cdecimal import Decimal
-from tqdm import tqdm
 from glob import glob
 from photometry import *
 from digits import *
@@ -37,8 +36,9 @@ from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
 from bs4 import BeautifulSoup, Tag, NavigableString
-from math import isnan, floor, ceil, pi
+from math import isnan, floor, ceil, pi, hypot
 from statistics import mean
+from tq import *
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
 parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',          default=True, action='store_false')
@@ -78,6 +78,9 @@ columnkey = [
     "host",
     "ra",
     "dec",
+    "hostra",
+    "hostdec",
+    "hostoffset",
     "instruments",
     "redshift",
     "velocity",
@@ -106,8 +109,11 @@ header = [
     r"<em>m</em><sub>max</sub>",
     r"<em>M</em><sub>max</sub>",
     "Host Name",
-    "R.A. (h:m:s)",
-    "Dec. (d:m:s)",
+    "R.A.",
+    "Dec.",
+    "Host R.A.",
+    "Host Dec.",
+    "Host Offset (')",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
@@ -132,8 +138,11 @@ eventpageheader = [
     r"<em>m</em><sub>max</sub> [band]",
     r"<em>M</em><sub>max</sub> [band]",
     "Host Name",
-    "R.A. (h:m:s)",
-    "Dec. (d:m:s)",
+    "R.A.",
+    "Dec.",
+    "Host R.A.",
+    "Host Dec.",
+    "Host Offset (')",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
@@ -158,8 +167,11 @@ titles = [
     "Maximum apparent AB magnitude",
     "Maximum absolute AB magnitude",
     "Host Name",
-    "J2000 Right Ascension (h:m:s)",
-    "J2000 Declination (d:m:s)",
+    "Supernova J2000 Right Ascension (h:m:s)",
+    "Supernova J2000 Declination (d:m:s)",
+    "Host J2000 Right Ascension (h:m:s)",
+    "Host J2000 Declination (d:m:s)",
+    "Host Offset (Arcminutes)",
     "List of Instruments and Bands",
     "Redshift",
     "Heliocentric velocity (km/s)",
@@ -345,7 +357,7 @@ if os.path.isfile(outdir + 'md5s.json'):
 else:
     md5dict = {}
 
-for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
+for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
     if args.eventlist and fileeventname not in args.eventlist:
         continue
@@ -366,7 +378,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
-    tqdm.write(eventfile + ' [' + checksum + ']')
+    tprint(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry])
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
@@ -379,6 +391,13 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     if 'maxdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['maxdate']):
             catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][d]['value'].split('.')[0]
+
+    if all([x in catalog[entry] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
+        c1 = coord(ra=catalog[entry]['ra'][0]['value'], dec=catalog[entry]['dec'][0]['value'], unit=(un.hourangle, un.deg))
+        c2 = coord(ra=catalog[entry]['hostra'][0]['value'], dec=catalog[entry]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
+        catalog[entry]['hostoffset'] = pretty_num(hypot(c1.ra.degree - c2.ra.degree, c1.dec.degree - c2.dec.degree)*60.)
+    else:
+        catalog[entry]['hostoffset'] = ''
 
     hostmag = ''
     hosterr = ''

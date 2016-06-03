@@ -788,12 +788,15 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         elif unit == 'nospace' and 'ra' in quantity:
             svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
         elif unit == 'nospace' and 'dec' in quantity:
-            svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
+            if svalue.startswith(('+', '-')):
+                svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
+            else:
+                svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
         else:
             svalue = svalue.replace(' ', ':')
             if 'dec' in quantity:
                 valuesplit = svalue.split(':')
-                svalue = (('+' if float(valuesplit[0]) > 0.0 else '-') + valuesplit[0].strip('+-').zfill(2) +
+                svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
                     (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
                     (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
 
@@ -2799,6 +2802,22 @@ for task in tasks:
             add_quantity(name, 'claimedtype', row['Type'], source)
             add_photometry(name, time = row['MJD'], band = row['Band'], magnitude = row['mag'],
                 e_magnitude = row["e_mag"], telescope = row["Tel"], source = source)
+        journal_events()
+
+        result = Vizier.get_catalogs("J/ApJ/673/999/table1")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event('SN'+row['SN'])
+            source = add_source(name, bibcode = "2008ApJ...673..999P")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row['z'], source, kind = 'host')
+            add_quantity(name, 'hostra', row['RAGdeg'], source, unit = 'floatdegrees')
+            add_quantity(name, 'hostdec', row['DEGdeg'], source, unit = 'floatdegrees')
+            add_quantity(name, 'claimedtype', row['Type'].strip(':'), source)
         journal_events()
     
     if do_task(task, 'donations'):

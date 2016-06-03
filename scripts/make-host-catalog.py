@@ -68,7 +68,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             #tqdm.write(hn)
 
             hosts[hn] = OrderedDict([('host', hns), ('events', []), ('eventdates', []),
-                ('types', []), ('photocount', 0), ('spectracount', 0), ('lumdist', ''), ('redshift', '')])
+                ('types', []), ('photocount', 0), ('spectracount', 0), ('lumdist', ''),
+                ('redshift', ''), ('hostra', ''), ('hostdec', '')])
 
         hosts[hn]['events'].append(item['name'])
 
@@ -89,6 +90,11 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 hosts[hn]['redshift'] = item['redshift'][0]['value'] + '*'
             else:
                 hosts[hn]['redshift'] = item['redshift'][ind]['value']
+
+        if not hosts[hn]['hostra'] and 'hostra' in item:
+            hosts[hn]['hostra'] = item['hostra'][0]['value']
+        if not hosts[hn]['hostdec'] and 'hostdec' in item:
+            hosts[hn]['hostdec'] = item['hostdec'][0]['value']
 
         if 'discoverdate' in item and item['discoverdate']:
             datestr = item['discoverdate'][0]['value'].replace('/', '-')

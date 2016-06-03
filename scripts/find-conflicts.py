@@ -76,6 +76,9 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                                 'id':source['bibcode'] if 'bibcode' in source else source['name']})
                 if newsources:
                     decs.append(quantum['value'])
+                    # Temporary fix for David's typo
+                    if decs[-1].count('.') == 2:
+                        decs[-1] = decs[-1][:decs[-1].rfind('.')]
                     decsources.append({'idtype':','.join([x['idtype'] for x in newsources]), 'id':','.join([x['id'] for x in newsources])})
             elif key == 'redshift':
                 newsources = []
@@ -100,7 +103,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 
     edit = True if os.path.isfile('../sne-internal/' + get_event_filename(item['name']) + '.json') else False
 
-    if ras and decs and item['name'] not in ['SN1996D', 'SN1998ew', 'SN2003an', 'SN2011in', 'SN2012ac', 'SN2012ht', 'SN2013bz']:
+    if ras and decs and item['name'] not in ['SN2012ht', 'SN2015ag']:# and item['name'] not in ['SN1996D', 'SN1998ew', 'SN2003an', 'SN2011in', 'SN2012ac', 'SN2012ht', 'SN2013bz']:
         oralen = len(ras)
         odeclen = len(decs)
         if len(ras) > len(decs):
@@ -108,6 +111,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         elif len(ras) < len(decs):
             ras = ras + [ras[0] for x in range(len(decs) - len(ras))]
 
+        print(item['name'])
         coo = coord(ras, decs, unit = (un.hourangle, un.deg))
         ras = ras[:oralen]
         decs = decs[:odeclen]
