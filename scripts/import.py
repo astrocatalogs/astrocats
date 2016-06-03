@@ -1414,7 +1414,7 @@ def write_all_events(empty = False, gz = False, bury = False):
         # Delete non-SN events here without IAU designations (those with only banned types)
         if bury:
             buryevent = False
-            nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
+            nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star', 'False Positive',
                            'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star', 'Fake']
             nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')

@@ -179,7 +179,7 @@ titles = [
     "Claimed Type",
     "Milky Way Reddening",
     "Photometry",
-    "Spectra",
+    "pectra",
     "Radio",
     "X-rays",
     "Bibcodes of references with most data on event",
@@ -302,6 +302,8 @@ def is_valid_link(url):
     response = requests.get(url)
     try:
         response.raise_for_status()
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         return False
     return True
@@ -438,6 +440,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             datestr += "/01"
         try:
             mjdmax = astrotime(datestr.replace('/', '-')).mjd
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             pass
 
@@ -1297,22 +1301,25 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         sndec = catalog[entry]['dec'][0]['value']
         try:
             c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
+        except (KeyboardInterrupt, SystemExit):
+            raise
         except:
             warnings.warn('Malformed angle for event ' + entry + '.')
         else:
-            if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
-                if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
-                    sdssimagescale = max(0.05,0.04125/float(catalog[entry]['lumdist'][0]['value']))
-                else:
-                    sdssimagescale = max(0.05,20.6265/float(catalog[entry]['lumdist'][0]['value']))
-            else:
-                if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
-                    sdssimagescale = 0.0006
-                else:
-                    sdssimagescale = 0.3
-            dssimagescale = 0.13889*sdssimagescale
+            #if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
+            #    if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+            #        sdssimagescale = max(0.05,0.4125/float(catalog[entry]['lumdist'][0]['value']))
+            #    else:
+            #    sdssimagescale = max(0.5,20.6265/float(catalog[entry]['lumdist'][0]['value']))
+            #else:
+            #    if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+            #        sdssimagescale = 0.006
+            #    else:
+            #    sdssimagescale = 0.5
+            #dssimagescale = 0.13889*sdssimagescale
             #At the moment, no way to check if host is in SDSS footprint without comparing to empty image, which is only possible at fixed angular resolution.
             sdssimagescale = 0.3
+            dssimagescale = 0.13889*sdssimagescale
 
             imgsrc = ''
             hasimage = True
@@ -1321,8 +1328,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             else:
                 try:
                     response = urllib.request.urlopen('http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
-                        + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + sdssimagescale + '&width=500&height=500&opt=G', timeout = 60)
+                        + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=' + str(sdssimagescale) + '&width=500&height=500&opt=G', timeout = 60)
                     resptxt = response.read()
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     hasimage = False
                 else:
@@ -1343,6 +1352,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     try:
                         response = urllib.request.urlopen(url, timeout = 60)
                         bandsoup = BeautifulSoup(response, "html5lib")
+                    except (KeyboardInterrupt, SystemExit):
+                        raise
                     except:
                         hasimage = False
                     else:
@@ -1355,6 +1366,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         if imgname:
                             try:
                                 response = urllib.request.urlopen('http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname)
+                            except (KeyboardInterrupt, SystemExit):
+                                raise
                             except:
                                 hasimage = False
                             else:

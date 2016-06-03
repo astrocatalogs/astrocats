@@ -2,8 +2,8 @@
 
 import json
 
-with open('../names', 'r') as f:
-    names = f.read().splitlines()
+#with open('../names', 'r') as f:
+#    names = f.read().splitlines()
 
 with open('../hostimgs.json', 'r') as f:
     hostimgs = json.loads(f.read())
@@ -11,7 +11,8 @@ with open('../hostimgs.json', 'r') as f:
 count = 0
 newhostimgs = []
 for ei, entry in enumerate(hostimgs):
-    if entry[0] not in names:
+    if entry[1] == 'SDSS':
+    #if entry[0] not in names:
         count = count + 1
         newhostimgs.append(entry)
 
