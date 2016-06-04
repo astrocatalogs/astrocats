@@ -72,6 +72,7 @@ tasks = OrderedDict([
     ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
     ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
     ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
     ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
     ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
     ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
@@ -84,17 +85,17 @@ tasks = OrderedDict([
     ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
     ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
     ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
-    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+    #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    #("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+    #("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    #("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    #("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+    #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    #("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    #("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
@@ -123,6 +124,9 @@ with open('type-synonyms.json', 'r') as f:
     typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 with open('source-synonyms.json', 'r') as f:
     sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
+with open('non-sne-types.json', 'r') as f:
+    nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    nonsnetypes = [x.upper() for x in nonsnetypes]
 
 repbetterquantity = {
     'redshift',
@@ -750,7 +754,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
                     svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
         svalue = ' '.join(svalue.split())
 
-        if not skind and svalue.startswith('Abell') and is_number(svalue[5:]):
+        if (not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
+            'cluster' in svalue.lower())):
             skind = 'cluster'
     elif quantity == 'claimedtype':
         isq = False
@@ -913,6 +918,8 @@ def load_cached_url(url, filepath, timeout = 120, write = True):
     try:
         session = requests.Session()
         response = session.get(url, timeout = timeout)
+        if any([x.status_code == 307 for x in response.history]):
+            raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
         #tprint(filemd5 + ":" + newmd5)
@@ -1414,9 +1421,6 @@ def write_all_events(empty = False, gz = False, bury = False):
         # Delete non-SN events here without IAU designations (those with only banned types)
         if bury:
             buryevent = False
-            nonsnetypes = ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star', 'False Positive',
-                           'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star', 'Fake']
-            nonsnetypes = [x.upper() for x in nonsnetypes]
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
             if name.startswith(nonsneprefixes):
                 tprint('Burying ' + name + ', non-SNe prefix.')
@@ -3932,6 +3936,25 @@ for task in tasks:
                         add_photometry(name, time = mjd, band = row['Mband'], magnitude = row['Mmag'], source = source)
         f.close()
         journal_events()
+
+    if do_task(task, 'fermi'):
+        with open("../sne-external/1SC_catalog_v01.asc", 'r') as f:
+            tsvin = csv.reader(f, delimiter=',')
+            for ri, row in enumerate(tq(tsvin, currenttask)):
+                if row[0].startswith('#'):
+                    if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
+                        break
+                    continue
+                if 'Classified' not in row[1]:
+                    continue
+                name = row[0].replace('SNR', 'G')
+                name = add_event(name)
+                source = add_source(name, bibcode = '2016ApJS..224....8A')
+                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
+                add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
+                add_quantity(name, 'dec', row[3], source, unit = 'floatdegrees')
+        journal_events()
     
     if do_task(task, 'tns'):
         session = requests.Session()
@@ -4468,7 +4491,7 @@ for task in tasks:
     
     if do_task(task, 'psmds'):
         with open('../sne-external/MDS/apj506838t1_mrt.txt') as f:
-            for ri, row in enumerate(f.read().splitlines()):
+            for ri, row in enumerate(tq(f.read().splitlines(), currenttask)):
                 if ri < 35:
                     continue
                 cols = [x.strip() for x in row.split(',')]
@@ -4779,6 +4802,7 @@ for task in tasks:
                     alias = name.split('(')[0].strip(' ')
                     name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
                     name = add_event(name)
+                    source = add_source(name, bibcode = '2012PASP..124..668Y')
                     add_quantity(name, 'alias', alias, source)
                 else:
                     name = add_event(name)
@@ -4796,7 +4820,7 @@ for task in tasks:
                 else:
                     name = 'PTF' + cols[0]
                 name = add_event(name)
-                source = add_source(name, bibcode = '2016arXiv160408207D')
+                source = add_source(name, bibcode = '2016arXiv160408207P')
                 add_quantity(name, 'alias', name, source)
                 if alias:
                     add_quantity(name, 'alias', alias, source)
