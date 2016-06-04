@@ -179,7 +179,6 @@ Spectra to recover that were donated to SuSpect (bad wavelength solutions, etc):
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
-* Fermi SNR catalog - http://arxiv.org/abs/1511.06778
 * GALEX SNR catalog?
 * GRBs (BATSE, Swift, FERMI). LGRBs are definitely SNe, should we considered SGRBs to be SNe?
 
