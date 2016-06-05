@@ -53,38 +53,38 @@ args = parser.parse_args()
 tasks = OrderedDict([
     ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
     ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
-    ("radio",           {"nicename":"%pre radio data",              "update": False}),
-    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
-    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
-    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
-    ("donations",       {"nicename":"%pre donations",               "update": False}),
-    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
-    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
-    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
-    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
-    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
-    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
-    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
-    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
-    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
-    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
-    ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
-    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
-    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
-    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
-    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+    #("radio",           {"nicename":"%pre radio data",              "update": False}),
+    #("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+    #("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+    #("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+    #("donations",       {"nicename":"%pre donations",               "update": False}),
+    #("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+    #("scp",             {"nicename":"%pre SCP",                     "update": False}),
+    #("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+    #("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+    #("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+    #("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+    #("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
+    #("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+    #("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+    #("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+    #("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+    #("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+    #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+    #("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    #("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
+    #("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
+    #("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
+    #("snls",            {"nicename":"%pre SNLS",                    "update": False}),
     ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
-    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
-    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
-    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
-    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
-    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
-    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+    #("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    #("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
+    #("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
+    #("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+    #("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
+    #("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    #("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+    #("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
     #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
     #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
     #("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
@@ -94,8 +94,8 @@ tasks = OrderedDict([
     #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
     #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
     #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    #("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    #("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
@@ -205,6 +205,12 @@ def name_clean(name):
         newname = newname.replace('MASTER', 'MASTER OT J', 1)
     if newname.startswith('MASTER OT J '):
         newname = newname.replace('MASTER OT J ', 'MASTER OT J', 1)
+    if newname.startswith('HST ') and newname[4] != 'J':
+        newname = newname.replace('HST ', 'HST J', 1)
+    if newname.startswith('SNLS') and newname[4] != '-':
+        newname = newname.replace('SNLS', 'SNLS-', 1)
+    if newname.startswith('SCP') and newname[3] != '-':
+        newname = newname.replace('SCP', 'SCP-', 1)
     if newname.startswith('Psn'):
         newname = newname.replace('Psn', 'PSN', 1)
     if newname.startswith('PSNJ'):
@@ -714,6 +720,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         if svalue.startswith('M ') and is_number(svalue[2:]):
             svalue.replace('M ', 'M', 1)
         svalue = svalue.strip("()").replace('  ', ' ', 1)
+        svalue = svalue.replace("ABELL", "Abell", 1)
         svalue = svalue.replace("Abell", "Abell ", 1)
         svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
         svalue = svalue.replace("ARP", "ARP ", 1)
@@ -778,6 +785,9 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
                 hours = floor(flhours)
                 minutes = floor((flhours - hours) * 60.0)
                 seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
+                hours = 0 if hours < 1.e-6 else hours
+                minutes = 0 if minutes < 1.e-6 else minutes
+                seconds = 0.0 if seconds < 1.e-6 else seconds
                 if seconds > 60.0:
                     raise(ValueError('Invalid seconds value for ' + quantity))
                 svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1))
@@ -926,12 +936,14 @@ def load_cached_url(url, filepath, timeout = 120, write = True):
         if args.update and newmd5 == filemd5:
             tprint('Skipping file in "' + currenttask + '," local and remote copies identical [' + newmd5 + '].')
             return False
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
         return filetxt
     else:
         if write:
             with codecs.open(filepath, 'w', encoding='utf8') as f:
-                f.write(txt)
+                f.write(txt if txt else filetxt)
     return txt
 
 def make_date_string(year, month = '', day = ''):
@@ -1208,7 +1220,7 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'discoverdate' not in events[name]:
-            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-']
+            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-', 'SNLS-', 'SPIRITS']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
@@ -1235,7 +1247,21 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'discoverdate' not in events[name]:
-            prefixes = ['AT', 'SN']
+            prefixes = ['PTFS']
+            for alias in aliases:
+                for prefix in prefixes:
+                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
+                        discoverdate = '/'.join(['20' + alias.replace(prefix, '')[:2],
+                            alias.replace(prefix, '')[2:4]])
+                        if args.verbose:
+                            tprint ('Added discoverdate from name: ' + discoverdate)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'discoverdate', discoverdate, source)
+                        break
+                if 'discoverdate' in events[name]:
+                    break
+        if 'discoverdate' not in events[name]:
+            prefixes = ['AT', 'SN', 'OGLE-']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]):
@@ -1248,7 +1274,7 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'ra' not in events[name] or 'dec' not in events[name]:
-            prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J']
+            prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J', 'HST J', 'TCP J']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:6]):
@@ -1275,6 +1301,8 @@ def derive_and_sanitize():
             if name not in extinctionsdict:
                 try:
                     result = IrsaDust.get_query_table(events[name]['ra'][0]['value'] + " " + events[name]['dec'][0]['value'], section = 'ebv')
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     warnings.warn("Coordinate lookup for " + name + " failed in IRSA.")
                 else:
@@ -1979,7 +2007,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
-            name = 'SDSS-II ' + str(row['SNID'])
+            name = 'SDSS-II SN ' + str(row['SNID'])
             name = add_event(name)
             source = add_source(name, bibcode = '2008AJ....136.2306H')
             add_quantity(name, 'alias', name, source)
@@ -1994,13 +2022,13 @@ for task in tasks:
         for row in tq(table, currenttask):
             name = row['SN']
             if not name:
-                name = 'SDSS-II ' + str(row['SDSS-II'])
+                name = 'SDSS-II SN ' + str(row['SDSS-II'])
             else:
                 name = 'SN' + name
             name = add_event(name)
             source = add_source(name, bibcode = '2010ApJ...708..661D')
             add_quantity(name, 'alias', name, source)
-            add_quantity(name, 'alias', 'SDSS-II ' + str(row['SDSS-II']), source)
+            add_quantity(name, 'alias', 'SDSS-II SN ' + str(row['SDSS-II']), source)
             add_quantity(name, 'claimedtype', 'II P', source)
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
@@ -2010,7 +2038,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             if row['f_SN'] == 'a':
-                name = 'SDSS-II ' + str(row['SN'])
+                name = 'SDSS-II SN ' + str(row['SN'])
             else:
                 name = 'SN' + row['SN']
             name = add_event(name)
@@ -2794,7 +2822,6 @@ for task in tasks:
                 elif 'Spectrum' in row['n_z']:
                     kind = 'spectroscopic'
                 add_quantity(name, 'redshift', row['z'], source, error = row['e_z'], kind = kind)
-
         result = Vizier.get_catalogs("J/ApJS/220/9/table8")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
@@ -2808,6 +2835,7 @@ for task in tasks:
                 e_magnitude = row["e_mag"], telescope = row["Tel"], source = source)
         journal_events()
 
+        # 2008ApJ...673..999P
         result = Vizier.get_catalogs("J/ApJ/673/999/table1")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
@@ -2823,7 +2851,213 @@ for task in tasks:
             add_quantity(name, 'hostdec', row['DEGdeg'], source, unit = 'floatdegrees')
             add_quantity(name, 'claimedtype', row['Type'].strip(':'), source)
         journal_events()
+
+        # 2011MNRAS.417..916G
+        result = Vizier.get_catalogs("J/MNRAS/417/916/table2")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event('SNSDF'+row['SNSDF'])
+            source = add_source(name, bibcode = "2011MNRAS.417..916G")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'redshift', row['zsp'] if row['zsp'] else row['zph'], source, kind = 'host')
+            add_quantity(name, 'discoverdate', '20' + row['SNSDF'][:2] + '/' + row['SNSDF'][2:4], source, kind = 'host')
+            add_quantity(name, 'hostoffset', row['Offset'], source, unit = 'arcseconds')
+            add_quantity(name, 'claimedtype', row['Type'], source)
+        result = Vizier.get_catalogs("J/MNRAS/417/916/table3")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event('SNSDF'+row['hSDF'])
+            source = add_source(name, bibcode = "2011MNRAS.417..916G")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'hostra', row['RAJ2000'], source)
+            add_quantity(name, 'hostdec', row['DEJ2000'], source)
+        journal_events()
+
+        # 2013MNRAS.430.1746G
+        result = Vizier.get_catalogs("J/MNRAS/430/1746/table4")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event('SDSS'+row['SDSS'])
+            source = add_source(name, bibcode = "2013MNRAS.430.1746G")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'discoverdate', row['Date'].replace('-', '/'), source)
+            add_quantity(name, 'redshift', row['z'], source)
+            add_quantity(name, 'claimedtype', row['Type'], source)
+        journal_events()
+
+        # 2014AJ....148...13R
+        result = Vizier.get_catalogs("J/AJ/148/13/high_z")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event(row['Name'])
+            source = add_source(name, bibcode = "2014AJ....148...13R")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'discoverdate', '20' + row['Name'][3:4], source)
+            add_quantity(name, 'redshift', row['zSN'], source, kind = 'heliocentric', error = row['e_zSN'])
+            add_quantity(name, 'hostra', row['RAG'], source)
+            add_quantity(name, 'hostdec', row['DEG'], source)
+            add_quantity(name, 'hostoffset', row['ASep'], source, unit = 'arcseconds')
+            add_quantity(name, 'redshift', row['zhost'], source, kind = 'host', error = row['e_zhost'])
+        result = Vizier.get_catalogs("J/AJ/148/13/low_z")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event(row['Name'])
+            source = add_source(name, bibcode = "2014AJ....148...13R")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'discoverdate', '20' + row['Name'][3:4], source)
+            add_quantity(name, 'redshift', row['zSN'], source, kind = 'heliocentric', error = row['e_zSN'])
+            add_quantity(name, 'hostra', row['RAG'], source)
+            add_quantity(name, 'hostdec', row['DEG'], source)
+            add_quantity(name, 'hostoffset', row['ASep'], source, unit = 'arcseconds')
+            add_quantity(name, 'redshift', row['zhost'], source, kind = 'host', error = row['e_zhost'])
+        journal_events()
+
+        # 2007ApJ...666..674M
+        result = Vizier.get_catalogs("J/ApJ/666/674/table3")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            essname = 'ESSENCE '+row['ESSENCE']
+            if row['SN']:
+                name = add_event('SN'+row['SN'])
+            else:
+                name = add_event(essname)
+            source = add_source(name, bibcode = "2007ApJ...666..674M")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', essname, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'redshift', row['zSN'], source, error = row['e_zSN'], kind = 'heliocentric')
+            add_quantity(name, 'redshift', row['zGal'], source, kind = 'host')
+            add_quantity(name, 'claimedtype', row['SType'] if row['SType'] else row['Type'], source)
+        journal_events()
+
+        # 2013AcA....63....1K
+        result = Vizier.get_catalogs("J/AcA/63/1/table1")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            if 'OGLE' not in row['Name']:
+                continue
+            name = add_event(row['Name'])
+            source = add_source(name, bibcode = "2013AcA....63....1K")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', row['OGLEIV'], source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+            astrot = astrotime(float(row['Tmax']), format = 'jd').datetime
+            add_quantity(name, 'maxdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+        journal_events()
     
+        # 2011MNRAS.410.1262W
+        result = Vizier.get_catalogs("J/MNRAS/410/1262/tablea2")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event('SNLS-' + row['SN'])
+            source = add_source(name, bibcode = "2011MNRAS.410.1262W")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'ra', row['_RA'], source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['_DE'], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
+        journal_events()
+
+        # 2012ApJ...755...61S
+        result = Vizier.get_catalogs("J/ApJ/755/61/table3")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            sdssname = 'SDSS-II SN ' + row['SNID']
+            if row['SN']:
+                name = add_event('SN' + row['SN'])
+            else:
+                name = add_event(sdssname)
+            source = add_source(name, bibcode = "2012ApJ...755...61S")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', sdssname, source)
+            add_quantity(name, 'hostra', row['RAJ2000'], source)
+            add_quantity(name, 'hostdec', row['DEJ2000'], source)
+            add_quantity(name, 'redshift', row['z'], source, error = row['e_z'] if is_number(row['e_z']) else '', kind = 'host')
+        journal_events()
+
+        # 2008AJ....135..348S
+        result = Vizier.get_catalogs("J/AJ/135/348/SNe")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            sdssname = 'SDSS-II SN ' + row['SNID']
+            if row['SN']:
+                name = add_event('SN' + row['SN'])
+            else:
+                name = add_event(sdssname)
+            source = add_source(name, bibcode = "2008AJ....135..348S")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', sdssname, source)
+            fra = Decimal(row['RAJ2000'])
+            if fra < Decimal(0.0):
+                fra = Decimal(360.0) + fra
+            add_quantity(name, 'ra', str(fra), source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row['zsp'], source, kind = 'spectroscopic')
+            add_quantity(name, 'claimedtype', row['Type'].replace('SN', '').strip(), source, kind = 'spectroscopic')
+        journal_events()
+
+        # 2010ApJ...713.1026D
+        result = Vizier.get_catalogs("J/ApJ/713/1026/SNe")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            sdssname = 'SDSS-II SN ' + row['ID']
+            if row['IAU']:
+                name = add_event('SN' + row['IAU'])
+            else:
+                name = add_event(sdssname)
+            source = add_source(name, bibcode = "2010ApJ...713.1026D")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', sdssname, source)
+            add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row['z'], source, kind = 'heliocentric')
+        journal_events()
+
+        # 2013ApJ...770..107C
+        result = Vizier.get_catalogs("J/ApJ/770/107/galaxies")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = add_event(row['SN'])
+            source = add_source(name, bibcode = "2013ApJ...770..107C")
+            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'hostra', row['RAJ2000'], source)
+            add_quantity(name, 'hostdec', row['DEJ2000'], source)
+            add_quantity(name, 'redshift', row['z'], source, error = row['e_z'] if is_number(row['e_z']) else '', kind = 'host')
+        journal_events()
+
     if do_task(task, 'donations'):
         # Nicholl 04-01-16 donation
         with open("../sne-external/Nicholl-04-01-16/bibcodes.json", 'r') as f:
@@ -3253,6 +3487,53 @@ for task in tasks:
                         system = 'Natural', source = source)
         journal_events()
 
+        # 2014ApJ...783...28G
+        with open("../sne-external/apj490105t2_ascii.txt", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue    
+                name = add_event(row[0])
+                source = add_source(name, bibcode = '2014ApJ...783...28G')
+                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'alias', row[1], source)
+                add_quantity(name, 'discoverdate', '20' + row[0][3:4], source)
+                add_quantity(name, 'ra', row[2], source)
+                add_quantity(name, 'dec', row[3], source)
+                add_quantity(name, 'redshift', row[13] if is_number(row[13]) else row[10], source)
+        journal_events()
+
+        # 2005ApJ...634.1190H
+        with open("../sne-external/2005ApJ...634.1190H.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                name = add_event('SNLS-' + row[0])
+                source = add_source(name, bibcode = '2005ApJ...634.1190H')
+                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'discoverdate', '20' + row[0][:2], source)
+                add_quantity(name, 'ra', row[1], source)
+                add_quantity(name, 'dec', row[2], source)
+                add_quantity(name, 'redshift', row[5].replace('?', ''), source, error = row[6], kind = 'host')
+                add_quantity(name, 'claimedtype', row[6].replace('SN', '').strip(':* '), source)
+        journal_events()
+
+        # 2014MNRAS.444.2133S
+        with open("../sne-external/2014MNRAS.444.2133S.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue    
+                name = row[0]
+                if is_number(name[:4]):
+                    name = 'SN' + name
+                name = add_event(name)
+                source = add_source(name, bibcode = '2014MNRAS.444.2133S')
+                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'ra', row[1], source)
+                add_quantity(name, 'dec', row[2], source)
+                add_quantity(name, 'redshift', row[3], source, kind = 'host')
+        journal_events()
+
     # CCCP
     if do_task(task, 'cccp'):
         cccpbands = ['B', 'V', 'R', 'I']
@@ -3588,13 +3869,13 @@ for task in tasks:
             for r, row in enumerate(tsvin):
                 if r == 0:
                     if row[5] == "RA:":
-                        name = "SDSS-II " + row[3]
+                        name = "SDSS-II SN " + row[3]
                     else:
                         name = "SN" + row[5]
                     name = add_event(name)
                     source = add_source(name, bibcode = bibcode)
                     add_quantity(name, 'alias', name, source)
-                    add_quantity(name, 'alias', "SDSS-II " + row[3], source)
+                    add_quantity(name, 'alias', "SDSS-II SN " + row[3], source)
     
                     if row[5] != "RA:":
                         year = re.findall(r'\d+', name)[0]
@@ -4352,16 +4633,20 @@ for task in tasks:
         oldnumpages = len(glob('../sne-external/3pi/page*'))
         for page in tq(range(1,numpages), currenttask):
             fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
-            if not args.fullrefresh and archived_task('psthreepi') and os.path.isfile(fname) and page < oldnumpages:
+            if offline:
+                if not os.path.isfile(fname):
+                    continue
                 with open(fname, 'r') as f:
                     html = f.read()
-            elif not offline:
-                response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" + str(page) + "&sort=followup_flag_date")
-                with open(fname, 'w') as f:
-                    html = response.read().decode('utf-8')
-                    f.write(html)
             else:
-                continue
+                if not args.fullrefresh and archived_task('psthreepi') and page < oldnumpages and os.path.isfile(fname) :
+                    with open(fname, 'r') as f:
+                        html = f.read()
+                else:
+                    response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" + str(page) + "&sort=followup_flag_date")
+                    with open(fname, 'w') as f:
+                        html = response.read().decode('utf-8')
+                        f.write(html)
     
             bs = BeautifulSoup(html, "html5lib")
             trs = bs.findAll('tr')
@@ -4429,17 +4714,21 @@ for task in tasks:
                 add_quantity(name, 'claimedtype', ctype, source)
     
                 fname2 = '../sne-external/3pi/candidate-' + pslink.rstrip('/').split('/')[-1] + '.html'
-                if archived_task('psthreepi') and os.path.isfile(fname2):
+                if offline:
+                    if not os.path.isfile(fname2):
+                        continue
                     with open(fname2, 'r') as f:
                         html2 = f.read()
-                elif not offline:
-                    pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
-                    with open(fname2, 'w') as f:
-                        response2 = urllib.request.urlopen(pslink)
-                        html2 = response2.read().decode('utf-8')
-                        f.write(html2)
                 else:
-                    continue
+                    if archived_task('psthreepi') and os.path.isfile(fname2):
+                        with open(fname2, 'r') as f:
+                            html2 = f.read()
+                    else:
+                        pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
+                        with open(fname2, 'w') as f:
+                            response2 = urllib.request.urlopen(pslink)
+                            html2 = response2.read().decode('utf-8')
+                            f.write(html2)
     
                 bs2 = BeautifulSoup(html2, "html5lib")
                 scripts = bs2.findAll('script')
@@ -5126,6 +5415,8 @@ for task in tasks:
                                                                 del(tfiles[fi])
                                                                 lfiles = deepcopy(tfiles)
                                                                 raise(StopIteration)
+                                            except (KeyboardInterrupt, SystemExit):
+                                                raise
                                             except StopIteration:
                                                 pass
                                             if not specpath:
