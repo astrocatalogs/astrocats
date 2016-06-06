@@ -5,7 +5,7 @@ from . digits import is_number
 
 from scripts import _PATH_ROOT, _FILENAME_REPOS
 
-__all__ = ['repo_file_list', 'get_rep_folder', 'get_repo_folders']
+__all__ = ['repo_file_list', 'get_rep_folder', 'get_repo_folders', 'get_repo_years']
 
 
 def repo_file_list(bones=True):
@@ -31,7 +31,7 @@ def get_rep_folder(entry):
         raise(ValueError('Discovery year is not a number!'))
         sys.exit()
 
-    repo_years = _get_repo_years(repo_folders)
+    repo_years = get_repo_years(repo_folders)
     for r, repoyear in enumerate(repo_years):
         if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repoyear:
             return repo_folders[r]
@@ -47,7 +47,7 @@ def get_repo_folders():
     return repo_folders
 
 
-def _get_repo_years(repo_folders):
+def get_repo_years(repo_folders):
     """Get the years section of all repository names given in the 'rep-folders.txt' file.
     """
     repo_years = [int(repo_folders[x][-4:]) for x in range(len(repo_folders)-1)]
