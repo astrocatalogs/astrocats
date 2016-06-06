@@ -4156,7 +4156,7 @@ def import_main():
             if args.update and not len(events):
                 tprint('No sources changed, event files unchanged in update.')
                 sys.exit(1)
-            merge_duplicates(tasks)
+            merge_duplicates(tasks, args, events)
 
         if do_task(tasks, args, task, 'setprefnames'):
             set_preferred_names(tasks, args, events)

@@ -10,11 +10,13 @@ from math import log10, floor, sqrt  # , isnan, ceil
 from astropy.time import Time as astrotime
 
 from scripts import _FILENAME_SOURCE_SYNONYMS, _FILENAME_TYPE_SYNONYMS, _FILENAME_ATELS, \
-    _FILENAME_CBETS, _FILENAME_IAUCS, _FILENAME_EXTINCT, _FILENAME_NON_SNE_TYPES
+    _FILENAME_CBETS, _FILENAME_IAUCS, _FILENAME_EXTINCT, _FILENAME_NON_SNE_TYPES, \
+    _FILENAME_BIBAUTHORS
 from .. utils import repo_file_list, is_number, get_repo_folders, get_event_filename, tprint, \
-    bandrepf, bandmetaf, get_sig_digits, zpad, pretty_num, round_sig, get_repo_years
+    bandrepf, bandmetaf, get_sig_digits, zpad, pretty_num, round_sig, get_repo_years, tq
 
-from . constants import REPR_BETTER_QUANTITY, OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS
+from . constants import REPR_BETTER_QUANTITY, OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
+    KM
 
 
 def add_event(tasks, args, events, name, load=True, delete=True, source='', loadifempty=True):
@@ -35,7 +37,7 @@ def add_event(tasks, args, events, name, load=True, delete=True, source='', load
                 newname = match
 
         if load:
-            loadedname = load_event_from_file(tasks, name=newname, delete=delete)
+            loadedname = load_event_from_file(events, args, tasks, name=newname, delete=delete)
             if loadedname:
                 if 'stub' in events[loadedname]:
                     raise(ValueError('Failed to find event file for stubbed event'))
@@ -92,7 +94,7 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
     if not source:
         ValueError('Photometry must have source before being added!')
 
-    if is_erroneous(name, 'photometry', source):
+    if is_erroneous(events, name, 'photometry', source):
         return
 
     # Do some basic homogenization
@@ -222,7 +224,7 @@ def add_quantity(events, name, quantity, value, sources, forcereplacebetter=Fals
     with open(_FILENAME_TYPE_SYNONYMS, 'r') as f:
         typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
-    if is_erroneous(name, quantity, sources):
+    if is_erroneous(events, name, quantity, sources):
         return
 
     svalue = value.strip()
@@ -540,7 +542,7 @@ def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_
                  snr="", telescope="", observer="", reducer="", filename="", observatory="",
                  data=""):
 
-    if is_erroneous(name, 'spectra', source):
+    if is_erroneous(events, name, 'spectra', source):
         return
 
     spectrumentry = OrderedDict()
@@ -950,8 +952,9 @@ def derive_and_sanitize(tasks, args, events):
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
                 source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-                pnum = pretty_num(float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0)
-                add_quantity(events, name, 'maxabsmag', pnum, sig=bestsig), source)
+                pnum = float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0)
+                pnum = pretty_num(pnum, sig=bestsig)
+                add_quantity(events, name, 'maxabsmag', pnum, source)
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
             (bestz, bestkind, bestsig) = get_best_redshift(events, name)
@@ -959,8 +962,9 @@ def derive_and_sanitize(tasks, args, events):
                 bestz = float(bestz)
                 if 'velocity' not in events[name]:
                     source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-                    pnum = pretty_num(CLIGHT/KM*((bestz + 1.)**2. - 1.)/((bestz + 1.)**2. + 1.)
-                    add_quantity(events, name, 'velocity', pnum, sig=bestsig), source, kind=PREF_KINDS[bestkind])
+                    pnum = CLIGHT/KM*((bestz + 1.)**2. - 1.)/((bestz + 1.)**2. + 1.)
+                    pnum = pretty_num(pnum, sig=bestsig)
+                    add_quantity(events, name, 'velocity', pnum, source, kind=PREF_KINDS[bestkind])
                 if bestz > 0.:
                     from astropy.cosmology import Planck15 as cosmo
                     if 'lumdist' not in events[name]:
@@ -969,8 +973,8 @@ def derive_and_sanitize(tasks, args, events):
                         add_quantity(events, name, 'lumdist', pretty_num(dl.value, sig=bestsig), source, kind=PREF_KINDS[bestkind])
                         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                             source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-                            pnum = pretty_num(float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(dl.to('pc').value) - 1.0)
-                            add_quantity(events, name, 'maxabsmag', pnum, sig=bestsig), source)
+                            pnum = pretty_num(float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig=bestsig)
+                            add_quantity(events, name, 'maxabsmag', pnum, source)
                     if 'comovingdist' not in events[name]:
                         dl = cosmo.comoving_distance(bestz)
                         source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
@@ -982,6 +986,7 @@ def derive_and_sanitize(tasks, args, events):
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0))
         if 'sources' in events[name]:
+            bibauthor_dict = get_bibauthor_dict()
             for source in events[name]['sources']:
                 if 'bibcode' in source:
                     import urllib
@@ -1002,7 +1007,7 @@ def derive_and_sanitize(tasks, args, events):
                         if len(hsplit) > 5:
                             bibcodeauthor = hsplit[5]
                         else:
-                            bibcodeauthor=''
+                            bibcodeauthor = ''
 
                         if not bibcodeauthor:
                             warnings.warn("Bibcode didn't return authors, not converting this bibcode.")
@@ -1151,8 +1156,8 @@ def get_first_light(events, name):
         return (None, None)
 
     eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else Decimal(min(float(y) for y in x['time'])),
-                  x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x
-                  and 'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
+                  x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x and
+                  'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
     if not eventphoto:
         return (None, None)
     flmjd = min([x[0] for x in eventphoto])
@@ -1225,15 +1230,15 @@ def has_task(tasks, args, task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
 
-def is_erroneous(name, field, sources):
+def is_erroneous(events, name, field, sources):
     if 'errors' in events[name]:
         for alias in sources.split(','):
             source = get_source_by_alias(name, alias)
-            if ('bibcode' in source and source['bibcode'] in
-                [x['value'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['extra'] == field]):
+            if (('bibcode' in source and source['bibcode'] in
+                [x['value'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['extra'] == field])):
                     return True
-            if ('name' in source and source['name'] in
-                [x['value'] for x in events[name]['errors'] if x['kind'] == 'name' and x['extra'] == field]):
+            if (('name' in source and source['name'] in
+                [x['value'] for x in events[name]['errors'] if x['kind'] == 'name' and x['extra'] == field])):
                     return True
     return False
 
@@ -1249,12 +1254,12 @@ def journal_events(tasks, args, events, clear=True):
         clear_events(events)
 
 
-def load_event_from_file(tasks, name='', location='', clean=False, delete=True, append=False):
+def load_event_from_file(events, args, tasks, name='', location='', clean=False, delete=True, append=False):
     if not name and not location:
         raise ValueError('Either event name or location must be specified to load event')
 
-    path=''
-    namepath=''
+    path = ''
+    namepath = ''
     repo_folders = get_repo_folders()
     if location:
         path = location
@@ -1269,8 +1274,8 @@ def load_event_from_file(tasks, name='', location='', clean=False, delete=True, 
     if not path and not namepath:
         return False
     else:
-        newevent=''
-        newevent2=''
+        newevent = ''
+        newevent2 = ''
         if path or namepath:
             if name in events:
                 del events[name]
@@ -1302,10 +1307,9 @@ def load_event_from_file(tasks, name='', location='', clean=False, delete=True, 
                         newevent2 = json.loads(f.read(), object_pairs_hook=OrderedDict)
                         namename = next(reversed(newevent2))
 
-
             if newevent2:
                 # Needs to be fixed
-                newevent = OrderedDict([['temp',newevent[name]]])
+                newevent = OrderedDict([['temp', newevent[name]]])
                 copy_to_event(events, 'temp', namename)
             else:
                 events.update(newevent)
@@ -1321,10 +1325,9 @@ def load_event_from_file(tasks, name='', location='', clean=False, delete=True, 
 def load_stubs(tasks, args, events):
     global currenttask
     currenttask = 'Loading event stubs'
-
     files = repo_file_list()
 
-    #try:
+    # try:
     #    namepath = '../names.min.json'
     #    with open(namepath, 'r') as f:
     #        names = json.loads(f.read(), object_pairs_hook=OrderedDict)
@@ -1333,7 +1336,7 @@ def load_stubs(tasks, args, events):
     #        if name not in names:
     #            name = name.replace("_", "/")
     #        events[name] = OrderedDict(([['name', name], ['alias', [OrderedDict(([['value', x]])) for x in names[name]]], ['stub', True]]))
-    #except:
+    # except:
     #    events = OrderedDict()
     for fi in tq(files, currenttask):
         fname = fi
@@ -1368,7 +1371,7 @@ def load_cached_url(args, url, filepath, timeout=120, write=True):
             raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
-        #tprint(filemd5 + ": " + newmd5)
+        # tprint(filemd5 + ": " + newmd5)
         if args.update and newmd5 == filemd5:
             tprint('Skipping file in "' + currenttask + '," local and remote copies identical [' + newmd5 + '].')
             return False
@@ -1392,8 +1395,9 @@ def make_date_string(year, month='', day=''):
 
     return datestring
 
+
 # Merge and remove duplicate events
-def merge_duplicates(tasks):
+def merge_duplicates(tasks, args, events):
     if not len(events):
         load_stubs(tasks, args, events)
     currenttask = 'Merging duplicate events'
@@ -1408,8 +1412,8 @@ def merge_duplicates(tasks):
             allnames2 = get_aliases(events, name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else [])
             if any(i in allnames1 for i in allnames2):
                 tprint('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
-                load1 = load_event_from_file(tasks, name1, delete=True)
-                load2 = load_event_from_file(tasks, name2, delete=True)
+                load1 = load_event_from_file(events, args, tasks, name1, delete=True)
+                load2 = load_event_from_file(events, args, tasks, name2, delete=True)
                 if load1 and load2:
                     priority1 = 0
                     priority2 = 0
@@ -1429,7 +1433,7 @@ def merge_duplicates(tasks):
                         keys.append(name2)
                         del(events[name1])
                 else:
-                    print ('Duplicate already deleted')
+                    print('Duplicate already deleted')
                 journal_events(tasks, args, events)
 
 
@@ -1475,10 +1479,9 @@ def name_clean(name):
         prefix = newname.split('J')[0]
         coords = newname.split('J')[-1].strip()
         decsign = '+' if '+' in coords else '-'
-        coordsplit = coords.replace('+','-').split('-')
+        coordsplit = coords.replace('+', '-').split('-')
         if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
-            newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] +
-                decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
+            newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][6:] + decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
     if newname.startswith('Gaia ') and is_number(newname[3:4]) and len(newname) > 5:
         newname = newname.replace('Gaia ', 'Gaia', 1)
     if len(newname) <= 4 and is_number(newname):
@@ -1491,8 +1494,7 @@ def name_clean(name):
         newname = newname.replace('SN ', 'SN', 1)
     if newname.startswith('SN') and is_number(newname[2:6]) and len(newname) == 7 and newname[6].islower():
         newname = 'SN' + newname[2:6] + newname[6].upper()
-    elif (newname.startswith('SN') and is_number(newname[2:6]) and
-        (len(newname) == 8 or len(newname) == 9) and newname[6:].isupper()):
+    elif (newname.startswith('SN') and is_number(newname[2:6]) and (len(newname) == 8 or len(newname) == 9) and newname[6:].isupper()):
         newname = 'SN' + newname[2:6] + newname[6:].lower()
 
     newname = (' '.join(newname.split())).strip()
@@ -1504,11 +1506,14 @@ def null_field(obj, field):
 
 
 def same_tag_num(photo, val, tag, canbelist=False):
-    issame = ((tag not in photo and not val) or (tag in photo and not val) or (tag in photo and
-        ((not canbelist and Decimal(photo[tag]) == Decimal(val)) or
-         (canbelist and
-            ((isinstance(photo[tag], str) and isinstance(val, str) and Decimal(photo[tag]) == Decimal(val)) or
-             (isinstance(photo[tag], list) and isinstance(val, list) and photo[tag] == val))))))
+    issame = (
+        (tag not in photo and not val) or
+        (tag in photo and not val) or
+        (tag in photo and
+         ((not canbelist and Decimal(photo[tag]) == Decimal(val)) or
+          (canbelist and
+           ((isinstance(photo[tag], str) and isinstance(val, str) and Decimal(photo[tag]) == Decimal(val)) or
+            (isinstance(photo[tag], list) and isinstance(val, list) and photo[tag] == val))))))
     return issame
 
 
@@ -1615,9 +1620,9 @@ def set_preferred_names(tasks, args, events):
                     break
         if newname and name != newname:
             # Make sure new name doesn't already exist
-            if load_event_from_file(tasks, newname):
+            if load_event_from_file(events, args, tasks, newname):
                 continue
-            if load_event_from_file(tasks, name, delete=True):
+            if load_event_from_file(events, args, tasks, name, delete=True):
                 tprint('Changing event name (' + name + ') to preferred name (' + newname + ').')
                 events[newname] = events[name]
                 events[newname]['name'] = newname
