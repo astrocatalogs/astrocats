@@ -40,6 +40,10 @@
 	padding-left: 3px;
 }
 
+.event-cell sup {
+    word-spacing: -0.3em;
+}
+
 .event-tab-title {
     text-align: center;
 	width: 350px;

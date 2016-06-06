@@ -285,6 +285,10 @@ def name_clean(name):
         newname = newname.replace('KSN ', 'KSN-', 1)
     if newname.startswith('SNSDF '):
         newname = newname.replace(' ', '')
+    if newname.startswith('SNSDF'):
+        namesp = newname.split('.')
+        if len(namesp[0]) == 9:
+            newname = namesp[0] + '-' + namesp[1].zfill(3)
     if newname.startswith('HFF '):
         newname = newname.replace(' ', '')
     if newname.startswith('SN HST'):
@@ -319,6 +323,12 @@ def name_clean(name):
         newname = newname.replace('PS 1', 'PS1', 1)
     if newname.startswith('PS1 SN PS'):
         newname = newname.replace('PS1 SN PS', 'PS', 1)
+    if newname.startswith('PSN K'):
+        newname = newname.replace('PSN K', 'K', 1)
+    if newname.startswith('K') and is_number(newname[1:5]):
+        namesp = newname.split('-')
+        if len(namesp[0]) == 5:
+            newname = namesp[0] + '-' + namesp[1].zfill(3)
     if newname.startswith('Psn'):
         newname = newname.replace('Psn', 'PSN', 1)
     if newname.startswith('PSNJ'):
@@ -1884,7 +1894,7 @@ for task in tasks:
         #Simbad.list_votable_fields()
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
-        customSimbad.add_votable_fields('sptype', 'sp_bibcode')
+        customSimbad.add_votable_fields('sptype', 'sp_bibcode', 'id')
         # 2000A&AS..143....9W
         table = customSimbad.query_criteria('maintype=SN')
         for brow in tq(table, currenttask = currenttask):
@@ -1897,14 +1907,13 @@ for task in tasks:
                 continue
             name = add_event(name)
             source = add_source(name, bibcode = "2000A&AS..143....9W", secondary = True)
-            add_quantity(name, 'alias', name, source)
-            #aliases = Simbad.query_objectids(row['MAIN_ID'])
-            #aliases = [re.sub(r'b\'(.*)\'', r'\1', str(x['ID'])) for x in aliases[1:]]
-            #for alias in aliases:
-            #    ali = single_spaces(re.sub(r'\[[^)]*\]', '', alias).strip())
-            #    add_quantity(name, 'alias', ali, source)
-            #tprint(get_aliases(name))
-            #print(row)
+            aliases = row['ID'].split(',')
+            for alias in aliases:
+                ali = single_spaces(re.sub(r'\[[^)]*\]', '', alias).strip())
+                ali = name_clean(ali)
+                if 'OGLE-MBR' in ali:
+                    continue
+                add_quantity(name, 'alias', ali, source)
             if row['COO_BIBCODE']:
                 csources = ','.join([source, add_source(name, bibcode = row['COO_BIBCODE'])])
                 add_quantity(name, 'ra', row['RA'], csources)
@@ -3595,7 +3604,7 @@ for task in tasks:
                 source = add_source(name, bibcode = '2014ApJ...783...28G')
                 add_quantity(name, 'alias', name, source)
                 add_quantity(name, 'alias', row[1], source)
-                add_quantity(name, 'discoverdate', '20' + row[0][3:4], source)
+                add_quantity(name, 'discoverdate', '20' + row[0][2:3], source)
                 add_quantity(name, 'ra', row[2], source)
                 add_quantity(name, 'dec', row[3], source)
                 add_quantity(name, 'redshift', row[13] if is_number(row[13]) else row[10], source)
@@ -5064,6 +5073,8 @@ for task in tasks:
 
                 if name != snname and (name + ' HOST' != snname):
                     cleanhost = host_clean(distname)
+                    if cleanhost.endswith(' HOST'):
+                        cleanhost = ''
                     if not is_number(dist):
                         print(dist)
                     if dist:

@@ -1477,10 +1477,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             sourcehtml = ''
                             sourcecsv = ','.join(sources)
                             for s, source in enumerate(sources):
-                                if source == 'D':
-                                    sourcehtml = sourcehtml + (',' if s > 0 else '') + source
-                                else:
-                                    sourcehtml = sourcehtml + (',' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
+                                sourcehtml = sourcehtml + (', ' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
                             keyhtml = keyhtml + (r'<br>' if r > 0 else '')
                             keyhtml = keyhtml + "<div class='singletooltip'>"
                             keyhtml = keyhtml + row['value']
@@ -1508,8 +1505,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             keyhtml = (keyhtml + "<span class='singletooltiptext'><button class='singlemarkerror' type='button' onclick='markError(\"" +
                                 entry + "\", \"" + key + "\", \"" + ','.join(idtypes) +
                                 "\", \"" + ','.join(sourceids) + "\", \"" + edit + "\")'>Flag as erroneous</button></span>");
-                            keyhtml = keyhtml + r'<sup>' + sourcehtml + r'</sup>'
-                            keyhtml = keyhtml + "</div>"
+                            keyhtml = keyhtml + r'</div><sup>' + sourcehtml + r'</sup>'
                         elif isinstance(row, str):
                             keyhtml = keyhtml + (r'<br>' if r > 0 else '') + row.strip()
 
