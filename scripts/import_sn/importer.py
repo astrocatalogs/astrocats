@@ -11,25 +11,19 @@ import json
 import codecs
 import resource
 import argparse
-import gzip
 import io
-import shutil
-import statistics
 import warnings
 from datetime import timedelta, datetime
 from glob import glob
-from hashlib import md5
 from html import unescape
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
 from astroquery.simbad import Simbad
-from astroquery.irsa_dust import IrsaDust
 from copy import deepcopy
 from astropy import constants as const
 from astropy import units as un
 from astropy.io import fits
 from astropy.time import Time as astrotime
-from astropy.cosmology import Planck15 as cosmo, z_at_value
 from collections import OrderedDict, Sequence
 from math import log10, floor, sqrt, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
@@ -109,10 +103,6 @@ def import_main():
 
     # with open(_FILENAME_SOURCE_SYNONYMS, 'r') as f:
     #     sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-    # with open(_FILENAME_NON_SNE_TYPES, 'r') as f:
-    #     nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    #     nonsnetypes = [x.upper() for x in nonsnetypes]
 
     for task in tasks:
         if do_task(tasks, args, task, 'deleteoldevents'):
@@ -3084,7 +3074,7 @@ def import_main():
                         cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
                     if 'ESO' in cleanhost:
                         cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
-                    nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
+                    nedddict.setdefault(cleanhost, []).append(Decimal(dist))
 
                 if name:
                     name = add_event(tasks, args, events, name)
@@ -3125,7 +3115,7 @@ def import_main():
                     if name.upper().startswith('IPTF'):
                         name = 'iPTF' + name[4:]
                     # Only add events that are classified as SN.
-                    if event_exists(name):
+                    if event_exists(events, name):
                         continue
                     name = add_event(tasks, args, events, name)
                 else:
@@ -4127,7 +4117,7 @@ def import_main():
 
                     if 'theory' in name:
                         continue
-                    if event_exists(name):
+                    if event_exists(events, name):
                         prefname = get_preferred_name(name)
                         if 'spectra' in events[prefname] and lastname != prefname:
                             continue
@@ -4169,22 +4159,17 @@ def import_main():
             merge_duplicates(tasks)
 
         if do_task(tasks, args, task, 'setprefnames'):
-            set_preferred_names(tasks)
+            set_preferred_names(tasks, args, events)
 
     files = repo_file_list()
 
-    path = '../bibauthors.json'
-    if os.path.isfile(path):
-        with open(path, 'r') as f:
-            bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        bibauthordict = OrderedDict()
-    path = '../extinctions.json'
-    if os.path.isfile(path):
-        with open(path, 'r') as f:
-            extinctionsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        extinctionsdict = OrderedDict()
+    bibauthor_dict = get_bibauthor_dict()
+    # path = '../bibauthors.json'
+    # if os.path.isfile(path):
+    #     with open(path, 'r') as f:
+    #         bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    # else:
+    #     bibauthordict = OrderedDict()
 
     for fi in tq(files, 'Sanitizing and deriving quantities for events'):
         events = OrderedDict()
@@ -4194,7 +4179,7 @@ def import_main():
         if has_task(tasks, args, 'writeevents'):
             write_all_events(events, args, empty=True, gz=True, bury=True)
 
-    jsonstring = json.dumps(bibauthordict, indent='\t', separators=(',', ':'), ensure_ascii=False)
+    jsonstring = json.dumps(bibauthor_dict, indent='\t', separators=(',', ':'), ensure_ascii=False)
     with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
         f.write(jsonstring)
     jsonstring = json.dumps(extinctionsdict, indent='\t', separators=(',', ':'), ensure_ascii=False)
