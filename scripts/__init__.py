@@ -14,8 +14,10 @@ class PATH:
     DATA = os.path.join(ROOT, 'scripts/aux_data')
     REPO_BONEYARD = os.path.join(ROOT, 'sne-boneyard')
     REPO_INTERNAL = os.path.join(ROOT, 'sne-internal')
+    REPO_EXTERNAL = os.path.join(ROOT, 'sne-external')
     REPO_EXTERNAL_RADIO = os.path.join(ROOT, 'sne-external-radio')
     REPO_EXTERNAL_XRAY = os.path.join(ROOT, 'sne-external-xray')
+    REPO_EXTERNAL_SPECTRA = os.path.join(ROOT, 'sne-external-spectra')
 
 
 class FILENAME:

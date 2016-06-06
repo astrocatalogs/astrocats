@@ -449,7 +449,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
 
-            with open('../sne-external/II_189_refs.csv') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'II_189_refs.csv')) as f:
                 tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
                 ii189bibdict = {}
                 ii189refdict = {}
@@ -1231,7 +1231,7 @@ def import_main():
 
         if do_task(tasks, args, task, 'donations'):
             # Nicholl 04-01-16 donation
-            with open("../sne-external/Nicholl-04-01-16/bibcodes.json", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "Nicholl-04-01-16/bibcodes.json"), 'r') as f:
                 bcs = json.loads(f.read())
 
             for datafile in sorted(glob("../sne-external/Nicholl-04-01-16/*.txt"), key=lambda s: s.lower()):
@@ -1275,7 +1275,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # Maggi 04-11-16 donation (MC SNRs)
-            with open('../sne-external/Maggi-04-11-16/LMCSNRs_OpenSNe.csv') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'Maggi-04-11-16/LMCSNRs_OpenSNe.csv')) as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for row in tsvin:
                     name = 'MCSNR ' + row[0]
@@ -1291,7 +1291,7 @@ def import_main():
                         add_quantity(events, name, 'claimedtype', 'Ia', source)
                     elif row[4] == '2':
                         add_quantity(events, name, 'claimedtype', 'CC', source)
-            with open('../sne-external/Maggi-04-11-16/SMCSNRs_OpenSNe.csv') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'Maggi-04-11-16/SMCSNRs_OpenSNe.csv')) as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for row in tsvin:
                     name = 'MCSNR ' + row[0]
@@ -1430,7 +1430,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'pessto-dr1'):
-            with open("../sne-external/PESSTO_MPHOT.csv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "PESSTO_MPHOT.csv"), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for ri, row in enumerate(tsvin):
                     if ri == 0:
@@ -1451,7 +1451,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'scp'):
-            with open("../sne-external/SCP09.csv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "SCP09.csv"), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for ri, row in enumerate(tq(tsvin, currenttask)):
                     if ri == 0:
@@ -1476,7 +1476,7 @@ def import_main():
 
         if do_task(tasks, args, task, 'ascii'):
             # 2006ApJ...645..841N
-            with open("../sne-external/2006ApJ...645..841N-table3.csv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2006ApJ...645..841N-table3.csv"), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for ri, row in enumerate(tq(tsvin, currenttask)):
                     name = 'SNLS-' + row[0]
@@ -1516,7 +1516,7 @@ def import_main():
 
             # stromlo
             stromlobands = ['B', 'V', 'R', 'I', 'VM', 'RM']
-            with open('../sne-external/J_A+A_415_863-1/photometry.csv', 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'J_A+A_415_863-1/photometry.csv'), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for row in tq(tsvin, currenttask):
                     name = row[0]
@@ -1539,7 +1539,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # 2015MNRAS.449..451W
-            with open("../sne-external/2015MNRAS.449..451W.dat", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2015MNRAS.449..451W.dat"), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if r == 0:
@@ -1558,7 +1558,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # 2016MNRAS.459.1039T
-            with open("../sne-external/2016MNRAS.459.1039T.tsv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2016MNRAS.459.1039T.tsv"), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 name = add_event(tasks, args, events, 'LSQ13zm')
                 source = add_source(events, name, bibcode='2016MNRAS.459.1039T')
@@ -1581,7 +1581,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # 2015ApJ...804...28G
-            with open("../sne-external/2015ApJ...804...28G.tsv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2015ApJ...804...28G.tsv"), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 name = add_event(tasks, args, events, 'PS1-13arp')
                 source = add_source(events, name, bibcode='2015ApJ...804...28G')
@@ -1601,7 +1601,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # 2016ApJ...819...35A
-            with open("../sne-external/2016ApJ...819...35A.tsv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2016ApJ...819...35A.tsv"), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if row[0][0] == '#':
@@ -1618,7 +1618,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # 2014ApJ...784..105W
-            with open("../sne-external/2014ApJ...784..105W.tsv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2014ApJ...784..105W.tsv"), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if row[0][0] == '#':
@@ -1637,7 +1637,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # 2012MNRAS.425.1007B
-            with open("../sne-external/2012MNRAS.425.1007B.tsv", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "2012MNRAS.425.1007B.tsv"), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if row[0][0] == '#':
@@ -1690,13 +1690,13 @@ def import_main():
                                         e_magnitude=row[2*b + 2], upperlimit=(not row[2*b + 2]), source=source)
 
             if archived_task(tasks, args, 'cccp'):
-                with open('../sne-external/CCCP/sc_cccp.html', 'r') as f:
+                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'r') as f:
                     html = f.read()
             else:
                 session = requests.Session()
                 response = session.get("https://webhome.weizmann.ac.il/home/iair/sc_cccp.html")
                 html = response.text
-                with open('../sne-external/CCCP/sc_cccp.html', 'w') as f:
+                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html', 'w')) as f:
                     f.write(html)
 
             soup = BeautifulSoup(html, "html5lib")
@@ -1708,12 +1708,12 @@ def import_main():
                     add_quantity(events, name, 'alias', name, source)
 
                     if archived_task(tasks, args, 'cccp'):
-                        with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
+                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/' + link['href'].split('/')[-1], 'r')) as f:
                             html2 = f.read()
                     else:
                         response2 = session.get("https://webhome.weizmann.ac.il/home/iair/" + link['href'])
                         html2 = response2.text
-                        with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'w') as f:
+                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/' + link['href'].split('/')[-1], 'w')) as f:
                             f.write(html2)
 
                     soup2 = BeautifulSoup(html2, "html5lib")
@@ -1732,7 +1732,7 @@ def import_main():
                                 if response3.status_code == 404:
                                     continue
                                 html3 = response3.text
-                                with open('../sne-external/CCCP/' + link2['href'].split('/')[-1], 'w') as f:
+                                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/' + link2['href'].split('/')[-1], 'w')) as f:
                                     f.write(html3)
                             table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(",")] for x in list(filter(None, html3.split("\n")))]
                             for row in table:
@@ -1741,7 +1741,7 @@ def import_main():
 
         # Suspect catalog
         if do_task(tasks, args, task, 'suspect'):
-            with open('../sne-external/suspectreferences.csv', 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'suspectreferences.csv'), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
                 suspectrefdict = {}
                 for row in tsvin:
@@ -1884,7 +1884,7 @@ def import_main():
                 f.close()
 
             # Hicken 2012
-            f = open("../sne-external/hicken-2012-standard.dat", 'r')
+            f = open(os.path.join(PATH.REPO_EXTERNAL, "hicken-2012-standard.dat"), 'r')
             tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
             for r, row in enumerate(tq(tsvin, currenttask)):
                 if r <= 47:
@@ -1905,7 +1905,7 @@ def import_main():
                     magnitude=row[6].strip(), e_magnitude=row[7].strip(), source=source)
 
             # Bianco 2014
-            tsvin = open("../sne-external/bianco-2014-standard.dat", 'r')
+            tsvin = open(os.path.join(PATH.REPO_EXTERNAL, "bianco-2014-standard.dat"), 'r')
             tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
             for row in tq(tsvin, currenttask):
                 name = 'SN' + row[0]
@@ -1989,7 +1989,7 @@ def import_main():
 
         # Import SDSS
         if do_task(tasks, args, task, 'sdss'):
-            with open('../sne-external/SDSS/2010ApJ...708..661D.txt', 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as f:
                 bibcodes2010 = f.read().split("\n")
             sdssbands = ['u', 'g', 'r', 'i', 'z']
             for fname in tq(sorted(glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()), currenttask):
@@ -2146,10 +2146,10 @@ def import_main():
             itepbadsources = ['2004ApJ...602..571B']
 
             needsbib = []
-            with open("../sne-external/itep-refs.txt", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "itep-refs.txt"), 'r') as f:
                 refrep = f.read().splitlines()
             refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
-            f = open("../sne-external/itep-lc-cat-28dec2015.txt", 'r')
+            f = open(os.path.join(PATH.REPO_EXTERNAL, "itep-lc-cat-28dec2015.txt"), 'r')
             tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
             curname = ''
             for r, row in enumerate(tq(tsvin, currenttask)):
@@ -2359,7 +2359,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'fermi'):
-            with open("../sne-external/1SC_catalog_v01.asc", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "1SC_catalog_v01.asc"), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for ri, row in enumerate(tq(tsvin, currenttask)):
                     if row[0].startswith('#'):
@@ -2542,7 +2542,7 @@ def import_main():
             if not args.update:
                 vsnetfiles = ["latestsne.dat"]
                 for vsnetfile in vsnetfiles:
-                    f = open("../sne-external/" + vsnetfile, 'r', encoding='latin1')
+                    f = open(os.path.join(PATH.REPO_EXTERNAL, "" + vsnetfile, 'r', encoding='latin1'))
                     tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
                     for r, row in enumerate(tsvin):
                         if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
@@ -2718,7 +2718,7 @@ def import_main():
                 journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'snls'):
-            with open("../sne-external/SNLS-ugriz.dat", 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, "SNLS-ugriz.dat"), 'r') as f:
                 data = csv.reader(f, delimiter=' ', quotechar='"', skipinitialspace=True)
                 for row in data:
                     flux = row[3]
@@ -2916,7 +2916,7 @@ def import_main():
                 journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'psmds'):
-            with open('../sne-external/MDS/apj506838t1_mrt.txt') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
                 for ri, row in enumerate(tq(f.read().splitlines(), currenttask)):
                     if ri < 35:
                         continue
@@ -3086,7 +3086,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'nedd'):
-            f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
+            f = open(os.path.join(PATH.REPO_EXTERNAL, "NED25.12.1-D-10.4.0-20151123.csv"), 'r')
             data = csv.reader(f, delimiter=',', quotechar='"')
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
@@ -3213,13 +3213,13 @@ def import_main():
             #        name = add_event(tasks, args, events, name)
 
             if archived_task(tasks, args, 'ptf'):
-                with open('../sne-external/PTF/update.html', 'r') as f:
+                with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html'), 'r') as f:
                     html = f.read()
             else:
                 session = requests.Session()
                 response = session.get("http://wiserep.weizmann.ac.il/spectra/update")
                 html = response.text
-                with open('../sne-external/PTF/update.html', 'w') as f:
+                with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html', 'w')) as f:
                     f.write(html)
 
             bs = BeautifulSoup(html, "html5lib")
@@ -3238,10 +3238,10 @@ def import_main():
                     else:
                         name = add_event(tasks, args, events, name)
 
-            with open('../sne-external/PTF/old-ptf-events.csv') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
                 for suffix in f.read().splitlines():
                     name = add_event(tasks, args, events, 'PTF' + suffix)
-            with open('../sne-external/PTF/perly-2016.csv') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/perly-2016.csv')) as f:
                 for row in f.read().splitlines():
                     cols = [x.strip() for x in row.split(',')]
                     alias = ''
@@ -3986,10 +3986,10 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'suspectspectra'):
-            with open('../sne-external-spectra/Suspect/sources.json', 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/sources.json'), 'r') as f:
                 sourcedict = json.loads(f.read())
 
-            with open('../sne-external-spectra/Suspect/filename-changes.txt', 'r') as f:
+            with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/filename-changes.txt'), 'r') as f:
                 rows = f.readlines()
                 changedict = {}
                 for row in rows:
@@ -4041,7 +4041,7 @@ def import_main():
                         sig = get_sig_digits(day) + 5
                         time = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig=sig)
 
-                        with open('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder+'/'+spectrum) as f:
+                        with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/'+folder+'/'+eventfolder+'/'+spectrum)) as f:
                             specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
                             specdata = list(filter(None, specdata))
                             newspec = []
