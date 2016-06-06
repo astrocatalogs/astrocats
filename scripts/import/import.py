@@ -40,16 +40,6 @@ from digits import *
 from repos import *
 from events import *
 
-parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--update', '-u',       dest='update',      help='Only update catalog using live sources.',    default=False, action='store_true')
-parser.add_argument('--verbose', '-v',      dest='verbose',     help='Print more messages to the screen.',         default=False, action='store_true')
-parser.add_argument('--refresh', '-r',      dest='refresh',     help='Ignore most task caches.',                   default=False, action='store_true')
-parser.add_argument('--full-refresh', '-f', dest='fullrefresh', help='Ignore all task caches.',                    default=False, action='store_true')
-parser.add_argument('--archived', '-a',     dest='archived',    help='Always use task caches.',                    default=False, action='store_true')
-parser.add_argument('--travis', '-tr',      dest='travis',      help='Run import script in test mode for Travis.', default=False, action='store_true')
-parser.add_argument('--refreshlist', '-rl', dest='refreshlist', help='Comma-delimited list of caches to clear.',   default='')
-args = parser.parse_args()
-
 tasks = OrderedDict([
     ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
     ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
@@ -70,7 +60,7 @@ tasks = OrderedDict([
     ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
     ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
     ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
-    ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+    #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
     ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
     ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
     ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
@@ -85,25 +75,25 @@ tasks = OrderedDict([
     ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
     ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
     ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
-    #("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    #("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    #("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    #("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    #("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    #("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
-oscbibcode = '2016arXiv160501054G'
-oscname = 'The Open Supernova Catalog'
-oscurl = 'https://sne.space'
+OSC_BIBCODE = '2016arXiv160501054G'
+OSC_NAME = 'The Open Supernova Catalog'
+OSC_URL = 'https://sne.space'
 
-cfaack = ("This research has made use of the CfA Supernova Archive, "
+ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
           "which is funded in part by the National Science Foundation "
           "through grant AST 0907903.")
 
@@ -994,19 +984,19 @@ def set_first_max_light(name):
     if 'maxappmag' not in events[name]:
         (mldt, mlmag, mlband, mlsource) = get_max_light(name)
         if mldt:
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source,mlsource]))
         if mlmag:
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'maxappmag', pretty_num(mlmag), uniq_cdl([source,mlsource]))
         if mlband:
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'maxband', mlband, uniq_cdl([source,mlsource]))
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         (fldt, flsource) = get_first_light(name)
         if fldt:
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source,flsource]))
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
@@ -1026,7 +1016,7 @@ def set_first_max_light(name):
 
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
 
 def get_best_redshift(name):
@@ -1178,12 +1168,12 @@ def derive_and_sanitize():
             if 'sources' in events[name]:
                 add_quantity(name, 'alias', name, '1')
             else:
-                source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                 add_quantity(name, 'alias', name, source)
 
         if (name.startswith('SN') and is_number(name[2:6]) and 'discoverdate' in events[name] and
             int(events[name]['discoverdate'][0]['value'].split('/')[0]) >= 2016 and not any(['AT' in x for x in aliases])):
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'alias', 'AT' + name[2:], source)
 
         events[name]['alias'] = list(sorted(events[name]['alias'], key=lambda key: alias_priority(name, key)))
@@ -1202,7 +1192,7 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[2:4], alias.replace(prefix, '')[4:6]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1215,7 +1205,7 @@ def derive_and_sanitize():
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1229,7 +1219,7 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[4:6], alias.replace(prefix, '')[6:8]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1242,7 +1232,7 @@ def derive_and_sanitize():
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1264,7 +1254,7 @@ def derive_and_sanitize():
                         dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                         if args.verbose:
                             tprint ('Added ra/dec from name: ' + ra + ' ' + dec)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'ra', ra, source)
                         add_quantity(name, 'dec', dec, source)
                         break
@@ -1287,7 +1277,7 @@ def derive_and_sanitize():
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'claimedtype' not in events[name] and name.startswith('AT'):
-            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
             add_quantity(name, 'claimedtype', 'Candidate', source)
         if 'redshift' not in events[name] and 'velocity' in events[name]:
             # Find the "best" velocity to use for this
@@ -1299,7 +1289,7 @@ def derive_and_sanitize():
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
-                source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                 add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), source, kind = 'heliocentric')
         if 'redshift' not in events[name] and has_task('nedd') and 'host' in events[name]:
             reference = "NED-D"
@@ -1319,7 +1309,7 @@ def derive_and_sanitize():
                     bestld = ld['value']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                 add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
                     5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig), source)
         if 'redshift' in events[name]:
@@ -1328,21 +1318,21 @@ def derive_and_sanitize():
             if bestsig > 0:
                 bestz = float(bestz)
                 if 'velocity' not in events[name]:
-                    source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                    source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                     add_quantity(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
                         ((bestz + 1.)**2. + 1.), sig = bestsig), source, kind = prefkinds[bestkind])
                 if bestz > 0.:
                     if 'lumdist' not in events[name]:
                         dl = cosmo.luminosity_distance(bestz)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), source, kind = prefkinds[bestkind])
                         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                            source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                            source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                             add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
                                 5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), source)
                     if 'comovingdist' not in events[name]:
                         dl = cosmo.comoving_distance(bestz)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                         add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), source)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
@@ -1597,7 +1587,7 @@ def clean_event(dirtyevent):
 
     # Clean some legacy fields
     if 'aliases' in events['temp'] and isinstance(events['temp']['aliases'], list):
-        source = add_source('temp', bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+        source = add_source('temp', bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
         for alias in events['temp']['aliases']:
             add_quantity('temp', 'alias', alias, source)
         del(events['temp']['aliases'])
@@ -1606,20 +1596,20 @@ def clean_event(dirtyevent):
         isinstance(events['temp']['distinctfrom'][0], str)):
         distinctfroms = [x for x in events['temp']['distinctfrom']]
         del(events['temp']['distinctfrom'])
-        source = add_source('temp', bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+        source = add_source('temp', bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
         for df in distinctfroms:
             add_quantity('temp', 'distinctfrom', df, source)
 
     if ('errors' in events['temp'] and isinstance(events['temp']['errors'], list) and
         'sourcekind' in events['temp']['errors'][0]):
-        source = add_source('temp', bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+        source = add_source('temp', bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
         for err in events['temp']['errors']:
             add_quantity('temp', 'error', err['quantity'], source, kind = err['sourcekind'], extra = err['id'])
         del(events['temp']['errors'])
 
     if not bibcodes:
-        add_source('temp', bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-        bibcodes = [oscbibcode]
+        add_source('temp', bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
+        bibcodes = [OSC_BIBCODE]
 
     for key in list(events['temp'].keys()):
         if key in ['name', 'sources']:
@@ -3421,7 +3411,7 @@ for task in tasks:
             name = add_event(name)
             secondaryname = 'CfA Supernova Archive'
             secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            secondarysource = add_source(name, refname = secondaryname, url = secondaryurl, secondary = True, acknowledgment = cfaack)
+            secondarysource = add_source(name, refname = secondaryname, url = secondaryurl, secondary = True, acknowledgment = ACKN_CFA)
             add_quantity(name, 'alias', name, secondarysource)
     
             year = re.findall(r'\d+', name)[0]
@@ -5248,7 +5238,7 @@ for task in tasks:
             name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
+            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = ACKN_CFA)
             add_quantity(name, 'alias', name, source)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 filename = os.path.basename(fname)
@@ -5291,7 +5281,7 @@ for task in tasks:
             name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
+            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = ACKN_CFA)
             add_quantity(name, 'alias', name, source)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 filename = os.path.basename(fname)
@@ -5329,7 +5319,7 @@ for task in tasks:
             name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
+            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = ACKN_CFA)
             add_quantity(name, 'alias', name, source)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 if not os.path.isfile(fname):
