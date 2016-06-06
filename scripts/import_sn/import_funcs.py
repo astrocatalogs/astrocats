@@ -2,9 +2,9 @@
 """
 
 
-def add_event(name, load=True, delete=True, source='', loadifempty=True):
+def add_event(tasks, name, load=True, delete=True, source='', loadifempty=True):
     if loadifempty and args.update and not len(events):
-        load_stubs()
+        load_stubs(tasks)
 
     newname = name_clean(name)
     if newname not in events or 'stub' in events[newname]:
@@ -20,7 +20,7 @@ def add_event(name, load=True, delete=True, source='', loadifempty=True):
                 newname = match
 
         if load:
-            loadedname = load_event_from_file(name = newname, delete = delete)
+            loadedname = load_event_from_file(tasks, name=newname, delete=delete)
             if loadedname:
                 if 'stub' in events[loadedname]:
                     raise(ValueError('Failed to find event file for stubbed event'))
@@ -742,7 +742,7 @@ def ct_priority(name, attr):
     return -max_source_year
 
 
-def derive_and_sanitize():
+def derive_and_sanitize(tasks, events):
     biberrordict = {
         "2012Sci..337..942D":"2012Sci...337..942D",
         "2012MNRAS.420.1135":"2012MNRAS.420.1135S",
@@ -885,7 +885,7 @@ def derive_and_sanitize():
                 voc = float(besthv)*1.e5/CLIGHT
                 source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                 add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), source, kind = 'heliocentric')
-        if 'redshift' not in events[name] and has_task('nedd') and 'host' in events[name]:
+        if 'redshift' not in events[name] and has_task(tasks, 'nedd') and 'host' in events[name]:
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
@@ -982,9 +982,9 @@ def delete_old_event_files():
         os.remove(f)
 
 
-def do_task(checktask, task, quiet=False):
+def do_task(tasks, checktask, task, quiet=False):
     global currenttask
-    dotask = has_task(task) and checktask == task
+    dotask = has_task(tasks, task) and checktask == task
     if dotask and not quiet:
         currenttask = (tasks[task]['nicename'] if tasks[task]['nicename'] else task).replace('%pre', 'Updating' if args.update else 'Loading')
     return dotask
@@ -1122,7 +1122,7 @@ def get_source_by_alias(name, alias):
     raise(ValueError('Source alias not found!'))
 
 
-def has_task(task):
+def has_task(tasks, task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
 
@@ -1143,14 +1143,14 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def journal_events(clear=True):
+def journal_events(tasks, clear=True):
     if 'writeevents' in tasks:
         write_all_events()
     if clear:
         clear_events()
 
 
-def load_event_from_file(name='', location='', clean=False, delete=True, append=False):
+def load_event_from_file(tasks, name='', location='', clean=False, delete=True, append=False):
     if not name and not location:
         raise ValueError('Either event name or location must be specified to load event')
 
@@ -1218,7 +1218,7 @@ def load_event_from_file(name='', location='', clean=False, delete=True, append=
         return name
 
 
-def load_stubs():
+def load_stubs(tasks):
     global currenttask
     currenttask = 'Loading event stubs'
 
@@ -1243,7 +1243,7 @@ def load_stubs():
                 shutil.copyfileobj(f_in, f_out)
             os.remove(fi)
         name = os.path.basename(os.path.splitext(fname)[0]).replace('.json', '')
-        name = add_event(name, delete = False, loadifempty = False)
+        name = add_event(tasks, name, delete = False, loadifempty = False)
         events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
 
 
@@ -1288,9 +1288,9 @@ def make_date_string(year, month='', day=''):
     return datestring
 
 # Merge and remove duplicate events
-def merge_duplicates():
+def merge_duplicates(tasks):
     if not len(events):
-        load_stubs()
+        load_stubs(tasks)
     currenttask = 'Merging duplicate events'
     keys = list(sorted(list(events.keys())))
     for n1, name1 in enumerate(tq(keys[:], currenttask)):
@@ -1303,8 +1303,8 @@ def merge_duplicates():
             allnames2 = get_aliases(name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else [])
             if any(i in allnames1 for i in allnames2):
                 tprint('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
-                load1 = load_event_from_file(name1, delete = True)
-                load2 = load_event_from_file(name2, delete = True)
+                load1 = load_event_from_file(tasks, name1, delete=True)
+                load2 = load_event_from_file(tasks, name2, delete=True)
                 if load1 and load2:
                     priority1 = 0
                     priority2 = 0
@@ -1325,7 +1325,7 @@ def merge_duplicates():
                         del(events[name1])
                 else:
                     print ('Duplicate already deleted')
-                journal_events()
+                journal_events(tasks)
 
 
 def name_clean(name):
@@ -1452,9 +1452,9 @@ def set_first_max_light(name):
             add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
 
 
-def set_preferred_names():
+def set_preferred_names(tasks):
     if not len(events):
-        load_stubs()
+        load_stubs(tasks)
     for name in list(sorted(list(events.keys()))):
         if name not in events:
             continue
@@ -1510,14 +1510,14 @@ def set_preferred_names():
                     break
         if newname and name != newname:
             # Make sure new name doesn't already exist
-            if load_event_from_file(newname):
+            if load_event_from_file(tasks, newname):
                 continue
-            if load_event_from_file(name, delete = True):
+            if load_event_from_file(tasks, name, delete=True):
                 tprint('Changing event name (' + name + ') to preferred name (' + newname + ').')
                 events[newname] = events[name]
                 events[newname]['name'] = newname
                 del(events[name])
-                journal_events()
+                journal_events(tasks)
 
 
 def snname(string):
