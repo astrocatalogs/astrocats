@@ -1,5 +1,7 @@
 """Constant variables used by OSC import methods.
 """
+from astropy import constants as const
+from astropy import units as un
 
 OSC_BIBCODE = '2016arXiv160501054G'
 OSC_NAME = 'The Open Supernova Catalog'
@@ -10,7 +12,7 @@ ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
             "through grant AST 0907903.")
 
 CLIGHT = const.c.cgs.value
-KM = (1.0 * un.KM).cgs.value
+KM = (1.0 * un.km).cgs.value
 TRAVIS_QUERY_LIMIT = 10
 
 REPR_BETTER_QUANTITY = {
