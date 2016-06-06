@@ -11,33 +11,39 @@ import json
 import codecs
 import resource
 import argparse
-import io
+# import io
 import warnings
 from datetime import timedelta, datetime
 from glob import glob
 from html import unescape
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
-from astroquery.simbad import Simbad
+# from astroquery.simbad import Simbad
 from copy import deepcopy
-from astropy import constants as const
-from astropy import units as un
-from astropy.io import fits
+# from astropy import units as un
+# from astropy.io import fits
 from astropy.time import Time as astrotime
-from collections import OrderedDict, Sequence
-from math import log10, floor, sqrt, isnan, ceil
+from collections import OrderedDict  # , Sequence
+from math import log10, floor, isnan, ceil  # , sqrt
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
-# from photometry import *
-# from tq import *
-# from digits import *
-# from repos import *
-# from events import *
-
-from .. utils import *
-from . import_funcs import *
-from scripts import _FILENAME_TYPE_SYNONYMS, _FILENAME_SOURCE_SYNONYMS, _FILENAME_NON_SNE_TYPES
+# from .. utils import *
+from .. utils import get_sig_digits, pretty_num, tq, is_number, round_sig, tprint, repo_file_list
+# from . import_funcs import *
+from . import_funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
+    archived_task, convert_aq_output, \
+    derive_and_sanitize, delete_old_event_files, \
+    do_task, event_exists, get_aliases, \
+    get_bibauthor_dict, get_extinctions_dict, \
+    get_max_light, \
+    get_preferred_name, has_task, \
+    jd_to_mjd, journal_events, load_event_from_file, \
+    load_cached_url, make_date_string, merge_duplicates, \
+    set_preferred_names, \
+    clean_snname, uniq_cdl, utf8, write_all_events
+from scripts import PATH  # , FILENAME
+from . constants import KM, CLIGHT, ACKN_CFA, TRAVIS_QUERY_LIMIT
 
 
 def import_main():
@@ -45,7 +51,7 @@ def import_main():
     """
     args = load_args()
     currenttask = ''
-    eventnames = []
+    # eventnames = []
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
@@ -69,7 +75,7 @@ def import_main():
         ("itep",            {"nicename": "%pre ITEP",                    "update": False}),
         ("asiago",          {"nicename": "%pre Asiago metadata",         "update": False}),
         ("tns",             {"nicename": "%pre TNS metadata",            "update": True,  "archived": True}),
-        #("rochester",       {"nicename": "%pre Latest Supernovae",       "update": True,  "archived": False}),
+        # ("rochester",       {"nicename": "%pre Latest Supernovae",       "update": True,  "archived": False}),
         ("lennarz",         {"nicename": "%pre Lennarz",                 "update": False}),
         ("fermi",           {"nicename": "%pre Fermi",                   "update": False}),
         ("gaia",            {"nicename": "%pre GAIA",                    "update": True,  "archived": False}),
@@ -83,8 +89,8 @@ def import_main():
         ("cpcs",            {"nicename": "%pre CPCS",                    "update": True,  "archived": False}),
         ("ptf",             {"nicename": "%pre PTF",                     "update": False, "archived": False}),
         ("des",             {"nicename": "%pre DES",                     "update": False, "archived": False}),
-        ("asassn",          {"nicename": "%pre ASASSN",                  "update": True }),
-        ("asiagospectra",   {"nicename": "%pre Asiago spectra",          "update": True }),
+        ("asassn",          {"nicename": "%pre ASASSN",                  "update": True}),
+        ("asiagospectra",   {"nicename": "%pre Asiago spectra",          "update": True}),
         ("wiserepspectra",  {"nicename": "%pre WISeREP spectra",         "update": False}),
         ("cfaspectra",      {"nicename": "%pre CfA archive spectra",     "update": False}),
         ("snlsspectra",     {"nicename": "%pre SNLS spectra",            "update": False}),
@@ -95,14 +101,8 @@ def import_main():
         ("superfitspectra", {"nicename": "%pre Superfit spectra",        "update": False}),
         ("mergeduplicates", {"nicename": "Merging duplicates",           "update": False}),
         ("setprefnames",    {"nicename": "Setting preferred names",      "update": False}),
-        ("writeevents",     {"nicename": "Writing events",               "update": True })
+        ("writeevents",     {"nicename": "Writing events",               "update": True})
     ])
-
-    # with open(_FILENAME_TYPE_SYNONYMS, 'r') as f:
-    #     typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-    # with open(_FILENAME_SOURCE_SYNONYMS, 'r') as f:
-    #     sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
     for task in tasks:
         if do_task(tasks, args, task, 'deleteoldevents'):
@@ -111,53 +111,58 @@ def import_main():
 
         # Import data provided directly to OSC
         if do_task(tasks, args, task, 'internal'):
-            for datafile in tq(sorted(glob("../sne-internal/*.json"), key=lambda s: s.lower()), currenttask):
+            path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
+            for datafile in tq(sorted(glob(path_pattern), key=lambda s: s.lower()), currenttask):
                 if args.update:
-                    if not load_event_from_file(tasks, location=datafile, clean=True, delete=False, append=True):
+                    if not load_event_from_file(events, args, tasks, location=datafile, clean=True, delete=False, append=True):
                         raise IOError('Failed to find specified file.')
                 else:
-                    if not load_event_from_file(tasks, location=datafile, clean=True, delete=False):
+                    if not load_event_from_file(events, args, tasks,  location=datafile, clean=True, delete=False):
                         raise IOError('Failed to find specified file.')
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'radio'):
-            for datafile in tq(sorted(glob("../sne-external-radio/*.txt"), key=lambda s: s.lower()), currenttask):
+            path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
+            for datafile in tq(sorted(glob(path_pattern), key=lambda s: s.lower()), currenttask):
                 name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
                 radiosourcedict = OrderedDict()
                 with open(datafile, 'r') as f:
                     for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
                         if line.startswith('(') and li <= len(radiosourcedict):
-                            radiosourcedict[line.split()[0]] = add_source(events, name, bibcode = line.split()[-1])
+                            radiosourcedict[line.split()[0]] = add_source(events, name, bibcode=line.split()[-1])
                         elif li in [x + len(radiosourcedict) for x in range(3)]:
                             continue
                         else:
                             cols = list(filter(None, line.split()))
                             source = radiosourcedict[cols[6]]
-                            add_photometry(events, name, time = cols[0], frequency = cols[2], u_frequency = 'GHz', fluxdensity = cols[3],
-                                e_fluxdensity = cols[4], u_fluxdensity = 'µJy', instrument = cols[5], source = source)
+                            add_photometry(
+                                events, name, time=cols[0], frequency=cols[2], u_frequency='GHz', fluxdensity=cols[3],
+                                e_fluxdensity=cols[4], u_fluxdensity='µJy', instrument=cols[5], source=source)
                             add_quantity(events, name, 'alias', name, source)
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'xray'):
-            for datafile in tq(sorted(glob("../sne-external-xray/*.txt"), key=lambda s: s.lower()), currenttask):
+            path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
+            for datafile in tq(sorted(glob(path_pattern), key=lambda s: s.lower()), currenttask):
                 name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
                 with open(datafile, 'r') as f:
                     for li, line in enumerate(f.read().splitlines()):
                         if li == 0:
-                            source = add_source(events, name, bibcode = line.split()[-1])
-                        elif li in [1,2,3]:
+                            source = add_source(events, name, bibcode=line.split()[-1])
+                        elif li in [1, 2, 3]:
                             continue
                         else:
                             cols = list(filter(None, line.split()))
-                            add_photometry(events, name, time = cols[:2],
-                                energy = cols[2:4], u_energy = 'keV', counts = cols[4], flux = cols[6],
-                                unabsorbedflux = cols[8], u_flux = 'ergs/s/cm^2',
-                                photonindex = cols[15], instrument = cols[17], nhmw = cols[11],
-                                upperlimit = (float(cols[5]) < 0), source = source)
+                            add_photometry(
+                                events, name, time=cols[:2],
+                                energy=cols[2:4], u_energy='keV', counts=cols[4], flux=cols[6],
+                                unabsorbedflux=cols[8], u_flux='ergs/s/cm^2',
+                                photonindex=cols[15], instrument=cols[17], nhmw=cols[11],
+                                upperlimit=(float(cols[5]) < 0), source=source)
                             add_quantity(events, name, 'alias', name, source)
             journal_events(tasks, args, events)
 
-        #if do_task(tasks, args, task, 'simbad'):
+        # if do_task(tasks, args, task, 'simbad'):
         #    Simbad.list_votable_fields()
         #    customSimbad = Simbad()
         #    customSimbad.add_votable_fields('otype', 'id(opt)')
@@ -189,13 +194,13 @@ def import_main():
                 if is_number(name[:4]):
                     name = 'SN' + name
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2012ApJS..200...12H")
+                source = add_source(events, name, bibcode="2012ApJS..200...12H")
                 add_quantity(events, name, 'alias', name, source)
                 if '[' not in row['Gal']:
                     add_quantity(events, name, 'host', row['Gal'].replace('_', ' '), source)
-                add_quantity(events, name, 'redshift', str(row['z']), source, kind = 'heliocentric')
-                add_quantity(events, name, 'redshift', str(row['zCMB']), source, kind = 'cmb')
-                add_quantity(events, name, 'ebv', str(row['E_B-V_']), source, error = str(row['e_E_B-V_']) if row['e_E_B-V_'] else '')
+                add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric')
+                add_quantity(events, name, 'redshift', str(row['zCMB']), source, kind='cmb')
+                add_quantity(events, name, 'ebv', str(row['E_B-V_']), source, error=str(row['e_E_B-V_']) if row['e_E_B-V_'] else '')
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
 
@@ -207,14 +212,14 @@ def import_main():
             for row in tq(table, currenttask):
                 name = row['Name'].replace('SCP', 'SCP-')
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2012ApJ...746...85S")
+                source = add_source(events, name, bibcode="2012ApJ...746...85S")
                 add_quantity(events, name, 'alias', name, source)
                 if row['f_Name']:
                     add_quantity(events, name, 'claimedtype', 'Ia', source)
                 if row['z']:
-                    add_quantity(events, name, 'redshift', str(row['z']), source, kind = 'spectroscopic')
+                    add_quantity(events, name, 'redshift', str(row['z']), source, kind='spectroscopic')
                 else:
-                    add_quantity(events, name, 'redshift', str(row['zCl']), source, kind = 'cluster')
+                    add_quantity(events, name, 'redshift', str(row['zCl']), source, kind='cluster')
                 add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
@@ -231,15 +236,16 @@ def import_main():
                 err = Decimal(float(row['e_Flux']))
                 zp = Decimal(float(row['Zero']))
                 sig = get_sig_digits(str(row['Flux']))+1
-                magnitude = pretty_num(zp-Decimal(2.5)*(flux.log10()), sig = sig)
-                e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig = sig)
+                magnitude = pretty_num(zp-Decimal(2.5)*(flux.log10()), sig=sig)
+                e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig=sig)
                 if float(e_magnitude) > 5.0:
                     continue
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2012ApJ...746...85S")
+                source = add_source(events, name, bibcode="2012ApJ...746...85S")
                 add_quantity(events, name, 'alias', name, source)
-                add_photometry(events, name, time = str(row['MJD']), band = row['Filter'], instrument = row['Inst'],
-                    magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+                add_photometry(
+                    events, name, time=str(row['MJD']), band=row['Filter'], instrument=row['Inst'],
+                    magnitude=magnitude, e_magnitude=e_magnitude, source=source)
 
             # 2004ApJ...602..571B
             result = Vizier.get_catalogs("J/ApJ/602/571/table8")
@@ -253,12 +259,12 @@ def import_main():
                     continue
                 err = Decimal(float(row['e_Flux']))
                 sig = get_sig_digits(str(row['Flux']))+1
-                magnitude = pretty_num(Decimal(25.0)-Decimal(2.5)*(flux.log10()), sig = sig)
-                e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig = sig)
+                magnitude = pretty_num(Decimal(25.0)-Decimal(2.5)*(flux.log10()), sig=sig)
+                e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig=sig)
                 if float(e_magnitude) > 5.0:
                     continue
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2004ApJ...602..571B")
+                source = add_source(events, name, bibcode="2004ApJ...602..571B")
                 add_quantity(events, name, 'alias', name, source)
                 band = row['Filt']
                 system = ''
@@ -267,8 +273,9 @@ def import_main():
                     system = 'Cousins'
                 if band == 'Z':
                     telescope = 'Subaru'
-                add_photometry(events, name, time = str(row['MJD']), band = band, system = system, telescope = telescope,
-                    magnitude = magnitude, e_magnitude = e_magnitude, source = source)
+                add_photometry(
+                    events, name, time=str(row['MJD']), band=band, system=system, telescope=telescope,
+                    magnitude=magnitude, e_magnitude=e_magnitude, source=source)
 
             # 2014MNRAS.444.3258M
             result = Vizier.get_catalogs("J/MNRAS/444/3258/SNe")
@@ -281,11 +288,11 @@ def import_main():
                     continue
                 oldname = name
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2014MNRAS.444.3258M')
+                source = add_source(events, name, bibcode='2014MNRAS.444.3258M')
                 add_quantity(events, name, 'alias', name, source)
-                add_quantity(events, name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
-                add_quantity(events, name, 'ra', str(row['_RA']), source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', str(row['_DE']), source, unit = 'floatdegrees')
+                add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric', error=str(row['e_z']))
+                add_quantity(events, name, 'ra', str(row['_RA']), source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', str(row['_DE']), source, unit='floatdegrees')
             journal_events(tasks, args, events)
 
             # 2014MNRAS.438.1391P
@@ -295,9 +302,9 @@ def import_main():
             for row in tq(table, currenttask):
                 name = row['SN']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2014MNRAS.438.1391P')
+                source = add_source(events, name, bibcode='2014MNRAS.438.1391P')
                 add_quantity(events, name, 'alias', name, source)
-                add_quantity(events, name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
+                add_quantity(events, name, 'redshift', str(row['zh']), source, kind='heliocentric')
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
             journal_events(tasks, args, events)
@@ -307,9 +314,9 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
-                name = row['Name'].replace(' ','')
+                name = row['Name'].replace(' ', '')
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2012ApJ...749...18B')
+                source = add_source(events, name, bibcode='2012ApJ...749...18B')
                 add_quantity(events, name, 'alias', name, source)
                 mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
                 band = row['Filt']
@@ -317,8 +324,9 @@ def import_main():
                 e_magnitude = str(row['e_mag'])
                 e_magnitude = '' if e_magnitude == '--' else e_magnitude
                 upperlimit = True if row['l_mag'] == '>' else False
-                add_photometry(events, name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, instrument = 'UVOT',
-                    source = source, upperlimit = upperlimit, telescope = 'Swift', system = 'Swift')
+                add_photometry(
+                    events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_magnitude, instrument='UVOT',
+                    source=source, upperlimit=upperlimit, telescope='Swift', system='Swift')
             journal_events(tasks, args, events)
 
             # 2010A&A...523A...7G
@@ -328,14 +336,14 @@ def import_main():
             for row in tq(table, currenttask):
                 name = 'SNLS-' + row['SNLS']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2010A&A...523A...7G')
+                source = add_source(events, name, bibcode='2010A&A...523A...7G')
                 add_quantity(events, name, 'alias', name, source)
                 astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
                 add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
                 add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
-                add_quantity(events, name, 'redshift', str(row['z']), source, kind = 'heliocentric')
-                add_quantity(events, name, 'claimedtype', (row['Type'].replace('*', '?').replace('SN','')
-                    .replace('(pec)',' P').replace('Ia? P?', 'Ia P?')), source)
+                add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric')
+                add_quantity(
+                    events, name, 'claimedtype', (row['Type'].replace('*', '?').replace('SN', '').replace('(pec)', ' P').replace('Ia? P?', 'Ia P?')), source)
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
             journal_events(tasks, args, events)
@@ -347,7 +355,7 @@ def import_main():
             for row in tq(table, currenttask):
                 name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2004A&A...415..863G')
+                source = add_source(events, name, bibcode='2004A&A...415..863G')
                 add_quantity(events, name, 'alias', name, source)
                 datesplit = row['Date'].split('-')
                 add_quantity(events, name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
@@ -356,9 +364,9 @@ def import_main():
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
                 if row['zSN']:
-                    add_quantity(events, name, 'redshift', str(row['zSN']), source, kind = 'spectroscopic')
+                    add_quantity(events, name, 'redshift', str(row['zSN']), source, kind='spectroscopic')
                 else:
-                    add_quantity(events, name, 'redshift', str(row['zCl']), source, kind = 'cluster')
+                    add_quantity(events, name, 'redshift', str(row['zCl']), source, kind='cluster')
             journal_events(tasks, args, events)
 
             # 2008AJ....136.2306H
@@ -368,7 +376,7 @@ def import_main():
             for row in tq(table, currenttask):
                 name = 'SDSS-II ' + str(row['SNID'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2008AJ....136.2306H')
+                source = add_source(events, name, bibcode='2008AJ....136.2306H')
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
@@ -385,7 +393,7 @@ def import_main():
                 else:
                     name = 'SN' + name
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2010ApJ...708..661D')
+                source = add_source(events, name, bibcode='2010ApJ...708..661D')
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'alias', 'SDSS-II ' + str(row['SDSS-II']), source)
                 add_quantity(events, name, 'claimedtype', 'II P', source)
@@ -401,9 +409,9 @@ def import_main():
                 else:
                     name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2010ApJ...708..661D')
+                source = add_source(events, name, bibcode='2010ApJ...708..661D')
                 add_quantity(events, name, 'alias', name, source)
-                add_quantity(events, name, 'redshift', str(row['z']), source, error = str(row['e_z']))
+                add_quantity(events, name, 'redshift', str(row['z']), source, error=str(row['e_z']))
             journal_events(tasks, args, events)
 
             # 2014ApJ...795...44R
@@ -413,11 +421,11 @@ def import_main():
             for row in tq(table, currenttask):
                 name = row['SN']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2014ApJ...795...44R')
+                source = add_source(events, name, bibcode='2014ApJ...795...44R')
                 add_quantity(events, name, 'alias', name, source)
                 astrot = astrotime(row['tdisc'], format='mjd').datetime
                 add_quantity(events, name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
-                add_quantity(events, name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
+                add_quantity(events, name, 'redshift', str(row['z']), source, error=str(row['e_z']), kind='heliocentric')
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
                 add_quantity(events, name, 'claimedtype', 'Ia', source)
@@ -428,11 +436,12 @@ def import_main():
             for row in tq(table, currenttask):
                 name = row['SN']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2014ApJ...795...44R')
+                source = add_source(events, name, bibcode='2014ApJ...795...44R')
                 add_quantity(events, name, 'alias', name, source)
                 if row['mag'] != '--':
-                    add_photometry(events, name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
-                        e_magnitude = str(row['e_mag']), source = source, system = 'AB', telescope = 'PS1', instrument = 'PS1')
+                    add_photometry(
+                        events, name, time=str(row['MJD']), band=row['Filt'], magnitude=str(row['mag']),
+                        e_magnitude=str(row['e_mag']), source=source, system='AB', telescope='PS1', instrument='PS1')
             journal_events(tasks, args, events)
 
             # 1990A&AS...82..145C
@@ -456,17 +465,17 @@ def import_main():
                 name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
                 source = ''
-                secsource = add_source(events, name, bibcode = '1990A&AS...82..145C', secondary = True)
+                secsource = add_source(events, name, bibcode='1990A&AS...82..145C', secondary=True)
                 mjd = str(jd_to_mjd(Decimal(row['JD'])))
                 mag = str(row['m'])
                 band = row['band'].strip("'")
                 if row['r_m'] in ii189bibdict:
-                    source = add_source(events, name, bibcode = ii189bibdict[row['r_m']])
+                    source = add_source(events, name, bibcode=ii189bibdict[row['r_m']])
                 else:
-                    source = add_source(events, name, refname = ii189refdict[row['r_m']])
+                    source = add_source(events, name, refname=ii189refdict[row['r_m']])
                 add_quantity(events, name, 'alias', name, source)
 
-                add_photometry(events, name, time = mjd, band = band, magnitude = mag, source = uniq_cdl([source,secsource]))
+                add_photometry(events, name, time=mjd, band=band, magnitude=mag, source=uniq_cdl([source, secsource]))
             journal_events(tasks, args, events)
 
             # 2014yCat.7272....0G
@@ -493,8 +502,8 @@ def import_main():
                     name = row["SNR"].strip()
 
                 name = add_event(tasks, args, events, name)
-                source = (add_source(events, name, bibcode = '2014BASI...42...47G') + ',' +
-                          add_source(events, name, refname = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
+                source = (add_source(events, name, bibcode='2014BASI...42...47G') + ',' +
+                          add_source(events, name, refname='Galactic SNRs', url='https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
                 add_quantity(events, name, 'alias', name, source)
 
                 add_quantity(events, name, "alias", row["SNR"].strip(), source)
@@ -520,9 +529,9 @@ def import_main():
                 row = convert_aq_output(row)
                 name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2014MNRAS.442..844F')
+                source = add_source(events, name, bibcode='2014MNRAS.442..844F')
                 add_quantity(events, name, 'alias', name, source)
-                add_quantity(events, name, 'redshift', str(row['zhost']), source, kind = 'host')
+                add_quantity(events, name, 'redshift', str(row['zhost']), source, kind='host')
                 add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
             journal_events(tasks, args, events)
 
@@ -533,13 +542,14 @@ def import_main():
                 row = convert_aq_output(row)
                 name = 'SN' + str(row['SN'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2014MNRAS.442..844F")
+                source = add_source(events, name, bibcode="2014MNRAS.442..844F")
                 add_quantity(events, name, 'alias', name, source)
                 for band in ['B', 'V', 'R', 'I']:
                     bandtag = band + 'mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time = row['MJD'], band = band, magnitude = row[bandtag],
-                            e_magnitude = row['e_' + bandtag], source = source, telescope = 'KAIT', instrument = 'KAIT')
+                        add_photometry(
+                            events, name, time=row['MJD'], band=band, magnitude=row[bandtag],
+                            e_magnitude=row['e_' + bandtag], source=source, telescope='KAIT', instrument='KAIT')
             journal_events(tasks, args, events)
 
             # 2012MNRAS.425.1789S
@@ -550,12 +560,12 @@ def import_main():
                 row = convert_aq_output(row)
                 name = ''.join(row['SimbadName'].split(' '))
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2012MNRAS.425.1789S')
+                source = add_source(events, name, bibcode='2012MNRAS.425.1789S')
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'alias', 'SN' + row['SN'], source)
                 add_quantity(events, name, 'host', row['Gal'], source)
                 if is_number(row['cz']):
-                    add_quantity(events, name, 'redshift', str(round_sig(float(row['cz'])*KM/CLIGHT, sig = get_sig_digits(str(row['cz'])))), source, kind = 'heliocentric')
+                    add_quantity(events, name, 'redshift', str(round_sig(float(row['cz'])*KM/CLIGHT, sig=get_sig_digits(str(row['cz'])))), source, kind='heliocentric')
                 add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
             journal_events(tasks, args, events)
 
@@ -567,11 +577,11 @@ def import_main():
                 row = convert_aq_output(row)
                 name = u'LSQ' + str(row['LSQ'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015ApJS..219...13W")
+                source = add_source(events, name, bibcode="2015ApJS..219...13W")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
-                add_quantity(events, name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
+                add_quantity(events, name, 'redshift', row['z'], source, error=row['e_z'], kind='heliocentric')
                 add_quantity(events, name, 'ebv', row['E_B-V_'], source)
                 add_quantity(events, name, 'claimedtype', 'Ia', source)
             result = Vizier.get_catalogs("J/ApJS/219/13/table2")
@@ -581,11 +591,12 @@ def import_main():
                 row = convert_aq_output(row)
                 name = 'LSQ' + row['LSQ']
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015ApJS..219...13W")
+                source = add_source(events, name, bibcode="2015ApJS..219...13W")
                 add_quantity(events, name, 'alias', name, source)
-                add_photometry(events, name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'QUEST', telescope = 'ESO Schmidt',
-                    observatory = 'La Silla', band = row['Filt'],
-                    magnitude = row['mag'], e_magnitude = row['e_mag'], system = "Swope", source = source)
+                add_photometry(
+                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument='QUEST', telescope='ESO Schmidt',
+                    observatory='La Silla', band=row['Filt'],
+                    magnitude=row['mag'], e_magnitude=row['e_mag'], system="Swope", source=source)
             journal_events(tasks, args, events)
 
             # 2012Natur.491..228C
@@ -594,7 +605,7 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             name = 'SN2213-1745'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2012Natur.491..228C")
+            source = add_source(events, name, bibcode="2012Natur.491..228C")
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'claimedtype', 'SLSN-R', source)
             for row in tq(table, currenttask):
@@ -602,15 +613,16 @@ def import_main():
                 for band in ['g', 'r', 'i']:
                     bandtag = band + '_mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time = row["MJD" + band + "_"], band = band + "'", magnitude = row[bandtag],
-                            e_magnitude = row["e_" + bandtag], source = source)
+                        add_photometry(
+                            events, name, time=row["MJD" + band + "_"], band=band + "'", magnitude=row[bandtag],
+                            e_magnitude=row["e_" + bandtag], source=source)
 
             result = Vizier.get_catalogs("J/other/Nat/491.228/tablef2")
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             name = 'SN1000+0216'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2012Natur.491..228C")
+            source = add_source(events, name, bibcode="2012Natur.491..228C")
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'claimedtype', 'SLSN-II?', source)
             for row in tq(table, currenttask):
@@ -618,8 +630,9 @@ def import_main():
                 for band in ['g', 'r', 'i']:
                     bandtag = band + '_mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time = row["MJD" + band + "_"], band = band + "'", magnitude = row[bandtag],
-                            e_magnitude = row["e_" + bandtag], source = source)
+                        add_photometry(
+                            events, name, time=row["MJD" + band + "_"], band=band + "'", magnitude=row[bandtag],
+                            e_magnitude=row["e_" + bandtag], source=source)
             journal_events(tasks, args, events)
 
             # 2011Natur.474..484Q
@@ -630,10 +643,11 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2011Natur.474..484Q")
+                source = add_source(events, name, bibcode="2011Natur.474..484Q")
                 add_quantity(events, name, 'alias', name, source)
-                add_photometry(events, name, time = row['MJD'], band = row['Filt'], telescope = row['Tel'],
-                    magnitude = row['mag'], e_magnitude = row['e_mag'], source = source)
+                add_photometry(
+                    events, name, time=row['MJD'], band=row['Filt'], telescope=row['Tel'],
+                    magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
             journal_events(tasks, args, events)
 
             # 2011ApJ...736..159G
@@ -642,12 +656,13 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             name = 'PTF10vdl'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2011ApJ...736..159G")
+            source = add_source(events, name, bibcode="2011ApJ...736..159G")
             add_quantity(events, name, 'alias', name, source)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], telescope = row['Tel'], magnitude = row['mag'],
-                               e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
+                add_photometry(
+                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], telescope=row['Tel'], magnitude=row['mag'],
+                    e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '', upperlimit=(not is_number(row['e_mag'])), source=source)
             journal_events(tasks, args, events)
 
             # 2012ApJ...760L..33B
@@ -656,15 +671,15 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             name = 'PTF12gzk'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2012ApJ...760L..33B")
+            source = add_source(events, name, bibcode="2012ApJ...760L..33B")
             add_quantity(events, name, 'alias', name, source)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 # Fixing a typo in VizieR table
                 if str(row['JD']) == '2455151.456':
                     row['JD'] = '2456151.456'
-                add_photometry(events, name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], telescope = row['Inst'], magnitude = row['mag'],
-                               e_magnitude = row['e_mag'], source = source)
+                add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], telescope=row['Inst'], magnitude=row['mag'],
+                               e_magnitude=row['e_mag'], source=source)
             journal_events(tasks, args, events)
 
             # 2013ApJ...769...39S
@@ -673,7 +688,7 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             name = 'PS1-12sk'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2013ApJ...769...39S")
+            source = add_source(events, name, bibcode="2013ApJ...769...39S")
             add_quantity(events, name, 'alias', name, source)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
@@ -683,15 +698,15 @@ def import_main():
                     instrument = row['Inst']
                 else:
                     telescope = row['Inst']
-                add_photometry(events, name, time = row['MJD'], band = row['Filt'], telescope = telescope, instrument = instrument, magnitude = row['mag'],
-                               e_magnitude = row['e_mag'] if not row['l_mag'] else '', upperlimit = (row['l_mag'] == '>'), source = source)
+                add_photometry(events, name, time=row['MJD'], band=row['Filt'], telescope=telescope, instrument=instrument, magnitude=row['mag'],
+                               e_magnitude=row['e_mag'] if not row['l_mag'] else '', upperlimit=(row['l_mag'] == '>'), source=source)
             journal_events(tasks, args, events)
 
             # 2009MNRAS.394.2266P
             # Note: Instrument info available via links in VizieR, can't auto-parse just yet.
             name = 'SN2005cs'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2009MNRAS.394.2266P")
+            source = add_source(events, name, bibcode="2009MNRAS.394.2266P")
             add_quantity(events, name, 'alias', name, source)
             result = Vizier.get_catalogs("J/MNRAS/394/2266/table2")
             table = result[list(result.keys())[0]]
@@ -701,12 +716,13 @@ def import_main():
                 for band in ['U', 'B', 'V', 'R', 'I']:
                     bandtag = band + 'mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = band, magnitude = row[bandtag],
-                            e_magnitude = (row["e_" + bandtag] if row['l_' + bandtag] != '>' else ''),
-                            source = source, upperlimit = (row['l_' + bandtag] == '>'))
+                        add_photometry(
+                            events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), band=band, magnitude=row[bandtag],
+                            e_magnitude=(row["e_" + bandtag] if row['l_' + bandtag] != '>' else ''),
+                            source=source, upperlimit=(row['l_' + bandtag] == '>'))
                 if "zmag" in row and is_number(row["zmag"]) and not isnan(float(row["zmag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = "z", magnitude = row["zmag"],
-                                   e_magnitude = row["e_zmag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), band="z", magnitude=row["zmag"],
+                                   e_magnitude=row["e_zmag"], source=source)
 
             result = Vizier.get_catalogs("J/MNRAS/394/2266/table3")
             table = result[list(result.keys())[0]]
@@ -716,9 +732,10 @@ def import_main():
                 for band in ['B', 'V', 'R']:
                     bandtag = band + 'mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = band, magnitude = row[bandtag],
-                            e_magnitude = (row["e_" + bandtag] if row['l_' + bandtag] != '>' else ''),
-                            source = source, upperlimit = (row['l_' + bandtag] == '>'))
+                        add_photometry(
+                            events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), band=band, magnitude=row[bandtag],
+                            e_magnitude=(row["e_" + bandtag] if row['l_' + bandtag] != '>' else ''),
+                            source=source, upperlimit=(row['l_' + bandtag] == '>'))
 
             result = Vizier.get_catalogs("J/MNRAS/394/2266/table4")
             table = result[list(result.keys())[0]]
@@ -728,8 +745,8 @@ def import_main():
                 for band in ['J', 'H', 'K']:
                     bandtag = band + 'mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), band = band, magnitude = row[bandtag],
-                                       e_magnitude = row["e_" + bandtag], source = source)
+                        add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), band=band, magnitude=row[bandtag],
+                                       e_magnitude=row["e_" + bandtag], source=source)
             journal_events(tasks, args, events)
 
             # 2013AJ....145...99A
@@ -738,31 +755,31 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             name = 'SN2003ie'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2013AJ....145...99A")
+            source = add_source(events, name, bibcode="2013AJ....145...99A")
             add_quantity(events, name, 'alias', name, source)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = row["MJD"], band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"] if not row["l_Bmag"] else '',
-                                   upperlimit = (row['l_Bmag'] == '>'), source = source)
+                    add_photometry(events, name, time=row["MJD"], band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"] if not row["l_Bmag"] else '',
+                                   upperlimit=(row['l_Bmag'] == '>'), source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = row["MJD"], band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"] if is_number(row["e_Vmag"]) else '',
-                                   upperlimit = (not is_number(row["e_Vmag"])), source = source)
+                    add_photometry(events, name, time=row["MJD"], band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"] if is_number(row["e_Vmag"]) else '',
+                                   upperlimit=(not is_number(row["e_Vmag"])), source=source)
                 if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                    add_photometry(events, name, time = row["MJD"], band = "R", magnitude = row["Rmag"],
-                                   e_magnitude = row["e_Rmag"] if not row["l_Rmag"] else '',
-                                   upperlimit = (row['l_Rmag'] == '>'), source = source)
+                    add_photometry(events, name, time=row["MJD"], band="R", magnitude=row["Rmag"],
+                                   e_magnitude=row["e_Rmag"] if not row["l_Rmag"] else '',
+                                   upperlimit=(row['l_Rmag'] == '>'), source=source)
                 if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                    add_photometry(events, name, time = row["MJD"], band = "I", magnitude = row["Imag"],
-                                   e_magnitude = row["e_Imag"], source = source)
+                    add_photometry(events, name, time=row["MJD"], band="I", magnitude=row["Imag"],
+                                   e_magnitude=row["e_Imag"], source=source)
             journal_events(tasks, args, events)
 
             # 2011ApJ...729..143C
             name = 'SN2008am'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2011ApJ...729..143C")
+            source = add_source(events, name, bibcode="2011ApJ...729..143C")
             add_quantity(events, name, 'alias', name, source)
 
             result = Vizier.get_catalogs("J/ApJ/729/143/table1")
@@ -770,8 +787,8 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time = row['MJD'], band = 'ROTSE', telescope = 'ROTSE', magnitude = row['mag'],
-                               e_magnitude = row['e_mag'] if not row['l_mag'] else '', upperlimit = (row['l_mag'] == '<'), source = source)
+                add_photometry(events, name, time=row['MJD'], band='ROTSE', telescope='ROTSE', magnitude=row['mag'],
+                               e_magnitude=row['e_mag'] if not row['l_mag'] else '', upperlimit=(row['l_mag'] == '<'), source=source)
 
             result = Vizier.get_catalogs("J/ApJ/729/143/table2")
             table = result[list(result.keys())[0]]
@@ -779,36 +796,36 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
-                    add_photometry(events, name, time = row["MJD"], telescope = "PAIRITEL", band = "J", magnitude = row["Jmag"],
-                                   e_magnitude = row["e_Jmag"], source = source)
+                    add_photometry(events, name, time=row["MJD"], telescope="PAIRITEL", band="J", magnitude=row["Jmag"],
+                                   e_magnitude=row["e_Jmag"], source=source)
                 if "Hmag" in row and is_number(row["Hmag"]) and not isnan(float(row["Hmag"])):
-                    add_photometry(events, name, time = row["MJD"], telescope = "PAIRITEL", band = "H", magnitude = row["Hmag"],
-                                   e_magnitude = row["e_Hmag"], source = source)
+                    add_photometry(events, name, time=row["MJD"], telescope="PAIRITEL", band="H", magnitude=row["Hmag"],
+                                   e_magnitude=row["e_Hmag"], source=source)
                 if "Ksmag" in row and is_number(row["Ksmag"]) and not isnan(float(row["Ksmag"])):
-                    add_photometry(events, name, time = row["MJD"], telescope = "PAIRITEL", band = "Ks", magnitude = row["Ksmag"],
-                                   e_magnitude = row["e_Ksmag"], source = source)
+                    add_photometry(events, name, time=row["MJD"], telescope="PAIRITEL", band="Ks", magnitude=row["Ksmag"],
+                                   e_magnitude=row["e_Ksmag"], source=source)
 
             result = Vizier.get_catalogs("J/ApJ/729/143/table4")
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time = row['MJD'], band = row['Filt'], telescope = 'P60', magnitude = row['mag'],
-                               e_magnitude = row['e_mag'], source = source)
+                add_photometry(events, name, time=row['MJD'], band=row['Filt'], telescope='P60', magnitude=row['mag'],
+                               e_magnitude=row['e_mag'], source=source)
 
             result = Vizier.get_catalogs("J/ApJ/729/143/table5")
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time = row['MJD'], band = row['Filt'], instrument = 'UVOT', telescope = 'Swift', magnitude = row['mag'],
-                               e_magnitude = row['e_mag'], source = source)
+                add_photometry(events, name, time=row['MJD'], band=row['Filt'], instrument='UVOT', telescope='Swift', magnitude=row['mag'],
+                               e_magnitude=row['e_mag'], source=source)
             journal_events(tasks, args, events)
 
             # 2011ApJ...728...14P
             name = 'SN2009bb'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2011ApJ...728...14P")
+            source = add_source(events, name, bibcode="2011ApJ...728...14P")
             add_quantity(events, name, 'alias', name, source)
 
             result = Vizier.get_catalogs("J/ApJ/728/14/table1")
@@ -817,17 +834,17 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"], source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"], source=source)
                 if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "R", magnitude = row["Rmag"],
-                                   e_magnitude = row["e_Rmag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="R", magnitude=row["Rmag"],
+                                   e_magnitude=row["e_Rmag"], source=source)
                 if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "I", magnitude = row["Imag"],
-                                   e_magnitude = row["e_Imag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="I", magnitude=row["Imag"],
+                                   e_magnitude=row["e_Imag"], source=source)
 
             result = Vizier.get_catalogs("J/ApJ/728/14/table2")
             table = result[list(result.keys())[0]]
@@ -835,20 +852,20 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 if "u_mag" in row and is_number(row["u_mag"]) and not isnan(float(row["u_mag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "u'", magnitude = row["u_mag"],
-                                   e_magnitude = row["e_u_mag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="u'", magnitude=row["u_mag"],
+                                   e_magnitude=row["e_u_mag"], source=source)
                 if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "g'", magnitude = row["g_mag"],
-                                   e_magnitude = row["e_g_mag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="g'", magnitude=row["g_mag"],
+                                   e_magnitude=row["e_g_mag"], source=source)
                 if "r_mag" in row and is_number(row["r_mag"]) and not isnan(float(row["r_mag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "r'", magnitude = row["r_mag"],
-                                   e_magnitude = row["e_r_mag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="r'", magnitude=row["r_mag"],
+                                   e_magnitude=row["e_r_mag"], source=source)
                 if "i_mag" in row and is_number(row["i_mag"]) and not isnan(float(row["i_mag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "i'", magnitude = row["i_mag"],
-                                   e_magnitude = row["e_i_mag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="i'", magnitude=row["i_mag"],
+                                   e_magnitude=row["e_i_mag"], source=source)
                 if "z_mag" in row and is_number(row["z_mag"]) and not isnan(float(row["z_mag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "z'", magnitude = row["z_mag"],
-                                   e_magnitude = row["e_z_mag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), telescope=row['Tel'], band="z'", magnitude=row["z_mag"],
+                                   e_magnitude=row["e_z_mag"], source=source)
 
             result = Vizier.get_catalogs("J/ApJ/728/14/table3")
             table = result[list(result.keys())[0]]
@@ -856,20 +873,20 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 if "Ymag" in row and is_number(row["Ymag"]) and not isnan(float(row["Ymag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "Y", magnitude = row["Ymag"],
-                                   e_magnitude = row["e_Ymag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), instrument=row['Inst'], band="Y", magnitude=row["Ymag"],
+                                   e_magnitude=row["e_Ymag"], source=source)
                 if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "J", magnitude = row["Jmag"],
-                                   e_magnitude = row["e_Jmag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), instrument=row['Inst'], band="J", magnitude=row["Jmag"],
+                                   e_magnitude=row["e_Jmag"], source=source)
                 if "Hmag" in row and is_number(row["Hmag"]) and not isnan(float(row["Hmag"])):
-                    add_photometry(events, name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "H", magnitude = row["Hmag"],
-                                   e_magnitude = row["e_Hmag"], source = source)
+                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row["JD"]))), instrument=row['Inst'], band="H", magnitude=row["Hmag"],
+                                   e_magnitude=row["e_Hmag"], source=source)
             journal_events(tasks, args, events)
 
             # 2011PAZh...37..837T
             name = 'SN2009nr'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2011PAZh...37..837T")
+            source = add_source(events, name, bibcode="2011PAZh...37..837T")
             add_quantity(events, name, 'alias', name, source)
 
             result = Vizier.get_catalogs("J/PAZh/37/837/table2")
@@ -879,26 +896,26 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2455000))
                 if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "U", magnitude = row["Umag"],
-                                   e_magnitude = row["e_Umag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="U", magnitude=row["Umag"],
+                                   e_magnitude=row["e_Umag"], source=source)
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"], source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"], source=source)
                 if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "R", magnitude = row["Rmag"],
-                                   e_magnitude = row["e_Rmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="R", magnitude=row["Rmag"],
+                                   e_magnitude=row["e_Rmag"], source=source)
                 if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "I", magnitude = row["Imag"],
-                                   e_magnitude = row["e_Imag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="I", magnitude=row["Imag"],
+                                   e_magnitude=row["e_Imag"], source=source)
             journal_events(tasks, args, events)
 
             # 2013MNRAS.433.1871B
             name = 'SN2012aw'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2013MNRAS.433.1871B")
+            source = add_source(events, name, bibcode="2013MNRAS.433.1871B")
             add_quantity(events, name, 'alias', name, source)
 
             result = Vizier.get_catalogs("J/MNRAS/433/1871/table3a")
@@ -908,20 +925,20 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2456000))
                 if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "U", magnitude = row["Umag"],
-                                   e_magnitude = row["e_Umag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="U", magnitude=row["Umag"],
+                                   e_magnitude=row["e_Umag"], source=source)
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"], source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"], source=source)
                 if "Rcmag" in row and is_number(row["Rcmag"]) and not isnan(float(row["Rcmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "Rc", magnitude = row["Rcmag"],
-                                   e_magnitude = row["e_Rcmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="Rc", magnitude=row["Rcmag"],
+                                   e_magnitude=row["e_Rcmag"], source=source)
                 if "Icmag" in row and is_number(row["Icmag"]) and not isnan(float(row["Icmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "Ic", magnitude = row["Icmag"],
-                                   e_magnitude = row["e_Icmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="Ic", magnitude=row["Icmag"],
+                                   e_magnitude=row["e_Icmag"], source=source)
 
             result = Vizier.get_catalogs("J/MNRAS/433/1871/table3b")
             table = result[list(result.keys())[0]]
@@ -930,23 +947,23 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2456000))
                 if "gmag" in row and is_number(row["gmag"]) and not isnan(float(row["gmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "g", magnitude = row["gmag"],
-                                   e_magnitude = row["e_gmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="g", magnitude=row["gmag"],
+                                   e_magnitude=row["e_gmag"], source=source)
                 if "rmag" in row and is_number(row["rmag"]) and not isnan(float(row["rmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "r", magnitude = row["rmag"],
-                                   e_magnitude = row["e_rmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="r", magnitude=row["rmag"],
+                                   e_magnitude=row["e_rmag"], source=source)
                 if "imag" in row and is_number(row["imag"]) and not isnan(float(row["imag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "i", magnitude = row["imag"],
-                                   e_magnitude = row["e_imag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="i", magnitude=row["imag"],
+                                   e_magnitude=row["e_imag"], source=source)
                 if "zmag" in row and is_number(row["zmag"]) and not isnan(float(row["zmag"])):
-                    add_photometry(events, name, time = mjd, telescope = row['Tel'], band = "z", magnitude = row["zmag"],
-                                   e_magnitude = row["e_zmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope=row['Tel'], band="z", magnitude=row["zmag"],
+                                   e_magnitude=row["e_zmag"], source=source)
             journal_events(tasks, args, events)
 
             # 2014AJ....148....1Z
             name = 'SN2012fr'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2014AJ....148....1Z")
+            source = add_source(events, name, bibcode="2014AJ....148....1Z")
             add_quantity(events, name, 'alias', name, source)
 
             result = Vizier.get_catalogs("J/AJ/148/1/table2")
@@ -956,17 +973,17 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", instrument="YFOSC", band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"], source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", instrument="YFOSC", band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"], source=source)
                 if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "R", magnitude = row["Rmag"],
-                                   e_magnitude = row["e_Rmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", instrument="YFOSC", band="R", magnitude=row["Rmag"],
+                                   e_magnitude=row["e_Rmag"], source=source)
                 if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "I", magnitude = row["Imag"],
-                                   e_magnitude = row["e_Imag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", instrument="YFOSC", band="I", magnitude=row["Imag"],
+                                   e_magnitude=row["e_Imag"], source=source)
 
             result = Vizier.get_catalogs("J/AJ/148/1/table3")
             table = result[list(result.keys())[0]]
@@ -975,23 +992,23 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "U", magnitude = row["Umag"],
-                                   e_magnitude = row["e_Umag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band="U", magnitude=row["Umag"],
+                                   e_magnitude=row["e_Umag"], source=source)
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"], source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"], source=source)
                 if "UVW1" in row and is_number(row["UVW1"]) and not isnan(float(row["UVW1"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "W1", magnitude = row["UVW1"],
-                                   e_magnitude = row["e_UVW1"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band="W1", magnitude=row["UVW1"],
+                                   e_magnitude=row["e_UVW1"], source=source)
                 if "UVW2" in row and is_number(row["UVW2"]) and not isnan(float(row["UVW2"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "W2", magnitude = row["UVW2"],
-                                   e_magnitude = row["e_UVW2"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band="W2", magnitude=row["UVW2"],
+                                   e_magnitude=row["e_UVW2"], source=source)
                 if "UVM2" in row and is_number(row["UVM2"]) and not isnan(float(row["UVM2"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "M2", magnitude = row["UVM2"],
-                                   e_magnitude = row["e_UVM2"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band="M2", magnitude=row["UVM2"],
+                                   e_magnitude=row["e_UVM2"], source=source)
 
             result = Vizier.get_catalogs("J/AJ/148/1/table5")
             table = result[list(result.keys())[0]]
@@ -1000,23 +1017,23 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", band = "B", magnitude = row["Bmag"],
-                                   e_magnitude = row["e_Bmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", band="B", magnitude=row["Bmag"],
+                                   e_magnitude=row["e_Bmag"], source=source)
                 if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", band = "V", magnitude = row["Vmag"],
-                                   e_magnitude = row["e_Vmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", band="V", magnitude=row["Vmag"],
+                                   e_magnitude=row["e_Vmag"], source=source)
                 if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", band = "R", magnitude = row["Rmag"],
-                                   e_magnitude = row["e_Rmag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", band="R", magnitude=row["Rmag"],
+                                   e_magnitude=row["e_Rmag"], source=source)
                 if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                    add_photometry(events, name, time = mjd, telescope = "LJT", band = "I", magnitude = row["Imag"],
-                                   e_magnitude = row["e_Imag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="LJT", band="I", magnitude=row["Imag"],
+                                   e_magnitude=row["e_Imag"], source=source)
             journal_events(tasks, args, events)
 
             # 2015ApJ...805...74B
             name = 'SN2014J'
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, bibcode = "2014AJ....148....1Z")
+            source = add_source(events, name, bibcode="2014AJ....148....1Z")
             add_quantity(events, name, 'alias', name, source)
 
             result = Vizier.get_catalogs("J/ApJ/805/74/table1")
@@ -1026,11 +1043,11 @@ def import_main():
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if "mag" in row and is_number(row["mag"]) and not isnan(float(row["mag"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = row["Filt"], magnitude = row["mag"],
-                                   e_magnitude = row["e_mag"], source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band=row["Filt"], magnitude=row["mag"],
+                                   e_magnitude=row["e_mag"], source=source)
                 elif "maglim" in row and is_number(row["maglim"]) and not isnan(float(row["maglim"])):
-                    add_photometry(events, name, time = mjd, telescope = "Swift", instrument = "UVOT", band = row["Filt"], magnitude = row["maglim"],
-                                   upperlimit = True, source = source)
+                    add_photometry(events, name, time=mjd, telescope="Swift", instrument="UVOT", band=row["Filt"], magnitude=row["maglim"],
+                                   upperlimit=True, source=source)
             journal_events(tasks, args, events)
 
             # 2011ApJ...741...97D
@@ -1041,10 +1058,10 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['SN'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2011ApJ...741...97D")
+                source = add_source(events, name, bibcode="2011ApJ...741...97D")
                 add_quantity(events, name, 'alias', name, source)
-                add_photometry(events, name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], magnitude = row['mag'],
-                               e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
+                add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], magnitude=row['mag'],
+                               e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '', upperlimit=(not is_number(row['e_mag'])), source=source)
             journal_events(tasks, args, events)
 
             # 2015MNRAS.448.1206M
@@ -1056,13 +1073,13 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015MNRAS.448.1206M")
+                source = add_source(events, name, bibcode="2015MNRAS.448.1206M")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'redshift', row['zsp'], source, kind = 'spectroscopic')
-                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'redshift', row['zsp'], source, kind='spectroscopic')
+                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
                 add_quantity(events, name, 'maxband', 'r', source)
                 add_quantity(events, name, 'claimedtype', 'Ia', source)
             result = Vizier.get_catalogs("J/MNRAS/448/1206/table4")
@@ -1072,13 +1089,13 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015MNRAS.448.1206M")
+                source = add_source(events, name, bibcode="2015MNRAS.448.1206M")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'redshift', row['zph'], source, error = row['e_zph'], kind = 'photometric')
-                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'redshift', row['zph'], source, error=row['e_zph'], kind='photometric')
+                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
                 add_quantity(events, name, 'maxband', 'r', source)
                 add_quantity(events, name, 'claimedtype', 'Ia?', source)
             result = Vizier.get_catalogs("J/MNRAS/448/1206/table5")
@@ -1088,13 +1105,13 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015MNRAS.448.1206M")
+                source = add_source(events, name, bibcode="2015MNRAS.448.1206M")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'redshift', row['zsp'], source, kind = 'spectroscopic')
-                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'redshift', row['zsp'], source, kind='spectroscopic')
+                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
                 add_quantity(events, name, 'maxband', 'r', source)
                 add_quantity(events, name, 'claimedtype', row['Type'], source)
             result = Vizier.get_catalogs("J/MNRAS/448/1206/table6")
@@ -1104,12 +1121,12 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015MNRAS.448.1206M")
+                source = add_source(events, name, bibcode="2015MNRAS.448.1206M")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
                 add_quantity(events, name, 'maxband', 'r', source)
                 add_quantity(events, name, 'claimedtype', row['Type'], source)
             result = Vizier.get_catalogs("J/MNRAS/448/1206/tablea2")
@@ -1119,12 +1136,12 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015MNRAS.448.1206M")
+                source = add_source(events, name, bibcode="2015MNRAS.448.1206M")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
                 add_quantity(events, name, 'maxband', 'r', source)
                 add_quantity(events, name, 'claimedtype', row['Typesoft']+'?', source)
                 add_quantity(events, name, 'claimedtype', row['Typepsnid']+'?', source)
@@ -1135,12 +1152,12 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2015MNRAS.448.1206M")
+                source = add_source(events, name, bibcode="2015MNRAS.448.1206M")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error = row['e_rP1mag'])
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
                 add_quantity(events, name, 'maxband', 'r', source)
                 add_quantity(events, name, 'claimedtype', 'Candidate', source)
             journal_events(tasks, args, events)
@@ -1155,7 +1172,7 @@ def import_main():
                 row = convert_aq_output(row)
                 name = str(row['SN']).replace(' ', '')
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2012AJ....143..126B")
+                source = add_source(events, name, bibcode="2012AJ....143..126B")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'claimedtype', 'Ia-' + row['Wcl'], source)
             journal_events(tasks, args, events)
@@ -1168,11 +1185,11 @@ def import_main():
                 for row in tq(table, currenttask):
                     row = convert_aq_output(row)
                     name = add_event(tasks, args, events, row['SN'])
-                    source = add_source(events, name, bibcode = "2015ApJS..220....9F")
+                    source = add_source(events, name, bibcode="2015ApJS..220....9F")
                     add_quantity(events, name, 'alias', name, source)
                     add_quantity(events, name, 'claimedtype', row['Type'], source)
-                    add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                    add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+                    add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                    add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
                     if '?' not in row['Host']:
                         add_quantity(events, name, 'host', row['Host'].replace('_', ' '), source)
                     kind = ''
@@ -1180,7 +1197,7 @@ def import_main():
                         kind = 'host'
                     elif 'Spectrum' in row['n_z']:
                         kind = 'spectroscopic'
-                    add_quantity(events, name, 'redshift', row['z'], source, error = row['e_z'], kind = kind)
+                    add_quantity(events, name, 'redshift', row['z'], source, error=row['e_z'], kind=kind)
 
             result = Vizier.get_catalogs("J/ApJS/220/9/table8")
             table = result[list(result.keys())[0]]
@@ -1188,11 +1205,12 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 name = add_event(tasks, args, events, row['SN'])
-                source = add_source(events, name, bibcode = "2015ApJS..220....9F")
+                source = add_source(events, name, bibcode="2015ApJS..220....9F")
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'claimedtype', row['Type'], source)
-                add_photometry(events, name, time = row['MJD'], band = row['Band'], magnitude = row['mag'],
-                    e_magnitude = row["e_mag"], telescope = row["Tel"], source = source)
+                add_photometry(
+                    events, name, time=row['MJD'], band=row['Band'], magnitude=row['mag'],
+                    e_magnitude=row["e_mag"], telescope=row["Tel"], source=source)
             journal_events(tasks, args, events)
 
             result = Vizier.get_catalogs("J/ApJ/673/999/table1")
@@ -1201,13 +1219,13 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 name = add_event(tasks, args, events, 'SN'+row['SN'])
-                source = add_source(events, name, bibcode = "2008ApJ...673..999P")
+                source = add_source(events, name, bibcode="2008ApJ...673..999P")
                 add_quantity(events, name, 'alias', name, source)
-                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'redshift', row['z'], source, kind = 'host')
-                add_quantity(events, name, 'hostra', row['RAGdeg'], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'hostdec', row['DEGdeg'], source, unit = 'floatdegrees')
+                add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+                add_quantity(events, name, 'redshift', row['z'], source, kind='host')
+                add_quantity(events, name, 'hostra', row['RAGdeg'], source, unit='floatdegrees')
+                add_quantity(events, name, 'hostdec', row['DEGdeg'], source, unit='floatdegrees')
                 add_quantity(events, name, 'claimedtype', row['Type'].strip(':'), source)
             journal_events(tasks, args, events)
 
@@ -1225,9 +1243,9 @@ def import_main():
                         bibcode = bc
                 if not bibcode:
                     raise(ValueError('Bibcode not found!'))
-                source = add_source(events, name, bibcode = bibcode)
+                source = add_source(events, name, bibcode=bibcode)
                 add_quantity(events, name, 'alias', name, source)
-                with open(datafile,'r') as f:
+                with open(datafile, 'r') as f:
                     tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
                     for r, rrow in enumerate(tsvin):
                         row = list(filter(None, rrow))
@@ -1251,8 +1269,9 @@ def import_main():
                             err = ''
                             if is_number(row[2*v+2]) and not isnan(float(row[2*v+2])):
                                 err = row[2*v+2]
-                            add_photometry(events, name, time = mjd, band = bands[v], magnitude = mag,
-                                e_magnitude = err, upperlimit = upperlimit, source = source)
+                            add_photometry(
+                                events, name, time=mjd, band=bands[v], magnitude=mag,
+                                e_magnitude=err, upperlimit=upperlimit, source=source)
             journal_events(tasks, args, events)
 
             # Maggi 04-11-16 donation (MC SNRs)
@@ -1261,7 +1280,7 @@ def import_main():
                 for row in tsvin:
                     name = 'MCSNR ' + row[0]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = '2016A&A...585A.162M')
+                    source = add_source(events, name, bibcode='2016A&A...585A.162M')
                     add_quantity(events, name, 'alias', name, source)
                     if row[1] != 'noname':
                         add_quantity(events, name, "alias", row[1], source)
@@ -1277,7 +1296,7 @@ def import_main():
                 for row in tsvin:
                     name = 'MCSNR ' + row[0]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, refname = 'Pierre Maggi')
+                    source = add_source(events, name, refname='Pierre Maggi')
                     add_quantity(events, name, 'alias', name, source)
                     add_quantity(events, name, "alias", row[1], source)
                     add_quantity(events, name, "alias", row[2], source)
@@ -1306,7 +1325,7 @@ def import_main():
                             if field == 'name':
                                 name = value[:6].upper() + (value[6].upper() if len(value) == 7 else value[6:])
                                 name = add_event(tasks, args, events, name)
-                                source = add_source(events, name, bibcode = bibcode)
+                                source = add_source(events, name, bibcode=bibcode)
                                 add_quantity(events, name, 'alias', name, source)
                             elif field == 'type':
                                 claimedtype = value.replace('SN', '')
@@ -1318,16 +1337,16 @@ def import_main():
                             elif field == 'zcmb':
                                 zcmb = value
                             elif field == 'ra':
-                                add_quantity(events, name, 'ra', value, source, unit = 'floatdegrees')
+                                add_quantity(events, name, 'ra', value, source, unit='floatdegrees')
                             elif field == 'dec':
-                                add_quantity(events, name, 'dec', value, source, unit = 'floatdegrees')
+                                add_quantity(events, name, 'dec', value, source, unit='floatdegrees')
                             elif field == 'host':
                                 add_quantity(events, name, 'host', value.replace('- ', '-').replace('G ', 'G'), source)
                             elif field == 'e(b-v)_mw':
                                 add_quantity(events, name, 'ebv', value, source)
 
-                add_quantity(events, name, 'redshift', zhel, source, error = zerr, kind = 'heliocentric')
-                add_quantity(events, name, 'redshift', zcmb, source, error = zerr, kind = 'cmb')
+                add_quantity(events, name, 'redshift', zhel, source, error=zerr, kind='heliocentric')
+                add_quantity(events, name, 'redshift', zcmb, source, error=zerr, kind='cmb')
 
                 for path in photfiles:
                     with open(path, 'r') as f:
@@ -1342,8 +1361,8 @@ def import_main():
                                 cols = list(filter(None, line.split()))
                                 if not cols:
                                     continue
-                                add_photometry(events, name, time = cols[0], magnitude = cols[1], e_magnitude = cols[2],
-                                               band = band, system = cols[3], telescope = cols[4], source = source)
+                                add_photometry(events, name, time=cols[0], magnitude=cols[1], e_magnitude=cols[2],
+                                               band=band, system=cols[3], telescope=cols[4], source=source)
             journal_events(tasks, args, events)
 
             # Brown 05-14-16
@@ -1351,8 +1370,9 @@ def import_main():
             for fi in tq(files, currenttask):
                 name = os.path.basename(fi).split('_')[0]
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, refname = 'Swift Supernovae', bibcode = '2014Ap&SS.354...89B',
-                    url = 'http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
+                source = add_source(
+                    events, name, refname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
+                    url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
                 add_quantity(events, name, 'alias', name, source)
                 with open(fi, 'r') as f:
                     lines = f.read().splitlines()
@@ -1369,15 +1389,15 @@ def import_main():
                         mag = cols[2] if not isupp else cols[4]
                         e_mag = cols[3] if not isupp else ''
                         upp = '' if not isupp else True
-                        add_photometry(events, name, time = mjd, magnitude = mag, e_magnitude = e_mag,
-                                       upperlimit = upp, band = band, source = source,
-                                       telescope = 'Swift', instrument = 'UVOT', system = 'Vega')
+                        add_photometry(events, name, time=mjd, magnitude=mag, e_magnitude=e_mag,
+                                       upperlimit=upp, band=band, source=source,
+                                       telescope='Swift', instrument='UVOT', system='Vega')
             journal_events(tasks, args, events)
 
             # Nicholl 05-03-16
             files = glob("../sne-external/nicholl-05-03-16/*.txt")
             name = add_event(tasks, args, events, 'SN2015bn')
-            source = add_source(events, name, bibcode = '2016arXiv160304748N')
+            source = add_source(events, name, bibcode='2016arXiv160304748N')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'alias', 'PS15ae', source)
             for fi in tq(files, currenttask):
@@ -1404,9 +1424,9 @@ def import_main():
                             if not is_number(emag):
                                 emag = ''
                                 upp = True
-                            add_photometry(events, name, time = mjd, magnitude = col, e_magnitude = emag,
-                                           upperlimit = upp, band = bands[ci], source = source,
-                                           telescope = telescope, instrument = 'UVOT' if telescope == 'Swift' else '')
+                            add_photometry(events, name, time=mjd, magnitude=col, e_magnitude=emag,
+                                           upperlimit=upp, band=bands[ci], source=source,
+                                           telescope=telescope, instrument='UVOT' if telescope == 'Swift' else '')
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'pessto-dr1'):
@@ -1419,14 +1439,15 @@ def import_main():
                         continue
                     name = row[1]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = "2015A&A...579A..40S")
+                    source = add_source(events, name, bibcode="2015A&A...579A..40S")
                     add_quantity(events, name, 'alias', name, source)
-                    for hi, ci in enumerate(range(3,len(row)-1,2)):
+                    for hi, ci in enumerate(range(3, len(row)-1, 2)):
                         if not row[ci]:
                             continue
-                        add_photometry(events, name, time = row[2], magnitude = row[ci], e_magnitude = row[ci+1],
-                            band = bands[hi], system = systems[hi], telescope = 'Swift' if systems[hi] == 'Swift' else '',
-                            source = source)
+                        add_photometry(
+                            events, name, time=row[2], magnitude=row[ci], e_magnitude=row[ci+1],
+                            band=bands[hi], system=systems[hi], telescope='Swift' if systems[hi] == 'Swift' else '',
+                            source=source)
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'scp'):
@@ -1437,20 +1458,20 @@ def import_main():
                         continue
                     name = row[0].replace('SCP', 'SCP-')
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, refname = 'Supernova Cosmology Project', url = 'http://supernova.lbl.gov/2009ClusterSurvey/')
+                    source = add_source(events, name, refname='Supernova Cosmology Project', url='http://supernova.lbl.gov/2009ClusterSurvey/')
                     add_quantity(events, name, 'alias', name, source)
                     if row[1]:
                         add_quantity(events, name, 'alias', row[1], source)
                     if row[2]:
-                        add_quantity(events, name, 'redshift', row[2], source, kind = 'spectroscopic' if row[3] == 'sn' else 'host')
+                        add_quantity(events, name, 'redshift', row[2], source, kind='spectroscopic' if row[3] == 'sn' else 'host')
                     if row[4]:
-                        add_quantity(events, name, 'redshift', row[2], source, kind = 'cluster')
+                        add_quantity(events, name, 'redshift', row[2], source, kind='cluster')
                     if row[6]:
                         claimedtype = row[6].replace('SN ', '')
                         kind = ('spectroscopic/light curve' if 'a' in row[7] and 'c' in row[7] else
-                            'spectroscopic' if 'a' in row[7] else 'light curve' if 'c' in row[7] else '')
+                                'spectroscopic' if 'a' in row[7] else 'light curve' if 'c' in row[7] else '')
                         if claimedtype != '?':
-                            add_quantity(events, name, 'claimedtype', claimedtype, source, kind = kind)
+                            add_quantity(events, name, 'claimedtype', claimedtype, source, kind=kind)
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'ascii'):
@@ -1460,10 +1481,10 @@ def import_main():
                 for ri, row in enumerate(tq(tsvin, currenttask)):
                     name = 'SNLS-' + row[0]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = '2006ApJ...645..841N')
+                    source = add_source(events, name, bibcode='2006ApJ...645..841N')
                     add_quantity(events, name, 'alias', name, source)
-                    add_quantity(events, name, 'redshift', row[1], source, kind = 'spectroscopic')
-                    astrot = astrotime(float(row[4]) + 2450000., format = 'jd').datetime
+                    add_quantity(events, name, 'redshift', row[1], source, kind='spectroscopic')
+                    astrot = astrotime(float(row[4]) + 2450000., format='jd').datetime
                     add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
             journal_events(tasks, args, events)
 
@@ -1477,48 +1498,49 @@ def import_main():
                 else:
                     name = ('SN20' if int(basename[:2]) < 50 else 'SN19') + basename.split('_')[0]
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = '2014ApJ...786...67A')
+                source = add_source(events, name, bibcode='2014ApJ...786...67A')
                 add_quantity(events, name, 'alias', name, source)
 
-                if name in ['SN1999ca','SN2003dq','SN2008aw']:
+                if name in ['SN1999ca', 'SN2003dq', 'SN2008aw']:
                     system = 'Swope'
                 else:
                     system = 'Landolt'
 
-                with open(datafile,'r') as f:
+                with open(datafile, 'r') as f:
                     tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
                     for row in tsvin:
                         if not row[0]:
                             continue
-                        add_photometry(events, name, time = str(jd_to_mjd(Decimal(row[0]))), band = 'V', magnitude = row[1], e_magnitude = row[2], system = system, source = source)
+                        add_photometry(events, name, time=str(jd_to_mjd(Decimal(row[0]))), band='V', magnitude=row[1], e_magnitude=row[2], system=system, source=source)
             journal_events(tasks, args, events)
 
             # stromlo
-            stromlobands = ['B','V','R','I','VM','RM']
+            stromlobands = ['B', 'V', 'R', 'I', 'VM', 'RM']
             with open('../sne-external/J_A+A_415_863-1/photometry.csv', 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
                 for row in tq(tsvin, currenttask):
                     name = row[0]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = "2004A&A...415..863G")
+                    source = add_source(events, name, bibcode="2004A&A...415..863G")
                     add_quantity(events, name, 'alias', name, source)
                     mjd = str(jd_to_mjd(Decimal(row[1])))
-                    for ri, ci in enumerate(range(2,len(row),3)):
+                    for ri, ci in enumerate(range(2, len(row), 3)):
                         if not row[ci]:
                             continue
                         band = stromlobands[ri]
                         upperlimit = True if (not row[ci+1] and row[ci+2]) else False
                         e_upper_magnitude = str(abs(Decimal(row[ci+1]))) if row[ci+1] else ''
                         e_lower_magnitude = str(abs(Decimal(row[ci+2]))) if row[ci+2] else ''
-                        add_photometry(events, name, time = mjd, band = band, magnitude = row[ci],
-                            e_upper_magnitude = e_upper_magnitude, e_lower_magnitude = e_lower_magnitude,
-                            upperlimit = upperlimit, telescope = 'MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO',
-                            instrument = 'MaCHO' if band in ['VM', 'RM'] else '', source = source)
+                        add_photometry(
+                            events, name, time=mjd, band=band, magnitude=row[ci],
+                            e_upper_magnitude=e_upper_magnitude, e_lower_magnitude=e_lower_magnitude,
+                            upperlimit=upperlimit, telescope='MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO',
+                            instrument='MaCHO' if band in ['VM', 'RM'] else '', source=source)
             journal_events(tasks, args, events)
 
             # 2015MNRAS.449..451W
             with open("../sne-external/2015MNRAS.449..451W.dat", 'r') as f:
-                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if r == 0:
                         continue
@@ -1527,19 +1549,19 @@ def import_main():
                     if name.startswith('SN'):
                         name = name.replace(' ', '')
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = '2015MNRAS.449..451W')
+                    source = add_source(events, name, bibcode='2015MNRAS.449..451W')
                     add_quantity(events, name, 'alias', name, source)
                     if len(namesplit) > 1:
                         add_quantity(events, name, 'alias', namesplit[0], source)
                     add_quantity(events, name, 'claimedtype', row[1], source)
-                    add_photometry(events, name, time = row[2], band = row[4], magnitude = row[3], source = source)
+                    add_photometry(events, name, time=row[2], band=row[4], magnitude=row[3], source=source)
             journal_events(tasks, args, events)
 
             # 2016MNRAS.459.1039T
             with open("../sne-external/2016MNRAS.459.1039T.tsv", 'r') as f:
-                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 name = add_event(tasks, args, events, 'LSQ13zm')
-                source = add_source(events, name, bibcode = '2016MNRAS.459.1039T')
+                source = add_source(events, name, bibcode='2016MNRAS.459.1039T')
                 add_quantity(events, name, 'alias', name, source)
                 for r, row in enumerate(tq(data, currenttask)):
                     if row[0][0] == '#':
@@ -1553,15 +1575,16 @@ def import_main():
                     for mi, mag in enumerate(mags):
                         if not is_number(mag):
                             continue
-                        add_photometry(events, name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
-                            instrument = row[-1], upperlimit = upps[mi], source = source)
+                        add_photometry(
+                            events, name, time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
+                            instrument=row[-1], upperlimit=upps[mi], source=source)
             journal_events(tasks, args, events)
 
             # 2015ApJ...804...28G
             with open("../sne-external/2015ApJ...804...28G.tsv", 'r') as f:
-                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 name = add_event(tasks, args, events, 'PS1-13arp')
-                source = add_source(events, name, bibcode = '2015ApJ...804...28G')
+                source = add_source(events, name, bibcode='2015ApJ...804...28G')
                 add_quantity(events, name, 'alias', name, source)
                 for r, row in enumerate(tq(data, currenttask)):
                     if r == 0:
@@ -1572,40 +1595,43 @@ def import_main():
                     mag = mag.replace('<', '')
                     err = row[4] if is_number(row[4]) else ''
                     ins = row[5]
-                    add_photometry(events, name, time = mjd, band = row[0], magnitude = mag, e_magnitude = err,
-                        instrument = ins, upperlimit = upp, source = source)
+                    add_photometry(
+                        events, name, time=mjd, band=row[0], magnitude=mag, e_magnitude=err,
+                        instrument=ins, upperlimit=upp, source=source)
             journal_events(tasks, args, events)
 
             # 2016ApJ...819...35A
             with open("../sne-external/2016ApJ...819...35A.tsv", 'r') as f:
-                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if row[0][0] == '#':
                         continue
                     name = add_event(tasks, args, events, row[0])
-                    source = add_source(events, name, bibcode = '2016ApJ...819...35A')
+                    source = add_source(events, name, bibcode='2016ApJ...819...35A')
                     add_quantity(events, name, 'alias', name, source)
                     add_quantity(events, name, 'ra', row[1], source)
                     add_quantity(events, name, 'dec', row[2], source)
                     add_quantity(events, name, 'redshift', row[3], source)
-                    add_quantity(events, name, 'discoverdate',
+                    add_quantity(
+                        events, name, 'discoverdate',
                         datetime.strptime(row[4], '%Y %b %d').isoformat().split('T')[0].replace('-', '/'), source)
             journal_events(tasks, args, events)
 
             # 2014ApJ...784..105W
             with open("../sne-external/2014ApJ...784..105W.tsv", 'r') as f:
-                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+                data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
                 for r, row in enumerate(tq(data, currenttask)):
                     if row[0][0] == '#':
                         continue
                     name = add_event(tasks, args, events, row[0])
-                    source = add_source(events, name, bibcode = '2014ApJ...784..105W')
+                    source = add_source(events, name, bibcode='2014ApJ...784..105W')
                     add_quantity(events, name, 'alias', name, source)
                     mjd = row[1]
                     band = row[2]
                     mag = row[3]
                     err = row[4]
-                    add_photometry(events, name, time=mjd, band=row[2], magnitude=mag, e_magnitude=err,
+                    add_photometry(
+                        events, name, time=mjd, band=row[2], magnitude=mag, e_magnitude=err,
                         instrument='WHIRC', telescope='WIYN 3.5 m', observatory='NOAO',
                         system='WHIRC', source=source)
             journal_events(tasks, args, events)
@@ -1635,7 +1661,8 @@ def import_main():
                     for mi, mag in enumerate(mags):
                         if not is_number(mag):
                             continue
-                        add_photometry(events, name, time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
+                        add_photometry(
+                            events, name, time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
                             instrument=ins, telescope=tel, observatory=obs,
                             system='Natural', source=source)
             journal_events(tasks, args, events)
@@ -1644,7 +1671,7 @@ def import_main():
         if do_task(tasks, args, task, 'cccp'):
             cccpbands = ['B', 'V', 'R', 'I']
             for datafile in sorted(glob("../sne-external/CCCP/apj407397*.txt"), key=lambda s: s.lower()):
-                with open(datafile,'r') as f:
+                with open(datafile, 'r') as f:
                     tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
                     for r, row in enumerate(tsvin):
                         if r == 0:
@@ -1658,9 +1685,8 @@ def import_main():
                             mjd = str(Decimal(row[0]) + 53000)
                             for b, band in enumerate(cccpbands):
                                 if row[2*b + 1]:
-                                    if not row[2*b + 2]:
-                                        upplim = True
-                                    add_photometry(events, name, time=mjd, band=band, magnitude=row[2*b + 1].strip('>'),
+                                    add_photometry(
+                                        events, name, time=mjd, band=band, magnitude=row[2*b + 1].strip('>'),
                                         e_magnitude=row[2*b + 2], upperlimit=(not row[2*b + 2]), source=source)
 
             if archived_task(tasks, args, 'cccp'):
@@ -1715,7 +1741,7 @@ def import_main():
 
         # Suspect catalog
         if do_task(tasks, args, task, 'suspect'):
-            with open('../sne-external/suspectreferences.csv','r') as f:
+            with open('../sne-external/suspectreferences.csv', 'r') as f:
                 tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
                 suspectrefdict = {}
                 for row in tsvin:
@@ -1742,7 +1768,7 @@ def import_main():
                         reference = str(link).replace('"', "'")
 
                 bibcode = unescape(suspectrefdict[reference])
-                source = add_source(events, name, bibcode = bibcode)
+                source = add_source(events, name, bibcode=bibcode)
 
                 secondaryreference = "SUSPECT"
                 secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
@@ -1757,8 +1783,8 @@ def import_main():
                     redshifts = bandsoup.body.findAll(text=re.compile("Redshift"))
                     if redshifts:
                         add_quantity(events, name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource, kind='heliocentric')
-                    hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
-                    #if hvels:
+                    # hvels = bandsoup.body.findAll(text=re.compile("Heliocentric Velocity"))
+                    # if hvels:
                     #    add_quantity(events, name, 'velocity', hvels[0].split(':')[1].strip().split(' ')[0],
                     #        secondarysource, kind='heliocentric')
                     types = bandsoup.body.findAll(text=re.compile("Type"))
@@ -1786,7 +1812,7 @@ def import_main():
         # CfA data
         if do_task(tasks, args, task, 'cfa'):
             for fname in tq(sorted(glob("../sne-external/cfa-input/*.dat"), key=lambda s: s.lower()), currenttask):
-                f = open(fname,'r')
+                f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 csv_data = []
                 for r, row in enumerate(tsvin):
@@ -1804,7 +1830,7 @@ def import_main():
 
                 eventparts = eventname.split('_')
 
-                name = snname(eventparts[0])
+                name = clean_snname(eventparts[0])
                 name = add_event(tasks, args, events, name)
                 secondaryname = 'CfA Supernova Archive'
                 secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
@@ -1831,7 +1857,7 @@ def import_main():
                             for ci, col in enumerate(row[2:]):
                                 if col[0] == "(":
                                     refstr = ' '.join(row[2+ci:])
-                                    refstr = refstr.replace('(','').replace(')','')
+                                    refstr = refstr.replace('(', '').replace(')', '')
                                     bibcode = unescape(refstr)
                                     source = add_source(events, name, bibcode=bibcode)
 
@@ -1874,7 +1900,8 @@ def import_main():
                 source = add_source(events, name, bibcode='2012ApJS..200...12H')
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'claimedtype', 'Ia', source)
-                add_photometry(events, name, u_time='MJD', time=row[2].strip(), band=row[1].strip(),
+                add_photometry(
+                    events, name, u_time='MJD', time=row[2].strip(), band=row[1].strip(),
                     magnitude=row[6].strip(), e_magnitude=row[7].strip(), source=source)
 
             # Bianco 2014
@@ -1886,7 +1913,8 @@ def import_main():
 
                 source = add_source(events, name, bibcode='2014ApJS..213...19B')
                 add_quantity(events, name, 'alias', name, source)
-                add_photometry(events, name, u_time='MJD', time=row[2], band=row[1], magnitude=row[3],
+                add_photometry(
+                    events, name, u_time='MJD', time=row[2], band=row[1], magnitude=row[3],
                     e_magnitude=row[4], telescope=row[5], system="Standard", source=source)
             f.close()
             journal_events(tasks, args, events)
@@ -1897,7 +1925,8 @@ def import_main():
             secondaryrefurl = "http://heracles.astro.berkeley.edu/sndb/info"
             secondaryrefbib = "2012MNRAS.425.1789S"
 
-            jsontxt = load_cached_url(args, "http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot",
+            jsontxt = load_cached_url(
+                args, "http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot",
                 '../sne-external-spectra/UCB/allpub.json')
             if not jsontxt:
                 continue
@@ -1952,7 +1981,8 @@ def import_main():
                     e_magnitude = row[2]
                     band = row[4]
                     telescope = row[5]
-                    add_photometry(events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
+                    add_photometry(
+                        events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
                         e_magnitude=e_magnitude, source=sources)
 
             journal_events(tasks, args, events)
@@ -1963,7 +1993,7 @@ def import_main():
                 bibcodes2010 = f.read().split("\n")
             sdssbands = ['u', 'g', 'r', 'i', 'z']
             for fname in tq(sorted(glob("../sne-external/SDSS/*.sum"), key=lambda s: s.lower()), currenttask):
-                f = open(fname,'r')
+                f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
                 basename = os.path.basename(fname)
@@ -2002,12 +2032,13 @@ def import_main():
                         magnitude = row[3]
                         e_magnitude = row[4]
                         telescope = "SDSS"
-                        add_photometry(events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
+                        add_photometry(
+                            events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
                             e_magnitude=e_magnitude, source=source, system="SDSS")
                 f.close()
             journal_events(tasks, args, events)
 
-        #Import GAIA
+        # Import GAIA
         if do_task(tasks, args, task, 'gaia'):
             fname = '../sne-external/GAIA/alerts.csv'
             csvtxt = load_cached_url(args, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
@@ -2031,9 +2062,9 @@ def import_main():
                 elif (True in [x in row[9].upper() for x in ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
                     add_quantity(events, name, 'claimedtype', 'Candidate', source)
 
-                if 'aka' in row[9].replace('gakaxy','galaxy').lower() and 'AKARI' not in row[9]:
+                if 'aka' in row[9].replace('gakaxy', 'galaxy').lower() and 'AKARI' not in row[9]:
                     commentsplit = (row[9].replace('_', ' ').replace('MLS ', 'MLS').replace('CSS ', 'CSS').
-                        replace('SN iPTF', 'iPTF').replace('SN ', 'SN').replace('AT ', 'AT').split())
+                                    replace('SN iPTF', 'iPTF').replace('SN ', 'SN').replace('AT ', 'AT').split())
                     for csi, cs in enumerate(commentsplit):
                         if 'aka' in cs.lower() and csi < len(commentsplit) - 1:
                             alias = commentsplit[csi+1].strip('(),:.').replace('PSNJ', 'PSN J')
@@ -2073,14 +2104,14 @@ def import_main():
         if do_task(tasks, args, task, 'csp'):
             cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
             for fname in tq(sorted(glob("../sne-external/CSP/*.dat"), key=lambda s: s.lower()), currenttask):
-                f = open(fname,'r')
+                f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
                 eventname = os.path.basename(os.path.splitext(fname)[0])
 
                 eventparts = eventname.split('opt+')
 
-                name = snname(eventparts[0])
+                name = clean_snname(eventparts[0])
                 name = add_event(tasks, args, events, name)
 
                 reference = "Carnegie Supernova Project"
@@ -2104,7 +2135,8 @@ def import_main():
                             mjd = val
                         elif v % 2 != 0:
                             if float(row[v]) < 90.0:
-                                add_photometry(events, name, time=mjd, observatory='LCO', band=cspbands[(v-1)//2],
+                                add_photometry(
+                                    events, name, time=mjd, observatory='LCO', band=cspbands[(v-1)//2],
                                     system='CSP', magnitude=row[v], e_magnitude=row[v+1], source=source)
                 f.close()
             journal_events(tasks, args, events)
@@ -2114,10 +2146,10 @@ def import_main():
             itepbadsources = ['2004ApJ...602..571B']
 
             needsbib = []
-            with open("../sne-external/itep-refs.txt",'r') as f:
+            with open("../sne-external/itep-refs.txt", 'r') as f:
                 refrep = f.read().splitlines()
             refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
-            f = open("../sne-external/itep-lc-cat-28dec2015.txt",'r')
+            f = open("../sne-external/itep-lc-cat-28dec2015.txt", 'r')
             tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
             curname = ''
             for r, row in enumerate(tq(tsvin, currenttask)):
@@ -2149,7 +2181,8 @@ def import_main():
                     source = add_source(events, name, refname=reference) if reference else ''
 
                 if bibcode not in itepbadsources:
-                    add_photometry(events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_magnitude, source=secondarysource + ',' + source)
+                    add_photometry(events, name, time=mjd, band=band, magnitude=magnitude,
+                                   e_magnitude=e_magnitude, source=secondarysource + ',' + source)
             f.close()
 
             # Write out references that could use a bibcode
@@ -2160,7 +2193,7 @@ def import_main():
 
         # Now import the Asiago catalog
         if do_task(tasks, args, task, 'asiago'):
-            #response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
+            # response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
             path = os.path.abspath('../sne-external/asiago-cat.php')
             response = urllib.request.urlopen('file://' + path)
             html = response.read().decode('utf-8')
@@ -2179,13 +2212,14 @@ def import_main():
 
             for record in tq(records, currenttask):
                 if len(record) > 1 and record[1] != '':
-                    name = snname("SN" + record[1]).strip('?')
+                    name = clean_snname("SN" + record[1]).strip('?')
                     name = add_event(tasks, args, events, name)
 
                     reference = 'Asiago Supernova Catalogue'
                     refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                     refbib = '1989A&AS...81..421B'
-                    source = add_source(events, name, refname=reference, url=refurl, bibcode=refbib, secondary=True)
+                    source = add_source(
+                        events, name, refname=reference, url=refurl, bibcode=refbib, secondary=True)
                     add_quantity(events, name, 'alias', name, source)
 
                     year = re.findall(r'\d+', name)[0]
@@ -2336,16 +2370,17 @@ def import_main():
                         continue
                     name = row[0].replace('SNR', 'G')
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = '2016ApJS..224....8A')
+                    source = add_source(events, name, bibcode='2016ApJS..224....8A')
                     add_quantity(events, name, 'alias', name, source)
                     add_quantity(events, name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
-                    add_quantity(events, name, 'ra', row[2], source, unit = 'floatdegrees')
-                    add_quantity(events, name, 'dec', row[3], source, unit = 'floatdegrees')
+                    add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
+                    add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'tns'):
             session = requests.Session()
-            csvtxt = load_cached_url(args, "https://wis-tns.weizmann.ac.il/search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0",
+            csvtxt = load_cached_url(
+                args, "https://wis-tns.weizmann.ac.il/search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0",
                 "../sne-external/TNS/index.csv")
             if not csvtxt:
                 continue
@@ -2365,14 +2400,14 @@ def import_main():
                         f.write(csvtxt)
 
                 tsvin = csv.reader(csvtxt.splitlines(), delimiter=',')
-                for ri, row in enumerate(tq(tsvin, currenttask, leave = False)):
+                for ri, row in enumerate(tq(tsvin, currenttask, leave=False)):
                     if ri == 0:
                         continue
                     if row[4] and 'SN' not in row[4]:
                         continue
                     name = row[1].replace(' ', '')
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, refname = 'Transient Name Server', url = 'https://wis-tns.weizmann.ac.il')
+                    source = add_source(events, name, refname='Transient Name Server', url='https://wis-tns.weizmann.ac.il')
                     add_quantity(events, name, 'alias', name, source)
                     if row[2] and row[2] != '00:00:00.00':
                         add_quantity(events, name, 'ra', row[2], source)
@@ -2381,15 +2416,15 @@ def import_main():
                     if row[4]:
                         add_quantity(events, name, 'claimedtype', row[4].replace('SN', '').strip(), source)
                     if row[5]:
-                        add_quantity(events, name, 'redshift', row[5], source, kind = 'spectroscopic')
+                        add_quantity(events, name, 'redshift', row[5], source, kind='spectroscopic')
                     if row[6]:
                         add_quantity(events, name, 'host', row[6], source)
                     if row[7]:
-                        add_quantity(events, name, 'redshift', row[7], source, kind = 'host')
+                        add_quantity(events, name, 'redshift', row[7], source, kind='host')
                     if row[8]:
                         add_quantity(events, name, 'discoverer', row[8], source)
                     # Currently, all events listing all possible observers. TNS bug?
-                    #if row[9]:
+                    # if row[9]:
                     #    observers = row[9].split(',')
                     #    for observer in observers:
                     #        add_quantity(events, name, 'observer', observer.strip(), source)
@@ -2400,7 +2435,7 @@ def import_main():
                         magnitude = row[14]
                         band = row[15].split('-')[0]
                         mjd = astrotime(row[16]).mjd
-                        add_photometry(events, name, time = mjd, magnitude = magnitude, band = band, survey = survey, source = source)
+                        add_photometry(events, name, time=mjd, magnitude=magnitude, band=band, survey=survey, source=source)
                     if row[16]:
                         date = row[16].split()[0].replace('-', '/')
                         if date != '0000/00/00':
@@ -2408,7 +2443,7 @@ def import_main():
                             time = row[16].split()[1]
                             if time != '00:00:00':
                                 ts = time.split(':')
-                                date += pretty_num(timedelta(hours = int(ts[0]), minutes = int(ts[1]), seconds = int(ts[2])).total_seconds()/(24*60*60), sig=6).lstrip('0')
+                                date += pretty_num(timedelta(hours=int(ts[0]), minutes=int(ts[1]), seconds=int(ts[2])).total_seconds()/(24*60*60), sig=6).lstrip('0')
                             add_quantity(events, name, 'discoverdate', date, source)
                     if args.update:
                         journal_events(tasks, args, events)
@@ -2467,8 +2502,8 @@ def import_main():
 
                     reference = cols[12].findAll('a')[0].contents[0].strip()
                     refurl = cols[12].findAll('a')[0]['href'].strip()
-                    source = add_source(events, name, refname = reference, url = refurl)
-                    secondarysource = add_source(events, name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
+                    source = add_source(events, name, refname=reference, url=refurl)
+                    secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, secondary=True)
                     sources = uniq_cdl(list(filter(None, [source, secondarysource])))
                     add_quantity(events, name, 'alias', name, sources)
                     add_quantity(events, name, 'alias', sn, sources)
@@ -2495,9 +2530,9 @@ def import_main():
                         add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), sources)
                     if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                         astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
-                        if (float(str(cols[8].contents[0]).strip()) <= 90.0 and
-                            not any('GRB' in x for x in get_aliases(name))):
-                            add_photometry(events, name, time = str(astrot.mjd), magnitude = str(cols[8].contents[0]).strip(), source = sources)
+                        if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
+                             not any('GRB' in x for x in get_aliases(name)))):
+                            add_photometry(events, name, time=str(astrot.mjd), magnitude=str(cols[8].contents[0]).strip(), source=sources)
                     if cols[11].contents[0] != 'n/a':
                         add_quantity(events, name, 'redshift', str(cols[11].contents[0]).strip(), sources)
                     add_quantity(events, name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
@@ -2507,7 +2542,7 @@ def import_main():
             if not args.update:
                 vsnetfiles = ["latestsne.dat"]
                 for vsnetfile in vsnetfiles:
-                    f = open("../sne-external/" + vsnetfile,'r',encoding='latin1')
+                    f = open("../sne-external/" + vsnetfile, 'r', encoding='latin1')
                     tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
                     for r, row in enumerate(tsvin):
                         if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
@@ -2520,7 +2555,7 @@ def import_main():
                         if name.startswith('MASTEROTJ'):
                             name = name.replace('MASTEROTJ', 'MASTER OT J')
                         name = add_event(tasks, args, events, name)
-                        secondarysource = add_source(events, name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
+                        secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, secondary=True)
                         add_quantity(events, name, 'alias', name, secondarysource)
 
                         if not is_number(row[1]):
@@ -2553,15 +2588,15 @@ def import_main():
                                 sources = secondarysource
                             else:
                                 reference = ' '.join(row[refind:])
-                                source = add_source(events, name, refname = reference)
+                                source = add_source(events, name, refname=reference)
                                 add_quantity(events, name, 'alias', name, secondarysource)
-                                sources = uniq_cdl([source,secondarysource])
+                                sources = uniq_cdl([source, secondarysource])
                         else:
                             sources = secondarysource
 
                         band = row[2].lstrip('1234567890.')
 
-                        add_photometry(events, name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, source = sources)
+                        add_photometry(events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_magnitude, source=sources)
                     f.close()
             journal_events(tasks, args, events)
 
@@ -2614,7 +2649,7 @@ def import_main():
                         while 'Ra,Dec=' not in mySibling:
                             if isinstance(mySibling, NavigableString):
                                 if 'Phot.class=' in str(mySibling):
-                                    claimedtype = re.sub(r'\([^)]*\)', '', str(mySibling).split('=')[-1]).replace('SN','').strip()
+                                    claimedtype = re.sub(r'\([^)]*\)', '', str(mySibling).split('=')[-1]).replace('SN', '').strip()
                             if isinstance(mySibling, Tag):
                                 atela = mySibling
                                 if atela and atela.has_attr('href') and 'astronomerstelegram' in atela['href']:
@@ -2643,10 +2678,10 @@ def import_main():
                                 f.write(csvtxt)
 
                         lcdat = csvtxt.splitlines()
-                        sources = [add_source(events, name, refname = reference, url = refurl)]
+                        sources = [add_source(events, name, refname=reference, url=refurl)]
                         add_quantity(events, name, 'alias', name, sources[0])
                         if atelref and atelref != 'ATel#----':
-                            sources.append(add_source(events, name, refname = atelref, url = atelurl))
+                            sources.append(add_source(events, name, refname=atelref, url=atelurl))
                         sources = uniq_cdl(sources)
 
                         if name.startswith('OGLE'):
@@ -2658,8 +2693,8 @@ def import_main():
                                     add_quantity(events, name, 'discoverdate', '20' + name[4:6], sources)
 
                         # RA and Dec from OGLE pages currently not reliable
-                        #add_quantity(events, name, 'ra', ra, sources)
-                        #add_quantity(events, name, 'dec', dec, sources)
+                        # add_quantity(events, name, 'ra', ra, sources)
+                        # add_quantity(events, name, 'dec', dec, sources)
                         if claimedtype and claimedtype != '-':
                             add_quantity(events, name, 'claimedtype', claimedtype, sources)
                         elif 'SN' not in name and 'claimedtype' not in events[name]:
@@ -2675,15 +2710,16 @@ def import_main():
                             if e_magnitude == '-1' or float(e_magnitude) > 10.0:
                                 e_magnitude = ''
                                 upperlimit = True
-                            add_photometry(events, name, time = mjd, band = 'I', magnitude = magnitude, e_magnitude = e_magnitude,
-                                system = 'Vega', source = sources, upperlimit = upperlimit)
+                            add_photometry(
+                                events, name, time=mjd, band='I', magnitude=magnitude, e_magnitude=e_magnitude,
+                                system='Vega', source=sources, upperlimit=upperlimit)
                         if args.update:
                             journal_events(tasks, args, events)
                 journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'snls'):
             with open("../sne-external/SNLS-ugriz.dat", 'r') as f:
-                data = csv.reader(f, delimiter=' ', quotechar='"', skipinitialspace = True)
+                data = csv.reader(f, delimiter=' ', quotechar='"', skipinitialspace=True)
                 for row in data:
                     flux = row[3]
                     err = row[4]
@@ -2692,23 +2728,24 @@ def import_main():
                         continue
                     name = 'SNLS-' + row[0]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = '2010A&A...523A...7G')
+                    source = add_source(events, name, bibcode='2010A&A...523A...7G')
                     add_quantity(events, name, 'alias', name, source)
                     band = row[1]
                     mjd = row[2]
                     sig = get_sig_digits(flux.split('E')[0])+1
                     # Conversion comes from SNLS-Readme
                     # NOTE: Datafiles available for download suggest different zeropoints than 30, need to inquire.
-                    magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig = sig)
-                    e_magnitude = pretty_num(2.5*log10(1.0 + float(err)/float(flux)), sig = sig)
-                    #e_magnitude = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig = sig)
-                    add_photometry(events, name, time = mjd, band = band, magnitude = magnitude, e_magnitude = e_magnitude, counts = flux,
-                        e_counts = err, source = source)
+                    magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig=sig)
+                    e_magnitude = pretty_num(2.5*log10(1.0 + float(err)/float(flux)), sig=sig)
+                    # e_magnitude=pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
+                    add_photometry(
+                        events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_magnitude, counts=flux,
+                        e_counts=err, source=source)
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'psthreepi'):
             fname = '../sne-external/3pi/page00.html'
-            html = load_cached_url(args, "http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date", fname, write = False)
+            html = load_cached_url(args, "http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date", fname, write=False)
             if not html:
                 continue
 
@@ -2737,7 +2774,7 @@ def import_main():
 
             numpages = int(links[-2].contents[0])
             oldnumpages = len(glob('../sne-external/3pi/page*'))
-            for page in tq(range(1,numpages), currenttask):
+            for page in tq(range(1, numpages), currenttask):
                 fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
                 if not args.fullrefresh and archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname) and page < oldnumpages:
                     with open(fname, 'r') as f:
@@ -2800,10 +2837,10 @@ def import_main():
                     if not name:
                         name = psname
                     name = add_event(tasks, args, events, name)
-                    sources = [add_source(events, name, refname = 'Pan-STARRS 3Pi', url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
+                    sources = [add_source(events, name, refname='Pan-STARRS 3Pi', url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
                     add_quantity(events, name, 'alias', name, sources[0])
                     for ref in refs:
-                        sources.append(add_source(events, name, refname = ref[0], url = ref[1]))
+                        sources.append(add_source(events, name, refname=ref[0], url=ref[1]))
                     source = uniq_cdl(sources)
                     for alias in aliases:
                         newalias = alias
@@ -2838,21 +2875,23 @@ def import_main():
                         slines = script.text.splitlines()
                         for line in slines:
                             if 'jslcdata.push' in line:
-                                nslines.append(json.loads(line.strip().replace('jslcdata.push(','').replace(');','')))
+                                nslines.append(json.loads(line.strip().replace('jslcdata.push(', '').replace(');', '')))
                             if 'jslabels.push' in line and 'blanks' not in line and 'non det' not in line:
-                                nslabels.append(json.loads(line.strip().replace('jslabels.push(','').replace(');',''))['label'])
+                                nslabels.append(json.loads(line.strip().replace('jslabels.push(', '').replace(');', ''))['label'])
                     for li, line in enumerate(nslines[:len(nslabels)]):
                         if not line:
                             continue
                         for obs in line:
-                            add_photometry(events, name, time = str(obs[0]), band = nslabels[li], magnitude = str(obs[1]), e_magnitude = str(obs[2]), source = source,
-                                telescope = 'Pan-STARRS1')
+                            add_photometry(
+                                events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]), e_magnitude=str(obs[2]), source=source,
+                                telescope='Pan-STARRS1')
                     for li, line in enumerate(nslines[2*len(nslabels):]):
                         if not line:
                             continue
                         for obs in line:
-                            add_photometry(events, name, time = str(obs[0]), band = nslabels[li], magnitude = str(obs[1]), upperlimit = True, source = source,
-                                telescope = 'Pan-STARRS1')
+                            add_photometry(
+                                events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]), upperlimit=True, source=source,
+                                telescope='Pan-STARRS1')
                     assoctab = bs2.find('table', {"class": "generictable"})
                     hostname = ''
                     redshift = ''
@@ -2871,7 +2910,7 @@ def import_main():
                         continue
                     add_quantity(events, name, 'host', hostname, source)
                     if redshift:
-                        add_quantity(events, name, 'redshift', redshift, source, kind = 'host')
+                        add_quantity(events, name, 'redshift', redshift, source, kind='host')
                     if args.update:
                         journal_events(tasks, args, events)
                 journal_events(tasks, args, events)
@@ -2883,13 +2922,13 @@ def import_main():
                         continue
                     cols = [x.strip() for x in row.split(',')]
                     name = add_event(tasks, args, events, cols[0])
-                    source = add_source(events, name, bibcode = '2015ApJ...799..208S')
+                    source = add_source(events, name, bibcode='2015ApJ...799..208S')
                     add_quantity(events, name, 'alias', name, source)
                     add_quantity(events, name, 'ra', cols[2], source)
                     add_quantity(events, name, 'dec', cols[3], source)
                     astrot = astrotime(float(cols[4]), format='mjd').datetime
                     add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
-                    add_quantity(events, name, 'redshift', cols[5], source, kind = 'spectroscopic')
+                    add_quantity(events, name, 'redshift', cols[5], source, kind='spectroscopic')
                     add_quantity(events, name, 'claimedtype', 'II P', source)
             journal_events(tasks, args, events)
 
@@ -2947,27 +2986,29 @@ def import_main():
                             continue
                         if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
                             name = 'SN' + alias
-                        lalias = alias.lower()
-                        if (('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
-                            ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
-                            ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3)):
+                        # lalias = alias.lower()
+                        if ((('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
+                             ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
+                             ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3))):
                             alias = alias.replace('SNHunt', 'SNhunt')
                             validaliases.append(alias)
                     if not name:
                         name = crtsname
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, refname = 'Catalina Sky Survey', bibcode = '2009ApJ...696..870D',
-                        url = 'http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
+                    source = add_source(
+                        events, name, refname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
+                        url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
                     add_quantity(events, name, 'alias', name, source)
                     for alias in validaliases:
                         add_quantity(events, name, 'alias', alias, source)
-                    add_quantity(events, name, 'ra', ra, source, unit = 'floatdegrees')
-                    add_quantity(events, name, 'dec', dec, source, unit = 'floatdegrees')
+                    add_quantity(events, name, 'ra', ra, source, unit='floatdegrees')
+                    add_quantity(events, name, 'dec', dec, source, unit='floatdegrees')
 
                     if hostmag:
                         # 1.0 magnitude error based on Drake 2009 assertion that SN are only considered real if they are 2 mags brighter than host.
-                        add_photometry(events, name, band = 'C', magnitude = hostmag, e_magnitude = 1.0, source = source, host = True,
-                            telescope = 'Catalina Schmidt', upperlimit = hostupper)
+                        add_photometry(
+                            events, name, band='C', magnitude=hostmag, e_magnitude=1.0, source=source, host=True,
+                            telescope='Catalina Schmidt', upperlimit=hostupper)
 
                     fname2 = '../sne-external/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
                     if not args.fullrefresh and archived_task(tasks, args, 'crts') and os.path.isfile(fname2):
@@ -2992,8 +3033,9 @@ def import_main():
                             mag = re.search("showy\('(.*?)'\)", line).group(1)
                         if 'javascript:showz' in line:
                             err = re.search("showz\('(.*?)'\)", line).group(1)
-                        add_photometry(events, name, time = mjd, band = 'C', magnitude = mag, source = source, includeshost = True,
-                            telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
+                        add_photometry(
+                            events, name, time=mjd, band='C', magnitude=mag, source=source, includeshost=True,
+                            telescope='Catalina Schmidt', e_magnitude=err if float(err) > 0.0 else '', upperlimit=(float(err) == 0.0))
                     if args.update:
                         journal_events(tasks, args, events)
             journal_events(tasks, args, events)
@@ -3026,12 +3068,12 @@ def import_main():
                     continue
                 name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, refname = 'Supernova Hunt', url = 'http://nesssi.cacr.caltech.edu/catalina/current.html')
+                source = add_source(events, name, refname='Supernova Hunt', url='http://nesssi.cacr.caltech.edu/catalina/current.html')
                 add_quantity(events, name, 'alias', name, source)
                 host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
                 add_quantity(events, name, 'host', host, source)
-                add_quantity(events, name, 'ra', cols[2], source, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', cols[3], source, unit = 'floatdegrees')
+                add_quantity(events, name, 'ra', cols[2], source, unit='floatdegrees')
+                add_quantity(events, name, 'dec', cols[3], source, unit='floatdegrees')
                 dd = cols[0]
                 discoverdate = dd[:4] + '/' + dd[4:6] + '/' + dd[6:8]
                 add_quantity(events, name, 'discoverdate', discoverdate, source)
@@ -3048,7 +3090,7 @@ def import_main():
             data = csv.reader(f, delimiter=',', quotechar='"')
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-            nedddict = OrderedDict()
+            nedd_dict = OrderedDict()
             oldhostname = ''
             for r, row in enumerate(data):
                 if r <= 12:
@@ -3056,8 +3098,8 @@ def import_main():
                 hostname = row[3]
                 if args.update and oldhostname != hostname:
                     journal_events(tasks, args, events)
-                distmod = row[4]
-                moderr = row[5]
+                # distmod = row[4]
+                # moderr = row[5]
                 dist = row[6]
                 bibcode = unescape(row[8])
                 name = ''
@@ -3074,14 +3116,14 @@ def import_main():
                         cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
                     if 'ESO' in cleanhost:
                         cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
-                    nedddict.setdefault(cleanhost, []).append(Decimal(dist))
+                    nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
 
                 if name:
                     name = add_event(tasks, args, events, name)
-                    secondarysource = add_source(events, name, refname = reference, url = refurl, secondary = True)
+                    secondarysource = add_source(events, name, refname=reference, url=refurl, secondary=True)
                     add_quantity(events, name, 'alias', name, secondarysource)
                     if bibcode:
-                        source = add_source(events, name, bibcode = bibcode)
+                        source = add_source(events, name, bibcode=bibcode)
                         sources = uniq_cdl([source, secondarysource])
                     else:
                         sources = secondarysource
@@ -3091,7 +3133,8 @@ def import_main():
 
         # Import CPCS
         if do_task(tasks, args, task, 'cpcs'):
-            jsontxt = load_cached_url(args, "http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6",
+            jsontxt = load_cached_url(
+                args, "http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6",
                 "../sne-external/CPCS/index.json")
             if not jsontxt:
                 continue
@@ -3121,13 +3164,13 @@ def import_main():
                 else:
                     continue
 
-                secondarysource = add_source(events, name, refname = 'Cambridge Photometric Calibration Server', url = 'http://gsaweb.ast.cam.ac.uk/followup/', secondary = True)
+                secondarysource = add_source(events, name, refname='Cambridge Photometric Calibration Server', url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
                 add_quantity(events, name, 'alias', name, secondarysource)
-                add_quantity(events, name, 'ra', str(alertindex[i]['ra']), secondarysource, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', str(alertindex[i]['dec']), secondarysource, unit = 'floatdegrees')
+                add_quantity(events, name, 'ra', str(alertindex[i]['ra']), secondarysource, unit='floatdegrees')
+                add_quantity(events, name, 'dec', str(alertindex[i]['dec']), secondarysource, unit='floatdegrees')
 
                 alerturl = "http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=" + str(ai)
-                source = add_source(events, name, refname = 'CPCS Alert ' + str(ai), url = alerturl)
+                source = add_source(events, name, refname='CPCS Alert ' + str(ai), url=alerturl)
                 fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
                 if archived_task(tasks, args, 'cpcs') and os.path.isfile(fname):
                     with open(fname, 'r') as f:
@@ -3150,18 +3193,19 @@ def import_main():
                 bnds = cpcsalert['filter']
                 obs  = cpcsalert['observatory']
                 for mi, mjd in enumerate(mjds):
-                    add_photometry(events, name, time = mjd, magnitude = mags[mi], e_magnitude = errs[mi],
-                        band = bnds[mi], observatory = obs[mi], source = uniq_cdl([source,secondarysource]))
+                    add_photometry(
+                        events, name, time=mjd, magnitude=mags[mi], e_magnitude=errs[mi],
+                        band=bnds[mi], observatory=obs[mi], source=uniq_cdl([source, secondarysource]))
                 if args.update:
                     journal_events(tasks, args, events)
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'ptf'):
-            #response = urllib.request.urlopen("http://wiserep.weizmann.ac.il/objects/list")
-            #bs = BeautifulSoup(response, "html5lib")
-            #select = bs.find('select', {"name": "objid"})
-            #options = select.findAll('option')
-            #for option in options:
+            # response = urllib.request.urlopen("http://wiserep.weizmann.ac.il/objects/list")
+            # bs = BeautifulSoup(response, "html5lib")
+            # select = bs.find('select', {"name": "objid"})
+            # options = select.findAll('option')
+            # for option in options:
             #    print(option.text)
             #    name = option.text
             #    if ((name.startswith('PTF') and is_number(name[3:5])) or
@@ -3183,13 +3227,13 @@ def import_main():
             options = select.findAll('option')
             for option in options:
                 name = option.text
-                if ((name.startswith('PTF') and is_number(name[3:5])) or
-                    name.startswith('PTFS') or name.startswith('iPTF')):
+                if (((name.startswith('PTF') and is_number(name[3:5])) or
+                     name.startswith('PTFS') or name.startswith('iPTF'))):
                     if '(' in name:
                         alias = name.split('(')[0].strip(' ')
                         name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
                         name = add_event(tasks, args, events, name)
-                        source = add_source(events, name, bibcode = '2012PASP..124..668Y')
+                        source = add_source(events, name, bibcode='2012PASP..124..668Y')
                         add_quantity(events, name, 'alias', alias, source)
                     else:
                         name = add_event(tasks, args, events, name)
@@ -3207,17 +3251,17 @@ def import_main():
                     else:
                         name = 'PTF' + cols[0]
                     name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode = '2016arXiv160408207P')
+                    source = add_source(events, name, bibcode='2016arXiv160408207P')
                     add_quantity(events, name, 'alias', name, source)
                     if alias:
                         add_quantity(events, name, 'alias', alias, source)
                     add_quantity(events, name, 'ra', cols[1], source)
                     add_quantity(events, name, 'dec', cols[2], source)
                     add_quantity(events, name, 'claimedtype', 'SLSN-' + cols[3], source)
-                    add_quantity(events, name, 'redshift', cols[4], source, kind = 'spectroscopic')
+                    add_quantity(events, name, 'redshift', cols[4], source, kind='spectroscopic')
                     maxdate = cols[6].replace('-', '/')
-                    add_quantity(events, name, 'maxdate', maxdate.lstrip('<'), source, upperlimit = maxdate.startswith('<'))
-                    add_quantity(events, name, 'ebv', cols[7], source, kind = 'spectroscopic')
+                    add_quantity(events, name, 'maxdate', maxdate.lstrip('<'), source, upperlimit=maxdate.startswith('<'))
+                    add_quantity(events, name, 'ebv', cols[7], source, kind='spectroscopic')
                     name = add_event(tasks, args, events, 'PTF' + suffix)
             journal_events(tasks, args, events)
 
@@ -3245,14 +3289,14 @@ def import_main():
                         else:
                             atellink = ''
 
-                sources = [add_source(events, name, url = 'https://portal.nersc.gov/des-sn/', refname = 'DES Bright Transients',
-                    acknowledgment = 'http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause')]
+                sources = [add_source(events, name, url='https://portal.nersc.gov/des-sn/', refname='DES Bright Transients',
+                                      acknowledgment='http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause')]
                 if atellink:
-                    sources.append(add_source(events, name, refname = 'ATel ' + atellink.split('=')[-1], url = atellink))
-                sources += [add_source(events, name, bibcode = '2012ApJ...753..152B'),
-                    add_source(events, name, bibcode = '2015AJ....150..150F'),
-                    add_source(events, name, bibcode = '2015AJ....150...82G'),
-                    add_source(events, name, bibcode = '2015AJ....150..172K')]
+                    sources.append(add_source(events, name, refname='ATel ' + atellink.split('=')[-1], url=atellink))
+                sources += [add_source(events, name, bibcode='2012ApJ...753..152B'),
+                            add_source(events, name, bibcode='2015AJ....150..150F'),
+                            add_source(events, name, bibcode='2015AJ....150...82G'),
+                            add_source(events, name, bibcode='2015AJ....150..172K')]
                 sources = ','.join(sources)
                 add_quantity(events, name, 'alias', name, sources)
                 add_quantity(events, name, 'ra', ra, sources)
@@ -3266,9 +3310,10 @@ def import_main():
                     if 'var data = ' in line:
                         jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
                         for i, band in enumerate(jsontxt['band']):
-                            add_photometry(events, name, time = jsontxt['mjd'][i], magnitude = jsontxt['mag'][i], e_magnitude = jsontxt['mag_error'][i],
-                                band = band, observatory = 'CTIO', telescope = 'Blanco 4m', instrument = 'DECam',
-                                upperlimit = True if float(jsontxt['snr'][i]) <= 3.0 else '', source = sources)
+                            add_photometry(
+                                events, name, time=jsontxt['mjd'][i], magnitude=jsontxt['mag'][i], e_magnitude=jsontxt['mag_error'][i],
+                                band=band, observatory='CTIO', telescope='Blanco 4m', instrument='DECam',
+                                upperlimit=True if float(jsontxt['snr'][i]) <= 3.0 else '', source=sources)
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'asassn'):
@@ -3319,20 +3364,20 @@ def import_main():
                     if tdi == 12:
                         host = td.text
 
-                sources = [add_source(events, name, url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html', refname = 'ASAS-SN Supernovae')]
+                sources = [add_source(events, name, url='http://www.astronomy.ohio-state.edu/~assassin/sn_list.html', refname='ASAS-SN Supernovae')]
                 typesources = sources[:]
                 if atellink:
-                    sources.append(add_source(events, name, refname = 'ATel ' + atellink.split('=')[-1], url = atellink))
+                    sources.append(add_source(events, name, refname='ATel ' + atellink.split('=')[-1], url=atellink))
                 if typelink:
-                    typesources.append(add_source(events, name, refname = 'ATel ' + typelink.split('=')[-1], url = typelink))
+                    typesources.append(add_source(events, name, refname='ATel ' + typelink.split('=')[-1], url=typelink))
                 sources = ','.join(sources)
                 typesources = ','.join(typesources)
                 add_quantity(events, name, 'alias', name, sources)
                 add_quantity(events, name, 'discoverdate', discdate, sources)
-                add_quantity(events, name, 'ra', ra, sources, unit = 'floatdegrees')
-                add_quantity(events, name, 'dec', dec, sources, unit = 'floatdegrees')
+                add_quantity(events, name, 'ra', ra, sources, unit='floatdegrees')
+                add_quantity(events, name, 'dec', dec, sources, unit='floatdegrees')
                 add_quantity(events, name, 'redshift', redshift, sources)
-                add_quantity(events, name, 'hostoffset', hostoff, sources, unit = 'arcseconds')
+                add_quantity(events, name, 'hostoffset', hostoff, sources, unit='arcseconds')
                 for ct in claimedtype.split('/'):
                     if ct != 'Unk':
                         add_quantity(events, name, 'claimedtype', ct, typesources)
@@ -3350,7 +3395,7 @@ def import_main():
                 tds = tr.findAll('td')
                 name = ''
                 host = ''
-                fitsurl = ''
+                # fitsurl = ''
                 source = ''
                 reference = ''
                 for tdi, td in enumerate(tds):
@@ -3371,7 +3416,7 @@ def import_main():
                         name = add_event(tasks, args, events, name)
                         reference = 'Asiago Supernova Catalogue'
                         refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
-                        secondarysource = add_source(events, name, refname = reference, url = refurl, secondary = True)
+                        secondarysource = add_source(events, name, refname=reference, url=refurl, secondary=True)
                         add_quantity(events, name, 'alias', name, secondarysource)
                         if alias != name:
                             add_quantity(events, name, 'alias', alias, secondarysource)
@@ -3393,7 +3438,7 @@ def import_main():
                         epochstr = td.text.strip()
                         if epochstr:
                             mjd = (astrotime(epochstr[:4] + '-' + epochstr[4:6] + '-' + str(floor(float(epochstr[6:]))).zfill(2)).mjd +
-                                float(epochstr[6:]) - floor(float(epochstr[6:])))
+                                   float(epochstr[6:]) - floor(float(epochstr[6:])))
                         else:
                             mjd = ''
                     elif tdi == 10:
@@ -3406,13 +3451,14 @@ def import_main():
                                 reference = ref.text
                                 refurl = ref['href']
                         if reference:
-                            source = add_source(events, name, refname = reference, url = refurl)
+                            source = add_source(events, name, refname=reference, url=refurl)
                         add_quantity(events, name, 'alias', name, secondarysource)
                         sources = uniq_cdl(list(filter(None, [source, secondarysource])))
                     elif tdi == 12:
-                        fitslink = td.find('a')
-                        if fitslink:
-                            fitsurl = fitslink['href']
+                        pass
+                        # fitslink = td.find('a')
+                        # if fitslink:
+                        #     fitsurl = fitslink['href']
                 if name:
                     add_quantity(events, name, 'claimedtype', claimedtype, sources)
                     add_quantity(events, name, 'ra', ra, sources)
@@ -3421,14 +3467,14 @@ def import_main():
                     add_quantity(events, name, 'discoverer', discoverer, sources)
                     add_quantity(events, name, 'host', host, sources)
 
-                    #if fitsurl:
+                    # if fitsurl:
                     #    response = urllib.request.urlopen("http://sngroup.oapd.inaf.it./" + fitsurl)
                     #    compressed = io.BytesIO(response.read())
                     #    decompressed = gzip.GzipFile(fileobj=compressed)
                     #    hdulist = fits.open(decompressed)
                     #    scidata = hdulist[0].data
                     #    print(hdulist[0].header)
-
+                    #
                     #    print(scidata[3])
                     #    sys.exit()
             journal_events(tasks, args, events)
@@ -3440,19 +3486,19 @@ def import_main():
             wiserepcnt = 0
 
             # These are known to be in error on the WISeREP page, either fix or ignore them.
-            wiserepbibcorrectdict = {'2000AJ....120..367G]':'2000AJ....120..367G',
-                                     'Harutyunyan+et+al.+2008':'2008A&A...488..383H',
-                                     '0609268':'2007AJ....133...58K',
-                                     '2006ApJ...636...400Q':'2006ApJ...636..400Q',
-                                     '2011ApJ...741...76':'2011ApJ...741...76C',
-                                     '2016PASP...128...961':'2016PASP..128...961',
-                                     '2002AJ....1124..417H':'2002AJ....1124.417H',
-                                     '2013ApJ…774…58D':'2013ApJ...774...58D',
-                                     '2011Sci.333..856S':'2011Sci...333..856S',
-                                     '2014MNRAS.438,368':'2014MNRAS.438..368T',
-                                     '2012MNRAS.420.1135':'2012MNRAS.420.1135S',
-                                     '2012Sci..337..942D':'2012Sci...337..942D',
-                                     'stt1839':''}
+            wiserepbibcorrectdict = {'2000AJ....120..367G]': '2000AJ....120..367G',
+                                     'Harutyunyan+et+al.+2008': '2008A&A...488..383H',
+                                     '0609268': '2007AJ....133...58K',
+                                     '2006ApJ...636...400Q': '2006ApJ...636..400Q',
+                                     '2011ApJ...741...76': '2011ApJ...741...76C',
+                                     '2016PASP...128...961': '2016PASP..128...961',
+                                     '2002AJ....1124..417H': '2002AJ....1124.417H',
+                                     '2013ApJ…774…58D': '2013ApJ...774...58D',
+                                     '2011Sci.333..856S': '2011Sci...333..856S',
+                                     '2014MNRAS.438,368': '2014MNRAS.438..368T',
+                                     '2012MNRAS.420.1135': '2012MNRAS.420.1135S',
+                                     '2012Sci..337..942D': '2012Sci...337..942D',
+                                     'stt1839': ''}
 
             oldname = ''
             for folder in tq(sorted(next(os.walk("../sne-external-WISEREP"))[1], key=lambda s: s.lower()), currenttask):
@@ -3548,24 +3594,24 @@ def import_main():
                                         name = name.replace('MASTERJ', 'MASTER OT J')
                                     if name.startswith('PSNJ'):
                                         name = name.replace('PSNJ', 'PSN J')
-                                    name = get_preferred_name(name)
+                                    name = get_preferred_name(events, name)
                                     if oldname and name != oldname:
                                         journal_events(tasks, args, events)
                                     oldname = name
                                     name = add_event(tasks, args, events, name)
 
-                                    #print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
+                                    # print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
 
-                                    secondarysource = add_source(events, name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
+                                    secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
                                     add_quantity(events, name, 'alias', name, secondarysource)
                                     if bibcode:
                                         newbibcode = bibcode
                                         if bibcode in wiserepbibcorrectdict:
                                             newbibcode = wiserepbibcorrectdict[bibcode]
                                         if newbibcode:
-                                            source = add_source(events, name, bibcode = unescape(newbibcode))
+                                            source = add_source(events, name, bibcode=unescape(newbibcode))
                                         else:
-                                            source = add_source(events, name, refname = unescape(bibcode))
+                                            source = add_source(events, name, refname=unescape(bibcode))
                                         sources = uniq_cdl([source, secondarysource])
                                     else:
                                         sources = secondarysource
@@ -3577,7 +3623,7 @@ def import_main():
                                     if not specpath:
                                         continue
 
-                                    with open(specpath,'r') as f:
+                                    with open(specpath, 'r') as f:
                                         data = [x.split() for x in f]
 
                                         skipspec = False
@@ -3628,14 +3674,14 @@ def import_main():
                     name = 'SN' + name[2:]
                 if name.startswith('snf') and is_number(name[3:7]):
                     name = 'SNF' + name[3:]
-                name = get_preferred_name(name)
+                name = get_preferred_name(events, name)
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
                 name = add_event(tasks, args, events, name)
                 reference = 'CfA Supernova Archive'
                 refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-                source = add_source(events, name, refname = reference, url = refurl, secondary = True, acknowledgment = ACKN_CFA)
+                source = add_source(events, name, refname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
                 add_quantity(events, name, 'alias', name, source)
                 for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                     filename = os.path.basename(fname)
@@ -3651,16 +3697,17 @@ def import_main():
                         day = fileparts[2][6:]
                         instrument = fileparts[3].split('.')[0]
                     time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-                    f = open(fname,'r')
+                    f = open(fname, 'r')
                     data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                     data = [list(i) for i in zip(*data)]
                     wavelengths = data[0]
                     fluxes = data[1]
                     errors = data[2]
-                    sources = uniq_cdl([source, add_source(events, name, bibcode = '2012AJ....143..126B'), add_source(events, name, bibcode = '2008AJ....135.1598M')])
-                    add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
-                        wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
-                        errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
+                    sources = uniq_cdl([source, add_source(events, name, bibcode='2012AJ....143..126B'), add_source(events, name, bibcode='2008AJ....135.1598M')])
+                    add_spectrum(
+                        name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', filename=filename,
+                        wavelengths=wavelengths, fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument,
+                        errorunit="ergs/s/cm^2/Angstrom", errors=errors, source=sources, dereddened=False, deredshifted=False)
                     if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                         break
             journal_events(tasks, args, events)
@@ -3671,14 +3718,14 @@ def import_main():
                 fullpath = "../sne-external-spectra/CfA_SNIbc/" + name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
-                name = get_preferred_name(name)
+                name = get_preferred_name(events, name)
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
                 name = add_event(tasks, args, events, name)
                 reference = 'CfA Supernova Archive'
                 refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-                source = add_source(events, name, refname = reference, url = refurl, secondary = True, acknowledgment = ACKN_CFA)
+                source = add_source(events, name, refname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
                 add_quantity(events, name, 'alias', name, source)
                 for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                     filename = os.path.basename(fname)
@@ -3690,15 +3737,16 @@ def import_main():
                     if len(fileparts) > 2:
                         instrument = fileparts[-1].split('.')[0]
                     time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-                    f = open(fname,'r')
+                    f = open(fname, 'r')
                     data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                     data = [list(i) for i in zip(*data)]
                     wavelengths = data[0]
                     fluxes = data[1]
-                    sources = uniq_cdl([source, add_source(events, name, bibcode = '2014AJ....147...99M')])
-                    add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-                        fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
-                        dereddened = False, deredshifted = False)
+                    sources = uniq_cdl([source, add_source(events, name, bibcode='2014AJ....147...99M')])
+                    add_spectrum(
+                        name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
+                        fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=sources,
+                        dereddened=False, deredshifted=False)
                     if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                         break
             journal_events(tasks, args, events)
@@ -3709,21 +3757,21 @@ def import_main():
                 fullpath = "../sne-external-spectra/CfA_Extra/" + name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
-                name = get_preferred_name(name)
+                name = get_preferred_name(events, name)
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
                 name = add_event(tasks, args, events, name)
                 reference = 'CfA Supernova Archive'
                 refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-                source = add_source(events, name, refname = reference, url = refurl, secondary = True, acknowledgment = ACKN_CFA)
+                source = add_source(events, name, refname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
                 add_quantity(events, name, 'alias', name, source)
                 for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                     if not os.path.isfile(fname):
                         continue
                     filename = os.path.basename(fname)
-                    if (not filename.startswith('sn') or not filename.endswith('flm') or
-                        any(x in filename for x in ['-interp', '-z', '-dered', '-obj', '-gal'])):
+                    if ((not filename.startswith('sn') or not filename.endswith('flm') or
+                         any(x in filename for x in ['-interp', '-z', '-dered', '-obj', '-gal']))):
                         continue
                     fileparts = filename.split('.')[0].split('-')
                     instrument = ''
@@ -3736,14 +3784,15 @@ def import_main():
                             if len(fileparts) > 2:
                                 instrument = fileparts[-1]
                             time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
-                    f = open(fname,'r')
+                    f = open(fname, 'r')
                     data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                     data = [list(i) for i in zip(*data)]
                     wavelengths = data[0]
                     fluxes = [str(Decimal(x)*Decimal(1.0e-15)) for x in data[1]]
-                    add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
-                        fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = source,
-                        dereddened = False, deredshifted = False)
+                    add_spectrum(
+                        name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
+                        fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=source,
+                        dereddened=False, deredshifted=False)
                     if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                         break
             journal_events(tasks, args, events)
@@ -3757,21 +3806,21 @@ def import_main():
                 datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
             oldname = ''
-            for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()), currenttask = currenttask)):
+            for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()), currenttask=currenttask)):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('_')
                 name = 'SNLS-' + fileparts[1]
-                name = get_preferred_name(name)
+                name = get_preferred_name(events, name)
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
                 name = add_event(tasks, args, events, name)
-                source = add_source(events, name, bibcode = "2009A&A...507...85B")
+                source = add_source(events, name, bibcode="2009A&A...507...85B")
                 add_quantity(events, name, 'alias', name, source)
 
                 add_quantity(events, name, 'discoverdate', '20' + fileparts[1][:2], source)
 
-                f = open(fname,'r')
+                f = open(fname, 'r')
                 data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 specdata = []
                 for r, row in enumerate(data):
@@ -3785,19 +3834,21 @@ def import_main():
                 specdata = [list(i) for i in zip(*specdata)]
                 wavelengths = specdata[1]
 
-                fluxes = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[2]]
-                errors = [pretty_num(float(x)*1.e-16, sig = get_sig_digits(x)) for x in specdata[3]]
+                fluxes = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[2]]
+                errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
 
-                add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-                    fluxes = fluxes, u_time = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', telescope = telescope, source = source,
-                    filename = filename)
+                add_spectrum(
+                    name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths,
+                    fluxes=fluxes, u_time='MJD' if name in datedict else '',
+                    time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
+                    filename=filename)
                 if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                     break
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'cspspectra'):
             oldname = ''
-            for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()), currenttask = currenttask)):
+            for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()), currenttask=currenttask)):
                 filename = os.path.basename(fname)
                 sfile = filename.split('.')
                 if sfile[1] == 'txt':
@@ -3805,17 +3856,17 @@ def import_main():
                 sfile = sfile[0]
                 fileparts = sfile.split('_')
                 name = 'SN20' + fileparts[0][2:]
-                name = get_preferred_name(name)
+                name = get_preferred_name(events, name)
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
                 name = add_event(tasks, args, events, name)
                 telescope = fileparts[-2]
                 instrument = fileparts[-1]
-                source = add_source(events, name, bibcode = "2013ApJ...773...53F")
+                source = add_source(events, name, bibcode="2013ApJ...773...53F")
                 add_quantity(events, name, 'alias', name, source)
 
-                f = open(fname,'r')
+                f = open(fname, 'r')
                 data = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 specdata = []
                 for r, row in enumerate(data):
@@ -3831,8 +3882,9 @@ def import_main():
                 wavelengths = specdata[0]
                 fluxes = specdata[1]
 
-                add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
-                    fluxes = fluxes, telescope = telescope, instrument = instrument, source = source, deredshifted = True, filename = filename)
+                add_spectrum(
+                    name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths,
+                    fluxes=fluxes, telescope=telescope, instrument=instrument, source=source, deredshifted=True, filename=filename)
                 if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                     break
             journal_events(tasks, args, events)
@@ -3843,26 +3895,27 @@ def import_main():
             secondaryrefbib = "2012MNRAS.425.1789S"
             ucbspectracnt = 0
 
-            jsontxt = load_cached_url(args, "http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec",
+            jsontxt = load_cached_url(
+                args, "http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec",
                 '../sne-external-spectra/UCB/allpub.json')
             if not jsontxt:
                 continue
 
             spectra = json.loads(jsontxt)
-            spectra = sorted(spectra, key = lambda k: k['ObjName'])
+            spectra = sorted(spectra, key=lambda k: k['ObjName'])
             oldname = ''
-            for spectrum in tq(spectra, currenttask = currenttask):
+            for spectrum in tq(spectra, currenttask=currenttask):
                 name = spectrum["ObjName"]
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
                 name = add_event(tasks, args, events, name)
 
-                secondarysource = add_source(events, name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondaryrefbib, secondary = True)
+                secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondaryrefbib, secondary=True)
                 add_quantity(events, name, 'alias', name, secondarysource)
                 sources = [secondarysource]
                 if spectrum["Reference"]:
-                    sources += [add_source(events, name, bibcode = spectrum["Reference"])]
+                    sources += [add_source(events, name, bibcode=spectrum["Reference"])]
                 sources = uniq_cdl(sources)
 
                 if spectrum["Type"] and spectrum["Type"].strip() != "NoMatch":
@@ -3878,7 +3931,7 @@ def import_main():
                     month = epoch[4:6]
                     day = epoch[6:]
                     sig = get_sig_digits(day) + 5
-                    mjd = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
+                    mjd = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig=sig)
                 filename = spectrum["Filename"] if spectrum["Filename"] else ''
                 instrument = spectrum["Instrument"] if spectrum["Instrument"] else ''
                 reducer = spectrum["Reducer"] if spectrum["Reducer"] else ''
@@ -3922,10 +3975,11 @@ def import_main():
                 if not list(filter(None, errors)):
                     errors = ''
 
-                add_spectrum(name = name, u_time = 'MJD', time = mjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
-                    wavelengths = wavelengths, filename = filename, fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated',
-                    instrument = instrument, source = sources, snr = snr, observer = observer, reducer = reducer,
-                    deredshifted = ('-noz' in filename))
+                add_spectrum(
+                    name=name, u_time='MJD', time=mjd, waveunit='Angstrom', fluxunit='Uncalibrated',
+                    wavelengths=wavelengths, filename=filename, fluxes=fluxes, errors=errors, errorunit='Uncalibrated',
+                    instrument=instrument, source=sources, snr=snr, observer=observer, reducer=reducer,
+                    deredshifted=('-noz' in filename))
                 ucbspectracnt = ucbspectracnt + 1
                 if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
                     break
@@ -3953,7 +4007,7 @@ def import_main():
                     name = eventfolder
                     if is_number(name[:4]):
                         name = 'SN' + name
-                    name = get_preferred_name(name)
+                    name = get_preferred_name(events, name)
                     if oldname and name != oldname:
                         journal_events(tasks, args, events)
                     oldname = name
@@ -3961,7 +4015,7 @@ def import_main():
                     secondaryreference = "SUSPECT"
                     secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
                     secondarybibcode = "2001AAS...199.8408R"
-                    secondarysource = add_source(events, name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
+                    secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
                     add_quantity(events, name, 'alias', name, secondarysource)
                     eventspectra = next(os.walk('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder))[2]
                     for spectrum in eventspectra:
@@ -3976,7 +4030,7 @@ def import_main():
                         elif name in sourcedict:
                             bibcode = sourcedict[name]
                         if bibcode:
-                            source = add_source(events, name, bibcode = unescape(bibcode))
+                            source = add_source(events, name, bibcode=unescape(bibcode))
                             sources += source
                         sources = uniq_cdl(sources)
 
@@ -3985,7 +4039,7 @@ def import_main():
                         month = date[4:6]
                         day = date[6:]
                         sig = get_sig_digits(day) + 5
-                        time = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig = sig)
+                        time = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig=sig)
 
                         with open('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder+'/'+spectrum) as f:
                             specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
@@ -4007,8 +4061,9 @@ def import_main():
                         if haserrors:
                             errors = specdata[2]
 
-                        add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
-                            fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources, filename = spectrum)
+                        add_spectrum(
+                            name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit='Uncalibrated', wavelengths=wavelengths,
+                            fluxes=fluxes, errors=errors, errorunit='Uncalibrated', source=sources, filename=spectrum)
                         suspectcnt = suspectcnt + 1
                         if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                             break
@@ -4016,12 +4071,12 @@ def import_main():
 
         if do_task(tasks, args, task, 'snfspectra'):
             eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
-            bibcodes = {'SN2005gj':'2006ApJ...650..510A', 'SN2006D':'2007ApJ...654L..53T', 'SN2007if':'2010ApJ...713.1073S', 'SN2011fe':'2013A&A...554A..27P'}
+            bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T', 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
             oldname = ''
             snfcnt = 0
             for eventfolder in eventfolders:
                 name = eventfolder
-                name = get_preferred_name(name)
+                name = get_preferred_name(events, name)
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
                 oldname = name
@@ -4029,11 +4084,11 @@ def import_main():
                 secondaryreference = "Nearby Supernova Factory"
                 secondaryrefurl = "http://snfactory.lbl.gov/"
                 secondarybibcode = "2002SPIE.4836...61A"
-                secondarysource = add_source(events, name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
+                secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
                 add_quantity(events, name, 'alias', name, secondarysource)
                 bibcode = bibcodes[name]
-                source = add_source(events, name, bibcode = bibcode)
-                sources = uniq_cdl([source,secondarysource])
+                source = add_source(events, name, bibcode=bibcode)
+                sources = uniq_cdl([source, secondarysource])
                 eventspectra = glob('../sne-external-spectra/SNFactory/'+eventfolder+'/*.dat')
                 for spectrum in eventspectra:
                     filename = os.path.basename(spectrum)
@@ -4049,11 +4104,11 @@ def import_main():
                     if 'Keck_20060202_R' in spectrum:
                         time = '53768.23469'
                     elif 'Spectrum05_276' in spectrum:
-                        time = pretty_num(astrotime('2005-10-03').mjd, sig = 5)
+                        time = pretty_num(astrotime('2005-10-03').mjd, sig=5)
                     elif 'Spectrum05_329' in spectrum:
-                        time = pretty_num(astrotime('2005-11-25').mjd, sig = 5)
+                        time = pretty_num(astrotime('2005-11-25').mjd, sig=5)
                     elif 'Spectrum05_336' in spectrum:
-                        time = pretty_num(astrotime('2005-12-02').mjd, sig = 5)
+                        time = pretty_num(astrotime('2005-12-02').mjd, sig=5)
                     for row in specdata:
                         if row[0][0] == '#':
                             joinrow = (' '.join(row)).split('=')
@@ -4090,10 +4145,11 @@ def import_main():
                     if haserrors:
                         errors = specdata[2]
 
-                    add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom',
-                        wavelengths = wavelengths, fluxes = fluxes, errors = errors, observer = observer, observatory = observatory,
-                        telescope = telescope, instrument = instrument,
-                        errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources, filename = filename)
+                    add_spectrum(
+                        name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom',
+                        wavelengths=wavelengths, fluxes=fluxes, errors=errors, observer=observer, observatory=observatory,
+                        telescope=telescope, instrument=instrument,
+                        errorunit=('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source=sources, filename=filename)
                     snfcnt = snfcnt + 1
                     if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                         break
@@ -4101,11 +4157,11 @@ def import_main():
 
         if do_task(tasks, args, task, 'superfitspectra'):
             sfdirs = glob('../sne-external-spectra/superfit/*')
-            for sfdir in tq(sfdirs, currenttask = currenttask):
+            for sfdir in tq(sfdirs, currenttask=currenttask):
                 sffiles = sorted(glob(sfdir + "/*.dat"))
                 lastname = ''
                 oldname = ''
-                for sffile in tq(sffiles, currenttask = currenttask):
+                for sffile in tq(sffiles, currenttask=currenttask):
                     basename = os.path.basename(sffile)
                     name = basename.split('.')[0]
                     if name.startswith('sn'):
@@ -4118,7 +4174,7 @@ def import_main():
                     if 'theory' in name:
                         continue
                     if event_exists(events, name):
-                        prefname = get_preferred_name(name)
+                        prefname = get_preferred_name(events, name)
                         if 'spectra' in events[prefname] and lastname != prefname:
                             continue
                     if oldname and name != oldname:
@@ -4126,13 +4182,13 @@ def import_main():
                     oldname = name
                     name = add_event(tasks, args, events, name)
                     epoch = basename.split('.')[1]
-                    (mldt, mlmag, mlband, mlsource) = get_max_light(name)
+                    (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
                     if mldt:
                         epoff = Decimal(0.0) if epoch == 'max' else (Decimal(epoch[1:]) if epoch[0] == 'p' else -Decimal(epoch[1:]))
                     else:
                         epoff = ''
 
-                    source = add_source(events, name, refname = 'Superfit', url = 'http://www.dahowell.com/superfit.html', secondary = True)
+                    source = add_source(events, name, refname='Superfit', url='http://www.dahowell.com/superfit.html', secondary=True)
                     add_quantity(events, name, 'alias', name, source)
 
                     with open(sffile) as f:
@@ -4140,14 +4196,15 @@ def import_main():
                     specdata = []
                     for row in rows:
                         if row.strip():
-                            specdata.append(list(filter(None,re.split('\t+|\s+', row, maxsplit=0))))
-                    specdata = [[x.replace('D','E') for x in list(i)] for i in zip(*specdata)]
+                            specdata.append(list(filter(None, re.split('\t+|\s+', row, maxsplit=0))))
+                    specdata = [[x.replace('D', 'E') for x in list(i)] for i in zip(*specdata)]
                     wavelengths = specdata[0]
                     fluxes = specdata[1]
 
                     mlmjd = str(Decimal(astrotime('-'.join([str(mldt.year), str(mldt.month), str(mldt.day)])).mjd) + epoff) if (epoff != '') else ''
-                    add_spectrum(name, u_time = 'MJD' if mlmjd else '', time = mlmjd, waveunit = 'Angstrom', fluxunit = 'Uncalibrated',
-                        wavelengths = wavelengths, fluxes = fluxes, source = source)
+                    add_spectrum(
+                        name, u_time='MJD' if mlmjd else '', time=mlmjd, waveunit='Angstrom', fluxunit='Uncalibrated',
+                        wavelengths=wavelengths, fluxes=fluxes, source=source)
 
                     lastname = name
                 journal_events(tasks, args, events)
@@ -4164,25 +4221,21 @@ def import_main():
     files = repo_file_list()
 
     bibauthor_dict = get_bibauthor_dict()
-    # path = '../bibauthors.json'
-    # if os.path.isfile(path):
-    #     with open(path, 'r') as f:
-    #         bibauthordict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    # else:
-    #     bibauthordict = OrderedDict()
+    extinctions_dict = get_extinctions_dict()
 
     for fi in tq(files, 'Sanitizing and deriving quantities for events'):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        name = add_event(tasks, args, events, args, name, loadifempty = False)
-        derive_and_sanitize(tasks, args, events)
+        name = add_event(tasks, args, events, args, name, loadifempty=False)
+        events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
+            tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict)
         if has_task(tasks, args, 'writeevents'):
             write_all_events(events, args, empty=True, gz=True, bury=True)
 
     jsonstring = json.dumps(bibauthor_dict, indent='\t', separators=(',', ':'), ensure_ascii=False)
     with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
         f.write(jsonstring)
-    jsonstring = json.dumps(extinctionsdict, indent='\t', separators=(',', ':'), ensure_ascii=False)
+    jsonstring = json.dumps(extinctions_dict, indent='\t', separators=(',', ':'), ensure_ascii=False)
     with codecs.open('../extinctions.json', 'w', encoding='utf8') as f:
         f.write(jsonstring)
 
@@ -4204,4 +4257,4 @@ def load_args():
     return args
 
 if __name__ == "__main__":
-    main()
+    import_main()
