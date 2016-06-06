@@ -6,13 +6,12 @@ OSC_NAME = 'The Open Supernova Catalog'
 OSC_URL = 'https://sne.space'
 
 ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
-          "which is funded in part by the National Science Foundation "
-          "through grant AST 0907903.")
+            "which is funded in part by the National Science Foundation "
+            "through grant AST 0907903.")
 
 CLIGHT = const.c.cgs.value
 KM = (1.0 * un.KM).cgs.value
 TRAVIS_QUERY_LIMIT = 10
-
 
 REPR_BETTER_QUANTITY = {
     'redshift',
@@ -24,11 +23,9 @@ REPR_BETTER_QUANTITY = {
 }
 
 MAX_BANDS = [
-    ['B', 'b', 'g'], # B-like bands first
-    ['V', 'G'],      # if not, V-like bands
-    ['R', 'r']       # if not, R-like bands
+    ['B', 'b', 'g'],  # B-like bands first
+    ['V', 'G'],       # if not, V-like bands
+    ['R', 'r']        # if not, R-like bands
 ]
 
-
 PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', 'cluster', '']
-
