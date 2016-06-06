@@ -89,19 +89,6 @@ tasks = OrderedDict([
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
-OSC_BIBCODE = '2016arXiv160501054G'
-OSC_NAME = 'The Open Supernova Catalog'
-OSC_URL = 'https://sne.space'
-
-ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
-          "which is funded in part by the National Science Foundation "
-          "through grant AST 0907903.")
-
-clight = const.c.cgs.value
-km = (1.0 * un.km).cgs.value
-planckh = const.h.cgs.value
-keV = (1.0 * un.keV).cgs.value
-travislimit = 10
 
 currenttask = ''
 
@@ -117,21 +104,6 @@ with open('source-synonyms.json', 'r') as f:
 with open('non-sne-types.json', 'r') as f:
     nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
     nonsnetypes = [x.upper() for x in nonsnetypes]
-
-repbetterquantity = {
-    'redshift',
-    'ebv',
-    'velocity',
-    'lumdist',
-    'discoverdate',
-    'maxdate'
-}
-
-maxbands = [
-    ['B', 'b', 'g'], # B-like bands first
-    ['V', 'G'],      # if not, V-like bands
-    ['R', 'r']       # if not, R-like bands
-]
 
 def uniq_cdl(values):
     return ','.join(list(OrderedDict.fromkeys(values).keys()))
@@ -149,14 +121,13 @@ def event_attr_priority(attr):
         return 'aaaaaaac'
     return attr
 
-prefkinds = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', 'cluster', '']
 def frame_priority(attr):
     if 'kind' in attr:
-        if attr['kind'] in prefkinds:
-            return prefkinds.index(attr['kind'])
+        if attr['kind'] in PREF_KINDS:
+            return PREF_KINDS.index(attr['kind'])
         else:
-            return len(prefkinds)
-    return len(prefkinds)
+            return len(PREF_KINDS)
+    return len(PREF_KINDS)
 
 def alias_priority(name, attr):
     if name == attr:
@@ -679,7 +650,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
 
     #Set default units
     if not unit and quantity == 'velocity':
-        unit = 'km/s' 
+        unit = 'KM/s' 
     if not unit and quantity == 'ra':
         unit = 'hours'
     if not unit and quantity == 'dec':
@@ -857,7 +828,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         quantaentry['upperlimit'] = upperlimit
     if extra:
         quantaentry['extra'] = extra
-    if (forcereplacebetter or quantity in repbetterquantity) and quantity in events[name]:
+    if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and quantity in events[name]:
         newquantities = []
         isworse = True
         if quantity in ['discoverdate', 'maxdate']:
@@ -945,7 +916,7 @@ def get_max_light(name):
         return (None, None, None, None)
 
     mlmag = None
-    for mb in maxbands:
+    for mb in MAX_BANDS:
         leventphoto = [x for x in eventphoto if x[3] in mb]
         if leventphoto:
             mlmag = min([x[2] for x in leventphoto])
@@ -1023,7 +994,7 @@ def get_best_redshift(name):
     bestsig = -1
     bestkind = 10
     for z in events[name]['redshift']:
-        kind = prefkinds.index(z['kind'] if 'kind' in z else '')
+        kind = PREF_KINDS.index(z['kind'] if 'kind' in z else '')
         sig = get_sig_digits(z['value'])
         if sig > bestsig and kind <= bestkind:
             bestz = z['value']
@@ -1288,7 +1259,7 @@ def derive_and_sanitize():
                     besthv = hv['value']
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
-                voc = float(besthv)*1.e5/clight
+                voc = float(besthv)*1.e5/CLIGHT
                 source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                 add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), source, kind = 'heliocentric')
         if 'redshift' not in events[name] and has_task('nedd') and 'host' in events[name]:
@@ -1319,13 +1290,13 @@ def derive_and_sanitize():
                 bestz = float(bestz)
                 if 'velocity' not in events[name]:
                     source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
-                    add_quantity(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
-                        ((bestz + 1.)**2. + 1.), sig = bestsig), source, kind = prefkinds[bestkind])
+                    add_quantity(name, 'velocity', pretty_num(CLIGHT/KM*((bestz + 1.)**2. - 1.)/
+                        ((bestz + 1.)**2. + 1.), sig = bestsig), source, kind = PREF_KINDS[bestkind])
                 if bestz > 0.:
                     if 'lumdist' not in events[name]:
                         dl = cosmo.luminosity_distance(bestz)
                         source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
-                        add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), source, kind = prefkinds[bestkind])
+                        add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), source, kind = PREF_KINDS[bestkind])
                         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                             source = add_source(name, bibcode = OSC_BIBCODE, refname = OSC_NAME, url = OSC_URL, secondary = True)
                             add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
@@ -1687,6 +1658,9 @@ def load_stubs():
         name = os.path.basename(os.path.splitext(fname)[0]).replace('.json', '')
         name = add_event(name, delete = False, loadifempty = False)
         events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
+
+
+
 
 path = '../atels.json'
 if os.path.isfile(path):
@@ -2158,7 +2132,7 @@ for task in tasks:
             add_quantity(name, 'alias', 'SN' + row['SN'], source)
             add_quantity(name, 'host', row['Gal'], source)
             if is_number(row['cz']):
-                add_quantity(name, 'redshift', str(round_sig(float(row['cz'])*km/clight, sig = get_sig_digits(str(row['cz'])))), source, kind = 'heliocentric')
+                add_quantity(name, 'redshift', str(round_sig(float(row['cz'])*KM/CLIGHT, sig = get_sig_digits(str(row['cz'])))), source, kind = 'heliocentric')
             add_quantity(name, 'ebv', str(row['E_B-V_']), source)
         journal_events()
     
@@ -5214,7 +5188,7 @@ for task in tasks:
                                         filename = specfile)
                                     wiserepcnt = wiserepcnt + 1
     
-                                    if args.travis and wiserepcnt % travislimit == 0:
+                                    if args.travis and wiserepcnt % TRAVIS_QUERY_LIMIT == 0:
                                         break
     
                     tprint('Unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
@@ -5264,7 +5238,7 @@ for task in tasks:
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', filename = filename,
                     wavelengths = wavelengths, fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument,
                     errorunit = "ergs/s/cm^2/Angstrom", errors = errors, source = sources, dereddened = False, deredshifted = False)
-                if args.travis and fi >= travislimit:
+                if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                     break
         journal_events()
     
@@ -5302,7 +5276,7 @@ for task in tasks:
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
                     fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = sources,
                     dereddened = False, deredshifted = False)
-                if args.travis and fi >= travislimit:
+                if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                     break
         journal_events()
 
@@ -5347,7 +5321,7 @@ for task in tasks:
                 add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths, filename = filename,
                     fluxes = fluxes, u_time = 'MJD' if time else '', time = time, instrument = instrument, source = source,
                     dereddened = False, deredshifted = False)
-                if args.travis and fi >= travislimit:
+                if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                     break
         journal_events()
     
@@ -5394,7 +5368,7 @@ for task in tasks:
             add_spectrum(name = name, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, u_time = 'MJD' if name in datedict else '', time = datedict[name] if name in datedict else '', telescope = telescope, source = source,
                 filename = filename)
-            if args.travis and fi >= travislimit:
+            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
         journal_events()
     
@@ -5436,7 +5410,7 @@ for task in tasks:
     
             add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'erg/s/cm^2/Angstrom', wavelengths = wavelengths,
                 fluxes = fluxes, telescope = telescope, instrument = instrument, source = source, deredshifted = True, filename = filename)
-            if args.travis and fi >= travislimit:
+            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
         journal_events()
     
@@ -5530,7 +5504,7 @@ for task in tasks:
                 instrument = instrument, source = sources, snr = snr, observer = observer, reducer = reducer,
                 deredshifted = ('-noz' in filename))
             ucbspectracnt = ucbspectracnt + 1
-            if args.travis and ucbspectracnt >= travislimit:
+            if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
                 break
         journal_events()
     
@@ -5613,7 +5587,7 @@ for task in tasks:
                     add_spectrum(name = name, u_time = 'MJD', time = time, waveunit = 'Angstrom', fluxunit = 'Uncalibrated', wavelengths = wavelengths,
                         fluxes = fluxes, errors = errors, errorunit = 'Uncalibrated', source = sources, filename = spectrum)
                     suspectcnt = suspectcnt + 1
-                    if args.travis and suspectcnt % travislimit == 0:
+                    if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                         break
         journal_events()
     
@@ -5698,7 +5672,7 @@ for task in tasks:
                     telescope = telescope, instrument = instrument,
                     errorunit = ('Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'), source = sources, filename = filename)
                 snfcnt = snfcnt + 1
-                if args.travis and snfcnt % travislimit == 0:
+                if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
         journal_events()
     
