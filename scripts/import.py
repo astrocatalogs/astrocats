@@ -4888,6 +4888,10 @@ for task in tasks:
                 if args.update:
                     journal_events()
             journal_events()
+
+            # Only run first page for Travis
+            if args.travis:
+                break
     
     if do_task(task, 'psmds'):
         with open('../sne-external/MDS/apj506838t1_mrt.txt') as f:
