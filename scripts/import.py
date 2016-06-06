@@ -224,6 +224,10 @@ def host_clean(name):
     newname = newname.replace("PGC", "PGC ", 1)
     newname = newname.replace("SDSS", "SDSS ", 1)
     newname = newname.replace("UGC", "UGC ", 1)
+    if newname.startswith('MESSIER '):
+        newname = newname.replace('MESSIER ', 'M', 1)
+    if newname.startswith('M ') and is_number(newname[2:]):
+        newname = newname.replace('M ', 'M', 1)
     if len(newname) > 4 and newname.startswith("PGC "):
         newname = newname[:4] + newname[4:].lstrip(" 0")
     if len(newname) > 4 and newname.startswith("UGC "):
@@ -3171,11 +3175,11 @@ for task in tasks:
             bcs = json.loads(f.read())
     
         for datafile in sorted(glob("../sne-external/Nicholl-04-01-16/*.txt"), key=lambda s: s.lower()):
-            name = os.path.basename(datafile).split('_')[0]
-            name = add_event(name)
+            inpname = os.path.basename(datafile).split('_')[0]
+            name = add_event(inpname)
             bibcode = ''
             for bc in bcs:
-                if name in bcs[bc]:
+                if inpname in bcs[bc]:
                     bibcode = bc
             if not bibcode:
                 raise(ValueError('Bibcode not found!'))
