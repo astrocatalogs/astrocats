@@ -1,15 +1,14 @@
+"""
+"""
+
 from math import log10, floor
+
+__all__ = ['get_sig_digits', 'is_integer', 'is_number', 'pretty_num', 'round_sig', 'zpad']
+
 
 def get_sig_digits(x):
     return len((''.join(x.split('.'))).strip('0'))
 
-def round_sig(x, sig=4):
-    if x == 0.0:
-        return 0.0
-    return round(x, sig-int(floor(log10(abs(x))))-1)
-
-def pretty_num(x, sig=4):
-    return str('%g'%(round_sig(x, sig)))
 
 def is_integer(s):
     if isinstance(s, list) and not isinstance(s, str):
@@ -25,6 +24,7 @@ def is_integer(s):
         except ValueError:
             return False
 
+
 def is_number(s):
     if isinstance(s, list) and not isinstance(s, str):
         try:
@@ -39,7 +39,18 @@ def is_number(s):
         except ValueError:
             return False
 
-def zpad(val, n = 2):
+
+def pretty_num(x, sig=4):
+    return str('%g' % (round_sig(x, sig)))
+
+
+def round_sig(x, sig=4):
+    if x == 0.0:
+        return 0.0
+    return round(x, sig-int(floor(log10(abs(x))))-1)
+
+
+def zpad(val, n=2):
     bits = val.split('.')
     if len(bits) != 2:
         return val.zfill(n)
