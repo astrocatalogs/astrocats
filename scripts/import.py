@@ -53,47 +53,47 @@ args = parser.parse_args()
 tasks = OrderedDict([
     ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
     ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
-    #("radio",           {"nicename":"%pre radio data",              "update": False}),
-    #("xray",            {"nicename":"%pre X-ray data",              "update": False}),
-    #("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
-    #("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
-    #("donations",       {"nicename":"%pre donations",               "update": False}),
-    #("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
-    #("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    #("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
-    #("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
-    #("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
-    #("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    #("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
-    #("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
-    #("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
-    #("itep",            {"nicename":"%pre ITEP",                    "update": False}),
-    #("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
-    #("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
-    #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
-    #("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    #("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
-    #("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
-    #("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
-    #("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+    ("radio",           {"nicename":"%pre radio data",              "update": False}),
+    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+    ("donations",       {"nicename":"%pre donations",               "update": False}),
+    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
+    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
+    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+    ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
+    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
+    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
+    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
     ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
-    #("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    #("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
-    #("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
-    #("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    #("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
-    #("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
-    #("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
-    #("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
-    #("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    #("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    #("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    #("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
+    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
+    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
+    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
     ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
     ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
@@ -146,6 +146,9 @@ maxbands = [
 def uniq_cdl(values):
     return ','.join(list(OrderedDict.fromkeys(values).keys()))
 
+def single_spaces(string):
+    return ' '.join(list(filter(None, string.split())))
+
 def event_attr_priority(attr):
     if attr == 'photometry':
         return 'zzzzzzzy'
@@ -197,20 +200,125 @@ def get_source_year(source):
             return -10000
     raise(ValueError('No bibcode available for source!'))
 
+def host_clean(name):
+    newname = name.strip(' ;,*')
+    if newname.startswith('M ') and is_number(newname[2:]):
+        newname.replace('M ', 'M', 1)
+    newname = newname.strip("()").replace('  ', ' ', 1)
+    newname = newname.replace("ABELL", "Abell", 1)
+    newname = newname.replace("Abell", "Abell ", 1)
+    newname = newname.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
+    newname = newname.replace("ARP", "ARP ", 1)
+    newname = newname.replace("CGCG", "CGCG ", 1)
+    newname = newname.replace("HOLM", "HOLM ", 1)
+    newname = newname.replace("IC", "IC ", 1)
+    newname = newname.replace("Intergal.", "Intergalactic", 1)
+    newname = newname.replace("MCG+", "MCG +", 1)
+    newname = newname.replace("MCG-", "MCG -", 1)
+    newname = newname.replace("M+", "MCG +", 1)
+    newname = newname.replace("M-", "MCG -", 1)
+    newname = newname.replace("MGC ", "MCG ", 1)
+    newname = newname.replace("Mrk", "MRK", 1)
+    newname = newname.replace("MRK", "MRK ", 1)
+    newname = newname.replace("NGC", "NGC ", 1)
+    newname = newname.replace("PGC", "PGC ", 1)
+    newname = newname.replace("SDSS", "SDSS ", 1)
+    newname = newname.replace("UGC", "UGC ", 1)
+    if len(newname) > 4 and newname.startswith("PGC "):
+        newname = newname[:4] + newname[4:].lstrip(" 0")
+    if len(newname) > 4 and newname.startswith("UGC "):
+        newname = newname[:4] + newname[4:].lstrip(" 0")
+    if len(newname) > 5 and newname.startswith(("MCG +", "MCG -")):
+        newname = newname[:5] + '-'.join([x.zfill(2) for x in newname[5:].strip().split("-")])
+    if len(newname) > 5 and newname.startswith("CGCG "):
+        newname = newname[:5] + '-'.join([x.zfill(3) for x in newname[5:].strip().split("-")])
+    if (len(newname) > 1 and newname.startswith("E")) or (len(newname) > 3 and newname.startswith('ESO')):
+        if newname[0] == "E":
+            esplit = newname[1:].split("-")
+        else:
+            esplit = newname[3:].split("-")
+        if len(esplit) == 2 and is_number(esplit[0].strip()):
+            if esplit[1].strip()[0] == 'G':
+                parttwo = esplit[1][1:].strip()
+            else:
+                parttwo = esplit[1].strip()
+            if is_number(parttwo.strip()):
+                newname = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
+    newname = ' '.join(newname.split())
+    return newname
+
 def name_clean(name):
     newname = name.strip(' ;,*')
+    if newname.startswith('NAME '):
+        newname = newname.replace('NAME ', '', 1)
+    if newname.endswith(' SN'):
+        newname = newname.replace(' SN', '')
+    if newname.endswith(':SN'):
+        newname = newname.replace(':SN', '')
     if newname.startswith('MASJ'):
         newname = newname.replace('MASJ', 'MASTER OT J', 1)
     if newname.startswith('MASTER') and is_number(newname[7]):
         newname = newname.replace('MASTER', 'MASTER OT J', 1)
     if newname.startswith('MASTER OT J '):
         newname = newname.replace('MASTER OT J ', 'MASTER OT J', 1)
+    if newname.startswith('OGLE '):
+        newname = newname.replace('OGLE ', 'OGLE-', 1)
+    if newname.startswith('OGLE-') and len(newname) != 16:
+        namesp = newname.split('-')
+        if len(namesp[1]) == 4:
+            newname = 'OGLE-' + namesp[1] + '-' + namesp[2].zfill(3)
+    if newname.startswith('SN SDSS'):
+        newname = newname.replace('SN SDSS ', 'SDSS', 1)
+    if newname.startswith('SDSS '):
+        newname = newname.replace('SDSS ', 'SDSS', 1)
+    if newname.startswith('SN CL'):
+        newname = newname.replace('SN CL', 'CL', 1)
+    if newname.startswith('SN HiTS '):
+        newname = newname.replace('SN HiTS ', 'SNHiTS', 1)
+    if newname.startswith('GAIA'):
+        newname = newname.replace('GAIA', 'Gaia', 1)
+    if newname.startswith('Gaia '):
+        newname = newname.replace('Gaia ', 'Gaia', 1)
+    if newname.startswith('LSQ '):
+        newname = newname.replace('LSQ ', 'LSQ', 1)
+    if newname.startswith('KSN '):
+        newname = newname.replace('KSN ', 'KSN-', 1)
+    if newname.startswith('SNSDF '):
+        newname = newname.replace(' ', '')
+    if newname.startswith('HFF '):
+        newname = newname.replace(' ', '')
+    if newname.startswith('SN HST'):
+        newname = newname.replace('SN HST', 'HST', 1)
     if newname.startswith('HST ') and newname[4] != 'J':
         newname = newname.replace('HST ', 'HST J', 1)
     if newname.startswith('SNLS') and newname[4] != '-':
         newname = newname.replace('SNLS', 'SNLS-', 1)
+    if newname.startswith('SNLS- '):
+        newname = newname.replace('SNLS- ', 'SNLS-', 1)
+    if newname.startswith('CRTS CSS'):
+        newname = newname.replace('CRTS CSS', 'CSS', 1)
+    if newname.startswith('CRTS MLS'):
+        newname = newname.replace('CRTS MLS', 'MLS', 1)
+    if newname.startswith('CRTS SSS'):
+        newname = newname.replace('CRTS SSS', 'SSS', 1)
+    if newname.startswith(('CSS', 'MLS', 'SSS')):
+        newname = newname.replace(' ', ':').replace('J', '')
+    if newname.startswith('SN HFF'):
+        newname = newname.replace('SN HFF', 'HFF', 1)
+    if newname.startswith('SN GND'):
+        newname = newname.replace('SN GND', 'GND', 1)
+    if newname.startswith('SN SCP'):
+        newname = newname.replace('SN SCP', 'SCP', 1)
+    if newname.startswith('SN UDS'):
+        newname = newname.replace('SN UDS', 'UDS', 1)
     if newname.startswith('SCP') and newname[3] != '-':
         newname = newname.replace('SCP', 'SCP-', 1)
+    if newname.startswith('SCP- '):
+        newname = newname.replace('SCP- ', 'SCP-', 1)
+    if newname.startswith('PS 1'):
+        newname = newname.replace('PS 1', 'PS1', 1)
+    if newname.startswith('PS1 SN PS'):
+        newname = newname.replace('PS1 SN PS', 'PS', 1)
     if newname.startswith('Psn'):
         newname = newname.replace('Psn', 'PSN', 1)
     if newname.startswith('PSNJ'):
@@ -221,24 +329,36 @@ def name_clean(name):
         newname = newname.replace('SMTJ', 'SMT J', 1)
     if newname.startswith('PSN20J'):
         newname = newname.replace('PSN20J', 'PSN J', 1)
+    if newname.startswith('SN ASASSN'):
+        newname = newname.replace('SN ASASSN', 'ASASSN', 1)
+    if newname.startswith('ASASSN '):
+        newname = newname.replace('ASASSN ', 'ASASSN-', 1).replace('--', '-')
     if newname.startswith('ASASSN') and newname[6] != '-':
         newname = newname.replace('ASASSN', 'ASASSN-', 1)
     if newname.startswith('ROTSE3J'):
         newname = newname.replace('ROTSE3J', 'ROTSE3 J', 1)
+    if newname.startswith('MACSJ'):
+        newname = newname.replace('MACSJ', 'MACS J', 1)
+    if newname.startswith('SN HUNT'):
+        newname = newname.replace('SN HUNT', 'SNhunt', 1)
+    if newname.startswith('SN Hunt'):
+        newname = newname.replace(' ', '')
     if newname.startswith('SNHunt'):
         newname = newname.replace('SNHunt', 'SNhunt', 1)
     if newname.startswith('ptf'):
         newname = newname.replace('ptf', 'PTF', 1)
+    if newname.startswith('SN PTF'):
+        newname = newname.replace('SN PTF', 'PTF', 1)
     if newname.startswith('PTF '):
         newname = newname.replace('PTF ', 'PTF', 1)
     if newname.startswith('iPTF '):
         newname = newname.replace('iPTF ', 'iPTF', 1)
-    if newname.startswith('SNHunt'):
-        newname = newname.replace('SNHunt', 'SNhunt', 1)
     if newname.startswith('PESSTOESO'):
         newname = newname.replace('PESSTOESO', 'PESSTO ESO ', 1)
     if newname.startswith('snf'):
         newname = newname.replace('snf', 'SNF', 1)
+    if newname.startswith('SNF '):
+        newname = newname.replace('SNF ', 'SNF', 1)
     if newname.startswith('SNF') and is_number(newname[3:]) and len(newname) >= 12:
         newname = 'SNF' + newname[3:11] + '-' + newname[11:]
     if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
@@ -255,6 +375,8 @@ def name_clean(name):
         newname = 'SN' + newname + 'A'
     if len(newname) > 4 and is_number(newname[:4]) and not is_number(newname[4:]):
         newname = 'SN' + newname
+    if newname.startswith('Sn ') and is_number(newname[3:7]) and len(newname) > 7:
+        newname = newname.replace('Sn ', 'SN', 1)
     if newname.startswith('sn') and is_number(newname[2:6]) and len(newname) > 6:
         newname = newname.replace('sn', 'SN', 1)
     if newname.startswith('SN ') and is_number(newname[3:7]) and len(newname) > 7:
@@ -717,50 +839,9 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
             return
         if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
             return
-        if svalue.startswith('M ') and is_number(svalue[2:]):
-            svalue.replace('M ', 'M', 1)
-        svalue = svalue.strip("()").replace('  ', ' ', 1)
-        svalue = svalue.replace("ABELL", "Abell", 1)
-        svalue = svalue.replace("Abell", "Abell ", 1)
-        svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
-        svalue = svalue.replace("ARP", "ARP ", 1)
-        svalue = svalue.replace("CGCG", "CGCG ", 1)
-        svalue = svalue.replace("HOLM", "HOLM ", 1)
-        svalue = svalue.replace("IC", "IC ", 1)
-        svalue = svalue.replace("Intergal.", "Intergalactic", 1)
-        svalue = svalue.replace("MCG+", "MCG +", 1)
-        svalue = svalue.replace("MCG-", "MCG -", 1)
-        svalue = svalue.replace("M+", "MCG +", 1)
-        svalue = svalue.replace("M-", "MCG -", 1)
-        svalue = svalue.replace("MGC ", "MCG ", 1)
-        svalue = svalue.replace("Mrk", "MRK", 1)
-        svalue = svalue.replace("MRK", "MRK ", 1)
-        svalue = svalue.replace("NGC", "NGC ", 1)
-        svalue = svalue.replace("PGC", "PGC ", 1)
-        svalue = svalue.replace("SDSS", "SDSS ", 1)
-        svalue = svalue.replace("UGC", "UGC ", 1)
-        if len(svalue) > 4 and svalue.startswith("PGC "):
-            svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-        if len(svalue) > 4 and svalue.startswith("UGC "):
-            svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-        if len(svalue) > 5 and svalue.startswith(("MCG +", "MCG -")):
-            svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
-        if len(svalue) > 5 and svalue.startswith("CGCG "):
-            svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
-        if (len(svalue) > 1 and svalue.startswith("E")) or (len(svalue) > 3 and svalue.startswith('ESO')):
-            if svalue[0] == "E":
-                esplit = svalue[1:].split("-")
-            else:
-                esplit = svalue[3:].split("-")
-            if len(esplit) == 2 and is_number(esplit[0].strip()):
-                if esplit[1].strip()[0] == 'G':
-                    parttwo = esplit[1][1:].strip()
-                else:
-                    parttwo = esplit[1].strip()
-                if is_number(parttwo.strip()):
-                    svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
-        svalue = ' '.join(svalue.split())
 
+        svalue = host_clean(svalue)
+        
         if (not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
             'cluster' in svalue.lower())):
             skind = 'cluster'
@@ -1220,7 +1301,8 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'discoverdate' not in events[name]:
-            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-', 'SNLS-', 'SPIRITS']
+            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-', 'SNLS-', 'SPIRITS', 'LSQ', 'DES', 'SNHiTS',
+                'GND', 'GNW', 'GSD', 'GSW', 'EGS', 'COS']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
@@ -1247,7 +1329,7 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'discoverdate' not in events[name]:
-            prefixes = ['PTFS']
+            prefixes = ['PTFS', 'SNSDF']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
@@ -1261,10 +1343,10 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'discoverdate' not in events[name]:
-            prefixes = ['AT', 'SN', 'OGLE-']
+            prefixes = ['AT', 'SN', 'OGLE-', 'SM ', 'KSN-']
             for alias in aliases:
                 for prefix in prefixes:
-                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]):
+                    if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]) and '.' not in alias.replace(prefix, '')[:4]:
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
@@ -1274,7 +1356,7 @@ def derive_and_sanitize():
                 if 'discoverdate' in events[name]:
                     break
         if 'ra' not in events[name] or 'dec' not in events[name]:
-            prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J', 'HST J', 'TCP J']
+            prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J', 'HST J', 'TCP J', 'MACS J', '2MASS J', 'EQ J', 'CRTS J', 'SMT J']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:6]):
@@ -1441,7 +1523,7 @@ def write_all_events(empty = False, gz = False, bury = False):
         if 'discoverdate' in events[name]:
             for r, year in enumerate(repoyears):
                 if int(events[name]['discoverdate'][0]['value'].split('/')[0]) <= year:
-                    outdir += repofolders[r]
+                    outdir += str(repofolders[r])
                     break
         else:
             outdir += str(repofolders[0])
@@ -1449,7 +1531,7 @@ def write_all_events(empty = False, gz = False, bury = False):
         # Delete non-SN events here without IAU designations (those with only banned types)
         if bury:
             buryevent = False
-            nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
+            nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA', 'EV*', 'V*')
             if name.startswith(nonsneprefixes):
                 tprint('Burying ' + name + ', non-SNe prefix.')
                 continue
@@ -1674,7 +1756,7 @@ def has_task(task):
     return task in tasks and (not args.update or tasks[task]['update'])
 
 def archived_task(task):
-    if 'archived' in tasks[task] and args.archived:
+    if 'archived' in tasks[task] and args.archived and task not in args.refreshlist.split(','):
         return True
     if ('archived' in tasks[task] and tasks[task]['archived'] and
         task not in args.refreshlist.split(',') and not args.fullrefresh):
@@ -1798,23 +1880,39 @@ for task in tasks:
                         add_quantity(name, 'alias', name, source)
         journal_events()
     
-    #if do_task(task, 'simbad'):
-    #    Simbad.list_votable_fields()
-    #    customSimbad = Simbad()
-    #    customSimbad.add_votable_fields('otype', 'id(opt)')
-    #    result = customSimbad.query_object('SN 20[0-9][0-9]*', wildcard=True)
-    #    for r, row in enumerate(result):
-    #        if row['OTYPE'].decode() != "SN":
-    #            continue
-    #        name = row["MAIN_ID"].decode()
-    #        aliases = Simbad.query_objectids(name)
-    #        print(aliases)
-    #        if name[:3] == 'SN ':
-    #            name = 'SN' + name[3:]
-    #        if name[:2] == 'SN' and is_number(name[2:]):
-    #            name = name + 'A'
-    #        name = add_event(name)
-    #    journal_events()
+    if do_task(task, 'simbad'):
+        #Simbad.list_votable_fields()
+        customSimbad = Simbad()
+        customSimbad.ROW_LIMIT = -1
+        customSimbad.add_votable_fields('sptype', 'sp_bibcode')
+        # 2000A&AS..143....9W
+        table = customSimbad.query_criteria('maintype=SN')
+        for brow in tq(table, currenttask = currenttask):
+            row = {x:re.sub(r'b\'(.*)\'', r'\1', str(brow[x])) for x in brow.colnames}
+            # Skip items with no bibliographic info aside from SIMBAD, too error-prone
+            if not row['COO_BIBCODE'] and not row['SP_BIBCODE']:
+                continue
+            name = single_spaces(re.sub(r'\[[^)]*\]', '', row['MAIN_ID']).strip())
+            if name == 'SN':
+                continue
+            name = add_event(name)
+            source = add_source(name, bibcode = "2000A&AS..143....9W", secondary = True)
+            add_quantity(name, 'alias', name, source)
+            #aliases = Simbad.query_objectids(row['MAIN_ID'])
+            #aliases = [re.sub(r'b\'(.*)\'', r'\1', str(x['ID'])) for x in aliases[1:]]
+            #for alias in aliases:
+            #    ali = single_spaces(re.sub(r'\[[^)]*\]', '', alias).strip())
+            #    add_quantity(name, 'alias', ali, source)
+            #tprint(get_aliases(name))
+            #print(row)
+            if row['COO_BIBCODE']:
+                csources = ','.join([source, add_source(name, bibcode = row['COO_BIBCODE'])])
+                add_quantity(name, 'ra', row['RA'], csources)
+                add_quantity(name, 'dec', row['DEC'], csources)
+            if row['SP_BIBCODE']:
+                ssources = ','.join([source, add_source(name, bibcode = row['SP_BIBCODE'])])
+                add_quantity(name, 'claimedtype', row['SP_TYPE'].replace('SN.', '').replace('SN', '').strip(': '), ssources)
+        journal_events()
     
     # Import primary data sources from Vizier
     if do_task(task, 'vizier'):
@@ -4946,50 +5044,59 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'nedd'): 
-        f = open("../sne-external/NED25.12.1-D-10.4.0-20151123.csv", 'r')
-        data = csv.reader(f, delimiter=',', quotechar='"')
-        reference = "NED-D"
-        refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-        nedddict = OrderedDict()
-        oldhostname = ''
-        for r, row in enumerate(data):
-            if r <= 12:
-                continue
-            hostname = row[3]
-            if args.update and oldhostname != hostname:
-                journal_events()
-            distmod = row[4]
-            moderr = row[5]
-            dist = row[6]
-            bibcode = unescape(row[8])
-            name = ''
-            if hostname.startswith('SN '):
-                if is_number(hostname[3:7]):
-                    name = 'SN' + hostname[3:]
-                else:
-                    name = hostname[3:]
-            elif hostname.startswith('SNLS '):
-                name = 'SNLS-' + hostname[5:].split()[0]
-            else:
-                cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
-                if True in [x in cleanhost for x in ['UGC', 'PGC', 'IC']]:
-                    cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
-                if 'ESO' in cleanhost:
-                    cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
-                nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
+        with open("../sne-external/NED26.05.1-D-12.1.0-20160501.csv", 'r') as f:
+            data = sorted(list(csv.reader(f, delimiter=',', quotechar='"'))[13:], key=lambda x: (x[9], x[3]))
+            reference = "NED-D"
+            refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
+            nedddict = OrderedDict()
+            olddistname = ''
+            for r, row in enumerate(tq(data, currenttask = currenttask)):
+                if r <= 12:
+                    continue
+                distname = row[3]
+                name = name_clean(distname) 
+                distmod = row[4]
+                moderr = row[5]
+                dist = row[6]
+                bibcode = unescape(row[8])
+                snname = name_clean(row[9])
+                cleanhost = ''
+
+                if name != snname and (name + ' HOST' != snname):
+                    cleanhost = host_clean(distname)
+                    if not is_number(dist):
+                        print(dist)
+                    if dist:
+                        nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
     
-            if name:
-                name = add_event(name)
-                secondarysource = add_source(name, refname = reference, url = refurl, secondary = True)
-                add_quantity(name, 'alias', name, secondarysource)
-                if bibcode:
-                    source = add_source(name, bibcode = bibcode)
-                    sources = uniq_cdl([source, secondarysource])
-                else:
-                    sources = secondarysource
-                add_quantity(name, 'comovingdist', dist, sources)
-            oldhostname = hostname
-        journal_events()
+                if snname and 'HOST' not in snname:
+                    snname = add_event(snname)
+                    secondarysource = add_source(snname, refname = reference, url = refurl, secondary = True)
+                    add_quantity(snname, 'alias', snname, secondarysource)
+                    if bibcode:
+                        source = add_source(snname, bibcode = bibcode)
+                        sources = uniq_cdl([source, secondarysource])
+                    else:
+                        sources = secondarysource
+
+                    if name == snname and dist:
+                        add_quantity(snname, 'comovingdist', dist, sources)
+                        try:
+                            redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(dist) * un.Mpc, zmax = 5.0), sig = get_sig_digits(str(dist)))
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
+                        except:
+                            pass
+                        else:
+                            add_quantity(snname, 'redshift', redshift, sources) 
+
+                    if cleanhost:
+                        add_quantity(snname, 'host', cleanhost, sources)
+
+                    if args.update and olddistname != distname:
+                        journal_events()
+                olddistname = distname
+            journal_events()
     
     # Import CPCS
     if do_task(task, 'cpcs'):
