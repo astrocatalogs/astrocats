@@ -584,7 +584,7 @@ def alias_priority(name, attr):
     return 1
 
 
-def archived_task(task):
+def archived_task(task, tasks):
     if 'archived' in tasks[task] and args.archived:
         return True
     if ('archived' in tasks[task] and tasks[task]['archived'] and

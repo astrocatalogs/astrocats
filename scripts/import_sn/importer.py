@@ -42,97 +42,98 @@ from string import ascii_letters
 # from events import *
 
 from .. utils import *
-from import_funcs import *
-
-
-tasks = OrderedDict([
-    ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
-    ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
-    ("radio",           {"nicename":"%pre radio data",              "update": False}),
-    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
-    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
-    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
-    ("donations",       {"nicename":"%pre donations",               "update": False}),
-    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
-    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
-    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
-    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
-    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
-    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
-    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
-    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
-    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
-    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
-    #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
-    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
-    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
-    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
-    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
-    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
-    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
-    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
-    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
-    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
-    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
-    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
-    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
-    ("writeevents",     {"nicename":"Writing events",               "update": True })
-])
+from . import_funcs import *
+from scripts import _FILENAME_TYPE_SYNONYMS, _FILENAME_SOURCE_SYNONYMS, _FILENAME_NON_SNE_TYPES
 
 
 def import_main():
     """
     """
-    args = argparse()
-
+    args = load_args()
     currenttask = ''
-
     eventnames = []
     events = OrderedDict()
-
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
-    with open('type-synonyms.json', 'r') as f:
-        typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    with open('source-synonyms.json', 'r') as f:
-        sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    with open('non-sne-types.json', 'r') as f:
-        nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
-        nonsnetypes = [x.upper() for x in nonsnetypes]
+    tasks = OrderedDict([
+        ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
+        ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
+        ("radio",           {"nicename":"%pre radio data",              "update": False}),
+        ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+        ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+        ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+        ("donations",       {"nicename":"%pre donations",               "update": False}),
+        ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+        ("scp",             {"nicename":"%pre SCP",                     "update": False}),
+        ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+        ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+        ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+        ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+        ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
+        ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+        ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+        ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+        ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+        ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+        #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+        ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+        ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
+        ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
+        ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
+        ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+        ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
+        ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+        ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
+        ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
+        ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+        ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
+        ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+        ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+        ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+        ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+        ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+        ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+        ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+        ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+        ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+        ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+        ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+        ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+        ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+        ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+        ("writeevents",     {"nicename":"Writing events",               "update": True })
+    ])
 
-    path = '../atels.json'
-    if os.path.isfile(path):
-        with open(path, 'r') as f:
-            atelsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        atelsdict = OrderedDict()
-    path = '../cbets.json'
-    if os.path.isfile(path):
-        with open(path, 'r') as f:
-            cbetsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        cbetsdict = OrderedDict()
-    path = '../iaucs.json'
-    if os.path.isfile(path):
-        with open(path, 'r') as f:
-            iaucsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        iaucsdict = OrderedDict()
+    # with open(_FILENAME_TYPE_SYNONYMS, 'r') as f:
+    #     typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
+
+    # with open(_FILENAME_SOURCE_SYNONYMS, 'r') as f:
+    #     sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
+
+    # with open(_FILENAME_NON_SNE_TYPES, 'r') as f:
+    #     nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    #     nonsnetypes = [x.upper() for x in nonsnetypes]
+
+    # path = '../atels.json'
+    # if os.path.isfile(path):
+    #     with open(path, 'r') as f:
+    #         atelsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    # else:
+    #     atelsdict = OrderedDict()
+    #
+    # path = '../cbets.json'
+    # if os.path.isfile(path):
+    #     with open(path, 'r') as f:
+    #         cbetsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    # else:
+    #     cbetsdict = OrderedDict()
+    #
+    # path = '../iaucs.json'
+    # if os.path.isfile(path):
+    #     with open(path, 'r') as f:
+    #         iaucsdict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    # else:
+    #     iaucsdict = OrderedDict()
 
     for task in tasks:
         if do_task(task, 'deleteoldevents'):
@@ -1693,7 +1694,7 @@ def import_main():
                                     add_photometry(name, time = mjd, band = band, magnitude = row[2*b + 1].strip('>'),
                                         e_magnitude = row[2*b + 2], upperlimit = (not row[2*b + 2]), source = source)
 
-            if archived_task('cccp'):
+            if archived_task('cccp', tasks):
                 with open('../sne-external/CCCP/sc_cccp.html', 'r') as f:
                     html = f.read()
             else:
@@ -1711,7 +1712,7 @@ def import_main():
                     source = add_source(name, refname = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
                     add_quantity(name, 'alias', name, source)
 
-                    if archived_task('cccp'):
+                    if archived_task('cccp', tasks):
                         with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
                             html2 = f.read()
                     else:
@@ -1725,7 +1726,7 @@ def import_main():
                     for link2 in links2:
                         if ".txt" in link2['href'] and '_' in link2['href']:
                             band = link2['href'].split('_')[1].split('.')[0].upper()
-                            if archived_task('cccp'):
+                            if archived_task('cccp', tasks):
                                 fname = '../sne-external/CCCP/' + link2['href'].split('/')[-1]
                                 if not os.path.isfile(fname):
                                     continue
@@ -1960,7 +1961,7 @@ def import_main():
                     raise(ValueError('ID not found for SNDB phot!'))
 
                 filepath = '../sne-external/SNDB/' + filename
-                if archived_task('ucb') and os.path.isfile(filepath):
+                if archived_task('ucb', tasks) and os.path.isfile(filepath):
                     with open(filepath, 'r') as f:
                         phottxt = f.read()
                 else:
@@ -2073,7 +2074,7 @@ def import_main():
                             break
 
                 fname = '../sne-external/GAIA/' + row[0] + '.csv'
-                if not args.fullrefresh and archived_task('gaia') and os.path.isfile(fname):
+                if not args.fullrefresh and archived_task('gaia', tasks) and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:
@@ -2384,7 +2385,7 @@ def import_main():
 
             for page in tq(range(maxpages), currenttask):
                 fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.csv'
-                if archived_task('tns') and os.path.isfile(fname) and page < 7:
+                if archived_task('tns', tasks) and os.path.isfile(fname) and page < 7:
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:
@@ -2663,7 +2664,7 @@ def import_main():
                         dec = radec[1]
 
                         fname = '../sne-external/OGLE/' + datafnames[ec]
-                        if not args.fullrefresh and archived_task('ogle') and os.path.isfile(fname):
+                        if not args.fullrefresh and archived_task('ogle', tasks) and os.path.isfile(fname):
                             with open(fname, 'r') as f:
                                 csvtxt = f.read()
                         else:
@@ -2769,7 +2770,7 @@ def import_main():
             oldnumpages = len(glob('../sne-external/3pi/page*'))
             for page in tq(range(1,numpages), currenttask):
                 fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
-                if not args.fullrefresh and archived_task('psthreepi') and os.path.isfile(fname) and page < oldnumpages:
+                if not args.fullrefresh and archived_task('psthreepi', tasks) and os.path.isfile(fname) and page < oldnumpages:
                     with open(fname, 'r') as f:
                         html = f.read()
                 elif not offline:
@@ -2846,7 +2847,7 @@ def import_main():
                     add_quantity(name, 'claimedtype', ctype, source)
 
                     fname2 = '../sne-external/3pi/candidate-' + pslink.rstrip('/').split('/')[-1] + '.html'
-                    if archived_task('psthreepi') and os.path.isfile(fname2):
+                    if archived_task('psthreepi', tasks) and os.path.isfile(fname2):
                         with open(fname2, 'r') as f:
                             html2 = f.read()
                     elif not offline:
@@ -3000,7 +3001,7 @@ def import_main():
                             telescope = 'Catalina Schmidt', upperlimit = hostupper)
 
                     fname2 = '../sne-external/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
-                    if not args.fullrefresh and archived_task('crts') and os.path.isfile(fname2):
+                    if not args.fullrefresh and archived_task('crts', tasks) and os.path.isfile(fname2):
                         with open(fname2, 'r') as f:
                             html2 = f.read()
                     else:
@@ -3159,7 +3160,7 @@ def import_main():
                 alerturl = "http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=" + str(ai)
                 source = add_source(name, refname = 'CPCS Alert ' + str(ai), url = alerturl)
                 fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
-                if archived_task('cpcs') and os.path.isfile(fname):
+                if archived_task('cpcs', tasks) and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         jsonstr = f.read()
                 else:
@@ -3198,7 +3199,7 @@ def import_main():
             #        name.startswith('PTFS') or name.startswith('iPTF')):
             #        name = add_event(name)
 
-            if archived_task('ptf'):
+            if archived_task('ptf', tasks):
                 with open('../sne-external/PTF/update.html', 'r') as f:
                     html = f.read()
             else:
@@ -3921,7 +3922,7 @@ def import_main():
                     raise(ValueError('ID not found for SNDB spectrum!'))
 
                 filepath = '../sne-external-spectra/UCB/' + filename
-                if archived_task('ucbspectra') and os.path.isfile(filepath):
+                if archived_task('ucbspectra', tasks) and os.path.isfile(filepath):
                     with open(filepath, 'r') as f:
                         spectxt = f.read()
                 else:
@@ -4226,7 +4227,7 @@ def import_main():
     sys.exit(0)
 
 
-def argparse():
+def load_args():
     parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
     parser.add_argument('--update', '-u',       dest='update',      help='Only update catalog using live sources.',    default=False, action='store_true')
     parser.add_argument('--verbose', '-v',      dest='verbose',     help='Print more messages to the screen.',         default=False, action='store_true')
