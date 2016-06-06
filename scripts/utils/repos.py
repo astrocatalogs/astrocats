@@ -3,7 +3,7 @@ import sys
 from glob import glob
 from . digits import is_number
 
-from scripts import _PATH_ROOT, _FILENAME_REPOS
+from scripts import PATH, FILENAME
 
 __all__ = ['repo_file_list', 'get_rep_folder', 'get_repo_folders', 'get_repo_years']
 
@@ -14,7 +14,7 @@ def repo_file_list(bones=True):
     repo_folders = get_repo_folders()
     files = []
     for rep in repo_folders:
-        rep_path = os.path.join(_PATH_ROOT, rep)
+        rep_path = os.path.join(PATH.ROOT, rep)
         if not bones and 'boneyard' in rep:
             continue
         # files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
@@ -42,7 +42,7 @@ def get_repo_folders():
     """Get the names of all repositories given in the 'rep-folders.txt' file.
     """
     # _REPO_FILENAME = '../rep-folders.txt'
-    with open(_FILENAME_REPOS, 'r') as f:
+    with open(FILENAME.REPOS_LIST, 'r') as f:
         repo_folders = f.read().splitlines()
     return repo_folders
 
