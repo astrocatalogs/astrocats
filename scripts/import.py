@@ -3608,7 +3608,7 @@ for task in tasks:
                 source = add_source(name, bibcode = '2014ApJ...783...28G')
                 add_quantity(name, 'alias', name, source)
                 add_quantity(name, 'alias', row[1], source)
-                add_quantity(name, 'discoverdate', '20' + row[0][2:3], source)
+                add_quantity(name, 'discoverdate', '20' + row[0][3:5], source)
                 add_quantity(name, 'ra', row[2], source)
                 add_quantity(name, 'dec', row[3], source)
                 add_quantity(name, 'redshift', row[13] if is_number(row[13]) else row[10], source)
