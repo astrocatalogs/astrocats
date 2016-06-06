@@ -4,19 +4,31 @@
 import os
 import json
 import warnings
+# import sys
 from cdecimal import Decimal
 from collections import OrderedDict
 from math import log10, floor, sqrt  # , isnan, ceil
 from astropy.time import Time as astrotime
+from astropy import units
 
-from scripts import _FILENAME_SOURCE_SYNONYMS, _FILENAME_TYPE_SYNONYMS, _FILENAME_ATELS, \
-    _FILENAME_CBETS, _FILENAME_IAUCS, _FILENAME_EXTINCT, _FILENAME_NON_SNE_TYPES, \
-    _FILENAME_BIBAUTHORS
+from scripts import PATH, FILENAME
 from .. utils import repo_file_list, is_number, get_repo_folders, get_event_filename, tprint, \
     bandrepf, bandmetaf, get_sig_digits, zpad, pretty_num, round_sig, get_repo_years, tq
 
 from . constants import REPR_BETTER_QUANTITY, OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
-    KM
+    KM, MAX_BANDS
+
+__all__ = ['add_event', 'add_photometry', 'add_quantity', 'add_source', 'add_spectrum',
+           'alias_priority', 'archived_task', 'clean_event', 'clear_events', 'convert_aq_output',
+           'copy_to_event', 'ct_priority', 'derive_and_sanitize', 'delete_old_event_files',
+           'do_task', 'event_attr_priority', 'event_exists', 'frame_priority', 'get_aliases',
+           'get_atels_dict', 'get_bibauthor_dict', 'get_cbets_dict', 'get_extinctions_dict',
+           'get_iaucs_dict', 'get_best_redshift', 'get_first_light', 'get_max_light',
+           'get_preferred_name', 'get_source_by_alias', 'get_source_year', 'has_task',
+           'is_erroneous', 'jd_to_mjd', 'journal_events', 'load_event_from_file', 'load_stubs',
+           'load_cached_url', 'make_date_string', 'merge_duplicates', 'name_clean', 'null_field',
+           'same_tag_num', 'same_tag_str', 'set_first_max_light', 'set_preferred_names',
+           'clean_snname', 'trim_str_arr', 'uniq_cdl', 'utf8', 'write_all_events']
 
 
 def add_event(tasks, args, events, name, load=True, delete=True, source='', loadifempty=True):
@@ -221,7 +233,7 @@ def add_quantity(events, name, quantity, value, sources, forcereplacebetter=Fals
     if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
         raise(ValueError('Quantity must be a string or an array of strings.'))
 
-    with open(_FILENAME_TYPE_SYNONYMS, 'r') as f:
+    with open(FILENAME.TYPE_SYNONYMS, 'r') as f:
         typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
     if is_erroneous(events, name, quantity, sources):
@@ -463,7 +475,7 @@ def add_quantity(events, name, quantity, value, sources, forcereplacebetter=Fals
 
 
 def add_source(events, name, refname='', reference='', url='', bibcode='', secondary='', acknowledgment=''):
-    with open(_FILENAME_SOURCE_SYNONYMS, 'r') as f:
+    with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
         sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
     nsources = len(events[name]['sources']) if 'sources' in events[name] else 0
@@ -506,9 +518,11 @@ def add_source(events, name, refname='', reference='', url='', bibcode='', secon
             break
 
     no_source = 'sources' not in events[name]
-    no_ref = refname not in [x['name'] for x in events[name]['sources']]
-    no_bib = (not bibcode or
-              bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']])
+    no_ref = no_bib = True
+    if not no_source:
+        no_ref = refname not in [x['name'] for x in events[name]['sources']]
+        no_bib = (not bibcode or
+                  bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']])
     if no_source or (no_ref and no_bib):
         source = str(nsources + 1)
         newsource = OrderedDict()
@@ -763,7 +777,7 @@ def copy_to_event(events, fromname, destname):
                         unit=null_field(item, "unit"), kind=null_field(item, "kind"))
 
 
-def ct_priority(name, attr):
+def ct_priority(events, name, attr):
     aliases = attr['source'].split(',')
     max_source_year = -10000
     vaguetypes = ['CC', 'I']
@@ -772,7 +786,7 @@ def ct_priority(name, attr):
     for alias in aliases:
         if alias == 'D':
             continue
-        source = get_source_by_alias(name, alias)
+        source = get_source_by_alias(events, name, alias)
         if 'bibcode' in source:
             source_year = get_source_year(source)
             if source_year > max_source_year:
@@ -780,7 +794,7 @@ def ct_priority(name, attr):
     return -max_source_year
 
 
-def derive_and_sanitize(tasks, args, events):
+def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict):
     biberrordict = {
         "2012Sci..337..942D": "2012Sci...337..942D",
         "2012MNRAS.420.1135": "2012MNRAS.420.1135S",
@@ -815,7 +829,7 @@ def derive_and_sanitize(tasks, args, events):
         set_first_max_light(events, name)
 
         if 'claimedtype' in events[name]:
-            events[name]['claimedtype'] = list(sorted(events[name]['claimedtype'], key=lambda key: ct_priority(name, key)))
+            events[name]['claimedtype'] = list(sorted(events[name]['claimedtype'], key=lambda key: ct_priority(events, name, key)))
         if 'discoverdate' not in events[name]:
             prefixes = ['MLS', 'SSS', 'CSS']
             for alias in aliases:
@@ -900,7 +914,6 @@ def derive_and_sanitize(tasks, args, events):
                    not any([x['value'] == 'Milky Way' for x in events[name]['host']]))
         if ('ra' in events[name] and 'dec' in events[name] and no_host):
             from astroquery.irsa_dust import IrsaDust
-            extinctions_dict = get_extinctions_dict()
             if name not in extinctions_dict:
                 try:
                     ra_dec = events[name]['ra'][0]['value'] + " " + events[name]['dec'][0]['value']
@@ -937,10 +950,10 @@ def derive_and_sanitize(tasks, args, events):
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
-                if host['value'] in nedddict:
+                if host['value'] in nedd_dict:
                     secondarysource = add_source(events, name, refname=reference, url=refurl, secondary=True)
-                    meddist = statistics.median(nedddict[host['value']])
-                    redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(meddist) * un.Mpc), sig=get_sig_digits(str(meddist)))
+                    meddist = statistics.median(nedd_dict[host['value']])
+                    redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(meddist) * units.Mpc), sig=get_sig_digits(str(meddist)))
                     add_quantity(events, name, 'redshift', redshift, secondarysource, kind='host')
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
@@ -980,13 +993,13 @@ def derive_and_sanitize(tasks, args, events):
                         source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'comovingdist', pretty_num(dl.value, sig=bestsig), source)
         if 'photometry' in events[name]:
-            events[name]['photometry'].sort(key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
-                min([float(y) for y in x['time']])) if 'time' in x else 0.0,
-                x['band'] if 'band' in x else '', float(x['magnitude']) if 'magnitude' in x else ''))
+            events[name]['photometry'].sort(
+                key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
+                                min([float(y) for y in x['time']])) if 'time' in x else 0.0,
+                               x['band'] if 'band' in x else '', float(x['magnitude']) if 'magnitude' in x else ''))
         if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
             events[name]['spectra'].sort(key=lambda x: (float(x['time']) if 'time' in x else 0.0))
         if 'sources' in events[name]:
-            bibauthor_dict = get_bibauthor_dict()
             for source in events[name]['sources']:
                 if 'bibcode' in source:
                     import urllib
@@ -1024,9 +1037,11 @@ def derive_and_sanitize(tasks, args, events):
         if 'velocity' in events[name]:
             events[name]['velocity'] = list(sorted(events[name]['velocity'], key=lambda key: frame_priority(key)))
         if 'claimedtype' in events[name]:
-            events[name]['claimedtype'] = list(sorted(events[name]['claimedtype'], key=lambda key: ct_priority(name, key)))
+            events[name]['claimedtype'] = list(sorted(events[name]['claimedtype'], key=lambda key: ct_priority(events, name, key)))
 
         events[name] = OrderedDict(sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
+
+    return events, extinctions_dict, bibauthor_dict
 
 
 def delete_old_event_files():
@@ -1089,8 +1104,8 @@ def get_aliases(events, name, includename=True):
 
 def get_atels_dict():
     # path = '../atels.json'
-    if os.path.isfile(_FILENAME_ATELS):
-        with open(_FILENAME_ATELS, 'r') as f:
+    if os.path.isfile(FILENAME.ATELS):
+        with open(FILENAME.ATELS, 'r') as f:
             atels_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
         atels_dict = OrderedDict()
@@ -1099,8 +1114,8 @@ def get_atels_dict():
 
 def get_bibauthor_dict():
     # path = '../bibauthors.json'
-    if os.path.isfile(_FILENAME_BIBAUTHORS):
-        with open(_FILENAME_BIBAUTHORS, 'r') as f:
+    if os.path.isfile(FILENAME.BIBAUTHORS):
+        with open(FILENAME.BIBAUTHORS, 'r') as f:
             bibauthor_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
         bibauthor_dict = OrderedDict()
@@ -1109,8 +1124,8 @@ def get_bibauthor_dict():
 
 def get_cbets_dict():
     # path = '../cbets.json'
-    if os.path.isfile(_FILENAME_CBETS):
-        with open(_FILENAME_CBETS, 'r') as f:
+    if os.path.isfile(FILENAME.CBETS):
+        with open(FILENAME.CBETS, 'r') as f:
             cbets_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
         cbets_dict = OrderedDict()
@@ -1119,8 +1134,8 @@ def get_cbets_dict():
 
 def get_extinctions_dict():
     # path = '../extinctions.json'
-    if os.path.isfile(_FILENAME_EXTINCT):
-        with open(_FILENAME_EXTINCT, 'r') as f:
+    if os.path.isfile(FILENAME.EXTINCT):
+        with open(FILENAME.EXTINCT, 'r') as f:
             extinctions_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
         extinctions_dict = OrderedDict()
@@ -1129,8 +1144,8 @@ def get_extinctions_dict():
 
 def get_iaucs_dict():
     # path = '../iaucs.json'
-    if os.path.isfile(_FILENAME_IAUCS):
-        with open(_FILENAME_IAUCS, 'r') as f:
+    if os.path.isfile(FILENAME.IAUCS):
+        with open(FILENAME.IAUCS, 'r') as f:
             iaucs_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
         iaucs_dict = OrderedDict()
@@ -1167,7 +1182,7 @@ def get_first_light(events, name):
     return (astrotime(flmjd, format='mjd').datetime, flsource)
 
 
-def get_max_light(name):
+def get_max_light(events, name):
     if 'photometry' not in events[name]:
         return (None, None, None, None)
 
@@ -1198,9 +1213,9 @@ def get_max_light(name):
         return (None, mlmag, mlband, mlsource)
 
 
-def get_preferred_name(name):
+def get_preferred_name(events, name):
     if name not in events:
-        matches = []
+        # matches = []
         for event in events:
             aliases = get_aliases(events, event)
             if len(aliases) > 1 and name in aliases:
@@ -1210,7 +1225,7 @@ def get_preferred_name(name):
         return name
 
 
-def get_source_by_alias(name, alias):
+def get_source_by_alias(events, name, alias):
     for source in events[name]['sources']:
         if source['alias'] == alias:
             return source
@@ -1233,12 +1248,12 @@ def has_task(tasks, args, task):
 def is_erroneous(events, name, field, sources):
     if 'errors' in events[name]:
         for alias in sources.split(','):
-            source = get_source_by_alias(name, alias)
+            source = get_source_by_alias(events, name, alias)
             if (('bibcode' in source and source['bibcode'] in
-                [x['value'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['extra'] == field])):
+                 [x['value'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['extra'] == field])):
                     return True
             if (('name' in source and source['name'] in
-                [x['value'] for x in events[name]['errors'] if x['kind'] == 'name' and x['extra'] == field])):
+                 [x['value'] for x in events[name]['errors'] if x['kind'] == 'name' and x['extra'] == field])):
                     return True
     return False
 
@@ -1524,7 +1539,7 @@ def same_tag_str(photo, val, tag):
 
 def set_first_max_light(events, name):
     if 'maxappmag' not in events[name]:
-        (mldt, mlmag, mlband, mlsource) = get_max_light(name)
+        (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
         if mldt:
             source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source, mlsource]))
@@ -1630,7 +1645,7 @@ def set_preferred_names(tasks, args, events):
                 journal_events(tasks, args, events)
 
 
-def snname(string):
+def clean_snname(string):
     newstring = string.replace(' ', '').upper()
     if (newstring[:2] == "SN"):
         head = newstring[:6]
@@ -1661,7 +1676,7 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
     repo_folders = get_repo_folders()
     non_sne_types = None
     if bury:
-        with open(_FILENAME_NON_SNE_TYPES, 'r') as f:
+        with open(FILENAME.NON_SNE_TYPES, 'r') as f:
             non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
             non_sne_types = [x.upper() for x in non_sne_types]
 
@@ -1676,15 +1691,18 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
             tprint('Writing ' + name)
         filename = get_event_filename(name)
 
-        outdir = '../'
+        # outdir = '../'
+        outdir = str(PATH.ROOT)
         if 'discoverdate' in events[name]:
-            repo_years = get_repo_years()
+            repo_years = get_repo_years(repo_folders)
             for r, year in enumerate(repo_years):
                 if int(events[name]['discoverdate'][0]['value'].split('/')[0]) <= year:
-                    outdir += repo_folders[r]
+                    # outdir += repo_folders[r]
+                    outdir = os.path.join(outdir, repo_folders[r])
                     break
         else:
-            outdir += str(repo_folders[0])
+            # outdir += str(repo_folders[0])
+            outdir = os.path.join(outdir, repo_folders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
         if bury:
@@ -1702,11 +1720,13 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
                         buryevent = True
                 if buryevent:
                     tprint('Burying ' + name + ' (' + ct['value'] + ').')
-                    outdir = '../sne-boneyard'
+                    # outdir = '../sne-boneyard'
+                    outdir = str(PATH.REPO_BONEYARD)  # os.path.join(PATH.ROOT, 'sne-boneyard')
 
         jsonstring = json.dumps({name: events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
 
-        path = outdir + '/' + filename + '.json'
+        # path = outdir + '/' + filename + '.json'
+        path = os.path.join(outdir, filename + '.json')
         with codecs.open(path, 'w', encoding='utf8') as f:
             f.write(jsonstring)
 
