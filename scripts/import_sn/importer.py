@@ -342,8 +342,9 @@ def import_main():
                 add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
                 add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
                 add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric')
+                type_str = row['Type'].replace('*', '?').replace('SN', '').replace('(pec)', ' P').replace('Ia? P?', 'Ia P?')
                 add_quantity(
-                    events, name, 'claimedtype', (row['Type'].replace('*', '?').replace('SN', '').replace('(pec)', ' P').replace('Ia? P?', 'Ia P?')), source)
+                    events, name, 'claimedtype', type_str, source)
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
                 add_quantity(events, name, 'dec', row['DEJ2000'], source)
             journal_events(tasks, args, events)
@@ -358,7 +359,8 @@ def import_main():
                 source = add_source(events, name, bibcode='2004A&A...415..863G')
                 add_quantity(events, name, 'alias', name, source)
                 datesplit = row['Date'].split('-')
-                add_quantity(events, name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
+                date_str = make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0'))
+                add_quantity(events, name, 'discoverdate', date_str, source)
                 add_quantity(events, name, 'host', 'Abell ' + str(row['Abell']), source)
                 add_quantity(events, name, 'claimedtype', row['Type'], source)
                 add_quantity(events, name, 'ra', row['RAJ2000'], source)
@@ -503,7 +505,8 @@ def import_main():
 
                 name = add_event(tasks, args, events, name)
                 source = (add_source(events, name, bibcode='2014BASI...42...47G') + ',' +
-                          add_source(events, name, refname='Galactic SNRs', url='https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
+                          add_source(events, name, refname='Galactic SNRs',
+                                     url='https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
                 add_quantity(events, name, 'alias', name, source)
 
                 add_quantity(events, name, 'alias', row['SNR'].strip(), source)
@@ -564,8 +567,9 @@ def import_main():
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'alias', 'SN' + row['SN'], source)
                 add_quantity(events, name, 'host', row['Gal'], source)
+                red_str = str(round_sig(float(row['cz'])*KM/CLIGHT, sig=get_sig_digits(str(row['cz']))))
                 if is_number(row['cz']):
-                    add_quantity(events, name, 'redshift', str(round_sig(float(row['cz'])*KM/CLIGHT, sig=get_sig_digits(str(row['cz'])))), source, kind='heliocentric')
+                    add_quantity(events, name, 'redshift', red_str, source, kind='heliocentric')
                 add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
             journal_events(tasks, args, events)
 
@@ -661,8 +665,10 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 add_photometry(
-                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], telescope=row['Tel'], magnitude=row['mag'],
-                    e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '', upperlimit=(not is_number(row['e_mag'])), source=source)
+                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'],
+                    telescope=row['Tel'], magnitude=row['mag'],
+                    e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '',
+                    upperlimit=(not is_number(row['e_mag'])), source=source)
             journal_events(tasks, args, events)
 
             # 2012ApJ...760L..33B
@@ -678,8 +684,9 @@ def import_main():
                 # Fixing a typo in VizieR table
                 if str(row['JD']) == '2455151.456':
                     row['JD'] = '2456151.456'
-                add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], telescope=row['Inst'], magnitude=row['mag'],
-                               e_magnitude=row['e_mag'], source=source)
+                add_photometry(
+                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'],
+                    telescope=row['Inst'], magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
             journal_events(tasks, args, events)
 
             # 2013ApJ...769...39S
@@ -698,8 +705,11 @@ def import_main():
                     instrument = row['Inst']
                 else:
                     telescope = row['Inst']
-                add_photometry(events, name, time=row['MJD'], band=row['Filt'], telescope=telescope, instrument=instrument, magnitude=row['mag'],
-                               e_magnitude=row['e_mag'] if not row['l_mag'] else '', upperlimit=(row['l_mag'] == '>'), source=source)
+                add_photometry(
+                    events, name, time=row['MJD'], band=row['Filt'], telescope=telescope,
+                    instrument=instrument, magnitude=row['mag'],
+                    e_magnitude=row['e_mag'] if not row['l_mag'] else '',
+                    upperlimit=(row['l_mag'] == '>'), source=source)
             journal_events(tasks, args, events)
 
             # 2009MNRAS.394.2266P
@@ -745,8 +755,10 @@ def import_main():
                 for band in ['J', 'H', 'K']:
                     bandtag = band + 'mag'
                     if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                        add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=band, magnitude=row[bandtag],
-                                       e_magnitude=row['e_' + bandtag], source=source)
+                        add_photometry(
+                            events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=band,
+                            magnitude=row[bandtag],
+                            e_magnitude=row['e_' + bandtag], source=source)
             journal_events(tasks, args, events)
 
             # 2013AJ....145...99A
@@ -787,8 +799,9 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time=row['MJD'], band='ROTSE', telescope='ROTSE', magnitude=row['mag'],
-                               e_magnitude=row['e_mag'] if not row['l_mag'] else '', upperlimit=(row['l_mag'] == '<'), source=source)
+                add_photometry(
+                    events, name, time=row['MJD'], band='ROTSE', telescope='ROTSE', magnitude=row['mag'],
+                    e_magnitude=row['e_mag'] if not row['l_mag'] else '', upperlimit=(row['l_mag'] == '<'), source=source)
 
             result = Vizier.get_catalogs('J/ApJ/729/143/table2')
             table = result[list(result.keys())[0]]
@@ -810,16 +823,18 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time=row['MJD'], band=row['Filt'], telescope='P60', magnitude=row['mag'],
-                               e_magnitude=row['e_mag'], source=source)
+                add_photometry(
+                    events, name, time=row['MJD'], band=row['Filt'], telescope='P60',
+                    magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
 
             result = Vizier.get_catalogs('J/ApJ/729/143/table5')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                add_photometry(events, name, time=row['MJD'], band=row['Filt'], instrument='UVOT', telescope='Swift', magnitude=row['mag'],
-                               e_magnitude=row['e_mag'], source=source)
+                add_photometry(
+                    events, name, time=row['MJD'], band=row['Filt'], instrument='UVOT', telescope='Swift',
+                    magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
             journal_events(tasks, args, events)
 
             # 2011ApJ...728...14P
@@ -834,17 +849,21 @@ def import_main():
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
                 if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
-                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'], band='B', magnitude=row['Bmag'],
-                                   e_magnitude=row['e_Bmag'], source=source)
+                    add_photometry(
+                        events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'],
+                        band='B', magnitude=row['Bmag'], e_magnitude=row['e_Bmag'], source=source)
                 if 'Vmag' in row and is_number(row['Vmag']) and not isnan(float(row['Vmag'])):
-                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'], band='V', magnitude=row['Vmag'],
-                                   e_magnitude=row['e_Vmag'], source=source)
+                    add_photometry(
+                        events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'],
+                        band='V', magnitude=row['Vmag'], e_magnitude=row['e_Vmag'], source=source)
                 if 'Rmag' in row and is_number(row['Rmag']) and not isnan(float(row['Rmag'])):
-                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'], band='R', magnitude=row['Rmag'],
-                                   e_magnitude=row['e_Rmag'], source=source)
+                    add_photometry(
+                        events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'],
+                        band='R', magnitude=row['Rmag'], e_magnitude=row['e_Rmag'], source=source)
                 if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
-                    add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'], band='I', magnitude=row['Imag'],
-                                   e_magnitude=row['e_Imag'], source=source)
+                    add_photometry(
+                        events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'],
+                        band='I', magnitude=row['Imag'], e_magnitude=row['e_Imag'], source=source)
 
             result = Vizier.get_catalogs('J/ApJ/728/14/table2')
             table = result[list(result.keys())[0]]
@@ -1696,7 +1715,7 @@ def import_main():
                 session = requests.Session()
                 response = session.get('https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
                 html = response.text
-                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html', 'w')) as f:
+                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'w') as f:
                     f.write(html)
 
             soup = BeautifulSoup(html, 'html5lib')
@@ -1708,12 +1727,12 @@ def import_main():
                     add_quantity(events, name, 'alias', name, source)
 
                     if archived_task(tasks, args, 'cccp'):
-                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/' + link['href'].split('/')[-1], 'r')) as f:
+                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1], 'r') as f:
                             html2 = f.read()
                     else:
                         response2 = session.get('https://webhome.weizmann.ac.il/home/iair/' + link['href'])
                         html2 = response2.text
-                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/' + link['href'].split('/')[-1], 'w')) as f:
+                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1], 'w') as f:
                             f.write(html2)
 
                     soup2 = BeautifulSoup(html2, 'html5lib')
@@ -1732,7 +1751,7 @@ def import_main():
                                 if response3.status_code == 404:
                                     continue
                                 html3 = response3.text
-                                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/' + link2['href'].split('/')[-1], 'w')) as f:
+                                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link2['href'].split('/')[-1], 'w') as f:
                                     f.write(html3)
                             table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(',')] for x in list(filter(None, html3.split('\n')))]
                             for row in table:
@@ -3219,7 +3238,7 @@ def import_main():
                 session = requests.Session()
                 response = session.get('http://wiserep.weizmann.ac.il/spectra/update')
                 html = response.text
-                with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html', 'w')) as f:
+                with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html'), 'w') as f:
                     f.write(html)
 
             bs = BeautifulSoup(html, 'html5lib')
