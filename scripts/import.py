@@ -1165,9 +1165,10 @@ def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
 def set_preferred_names():
+    currenttask = 'Setting preferred names'
     if not len(events):
         load_stubs()
-    for name in list(sorted(list(events.keys()))):
+    for ni, name in enumerate(tq(list(sorted(list(events.keys()))), currenttask = currenttask)):
         if name not in events:
             continue
         newname = ''
@@ -1230,6 +1231,8 @@ def set_preferred_names():
                 events[newname]['name'] = newname
                 del(events[name])
                 journal_events()
+        if args.travis and ni > travislimit:
+            break
 
 # Merge and remove duplicate events
 def merge_duplicates():
@@ -1270,6 +1273,8 @@ def merge_duplicates():
                 else:
                     print ('Duplicate already deleted')
                 journal_events()
+        if args.travis and n1 > travislimit:
+            break
 
 def derive_and_sanitize():
     biberrordict = {
@@ -4438,7 +4443,6 @@ for task in tasks:
     
             for mirror in rochestermirrors:
                 filepath = '../sne-external/rochester/' + os.path.basename(path)
-                print(mirror + path)
                 html = load_cached_url(mirror + path, filepath, failhard = (mirror == rochestermirrors[-1]))
                 if html:
                     break
@@ -6219,13 +6223,15 @@ if os.path.isfile(path):
 else:
     extinctionsdict = OrderedDict()
 
-for fi in tq(files, 'Sanitizing and deriving quantities for events'):
+for i, fi in enumerate(tq(files, 'Sanitizing and deriving quantities for events')):
     events = OrderedDict()
     name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
     name = add_event(name, loadifempty = False)
     derive_and_sanitize()
     if has_task('writeevents'): 
         write_all_events(empty = True, gz = True, bury = True)
+    if args.travis and i > travislimit:
+        break
 
 jsonstring = json.dumps(bibauthordict, indent='\t', separators=(',', ':'), ensure_ascii=False)
 with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
