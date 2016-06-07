@@ -1234,7 +1234,7 @@ def import_main():
             with open(os.path.join(PATH.REPO_EXTERNAL, 'Nicholl-04-01-16/bibcodes.json'), 'r') as f:
                 bcs = json.loads(f.read())
 
-            for datafile in sorted(glob('../sne-external/Nicholl-04-01-16/*.txt'), key=lambda s: s.lower()):
+            for datafile in sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'Nicholl-04-01-16/*.txt')), key=lambda s: s.lower()):
                 name = os.path.basename(datafile).split('_')[0]
                 name = add_event(tasks, args, events, name)
                 bibcode = ''
@@ -1306,11 +1306,11 @@ def import_main():
             journal_events(tasks, args, events)
 
             # Galbany 04-18-16 donation
-            folders = next(os.walk('../sne-external/galbany-04-18-16/'))[1]
+            folders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL, 'galbany-04-18-16/')))[1]
             bibcode = '2016AJ....151...33G'
             for folder in folders:
-                infofiles = glob('../sne-external/galbany-04-18-16/' + folder + '/*.info')
-                photfiles = glob('../sne-external/galbany-04-18-16/' + folder + '/*.out*')
+                infofiles = glob(os.path.join(PATH.REPO_EXTERNAL, 'galbany-04-18-16/') + folder + '/*.info')
+                photfiles = glob(os.path.join(PATH.REPO_EXTERNAL, 'galbany-04-18-16/') + folder + '/*.out*')
 
                 zhel = ''
                 zcmb = ''
@@ -1366,7 +1366,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # Brown 05-14-16
-            files = glob('../sne-external/brown-05-14-16/*.dat')
+            files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
             for fi in tq(files, currenttask):
                 name = os.path.basename(fi).split('_')[0]
                 name = add_event(tasks, args, events, name)
@@ -1395,7 +1395,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # Nicholl 05-03-16
-            files = glob('../sne-external/nicholl-05-03-16/*.txt')
+            files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
             name = add_event(tasks, args, events, 'SN2015bn')
             source = add_source(events, name, bibcode='2016arXiv160304748N')
             add_quantity(events, name, 'alias', name, source)
@@ -1489,7 +1489,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # Anderson 2014
-            for datafile in tq(sorted(glob('../sne-external/SNII_anderson2014/*.dat'), key=lambda s: s.lower()), currenttask):
+            for datafile in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat')), key=lambda s: s.lower()), currenttask):
                 basename = os.path.basename(datafile)
                 if not is_number(basename[:2]):
                     continue
@@ -1670,7 +1670,7 @@ def import_main():
         # CCCP
         if do_task(tasks, args, task, 'cccp'):
             cccpbands = ['B', 'V', 'R', 'I']
-            for datafile in sorted(glob('../sne-external/CCCP/apj407397*.txt'), key=lambda s: s.lower()):
+            for datafile in sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')), key=lambda s: s.lower()):
                 with open(datafile, 'r') as f:
                     tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
                     for r, row in enumerate(tsvin):
@@ -1722,7 +1722,7 @@ def import_main():
                         if '.txt' in link2['href'] and '_' in link2['href']:
                             band = link2['href'].split('_')[1].split('.')[0].upper()
                             if archived_task(tasks, args, 'cccp'):
-                                fname = '../sne-external/CCCP/' + link2['href'].split('/')[-1]
+                                fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link2['href'].split('/')[-1]
                                 if not os.path.isfile(fname):
                                     continue
                                 with open(fname, 'r') as f:
@@ -1747,7 +1747,7 @@ def import_main():
                 for row in tsvin:
                     suspectrefdict[row[0]] = row[1]
 
-            for datafile in tq(sorted(glob('../sne-external/SUSPECT/*.html'), key=lambda s: s.lower()), currenttask):
+            for datafile in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'SUSPECT/*.html')), key=lambda s: s.lower()), currenttask):
                 basename = os.path.basename(datafile)
                 basesplit = basename.split('-')
                 name = basesplit[1]
@@ -1811,7 +1811,7 @@ def import_main():
 
         # CfA data
         if do_task(tasks, args, task, 'cfa'):
-            for fname in tq(sorted(glob('../sne-external/cfa-input/*.dat'), key=lambda s: s.lower()), currenttask):
+            for fname in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat')), key=lambda s: s.lower()), currenttask):
                 f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 csv_data = []
@@ -1927,7 +1927,7 @@ def import_main():
 
             jsontxt = load_cached_url(
                 args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
-                '../sne-external-spectra/UCB/allpub.json')
+                os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
             if not jsontxt:
                 continue
 
@@ -1958,7 +1958,7 @@ def import_main():
                 if not phot['PhotID']:
                     raise(ValueError('ID not found for SNDB phot!'))
 
-                filepath = '../sne-external/SNDB/' + filename
+                filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
                 if archived_task(tasks, args, 'ucb') and os.path.isfile(filepath):
                     with open(filepath, 'r') as f:
                         phottxt = f.read()
@@ -1992,7 +1992,7 @@ def import_main():
             with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as f:
                 bibcodes2010 = f.read().split('\n')
             sdssbands = ['u', 'g', 'r', 'i', 'z']
-            for fname in tq(sorted(glob('../sne-external/SDSS/*.sum'), key=lambda s: s.lower()), currenttask):
+            for fname in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/*.sum')), key=lambda s: s.lower()), currenttask):
                 f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
@@ -2040,7 +2040,7 @@ def import_main():
 
         # Import GAIA
         if do_task(tasks, args, task, 'gaia'):
-            fname = '../sne-external/GAIA/alerts.csv'
+            fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
             csvtxt = load_cached_url(args, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
             if not csvtxt:
                 continue
@@ -2073,7 +2073,7 @@ def import_main():
                             add_quantity(events, name, 'alias', alias, source)
                             break
 
-                fname = '../sne-external/GAIA/' + row[0] + '.csv'
+                fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
                 if not args.fullrefresh and archived_task(tasks, args, 'gaia') and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
@@ -2103,7 +2103,7 @@ def import_main():
         # VizieR catalogs exist for this: J/AJ/139/519, J/AJ/142/156. Should replace eventually.
         if do_task(tasks, args, task, 'csp'):
             cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-            for fname in tq(sorted(glob('../sne-external/CSP/*.dat'), key=lambda s: s.lower()), currenttask):
+            for fname in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat')), key=lambda s: s.lower()), currenttask):
                 f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
@@ -2194,7 +2194,7 @@ def import_main():
         # Now import the Asiago catalog
         if do_task(tasks, args, task, 'asiago'):
             # response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
-            path = os.path.abspath('../sne-external/asiago-cat.php')
+            path = os.path.abspath(os.path.join(PATH.REPO_EXTERNAL, 'asiago-cat.php'))
             response = urllib.request.urlopen('file://' + path)
             html = response.read().decode('utf-8')
             html = html.replace('\r', "")
@@ -2381,14 +2381,14 @@ def import_main():
             session = requests.Session()
             csvtxt = load_cached_url(
                 args, 'https://wis-tns.weizmann.ac.il/search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0',
-                '../sne-external/TNS/index.csv')
+                os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
             if not csvtxt:
                 continue
             maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
             maxpages = ceil(int(maxid)/1000.)
 
             for page in tq(range(maxpages), currenttask):
-                fname = '../sne-external/TNS/page-' + str(page).zfill(2) + '.csv'
+                fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + str(page).zfill(2) + '.csv'
                 if archived_task(tasks, args, 'tns') and os.path.isfile(fname) and page < 7:
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
@@ -2457,7 +2457,7 @@ def import_main():
                 if args.update and not rochesterupdate[p]:
                     continue
 
-                filepath = '../sne-external/rochester/' + os.path.basename(path)
+                filepath = os.path.join(PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
                 html = load_cached_url(args, path, filepath)
                 if not html:
                     continue
@@ -2608,7 +2608,7 @@ def import_main():
                 if args.update and not ogleupdate[b]:
                     continue
 
-                filepath = '../sne-external/OGLE-' + bn.replace('/', '-') + '-transients.html'
+                filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-') + bn.replace('/', '-') + '-transients.html'
                 htmltxt = load_cached_url(args, 'http://ogle.astrouw.edu.pl/ogle4/' + bn + '/transients.html', filepath)
                 if not htmltxt:
                     continue
@@ -2667,7 +2667,7 @@ def import_main():
                         ra = radec[0]
                         dec = radec[1]
 
-                        fname = '../sne-external/OGLE/' + datafnames[ec]
+                        fname = os.path.join(PATH.REPO_EXTERNAL, 'OGLE/') + datafnames[ec]
                         if not args.fullrefresh and archived_task(tasks, args, 'ogle') and os.path.isfile(fname):
                             with open(fname, 'r') as f:
                                 csvtxt = f.read()
@@ -2744,7 +2744,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'psthreepi'):
-            fname = '../sne-external/3pi/page00.html'
+            fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
             html = load_cached_url(args, 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date', fname, write=False)
             if not html:
                 continue
@@ -2773,9 +2773,9 @@ def import_main():
                     f.write(html)
 
             numpages = int(links[-2].contents[0])
-            oldnumpages = len(glob('../sne-external/3pi/page*'))
+            oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
             for page in tq(range(1, numpages), currenttask):
-                fname = '../sne-external/3pi/page' + str(page).zfill(2) + '.html'
+                fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + str(page).zfill(2) + '.html'
                 if not args.fullrefresh and archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname) and page < oldnumpages:
                     with open(fname, 'r') as f:
                         html = f.read()
@@ -2852,7 +2852,7 @@ def import_main():
                     add_quantity(events, name, 'dec', dec, source)
                     add_quantity(events, name, 'claimedtype', ctype, source)
 
-                    fname2 = '../sne-external/3pi/candidate-' + pslink.rstrip('/').split('/')[-1] + '.html'
+                    fname2 = os.path.join(PATH.REPO_EXTERNAL, '3pi/candidate-') + pslink.rstrip('/').split('/')[-1] + '.html'
                     if archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname2):
                         with open(fname2, 'r') as f:
                             html2 = f.read()
@@ -2937,7 +2937,7 @@ def import_main():
 
             folders = ['catalina', 'MLS', 'SSS']
             for fold in tq(folders, currenttask):
-                html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html', '../sne-external/CRTS/' + fold + '.html')
+                html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html', os.path.join(PATH.REPO_EXTERNAL, 'CRTS/') + fold + '.html')
                 if not html:
                     continue
                 bs = BeautifulSoup(html, 'html5lib')
@@ -3010,7 +3010,7 @@ def import_main():
                             events, name, band='C', magnitude=hostmag, e_magnitude=1.0, source=source, host=True,
                             telescope='Catalina Schmidt', upperlimit=hostupper)
 
-                    fname2 = '../sne-external/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
+                    fname2 = PATH.REPO_EXTERNAL + '/' + fold + '/' + lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html'
                     if not args.fullrefresh and archived_task(tasks, args, 'crts') and os.path.isfile(fname2):
                         with open(fname2, 'r') as f:
                             html2 = f.read()
@@ -3041,7 +3041,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'snhunt'):
-            html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/catalina/current.html', '../sne-external/SNhunt/current.html')
+            html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/catalina/current.html', os.path.join(PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
             if not html:
                 continue
             text = html.splitlines()
@@ -3135,7 +3135,7 @@ def import_main():
         if do_task(tasks, args, task, 'cpcs'):
             jsontxt = load_cached_url(
                 args, 'http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6',
-                '../sne-external/CPCS/index.json')
+                os.path.join(PATH.REPO_EXTERNAL, 'CPCS/index.json'))
             if not jsontxt:
                 continue
             alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
@@ -3171,7 +3171,7 @@ def import_main():
 
                 alerturl = 'http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=' + str(ai)
                 source = add_source(events, name, refname='CPCS Alert ' + str(ai), url=alerturl)
-                fname = '../sne-external/CPCS/alert-' + str(ai).zfill(2) + '.json'
+                fname = os.path.join(PATH.REPO_EXTERNAL, 'CPCS/alert-') + str(ai).zfill(2) + '.json'
                 if archived_task(tasks, args, 'cpcs') and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         jsonstr = f.read()
@@ -3266,7 +3266,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'des'):
-            html = load_cached_url(args, 'https://portal.nersc.gov/des-sn/transients/', '../sne-external/DES/transients.html')
+            html = load_cached_url(args, 'https://portal.nersc.gov/des-sn/transients/', os.path.join(PATH.REPO_EXTERNAL, 'DES/transients.html'))
             if not html:
                 continue
             bs = BeautifulSoup(html, 'html5lib')
@@ -3302,7 +3302,7 @@ def import_main():
                 add_quantity(events, name, 'ra', ra, sources)
                 add_quantity(events, name, 'dec', dec, sources)
 
-                html2 = load_cached_url(args, 'https://portal.nersc.gov/des-sn/transients/' + name, '../sne-external/DES/' + name + '.html')
+                html2 = load_cached_url(args, 'https://portal.nersc.gov/des-sn/transients/' + name, os.path.join(PATH.REPO_EXTERNAL, 'DES/') + name + '.html')
                 if not html2:
                     continue
                 lines = html2.splitlines()
@@ -3317,7 +3317,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'asassn'):
-            html = load_cached_url(args, 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html', '../sne-external/ASASSN/sn_list.html')
+            html = load_cached_url(args, 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html', os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
             if not html:
                 continue
             bs = BeautifulSoup(html, 'html5lib')
@@ -3386,7 +3386,8 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'asiagospectra'):
-            html = load_cached_url(args, 'http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990', '../sne-external-spectra/Asiago/spectra.html')
+            html = load_cached_url(args, 'http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990',
+                                   os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Asiago/spectra.html'))
             if not html:
                 continue
             bs = BeautifulSoup(html, 'html5lib')
@@ -3501,8 +3502,8 @@ def import_main():
                                      'stt1839': ''}
 
             oldname = ''
-            for folder in tq(sorted(next(os.walk('../sne-external-WISEREP'))[1], key=lambda s: s.lower()), currenttask):
-                files = glob('../sne-external-WISEREP/' + folder + '/*')
+            for folder in tq(sorted(next(os.walk(PATH.REPO_EXTERNAL_WISEREP))[1], key=lambda s: s.lower()), currenttask):
+                files = glob(PATH.REPO_EXTERNAL_WISEREP + '/' + folder + '/*')
                 for fname in tq(files, currenttask):
                     if '.html' in fname:
                         lfiles = deepcopy(files)
@@ -3667,8 +3668,8 @@ def import_main():
         if do_task(tasks, args, task, 'cfaspectra'):
             # Ia spectra
             oldname = ''
-            for name in tq(sorted(next(os.walk('../sne-external-spectra/CfA_SNIa'))[1], key=lambda s: s.lower()), currenttask):
-                fullpath = '../sne-external-spectra/CfA_SNIa/' + name
+            for name in tq(sorted(next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1], key=lambda s: s.lower()), currenttask):
+                fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa/') + name
                 origname = name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
@@ -3714,8 +3715,8 @@ def import_main():
 
             # Ibc spectra
             oldname = ''
-            for name in tq(sorted(next(os.walk('../sne-external-spectra/CfA_SNIbc'))[1], key=lambda s: s.lower()), currenttask):
-                fullpath = '../sne-external-spectra/CfA_SNIbc/' + name
+            for name in tq(sorted(next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc')))[1], key=lambda s: s.lower()), currenttask):
+                fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
                 name = get_preferred_name(events, name)
@@ -3753,8 +3754,8 @@ def import_main():
 
             # Other spectra
             oldname = ''
-            for name in tq(sorted(next(os.walk('../sne-external-spectra/CfA_Extra'))[1], key=lambda s: s.lower()), currenttask):
-                fullpath = '../sne-external-spectra/CfA_Extra/' + name
+            for name in tq(sorted(next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra')))[1], key=lambda s: s.lower()), currenttask):
+                fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
                 name = get_preferred_name(events, name)
@@ -3806,7 +3807,7 @@ def import_main():
                 datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
             oldname = ''
-            for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/SNLS/*'), key=lambda s: s.lower()), currenttask=currenttask)):
+            for fi, fname in enumerate(tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNLS/*')), key=lambda s: s.lower()), currenttask=currenttask)):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('_')
                 name = 'SNLS-' + fileparts[1]
@@ -3848,7 +3849,7 @@ def import_main():
 
         if do_task(tasks, args, task, 'cspspectra'):
             oldname = ''
-            for fi, fname in enumerate(tq(sorted(glob('../sne-external-spectra/CSP/*'), key=lambda s: s.lower()), currenttask=currenttask)):
+            for fi, fname in enumerate(tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*')), key=lambda s: s.lower()), currenttask=currenttask)):
                 filename = os.path.basename(fname)
                 sfile = filename.split('.')
                 if sfile[1] == 'txt':
@@ -3897,7 +3898,7 @@ def import_main():
 
             jsontxt = load_cached_url(
                 args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
-                '../sne-external-spectra/UCB/allpub.json')
+                os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
             if not jsontxt:
                 continue
 
@@ -3943,7 +3944,7 @@ def import_main():
                 if not spectrum['SpecID']:
                     raise(ValueError('ID not found for SNDB spectrum!'))
 
-                filepath = '../sne-external-spectra/UCB/' + filename
+                filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
                 if archived_task('ucbspectra', tasks) and os.path.isfile(filepath):
                     with open(filepath, 'r') as f:
                         spectxt = f.read()
@@ -3999,9 +4000,9 @@ def import_main():
                     changedict[items[1]] = items[0]
 
             suspectcnt = 0
-            folders = next(os.walk('../sne-external-spectra/Suspect'))[1]
+            folders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect')))[1]
             for folder in tq(folders, currenttask):
-                eventfolders = next(os.walk('../sne-external-spectra/Suspect/'+folder))[1]
+                eventfolders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/')+folder))[1]
                 oldname = ''
                 for eventfolder in tq(eventfolders, currenttask):
                     name = eventfolder
@@ -4017,7 +4018,7 @@ def import_main():
                     secondarybibcode = '2001AAS...199.8408R'
                     secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
                     add_quantity(events, name, 'alias', name, secondarysource)
-                    eventspectra = next(os.walk('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder))[2]
+                    eventspectra = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/')+folder+'/'+eventfolder))[2]
                     for spectrum in eventspectra:
                         sources = [secondarysource]
                         bibcode = ''
@@ -4070,7 +4071,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'snfspectra'):
-            eventfolders = next(os.walk('../sne-external-spectra/SNFactory'))[1]
+            eventfolders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
             bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T', 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
             oldname = ''
             snfcnt = 0
@@ -4089,7 +4090,7 @@ def import_main():
                 bibcode = bibcodes[name]
                 source = add_source(events, name, bibcode=bibcode)
                 sources = uniq_cdl([source, secondarysource])
-                eventspectra = glob('../sne-external-spectra/SNFactory/'+eventfolder+'/*.dat')
+                eventspectra = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory/')+eventfolder+'/*.dat')
                 for spectrum in eventspectra:
                     filename = os.path.basename(spectrum)
                     with open(spectrum) as f:
@@ -4156,7 +4157,7 @@ def import_main():
             journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'superfitspectra'):
-            sfdirs = glob('../sne-external-spectra/superfit/*')
+            sfdirs = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*'))
             for sfdir in tq(sfdirs, currenttask=currenttask):
                 sffiles = sorted(glob(sfdir + '/*.dat'))
                 lastname = ''

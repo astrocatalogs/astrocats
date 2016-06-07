@@ -15,6 +15,7 @@ class PATH:
     REPO_EXTERNAL_RADIO = os.path.join(ROOT, 'sne-external-radio')
     REPO_EXTERNAL_XRAY = os.path.join(ROOT, 'sne-external-xray')
     REPO_EXTERNAL_SPECTRA = os.path.join(ROOT, 'sne-external-spectra')
+    REPO_EXTERNAL_WISEREP = os.path.join(ROOT, 'sne-external-WISEREP')
 
 
 class FILENAME:
