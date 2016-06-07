@@ -5,7 +5,7 @@ from . digits import is_number
 
 from scripts import PATH, FILENAME
 
-__all__ = ['repo_file_list', 'get_rep_folder', 'get_repo_folders', 'get_repo_years']
+__all__ = ['repo_file_list', 'get_repo_folder_for_year', 'get_repo_folders', 'get_repo_years']
 
 
 def repo_file_list(bones=True):
@@ -23,7 +23,7 @@ def repo_file_list(bones=True):
     return files
 
 
-def get_rep_folder(entry):
+def get_repo_folder_for_year(entry):
     repo_folders = get_repo_folders()
     if 'discoverdate' not in entry:
         return repo_folders[0]

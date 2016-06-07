@@ -382,7 +382,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     tprint(eventfile + ' [' + checksum + ']')
 
-    repfolder = get_rep_folder(catalog[entry])
+    repfolder = get_repo_folder_for_year(catalog[entry])
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
         catalog[entry]['download'] = 'e'
     else:
@@ -1451,7 +1451,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             </script>'''
             , html)
 
-        repfolder = get_rep_folder(catalog[entry])
+        repfolder = get_repo_folder_for_year(catalog[entry])
         html = re.sub(r'(\<\/body\>)', '<div style="width:100%; text-align:center;">' + r'<a class="event-download" href="' +
             linkdir + fileeventname + r'.json" download>' + r'Click to download all data for ' + eventname + ' in JSON format' +
             r'</a></div>\n\1', html)
