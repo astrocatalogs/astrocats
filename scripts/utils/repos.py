@@ -53,3 +53,7 @@ def get_repo_years(repo_folders):
     repo_years = [int(repo_folders[x][-4:]) for x in range(len(repo_folders)-1)]
     repo_years[0] -= 1
     return repo_years
+
+
+# def get_filename_in_repo(repo, fname):
+#     return os.path.join(PATH.ROOT, repo, fname)
