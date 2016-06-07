@@ -103,7 +103,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 
     edit = True if os.path.isfile('../sne-internal/' + get_event_filename(item['name']) + '.json') else False
 
-    if ras and decs and item['name']:# and item['name'] not in ['SN1996D', 'SN1998ew', 'SN2003an', 'SN2011in', 'SN2012ac', 'SN2012ht', 'SN2013bz']:
+    if ras and decs and item['name'] and item['name'] not in ['SN2002fz']:
         oralen = len(ras)
         odeclen = len(decs)
         if len(ras) > len(decs):
