@@ -4776,7 +4776,7 @@ for task in tasks:
                 continue
             bs = BeautifulSoup(html, "html5lib")
             trs = bs.findAll('tr')
-            for tr in tq(trs, currenttask):
+            for tri, tr in enumerate(tq(trs, currenttask)):
                 tds = tr.findAll('td')
                 if not tds:
                     continue
@@ -4867,6 +4867,8 @@ for task in tasks:
                         telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
                 if args.update:
                     journal_events()
+            if args.travis and tri > travislimit:
+                break
         journal_events()
     
     if do_task(task, 'snhunt'):
@@ -5401,8 +5403,8 @@ for task in tasks:
                                                 raise
                                             except StopIteration:
                                                 pass
-                                            if not specpath:
-                                                warnings.warn('Spectrum file not found, "' + specfile + '"')
+                                            #if not specpath:
+                                            #    warnings.warn('Spectrum file not found, "' + specfile + '"')
                                         else:
                                             continue
                             if "Spec Type:</span>" in str(tr.contents) and produceoutput:

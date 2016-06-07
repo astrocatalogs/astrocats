@@ -55,7 +55,7 @@ infl.defnoun("spectrum", "spectra")
 
 outdir = "../"
 
-travislimit = 1000
+travislimit = 100
 
 radiosigma = 3.0
 
