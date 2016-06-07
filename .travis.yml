@@ -32,6 +32,7 @@ install:
     - git clone --depth=1 git://github.com/astrocatalogs/sne-2005-2009.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-2010-2014.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-2015-2019.git
+    - git clone --depth=1 git://github.com/astrocatalogs/sne-boneyard.git
 
 # Run test
 script:

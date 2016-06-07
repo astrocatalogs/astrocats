@@ -52,50 +52,50 @@ args = parser.parse_args()
 
 tasks = OrderedDict([
     ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
-    #("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
-    #("radio",           {"nicename":"%pre radio data",              "update": False}),
-    #("xray",            {"nicename":"%pre X-ray data",              "update": False}),
-    #("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
-    #("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
-    #("donations",       {"nicename":"%pre donations",               "update": False}),
-    #("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
-    #("scp",             {"nicename":"%pre SCP",                     "update": False}),
-    #("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
-    #("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
-    #("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
-    #("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    #("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
-    #("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
-    #("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
-    #("itep",            {"nicename":"%pre ITEP",                    "update": False}),
-    #("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
-    #("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+    ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
+    ("radio",           {"nicename":"%pre radio data",              "update": False}),
+    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+    ("donations",       {"nicename":"%pre donations",               "update": False}),
+    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
+    ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
+    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
+    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
     ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
-    #("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    #("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
-    #("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
-    #("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
-    #("snls",            {"nicename":"%pre SNLS",                    "update": False}),
-    #("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
-    #("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    #("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
-    #("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
-    #("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    #("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
-    #("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
-    #("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
-    #("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
-    #("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    #("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    #("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    #("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    #("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    #("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
+    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
+    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
+    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
+    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
+    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
+    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
+    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
@@ -1015,7 +1015,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     else:
         events[name].setdefault(quantity,[]).append(quantaentry)
 
-def load_cached_url(url, filepath, timeout = 120, write = True):
+def load_cached_url(url, filepath, timeout = 120, write = True, failhard = True):
     filemd5 = ''
     filetxt = ''
     if not args.refresh and os.path.isfile(filepath):
@@ -1038,6 +1038,8 @@ def load_cached_url(url, filepath, timeout = 120, write = True):
     except (KeyboardInterrupt, SystemExit):
         raise
     except:
+        if failhard:
+            return ''
         return filetxt
     else:
         if write:
@@ -1900,6 +1902,8 @@ for task in tasks:
     
     if do_task(task, 'simbad'):
         #Simbad.list_votable_fields()
+        # Some coordinates that SIMBAD claims belong to the SNe actually belong to the host.
+        simbadbadcoordbib = ['2013ApJ...770..107C']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
         customSimbad.add_votable_fields('sptype', 'sp_bibcode', 'id')
@@ -1922,7 +1926,7 @@ for task in tasks:
                 if 'OGLE-MBR' in ali:
                     continue
                 add_quantity(name, 'alias', ali, source)
-            if row['COO_BIBCODE']:
+            if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
                 csources = ','.join([source, add_source(name, bibcode = row['COO_BIBCODE'])])
                 add_quantity(name, 'ra', row['RA'], csources)
                 add_quantity(name, 'dec', row['DEC'], csources)
@@ -4434,7 +4438,8 @@ for task in tasks:
     
             for mirror in rochestermirrors:
                 filepath = '../sne-external/rochester/' + os.path.basename(path)
-                html = load_cached_url(mirror + path, filepath)
+                print(mirror + path)
+                html = load_cached_url(mirror + path, filepath, failhard = (mirror == rochestermirrors[-1]))
                 if html:
                     break
             if not html:
