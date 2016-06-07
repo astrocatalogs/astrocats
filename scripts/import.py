@@ -272,7 +272,7 @@ def name_clean(name):
         newname = newname.replace('OGLE ', 'OGLE-', 1)
     if newname.startswith('OGLE-') and len(newname) != 16:
         namesp = newname.split('-')
-        if len(namesp[1]) == 4:
+        if len(namesp[1]) == 4 and is_number(namesp[1]) and is_number(namesp[2]):
             newname = 'OGLE-' + namesp[1] + '-' + namesp[2].zfill(3)
     if newname.startswith('SN SDSS'):
         newname = newname.replace('SN SDSS ', 'SDSS', 1)
