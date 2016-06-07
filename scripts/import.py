@@ -85,6 +85,7 @@ tasks = OrderedDict([
     ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
     ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
     ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+    ("snf",             {"nicename":"%pre SNF",                     "update": False}),
     ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
     ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
     ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
@@ -418,7 +419,16 @@ def get_aliases(name, includename = True):
         return [name]
     return []
 
-def add_event(name, load = True, delete = True, source = '', loadifempty = True):
+def new_event(name, load = True, delete = True, loadifempty = True, refname = '',
+    reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
+    oldname = name
+    name = add_event(name, load = load, delete = delete, loadifempty = loadifempty)
+    source = add_source(name, refname = refname, reference = reference, url = url,
+        bibcode = bibcode, secondary = secondary, acknowledgment = acknowledgment)
+    add_quantity(name, 'alias', oldname, source)
+    return (name, source)
+
+def add_event(name, load = True, delete = True, loadifempty = True):
     if loadifempty and args.update and not len(events):
         load_stubs()
 
@@ -447,8 +457,6 @@ def add_event(name, load = True, delete = True, source = '', loadifempty = True)
 
         events[newname] = OrderedDict()
         events[newname]['name'] = newname
-        if source:
-            add_quantity(newname, 'alias', newname, source)
         if args.verbose and 'stub' not in events[newname]:
             tprint('Added new event ' + newname)
         return newname
@@ -1870,7 +1878,8 @@ for task in tasks:
     
     if do_task(task, 'radio'):
         for datafile in tq(sorted(glob("../sne-external-radio/*.txt"), key=lambda s: s.lower()), currenttask):
-            name = add_event(os.path.basename(datafile).split('.')[0])
+            oldname = os.path.basename(datafile).split('.')[0]
+            name = add_event(oldname)
             radiosourcedict = OrderedDict()
             with open(datafile, 'r') as f:
                 for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
@@ -1883,12 +1892,13 @@ for task in tasks:
                         source = radiosourcedict[cols[6]]
                         add_photometry(name, time = cols[0], frequency = cols[2], u_frequency = 'GHz', fluxdensity = cols[3],
                             e_fluxdensity = cols[4], u_fluxdensity = 'µJy', instrument = cols[5], source = source)
-                        add_quantity(name, 'alias', name, source)
+                        add_quantity(name, 'alias', oldname, source)
         journal_events()
     
     if do_task(task, 'xray'):
         for datafile in tq(sorted(glob("../sne-external-xray/*.txt"), key=lambda s: s.lower()), currenttask):
-            name = add_event(os.path.basename(datafile).split('.')[0])
+            oldname = os.path.basename(datafile).split('.')[0]
+            name = add_event(oldname)
             with open(datafile, 'r') as f:
                 for li, line in enumerate(f.read().splitlines()):
                     if li == 0:
@@ -1902,7 +1912,7 @@ for task in tasks:
                             unabsorbedflux = cols[8], u_flux = 'ergs/s/cm^2',
                             photonindex = cols[15], instrument = cols[17], nhmw = cols[11],
                             upperlimit = (float(cols[5]) < 0), source = source)
-                        add_quantity(name, 'alias', name, source)
+                        add_quantity(name, 'alias', oldname, source)
         journal_events()
     
     if do_task(task, 'simbad'):
@@ -1953,9 +1963,7 @@ for task in tasks:
             name = row['SN']
             if is_number(name[:4]):
                 name = 'SN' + name
-            name = add_event(name)
-            source = add_source(name, bibcode = "2012ApJS..200...12H")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2012ApJS..200...12H")
             if '[' not in row['Gal']:
                 add_quantity(name, 'host', row['Gal'].replace('_', ' '), source)
             add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric')
@@ -1971,9 +1979,7 @@ for task in tasks:
         oldname = ''
         for row in tq(table, currenttask):
             name = row['Name'].replace('SCP', 'SCP-')
-            name = add_event(name)
-            source = add_source(name, bibcode = "2012ApJ...746...85S")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2012ApJ...746...85S")
             if row['f_Name']:
                 add_quantity(name, 'claimedtype', 'Ia', source)
             if row['z']:
@@ -2000,9 +2006,7 @@ for task in tasks:
             e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig = sig)
             if float(e_magnitude) > 5.0:
                 continue
-            name = add_event(name)
-            source = add_source(name, bibcode = "2012ApJ...746...85S")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2012ApJ...746...85S")
             add_photometry(name, time = str(row['MJD']), band = row['Filter'], instrument = row['Inst'],
                 magnitude = magnitude, e_magnitude = e_magnitude, source = source)
     
@@ -2022,9 +2026,7 @@ for task in tasks:
             e_magnitude = pretty_num(Decimal(2.5)*(Decimal(1.0) + err/flux).log10(), sig = sig)
             if float(e_magnitude) > 5.0:
                 continue
-            name = add_event(name)
-            source = add_source(name, bibcode = "2004ApJ...602..571B")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2004ApJ...602..571B")
             band = row['Filt']
             system = ''
             telescope = ''
@@ -2045,9 +2047,7 @@ for task in tasks:
             if name == oldname:
                 continue
             oldname = name
-            name = add_event(name)
-            source = add_source(name, bibcode = '2014MNRAS.444.3258M')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014MNRAS.444.3258M')
             add_quantity(name, 'redshift', str(row['z']), source, kind = 'heliocentric', error = str(row['e_z']))
             add_quantity(name, 'ra', str(row['_RA']), source, unit = 'floatdegrees')
             add_quantity(name, 'dec', str(row['_DE']), source, unit = 'floatdegrees')
@@ -2059,9 +2059,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = row['SN']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2014MNRAS.438.1391P')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014MNRAS.438.1391P')
             add_quantity(name, 'redshift', str(row['zh']), source, kind = 'heliocentric')
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
@@ -2073,9 +2071,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = row['Name'].replace(' ','')
-            name = add_event(name)
-            source = add_source(name, bibcode = '2012ApJ...749...18B')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2012ApJ...749...18B')
             mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
             band = row['Filt']
             magnitude = str(row['mag'])
@@ -2092,9 +2088,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = 'SNLS-' + row['SNLS']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2010A&A...523A...7G')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2010A&A...523A...7G')
             astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
             add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
             add_quantity(name, 'ebv', str(row['E_B-V_']), source)
@@ -2111,9 +2105,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = 'SN' + row['SN']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2004A&A...415..863G')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2004A&A...415..863G')
             datesplit = row['Date'].split('-')
             add_quantity(name, 'discoverdate', make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0')), source)
             add_quantity(name, 'host', 'Abell ' + str(row['Abell']), source)
@@ -2132,9 +2124,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = 'SDSS-II SN ' + str(row['SNID'])
-            name = add_event(name)
-            source = add_source(name, bibcode = '2008AJ....136.2306H')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2008AJ....136.2306H')
             add_quantity(name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
@@ -2149,9 +2139,7 @@ for task in tasks:
                 name = 'SDSS-II SN ' + str(row['SDSS-II'])
             else:
                 name = 'SN' + name
-            name = add_event(name)
-            source = add_source(name, bibcode = '2010ApJ...708..661D')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2010ApJ...708..661D')
             add_quantity(name, 'alias', 'SDSS-II SN ' + str(row['SDSS-II']), source)
             add_quantity(name, 'claimedtype', 'II P', source)
             add_quantity(name, 'ra', row['RAJ2000'], source)
@@ -2165,9 +2153,7 @@ for task in tasks:
                 name = 'SDSS-II SN ' + str(row['SN'])
             else:
                 name = 'SN' + row['SN']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2010ApJ...708..661D')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2010ApJ...708..661D')
             add_quantity(name, 'redshift', str(row['z']), source, error = str(row['e_z']))
         journal_events()
     
@@ -2177,9 +2163,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = row['SN']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2014ApJ...795...44R')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014ApJ...795...44R')
             astrot = astrotime(row['tdisc'], format='mjd').datetime
             add_quantity(name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
             add_quantity(name, 'redshift', str(row['z']), source, error = str(row['e_z']), kind = 'heliocentric')
@@ -2192,9 +2176,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             name = row['SN']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2014ApJ...795...44R')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014ApJ...795...44R')
             if row['mag'] != '--':
                 add_photometry(name, time = str(row['MJD']), band = row['Filt'], magnitude = str(row['mag']),
                     e_magnitude = str(row['e_mag']), source = source, system = 'AB', telescope = 'PS1', instrument = 'PS1')
@@ -2218,8 +2200,8 @@ for task in tasks:
         for row in tq(table, currenttask):
             if row['band'][0] == '(':
                 continue
-            name = 'SN' + row['SN']
-            name = add_event(name)
+            oldname = 'SN' + row['SN']
+            name = add_event(oldname)
             source = ''
             secsource = add_source(name, bibcode = '1990A&AS...82..145C', secondary = True)
             mjd = str(jd_to_mjd(Decimal(row['JD'])))
@@ -2229,7 +2211,7 @@ for task in tasks:
                 source = add_source(name, bibcode = ii189bibdict[row['r_m']])
             else:
                 source = add_source(name, refname = ii189refdict[row['r_m']])
-            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', oldname, source)
     
             add_photometry(name, time = mjd, band = band, magnitude = mag, source = uniq_cdl([source,secsource]))
         journal_events()
@@ -2257,10 +2239,11 @@ for task in tasks:
             if not name:
                 name = row["SNR"].strip()
     
+            oldname = name
             name = add_event(name)
             source = (add_source(name, bibcode = '2014BASI...42...47G') + ',' +
                       add_source(name, refname = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
-            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', oldname, source)
     
             add_quantity(name, "alias", row["SNR"].strip(), source)
             add_quantity(name, "alias", 'MWSNR '+row["SNR"].strip('G '), source)
@@ -2284,9 +2267,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = 'SN' + row['SN']
-            name = add_event(name)
-            source = add_source(name, bibcode = '2014MNRAS.442..844F')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014MNRAS.442..844F')
             add_quantity(name, 'redshift', str(row['zhost']), source, kind = 'host')
             add_quantity(name, 'ebv', str(row['E_B-V_']), source)
         journal_events()
@@ -2297,9 +2278,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = 'SN' + str(row['SN'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2014MNRAS.442..844F")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2014MNRAS.442..844F")
             for band in ['B', 'V', 'R', 'I']:
                 bandtag = band + 'mag'
                 if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
@@ -2314,9 +2293,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = ''.join(row['SimbadName'].split(' '))
-            name = add_event(name)
-            source = add_source(name, bibcode = '2012MNRAS.425.1789S')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2012MNRAS.425.1789S')
             add_quantity(name, 'alias', 'SN' + row['SN'], source)
             add_quantity(name, 'host', row['Gal'], source)
             if is_number(row['cz']):
@@ -2331,9 +2308,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = u'LSQ' + str(row['LSQ'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015ApJS..219...13W")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015ApJS..219...13W")
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
             add_quantity(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
@@ -2345,9 +2320,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = 'LSQ' + row['LSQ']
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015ApJS..219...13W")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015ApJS..219...13W")
             add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), instrument = 'QUEST', telescope = 'ESO Schmidt',
                 observatory = 'La Silla', band = row['Filt'],
                 magnitude = row['mag'], e_magnitude = row['e_mag'], system = "Swope", source = source)
@@ -2358,9 +2331,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         name = 'SN2213-1745'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2012Natur.491..228C")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2012Natur.491..228C")
         add_quantity(name, 'claimedtype', 'SLSN-R', source)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
@@ -2374,9 +2345,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         name = 'SN1000+0216'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2012Natur.491..228C")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2012Natur.491..228C")
         add_quantity(name, 'claimedtype', 'SLSN-II?', source)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
@@ -2394,9 +2363,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2011Natur.474..484Q")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2011Natur.474..484Q")
             add_photometry(name, time = row['MJD'], band = row['Filt'], telescope = row['Tel'],
                 magnitude = row['mag'], e_magnitude = row['e_mag'], source = source)
         journal_events()
@@ -2406,9 +2373,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         name = 'PTF10vdl'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2011ApJ...736..159G")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2011ApJ...736..159G")
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], telescope = row['Tel'], magnitude = row['mag'],
@@ -2420,9 +2385,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         name = 'PTF12gzk'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2012ApJ...760L..33B")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2012ApJ...760L..33B")
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             # Fixing a typo in VizieR table
@@ -2437,9 +2400,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         name = 'PS1-12sk'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2013ApJ...769...39S")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2013ApJ...769...39S")
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             instrument = ''
@@ -2455,9 +2416,7 @@ for task in tasks:
         # 2009MNRAS.394.2266P
         # Note: Instrument info available via links in VizieR, can't auto-parse just yet.
         name = 'SN2005cs'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2009MNRAS.394.2266P")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2009MNRAS.394.2266P")
         result = Vizier.get_catalogs("J/MNRAS/394/2266/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
@@ -2502,9 +2461,7 @@ for task in tasks:
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         name = 'SN2003ie'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2013AJ....145...99A")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2013AJ....145...99A")
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
@@ -2526,9 +2483,7 @@ for task in tasks:
     
         # 2011ApJ...729..143C
         name = 'SN2008am'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2011ApJ...729..143C")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2011ApJ...729..143C")
     
         result = Vizier.get_catalogs("J/ApJ/729/143/table1")
         table = result[list(result.keys())[0]]
@@ -2572,9 +2527,7 @@ for task in tasks:
     
         # 2011ApJ...728...14P
         name = 'SN2009bb'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2011ApJ...728...14P")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2011ApJ...728...14P")
     
         result = Vizier.get_catalogs("J/ApJ/728/14/table1")
         table = result[list(result.keys())[0]]
@@ -2633,9 +2586,7 @@ for task in tasks:
     
         # 2011PAZh...37..837T
         name = 'SN2009nr'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2011PAZh...37..837T")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2011PAZh...37..837T")
     
         result = Vizier.get_catalogs("J/PAZh/37/837/table2")
         table = result[list(result.keys())[0]]
@@ -2662,9 +2613,7 @@ for task in tasks:
     
         # 2013MNRAS.433.1871B
         name = 'SN2012aw'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2013MNRAS.433.1871B")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2013MNRAS.433.1871B")
     
         result = Vizier.get_catalogs("J/MNRAS/433/1871/table3a")
         table = result[list(result.keys())[0]]
@@ -2710,9 +2659,7 @@ for task in tasks:
     
         # 2014AJ....148....1Z
         name = 'SN2012fr'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2014AJ....148....1Z")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2014AJ....148....1Z")
     
         result = Vizier.get_catalogs("J/AJ/148/1/table2")
         table = result[list(result.keys())[0]]
@@ -2780,9 +2727,7 @@ for task in tasks:
     
         # 2015ApJ...805...74B
         name = 'SN2014J'
-        name = add_event(name)
-        source = add_source(name, bibcode = "2014AJ....148....1Z")
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event(name, bibcode = "2014AJ....148....1Z")
     
         result = Vizier.get_catalogs("J/ApJ/805/74/table1")
         table = result[list(result.keys())[0]]
@@ -2805,9 +2750,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['SN'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2011ApJ...741...97D")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2011ApJ...741...97D")
             add_photometry(name, time = str(jd_to_mjd(Decimal(row['JD']))), band = row['Filt'], magnitude = row['mag'],
                            e_magnitude = row['e_mag'] if is_number(row['e_mag']) else '', upperlimit = (not is_number(row['e_mag'])), source = source)
         journal_events()
@@ -2820,9 +2763,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015MNRAS.448.1206M")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015MNRAS.448.1206M")
             add_quantity(name, 'discoverdate', '20' + name[4:6], source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2836,9 +2777,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015MNRAS.448.1206M")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015MNRAS.448.1206M")
             add_quantity(name, 'discoverdate', '20' + name[4:6], source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2852,9 +2791,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015MNRAS.448.1206M")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015MNRAS.448.1206M")
             add_quantity(name, 'discoverdate', '20' + name[4:6], source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2868,9 +2805,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015MNRAS.448.1206M")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015MNRAS.448.1206M")
             add_quantity(name, 'discoverdate', '20' + name[4:6], source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2883,9 +2818,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015MNRAS.448.1206M")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015MNRAS.448.1206M")
             add_quantity(name, 'discoverdate', '20' + name[4:6], source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2899,9 +2832,7 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = str(row['Name'])
-            name = add_event(name)
-            source = add_source(name, bibcode = "2015MNRAS.448.1206M")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2015MNRAS.448.1206M")
             add_quantity(name, 'discoverdate', '20' + name[4:6], source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2919,9 +2850,7 @@ for task in tasks:
                 continue
             row = convert_aq_output(row)
             name = str(row['SN']).replace(' ', '')
-            name = add_event(name)
-            source = add_source(name, bibcode = "2012AJ....143..126B")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2012AJ....143..126B")
             add_quantity(name, 'claimedtype', 'Ia-' + row['Wcl'], source)
         journal_events()
 
@@ -2932,9 +2861,7 @@ for task in tasks:
             table.convert_bytestring_to_unicode(python3_only=True)
             for row in tq(table, currenttask):
                 row = convert_aq_output(row)
-                name = add_event(row['SN'])
-                source = add_source(name, bibcode = "2015ApJS..220....9F")
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(row['SN'], bibcode = "2015ApJS..220....9F")
                 add_quantity(name, 'claimedtype', row['Type'], source)
                 add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
                 add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -2951,9 +2878,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event(row['SN'])
-            source = add_source(name, bibcode = "2015ApJS..220....9F")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(row['SN'], bibcode = "2015ApJS..220....9F")
             add_quantity(name, 'claimedtype', row['Type'], source)
             add_photometry(name, time = row['MJD'], band = row['Band'], magnitude = row['mag'],
                 e_magnitude = row["e_mag"], telescope = row["Tel"], source = source)
@@ -2965,9 +2890,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event('SN'+row['SN'])
-            source = add_source(name, bibcode = "2008ApJ...673..999P")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('SN'+row['SN'], bibcode = "2008ApJ...673..999P")
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'redshift', row['z'], source, kind = 'host')
@@ -2982,9 +2905,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event('SNSDF'+row['SNSDF'])
-            source = add_source(name, bibcode = "2011MNRAS.417..916G")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('SNSDF'+row['SNSDF'], bibcode = "2011MNRAS.417..916G")
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
             add_quantity(name, 'redshift', row['zsp'] if row['zsp'] else row['zph'], source, kind = 'host')
@@ -2996,9 +2917,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event('SNSDF'+row['hSDF'])
-            source = add_source(name, bibcode = "2011MNRAS.417..916G")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('SNSDF'+row['hSDF'], bibcode = "2011MNRAS.417..916G")
             add_quantity(name, 'hostra', row['RAJ2000'], source)
             add_quantity(name, 'hostdec', row['DEJ2000'], source)
         journal_events()
@@ -3009,9 +2928,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event('SDSS'+row['SDSS'])
-            source = add_source(name, bibcode = "2013MNRAS.430.1746G")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('SDSS'+row['SDSS'], bibcode = "2013MNRAS.430.1746G")
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'discoverdate', row['Date'].replace('-', '/'), source)
@@ -3025,9 +2942,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event(row['Name'])
-            source = add_source(name, bibcode = "2014AJ....148...13R")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(row['Name'], bibcode = "2014AJ....148...13R")
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
             add_quantity(name, 'discoverdate', '20' + row['Name'][3:5], source)
@@ -3041,9 +2956,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event(row['Name'])
-            source = add_source(name, bibcode = "2014AJ....148...13R")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(row['Name'], bibcode = "2014AJ....148...13R")
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
             add_quantity(name, 'discoverdate', '20' + row['Name'][3:5], source)
@@ -3062,11 +2975,10 @@ for task in tasks:
             row = convert_aq_output(row)
             essname = 'ESSENCE '+row['ESSENCE']
             if row['SN']:
-                name = add_event('SN'+row['SN'])
+                name = 'SN'+row['SN']
             else:
-                name = add_event(essname)
-            source = add_source(name, bibcode = "2007ApJ...666..674M")
-            add_quantity(name, 'alias', name, source)
+                name = essname
+            (name, source) = new_event(name, bibcode = "2007ApJ...666..674M")
             add_quantity(name, 'alias', essname, source)
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
@@ -3083,9 +2995,7 @@ for task in tasks:
             row = convert_aq_output(row)
             if 'OGLE' not in row['Name']:
                 continue
-            name = add_event(row['Name'])
-            source = add_source(name, bibcode = "2013AcA....63....1K")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(row['Name'], bibcode = "2013AcA....63....1K")
             add_quantity(name, 'alias', row['OGLEIV'], source)
             add_quantity(name, 'ra', row['RAJ2000'], source)
             add_quantity(name, 'dec', row['DEJ2000'], source)
@@ -3099,9 +3009,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event('SNLS-' + row['SN'])
-            source = add_source(name, bibcode = "2011MNRAS.410.1262W")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('SNLS-' + row['SN'], bibcode = "2011MNRAS.410.1262W")
             add_quantity(name, 'ra', row['_RA'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['_DE'], source, unit = 'floatdegrees')
             add_quantity(name, 'redshift', row['z'], source, error = row['e_z'], kind = 'heliocentric')
@@ -3115,11 +3023,10 @@ for task in tasks:
             row = convert_aq_output(row)
             sdssname = 'SDSS-II SN ' + row['SNID']
             if row['SN']:
-                name = add_event('SN' + row['SN'])
+                name = 'SN' + row['SN']
             else:
-                name = add_event(sdssname)
-            source = add_source(name, bibcode = "2012ApJ...755...61S")
-            add_quantity(name, 'alias', name, source)
+                name = sdssname
+            (name, source) = new_event(name, bibcode = "2012ApJ...755...61S")
             add_quantity(name, 'alias', sdssname, source)
             add_quantity(name, 'hostra', row['RAJ2000'], source)
             add_quantity(name, 'hostdec', row['DEJ2000'], source)
@@ -3134,11 +3041,10 @@ for task in tasks:
             row = convert_aq_output(row)
             sdssname = 'SDSS-II SN ' + row['SNID']
             if row['SN']:
-                name = add_event('SN' + row['SN'])
+                name = 'SN' + row['SN']
             else:
-                name = add_event(sdssname)
-            source = add_source(name, bibcode = "2008AJ....135..348S")
-            add_quantity(name, 'alias', name, source)
+                name = sdssname
+            (name, source) = new_event(name, bibcode = "2008AJ....135..348S")
             add_quantity(name, 'alias', sdssname, source)
             fra = Decimal(row['RAJ2000'])
             if fra < Decimal(0.0):
@@ -3157,11 +3063,10 @@ for task in tasks:
             row = convert_aq_output(row)
             sdssname = 'SDSS-II SN ' + row['ID']
             if row['IAU']:
-                name = add_event('SN' + row['IAU'])
+                name = 'SN' + row['IAU']
             else:
-                name = add_event(sdssname)
-            source = add_source(name, bibcode = "2010ApJ...713.1026D")
-            add_quantity(name, 'alias', name, source)
+                name = sdssname
+            (name, source) = new_event(name, bibcode = "2010ApJ...713.1026D")
             add_quantity(name, 'alias', sdssname, source)
             add_quantity(name, 'ra', row['RAJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
@@ -3174,9 +3079,7 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            name = add_event(row['SN'])
-            source = add_source(name, bibcode = "2013ApJ...770..107C")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(row['SN'], bibcode = "2013ApJ...770..107C")
             add_quantity(name, 'hostra', row['RAJ2000'], source)
             add_quantity(name, 'hostdec', row['DEJ2000'], source)
             add_quantity(name, 'redshift', row['z'], source, error = row['e_z'] if is_number(row['e_z']) else '', kind = 'host')
@@ -3197,7 +3100,7 @@ for task in tasks:
             if not bibcode:
                 raise(ValueError('Bibcode not found!'))
             source = add_source(name, bibcode = bibcode)
-            add_quantity(name, 'alias', name, source)
+            add_quantity(name, 'alias', inpname, source)
             with open(datafile,'r') as f:
                 tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
                 for r, rrow in enumerate(tsvin):
@@ -3231,9 +3134,7 @@ for task in tasks:
             tsvin = csv.reader(f, delimiter=',')
             for row in tsvin:
                 name = 'MCSNR ' + row[0]
-                name = add_event(name)
-                source = add_source(name, bibcode = '2016A&A...585A.162M')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2016A&A...585A.162M')
                 if row[1] != 'noname':
                     add_quantity(name, "alias", row[1], source)
                 add_quantity(name, 'ra', row[2], source)
@@ -3247,9 +3148,7 @@ for task in tasks:
             tsvin = csv.reader(f, delimiter=',')
             for row in tsvin:
                 name = 'MCSNR ' + row[0]
-                name = add_event(name)
-                source = add_source(name, refname = 'Pierre Maggi')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, refname = 'Pierre Maggi')
                 add_quantity(name, "alias", row[1], source)
                 add_quantity(name, "alias", row[2], source)
                 add_quantity(name, 'ra', row[3], source)
@@ -3276,9 +3175,7 @@ for task in tasks:
                         value = splitline[1].strip()
                         if field == 'name':
                             name = value[:6].upper() + (value[6].upper() if len(value) == 7 else value[6:])
-                            name = add_event(name)
-                            source = add_source(name, bibcode = bibcode)
-                            add_quantity(name, 'alias', name, source)
+                            (name, source) = new_event(name, bibcode = bibcode)
                         elif field == 'type':
                             claimedtype = value.replace('SN', '')
                             add_quantity(name, 'claimedtype', claimedtype, source)
@@ -3321,10 +3218,8 @@ for task in tasks:
         files = glob("../sne-external/brown-05-14-16/*.dat")
         for fi in tq(files, currenttask):
             name = os.path.basename(fi).split('_')[0]
-            name = add_event(name)
-            source = add_source(name, refname = 'Swift Supernovae', bibcode = '2014Ap&SS.354...89B',
+            (name, source) = new_event(name, refname = 'Swift Supernovae', bibcode = '2014Ap&SS.354...89B',
                 url = 'http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
-            add_quantity(name, 'alias', name, source)
             with open(fi, 'r') as f:
                 lines = f.read().splitlines()
                 for line in lines:
@@ -3347,9 +3242,7 @@ for task in tasks:
 
         # Nicholl 05-03-16
         files = glob("../sne-external/nicholl-05-03-16/*.txt")
-        name = add_event('SN2015bn')
-        source = add_source(name, bibcode = '2016arXiv160304748N')
-        add_quantity(name, 'alias', name, source)
+        (name, source) = new_event('SN2015bn', bibcode = '2016arXiv160304748N')
         add_quantity(name, 'alias', 'PS15ae', source)
         for fi in tq(files, currenttask):
             telescope = os.path.basename(fi).split('_')[1]
@@ -3389,9 +3282,7 @@ for task in tasks:
                     systems = [x.split('_')[1].capitalize().replace('Ab', 'AB') for x in row[3::2]]
                     continue
                 name = row[1]
-                name = add_event(name)
-                source = add_source(name, bibcode = "2015A&A...579A..40S")
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = "2015A&A...579A..40S")
                 for hi, ci in enumerate(range(3,len(row)-1,2)):
                     if not row[ci]:
                         continue
@@ -3407,9 +3298,7 @@ for task in tasks:
                 if ri == 0:
                     continue
                 name = row[0].replace('SCP', 'SCP-')
-                name = add_event(name)
-                source = add_source(name, refname = 'Supernova Cosmology Project', url = 'http://supernova.lbl.gov/2009ClusterSurvey/')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, refname = 'Supernova Cosmology Project', url = 'http://supernova.lbl.gov/2009ClusterSurvey/')
                 if row[1]:
                     add_quantity(name, 'alias', row[1], source)
                 if row[2]:
@@ -3430,9 +3319,7 @@ for task in tasks:
             tsvin = csv.reader(f, delimiter=',')
             for ri, row in enumerate(tq(tsvin, currenttask)):
                 name = 'SNLS-' + row[0]
-                name = add_event(name)
-                source = add_source(name, bibcode = '2006ApJ...645..841N')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2006ApJ...645..841N')
                 add_quantity(name, 'redshift', row[1], source, kind = 'spectroscopic')
                 astrot = astrotime(float(row[4]) + 2450000., format = 'jd').datetime
                 add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
@@ -3447,9 +3334,7 @@ for task in tasks:
                 name = 'SN0210'
             else:
                 name = ('SN20' if int(basename[:2]) < 50 else 'SN19') + basename.split('_')[0]
-            name = add_event(name)
-            source = add_source(name, bibcode = '2014ApJ...786...67A')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014ApJ...786...67A')
     
             if name in ['SN1999ca','SN2003dq','SN2008aw']:
                 system = 'Swope'
@@ -3470,9 +3355,7 @@ for task in tasks:
             tsvin = csv.reader(f, delimiter=',')
             for row in tq(tsvin, currenttask):
                 name = row[0]
-                name = add_event(name)
-                source = add_source(name, bibcode = "2004A&A...415..863G")
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = "2004A&A...415..863G")
                 mjd = str(jd_to_mjd(Decimal(row[1])))
                 for ri, ci in enumerate(range(2,len(row),3)):
                     if not row[ci]:
@@ -3497,9 +3380,7 @@ for task in tasks:
                 name = namesplit[-1]
                 if name.startswith('SN'):
                     name = name.replace(' ', '')
-                name = add_event(name)
-                source = add_source(name, bibcode = '2015MNRAS.449..451W')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2015MNRAS.449..451W')
                 if len(namesplit) > 1:
                     add_quantity(name, 'alias', namesplit[0], source)
                 add_quantity(name, 'claimedtype', row[1], source)
@@ -3509,9 +3390,7 @@ for task in tasks:
         # 2016MNRAS.459.1039T
         with open("../sne-external/2016MNRAS.459.1039T.tsv", 'r') as f:
             data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-            name = add_event('LSQ13zm')
-            source = add_source(name, bibcode = '2016MNRAS.459.1039T')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('LSQ13zm', bibcode = '2016MNRAS.459.1039T')
             for r, row in enumerate(tq(data, currenttask)):
                 if row[0][0] == '#':
                     bands = [x.replace('(err)', '') for x in row[3:-1]]
@@ -3531,9 +3410,7 @@ for task in tasks:
         # 2015ApJ...804...28G
         with open("../sne-external/2015ApJ...804...28G.tsv", 'r') as f:
             data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-            name = add_event('PS1-13arp')
-            source = add_source(name, bibcode = '2015ApJ...804...28G')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event('PS1-13arp', bibcode = '2015ApJ...804...28G')
             for r, row in enumerate(tq(data, currenttask)):
                 if r == 0:
                     continue    
@@ -3553,9 +3430,7 @@ for task in tasks:
             for r, row in enumerate(tq(data, currenttask)):
                 if row[0][0] == '#':
                     continue    
-                name = add_event(row[0])
-                source = add_source(name, bibcode = '2016ApJ...819...35A')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(row[0], bibcode = '2016ApJ...819...35A')
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'redshift', row[3], source)
@@ -3569,9 +3444,7 @@ for task in tasks:
             for r, row in enumerate(tq(data, currenttask)):
                 if row[0][0] == '#':
                     continue    
-                name = add_event(row[0])
-                source = add_source(name, bibcode = '2014ApJ...784..105W')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(row[0], bibcode = '2014ApJ...784..105W')
                 mjd = row[1]
                 band = row[2]
                 mag = row[3]
@@ -3588,9 +3461,7 @@ for task in tasks:
                 if row[0][0] == '#':
                     bands = row[2:]
                     continue    
-                name = add_event(row[0])
-                source = add_source(name, bibcode = '2012MNRAS.425.1007B')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(row[0], bibcode = '2012MNRAS.425.1007B')
                 mjd = row[1]
                 mags = [x.split('±')[0].strip() for x in row[2:]] 
                 errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[2:]] 
@@ -3617,9 +3488,7 @@ for task in tasks:
             for r, row in enumerate(tq(data, currenttask)):
                 if row[0][0] == '#':
                     continue    
-                name = add_event(row[0])
-                source = add_source(name, bibcode = '2014ApJ...783...28G')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(row[0], bibcode = '2014ApJ...783...28G')
                 add_quantity(name, 'alias', row[1], source)
                 add_quantity(name, 'discoverdate', '20' + row[0][3:5], source)
                 add_quantity(name, 'ra', row[2], source)
@@ -3631,9 +3500,7 @@ for task in tasks:
         with open("../sne-external/2005ApJ...634.1190H.tsv", 'r') as f:
             data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
             for r, row in enumerate(tq(data, currenttask)):
-                name = add_event('SNLS-' + row[0])
-                source = add_source(name, bibcode = '2005ApJ...634.1190H')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event('SNLS-' + row[0], bibcode = '2005ApJ...634.1190H')
                 add_quantity(name, 'discoverdate', '20' + row[0][:2], source)
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
@@ -3650,9 +3517,7 @@ for task in tasks:
                 name = row[0]
                 if is_number(name[:4]):
                     name = 'SN' + name
-                name = add_event(name)
-                source = add_source(name, bibcode = '2014MNRAS.444.2133S')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2014MNRAS.444.2133S')
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'redshift', row[3], source, kind = 'host')
@@ -3669,9 +3534,7 @@ for task in tasks:
                         continue
                     elif r == 1:
                         name = 'SN' + row[0].split('SN ')[-1]
-                        name = add_event(name)
-                        source = add_source(name, bibcode = '2012ApJ...744...10K')
-                        add_quantity(name, 'alias', name, source)
+                        (name, source) = new_event(name, bibcode = '2012ApJ...744...10K')
                     elif r >= 5:
                         mjd = str(Decimal(row[0]) + 53000)
                         for b, band in enumerate(cccpbands):
@@ -3695,9 +3558,7 @@ for task in tasks:
         links = soup.body.findAll("a")
         for link in tq(links, currenttask):
             if 'sc_sn' in link['href']:
-                name = add_event(link.text.replace(' ', ''))
-                source = add_source(name, refname = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(link.text.replace(' ', ''), refname = 'CCCP', url = 'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
     
                 if archived_task('cccp'):
                     with open('../sne-external/CCCP/' + link['href'].split('/')[-1], 'r') as f:
@@ -3742,8 +3603,8 @@ for task in tasks:
         for datafile in tq(sorted(glob("../sne-external/SUSPECT/*.html"), key=lambda s: s.lower()), currenttask):
             basename = os.path.basename(datafile)
             basesplit = basename.split('-')
-            name = basesplit[1]
-            name = add_event(name)
+            oldname = basesplit[1]
+            name = add_event(oldname)
             if name.startswith('SN') and is_number(name[2:]):
                 name = name + 'A'
             band = basesplit[3].split('.')[0]
@@ -3765,7 +3626,7 @@ for task in tasks:
             secondaryreference = "SUSPECT"
             secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
             secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
-            add_quantity(name, 'alias', name, secondarysource)
+            add_quantity(name, 'alias', oldname, secondarysource)
     
             if ei == 1:
                 year = re.findall(r'\d+', name)[0]
@@ -3822,12 +3683,12 @@ for task in tasks:
     
             eventparts = eventname.split('_')
     
-            name = snname(eventparts[0])
-            name = add_event(name)
+            oldname = snname(eventparts[0])
+            name = add_event(oldname)
             secondaryname = 'CfA Supernova Archive'
             secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
             secondarysource = add_source(name, refname = secondaryname, url = secondaryurl, secondary = True, acknowledgment = cfaack)
-            add_quantity(name, 'alias', name, secondarysource)
+            add_quantity(name, 'alias', oldname, secondarysource)
     
             year = re.findall(r'\d+', name)[0]
             add_quantity(name, 'discoverdate', year, secondarysource)
@@ -3887,10 +3748,7 @@ for task in tasks:
             else:
                 name = row[0].strip()
     
-            name = add_event(name)
-    
-            source = add_source(name, bibcode = '2012ApJS..200...12H')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2012ApJS..200...12H')
             add_quantity(name, 'claimedtype', 'Ia', source)
             add_photometry(name, u_time = 'MJD', time = row[2].strip(), band = row[1].strip(),
                 magnitude = row[6].strip(), e_magnitude = row[7].strip(), source = source)
@@ -3900,10 +3758,8 @@ for task in tasks:
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in tq(tsvin, currenttask):
             name = 'SN' + row[0]
-            name = add_event(name)
     
-            source = add_source(name, bibcode = '2014ApJS..213...19B')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = '2014ApJS..213...19B')
             add_photometry(name, u_time = 'MJD', time = row[2], band = row[1], magnitude = row[3],
                 e_magnitude = row[4], telescope = row[5], system = "Standard", source = source)
         f.close()
@@ -3923,11 +3779,11 @@ for task in tasks:
         photom = json.loads(jsontxt)
         photom = sorted(photom, key = lambda k: k['ObjName'])
         for phot in tq(photom, currenttask = currenttask):
-            name = phot["ObjName"]
-            name = add_event(name)
+            oldname = phot["ObjName"]
+            name = add_event(oldname)
     
             secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondaryrefbib, secondary = True)
-            add_quantity(name, 'alias', name, secondarysource)
+            add_quantity(name, 'alias', oldname, secondarysource)
             sources = [secondarysource]
             if phot["Reference"]:
                 sources += [add_source(name, bibcode = phot["Reference"])]
@@ -3996,9 +3852,7 @@ for task in tasks:
                         name = "SDSS-II SN " + row[3]
                     else:
                         name = "SN" + row[5]
-                    name = add_event(name)
-                    source = add_source(name, bibcode = bibcode)
-                    add_quantity(name, 'alias', name, source)
+                    (name, source) = new_event(name, bibcode = bibcode)
                     add_quantity(name, 'alias', "SDSS-II SN " + row[3], source)
     
                     if row[5] != "RA:":
@@ -4037,9 +3891,7 @@ for task in tasks:
         for ri, row in enumerate(tq(tsvin, currenttask)):
             if ri == 0 or not row:
                 continue
-            name = add_event(row[0])
-            source = add_source(name, refname = reference, url = refurl)
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(row[0], refname = reference, url = refurl)
             year = '20' + re.findall(r'\d+', row[0])[0]
             add_quantity(name, 'discoverdate', year, source)
             add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
@@ -4099,13 +3951,11 @@ for task in tasks:
             eventparts = eventname.split('opt+')
     
             name = snname(eventparts[0])
-            name = add_event(name)
     
             reference = "Carnegie Supernova Project"
             refbib = "2010AJ....139..519C"
             refurl = "http://csp.obs.carnegiescience.edu/data"
-            source = add_source(name, bibcode = refbib, refname = reference, url = refurl)
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = refbib, refname = reference, url = refurl)
     
             year = re.findall(r'\d+', name)[0]
             add_quantity(name, 'discoverdate', year, source)
@@ -4141,21 +3991,21 @@ for task in tasks:
         for r, row in enumerate(tq(tsvin, currenttask)):
             if r <= 1 or len(row) < 7:
                 continue
-            name = 'SN' + row[0].strip()
+            oldname = 'SN' + row[0].strip()
             mjd = str(jd_to_mjd(Decimal(row[1].strip())))
             band = row[2].strip()
             magnitude = row[3].strip()
             e_magnitude = row[4].strip()
             reference = row[6].strip().strip(',')
     
-            if curname != name:
-                curname = name
-                name = add_event(name)
+            if curname != oldname:
+                curname = oldname
+                name = add_event(oldname)
     
                 secondaryreference = "Sternberg Astronomical Institute Supernova Light Curve Catalogue"
                 secondaryrefurl = "http://dau.itep.ru/sn/node/72"
                 secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
-                add_quantity(name, 'alias', name, secondarysource)
+                add_quantity(name, 'alias', oldname, secondarysource)
     
                 year = re.findall(r'\d+', name)[0]
                 add_quantity(name, 'discoverdate', year, secondarysource)
@@ -4198,13 +4048,11 @@ for task in tasks:
         for record in tq(records, currenttask):
             if len(record) > 1 and record[1] != '':
                 name = snname("SN" + record[1]).strip('?')
-                name = add_event(name)
     
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 refbib = '1989A&AS...81..421B'
-                source = add_source(name, refname = reference, url = refurl, bibcode = refbib, secondary = True)
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, refname = reference, url = refurl, bibcode = refbib, secondary = True)
     
                 year = re.findall(r'\d+', name)[0]
                 add_quantity(name, 'discoverdate', year, source)
@@ -4279,10 +4127,8 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             name = 'SN' + row['SN']
-            name = add_event(name)
     
-            source = add_source(name, bibcode = bibcode)
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = bibcode)
     
             if row['RAJ2000']:
                 add_quantity(name, 'ra', row['RAJ2000'], source)
@@ -4353,9 +4199,7 @@ for task in tasks:
                 if 'Classified' not in row[1]:
                     continue
                 name = row[0].replace('SNR', 'G')
-                name = add_event(name)
-                source = add_source(name, bibcode = '2016ApJS..224....8A')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2016ApJS..224....8A')
                 add_quantity(name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
                 add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
                 add_quantity(name, 'dec', row[3], source, unit = 'floatdegrees')
@@ -4389,9 +4233,7 @@ for task in tasks:
                 if row[4] and 'SN' not in row[4]:
                     continue
                 name = row[1].replace(' ', '')
-                name = add_event(name)
-                source = add_source(name, refname = 'Transient Name Server', url = 'https://wis-tns.weizmann.ac.il')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, refname = 'Transient Name Server', url = 'https://wis-tns.weizmann.ac.il')
                 if row[2] and row[2] != '00:00:00.00':
                     add_quantity(name, 'ra', row[2], source)
                 if row[3] and row[3] != '+00:00:00.00':
@@ -4465,9 +4307,11 @@ for task in tasks:
                     aka = str(cols[14].contents[0]).strip()
                     if is_number(aka.strip('?')):
                         aka = 'SN' + aka.strip('?') + 'A'
+                        oldname = aka
                         name = add_event(aka)
                     elif len(aka) >= 4 and is_number(aka[:4]):
                         aka = 'SN' + aka
+                        oldname = aka
                         name = add_event(aka)
     
                 ra = str(cols[3].contents[0]).strip()
@@ -4485,6 +4329,7 @@ for task in tasks:
                         sn = sn.replace('MASTER J', 'MASTER OT J').replace('SNHunt', 'SNhunt')
                     if 'POSSIBLE' in sn.upper() and ra and dec:
                         sn = 'PSN J' + ra.replace(':', '').replace('.', '') + dec.replace(':', '').replace('.', '')
+                    oldname = sn
                     name = add_event(sn)
     
                 reference = cols[12].findAll('a')[0].contents[0].strip()
@@ -4492,7 +4337,7 @@ for task in tasks:
                 source = add_source(name, refname = reference, url = refurl)
                 secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
                 sources = uniq_cdl(list(filter(None, [source, secondarysource])))
-                add_quantity(name, 'alias', name, sources)
+                add_quantity(name, 'alias', oldname, sources)
                 add_quantity(name, 'alias', sn, sources)
     
                 if cols[14].contents:
@@ -4541,9 +4386,7 @@ for task in tasks:
                         name = 'PSN J' + name[4:]
                     if name.startswith('MASTEROTJ'):
                         name = name.replace('MASTEROTJ', 'MASTER OT J')
-                    name = add_event(name)
-                    secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
-                    add_quantity(name, 'alias', name, secondarysource)
+                    (name, secondarysource) = new_event(name, refname = secondaryreference, url = secondaryrefurl, secondary = True)
     
                     if not is_number(row[1]):
                         continue
@@ -4713,9 +4556,7 @@ for task in tasks:
                 if float(flux) < 3.0*float(err):
                     continue
                 name = 'SNLS-' + row[0]
-                name = add_event(name)
-                source = add_source(name, bibcode = '2010A&A...523A...7G')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2010A&A...523A...7G')
                 band = row[1]
                 mjd = row[2]
                 sig = get_sig_digits(flux.split('E')[0])+1
@@ -4916,9 +4757,7 @@ for task in tasks:
                 if ri < 35:
                     continue
                 cols = [x.strip() for x in row.split(',')]
-                name = add_event(cols[0])
-                source = add_source(name, bibcode = '2015ApJ...799..208S')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(cols[0], bibcode = '2015ApJ...799..208S')
                 add_quantity(name, 'ra', cols[2], source)
                 add_quantity(name, 'dec', cols[3], source)
                 astrot = astrotime(float(cols[4]), format='mjd').datetime
@@ -4989,10 +4828,8 @@ for task in tasks:
                         validaliases.append(alias)
                 if not name:
                     name = crtsname
-                name = add_event(name)
-                source = add_source(name, refname = 'Catalina Sky Survey', bibcode = '2009ApJ...696..870D',
+                (name, source) = new_event(name, refname = 'Catalina Sky Survey', bibcode = '2009ApJ...696..870D',
                     url = 'http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
-                add_quantity(name, 'alias', name, source)
                 for alias in validaliases:
                     add_quantity(name, 'alias', alias, source)
                 add_quantity(name, 'ra', ra, source, unit = 'floatdegrees')
@@ -5059,9 +4896,7 @@ for task in tasks:
             if not cols:
                 continue
             name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
-            name = add_event(name)
-            source = add_source(name, refname = 'Supernova Hunt', url = 'http://nesssi.cacr.caltech.edu/catalina/current.html')
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, refname = 'Supernova Hunt', url = 'http://nesssi.cacr.caltech.edu/catalina/current.html')
             host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
             add_quantity(name, 'host', host, source)
             add_quantity(name, 'ra', cols[2], source, unit = 'floatdegrees')
@@ -5106,9 +4941,7 @@ for task in tasks:
                         nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
     
                 if snname and 'HOST' not in snname:
-                    snname = add_event(snname)
-                    secondarysource = add_source(snname, refname = reference, url = refurl, secondary = True)
-                    add_quantity(snname, 'alias', snname, secondarysource)
+                    (snname, secondarysource) = new_event(snname, refname = reference, url = refurl, secondary = True)
                     if bibcode:
                         source = add_source(snname, bibcode = bibcode)
                         sources = uniq_cdl([source, secondarysource])
@@ -5162,12 +4995,13 @@ for task in tasks:
                 # Only add events that are classified as SN.
                 if event_exists(name):
                     continue
+                oldname = name
                 name = add_event(name)
             else:
                 continue
     
             secondarysource = add_source(name, refname = 'Cambridge Photometric Calibration Server', url = 'http://gsaweb.ast.cam.ac.uk/followup/', secondary = True)
-            add_quantity(name, 'alias', name, secondarysource)
+            add_quantity(name, 'alias', oldname, secondarysource)
             add_quantity(name, 'ra', str(alertindex[i]['ra']), secondarysource, unit = 'floatdegrees')
             add_quantity(name, 'dec', str(alertindex[i]['dec']), secondarysource, unit = 'floatdegrees')
     
@@ -5233,11 +5067,10 @@ for task in tasks:
                 if '(' in name:
                     alias = name.split('(')[0].strip(' ')
                     name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
-                    name = add_event(name)
-                    source = add_source(name, bibcode = '2012PASP..124..668Y')
+                    (name, source) = new_event(name, bibcode = '2012PASP..124..668Y')
                     add_quantity(name, 'alias', alias, source)
                 else:
-                    name = add_event(name)
+                    (name, source) = new_event(name, bibcode = '2012PASP..124..668Y')
         
         with open('../sne-external/PTF/old-ptf-events.csv') as f:
             for suffix in f.read().splitlines():
@@ -5251,9 +5084,7 @@ for task in tasks:
                     alias = 'PTF' + cols[0]
                 else:
                     name = 'PTF' + cols[0]
-                name = add_event(name)
-                source = add_source(name, bibcode = '2016arXiv160408207P')
-                add_quantity(name, 'alias', name, source)
+                (name, source) = new_event(name, bibcode = '2016arXiv160408207P')
                 if alias:
                     add_quantity(name, 'alias', alias, source)
                 add_quantity(name, 'ra', cols[1], source)
@@ -5384,6 +5215,13 @@ for task in tasks:
             if host != 'Uncatalogued':
                 add_quantity(name, 'host', host, sources)
         journal_events()
+
+    if do_task(task, 'snf'):
+        with open('../sne-external/SNF/snf-aliases.csv') as f:
+            for row in [x.split(',') for x in f.read().splitlines()]:
+                (name, source) = new_event(row[0], bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                add_quantity(name, 'alias', row[1])
+        journal_events()
     
     if do_task(task, 'asiagospectra'):
         html = load_cached_url("http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990", "../sne-external-spectra/Asiago/spectra.html")
@@ -5413,11 +5251,12 @@ for task in tasks:
                         name = alias
                     if is_number(name[:4]):
                         name = 'SN' + name
+                    oldname = name
                     name = add_event(name)
                     reference = 'Asiago Supernova Catalogue'
                     refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                     secondarysource = add_source(name, refname = reference, url = refurl, secondary = True)
-                    add_quantity(name, 'alias', name, secondarysource)
+                    add_quantity(name, 'alias', oldname, secondarysource)
                     if alias != name:
                         add_quantity(name, 'alias', alias, secondarysource)
                 elif tdi == 2:
@@ -5599,12 +5438,10 @@ for task in tasks:
                                 if oldname and name != oldname:
                                     journal_events()
                                 oldname = name
-                                name = add_event(name)
     
                                 #print(name + " " + claimedtype + " " + epoch + " " + observer + " " + reducer + " " + specfile + " " + bibcode + " " + redshift)
     
-                                secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
-                                add_quantity(name, 'alias', name, secondarysource)
+                                (name, secondarysource) = new_event(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
                                 if bibcode:
                                     newbibcode = bibcode
                                     if bibcode in wiserepbibcorrectdict:
@@ -5679,11 +5516,9 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('-')
@@ -5722,11 +5557,9 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('-')
@@ -5760,11 +5593,9 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
             reference = 'CfA Supernova Archive'
             refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-            source = add_source(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, refname = reference, url = refurl, secondary = True, acknowledgment = cfaack)
             for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
                 if not os.path.isfile(fname):
                     continue
@@ -5812,9 +5643,7 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
-            source = add_source(name, bibcode = "2009A&A...507...85B")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2009A&A...507...85B")
     
             add_quantity(name, 'discoverdate', '20' + fileparts[1][:2], source)
     
@@ -5856,11 +5685,9 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
             telescope = fileparts[-2]
             instrument = fileparts[-1]
-            source = add_source(name, bibcode = "2013ApJ...773...53F")
-            add_quantity(name, 'alias', name, source)
+            (name, source) = new_event(name, bibcode = "2013ApJ...773...53F")
     
             f = open(fname,'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -5903,10 +5730,8 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
     
-            secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondaryrefbib, secondary = True)
-            add_quantity(name, 'alias', name, secondarysource)
+            (name, secondarysource) = new_event(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondaryrefbib, secondary = True)
             sources = [secondarysource]
             if spectrum["Reference"]:
                 sources += [add_source(name, bibcode = spectrum["Reference"])]
@@ -6004,12 +5829,10 @@ for task in tasks:
                 if oldname and name != oldname:
                     journal_events()
                 oldname = name
-                name = add_event(name)
                 secondaryreference = "SUSPECT"
                 secondaryrefurl = "https://www.nhn.ou.edu/~suspect/"
                 secondarybibcode = "2001AAS...199.8408R"
-                secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
-                add_quantity(name, 'alias', name, secondarysource)
+                (name, secondarysource) = new_event(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
                 eventspectra = next(os.walk('../sne-external-spectra/Suspect/'+folder+'/'+eventfolder))[2]
                 for spectrum in eventspectra:
                     sources = [secondarysource]
@@ -6072,12 +5895,10 @@ for task in tasks:
             if oldname and name != oldname:
                 journal_events()
             oldname = name
-            name = add_event(name)
             secondaryreference = "Nearby Supernova Factory"
             secondaryrefurl = "http://snfactory.lbl.gov/"
             secondarybibcode = "2002SPIE.4836...61A"
-            secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
-            add_quantity(name, 'alias', name, secondarysource)
+            (name, secondarysource) = new_event(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondarybibcode, secondary = True)
             bibcode = bibcodes[name]
             source = add_source(name, bibcode = bibcode)
             sources = uniq_cdl([source,secondarysource])
@@ -6180,7 +6001,7 @@ for task in tasks:
                     epoff = ''
     
                 source = add_source(name, refname = 'Superfit', url = 'http://www.dahowell.com/superfit.html', secondary = True)
-                add_quantity(name, 'alias', name, source)
+                add_quantity(name, 'alias', oldname, source)
     
                 with open(sffile) as f:
                     rows = f.read().splitlines()
