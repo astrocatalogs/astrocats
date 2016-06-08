@@ -1035,7 +1035,7 @@ def load_cached_url(url, filepath, timeout = 120, write = True, failhard = True)
     try:
         session = requests.Session()
         response = session.get(url, timeout = timeout)
-        if any([x.status_code == 307 for x in response.history]):
+        if any([x.status_code == 307 or x.status_code == 404 for x in response.history]):
             raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
@@ -4275,7 +4275,7 @@ for task in tasks:
         journal_events()
     
     if do_task(task, 'rochester'): 
-        rochestermirrors = ['http://www.rochesterastronomy.org/', 'http://www.supernova.thistlethwaites.com/snimages/']
+        rochestermirrors = ['http://www.rochesterastronomy.org/', 'http://www.supernova.thistlethwaites.com/']
         rochesterpaths = ['snimages/snredshiftall.html', 'sn2016/snredshift.html']
         rochesterupdate = [False, True]
     
@@ -4285,7 +4285,7 @@ for task in tasks:
     
             for mirror in rochestermirrors:
                 filepath = '../sne-external/rochester/' + os.path.basename(path)
-                html = load_cached_url(mirror + path, filepath, failhard = (mirror == rochestermirrors[-1]))
+                html = load_cached_url(mirror + path, filepath, failhard = (mirror != rochestermirrors[-1]))
                 if html:
                     break
             if not html:
@@ -5222,7 +5222,7 @@ for task in tasks:
         with open('../sne-external/SNF/snf-aliases.csv') as f:
             for row in [x.split(',') for x in f.read().splitlines()]:
                 (name, source) = new_event(row[0], bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-                add_quantity(name, 'alias', row[1])
+                add_quantity(name, 'alias', row[1], source)
         journal_events()
     
     if do_task(task, 'asiagospectra'):
