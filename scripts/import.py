@@ -147,6 +147,12 @@ maxbands = [
 def uniq_cdl(values):
     return ','.join(list(OrderedDict.fromkeys(values).keys()))
 
+def rep_chars(string, chars, rep = ''):
+    for c in chars:
+        if c in string:
+            string = string.replace(c, rep)
+    return string
+
 def single_spaces(string):
     return ' '.join(list(filter(None, string.split())))
 
@@ -200,6 +206,60 @@ def get_source_year(source):
         else:
             return -10000
     raise(ValueError('No bibcode available for source!'))
+
+def radec_clean(svalue, quantity, unit = ''):
+    if unit == 'floatdegrees':
+        deg = float('%g' % Decimal(svalue))
+        sig = get_sig_digits(svalue)
+        if 'ra' in quantity:
+            flhours = deg / 360.0 * 24.0
+            hours = floor(flhours)
+            minutes = floor((flhours - hours) * 60.0)
+            seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
+            hours = 0 if hours < 1.e-6 else hours
+            minutes = 0 if minutes < 1.e-6 else minutes
+            seconds = 0.0 if seconds < 1.e-6 else seconds
+            if seconds > 60.0:
+                raise(ValueError('Invalid seconds value for ' + quantity))
+            svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1))
+        elif 'dec' in quantity:
+            fldeg = abs(deg)
+            degree = floor(fldeg)
+            minutes = floor((fldeg - degree) * 60.0)
+            seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
+            if seconds > 60.0:
+                raise(ValueError('Invalid seconds value for ' + quantity))
+            svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
+                str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1)))
+    elif unit == 'nospace' and 'ra' in quantity:
+        svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
+    elif unit == 'nospace' and 'dec' in quantity:
+        if svalue.startswith(('+', '-')):
+            svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
+        else:
+            svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
+    else:
+        svalue = svalue.replace(' ', ':')
+        if 'dec' in quantity:
+            valuesplit = svalue.split(':')
+            svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
+                (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
+                (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
+
+    if 'ra' in quantity:
+        sunit = 'hours'
+    elif 'dec' in quantity:
+        sunit = 'degrees'
+
+    # Correct case of arcseconds = 60.0.
+    valuesplit = svalue.split(':')
+    if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
+        svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
+
+    # Strip trailing dots.
+    svalue = svalue.rstrip('.')
+
+    return svalue
 
 def host_clean(name):
     newname = name.strip(' ;,*')
@@ -272,8 +332,8 @@ def name_clean(name):
         newname = newname.replace('OGLE ', 'OGLE-', 1)
     if newname.startswith('OGLE-') and len(newname) != 16:
         namesp = newname.split('-')
-        if len(namesp[1]) == 4 and is_number(namesp[1]) and is_number(namesp[2]):
-            newname = 'OGLE-' + namesp[1] + '-' + namesp[2].zfill(3)
+        if len(namesp[1]) == 4 and is_number(namesp[1]) and is_number(namesp[3]):
+            newname = 'OGLE-' + namesp[1] + '-SN-' + namesp[3].zfill(3)
     if newname.startswith('SN SDSS'):
         newname = newname.replace('SN SDSS ', 'SDSS', 1)
     if newname.startswith('SDSS '):
@@ -820,7 +880,7 @@ def is_erroneous(name, field, sources):
     return False
 
 def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
-    lowerlimit = '', upperlimit = '', error = '', unit = '', kind = '', extra = ''):
+    lowerlimit = '', upperlimit = '', error = '', unit = '', kind = '', probability = '', extra = ''):
     if not quantity:
         raise(ValueError('Quantity must be specified for add_quantity.'))
     if not sources:
@@ -834,6 +894,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     svalue = value.strip()
     serror = error.strip()
     skind = kind.strip()
+    sprob = probability.strip()
     sunit = ''
 
     if not svalue or svalue == '--' or svalue == '-':
@@ -884,56 +945,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         if isq:
             svalue = svalue + '?'
     elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-        if unit == 'floatdegrees':
-            deg = float('%g' % Decimal(svalue))
-            sig = get_sig_digits(svalue)
-            if 'ra' in quantity:
-                flhours = deg / 360.0 * 24.0
-                hours = floor(flhours)
-                minutes = floor((flhours - hours) * 60.0)
-                seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
-                hours = 0 if hours < 1.e-6 else hours
-                minutes = 0 if minutes < 1.e-6 else minutes
-                seconds = 0.0 if seconds < 1.e-6 else seconds
-                if seconds > 60.0:
-                    raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1))
-            elif 'dec' in quantity:
-                fldeg = abs(deg)
-                degree = floor(fldeg)
-                minutes = floor((fldeg - degree) * 60.0)
-                seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
-                if seconds > 60.0:
-                    raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
-                    str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1)))
-        elif unit == 'nospace' and 'ra' in quantity:
-            svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
-        elif unit == 'nospace' and 'dec' in quantity:
-            if svalue.startswith(('+', '-')):
-                svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
-            else:
-                svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
-        else:
-            svalue = svalue.replace(' ', ':')
-            if 'dec' in quantity:
-                valuesplit = svalue.split(':')
-                svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
-                    (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
-                    (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
-
-        if 'ra' in quantity:
-            sunit = 'hours'
-        elif 'dec' in quantity:
-            sunit = 'degrees'
-
-        # Correct case of arcseconds = 60.0.
-        valuesplit = svalue.split(':')
-        if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
-            svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
-
-        # Strip trailing dots.
-        svalue = svalue.rstrip('.')
+        svalue = radec_clean(svalue, quantity, unit = unit)
     elif quantity == 'maxdate' or quantity == 'discoverdate':
         # Make sure month and day have leading zeroes
         sparts = svalue.split('/')
@@ -963,6 +975,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
                         events[name][quantity][i]['source'] += ',' + source
                         if serror and 'error' not in events[name][quantity][i]:
                             events[name][quantity][i]['error'] = serror
+                        if sprob and 'probability' not in events[name][quantity][i]:
+                            events[name][quantity][i]['probability'] = sprob
                 return
 
     if not sunit:
@@ -976,6 +990,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         quantaentry['source'] = sources
     if skind:
         quantaentry['kind'] = skind
+    if sprob:
+        quantaentry['probability'] = sprob
     if sunit:
         quantaentry['unit'] = sunit
     if lowerlimit:
@@ -1920,13 +1936,15 @@ for task in tasks:
         simbadbadcoordbib = ['2013ApJ...770..107C']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
-        customSimbad.add_votable_fields('sptype', 'sp_bibcode', 'id')
+        customSimbad.add_votable_fields('otype', 'sptype', 'sp_bibcode', 'id')
         # 2000A&AS..143....9W
-        table = customSimbad.query_criteria('maintype=SN')
+        table = customSimbad.query_criteria('maintype=SN | maintype="SN?"')
         for brow in tq(table, currenttask = currenttask):
             row = {x:re.sub(r'b\'(.*)\'', r'\1', str(brow[x])) for x in brow.colnames}
             # Skip items with no bibliographic info aside from SIMBAD, too error-prone
-            if not row['COO_BIBCODE'] and not row['SP_BIBCODE']:
+            if row['OTYPE'] == 'Candidate_SN*' and not row['SP_TYPE']:
+                continue
+            if not row['COO_BIBCODE'] and not row['SP_BIBCODE'] and not row['SP_BIBCODE_2']:
                 continue
             name = single_spaces(re.sub(r'\[[^)]*\]', '', row['MAIN_ID']).strip())
             if name == 'SN':
@@ -1945,7 +1963,8 @@ for task in tasks:
                 add_quantity(name, 'ra', row['RA'], csources)
                 add_quantity(name, 'dec', row['DEC'], csources)
             if row['SP_BIBCODE']:
-                ssources = ','.join([source, add_source(name, bibcode = row['SP_BIBCODE'])])
+                ssources = ','.join([source, add_source(name, bibcode = row['SP_BIBCODE'])] +
+                    ([add_source(name, bibcode = row['SP_BIBCODE_2'])] if row['SP_BIBCODE_2'] else []))
                 add_quantity(name, 'claimedtype', row['SP_TYPE'].replace('SN.', '').replace('SN', '').strip(': '), ssources)
         journal_events()
     
@@ -2911,14 +2930,6 @@ for task in tasks:
             add_quantity(name, 'discoverdate', '20' + row['SNSDF'][:2] + '/' + row['SNSDF'][2:4], source, kind = 'host')
             add_quantity(name, 'hostoffset', row['Offset'], source, unit = 'arcseconds')
             add_quantity(name, 'claimedtype', row['Type'], source)
-        result = Vizier.get_catalogs("J/MNRAS/417/916/table3")
-        table = result[list(result.keys())[0]]
-        table.convert_bytestring_to_unicode(python3_only=True)
-        for row in tq(table, currenttask):
-            row = convert_aq_output(row)
-            (name, source) = new_event('SNSDF'+row['hSDF'], bibcode = "2011MNRAS.417..916G")
-            add_quantity(name, 'hostra', row['RAJ2000'], source)
-            add_quantity(name, 'hostdec', row['DEJ2000'], source)
         journal_events()
 
         # 2013MNRAS.430.1746G
@@ -3051,7 +3062,7 @@ for task in tasks:
             add_quantity(name, 'ra', str(fra), source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
             add_quantity(name, 'redshift', row['zsp'], source, kind = 'spectroscopic')
-            add_quantity(name, 'claimedtype', row['Type'].replace('SN', '').strip(), source, kind = 'spectroscopic')
+            add_quantity(name, 'claimedtype', row['Type'].replace('SN', '').strip(), source)
         journal_events()
 
         # 2010ApJ...713.1026D
@@ -3082,6 +3093,69 @@ for task in tasks:
             add_quantity(name, 'hostra', row['RAJ2000'], source)
             add_quantity(name, 'hostdec', row['DEJ2000'], source)
             add_quantity(name, 'redshift', row['z'], source, error = row['e_z'] if is_number(row['e_z']) else '', kind = 'host')
+        journal_events()
+
+        # 2011ApJ...738..162S
+        result = Vizier.get_catalogs("J/ApJ/738/162/table3")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = 'SDSS-II SN ' + row['CID']
+            (name, source) = new_event(name, bibcode = "2011ApJ...738..162S")
+            fra = Decimal(row['RAJ2000'])
+            if fra < Decimal(0.0):
+                fra = Decimal(360.0) + fra
+            add_quantity(name, 'ra', str(fra), source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row['z'], source, kind = 'spectroscopic', error = row['e_z'])
+            add_quantity(name, 'claimedtype', 'Ia', source, probability = row['PzIa'])
+        result = Vizier.get_catalogs("J/ApJ/738/162/table4")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = 'SDSS-II SN ' + row['CID']
+            (name, source) = new_event(name, bibcode = "2011ApJ...738..162S")
+            fra = Decimal(row['RAJ2000'])
+            if fra < Decimal(0.0):
+                fra = Decimal(360.0) + fra
+            add_quantity(name, 'ra', str(fra), source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row['DEJ2000'], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row['zph'], source, kind = 'photometric')
+            add_quantity(name, 'claimedtype', 'Ia', source, probability = row['PIa'])
+        journal_events()
+
+        # 2015MNRAS.446..943V
+        snrtabs = ["ngc2403","ngc2903","ngc300","ngc3077","ngc4214","ngc4395","ngc4449","ngc5204",
+            "ngc5585","ngc6946","ngc7793","m33","m74","m81","m82","m83","m101","m31"]
+        for tab in tq(snrtabs, currenttask):
+            result = Vizier.get_catalogs("J/MNRAS/446/943/" + tab)
+            table = result[list(result.keys())[0]]
+            table.convert_bytestring_to_unicode(python3_only=True)
+            for ri, row in enumerate(tq(table, currenttask)):
+                ra = row['RAJ2000'] if isinstance(row['RAJ2000'], str) else radec_clean(str(row['RAJ2000']), 'ra', unit = 'floatdegrees')
+                dec = row['DEJ2000'] if isinstance(row['DEJ2000'], str) else radec_clean(str(row['DEJ2000']), 'dec', unit = 'floatdegrees')
+                name = tab.upper() + 'SNR J' + rep_chars(ra, ' :.') + rep_chars(dec, ' :.')
+                (name, source) = new_event(name, bibcode = "2015MNRAS.446..943V")
+                add_quantity(name, 'ra', ra, source)
+                add_quantity(name, 'dec', dec, source)
+                add_quantity(name, 'host', tab.upper(), source)
+        journal_events()
+
+        # 2009ApJ...703..370C
+        result = Vizier.get_catalogs("J/ApJ/703/370/tables")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            ra = row['RAJ2000']
+            dec = row['DEJ2000']
+            name = row['Gal'].replace(' ', '') + 'SNR J' + rep_chars(ra, ' .') + rep_chars(dec, ' .')
+            (name, source) = new_event(name, bibcode = "2009ApJ...703..370C")
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+            add_quantity(name, 'host', row['Gal'], source)
         journal_events()
 
     if do_task(task, 'donations'):
@@ -3131,9 +3205,12 @@ for task in tasks:
         # Maggi 04-11-16 donation (MC SNRs)
         with open('../sne-external/Maggi-04-11-16/LMCSNRs_OpenSNe.csv') as f:
             tsvin = csv.reader(f, delimiter=',')
-            for row in tsvin:
+            for row in tq(tsvin, currenttask):
                 name = 'MCSNR ' + row[0]
                 (name, source) = new_event(name, bibcode = '2016A&A...585A.162M')
+                ra = row[2]
+                dec = row[3]
+                add_quantity(name, 'alias', 'LMCSNR J' + rep_chars(ra, ' :.') + rep_chars(dec, ' :.'), source)
                 if row[1] != 'noname':
                     add_quantity(name, "alias", row[1], source)
                 add_quantity(name, 'ra', row[2], source)
@@ -3145,11 +3222,14 @@ for task in tasks:
                     add_quantity(name, 'claimedtype', 'CC', source)
         with open('../sne-external/Maggi-04-11-16/SMCSNRs_OpenSNe.csv') as f:
             tsvin = csv.reader(f, delimiter=',')
-            for row in tsvin:
+            for row in tq(tsvin, currenttask):
                 name = 'MCSNR ' + row[0]
                 (name, source) = new_event(name, refname = 'Pierre Maggi')
-                add_quantity(name, "alias", row[1], source)
-                add_quantity(name, "alias", row[2], source)
+                ra = row[3]
+                dec = row[4]
+                add_quantity(name, 'alias', 'SMCSNR J' + ra.replace(':', '')[:6] + dec.replace(':', '')[:7], source)
+                add_quantity(name, 'alias', row[1], source)
+                add_quantity(name, 'alias', row[2], source)
                 add_quantity(name, 'ra', row[3], source)
                 add_quantity(name, 'dec', row[4], source)
                 add_quantity(name, 'host', 'SMC', source)

@@ -1,4 +1,5 @@
 import sys
+import warnings
 from glob import glob
 from digits import *
 
@@ -20,8 +21,8 @@ def get_rep_folder(entry):
     if 'discoverdate' not in entry:
         return repofolders[0]
     if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
-        raise(ValueError('Discovery year is not a number!'))
-        sys.exit()
+        warnings.warn('Discovery year is not a number')
+        return repofolders[0]
     for r, repoyear in enumerate(repoyears):
         if int(entry['discoverdate'][0]['value'].split('/')[0]) <= repoyear:
             return repofolders[r]
