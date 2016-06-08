@@ -1552,14 +1552,13 @@ def write_all_events(empty = False, gz = False, bury = False):
             tprint('Writing ' + name)
         filename = get_event_filename(name)
 
-        outdir = '../'
+        outdir = "../" + str(repofolders[0])
         if 'discoverdate' in events[name]:
             for r, year in enumerate(repoyears):
-                if int(events[name]['discoverdate'][0]['value'].split('/')[0]) <= year:
-                    outdir += str(repofolders[r])
+                eyr = events[name]['discoverdate'][0]['value'].split('/')[0]
+                if is_integer(eyr) and int(eyr) <= year:
+                    outdir = "../" + str(repofolders[r])
                     break
-        else:
-            outdir += str(repofolders[0])
 
         # Delete non-SN events here without IAU designations (those with only banned types)
         if bury:
