@@ -1950,7 +1950,8 @@ for task in tasks:
             if name == 'SN':
                 continue
             name = add_event(name)
-            source = add_source(name, bibcode = "2000A&AS..143....9W", secondary = True)
+            source = add_source(name, refname = 'SIMBAD astronomical database', bibcode = "2000A&AS..143....9W",
+                url = "http://simbad.u-strasbg.fr/", secondary = True)
             aliases = row['ID'].split(',')
             for alias in aliases:
                 ali = single_spaces(re.sub(r'\[[^)]*\]', '', alias).strip())
