@@ -268,7 +268,7 @@ def host_clean(name):
 
     # Handle some special cases
     for k, v in {'M051a':'M51A', 'M051b':'M51B'}:
-        if newname = k:
+        if newname == k:
             newname = v
 
     # Some general cases
