@@ -80,7 +80,8 @@ columnkey = [
     "dec",
     "hostra",
     "hostdec",
-    "hostoffset",
+    "hostoffmin",
+    "hostoffkpc",
     "instruments",
     "redshift",
     "velocity",
@@ -114,6 +115,7 @@ header = [
     "Host R.A.",
     "Host Dec.",
     "Host Offset (')",
+    "Host Offset (kpc)",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
@@ -143,6 +145,7 @@ eventpageheader = [
     "Host R.A.",
     "Host Dec.",
     "Host Offset (')",
+    "Host Offset (kpc)",
     "Instruments/Bands",
     r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)",
@@ -172,6 +175,7 @@ titles = [
     "Host J2000 Right Ascension (h:m:s)",
     "Host J2000 Declination (d:m:s)",
     "Host Offset (Arcminutes)",
+    "Host Offset (kpc)",
     "List of Instruments and Bands",
     "Redshift",
     "Heliocentric velocity (km/s)",
@@ -394,12 +398,16 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         for d, date in enumerate(catalog[entry]['maxdate']):
             catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][d]['value'].split('.')[0]
 
+    catalog[entry]['hostoffkpc'] = ''
     if all([x in catalog[entry] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
         c1 = coord(ra=catalog[entry]['ra'][0]['value'], dec=catalog[entry]['dec'][0]['value'], unit=(un.hourangle, un.deg))
         c2 = coord(ra=catalog[entry]['hostra'][0]['value'], dec=catalog[entry]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
-        catalog[entry]['hostoffset'] = pretty_num(hypot(c1.ra.degree - c2.ra.degree, c1.dec.degree - c2.dec.degree)*60.)
+        catalog[entry]['hostoffmin'] = pretty_num(hypot(c1.ra.degree - c2.ra.degree, c1.dec.degree - c2.dec.degree)*60.)
+        if 'comovingdist' in catalog[entry] and 'redshift' in catalog[entry]:
+            catalog[entry]['hostoffkpc'] = pretty_num(float(catalog[entry]['hostoffmin']) / 60. * (pi / 180.) *
+                float(catalog[entry]['comovingdist'][0]['value']) * 1000. / (1.0 + float(catalog[entry]['redshift'][0]['value'])))
     else:
-        catalog[entry]['hostoffset'] = ''
+        catalog[entry]['hostoffmin'] = ''
 
     hostmag = ''
     hosterr = ''
@@ -1739,7 +1747,7 @@ if args.writecatalog and not args.eventlist:
 
     safefiles = [os.path.basename(x) for x in files]
     safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json', 'errata.json',
-        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json', 'hosts.json']
+        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json', 'hosts.json', 'hosts.min.json']
 
     for myfile in glob('../*.json'):
         if not os.path.basename(myfile) in safefiles:

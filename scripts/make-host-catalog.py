@@ -27,6 +27,10 @@ hosts = OrderedDict()
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
+def touch(fname, times=None):
+    with open(fname, 'a'):
+        os.utime(fname, times)
+
 with open('rep-folders.txt', 'r') as f:
     repfolders = f.read().splitlines()
 
@@ -153,6 +157,12 @@ for hn in hosts:
 
 # Convert to array since that's what datatables expects
 hosts = list(hosts.values())
+
 jsonstring = json.dumps(hosts, indent='\t', separators=(',', ':'), ensure_ascii=False)
 with open('../hosts.json', 'w') as f:
     f.write(jsonstring)
+
+minjsonstring = json.dumps(hosts, separators=(',', ':'), ensure_ascii=False)
+with gzip.open("../hosts.min.json.gz", 'wt') as fff:
+    touch("../hosts.min.json")
+    fff.write(minjsonstring)

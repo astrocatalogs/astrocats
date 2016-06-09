@@ -20,9 +20,6 @@ dupes = OrderedDict()
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-def get_event_filename(name):
-    return(name.replace('/', '_'))
-
 files = repo_file_list(bones = False)
 
 newcatalog = []
