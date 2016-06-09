@@ -265,8 +265,13 @@ def radec_clean(svalue, quantity, unit = ''):
 
 def host_clean(name):
     newname = name.strip(' ;,*')
-    if newname.startswith('M ') and is_number(newname[2:]):
-        newname.replace('M ', 'M', 1)
+
+    # Handle some special cases
+    for k, v in {'M051a':'M51A', 'M051b':'M51B'}:
+        if newname = k:
+            newname = v
+
+    # Some general cases
     newname = newname.strip("()").replace('  ', ' ', 1)
     newname = newname.replace("ABELL", "Abell", 1)
     newname = newname.replace("Abell", "Abell ", 1)
