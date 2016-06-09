@@ -209,6 +209,8 @@ def get_source_year(source):
 
 def radec_clean(svalue, quantity, unit = ''):
     if unit == 'floatdegrees':
+        if not is_number(svalue):
+            return svalue
         deg = float('%g' % Decimal(svalue))
         sig = get_sig_digits(svalue)
         if 'ra' in quantity:
@@ -888,6 +890,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
         raise(ValueError('Quantity must be a string or an array of strings.'))
 
+    ssources = uniq_cdl(sources)
+
     if is_erroneous(name, quantity, sources):
         return
 
@@ -967,10 +971,10 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
 
     if quantity in events[name]:
         for i, ct in enumerate(events[name][quantity]):
-            if ct['value'] == svalue and sources:
+            if ct['value'] == svalue and ssources:
                 if 'kind' in ct and skind and ct['kind'] != skind:
                     return
-                for source in sources.split(','):
+                for source in ssources.split(','):
                     if source not in events[name][quantity][i]['source'].split(','):
                         events[name][quantity][i]['source'] += ',' + source
                         if serror and 'error' not in events[name][quantity][i]:
@@ -986,8 +990,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     quantaentry['value'] = svalue
     if serror:
         quantaentry['error'] = serror
-    if sources:
-        quantaentry['source'] = sources
+    if ssources:
+        quantaentry['source'] = ssources
     if skind:
         quantaentry['kind'] = skind
     if sprob:
@@ -1663,7 +1667,7 @@ def copy_to_event(fromname, destname):
                         kind = null_field(item, "kind"), extra = null_field(item, "extra"))
                 else:
                     add_quantity(destname, key, item['value'], sources, error = null_field(item, "error"),
-                        unit = null_field(item, "unit"), kind = null_field(item, "kind"))
+                        unit = null_field(item, "unit"), probability = null_field(item, "probability"), kind = null_field(item, "kind"))
 
 def load_event_from_file(name = '', location = '', clean = False, delete = True, append = False):
     if not name and not location:
