@@ -890,8 +890,6 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
         raise(ValueError('Quantity must be a string or an array of strings.'))
 
-    ssources = uniq_cdl(sources)
-
     if is_erroneous(name, quantity, sources):
         return
 
@@ -971,10 +969,10 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
 
     if quantity in events[name]:
         for i, ct in enumerate(events[name][quantity]):
-            if ct['value'] == svalue and ssources:
+            if ct['value'] == svalue and sources:
                 if 'kind' in ct and skind and ct['kind'] != skind:
                     return
-                for source in ssources.split(','):
+                for source in sources.split(','):
                     if source not in events[name][quantity][i]['source'].split(','):
                         events[name][quantity][i]['source'] += ',' + source
                         if serror and 'error' not in events[name][quantity][i]:
@@ -990,8 +988,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     quantaentry['value'] = svalue
     if serror:
         quantaentry['error'] = serror
-    if ssources:
-        quantaentry['source'] = ssources
+    if sources:
+        quantaentry['source'] = sources
     if skind:
         quantaentry['kind'] = skind
     if sprob:
@@ -1968,7 +1966,7 @@ for task in tasks:
                 add_quantity(name, 'ra', row['RA'], csources)
                 add_quantity(name, 'dec', row['DEC'], csources)
             if row['SP_BIBCODE']:
-                ssources = ','.join([source, add_source(name, bibcode = row['SP_BIBCODE'])] +
+                ssources = uniq_cdl([source, add_source(name, bibcode = row['SP_BIBCODE'])] +
                     ([add_source(name, bibcode = row['SP_BIBCODE_2'])] if row['SP_BIBCODE_2'] else []))
                 add_quantity(name, 'claimedtype', row['SP_TYPE'].replace('SN.', '').replace('SN', '').strip(': '), ssources)
         journal_events()
