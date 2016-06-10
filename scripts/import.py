@@ -1792,7 +1792,7 @@ def clean_event(dirtyevent):
         bibcodes = [oscbibcode]
 
     for key in list(events['temp'].keys()):
-        if key in ['name', 'sources']:
+        if key in ['name', 'sources', 'errors']:
             pass
         elif key == 'photometry':
             for p, photo in enumerate(events['temp']['photometry']):
