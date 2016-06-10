@@ -111,29 +111,45 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         elif len(ras) < len(decs):
             ras = ras + [ras[0] for x in range(len(decs) - len(ras))]
 
-        coo = coord(ras, decs, unit = (un.hourangle, un.deg))
+        try:
+            coo = coord(ras, decs, unit = (un.hourangle, un.deg))
+        except:
+            warnings.warn('Mangled coordinate, setting to 0')
+            radegs = []
+            decdegs = []
+        else:
+            radegs = coo.ra.deg[:oralen]
+            decdegs = coo.dec.deg[:odeclen]
+
         ras = ras[:oralen]
         decs = decs[:odeclen]
-        radegs = coo.ra.deg[:oralen]
-        decdegs = coo.dec.deg[:odeclen]
 
-        if len(radegs) > 1:
+        if len(ras) != len(radegs):
+            tqdm.write('Mangled R.A. for ' + item['name'])
+            conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
+                ('quantity', 'ra'), ('difference', '?'), ('values', ras), ('sources', rasources)]))
+        elif len(radegs) > 1:
             maxradiff = max([abs((radegs[i+1]-radegs[i])/radegs[i+1]) for i in range(len(radegs)-1)])
-            if maxradiff > 0.01:
-                tqdm.write('R.A. difference greater than a % for ' + item['name'])
+            if maxradiff > 0.001:
+                tqdm.write('R.A. difference greater than 0.1% for ' + item['name'])
                 conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                     ('quantity', 'ra'), ('difference', str(round_sig(maxradiff))), ('values', ras), ('sources', rasources)]))
-        if len(decdegs) > 1:
+
+        if len(decs) != len(decdegs):
+            tqdm.write('Mangled Dec. for ' + item['name'])
+            conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
+                ('quantity', 'dec'), ('difference', '?'), ('values', decs), ('sources', decsources)]))
+        elif len(decdegs) > 1:
             maxdecdiff = max([abs((decdegs[i+1]-decdegs[i])/decdegs[i+1]) for i in range(len(decdegs)-1)])
-            if maxdecdiff > 0.01:
-                tqdm.write('Dec. difference greater than a % for ' + item['name'])
+            if maxdecdiff > 0.001:
+                tqdm.write('Dec. difference greater than 0.1% for ' + item['name'])
                 conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                     ('quantity', 'dec'), ('difference', str(round_sig(maxdecdiff))), ('values', decs), ('sources', decsources)]))
 
     if zs:
         maxzdiff = max([abs((zs[i+1]-zs[i])/zs[i+1]) for i in range(len(zs)-1)])
-        if maxzdiff > 0.01:
-            tqdm.write('Redshift difference greater than a % for ' + item['name'])
+        if maxzdiff > 0.05:
+            tqdm.write('Redshift difference greater than 5% for ' + item['name'])
             conflicts.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('edit',edit),
                 ('quantity', 'redshift'), ('difference', str(round_sig(maxzdiff))), ('values', zs), ('sources', zsources)]))
 

@@ -2,6 +2,7 @@
 
 import json
 import sys
+import warnings
 from tq import *
 from repos import *
 from events import *
@@ -34,10 +35,17 @@ colors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
           cubehelix.cubehelix3_16.hex_colors[2:13] +
           cubehelix.jim_special_16.hex_colors[2:13] +
           cubehelix.purple_16.hex_colors[2:13] +
+          cubehelix.purple_16.hex_colors[2:13] +
+          cubehelix.purple_16.hex_colors[2:13] +
+          cubehelix.purple_16.hex_colors[2:13] +
           cubehelix.perceptual_rainbow_16.hex_colors)
 shuffle(colors)
 
 files = repo_file_list(bones = False)
+
+with open('non-sne-types.json', 'r') as f:
+    nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    nonsnetypes = [x.upper() for x in nonsnetypes]
 
 for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()), "Collecting positions")):
     #if fcnt > 20:
@@ -52,9 +60,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()), "Col
         if 'claimedtype' in thisevent and thisevent['claimedtype']:
             for ct in [x['value'] for x in thisevent['claimedtype']]:
                 thistype = ct.replace('?', '').replace('*', '')
-                nonsnetypes = [x.lower() for x in ['Dwarf Nova', 'Nova', 'QSO', 'AGN', 'CV', 'Galaxy', 'Impostor', 'Imposter', 'Stellar', 'Gal', 'M-star',
-                               'AGN / QSO', 'TDE', 'Varstar', 'Star', 'RCrB', 'dK', 'dM', 'SSO', 'YSO', 'LBV', 'BL Lac', 'C-star']]
-                if thistype.lower() in nonsnetypes:
+                if thistype.upper() in nonsnetypes:
                     continue
                 elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate', 'nIa'):
                     sntypes.append('Unknown')
@@ -66,16 +72,23 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()), "Col
             sntypes.append('Unknown')
 
         tprint(thisevent['name'])
-        c = coord(ra=thisevent['ra'][0]['value'], dec=thisevent['dec'][0]['value'], unit=(un.hourangle, un.deg))
-        snnames.append(thisevent['name'])
-        rarad = c.ra.radian - pi
-        decrad = c.dec.radian
-        snhx = 2.0**1.5*cos(decrad)*sin(rarad/2.0)/sqrt(1.0 + cos(decrad)*cos(rarad/2.0))
-        snhy = sqrt(2.0)*sin(decrad)/sqrt(1.0 + cos(decrad)*cos(rarad/2.0))
-        snras.append(c.ra.deg)
-        sndecs.append(c.dec.deg)
-        snhxs.append(snhx)
-        snhys.append(snhy)
+        try:
+            c = coord(ra=thisevent['ra'][0]['value'], dec=thisevent['dec'][0]['value'], unit=(un.hourangle, un.deg))
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            warnings.warn('Mangled coordinate, skipping')
+            continue
+        else:
+            snnames.append(thisevent['name'])
+            rarad = c.ra.radian - pi
+            decrad = c.dec.radian
+            snhx = 2.0**1.5*cos(decrad)*sin(rarad/2.0)/sqrt(1.0 + cos(decrad)*cos(rarad/2.0))
+            snhy = sqrt(2.0)*sin(decrad)/sqrt(1.0 + cos(decrad)*cos(rarad/2.0))
+            snras.append(c.ra.deg)
+            sndecs.append(c.dec.deg)
+            snhxs.append(snhx)
+            snhys.append(snhy)
 
 rangepts = 100
 raseps = 24
