@@ -346,6 +346,10 @@ def name_clean(name):
         newname = newname.replace('SN SDSS ', 'SDSS', 1)
     if newname.startswith('SDSS '):
         newname = newname.replace('SDSS ', 'SDSS', 1)
+    if newname.startswith('SDSS'):
+        namesp = newname.split('-')
+        if len(namesp) == 3 and is_number(namesp[0][4:]) and is_number(namesp[1]) and is_number(namesp[2]):
+            newname = namesp[0] + '-' + namesp[1] + '-' + namesp[2].zfill(3)
     if newname.startswith('SN CL'):
         newname = newname.replace('SN CL', 'CL', 1)
     if newname.startswith('SN HiTS '):

@@ -219,48 +219,8 @@ newfiletemplate = (
 }'''
 )
 
-sitemaptemplate = (
-'''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
-  <url>
-    <loc>https://sne.space</loc>
-    <priority>1.0</priority>
-    <changefreq>daily</changefreq>
-  </url>
-  <url>
-    <loc>https://sne.space/about</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/contribute</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/find-duplicates</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/derivations</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/statistics</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/download</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/bibliography</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://sne.space/links</loc>
-    <priority>0.7</priority>
-  </url>
-{0}</urlset>'''
-)
+with open('sitemap-template.xml', 'r') as f:
+    sitemaptemplate = f.read()
 
 if len(columnkey) != len(header):
     raise(ValueError('Header not same length as key list.'))
