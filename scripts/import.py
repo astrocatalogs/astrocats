@@ -267,9 +267,10 @@ def host_clean(name):
     newname = name.strip(' ;,*')
 
     # Handle some special cases
-    for k, v in {'M051a':'M51A', 'M051b':'M51B'}:
+    hostcases = {'M051a':'M51A', 'M051b':'M51B'}
+    for k in hostcases:
         if newname == k:
-            newname = v
+            newname = hostcases[k]
 
     # Some general cases
     newname = newname.strip("()").replace('  ', ' ', 1)
@@ -707,7 +708,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                 same_tag_num(photo, unabsorbedflux, 'unabsorbedflux') and
                 same_tag_num(photo, fluxdensity, 'fluxdensity') and
                 same_tag_num(photo, counts, 'counts') and
-                same_tag_num(photo, energy, 'energy') and
+                same_tag_num(photo, energy, 'energy', canbelist = True) and
                 same_tag_num(photo, frequency, 'frequency') and
                 same_tag_num(photo, photonindex, 'photonindex') and
                 same_tag_num(photo, e_magnitude, 'e_magnitude') and
@@ -717,10 +718,10 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                 same_tag_num(photo, e_unabsorbedflux, 'e_unabsorbedflux') and
                 same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
                 same_tag_num(photo, e_counts, 'e_counts') and
-                same_tag_num(photo, u_flux, 'u_flux') and
-                same_tag_num(photo, u_fluxdensity, 'u_fluxdensity') and
-                same_tag_num(photo, u_frequency, 'u_frequency') and
-                same_tag_num(photo, u_energy, 'u_energy') and
+                same_tag_str(photo, u_flux, 'u_flux') and
+                same_tag_str(photo, u_fluxdensity, 'u_fluxdensity') and
+                same_tag_str(photo, u_frequency, 'u_frequency') and
+                same_tag_str(photo, u_energy, 'u_energy') and
                 same_tag_str(photo, ssystem, 'system')
                 ):
                 return
@@ -3608,6 +3609,47 @@ for task in tasks:
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'redshift', row[3], source, kind = 'host')
+        journal_events()
+
+        # 2009MNRAS.398.1041B
+        with open("../sne-external/2009MNRAS.398.1041B.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    bands = row[2:-1]
+                    continue    
+                (name, source) = new_event('SN2008S', bibcode = '2009MNRAS.398.1041B')
+                mjd = str(jd_to_mjd(Decimal(row[0])))
+                mags = [x.split('±')[0].strip() for x in row[2:]] 
+                upps = [('<' in x.split('±')[0]) for x in row[2:]] 
+                errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[2:]] 
+
+                instrument = row[-1]
+                    
+                for mi, mag in enumerate(mags):
+                    if not is_number(mag):
+                        continue
+                    add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                        instrument = ins, source = source)
+        journal_events()
+
+        # 2010arXiv1007.0011P
+        with open("../sne-external/2010arXiv1007.0011P.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    bands = row[1:]
+                    continue    
+                (name, source) = new_event('SN2008S', bibcode = '2010arXiv1007.0011P')
+                mjd = row[0]
+                mags = [x.split('±')[0].strip() for x in row[1:]] 
+                errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[1:]] 
+
+                for mi, mag in enumerate(mags):
+                    if not is_number(mag):
+                        continue
+                    add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                        instrument = 'LBT', source = source)
         journal_events()
 
     # CCCP
