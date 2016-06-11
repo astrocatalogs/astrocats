@@ -9,7 +9,7 @@ __all__ = ['repo_file_list', 'get_repo_folder_for_year', 'get_repo_folders', 'ge
 
 
 def repo_file_list(bones=True):
-    """
+    """Get filenames for all files in each repository, with `boneyard` files optional.
     """
     repo_folders = get_repo_folders()
     files = []
@@ -24,6 +24,8 @@ def repo_file_list(bones=True):
 
 
 def get_repo_folder_for_year(entry):
+    """Determine the appropriate SN repository based on the `discoverdate` year of this `entry`.
+    """
     repo_folders = get_repo_folders()
     if 'discoverdate' not in entry:
         return repo_folders[0]
