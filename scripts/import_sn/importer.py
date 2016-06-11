@@ -11,26 +11,20 @@ import json
 import codecs
 import resource
 import argparse
-# import io
 import warnings
 from datetime import timedelta, datetime
 from glob import glob
 from html import unescape
 from cdecimal import Decimal
 from astroquery.vizier import Vizier
-# from astroquery.simbad import Simbad
 from copy import deepcopy
-# from astropy import units as un
-# from astropy.io import fits
 from astropy.time import Time as astrotime
-from collections import OrderedDict  # , Sequence
-from math import log10, floor, isnan, ceil  # , sqrt
+from collections import OrderedDict
+from math import log10, floor, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
-# from .. utils import *
 from .. utils import get_sig_digits, pretty_num, tq, is_number, round_sig, tprint, repo_file_list
-# from . import_funcs import *
 from . import_funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
     archived_task, convert_aq_output, \
     derive_and_sanitize, delete_old_event_files, \
@@ -42,7 +36,7 @@ from . import_funcs import add_event, add_photometry, add_quantity, add_source, 
     load_cached_url, make_date_string, merge_duplicates, \
     set_preferred_names, \
     clean_snname, uniq_cdl, utf8, write_all_events
-from scripts import PATH  # , FILENAME
+from scripts import PATH
 from . constants import KM, CLIGHT, ACKN_CFA, TRAVIS_QUERY_LIMIT
 
 
