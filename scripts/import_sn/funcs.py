@@ -1280,6 +1280,7 @@ def journal_events(tasks, args, events, clear=True):
         clear_events(events)
     return events
 
+
 def load_event_from_file(events, args, tasks, name='', path='',
                          clean=False, delete=True, append=False):
     """
@@ -1294,7 +1295,7 @@ def load_event_from_file(events, args, tasks, name='', path='',
         indir = '../'
         for rep in repo_folders:
             filename = get_event_filename(name)
-            newpath = os.path.join(indir, rep, filename + '.json'
+            newpath = os.path.join(indir, rep, filename + '.json')
             if os.path.isfile(newpath):
                 namepath = newpath
                 break
@@ -1308,11 +1309,7 @@ def load_event_from_file(events, args, tasks, name='', path='',
             if name in events:
                 del events[name]
 
-        if path and namepath:
-            with open(path, 'r') as f, open(namepath, 'r') as nf:
-                newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
-                newevent2 = json.loads(nf.read(), object_pairs_hook=OrderedDict)
-        elif path:
+        if path:
             with open(path, 'r') as f:
                 newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
         elif namepath:
@@ -1320,6 +1317,7 @@ def load_event_from_file(events, args, tasks, name='', path='',
                 newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
 
         if newevent:
+            newevent2 = ''
             if clean:
                 newevent = clean_event(events, newevent)
             name = next(reversed(newevent))
@@ -1424,8 +1422,9 @@ def make_date_string(year, month='', day=''):
     return datestring
 
 
-# Merge and remove duplicate events
 def merge_duplicates(tasks, args, events):
+    """Merge and remove duplicate events
+    """
     if not len(events):
         load_stubs(tasks, args, events)
     currenttask = 'Merging duplicate events'
