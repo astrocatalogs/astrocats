@@ -634,6 +634,7 @@ def get_source_by_alias(name, alias):
     for source in events[name]['sources']:
         if source['alias'] == alias:
             return source
+    print(events[name])
     raise(ValueError('Source alias not found!'))
 
 def same_tag_str(photo, val, tag):
@@ -1051,7 +1052,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     else:
         events[name].setdefault(quantity,[]).append(quantaentry)
 
-def load_cached_url(url, filepath, timeout = 120, write = True, failhard = True):
+def load_cached_url(url, filepath, timeout = 120, write = True, failhard = False):
     filemd5 = ''
     filetxt = ''
     if not args.refresh and os.path.isfile(filepath):
@@ -1063,11 +1064,13 @@ def load_cached_url(url, filepath, timeout = 120, write = True, failhard = True)
     try:
         session = requests.Session()
         response = session.get(url, timeout = timeout)
-        if any([x.status_code == 307 or x.status_code == 404 for x in response.history]):
-            raise
+        response.raise_for_status()
+        for x in response.history:
+            x.raise_for_status()
+            if x.status_code == 500:
+                raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
-        #tprint(filemd5 + ":" + newmd5)
         if args.update and newmd5 == filemd5:
             tprint('Skipping file in "' + currenttask + '," local and remote copies identical [' + newmd5 + '].')
             return False
@@ -5982,7 +5985,7 @@ for task in tasks:
                         bibcode = sourcedict[name]
                     if bibcode:
                         source = add_source(name, bibcode = unescape(bibcode))
-                        sources += source
+                        sources += [source]
                     sources = uniq_cdl(sources)
     
                     date = spectrum.split('_')[1]

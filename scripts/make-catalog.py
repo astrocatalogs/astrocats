@@ -1349,14 +1349,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if imgsrc == 'SDSS':
                 hostimgs.append([eventname, 'SDSS'])
                 skyhtml = ('<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
-                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
+                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale=0.15"><img src="' + fileeventname + '-host.jpg" width=250></a>')
             elif imgsrc == 'DSS':
                 hostimgs.append([eventname, 'DSS'])
                 url = ("http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position=" + str(urllib.parse.quote_plus(snra + " " + sndec)) +
                        "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size=" + str(dssimagescale) + "float=on&scaling=Log&resolver=SIMBAD-NED" +
                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1" +
                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null")
-                skyhtml = ('<a href="' + url + '"><img style="margin:5px;" src="' + fileeventname + '-host.jpg" width=250></a>')
+                skyhtml = ('<a href="' + url + '"><img src="' + fileeventname + '-host.jpg" width=250></a>')
         else:
             hostimgs.append([eventname, 'None'])
 
