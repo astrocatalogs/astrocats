@@ -24,7 +24,8 @@ from math import log10, floor, isnan, ceil
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 
-from .. utils import get_sig_digits, pretty_num, tq, is_number, round_sig, tprint, repo_file_list
+from .. utils import get_sig_digits, pretty_num, pbar, pbar_strings, is_number, round_sig, tprint, \
+    repo_file_list
 from . import_funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
     archived_task, convert_aq_output, \
     derive_and_sanitize, delete_old_event_files, \
@@ -44,7 +45,7 @@ def import_main():
     """
     """
     args = load_args()
-    currenttask = ''
+    current_task = ''
     # eventnames = []
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
@@ -100,79 +101,22 @@ def import_main():
 
     for task in tasks:
         if do_task(tasks, args, task, 'deleteoldevents'):
-            currenttask = 'Deleting old events'
+            # Delete `current_task` here and wrap deletion in `pbar_strings` ??
+            current_task = 'Deleting old events'
             delete_old_event_files()
 
-        # Import data provided directly to OSC
+        # Import data provided directly to OSC, in standard format
         if do_task(tasks, args, task, 'internal'):
-            path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
-            for datafile in tq(sorted(glob(path_pattern), key=lambda s: s.lower()), currenttask):
-                if args.update:
-                    if not load_event_from_file(events, args, tasks, location=datafile, clean=True, delete=False, append=True):
-                        raise IOError('Failed to find specified file.')
-                else:
-                    if not load_event_from_file(events, args, tasks,  location=datafile, clean=True, delete=False):
-                        raise IOError('Failed to find specified file.')
-            journal_events(tasks, args, events)
+            events = do_internal(events, args, tasks)
 
         if do_task(tasks, args, task, 'radio'):
-            path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
-            for datafile in tq(sorted(glob(path_pattern), key=lambda s: s.lower()), currenttask):
-                name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
-                radiosourcedict = OrderedDict()
-                with open(datafile, 'r') as f:
-                    for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
-                        if line.startswith('(') and li <= len(radiosourcedict):
-                            radiosourcedict[line.split()[0]] = add_source(events, name, bibcode=line.split()[-1])
-                        elif li in [x + len(radiosourcedict) for x in range(3)]:
-                            continue
-                        else:
-                            cols = list(filter(None, line.split()))
-                            source = radiosourcedict[cols[6]]
-                            add_photometry(
-                                events, name, time=cols[0], frequency=cols[2], u_frequency='GHz', fluxdensity=cols[3],
-                                e_fluxdensity=cols[4], u_fluxdensity='µJy', instrument=cols[5], source=source)
-                            add_quantity(events, name, 'alias', name, source)
-            journal_events(tasks, args, events)
+            events = do_external_radio(events, args, tasks)
 
         if do_task(tasks, args, task, 'xray'):
-            path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
-            for datafile in tq(sorted(glob(path_pattern), key=lambda s: s.lower()), currenttask):
-                name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
-                with open(datafile, 'r') as f:
-                    for li, line in enumerate(f.read().splitlines()):
-                        if li == 0:
-                            source = add_source(events, name, bibcode=line.split()[-1])
-                        elif li in [1, 2, 3]:
-                            continue
-                        else:
-                            cols = list(filter(None, line.split()))
-                            add_photometry(
-                                events, name, time=cols[:2],
-                                energy=cols[2:4], u_energy='keV', counts=cols[4], flux=cols[6],
-                                unabsorbedflux=cols[8], u_flux='ergs/s/cm^2',
-                                photonindex=cols[15], instrument=cols[17], nhmw=cols[11],
-                                upperlimit=(float(cols[5]) < 0), source=source)
-                            add_quantity(events, name, 'alias', name, source)
-            journal_events(tasks, args, events)
+            events = do_external_xray(events, args, tasks)
 
         # if do_task(tasks, args, task, 'simbad'):
-        #    Simbad.list_votable_fields()
-        #    customSimbad = Simbad()
-        #    customSimbad.add_votable_fields('otype', 'id(opt)')
-        #    result = customSimbad.query_object('SN 20[0-9][0-9]*', wildcard=True)
-        #    for r, row in enumerate(result):
-        #        if row['OTYPE'].decode() != 'SN':
-        #            continue
-        #        name = row['MAIN_ID'].decode()
-        #        aliases = Simbad.query_objectids(name)
-        #        print(aliases)
-        #        if name[:3] == 'SN ':
-        #            name = 'SN' + name[3:]
-        #        if name[:2] == 'SN' and is_number(name[2:]):
-        #            name = name + 'A'
-        #        name = add_event(tasks, args, events, name)
-        #    journal_events(tasks, args, events)
+        #     events = do_simbad(events, args, tasks)
 
         # Import primary data sources from Vizier
         if do_task(tasks, args, task, 'vizier'):
@@ -183,7 +127,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             oldname = ''
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['SN']
                 if is_number(name[:4]):
                     name = 'SN' + name
@@ -203,7 +147,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             oldname = ''
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['Name'].replace('SCP', 'SCP-')
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2012ApJ...746...85S')
@@ -222,7 +166,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             oldname = ''
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['Name'].replace('SCP', 'SCP-')
                 flux = Decimal(float(row['Flux']))
                 if flux <= 0.0:
@@ -246,7 +190,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             oldname = ''
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = 'SN'+row['SN']
                 flux = Decimal(float(row['Flux']))
                 if flux <= 0.0:
@@ -276,7 +220,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             oldname = ''
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['SN']
                 if name == oldname:
                     continue
@@ -293,7 +237,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/438/1391/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['SN']
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2014MNRAS.438.1391P')
@@ -307,7 +251,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/749/18/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['Name'].replace(' ', '')
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2012ApJ...749...18B')
@@ -327,7 +271,7 @@ def import_main():
             result = Vizier.get_catalogs('J/A+A/523/A7/table9')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = 'SNLS-' + row['SNLS']
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2010A&A...523A...7G')
@@ -347,7 +291,7 @@ def import_main():
             result = Vizier.get_catalogs('J/A+A/415/863/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2004A&A...415..863G')
@@ -369,7 +313,7 @@ def import_main():
             result = Vizier.get_catalogs('J/AJ/136/2306/sources')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = 'SDSS-II ' + str(row['SNID'])
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2008AJ....136.2306H')
@@ -382,7 +326,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/708/661/sn')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['SN']
                 if not name:
                     name = 'SDSS-II ' + str(row['SDSS-II'])
@@ -399,7 +343,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/708/661/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 if row['f_SN'] == 'a':
                     name = 'SDSS-II ' + str(row['SN'])
                 else:
@@ -414,7 +358,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/795/44/ps1_snIa')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['SN']
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2014ApJ...795...44R')
@@ -429,7 +373,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/795/44/table6')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 name = row['SN']
                 name = add_event(tasks, args, events, name)
                 source = add_source(events, name, bibcode='2014ApJ...795...44R')
@@ -455,7 +399,7 @@ def import_main():
                     else:
                         ii189refdict[r+1] = row[2]
 
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 if row['band'][0] == '(':
                     continue
                 name = 'SN' + row['SN']
@@ -479,7 +423,7 @@ def import_main():
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
 
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = ''
                 if row['Names']:
@@ -522,7 +466,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/442/844/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
@@ -535,7 +479,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/442/844/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = 'SN' + str(row['SN'])
                 name = add_event(tasks, args, events, name)
@@ -553,7 +497,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/425/1789/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = ''.join(row['SimbadName'].split(' '))
                 name = add_event(tasks, args, events, name)
@@ -571,7 +515,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJS/219/13/table3')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = u'LSQ' + str(row['LSQ'])
                 name = add_event(tasks, args, events, name)
@@ -585,7 +529,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJS/219/13/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = 'LSQ' + row['LSQ']
                 name = add_event(tasks, args, events, name)
@@ -606,7 +550,7 @@ def import_main():
             source = add_source(events, name, bibcode='2012Natur.491..228C')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'claimedtype', 'SLSN-R', source)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 for band in ['g', 'r', 'i']:
                     bandtag = band + '_mag'
@@ -623,7 +567,7 @@ def import_main():
             source = add_source(events, name, bibcode='2012Natur.491..228C')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'claimedtype', 'SLSN-II?', source)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 for band in ['g', 'r', 'i']:
                     bandtag = band + '_mag'
@@ -637,7 +581,7 @@ def import_main():
             result = Vizier.get_catalogs('J/other/Nat/474.484/tables1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -656,7 +600,7 @@ def import_main():
             name = add_event(tasks, args, events, name)
             source = add_source(events, name, bibcode='2011ApJ...736..159G')
             add_quantity(events, name, 'alias', name, source)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 add_photometry(
                     events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'],
@@ -673,7 +617,7 @@ def import_main():
             name = add_event(tasks, args, events, name)
             source = add_source(events, name, bibcode='2012ApJ...760L..33B')
             add_quantity(events, name, 'alias', name, source)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 # Fixing a typo in VizieR table
                 if str(row['JD']) == '2455151.456':
@@ -691,7 +635,7 @@ def import_main():
             name = add_event(tasks, args, events, name)
             source = add_source(events, name, bibcode='2013ApJ...769...39S')
             add_quantity(events, name, 'alias', name, source)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 instrument = ''
                 telescope = ''
@@ -715,7 +659,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/394/2266/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 for band in ['U', 'B', 'V', 'R', 'I']:
                     bandtag = band + 'mag'
@@ -731,7 +675,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/394/2266/table3')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 for band in ['B', 'V', 'R']:
                     bandtag = band + 'mag'
@@ -744,7 +688,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/394/2266/table4')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 for band in ['J', 'H', 'K']:
                     bandtag = band + 'mag'
@@ -763,7 +707,7 @@ def import_main():
             name = add_event(tasks, args, events, name)
             source = add_source(events, name, bibcode='2013AJ....145...99A')
             add_quantity(events, name, 'alias', name, source)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
                     add_photometry(events, name, time=row['MJD'], band='B', magnitude=row['Bmag'],
@@ -791,7 +735,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/729/143/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 add_photometry(
                     events, name, time=row['MJD'], band='ROTSE', telescope='ROTSE', magnitude=row['mag'],
@@ -800,7 +744,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/729/143/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 if 'Jmag' in row and is_number(row['Jmag']) and not isnan(float(row['Jmag'])):
                     add_photometry(events, name, time=row['MJD'], telescope='PAIRITEL', band='J', magnitude=row['Jmag'],
@@ -815,7 +759,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/729/143/table4')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 add_photometry(
                     events, name, time=row['MJD'], band=row['Filt'], telescope='P60',
@@ -824,7 +768,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/729/143/table5')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 add_photometry(
                     events, name, time=row['MJD'], band=row['Filt'], instrument='UVOT', telescope='Swift',
@@ -840,7 +784,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/728/14/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
                     add_photometry(
@@ -862,7 +806,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/728/14/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 if 'u_mag' in row and is_number(row['u_mag']) and not isnan(float(row['u_mag'])):
                     add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), telescope=row['Tel'], band='u', magnitude=row['u_mag'],
@@ -883,7 +827,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/728/14/table3')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 if 'Ymag' in row and is_number(row['Ymag']) and not isnan(float(row['Ymag'])):
                     add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument=row['Inst'], band='Y', magnitude=row['Ymag'],
@@ -905,7 +849,7 @@ def import_main():
             result = Vizier.get_catalogs('J/PAZh/37/837/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = str(jd_to_mjd(Decimal(row['JD']) + 2455000))
                 if 'Umag' in row and is_number(row['Umag']) and not isnan(float(row['Umag'])):
@@ -934,7 +878,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/433/1871/table3a')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = str(jd_to_mjd(Decimal(row['JD']) + 2456000))
                 if 'Umag' in row and is_number(row['Umag']) and not isnan(float(row['Umag'])):
@@ -956,7 +900,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/433/1871/table3b')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = str(jd_to_mjd(Decimal(row['JD']) + 2456000))
                 if 'gmag' in row and is_number(row['gmag']) and not isnan(float(row['gmag'])):
@@ -982,7 +926,7 @@ def import_main():
             result = Vizier.get_catalogs('J/AJ/148/1/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
@@ -1001,7 +945,7 @@ def import_main():
             result = Vizier.get_catalogs('J/AJ/148/1/table3')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if 'Umag' in row and is_number(row['Umag']) and not isnan(float(row['Umag'])):
@@ -1026,7 +970,7 @@ def import_main():
             result = Vizier.get_catalogs('J/AJ/148/1/table5')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
@@ -1052,7 +996,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/805/74/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 mjd = row['MJD']
                 if 'mag' in row and is_number(row['mag']) and not isnan(float(row['mag'])):
@@ -1067,7 +1011,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/741/97/table2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['SN'])
                 name = add_event(tasks, args, events, name)
@@ -1082,7 +1026,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/448/1206/table3')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -1098,7 +1042,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/448/1206/table4')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -1114,7 +1058,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/448/1206/table5')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -1130,7 +1074,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/448/1206/table6')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -1145,7 +1089,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea2')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -1161,7 +1105,7 @@ def import_main():
             result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea3')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = str(row['Name'])
                 name = add_event(tasks, args, events, name)
@@ -1179,7 +1123,7 @@ def import_main():
             result = Vizier.get_catalogs('J/AJ/143/126/table4')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 if not row['Wcl'] or row['Wcl'] == 'N':
                     continue
                 row = convert_aq_output(row)
@@ -1195,7 +1139,7 @@ def import_main():
                 result = Vizier.get_catalogs('J/ApJS/220/9/table' + viztab)
                 table = result[list(result.keys())[0]]
                 table.convert_bytestring_to_unicode(python3_only=True)
-                for row in tq(table, currenttask):
+                for row in pbar(table, current_task):
                     row = convert_aq_output(row)
                     name = add_event(tasks, args, events, row['SN'])
                     source = add_source(events, name, bibcode='2015ApJS..220....9F')
@@ -1215,7 +1159,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJS/220/9/table8')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = add_event(tasks, args, events, row['SN'])
                 source = add_source(events, name, bibcode='2015ApJS..220....9F')
@@ -1229,7 +1173,7 @@ def import_main():
             result = Vizier.get_catalogs('J/ApJ/673/999/table1')
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = add_event(tasks, args, events, 'SN'+row['SN'])
                 source = add_source(events, name, bibcode='2008ApJ...673..999P')
@@ -1380,7 +1324,7 @@ def import_main():
 
             # Brown 05-14-16
             files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
-            for fi in tq(files, currenttask):
+            for fi in pbar(files, current_task):
                 name = os.path.basename(fi).split('_')[0]
                 name = add_event(tasks, args, events, name)
                 source = add_source(
@@ -1413,7 +1357,7 @@ def import_main():
             source = add_source(events, name, bibcode='2016arXiv160304748N')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'alias', 'PS15ae', source)
-            for fi in tq(files, currenttask):
+            for fi in pbar(files, current_task):
                 telescope = os.path.basename(fi).split('_')[1]
                 with open(fi, 'r') as f:
                     lines = f.read().splitlines()
@@ -1466,7 +1410,7 @@ def import_main():
         if do_task(tasks, args, task, 'scp'):
             with open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
-                for ri, row in enumerate(tq(tsvin, currenttask)):
+                for ri, row in enumerate(pbar(tsvin, current_task)):
                     if ri == 0:
                         continue
                     name = row[0].replace('SCP', 'SCP-')
@@ -1491,7 +1435,7 @@ def import_main():
             # 2006ApJ...645..841N
             with open(os.path.join(PATH.REPO_EXTERNAL, '2006ApJ...645..841N-table3.csv'), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
-                for ri, row in enumerate(tq(tsvin, currenttask)):
+                for ri, row in enumerate(pbar(tsvin, current_task)):
                     name = 'SNLS-' + row[0]
                     name = add_event(tasks, args, events, name)
                     source = add_source(events, name, bibcode='2006ApJ...645..841N')
@@ -1502,7 +1446,7 @@ def import_main():
             journal_events(tasks, args, events)
 
             # Anderson 2014
-            for datafile in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat')), key=lambda s: s.lower()), currenttask):
+            for datafile in pbar_strings(glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat')), desc=current_task):
                 basename = os.path.basename(datafile)
                 if not is_number(basename[:2]):
                     continue
@@ -1531,7 +1475,7 @@ def import_main():
             stromlobands = ['B', 'V', 'R', 'I', 'VM', 'RM']
             with open(os.path.join(PATH.REPO_EXTERNAL, 'J_A+A_415_863-1/photometry.csv'), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
-                for row in tq(tsvin, currenttask):
+                for row in pbar(tsvin, current_task):
                     name = row[0]
                     name = add_event(tasks, args, events, name)
                     source = add_source(events, name, bibcode='2004A&A...415..863G')
@@ -1554,7 +1498,7 @@ def import_main():
             # 2015MNRAS.449..451W
             with open(os.path.join(PATH.REPO_EXTERNAL, '2015MNRAS.449..451W.dat'), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
-                for r, row in enumerate(tq(data, currenttask)):
+                for r, row in enumerate(pbar(data, current_task)):
                     if r == 0:
                         continue
                     namesplit = row[0].split('/')
@@ -1576,7 +1520,7 @@ def import_main():
                 name = add_event(tasks, args, events, 'LSQ13zm')
                 source = add_source(events, name, bibcode='2016MNRAS.459.1039T')
                 add_quantity(events, name, 'alias', name, source)
-                for r, row in enumerate(tq(data, currenttask)):
+                for r, row in enumerate(pbar(data, current_task)):
                     if row[0][0] == '#':
                         bands = [x.replace('(err)', '') for x in row[3:-1]]
                         continue
@@ -1599,7 +1543,7 @@ def import_main():
                 name = add_event(tasks, args, events, 'PS1-13arp')
                 source = add_source(events, name, bibcode='2015ApJ...804...28G')
                 add_quantity(events, name, 'alias', name, source)
-                for r, row in enumerate(tq(data, currenttask)):
+                for r, row in enumerate(pbar(data, current_task)):
                     if r == 0:
                         continue
                     mjd = row[1]
@@ -1616,7 +1560,7 @@ def import_main():
             # 2016ApJ...819...35A
             with open(os.path.join(PATH.REPO_EXTERNAL, '2016ApJ...819...35A.tsv'), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
-                for r, row in enumerate(tq(data, currenttask)):
+                for r, row in enumerate(pbar(data, current_task)):
                     if row[0][0] == '#':
                         continue
                     name = add_event(tasks, args, events, row[0])
@@ -1633,7 +1577,7 @@ def import_main():
             # 2014ApJ...784..105W
             with open(os.path.join(PATH.REPO_EXTERNAL, '2014ApJ...784..105W.tsv'), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
-                for r, row in enumerate(tq(data, currenttask)):
+                for r, row in enumerate(pbar(data, current_task)):
                     if row[0][0] == '#':
                         continue
                     name = add_event(tasks, args, events, row[0])
@@ -1652,7 +1596,7 @@ def import_main():
             # 2012MNRAS.425.1007B
             with open(os.path.join(PATH.REPO_EXTERNAL, '2012MNRAS.425.1007B.tsv'), 'r') as f:
                 data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace=True)
-                for r, row in enumerate(tq(data, currenttask)):
+                for r, row in enumerate(pbar(data, current_task)):
                     if row[0][0] == '#':
                         bands = row[2:]
                         continue
@@ -1714,7 +1658,7 @@ def import_main():
 
             soup = BeautifulSoup(html, 'html5lib')
             links = soup.body.findAll("a")
-            for link in tq(links, currenttask):
+            for link in pbar(links, current_task):
                 if 'sc_sn' in link['href']:
                     name = add_event(tasks, args, events, link.text.replace(' ', ''))
                     source = add_source(events, name, refname='CCCP', url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
@@ -1760,7 +1704,7 @@ def import_main():
                 for row in tsvin:
                     suspectrefdict[row[0]] = row[1]
 
-            for datafile in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'SUSPECT/*.html')), key=lambda s: s.lower()), currenttask):
+            for datafile in pbar_strings(glob(os.path.join(PATH.REPO_EXTERNAL, 'SUSPECT/*.html')), desc=current_task):
                 basename = os.path.basename(datafile)
                 basesplit = basename.split('-')
                 name = basesplit[1]
@@ -1824,7 +1768,7 @@ def import_main():
 
         # CfA data
         if do_task(tasks, args, task, 'cfa'):
-            for fname in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat')), key=lambda s: s.lower()), currenttask):
+            for fname in pbar_strings(glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat')), desc=current_task):
                 f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
                 csv_data = []
@@ -1899,7 +1843,7 @@ def import_main():
             # Hicken 2012
             f = open(os.path.join(PATH.REPO_EXTERNAL, 'hicken-2012-standard.dat'), 'r')
             tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
-            for r, row in enumerate(tq(tsvin, currenttask)):
+            for r, row in enumerate(pbar(tsvin, current_task)):
                 if r <= 47:
                     continue
 
@@ -1920,7 +1864,7 @@ def import_main():
             # Bianco 2014
             tsvin = open(os.path.join(PATH.REPO_EXTERNAL, 'bianco-2014-standard.dat'), 'r')
             tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
-            for row in tq(tsvin, currenttask):
+            for row in pbar(tsvin, current_task):
                 name = 'SN' + row[0]
                 name = add_event(tasks, args, events, name)
 
@@ -1946,7 +1890,7 @@ def import_main():
 
             photom = json.loads(jsontxt)
             photom = sorted(photom, key=lambda k: k['ObjName'])
-            for phot in tq(photom, currenttask=currenttask):
+            for phot in pbar(photom, desc=current_task):
                 name = phot['ObjName']
                 name = add_event(tasks, args, events, name)
 
@@ -2005,7 +1949,7 @@ def import_main():
             with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as f:
                 bibcodes2010 = f.read().split('\n')
             sdssbands = ['u', 'g', 'r', 'i', 'z']
-            for fname in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/*.sum')), key=lambda s: s.lower()), currenttask):
+            for fname in pbar_strings(glob(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/*.sum')), desc=current_task):
                 f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
 
@@ -2060,7 +2004,7 @@ def import_main():
             tsvin = csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True)
             reference = 'Gaia Photometric Science Alerts'
             refurl = 'http://gsaweb.ast.cam.ac.uk/alerts/alertsindex'
-            for ri, row in enumerate(tq(tsvin, currenttask)):
+            for ri, row in enumerate(pbar(tsvin, current_task)):
                 if ri == 0 or not row:
                     continue
                 name = add_event(tasks, args, events, row[0])
@@ -2116,7 +2060,7 @@ def import_main():
         # VizieR catalogs exist for this: J/AJ/139/519, J/AJ/142/156. Should replace eventually.
         if do_task(tasks, args, task, 'csp'):
             cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-            for fname in tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat')), key=lambda s: s.lower()), currenttask):
+            for fname in pbar_strings(glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat')), desc=current_task):
                 f = open(fname, 'r')
                 tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
 
@@ -2165,7 +2109,7 @@ def import_main():
             f = open(os.path.join(PATH.REPO_EXTERNAL, 'itep-lc-cat-28dec2015.txt'), 'r')
             tsvin = csv.reader(f, delimiter='|', skipinitialspace=True)
             curname = ''
-            for r, row in enumerate(tq(tsvin, currenttask)):
+            for r, row in enumerate(pbar(tsvin, current_task)):
                 if r <= 1 or len(row) < 7:
                     continue
                 name = 'SN' + row[0].strip()
@@ -2223,7 +2167,7 @@ def import_main():
                 col = row.findAll('td')
                 records.append([utf8(x.renderContents()) for x in col])
 
-            for record in tq(records, currenttask):
+            for record in pbar(records, current_task):
                 if len(record) > 1 and record[1] != '':
                     name = clean_snname('SN' + record[1]).strip('?')
                     name = add_event(tasks, args, events, name)
@@ -2305,7 +2249,7 @@ def import_main():
             table.convert_bytestring_to_unicode(python3_only=True)
 
             bibcode = '2012A&A...538A.120L'
-            for row in tq(table, currenttask):
+            for row in pbar(table, current_task):
                 row = convert_aq_output(row)
                 name = 'SN' + row['SN']
                 name = add_event(tasks, args, events, name)
@@ -2374,7 +2318,7 @@ def import_main():
         if do_task(tasks, args, task, 'fermi'):
             with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as f:
                 tsvin = csv.reader(f, delimiter=',')
-                for ri, row in enumerate(tq(tsvin, currenttask)):
+                for ri, row in enumerate(pbar(tsvin, current_task)):
                     if row[0].startswith('#'):
                         if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
                             break
@@ -2400,7 +2344,7 @@ def import_main():
             maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
             maxpages = ceil(int(maxid)/1000.)
 
-            for page in tq(range(maxpages), currenttask):
+            for page in pbar(range(maxpages), current_task):
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + str(page).zfill(2) + '.csv'
                 if archived_task(tasks, args, 'tns') and os.path.isfile(fname) and page < 7:
                     with open(fname, 'r') as f:
@@ -2413,7 +2357,7 @@ def import_main():
                         f.write(csvtxt)
 
                 tsvin = csv.reader(csvtxt.splitlines(), delimiter=',')
-                for ri, row in enumerate(tq(tsvin, currenttask, leave=False)):
+                for ri, row in enumerate(pbar(tsvin, current_task, leave=False)):
                     if ri == 0:
                         continue
                     if row[4] and 'SN' not in row[4]:
@@ -2466,7 +2410,7 @@ def import_main():
             rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html', 'http://www.rochesterastronomy.org/sn2016/snredshift.html']
             rochesterupdate = [False, True]
 
-            for p, path in enumerate(tq(rochesterpaths, currenttask)):
+            for p, path in enumerate(pbar(rochesterpaths, current_task)):
                 if args.update and not rochesterupdate[p]:
                     continue
 
@@ -2479,7 +2423,7 @@ def import_main():
                 rows = soup.findAll('tr')
                 secondaryreference = 'Latest Supernovae'
                 secondaryrefurl = 'http://www.rochesterastronomy.org/snimages/snredshiftall.html'
-                for r, row in enumerate(tq(rows, currenttask)):
+                for r, row in enumerate(pbar(rows, current_task)):
                     if r == 0:
                         continue
                     cols = row.findAll('td')
@@ -2617,7 +2561,7 @@ def import_main():
             basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
             oglenames = []
             ogleupdate = [True, False, False, False, False]
-            for b, bn in enumerate(tq(basenames, currenttask)):
+            for b, bn in enumerate(pbar(basenames, current_task)):
                 if args.update and not ogleupdate[b]:
                     continue
 
@@ -2640,7 +2584,7 @@ def import_main():
                 ec = -1
                 reference = 'OGLE-IV Transient Detection System'
                 refurl = 'http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'
-                for br in tq(breaks, currenttask):
+                for br in pbar(breaks, current_task):
                     sibling = br.nextSibling
                     if 'Ra,Dec=' in sibling:
                         line = sibling.replace('\n', '').split('Ra,Dec=')
@@ -2787,7 +2731,7 @@ def import_main():
 
             numpages = int(links[-2].contents[0])
             oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
-            for page in tq(range(1, numpages), currenttask):
+            for page in pbar(range(1, numpages), current_task):
                 fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + str(page).zfill(2) + '.html'
                 if not args.fullrefresh and archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname) and page < oldnumpages:
                     with open(fname, 'r') as f:
@@ -2802,7 +2746,7 @@ def import_main():
 
                 bs = BeautifulSoup(html, 'html5lib')
                 trs = bs.findAll('tr')
-                for tr in tq(trs, currenttask):
+                for tr in pbar(trs, current_task):
                     tds = tr.findAll('td')
                     if not tds:
                         continue
@@ -2930,7 +2874,7 @@ def import_main():
 
         if do_task(tasks, args, task, 'psmds'):
             with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
-                for ri, row in enumerate(tq(f.read().splitlines(), currenttask)):
+                for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
                     if ri < 35:
                         continue
                     cols = [x.strip() for x in row.split(',')]
@@ -2949,13 +2893,13 @@ def import_main():
             crtsnameerrors = ['2011ax']
 
             folders = ['catalina', 'MLS', 'SSS']
-            for fold in tq(folders, currenttask):
+            for fold in pbar(folders, current_task):
                 html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html', os.path.join(PATH.REPO_EXTERNAL, 'CRTS/') + fold + '.html')
                 if not html:
                     continue
                 bs = BeautifulSoup(html, 'html5lib')
                 trs = bs.findAll('tr')
-                for tr in tq(trs, currenttask):
+                for tr in pbar(trs, current_task):
                     tds = tr.findAll('td')
                     if not tds:
                         continue
@@ -3075,7 +3019,7 @@ def import_main():
             tablestr = tablestr + '</table></body></html>'
             bs = BeautifulSoup(tablestr, 'html5lib')
             trs = bs.find('table').findAll('tr')
-            for tr in tq(trs, currenttask):
+            for tr in pbar(trs, current_task):
                 cols = [str(x.text) for x in tr.findAll('td')]
                 if not cols:
                     continue
@@ -3154,7 +3098,7 @@ def import_main():
             alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
             ids = [x['id'] for x in alertindex]
 
-            for i, ai in enumerate(tq(ids, currenttask)):
+            for i, ai in enumerate(pbar(ids, current_task)):
                 name = alertindex[i]['ivorn'].split('/')[-1].strip()
                 # Skip a few weird entries
                 if name == 'ASASSNli':
@@ -3284,7 +3228,7 @@ def import_main():
                 continue
             bs = BeautifulSoup(html, 'html5lib')
             trs = bs.find('tbody').findAll('tr')
-            for tri, tr in enumerate(tq(trs, currenttask)):
+            for tri, tr in enumerate(pbar(trs, current_task)):
                 name = ''
                 source = ''
                 if tri == 0:
@@ -3335,7 +3279,7 @@ def import_main():
                 continue
             bs = BeautifulSoup(html, 'html5lib')
             trs = bs.find('table').findAll('tr')
-            for tri, tr in enumerate(tq(trs, currenttask)):
+            for tri, tr in enumerate(pbar(trs, current_task)):
                 name = ''
                 source = ''
                 ra = ''
@@ -3405,7 +3349,7 @@ def import_main():
                 continue
             bs = BeautifulSoup(html, 'html5lib')
             trs = bs.findAll('tr')
-            for tr in tq(trs, currenttask):
+            for tr in pbar(trs, current_task):
                 tds = tr.findAll('td')
                 name = ''
                 host = ''
@@ -3515,9 +3459,10 @@ def import_main():
                                      'stt1839': ''}
 
             oldname = ''
-            for folder in tq(sorted(next(os.walk(PATH.REPO_EXTERNAL_WISEREP))[1], key=lambda s: s.lower()), currenttask):
+            file_names = next(os.walk(PATH.REPO_EXTERNAL_WISEREP))[1]
+            for folder in pbar_strings(file_names, current_task):
                 files = glob(PATH.REPO_EXTERNAL_WISEREP + '/' + folder + '/*')
-                for fname in tq(files, currenttask):
+                for fname in pbar(files, current_task):
                     if '.html' in fname:
                         lfiles = deepcopy(files)
                         with open(fname, 'r') as f:
@@ -3681,7 +3626,8 @@ def import_main():
         if do_task(tasks, args, task, 'cfaspectra'):
             # Ia spectra
             oldname = ''
-            for name in tq(sorted(next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1], key=lambda s: s.lower()), currenttask):
+            file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1]
+            for name in pbar_strings(file_names, current_task):
                 fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa/') + name
                 origname = name
                 if name.startswith('sn') and is_number(name[2:6]):
@@ -3728,7 +3674,8 @@ def import_main():
 
             # Ibc spectra
             oldname = ''
-            for name in tq(sorted(next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc')))[1], key=lambda s: s.lower()), currenttask):
+            file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc')))[1]
+            for name in pbar(file_names, current_task):
                 fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
@@ -3767,7 +3714,8 @@ def import_main():
 
             # Other spectra
             oldname = ''
-            for name in tq(sorted(next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra')))[1], key=lambda s: s.lower()), currenttask):
+            file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra')))[1]
+            for name in pbar_strings(file_names, current_task):
                 fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
                 if name.startswith('sn') and is_number(name[2:6]):
                     name = 'SN' + name[2:]
@@ -3820,7 +3768,8 @@ def import_main():
                 datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
             oldname = ''
-            for fi, fname in enumerate(tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNLS/*')), key=lambda s: s.lower()), currenttask=currenttask)):
+            file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNLS/*'))
+            for fi, fname in enumerate(pbar_strings(file_names, current_task=current_task)):
                 filename = os.path.basename(fname)
                 fileparts = filename.split('_')
                 name = 'SNLS-' + fileparts[1]
@@ -3862,7 +3811,8 @@ def import_main():
 
         if do_task(tasks, args, task, 'cspspectra'):
             oldname = ''
-            for fi, fname in enumerate(tq(sorted(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*')), key=lambda s: s.lower()), currenttask=currenttask)):
+            file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*')
+            for fi, fname in enumerate(pbar_strings(file_names, current_task=current_task)):
                 filename = os.path.basename(fname)
                 sfile = filename.split('.')
                 if sfile[1] == 'txt':
@@ -3918,7 +3868,7 @@ def import_main():
             spectra = json.loads(jsontxt)
             spectra = sorted(spectra, key=lambda k: k['ObjName'])
             oldname = ''
-            for spectrum in tq(spectra, currenttask=currenttask):
+            for spectrum in pbar(spectra, desc=current_task):
                 name = spectrum['ObjName']
                 if oldname and name != oldname:
                     journal_events(tasks, args, events)
@@ -4014,10 +3964,10 @@ def import_main():
 
             suspectcnt = 0
             folders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect')))[1]
-            for folder in tq(folders, currenttask):
+            for folder in pbar(folders, current_task):
                 eventfolders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/')+folder))[1]
                 oldname = ''
-                for eventfolder in tq(eventfolders, currenttask):
+                for eventfolder in pbar(eventfolders, current_task):
                     name = eventfolder
                     if is_number(name[:4]):
                         name = 'SN' + name
@@ -4171,11 +4121,11 @@ def import_main():
 
         if do_task(tasks, args, task, 'superfitspectra'):
             sfdirs = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*'))
-            for sfdir in tq(sfdirs, currenttask=currenttask):
+            for sfdir in pbar(sfdirs, desc=current_task):
                 sffiles = sorted(glob(sfdir + '/*.dat'))
                 lastname = ''
                 oldname = ''
-                for sffile in tq(sffiles, currenttask=currenttask):
+                for sffile in pbar(sffiles, desc=current_task):
                     basename = os.path.basename(sffile)
                     name = basename.split('.')[0]
                     if name.startswith('sn'):
@@ -4237,7 +4187,7 @@ def import_main():
     bibauthor_dict = get_bibauthor_dict()
     extinctions_dict = get_extinctions_dict()
 
-    for fi in tq(files, 'Sanitizing and deriving quantities for events'):
+    for fi in pbar(files, 'Sanitizing and deriving quantities for events'):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         name = add_event(tasks, args, events, args, name, loadifempty=False)
@@ -4256,6 +4206,96 @@ def import_main():
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
     sys.exit(0)
+
+
+def do_internal(events, args, tasks):
+    """Load events from files in the 'internal' repository, and save them.
+    """
+    path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
+    files = glob(path_pattern)
+    for datafile in pbar_strings(files, desc=current_task):
+        if args.update:
+            if not load_event_from_file(events, args, tasks, path=datafile,
+                                        clean=True, delete=False, append=True):
+                raise IOError('Failed to find specified file.')
+        else:
+            if not load_event_from_file(events, args, tasks, path=datafile,
+                                        clean=True, delete=False):
+                raise IOError('Failed to find specified file.')
+
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def do_external_radio(events, args, tasks):
+    path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
+    for datafile in pbar_strings(glob(path_pattern), desc=current_task):
+        name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
+        radiosourcedict = OrderedDict()
+        with open(datafile, 'r') as f:
+            for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
+                if line.startswith('(') and li <= len(radiosourcedict):
+                    radiosourcedict[line.split()[0]] = add_source(events, name, bibcode=line.split()[-1])
+                elif li in [x + len(radiosourcedict) for x in range(3)]:
+                    continue
+                else:
+                    cols = list(filter(None, line.split()))
+                    source = radiosourcedict[cols[6]]
+                    add_photometry(
+                        events, name, time=cols[0], frequency=cols[2], u_frequency='GHz', fluxdensity=cols[3],
+                        e_fluxdensity=cols[4], u_fluxdensity='µJy', instrument=cols[5], source=source)
+                    add_quantity(events, name, 'alias', name, source)
+
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def do_external_xray(events, args, tasks):
+    path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
+    for datafile in pbar_strings(glob(path_pattern), desc=current_task):
+        name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
+        with open(datafile, 'r') as f:
+            for li, line in enumerate(f.read().splitlines()):
+                if li == 0:
+                    source = add_source(events, name, bibcode=line.split()[-1])
+                elif li in [1, 2, 3]:
+                    continue
+                else:
+                    cols = list(filter(None, line.split()))
+                    add_photometry(
+                        events, name, time=cols[:2],
+                        energy=cols[2:4], u_energy='keV', counts=cols[4], flux=cols[6],
+                        unabsorbedflux=cols[8], u_flux='ergs/s/cm^2',
+                        photonindex=cols[15], instrument=cols[17], nhmw=cols[11],
+                        upperlimit=(float(cols[5]) < 0), source=source)
+                    add_quantity(events, name, 'alias', name, source)
+
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def do_simbad(events, args, tasks):
+    Simbad.list_votable_fields()
+    customSimbad = Simbad()
+    customSimbad.add_votable_fields('otype', 'id(opt)')
+    result = customSimbad.query_object('SN 20[0-9][0-9]*', wildcard=True)
+    for r, row in enumerate(result):
+        if row['OTYPE'].decode() != 'SN':
+            continue
+        name = row['MAIN_ID'].decode()
+        aliases = Simbad.query_objectids(name)
+        print(aliases)
+        if name[:3] == 'SN ':
+            name = 'SN' + name[3:]
+        if name[:2] == 'SN' and is_number(name[2:]):
+            name = name + 'A'
+        name = add_event(tasks, args, events, name)
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def do_vizier(events, args, tasks):
+
 
 
 def load_args():
