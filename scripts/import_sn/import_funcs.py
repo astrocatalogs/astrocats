@@ -643,6 +643,8 @@ def archived_task(tasks, args, atask):
 
 
 def clean_event(events, dirtyevent):
+    """
+    """
     bibcodes = []
     name = next(reversed(dirtyevent))
 
@@ -712,7 +714,12 @@ def clean_event(events, dirtyevent):
 
 
 def clear_events(events):
-    events = OrderedDict((k, OrderedDict([['name', events[k]['name']]] + ([['alias', events[k]['alias']]] if 'alias' in events[k] else []) + [['stub', True]])) for k in events)
+    """
+    """
+    events = OrderedDict((k, OrderedDict([['name', events[k]['name']]] +
+                          ([['alias', events[k]['alias']]] if 'alias' in events[k] else []) +
+                          [['stub', True]]))
+                         for k in events)
 
 
 def convert_aq_output(row):
@@ -722,7 +729,7 @@ def convert_aq_output(row):
 def copy_to_event(events, fromname, destname):
     tprint('Copying ' + fromname + ' to event ' + destname)
     newsourcealiases = {}
-    keys = list(sorted(events[fromname].keys(), key=lambda key: event_attr_priority(key)))
+    keys = list(sorted(events[fromname].keys(), key=lambda xx: event_attr_priority(xx)))
 
     if 'sources' in events[fromname]:
         for source in events[fromname]['sources']:
@@ -1052,6 +1059,8 @@ def delete_old_event_files():
 
 
 def do_task(tasks, args, checktask, task, quiet=False):
+    """
+    """
     global currenttask
     dotask = has_task(tasks, args, task) and checktask == task
     if dotask and not quiet:
@@ -1263,28 +1272,32 @@ def jd_to_mjd(jd):
 
 
 def journal_events(tasks, args, events, clear=True):
+    """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
+    """
     if 'writeevents' in tasks:
         write_all_events(events, args)
     if clear:
         clear_events(events)
+    return events
 
+def load_event_from_file(events, args, tasks, name='', path='',
+                         clean=False, delete=True, append=False):
+    """
+    """
+    if not name and not path:
+        raise ValueError('Either event `name` or `path` must be specified to load event')
 
-def load_event_from_file(events, args, tasks, name='', location='', clean=False, delete=True, append=False):
-    if not name and not location:
-        raise ValueError('Either event name or location must be specified to load event')
-
-    path = ''
     namepath = ''
     repo_folders = get_repo_folders()
-    if location:
-        path = location
+    # Try to find a path (`namepath`) in a repo, corresponding to given `name`
     if name:
         indir = '../'
         for rep in repo_folders:
             filename = get_event_filename(name)
-            newpath = indir + rep + '/' + filename + '.json'
+            newpath = os.path.join(indir, rep, filename + '.json'
             if os.path.isfile(newpath):
                 namepath = newpath
+                break
 
     if not path and not namepath:
         return False
@@ -1672,6 +1685,8 @@ def utf8(x):
 
 
 def write_all_events(events, args, empty=False, gz=False, bury=False):
+    """Save all `events` to files.
+    """
     import codecs
     repo_folders = get_repo_folders()
     non_sne_types = None
