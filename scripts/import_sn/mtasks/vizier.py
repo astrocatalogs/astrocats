@@ -8,13 +8,15 @@ from astroquery.vizier import Vizier
 from astropy.time import Time as astrotime
 
 from .. scripts import PATH
-from ... utils import pbar, is_number, Decimal, pretty_num, get_sig_digits, round_sig
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     convert_aq_output, jd_to_mjd, journal_events, make_date_string, uniq_cdl
 from .. constants import KM, CLIGHT
+from ... utils import pbar, is_number, Decimal, pretty_num, get_sig_digits, round_sig
 
 
 def do_vizier(events, args, tasks):
+    """
+    """
     current_task = 'Vizier Catalog'
 
     Vizier.ROW_LIMIT = -1
@@ -128,7 +130,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric', error=str(row['e_z']))
         add_quantity(events, name, 'ra', str(row['_RA']), source, unit='floatdegrees')
         add_quantity(events, name, 'dec', str(row['_DE']), source, unit='floatdegrees')
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2014MNRAS.438.1391P
     result = Vizier.get_catalogs('J/MNRAS/438/1391/table2')
@@ -142,7 +144,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'redshift', str(row['zh']), source, kind='heliocentric')
         add_quantity(events, name, 'ra', row['RAJ2000'], source)
         add_quantity(events, name, 'dec', row['DEJ2000'], source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2012ApJ...749...18B
     result = Vizier.get_catalogs('J/ApJ/749/18/table1')
@@ -162,7 +164,7 @@ def do_vizier(events, args, tasks):
         add_photometry(
             events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_magnitude, instrument='UVOT',
             source=source, upperlimit=upperlimit, telescope='Swift', system='Swift')
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2010A&A...523A...7G
     result = Vizier.get_catalogs('J/A+A/523/A7/table9')
@@ -182,7 +184,7 @@ def do_vizier(events, args, tasks):
             events, name, 'claimedtype', type_str, source)
         add_quantity(events, name, 'ra', row['RAJ2000'], source)
         add_quantity(events, name, 'dec', row['DEJ2000'], source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2004A&A...415..863G
     result = Vizier.get_catalogs('J/A+A/415/863/table1')
@@ -204,7 +206,7 @@ def do_vizier(events, args, tasks):
             add_quantity(events, name, 'redshift', str(row['zSN']), source, kind='spectroscopic')
         else:
             add_quantity(events, name, 'redshift', str(row['zCl']), source, kind='cluster')
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2008AJ....136.2306H
     result = Vizier.get_catalogs('J/AJ/136/2306/sources')
@@ -249,7 +251,7 @@ def do_vizier(events, args, tasks):
         source = add_source(events, name, bibcode='2010ApJ...708..661D')
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'redshift', str(row['z']), source, error=str(row['e_z']))
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2014ApJ...795...44R
     result = Vizier.get_catalogs('J/ApJ/795/44/ps1_snIa')
@@ -279,7 +281,7 @@ def do_vizier(events, args, tasks):
             add_photometry(
                 events, name, time=str(row['MJD']), band=row['Filt'], magnitude=str(row['mag']),
                 e_magnitude=str(row['e_mag']), source=source, system='AB', telescope='PS1', instrument='PS1')
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 1990A&AS...82..145C
     result = Vizier.get_catalogs('II/189/mag')
@@ -313,7 +315,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'alias', name, source)
 
         add_photometry(events, name, time=mjd, band=band, magnitude=mag, source=uniq_cdl([source, secsource]))
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2014yCat.7272....0G
     result = Vizier.get_catalogs('VII/272/snrs')
@@ -357,7 +359,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'host', 'Milky Way', source)
         add_quantity(events, name, 'ra', row['RAJ2000'], source)
         add_quantity(events, name, 'dec', row['DEJ2000'], source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2014MNRAS.442..844F
     result = Vizier.get_catalogs('J/MNRAS/442/844/table1')
@@ -371,7 +373,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'redshift', str(row['zhost']), source, kind='host')
         add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     result = Vizier.get_catalogs('J/MNRAS/442/844/table2')
     table = result[list(result.keys())[0]]
@@ -388,7 +390,7 @@ def do_vizier(events, args, tasks):
                 add_photometry(
                     events, name, time=row['MJD'], band=band, magnitude=row[bandtag],
                     e_magnitude=row['e_' + bandtag], source=source, telescope='KAIT', instrument='KAIT')
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2012MNRAS.425.1789S
     result = Vizier.get_catalogs('J/MNRAS/425/1789/table1')
@@ -406,7 +408,7 @@ def do_vizier(events, args, tasks):
         if is_number(row['cz']):
             add_quantity(events, name, 'redshift', red_str, source, kind='heliocentric')
         add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2015ApJS..219...13W
     result = Vizier.get_catalogs('J/ApJS/219/13/table3')
@@ -436,7 +438,7 @@ def do_vizier(events, args, tasks):
             events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument='QUEST', telescope='ESO Schmidt',
             observatory='La Silla', band=row['Filt'],
             magnitude=row['mag'], e_magnitude=row['e_mag'], system='Swope', source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2012Natur.491..228C
     result = Vizier.get_catalogs('J/other/Nat/491.228/tablef1')
@@ -472,7 +474,7 @@ def do_vizier(events, args, tasks):
                 add_photometry(
                     events, name, time=row['MJD' + band + '_'], band=band + "'", magnitude=row[bandtag],
                     e_magnitude=row['e_' + bandtag], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2011Natur.474..484Q
     result = Vizier.get_catalogs('J/other/Nat/474.484/tables1')
@@ -487,7 +489,7 @@ def do_vizier(events, args, tasks):
         add_photometry(
             events, name, time=row['MJD'], band=row['Filt'], telescope=row['Tel'],
             magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2011ApJ...736..159G
     result = Vizier.get_catalogs('J/ApJ/736/159/table1')
@@ -504,7 +506,7 @@ def do_vizier(events, args, tasks):
             telescope=row['Tel'], magnitude=row['mag'],
             e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '',
             upperlimit=(not is_number(row['e_mag'])), source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2012ApJ...760L..33B
     result = Vizier.get_catalogs('J/ApJ/760/L33/table1')
@@ -522,7 +524,7 @@ def do_vizier(events, args, tasks):
         add_photometry(
             events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'],
             telescope=row['Inst'], magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2013ApJ...769...39S
     result = Vizier.get_catalogs('J/ApJ/769/39/table1')
@@ -545,7 +547,7 @@ def do_vizier(events, args, tasks):
             instrument=instrument, magnitude=row['mag'],
             e_magnitude=row['e_mag'] if not row['l_mag'] else '',
             upperlimit=(row['l_mag'] == '>'), source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2009MNRAS.394.2266P
     # Note: Instrument info available via links in VizieR, can't auto-parse just yet.
@@ -594,7 +596,7 @@ def do_vizier(events, args, tasks):
                     events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=band,
                     magnitude=row[bandtag],
                     e_magnitude=row['e_' + bandtag], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2013AJ....145...99A
     result = Vizier.get_catalogs('J/AJ/145/99/table1')
@@ -621,7 +623,7 @@ def do_vizier(events, args, tasks):
         if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
             add_photometry(events, name, time=row['MJD'], band='I', magnitude=row['Imag'],
                            e_magnitude=row['e_Imag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2011ApJ...729..143C
     name = 'SN2008am'
@@ -670,7 +672,7 @@ def do_vizier(events, args, tasks):
         add_photometry(
             events, name, time=row['MJD'], band=row['Filt'], instrument='UVOT', telescope='Swift',
             magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2011ApJ...728...14P
     name = 'SN2009bb'
@@ -735,7 +737,7 @@ def do_vizier(events, args, tasks):
         if 'Hmag' in row and is_number(row['Hmag']) and not isnan(float(row['Hmag'])):
             add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument=row['Inst'], band='H', magnitude=row['Hmag'],
                            e_magnitude=row['e_Hmag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2011PAZh...37..837T
     name = 'SN2009nr'
@@ -764,7 +766,7 @@ def do_vizier(events, args, tasks):
         if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
             add_photometry(events, name, time=mjd, telescope=row['Tel'], band='I', magnitude=row['Imag'],
                            e_magnitude=row['e_Imag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2013MNRAS.433.1871B
     name = 'SN2012aw'
@@ -812,7 +814,7 @@ def do_vizier(events, args, tasks):
         if 'zmag' in row and is_number(row['zmag']) and not isnan(float(row['zmag'])):
             add_photometry(events, name, time=mjd, telescope=row['Tel'], band='z', magnitude=row['zmag'],
                            e_magnitude=row['e_zmag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2014AJ....148....1Z
     name = 'SN2012fr'
@@ -882,7 +884,7 @@ def do_vizier(events, args, tasks):
         if 'Imag' in row and is_number(row['Imag']) and not isnan(float(row['Imag'])):
             add_photometry(events, name, time=mjd, telescope='LJT', band='I', magnitude=row['Imag'],
                            e_magnitude=row['e_Imag'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2015ApJ...805...74B
     name = 'SN2014J'
@@ -902,7 +904,7 @@ def do_vizier(events, args, tasks):
         elif 'maglim' in row and is_number(row['maglim']) and not isnan(float(row['maglim'])):
             add_photometry(events, name, time=mjd, telescope='Swift', instrument='UVOT', band=row['Filt'], magnitude=row['maglim'],
                            upperlimit=True, source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2011ApJ...741...97D
     result = Vizier.get_catalogs('J/ApJ/741/97/table2')
@@ -916,7 +918,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'alias', name, source)
         add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], magnitude=row['mag'],
                        e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '', upperlimit=(not is_number(row['e_mag'])), source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2015MNRAS.448.1206M
     # Note: Photometry from two SN can also be added from this source.
@@ -1014,7 +1016,7 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
         add_quantity(events, name, 'maxband', 'r', source)
         add_quantity(events, name, 'claimedtype', 'Candidate', source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2012AJ....143..126B
     result = Vizier.get_catalogs('J/AJ/143/126/table4')
@@ -1029,7 +1031,7 @@ def do_vizier(events, args, tasks):
         source = add_source(events, name, bibcode='2012AJ....143..126B')
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'claimedtype', 'Ia-' + row['Wcl'], source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     # 2015ApJS..220....9F
     for viztab in ['1', '2']:
@@ -1065,7 +1067,7 @@ def do_vizier(events, args, tasks):
         add_photometry(
             events, name, time=row['MJD'], band=row['Band'], magnitude=row['mag'],
             e_magnitude=row['e_mag'], telescope=row['Tel'], source=source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
     result = Vizier.get_catalogs('J/ApJ/673/999/table1')
     table = result[list(result.keys())[0]]
@@ -1081,6 +1083,144 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'hostra', row['RAGdeg'], source, unit='floatdegrees')
         add_quantity(events, name, 'hostdec', row['DEGdeg'], source, unit='floatdegrees')
         add_quantity(events, name, 'claimedtype', row['Type'].strip(':'), source)
-    journal_events(tasks, args, events)
+    events = journal_events(tasks, args, events)
 
+    return events
+
+
+def do_lennarz(events, args, tasks):
+    """
+    """
+    current_task = 'Vizier: lennarz'
+    Vizier.ROW_LIMIT = -1
+    result = Vizier.get_catalogs('J/A+A/538/A120/usc')
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+
+    bibcode = '2012A&A...538A.120L'
+    for row in pbar(table, current_task):
+        row = convert_aq_output(row)
+        name = 'SN' + row['SN']
+        name = add_event(tasks, args, events, name)
+
+        source = add_source(events, name, bibcode=bibcode)
+        add_quantity(events, name, 'alias', name, source)
+
+        if row['RAJ2000']:
+            add_quantity(events, name, 'ra', row['RAJ2000'], source)
+        if row['DEJ2000']:
+            add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        if row['RAG']:
+            add_quantity(events, name, 'hostra', row['RAG'], source)
+        if row['DEG']:
+            add_quantity(events, name, 'hostdec', row['DEG'], source)
+        if row['Gal']:
+            add_quantity(events, name, 'host', row['Gal'], source)
+        if row['Type']:
+            claimedtypes = row['Type'].split('|')
+            for claimedtype in claimedtypes:
+                add_quantity(events, name, 'claimedtype', claimedtype.strip(' -'), source)
+        if row['z']:
+            if name not in ['SN1985D', 'SN2004cq']:
+                add_quantity(events, name, 'redshift', row['z'], source, kind='host')
+        if row['Dist']:
+            if row['e_Dist']:
+                add_quantity(events, name, 'lumdist', row['Dist'], source, error=row['e_Dist'], kind='host')
+            else:
+                add_quantity(events, name, 'lumdist', row['Dist'], source, kind='host')
+
+        if row['Ddate']:
+            datestring = row['Ddate'].replace('-', '/')
+
+            add_quantity(events, name, 'discoverdate', datestring, source)
+
+            if 'photometry' not in events[name]:
+                if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
+                    datesplit = row['Ddate'].strip().split('-')
+                    if len(datesplit) == 3:
+                        datestr = row['Ddate'].strip()
+                    elif len(datesplit) == 2:
+                        datestr = row['Ddate'].strip() + '-01'
+                    elif len(datesplit) == 1:
+                        datestr = row['Ddate'].strip() + '-01-01'
+                    mjd = str(astrotime(datestr).mjd)
+                    add_photometry(events, name, time=mjd, band=row['Dband'], magnitude=row['Dmag'], source=source)
+        if row['Mdate']:
+            datestring = row['Mdate'].replace('-', '/')
+
+            add_quantity(events, name, 'maxdate', datestring, source)
+
+            if 'photometry' not in events[name]:
+                if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
+                    datesplit = row['Mdate'].strip().split('-')
+                    if len(datesplit) == 3:
+                        datestr = row['Mdate'].strip()
+                    elif len(datesplit) == 2:
+                        datestr = row['Mdate'].strip() + '-01'
+                    elif len(datesplit) == 1:
+                        datestr = row['Mdate'].strip() + '-01-01'
+                    mjd = str(astrotime(datestr).mjd)
+                    add_photometry(events, name, time=mjd, band=row['Mband'], magnitude=row['Mmag'], source=source)
+
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def do_snls_spectra(events, args, tasks):
+    """
+    """
+    from glob import glob
+    from .. funcs import add_spectrum, get_preferred_name
+    from .. constants import TRAVIS_QUERY_LIMIT
+    from ... utils import pbar_strings
+
+    current_task = 'Vizier: SNLS Spectra'
+    result = Vizier.get_catalogs('J/A+A/507/85/table1')
+    table = result[list(result.keys())[0]]
+    table.convert_bytestring_to_unicode(python3_only=True)
+    datedict = {}
+    for row in table:
+        datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
+
+    oldname = ''
+    file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNLS/*'))
+    for fi, fname in enumerate(pbar_strings(file_names, current_task=current_task)):
+        filename = os.path.basename(fname)
+        fileparts = filename.split('_')
+        name = 'SNLS-' + fileparts[1]
+        name = get_preferred_name(events, name)
+        if oldname and name != oldname:
+            events = journal_events(tasks, args, events)
+        oldname = name
+        name = add_event(tasks, args, events, name)
+        source = add_source(events, name, bibcode='2009A&A...507...85B')
+        add_quantity(events, name, 'alias', name, source)
+
+        add_quantity(events, name, 'discoverdate', '20' + fileparts[1][:2], source)
+
+        f = open(fname, 'r')
+        data = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        specdata = []
+        for r, row in enumerate(data):
+            if row[0] == '@TELESCOPE':
+                telescope = row[1].strip()
+            elif row[0] == '@REDSHIFT':
+                add_quantity(events, name, 'redshift', row[1].strip(), source)
+            if r < 14:
+                continue
+            specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
+        specdata = [list(i) for i in zip(*specdata)]
+        wavelengths = specdata[1]
+
+        fluxes = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[2]]
+        errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
+
+        add_spectrum(
+            name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths,
+            fluxes=fluxes, u_time='MJD' if name in datedict else '',
+            time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
+            filename=filename)
+        if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            break
+    events = journal_events(tasks, args, events)
     return events
