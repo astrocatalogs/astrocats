@@ -1067,7 +1067,7 @@ def load_cached_url(url, filepath, timeout = 120, write = True, failhard = False
         response.raise_for_status()
         for x in response.history:
             x.raise_for_status()
-            if x.status_code == 500:
+            if x.status_code == 500 or x.status_code == 307 or x.status_code == 404:
                 raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
