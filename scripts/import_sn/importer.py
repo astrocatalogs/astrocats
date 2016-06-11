@@ -26,7 +26,7 @@ from string import ascii_letters
 
 from .. utils import get_sig_digits, pretty_num, pbar, pbar_strings, is_number, round_sig, tprint, \
     repo_file_list
-from . import_funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
+from . funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
     archived_task, convert_aq_output, \
     derive_and_sanitize, delete_old_event_files, \
     do_task, event_exists, get_aliases, \
