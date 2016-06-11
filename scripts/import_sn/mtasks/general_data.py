@@ -31,11 +31,13 @@ def do_ascii(events, args, tasks):
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'redshift', row[1], source, kind='spectroscopic')
             astrot = astrotime(float(row[4]) + 2450000., format='jd').datetime
-            add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+            date_str = make_date_string(astrot.year, astrot.month, astrot.day)
+            add_quantity(events, name, 'discoverdate', date_str, source)
     events = journal_events(tasks, args, events)
 
     # Anderson 2014
-    for datafile in pbar_strings(glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat')), desc=current_task):
+    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat'))
+    for datafile in pbar_strings(file_names, desc=current_task):
         basename = os.path.basename(datafile)
         if not is_number(basename[:2]):
             continue
@@ -57,7 +59,10 @@ def do_ascii(events, args, tasks):
             for row in tsvin:
                 if not row[0]:
                     continue
-                add_photometry(events, name, time=str(jd_to_mjd(Decimal(row[0]))), band='V', magnitude=row[1], e_magnitude=row[2], system=system, source=source)
+                time = str(jd_to_mjd(Decimal(row[0])))
+                add_photometry(
+                    events, name, time=time, band='V', magnitude=row[1], e_magnitude=row[2],
+                    system=system, source=source)
     events = journal_events(tasks, args, events)
 
     # stromlo
@@ -77,11 +82,12 @@ def do_ascii(events, args, tasks):
                 upperlimit = True if (not row[ci+1] and row[ci+2]) else False
                 e_upper_magnitude = str(abs(Decimal(row[ci+1]))) if row[ci+1] else ''
                 e_lower_magnitude = str(abs(Decimal(row[ci+2]))) if row[ci+2] else ''
+                teles = 'MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO'
+                instr = 'MaCHO' if band in ['VM', 'RM'] else ''
                 add_photometry(
                     events, name, time=mjd, band=band, magnitude=row[ci],
                     e_upper_magnitude=e_upper_magnitude, e_lower_magnitude=e_lower_magnitude,
-                    upperlimit=upperlimit, telescope='MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO',
-                    instrument='MaCHO' if band in ['VM', 'RM'] else '', source=source)
+                    upperlimit=upperlimit, telescope=teles, instrument=instr, source=source)
     events = journal_events(tasks, args, events)
 
     # 2015MNRAS.449..451W
@@ -158,9 +164,9 @@ def do_ascii(events, args, tasks):
             add_quantity(events, name, 'ra', row[1], source)
             add_quantity(events, name, 'dec', row[2], source)
             add_quantity(events, name, 'redshift', row[3], source)
-            add_quantity(
-                events, name, 'discoverdate',
-                datetime.strptime(row[4], '%Y %b %d').isoformat().split('T')[0].replace('-', '/'), source)
+            disc_date = datetime.strptime(row[4], '%Y %b %d').isoformat()
+            disc_date = disc_date.split('T')[0].replace('-', '/')
+            add_quantity(events, name, 'discoverdate', disc_date, source)
     events = journal_events(tasks, args, events)
 
     # 2014ApJ...784..105W
@@ -219,7 +225,8 @@ def do_ascii(events, args, tasks):
 def do_cccp(events, args, tasks):
     current_task = 'CCCP'
     cccpbands = ['B', 'V', 'R', 'I']
-    for datafile in sorted(glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')), key=lambda s: s.lower()):
+    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt'))
+    for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
         with open(datafile, 'r') as f:
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
             for r, row in enumerate(tsvin):
@@ -234,9 +241,11 @@ def do_cccp(events, args, tasks):
                     mjd = str(Decimal(row[0]) + 53000)
                     for b, band in enumerate(cccpbands):
                         if row[2*b + 1]:
+                            mag = row[2*b + 1].strip('>')
+                            upl = (not row[2*b + 2])
                             add_photometry(
-                                events, name, time=mjd, band=band, magnitude=row[2*b + 1].strip('>'),
-                                e_magnitude=row[2*b + 2], upperlimit=(not row[2*b + 2]), source=source)
+                                events, name, time=mjd, band=band, magnitude=mag,
+                                e_magnitude=row[2*b + 2], upperlimit=upl, source=source)
 
     if archived_task(tasks, args, 'cccp'):
         with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'r') as f:
@@ -250,19 +259,22 @@ def do_cccp(events, args, tasks):
 
     soup = BeautifulSoup(html, 'html5lib')
     links = soup.body.findAll("a")
-    for link in pbar(links, current_task):
+    for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
             name = add_event(tasks, args, events, link.text.replace(' ', ''))
-            source = add_source(events, name, refname='CCCP', url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
+            source = add_source(events, name, refname='CCCP',
+                                url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
             add_quantity(events, name, 'alias', name, source)
 
             if archived_task(tasks, args, 'cccp'):
-                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1], 'r') as f:
+                fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1]
+                with open(fname, 'r') as f:
                     html2 = f.read()
             else:
                 response2 = session.get('https://webhome.weizmann.ac.il/home/iair/' + link['href'])
                 html2 = response2.text
-                with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1], 'w') as f:
+                fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1]
+                with open(fname, 'w') as f:
                     f.write(html2)
 
             soup2 = BeautifulSoup(html2, 'html5lib')
@@ -271,21 +283,28 @@ def do_cccp(events, args, tasks):
                 if '.txt' in link2['href'] and '_' in link2['href']:
                     band = link2['href'].split('_')[1].split('.')[0].upper()
                     if archived_task(tasks, args, 'cccp'):
-                        fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link2['href'].split('/')[-1]
+                        fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
+                        fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
                             continue
                         with open(fname, 'r') as f:
                             html3 = f.read()
                     else:
-                        response3 = session.get('https://webhome.weizmann.ac.il/home/iair/cccp/' + link2['href'])
+                        response3 = session.get('https://webhome.weizmann.ac.il/home/iair/cccp/' +
+                                                link2['href'])
                         if response3.status_code == 404:
                             continue
                         html3 = response3.text
-                        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link2['href'].split('/')[-1], 'w') as f:
+                        fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
+                        fname += link2['href'].split('/')[-1]
+                        with open(fname, 'w') as f:
                             f.write(html3)
-                    table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(',')] for x in list(filter(None, html3.split('\n')))]
+                    table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(',')]
+                             for x in list(filter(None, html3.split('\n')))]
                     for row in table:
-                        add_photometry(events, name, time=str(Decimal(row[0]) + 53000), band=band, magnitude=row[1], e_magnitude=row[2], source=source)
+                        add_photometry(
+                            events, name, time=str(Decimal(row[0]) + 53000), band=band,
+                            magnitude=row[1], e_magnitude=row[2], source=source)
 
     events = journal_events(tasks, args, events)
     return events
@@ -363,14 +382,18 @@ def do_external_suspect_photometry(events, args, tasks):
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
-                add_quantity(events, name, 'redshift', redshifts[0].split(':')[1].strip(), secondarysource, kind='heliocentric')
+                add_quantity(
+                    events, name, 'redshift', redshifts[0].split(':')[1].strip(),
+                    secondarysource, kind='heliocentric')
             # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric Velocity'))
             # if hvels:
             #    add_quantity(events, name, 'velocity', hvels[0].split(':')[1].strip().split(' ')[0],
             #        secondarysource, kind='heliocentric')
             types = bandsoup.body.findAll(text=re.compile('Type'))
 
-            add_quantity(events, name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0], secondarysource)
+            add_quantity(
+                events, name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0],
+                secondarysource)
 
         for r, row in enumerate(bandtable.findAll('tr')):
             if r == 0:
@@ -387,7 +410,9 @@ def do_external_suspect_photometry(events, args, tasks):
                 e_magnitude = ''
             else:
                 e_magnitude = str(e_magnitude)
-            add_photometry(events, name, time=mjd, band=band, magnitude=mag, e_magnitude=e_magnitude, source=secondarysource + ',' + source)
+            add_photometry(
+                events, name, time=mjd, band=band, magnitude=mag, e_magnitude=e_magnitude,
+                source=secondarysource + ',' + source)
 
     events = journal_events(tasks, args, events)
     return events
@@ -426,14 +451,16 @@ def do_external_suspect_spectra(events, args, tasks):
                 events = journal_events(tasks, args, events)
             oldname = name
             name = add_event(tasks, args, events, name)
-            secondaryreference = 'SUSPECT'
-            secondaryrefurl = 'https://www.nhn.ou.edu/~suspect/'
-            secondarybibcode = '2001AAS...199.8408R'
-            secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
-            add_quantity(events, name, 'alias', name, secondarysource)
-            eventspectra = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/')+folder+'/'+eventfolder))[2]
+            sec_ref = 'SUSPECT'
+            sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
+            sec_bibc = '2001AAS...199.8408R'
+            sec_source = add_source(
+                events, name, refname=sec_ref, url=sec_refurl, bibcode=sec_bibc, secondary=True)
+            add_quantity(events, name, 'alias', name, sec_source)
+            fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder, eventfolder)
+            eventspectra = next(os.walk(fpath))[2]
             for spectrum in eventspectra:
-                sources = [secondarysource]
+                sources = [sec_source]
                 bibcode = ''
                 if spectrum in changedict:
                     specalias = changedict[spectrum]
@@ -453,9 +480,14 @@ def do_external_suspect_spectra(events, args, tasks):
                 month = date[4:6]
                 day = date[6:]
                 sig = get_sig_digits(day) + 5
-                time = pretty_num(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)), sig=sig)
+                day_fmt = str(floor(float(day))).zfill(2)
+                time = astrotime(year + '-' + month + '-' + day_fmt).mjd
+                time = time + float(day) - floor(float(day))
+                time = pretty_num(time, sig=sig)
 
-                with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/'+folder+'/'+eventfolder+'/'+spectrum)) as f:
+                fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder,
+                                     eventfolder, spectrum)
+                with open() as f:
                     specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
                     specdata = list(filter(None, specdata))
                     newspec = []
@@ -476,11 +508,14 @@ def do_external_suspect_spectra(events, args, tasks):
                     errors = specdata[2]
 
                 add_spectrum(
-                    name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit='Uncalibrated', wavelengths=wavelengths,
-                    fluxes=fluxes, errors=errors, errorunit='Uncalibrated', source=sources, filename=spectrum)
+                    name=name, u_time='MJD', time=time, waveunit='Angstrom',
+                    fluxunit='Uncalibrated', wavelengths=wavelengths,
+                    fluxes=fluxes, errors=errors, errorunit='Uncalibrated',
+                    source=sources, filename=spectrum)
                 suspectcnt = suspectcnt + 1
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
+
     events = journal_events(tasks, args, events)
     return events
 
