@@ -1640,8 +1640,12 @@ def copy_to_event(fromname, destname):
                 reference = source['reference'] if 'reference' in source else '',
                 url = source['url'] if 'url' in source else ''))
 
+    if 'errors' in events[fromname]:
+        for err in events[fromname]['errors']:
+            events[destname].setdefault('errors',[]).append(err)
+
     for key in keys:
-        if key not in ['name', 'sources']:
+        if key not in ['name', 'sources', 'errors']:
             for item in events[fromname][key]:
                 isd = False
                 sources = []
@@ -1673,9 +1677,6 @@ def copy_to_event(fromname, destname):
                         telescope = null_field(item, "telescope"), observer = null_field(item, "observer"),
                         reducer = null_field(item, "reducer"), filename = null_field(item, "filename"),
                         observatory = null_field(item, "observatory"))
-                elif key == 'errors':
-                    add_quantity(destname, key, item['value'], sources,
-                        kind = null_field(item, "kind"), extra = null_field(item, "extra"))
                 else:
                     add_quantity(destname, key, item['value'], sources, error = null_field(item, "error"),
                         unit = null_field(item, "unit"), probability = null_field(item, "probability"), kind = null_field(item, "kind"))
