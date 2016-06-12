@@ -9,57 +9,57 @@
     "internal": {
         "nice_name": "%pre metadata and photometry",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_internal",
         "priority": 1
     },
     "radio": {
         "nice_name": "%pre radio data",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_external_radio",
         "priority": 2
     },
     "xray": {
         "nice_name": "%pre X-ray data",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_external_xray",
         "priority": 2
     },
     "simbad": {
         "nice_name": "%pre SIMBAD",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_simbad",
         "priority": 3
     },
     "vizier": {
         "nice_name": "%pre VizieR",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.vizier",
+        "function": "do_vizier",
         "priority": 3
     },
     "donations": {
         "nice_name": "%pre donations",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.donations",
+        "function": "do_donations",
         "priority": 4
     },
     "pessto-dr1": {
         "nice_name": "%pre PESSTO DR1",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_pessto",
         "priority": 10
     },
     "scp": {
         "nice_name": "%pre SCP",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_scp",
         "priority": 10
     },
     "ascii": {
@@ -95,15 +95,15 @@
         "nice_name": "%pre UCB photometry",
 		"update": "False",
         "archived": "True",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_ucb",
         "priority": 10
     },
     "sdss": {
         "nice_name": "%pre SDSS photometry",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_sdss",
         "priority": 10
     },
     "csp": {
