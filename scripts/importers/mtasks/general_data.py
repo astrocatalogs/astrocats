@@ -483,6 +483,27 @@ def do_external_xray(events, args, tasks):
     return events
 
 
+def do_fermi(events, args, tasks):
+    with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for ri, row in enumerate(pbar(tsvin, current_task)):
+            if row[0].startswith('#'):
+                if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
+                    break
+                continue
+            if 'Classified' not in row[1]:
+                continue
+            name = row[0].replace('SNR', 'G')
+            name = add_event(tasks, args, events, name)
+            source = add_source(events, name, bibcode='2016ApJS..224....8A')
+            add_quantity(events, name, 'alias', name, source)
+            add_quantity(events, name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
+            add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
+            add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
+    events = journal_events(tasks, args, events)
+    return events
+
+
 def do_gaia(events, args, tasks):
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
@@ -538,12 +559,12 @@ def do_gaia(events, args, tasks):
             magnitude = row2[2].strip()
             if magnitude == 'null':
                 continue
-            e_magnitude = 0.
+            e_mag = 0.
             telescope = 'GAIA'
             band = 'G'
             add_photometry(
                 events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
-                e_magnitude=e_magnitude, source=source)
+                e_magnitude=e_mag, source=source)
         if args.update:
             events = journal_events(tasks, args, events)
     events = journal_events(tasks, args, events)
@@ -668,12 +689,41 @@ def do_sdss(events, args, tasks):
                 mjd = row[1]
                 band = sdssbands[int(row[2])]
                 magnitude = row[3]
-                e_magnitude = row[4]
+                e_mag = row[4]
                 telescope = 'SDSS'
                 add_photometry(
                     events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
-                    e_magnitude=e_magnitude, source=source, system='SDSS')
+                    e_magnitude=e_mag, source=source, system='SDSS')
         f.close()
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def do_snls(events, args, tasks):
+    with open(os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat'), 'r') as f:
+        data = csv.reader(f, delimiter=' ', quotechar='"', skipinitialspace=True)
+        for row in data:
+            flux = row[3]
+            err = row[4]
+            # Being extra strict here with the flux constraint, see note below.
+            if float(flux) < 3.0*float(err):
+                continue
+            name = 'SNLS-' + row[0]
+            name = add_event(tasks, args, events, name)
+            source = add_source(events, name, bibcode='2010A&A...523A...7G')
+            add_quantity(events, name, 'alias', name, source)
+            band = row[1]
+            mjd = row[2]
+            sig = get_sig_digits(flux.split('E')[0])+1
+            # Conversion comes from SNLS-Readme
+            # NOTE: Datafiles avail for download suggest diff zeropoints than 30, need to inquire.
+            magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig=sig)
+            e_mag = pretty_num(2.5*log10(1.0 + float(err)/float(flux)), sig=sig)
+            # e_mag = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
+            add_photometry(
+                events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
+                e_counts=err, source=source)
+
     events = journal_events(tasks, args, events)
     return events
 
@@ -739,12 +789,12 @@ def do_ucb(events, args, tasks):
             magnitude = row[1]
             if magnitude and float(magnitude) > 99.0:
                 continue
-            e_magnitude = row[2]
+            e_mag = row[2]
             band = row[4]
             telescope = row[5]
             add_photometry(
                 events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
-                e_magnitude=e_magnitude, source=sources)
+                e_magnitude=e_mag, source=sources)
 
     events = journal_events(tasks, args, events)
     return events

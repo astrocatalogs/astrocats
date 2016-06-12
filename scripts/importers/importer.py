@@ -26,11 +26,11 @@ import warnings
 from .. utils import get_sig_digits, pretty_num, pbar, pbar_strings, is_number, round_sig, tprint, \
     repo_file_list
 from . funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
-    archived_task, derive_and_sanitize, delete_old_event_files, \
+    archived_task, clean_snname, derive_and_sanitize, delete_old_event_files, \
     do_task, event_exists, get_aliases, get_bibauthor_dict, get_extinctions_dict, \
     get_max_light, get_preferred_name, has_task, jd_to_mjd, journal_events, \
     load_cached_url, make_date_string, merge_duplicates, \
-    set_preferred_names, clean_snname, uniq_cdl, utf8, write_all_events
+    set_preferred_names, uniq_cdl, utf8, write_all_events
 from scripts import PATH, FILENAME
 from . constants import TRAVIS_QUERY_LIMIT, TASK
 
@@ -62,7 +62,7 @@ def import_main():
         ('sdss',            {'nicename': '%pre SDSS photometry',         'update': False}),
         ('csp',             {'nicename': '%pre CSP photometry',          'update': False}),
         ('itep',            {'nicename': '%pre ITEP',                    'update': False}),
-        ('asiago',          {'nicename': '%pre Asiago metadata',         'update': False}),
+        ('asiago_photo',          {'nicename': '%pre Asiago metadata',         'update': False}),
         ('tns',             {'nicename': '%pre TNS metadata',            'update': True,  'archived': True}),
         # ('rochester',       {'nicename': '%pre Latest Supernovae',       'update': True,  'archived': False}),
         ('lennarz',         {'nicename': '%pre Lennarz',                 'update': False}),
@@ -79,7 +79,7 @@ def import_main():
         ('ptf',             {'nicename': '%pre PTF',                     'update': False, 'archived': False}),
         ('des',             {'nicename': '%pre DES',                     'update': False, 'archived': False}),
         ('asassn',          {'nicename': '%pre ASASSN',                  'update': True}),
-        ('asiagospectra',   {'nicename': '%pre Asiago spectra',          'update': True}),
+        ('asiago_spectra',   {'nicename': '%pre Asiago spectra',          'update': True}),
         ('wiserepspectra',  {'nicename': '%pre WISeREP spectra',         'update': False}),
         ('cfa_spectra',     {'nicename': '%pre CfA archive spectra',     'update': False}),
         ('snlsspectra',     {'nicename': '%pre SNLS spectra',            'update': False}),
@@ -130,12 +130,12 @@ def import_main():
 
         # Suspect catalog
         if do_task(tasks, args, task, 'suspect_photo'):
-            from mtasks.general_data import do_external_suspect_photometry
-            events = do_external_suspect_photometry(events, args, tasks)
+            from mtasks.suspect import do_suspect_photometry
+            events = do_suspect_photometry(events, args, tasks)
 
         if do_task(tasks, args, task, 'suspect_spectra'):
-            from mtasks.general_data import do_external_suspect_spectra
-            events = do_external_suspect_spectra(events, args, tasks)
+            from mtasks.suspect import do_suspect_spectra
+            events = do_suspect_spectra(events, args, tasks)
 
         # CfA data
         if do_task(tasks, args, task, 'cfa_photo'):
@@ -200,6 +200,35 @@ def import_main():
             from mtasks.rochester import do_rochester
             events = do_rochester(events, args, tasks)
 
+        if do_task(tasks, args, task, 'ogle'):
+            from mtasks.ogle import do_ogle
+            events = do_ogle(events, args, tasks)
+
+        # Now import the Asiago catalog
+        if do_task(tasks, args, task, 'asiago_photo'):
+            from mtasks.asiago import do_asiago_photo
+            events = do_asiago_photo(events, args, tasks)
+
+        if do_task(tasks, args, task, 'asiago_spectra'):
+            from mtasks.asiago import do_asiago_spectra
+            events = do_asiago_spectra(events, args, tasks)
+
+        if do_task(tasks, args, task, 'snls'):
+            from mtasks.general_data import do_snls
+            events = do_snls(events, args, tasks)
+
+        if do_task(tasks, args, task, 'psmds'):
+            from mtasks.panstarrs import do_ps_mds
+            events = do_ps_mds(events, args, tasks)
+
+        if do_task(tasks, args, task, 'psthreepi'):
+            from mtasks.panstarrs import do_ps_threepi
+            events = do_ps_threepi(events, args, tasks)
+
+        if do_task(tasks, args, task, 'fermi'):
+            from mtasks.general_data import do_fermi
+            events = do_fermi(events, args, tasks)
+
         # Import ITEP
         if do_task(tasks, args, task, 'itep'):
             itepbadsources = ['2004ApJ...602..571B']
@@ -248,119 +277,6 @@ def import_main():
             needsbib = list(OrderedDict.fromkeys(needsbib))
             with open('../itep-needsbib.txt', 'w') as f:
                 f.writelines(['%s\n' % i for i in needsbib])
-            events = journal_events(tasks, args, events)
-
-        # Now import the Asiago catalog
-        if do_task(tasks, args, task, 'asiago'):
-            # response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
-            path = os.path.abspath(os.path.join(PATH.REPO_EXTERNAL, 'asiago-cat.php'))
-            response = urllib.request.urlopen('file://' + path)
-            html = response.read().decode('utf-8')
-            html = html.replace('\r', "")
-
-            soup = BeautifulSoup(html, 'html5lib')
-            table = soup.find('table')
-
-            records = []
-            for r, row in enumerate(table.findAll('tr')):
-                if r == 0:
-                    continue
-
-                col = row.findAll('td')
-                records.append([utf8(x.renderContents()) for x in col])
-
-            for record in pbar(records, current_task):
-                if len(record) > 1 and record[1] != '':
-                    name = clean_snname('SN' + record[1]).strip('?')
-                    name = add_event(tasks, args, events, name)
-
-                    reference = 'Asiago Supernova Catalogue'
-                    refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
-                    refbib = '1989A&AS...81..421B'
-                    source = add_source(
-                        events, name, refname=reference, url=refurl, bibcode=refbib, secondary=True)
-                    add_quantity(events, name, 'alias', name, source)
-
-                    year = re.findall(r'\d+', name)[0]
-                    add_quantity(events, name, 'discoverdate', year, source)
-
-                    hostname = record[2]
-                    hostra = record[3]
-                    hostdec = record[4]
-                    ra = record[5].strip(':')
-                    dec = record[6].strip(':')
-                    redvel = record[11].strip(':')
-                    discoverer = record[19]
-
-                    datestring = year
-
-                    monthday = record[18]
-                    if "*" in monthday:
-                        datekey = 'discover'
-                    else:
-                        datekey = 'max'
-
-                    if monthday.strip() != '':
-                        monthstr = ''.join(re.findall('[a-zA-Z]+', monthday))
-                        monthstr = str(list(calendar.month_abbr).index(monthstr))
-                        datestring = datestring + '/' + monthstr
-
-                        dayarr = re.findall(r'\d+', monthday)
-                        if dayarr:
-                            daystr = dayarr[0]
-                            datestring = datestring + '/' + daystr
-
-                    add_quantity(events, name, datekey + 'date', datestring, source)
-
-                    velocity = ''
-                    redshift = ''
-                    if redvel != '':
-                        if round(float(redvel)) == float(redvel):
-                            velocity = int(redvel)
-                        else:
-                            redshift = float(redvel)
-                        redshift = str(redshift)
-                        velocity = str(velocity)
-
-                    claimedtype = record[17].replace(':', '').replace('*', '').strip()
-
-                    if (hostname != ''):
-                        add_quantity(events, name, 'host', hostname, source)
-                    if (claimedtype != ''):
-                        add_quantity(events, name, 'claimedtype', claimedtype, source)
-                    if (redshift != ''):
-                        add_quantity(events, name, 'redshift', redshift, source, kind='host')
-                    if (velocity != ''):
-                        add_quantity(events, name, 'velocity', velocity, source, kind='host')
-                    if (hostra != ''):
-                        add_quantity(events, name, 'hostra', hostra, source, unit='nospace')
-                    if (hostdec != ''):
-                        add_quantity(events, name, 'hostdec', hostdec, source, unit='nospace')
-                    if (ra != ''):
-                        add_quantity(events, name, 'ra', ra, source, unit='nospace')
-                    if (dec != ''):
-                        add_quantity(events, name, 'dec', dec, source, unit='nospace')
-                    if (discoverer != ''):
-                        add_quantity(events, name, 'discoverer', discoverer, source)
-            events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'fermi'):
-            with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as f:
-                tsvin = csv.reader(f, delimiter=',')
-                for ri, row in enumerate(pbar(tsvin, current_task)):
-                    if row[0].startswith('#'):
-                        if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
-                            break
-                        continue
-                    if 'Classified' not in row[1]:
-                        continue
-                    name = row[0].replace('SNR', 'G')
-                    name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode='2016ApJS..224....8A')
-                    add_quantity(events, name, 'alias', name, source)
-                    add_quantity(events, name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
-                    add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
-                    add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
             events = journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'tns'):
@@ -433,338 +349,6 @@ def import_main():
                             add_quantity(events, name, 'discoverdate', date, source)
                     if args.update:
                         events = journal_events(tasks, args, events)
-            events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'ogle'):
-            basenames = ['transients', 'transients/2014b', 'transients/2014', 'transients/2013', 'transients/2012']
-            oglenames = []
-            ogleupdate = [True, False, False, False, False]
-            for b, bn in enumerate(pbar(basenames, current_task)):
-                if args.update and not ogleupdate[b]:
-                    continue
-
-                filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-') + bn.replace('/', '-') + '-transients.html'
-                htmltxt = load_cached_url(args, 'http://ogle.astrouw.edu.pl/ogle4/' + bn + '/transients.html', filepath)
-                if not htmltxt:
-                    continue
-
-                soup = BeautifulSoup(htmltxt, 'html5lib')
-                links = soup.findAll('a')
-                breaks = soup.findAll('br')
-                datalinks = []
-                datafnames = []
-                for a in links:
-                    if a.has_attr('href'):
-                        if '.dat' in a['href']:
-                            datalinks.append('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
-                            datafnames.append(bn.replace('/', '-') + '-' + a['href'].replace('/', '-'))
-
-                ec = -1
-                reference = 'OGLE-IV Transient Detection System'
-                refurl = 'http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'
-                for br in pbar(breaks, current_task):
-                    sibling = br.nextSibling
-                    if 'Ra,Dec=' in sibling:
-                        line = sibling.replace('\n', '').split('Ra,Dec=')
-                        name = line[0].strip()
-                        ec += 1
-
-                        if 'NOVA' in name or 'dupl' in name:
-                            continue
-
-                        if name in oglenames:
-                            continue
-                        oglenames.append(name)
-
-                        name = add_event(tasks, args, events, name)
-
-                        mySibling = sibling.nextSibling
-                        atelref = ''
-                        claimedtype = ''
-                        while 'Ra,Dec=' not in mySibling:
-                            if isinstance(mySibling, NavigableString):
-                                if 'Phot.class=' in str(mySibling):
-                                    claimedtype = re.sub(r'\([^)]*\)', '', str(mySibling).split('=')[-1]).replace('SN', '').strip()
-                            if isinstance(mySibling, Tag):
-                                atela = mySibling
-                                if atela and atela.has_attr('href') and 'astronomerstelegram' in atela['href']:
-                                    atelref = atela.contents[0].strip()
-                                    atelurl = atela['href']
-                            mySibling = mySibling.nextSibling
-                            if mySibling is None:
-                                break
-
-                        nextSibling = sibling.nextSibling
-                        if isinstance(nextSibling, Tag) and nextSibling.has_attr('alt') and nextSibling.contents[0].strip() != 'NED':
-                            radec = nextSibling.contents[0].strip().split()
-                        else:
-                            radec = line[-1].split()
-                        ra = radec[0]
-                        dec = radec[1]
-
-                        fname = os.path.join(PATH.REPO_EXTERNAL, 'OGLE/') + datafnames[ec]
-                        if not args.fullrefresh and archived_task(tasks, args, 'ogle') and os.path.isfile(fname):
-                            with open(fname, 'r') as f:
-                                csvtxt = f.read()
-                        else:
-                            response = urllib.request.urlopen(datalinks[ec])
-                            with open(fname, 'w') as f:
-                                csvtxt = response.read().decode('utf-8')
-                                f.write(csvtxt)
-
-                        lcdat = csvtxt.splitlines()
-                        sources = [add_source(events, name, refname=reference, url=refurl)]
-                        add_quantity(events, name, 'alias', name, sources[0])
-                        if atelref and atelref != 'ATel#----':
-                            sources.append(add_source(events, name, refname=atelref, url=atelurl))
-                        sources = uniq_cdl(sources)
-
-                        if name.startswith('OGLE'):
-                            if name[4] == '-':
-                                if is_number(name[5:9]):
-                                    add_quantity(events, name, 'discoverdate', name[5:9], sources)
-                            else:
-                                if is_number(name[4:6]):
-                                    add_quantity(events, name, 'discoverdate', '20' + name[4:6], sources)
-
-                        # RA and Dec from OGLE pages currently not reliable
-                        # add_quantity(events, name, 'ra', ra, sources)
-                        # add_quantity(events, name, 'dec', dec, sources)
-                        if claimedtype and claimedtype != '-':
-                            add_quantity(events, name, 'claimedtype', claimedtype, sources)
-                        elif 'SN' not in name and 'claimedtype' not in events[name]:
-                            add_quantity(events, name, 'claimedtype', 'Candidate', sources)
-                        for row in lcdat:
-                            row = row.split()
-                            mjd = str(jd_to_mjd(Decimal(row[0])))
-                            magnitude = row[1]
-                            if float(magnitude) > 90.0:
-                                continue
-                            e_magnitude = row[2]
-                            upperlimit = False
-                            if e_magnitude == '-1' or float(e_magnitude) > 10.0:
-                                e_magnitude = ''
-                                upperlimit = True
-                            add_photometry(
-                                events, name, time=mjd, band='I', magnitude=magnitude, e_magnitude=e_magnitude,
-                                system='Vega', source=sources, upperlimit=upperlimit)
-                        if args.update:
-                            events = journal_events(tasks, args, events)
-                events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'snls'):
-            with open(os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat'), 'r') as f:
-                data = csv.reader(f, delimiter=' ', quotechar='"', skipinitialspace=True)
-                for row in data:
-                    flux = row[3]
-                    err = row[4]
-                    # Being extra strict here with the flux constraint, see note below.
-                    if float(flux) < 3.0*float(err):
-                        continue
-                    name = 'SNLS-' + row[0]
-                    name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode='2010A&A...523A...7G')
-                    add_quantity(events, name, 'alias', name, source)
-                    band = row[1]
-                    mjd = row[2]
-                    sig = get_sig_digits(flux.split('E')[0])+1
-                    # Conversion comes from SNLS-Readme
-                    # NOTE: Datafiles available for download suggest different zeropoints than 30, need to inquire.
-                    magnitude = pretty_num(30.0-2.5*log10(float(flux)), sig=sig)
-                    e_magnitude = pretty_num(2.5*log10(1.0 + float(err)/float(flux)), sig=sig)
-                    # e_magnitude=pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
-                    add_photometry(
-                        events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_magnitude, counts=flux,
-                        e_counts=err, source=source)
-            events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'psthreepi'):
-            fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
-            html = load_cached_url(args, 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date', fname, write=False)
-            if not html:
-                continue
-
-            bs = BeautifulSoup(html, 'html5lib')
-            div = bs.find('div', {'class': 'pagination'})
-            offline = False
-            if not div:
-                offline = True
-            else:
-                links = div.findAll('a')
-                if not links:
-                    offline = True
-
-            if offline:
-                if args.update:
-                    continue
-                warnings.warn('Pan-STARRS 3pi offline, using local files only.')
-                with open(fname, 'r') as f:
-                    html = f.read()
-                bs = BeautifulSoup(html, 'html5lib')
-                div = bs.find('div', {'class': 'pagination'})
-                links = div.findAll('a')
-            else:
-                with open(fname, 'w') as f:
-                    f.write(html)
-
-            numpages = int(links[-2].contents[0])
-            oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
-            for page in pbar(range(1, numpages), current_task):
-                fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + str(page).zfill(2) + '.html'
-                if not args.fullrefresh and archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname) and page < oldnumpages:
-                    with open(fname, 'r') as f:
-                        html = f.read()
-                elif not offline:
-                    response = urllib.request.urlopen('http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=' + str(page) + '&sort=followup_flag_date')
-                    with open(fname, 'w') as f:
-                        html = response.read().decode('utf-8')
-                        f.write(html)
-                else:
-                    continue
-
-                bs = BeautifulSoup(html, 'html5lib')
-                trs = bs.findAll('tr')
-                for tr in pbar(trs, current_task):
-                    tds = tr.findAll('td')
-                    if not tds:
-                        continue
-                    refs = []
-                    aliases = []
-                    ttype = ''
-                    ctype = ''
-                    for tdi, td in enumerate(tds):
-                        if tdi == 0:
-                            psname = td.contents[0]
-                            pslink = psname['href']
-                            psname = psname.text
-                        elif tdi == 1:
-                            ra = td.contents[0]
-                        elif tdi == 2:
-                            dec = td.contents[0]
-                        elif tdi == 3:
-                            ttype = td.contents[0]
-                            if ttype != 'sn' and ttype != 'orphan':
-                                break
-                        elif tdi == 5:
-                            if not td.contents:
-                                continue
-                            ctype = td.contents[0]
-                            if ctype == 'Observed':
-                                ctype = ''
-                        elif tdi == 16:
-                            if td.contents:
-                                crossrefs = td.findAll('a')
-                                for cref in crossrefs:
-                                    if 'atel' in cref.contents[0].lower():
-                                        refs.append([cref.contents[0], cref['href']])
-                                    elif is_number(cref.contents[0][:4]):
-                                        continue
-                                    else:
-                                        aliases.append(cref.contents[0])
-
-                    if ttype != 'sn' and ttype != 'orphan':
-                        continue
-
-                    name = ''
-                    for alias in aliases:
-                        if alias[:2] == 'SN':
-                            name = alias
-                    if not name:
-                        name = psname
-                    name = add_event(tasks, args, events, name)
-                    sources = [add_source(events, name, refname='Pan-STARRS 3Pi', url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
-                    add_quantity(events, name, 'alias', name, sources[0])
-                    for ref in refs:
-                        sources.append(add_source(events, name, refname=ref[0], url=ref[1]))
-                    source = uniq_cdl(sources)
-                    for alias in aliases:
-                        newalias = alias
-                        if alias[:3] in ['CSS', 'SSS', 'MLS']:
-                            newalias = alias.replace('-', ':', 1)
-                        newalias = newalias.replace('PSNJ', 'PSN J')
-                        add_quantity(events, name, 'alias', newalias, source)
-                    add_quantity(events, name, 'ra', ra, source)
-                    add_quantity(events, name, 'dec', dec, source)
-                    add_quantity(events, name, 'claimedtype', ctype, source)
-
-                    fname2 = os.path.join(PATH.REPO_EXTERNAL, '3pi/candidate-') + pslink.rstrip('/').split('/')[-1] + '.html'
-                    if archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname2):
-                        with open(fname2, 'r') as f:
-                            html2 = f.read()
-                    elif not offline:
-                        pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
-                        with open(fname2, 'w') as f:
-                            response2 = urllib.request.urlopen(pslink)
-                            html2 = response2.read().decode('utf-8')
-                            f.write(html2)
-                    else:
-                        continue
-
-                    bs2 = BeautifulSoup(html2, 'html5lib')
-                    scripts = bs2.findAll('script')
-                    nslines = []
-                    nslabels = []
-                    for script in scripts:
-                        if 'jslcdata.push' not in script.text:
-                            continue
-                        slines = script.text.splitlines()
-                        for line in slines:
-                            if 'jslcdata.push' in line:
-                                nslines.append(json.loads(line.strip().replace('jslcdata.push(', '').replace(');', '')))
-                            if 'jslabels.push' in line and 'blanks' not in line and 'non det' not in line:
-                                nslabels.append(json.loads(line.strip().replace('jslabels.push(', '').replace(');', ''))['label'])
-                    for li, line in enumerate(nslines[:len(nslabels)]):
-                        if not line:
-                            continue
-                        for obs in line:
-                            add_photometry(
-                                events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]), e_magnitude=str(obs[2]), source=source,
-                                telescope='Pan-STARRS1')
-                    for li, line in enumerate(nslines[2*len(nslabels):]):
-                        if not line:
-                            continue
-                        for obs in line:
-                            add_photometry(
-                                events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]), upperlimit=True, source=source,
-                                telescope='Pan-STARRS1')
-                    assoctab = bs2.find('table', {'class': 'generictable'})
-                    hostname = ''
-                    redshift = ''
-                    if assoctab:
-                        trs = assoctab.findAll('tr')
-                        headertds = [x.contents[0] for x in trs[1].findAll('td')]
-                        tds = trs[1].findAll('td')
-                        for tdi, td in enumerate(tds):
-                            if tdi == 1:
-                                hostname = td.contents[0].strip()
-                            elif tdi == 4:
-                                if 'z' in headertds:
-                                    redshift = td.contents[0].strip()
-                    # Skip galaxies with just SDSS id
-                    if is_number(hostname):
-                        continue
-                    add_quantity(events, name, 'host', hostname, source)
-                    if redshift:
-                        add_quantity(events, name, 'redshift', redshift, source, kind='host')
-                    if args.update:
-                        events = journal_events(tasks, args, events)
-                events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'psmds'):
-            with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
-                for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
-                    if ri < 35:
-                        continue
-                    cols = [x.strip() for x in row.split(',')]
-                    name = add_event(tasks, args, events, cols[0])
-                    source = add_source(events, name, bibcode='2015ApJ...799..208S')
-                    add_quantity(events, name, 'alias', name, source)
-                    add_quantity(events, name, 'ra', cols[2], source)
-                    add_quantity(events, name, 'dec', cols[3], source)
-                    astrot = astrotime(float(cols[4]), format='mjd').datetime
-                    add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
-                    add_quantity(events, name, 'redshift', cols[5], source, kind='spectroscopic')
-                    add_quantity(events, name, 'claimedtype', 'II P', source)
             events = journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'snhunt'):
@@ -1110,101 +694,6 @@ def import_main():
                         add_quantity(events, name, 'claimedtype', ct, typesources)
                 if host != 'Uncatalogued':
                     add_quantity(events, name, 'host', host, sources)
-            events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'asiagospectra'):
-            html = load_cached_url(args, 'http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990',
-                                   os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Asiago/spectra.html'))
-            if not html:
-                continue
-            bs = BeautifulSoup(html, 'html5lib')
-            trs = bs.findAll('tr')
-            for tr in pbar(trs, current_task):
-                tds = tr.findAll('td')
-                name = ''
-                host = ''
-                # fitsurl = ''
-                source = ''
-                reference = ''
-                for tdi, td in enumerate(tds):
-                    if tdi == 0:
-                        butt = td.find('button')
-                        if not butt:
-                            break
-                        alias = butt.text.strip()
-                        alias = alias.replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
-                    elif tdi == 1:
-                        name = td.text.strip().replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
-                        if name.startswith('SN '):
-                            name = 'SN' + name[3:]
-                        if not name:
-                            name = alias
-                        if is_number(name[:4]):
-                            name = 'SN' + name
-                        name = add_event(tasks, args, events, name)
-                        reference = 'Asiago Supernova Catalogue'
-                        refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
-                        secondarysource = add_source(events, name, refname=reference, url=refurl, secondary=True)
-                        add_quantity(events, name, 'alias', name, secondarysource)
-                        if alias != name:
-                            add_quantity(events, name, 'alias', alias, secondarysource)
-                    elif tdi == 2:
-                        host = td.text.strip()
-                        if host == 'anonymous':
-                            host = ''
-                    elif tdi == 3:
-                        discoverer = td.text.strip()
-                    elif tdi == 5:
-                        ra = td.text.strip()
-                    elif tdi == 6:
-                        dec = td.text.strip()
-                    elif tdi == 7:
-                        claimedtype = td.text.strip()
-                    elif tdi == 8:
-                        redshift = td.text.strip()
-                    elif tdi == 9:
-                        epochstr = td.text.strip()
-                        if epochstr:
-                            mjd = (astrotime(epochstr[:4] + '-' + epochstr[4:6] + '-' + str(floor(float(epochstr[6:]))).zfill(2)).mjd +
-                                   float(epochstr[6:]) - floor(float(epochstr[6:])))
-                        else:
-                            mjd = ''
-                    elif tdi == 10:
-                        refs = td.findAll('a')
-                        source = ''
-                        reference = ''
-                        refurl = ''
-                        for ref in refs:
-                            if ref.text != 'REF':
-                                reference = ref.text
-                                refurl = ref['href']
-                        if reference:
-                            source = add_source(events, name, refname=reference, url=refurl)
-                        add_quantity(events, name, 'alias', name, secondarysource)
-                        sources = uniq_cdl(list(filter(None, [source, secondarysource])))
-                    elif tdi == 12:
-                        pass
-                        # fitslink = td.find('a')
-                        # if fitslink:
-                        #     fitsurl = fitslink['href']
-                if name:
-                    add_quantity(events, name, 'claimedtype', claimedtype, sources)
-                    add_quantity(events, name, 'ra', ra, sources)
-                    add_quantity(events, name, 'dec', dec, sources)
-                    add_quantity(events, name, 'redshift', redshift, sources)
-                    add_quantity(events, name, 'discoverer', discoverer, sources)
-                    add_quantity(events, name, 'host', host, sources)
-
-                    # if fitsurl:
-                    #    response = urllib.request.urlopen('http://sngroup.oapd.inaf.it./' + fitsurl)
-                    #    compressed = io.BytesIO(response.read())
-                    #    decompressed = gzip.GzipFile(fileobj=compressed)
-                    #    hdulist = fits.open(decompressed)
-                    #    scidata = hdulist[0].data
-                    #    print(hdulist[0].header)
-                    #
-                    #    print(scidata[3])
-                    #    sys.exit()
             events = journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'cspspectra'):
