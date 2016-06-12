@@ -1,7 +1,6 @@
 """Imports from the 'Vizier' catalog.
 """
 import csv
-from glob import glob
 import os
 from math import isnan
 
@@ -10,9 +9,9 @@ from astropy.time import Time as astrotime
 
 from .. scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
-    clean_snname, convert_aq_output, jd_to_mjd, journal_events, make_date_string, uniq_cdl
+    convert_aq_output, jd_to_mjd, journal_events, make_date_string, uniq_cdl
 from .. constants import KM, CLIGHT
-from ... utils import Decimal, get_sig_digits, is_number, pbar, pbar_strings, pretty_num, round_sig
+from ... utils import Decimal, get_sig_digits, is_number, pbar, pretty_num, round_sig
 
 
 def do_vizier(events, args, tasks):
@@ -1086,52 +1085,6 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'claimedtype', row['Type'].strip(':'), source)
     events = journal_events(tasks, args, events)
 
-    return events
-
-
-def do_csp(events, args, tasks):
-    import re
-    cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
-    current_task = 'CSP'
-    for fname in pbar_strings(file_names, desc=current_task):
-        f = open(fname, 'r')
-        tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
-
-        eventname = os.path.basename(os.path.splitext(fname)[0])
-
-        eventparts = eventname.split('opt+')
-
-        name = clean_snname(eventparts[0])
-        name = add_event(tasks, args, events, name)
-
-        reference = 'Carnegie Supernova Project'
-        refbib = '2010AJ....139..519C'
-        refurl = 'http://csp.obs.carnegiescience.edu/data'
-        source = add_source(events, name, bibcode=refbib, refname=reference, url=refurl)
-        add_quantity(events, name, 'alias', name, source)
-
-        year = re.findall(r'\d+', name)[0]
-        add_quantity(events, name, 'discoverdate', year, source)
-
-        for r, row in enumerate(tsvin):
-            if len(row) > 0 and row[0][0] == "#":
-                if r == 2:
-                    redz = row[0].split(' ')[-1]
-                    add_quantity(events, name, 'redshift', redz, source, kind='cmb')
-                    add_quantity(events, name, 'ra', row[1].split(' ')[-1], source)
-                    add_quantity(events, name, 'dec', row[2].split(' ')[-1], source)
-                continue
-            for v, val in enumerate(row):
-                if v == 0:
-                    mjd = val
-                elif v % 2 != 0:
-                    if float(row[v]) < 90.0:
-                        add_photometry(
-                            events, name, time=mjd, observatory='LCO', band=cspbands[(v-1)//2],
-                            system='CSP', magnitude=row[v], e_magnitude=row[v+1], source=source)
-        f.close()
-    events = journal_events(tasks, args, events)
     return events
 
 

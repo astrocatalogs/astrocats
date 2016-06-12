@@ -60,7 +60,7 @@ def import_main():
         ('cfa_photo',       {'nicename': '%pre CfA archive photometry',  'update': False}),
         ('ucb',             {'nicename': '%pre UCB photometry',          'update': False, 'archived': True}),
         ('sdss',            {'nicename': '%pre SDSS photometry',         'update': False}),
-        ('csp',             {'nicename': '%pre CSP photometry',          'update': False}),
+        ('csp_photo',             {'nicename': '%pre CSP photometry',          'update': False}),
         ('itep',            {'nicename': '%pre ITEP',                    'update': False}),
         ('asiago_photo',          {'nicename': '%pre Asiago metadata',         'update': False}),
         ('tns',             {'nicename': '%pre TNS metadata',            'update': True,  'archived': True}),
@@ -83,7 +83,7 @@ def import_main():
         ('wiserepspectra',  {'nicename': '%pre WISeREP spectra',         'update': False}),
         ('cfa_spectra',     {'nicename': '%pre CfA archive spectra',     'update': False}),
         ('snlsspectra',     {'nicename': '%pre SNLS spectra',            'update': False}),
-        ('cspspectra',      {'nicename': '%pre CSP spectra',             'update': False}),
+        ('csp_spectra',      {'nicename': '%pre CSP spectra',             'update': False}),
         ('ucbspectra',      {'nicename': '%pre UCB spectra',             'update': True,  'archived': True}),
         ('suspect_spectra', {'nicename': '%pre SUSPECT spectra',         'update': False}),
         ('snfspectra',      {'nicename': '%pre SNH spectra',             'update': False}),
@@ -188,9 +188,13 @@ def import_main():
 
         # Import CSP
         # VizieR catalogs exist for this: J/AJ/139/519, J/AJ/142/156. Should replace eventually.
-        if do_task(tasks, args, task, 'csp'):
-            from mtasks.vizier import do_csp
-            events = do_csp(events, args, tasks)
+        if do_task(tasks, args, task, 'csp_photo'):
+            from mtasks.carnegie import do_csp_photo
+            events = do_csp_photo(events, args, tasks)
+
+        if do_task(tasks, args, task, 'csp_spectra'):
+            from mtasks.carnegie import do_csp_spectra
+            events = do_csp_spectra(events, args, tasks)
 
         if do_task(tasks, args, task, 'crts'):
             from mtasks.general_data import do_crts
@@ -694,50 +698,6 @@ def import_main():
                         add_quantity(events, name, 'claimedtype', ct, typesources)
                 if host != 'Uncatalogued':
                     add_quantity(events, name, 'host', host, sources)
-            events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'cspspectra'):
-            oldname = ''
-            file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
-            for fi, fname in enumerate(pbar_strings(file_names, current_task=current_task)):
-                filename = os.path.basename(fname)
-                sfile = filename.split('.')
-                if sfile[1] == 'txt':
-                    continue
-                sfile = sfile[0]
-                fileparts = sfile.split('_')
-                name = 'SN20' + fileparts[0][2:]
-                name = get_preferred_name(events, name)
-                if oldname and name != oldname:
-                    events = journal_events(tasks, args, events)
-                oldname = name
-                name = add_event(tasks, args, events, name)
-                telescope = fileparts[-2]
-                instrument = fileparts[-1]
-                source = add_source(events, name, bibcode='2013ApJ...773...53F')
-                add_quantity(events, name, 'alias', name, source)
-
-                f = open(fname, 'r')
-                data = csv.reader(f, delimiter=' ', skipinitialspace=True)
-                specdata = []
-                for r, row in enumerate(data):
-                    if row[0] == '#JDate_of_observation:':
-                        jd = row[1].strip()
-                        time = str(jd_to_mjd(Decimal(jd)))
-                    elif row[0] == '#Redshift:':
-                        add_quantity(events, name, 'redshift', row[1].strip(), source)
-                    if r < 7:
-                        continue
-                    specdata.append(list(filter(None, [x.strip(' ') for x in row])))
-                specdata = [list(i) for i in zip(*specdata)]
-                wavelengths = specdata[0]
-                fluxes = specdata[1]
-
-                add_spectrum(
-                    name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths,
-                    fluxes=fluxes, telescope=telescope, instrument=instrument, source=source, deredshifted=True, filename=filename)
-                if args.travis and fi >= TRAVIS_QUERY_LIMIT:
-                    break
             events = journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'ucbspectra'):
