@@ -13,6 +13,7 @@ from glob import glob
 from html import unescape
 import json
 from math import log10, floor, ceil
+import numpy as np
 import os
 import re
 import requests
@@ -30,8 +31,8 @@ from . funcs import add_event, add_photometry, add_quantity, add_source, add_spe
     get_max_light, get_preferred_name, has_task, jd_to_mjd, journal_events, \
     load_cached_url, make_date_string, merge_duplicates, \
     set_preferred_names, clean_snname, uniq_cdl, utf8, write_all_events
-from scripts import PATH
-from . constants import TRAVIS_QUERY_LIMIT
+from scripts import PATH, FILENAME
+from . constants import TRAVIS_QUERY_LIMIT, TASK
 
 
 def import_main():
@@ -55,8 +56,8 @@ def import_main():
         ('scp',             {'nicename': '%pre SCP',                     'update': False}),
         ('ascii',           {'nicename': '%pre ASCII',                   'update': False}),
         ('cccp',            {'nicename': '%pre CCCP',                    'update': False, 'archived': True}),
-        ('suspect_photo',         {'nicename': '%pre SUSPECT',                 'update': False}),
-        ('cfa_photo',             {'nicename': '%pre CfA archive photometry',  'update': False}),
+        ('suspect_photo',   {'nicename': '%pre SUSPECT',                 'update': False}),
+        ('cfa_photo',       {'nicename': '%pre CfA archive photometry',  'update': False}),
         ('ucb',             {'nicename': '%pre UCB photometry',          'update': False, 'archived': True}),
         ('sdss',            {'nicename': '%pre SDSS photometry',         'update': False}),
         ('csp',             {'nicename': '%pre CSP photometry',          'update': False}),
@@ -80,11 +81,11 @@ def import_main():
         ('asassn',          {'nicename': '%pre ASASSN',                  'update': True}),
         ('asiagospectra',   {'nicename': '%pre Asiago spectra',          'update': True}),
         ('wiserepspectra',  {'nicename': '%pre WISeREP spectra',         'update': False}),
-        ('cfa_spectra',      {'nicename': '%pre CfA archive spectra',     'update': False}),
+        ('cfa_spectra',     {'nicename': '%pre CfA archive spectra',     'update': False}),
         ('snlsspectra',     {'nicename': '%pre SNLS spectra',            'update': False}),
         ('cspspectra',      {'nicename': '%pre CSP spectra',             'update': False}),
         ('ucbspectra',      {'nicename': '%pre UCB spectra',             'update': True,  'archived': True}),
-        ('suspect_spectra',  {'nicename': '%pre SUSPECT spectra',         'update': False}),
+        ('suspect_spectra', {'nicename': '%pre SUSPECT spectra',         'update': False}),
         ('snfspectra',      {'nicename': '%pre SNH spectra',             'update': False}),
         ('superfitspectra', {'nicename': '%pre Superfit spectra',        'update': False}),
         ('mergeduplicates', {'nicename': 'Merging duplicates',           'update': False}),
@@ -115,59 +116,9 @@ def import_main():
         #     from mtasks import do_simbad
         #     events = do_simbad(events, args, tasks)
 
-        # Import primary data sources from Vizier
-        if do_task(tasks, args, task, 'vizier'):
-            from mtasks.vizier import do_vizier
-            events = do_vizier(events, args, tasks)
-
         if do_task(tasks, args, task, 'donations'):
             from mtasks.donations import do_donations
             events = do_donations(events, args, tasks)
-
-        if do_task(tasks, args, task, 'pessto-dr1'):
-            with open(os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv'), 'r') as f:
-                tsvin = csv.reader(f, delimiter=',')
-                for ri, row in enumerate(tsvin):
-                    if ri == 0:
-                        bands = [x.split('_')[0] for x in row[3::2]]
-                        systems = [x.split('_')[1].capitalize().replace('Ab', 'AB') for x in row[3::2]]
-                        continue
-                    name = row[1]
-                    name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, bibcode='2015A&A...579A..40S')
-                    add_quantity(events, name, 'alias', name, source)
-                    for hi, ci in enumerate(range(3, len(row)-1, 2)):
-                        if not row[ci]:
-                            continue
-                        add_photometry(
-                            events, name, time=row[2], magnitude=row[ci], e_magnitude=row[ci+1],
-                            band=bands[hi], system=systems[hi], telescope='Swift' if systems[hi] == 'Swift' else '',
-                            source=source)
-            events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'scp'):
-            with open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r') as f:
-                tsvin = csv.reader(f, delimiter=',')
-                for ri, row in enumerate(pbar(tsvin, current_task)):
-                    if ri == 0:
-                        continue
-                    name = row[0].replace('SCP', 'SCP-')
-                    name = add_event(tasks, args, events, name)
-                    source = add_source(events, name, refname='Supernova Cosmology Project', url='http://supernova.lbl.gov/2009ClusterSurvey/')
-                    add_quantity(events, name, 'alias', name, source)
-                    if row[1]:
-                        add_quantity(events, name, 'alias', row[1], source)
-                    if row[2]:
-                        add_quantity(events, name, 'redshift', row[2], source, kind='spectroscopic' if row[3] == 'sn' else 'host')
-                    if row[4]:
-                        add_quantity(events, name, 'redshift', row[2], source, kind='cluster')
-                    if row[6]:
-                        claimedtype = row[6].replace('SN ', '')
-                        kind = ('spectroscopic/light curve' if 'a' in row[7] and 'c' in row[7] else
-                                'spectroscopic' if 'a' in row[7] else 'light curve' if 'c' in row[7] else '')
-                        if claimedtype != '?':
-                            add_quantity(events, name, 'claimedtype', claimedtype, source, kind=kind)
-            events = journal_events(tasks, args, events)
 
         if do_task(tasks, args, task, 'ascii'):
             from mtasks.general_data import do_ascii
@@ -194,6 +145,51 @@ def import_main():
         if do_task(tasks, args, task, 'cfa_spectra'):
             from mtasks.cfa import do_cfa_spectra
             events = do_cfa_spectra(events, args, tasks)
+
+        if do_task(tasks, args, task, 'wiserepspectra'):
+            from mtasks.wiserep import do_wiserep_spectra
+            events = do_wiserep_spectra(events, args, tasks)
+
+        # Import primary data sources from Vizier
+        if do_task(tasks, args, task, 'vizier'):
+            from mtasks.vizier import do_vizier
+            events = do_vizier(events, args, tasks)
+
+        if do_task(tasks, args, task, 'lennarz'):
+            from mtasks.vizier import do_lennarz
+            events = do_lennarz(events, args, tasks)
+
+        if do_task(tasks, args, task, 'snlsspectra'):
+            from mtasks.vizier import do_snls_spectra
+            events = do_snls_spectra(events, args, tasks)
+
+        if do_task(tasks, args, task, 'pessto-dr1'):
+            from mtasks.general_data import do_pessto
+            do_pessto(events, args, tasks)
+
+        if do_task(tasks, args, task, 'scp'):
+            with open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r') as f:
+                tsvin = csv.reader(f, delimiter=',')
+                for ri, row in enumerate(pbar(tsvin, current_task)):
+                    if ri == 0:
+                        continue
+                    name = row[0].replace('SCP', 'SCP-')
+                    name = add_event(tasks, args, events, name)
+                    source = add_source(events, name, refname='Supernova Cosmology Project', url='http://supernova.lbl.gov/2009ClusterSurvey/')
+                    add_quantity(events, name, 'alias', name, source)
+                    if row[1]:
+                        add_quantity(events, name, 'alias', row[1], source)
+                    if row[2]:
+                        add_quantity(events, name, 'redshift', row[2], source, kind='spectroscopic' if row[3] == 'sn' else 'host')
+                    if row[4]:
+                        add_quantity(events, name, 'redshift', row[2], source, kind='cluster')
+                    if row[6]:
+                        claimedtype = row[6].replace('SN ', '')
+                        kind = ('spectroscopic/light curve' if 'a' in row[7] and 'c' in row[7] else
+                                'spectroscopic' if 'a' in row[7] else 'light curve' if 'c' in row[7] else '')
+                        if claimedtype != '?':
+                            add_quantity(events, name, 'claimedtype', claimedtype, source, kind=kind)
+            events = journal_events(tasks, args, events)
 
         # New UCB import
         if do_task(tasks, args, task, 'ucb'):
@@ -560,10 +556,6 @@ def import_main():
                     if (discoverer != ''):
                         add_quantity(events, name, 'discoverer', discoverer, source)
             events = journal_events(tasks, args, events)
-
-        if do_task(tasks, args, task, 'lennarz'):
-            from mtasks.vizier import do_lennarz
-            events = do_lennarz(events, args, tasks)
 
         if do_task(tasks, args, task, 'fermi'):
             with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as f:
@@ -1687,14 +1679,6 @@ def import_main():
                     #    sys.exit()
             events = journal_events(tasks, args, events)
 
-        if do_task(tasks, args, task, 'wiserepspectra'):
-            from mtasks.wiserep import do_wiserep_spectra
-            events = do_wiserep_spectra(events, args, tasks)
-
-        if do_task(tasks, args, task, 'snlsspectra'):
-            from mtasks.vizier import do_snls_spectra
-            events = do_snls_spectra(events, args, tasks)
-
         if do_task(tasks, args, task, 'cspspectra'):
             oldname = ''
             file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
@@ -2008,6 +1992,28 @@ def import_main():
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
 
     sys.exit(0)
+
+
+def load_task_list():
+    """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
+
+    A `TASK` object is created for each entry, with the parameters filled in.
+    These are placed in an OrderedDict, sorted by the `priority` parameter, with positive values
+    and then negative values, e.g. [0, 2, 10, -10, -1].
+    """
+    def_task_list_filename = FILENAME.TASK_LIST
+    data = json.load(open(def_task_list_filename, 'r'))
+
+    tasks = {}
+    # `defaults` is a dictionary where each `key` is a task name, and values are its properties
+    for key, val in data.items():
+        tasks[key] = TASK(name=key, **val)
+
+    # Sort entries as positive values, then negative values
+    #    [0, 1, 2, 2, 10, -100, -10, -1]
+    #    Tuples are sorted by first element (here: '0' if positive), then second (here normal order)
+    tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (t[1].priority < 0, t[1].priority)))
+    return tasks
 
 
 def load_args():

@@ -1,0 +1,337 @@
+{
+    "deleteoldevents": {
+        "nice_name": "Deleting old events",
+		"update": "False",
+        "module": "",
+        "function": "delete_old_event_files",
+        "priority": 0
+    },
+    "internal": {
+        "nice_name": "%pre metadata and photometry",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 1
+    },
+    "radio": {
+        "nice_name": "%pre radio data",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 2
+    },
+    "xray": {
+        "nice_name": "%pre X-ray data",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 2
+    },
+    "simbad": {
+        "nice_name": "%pre SIMBAD",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 3
+    },
+    "vizier": {
+        "nice_name": "%pre VizieR",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 3
+    },
+    "donations": {
+        "nice_name": "%pre donations",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 4
+    },
+    "pessto-dr1": {
+        "nice_name": "%pre PESSTO DR1",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "scp": {
+        "nice_name": "%pre SCP",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "ascii": {
+        "nice_name": "%pre ASCII",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "cccp": {
+        "nice_name": "%pre CCCP",
+		"update": "False",
+        "archived": "True",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "suspect_photo": {
+        "nice_name": "%pre SUSPECT",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "cfa_photo": {
+        "nice_name": "%pre CfA archive photometry",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "ucb": {
+        "nice_name": "%pre UCB photometry",
+		"update": "False",
+        "archived": "True",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "sdss": {
+        "nice_name": "%pre SDSS photometry",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "csp": {
+        "nice_name": "%pre CSP photometry",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "itep": {
+        "nice_name": "%pre ITEP",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "asiago": {
+        "nice_name": "%pre Asiago metadata",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "tns": {
+        "nice_name": "%pre TNS metadata",
+        "update": "True",
+        "archived": "True",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "rochester": {
+        "nice_name": "%pre Latest Supernovae",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "lennarz": {
+        "nice_name": "%pre Lennarz",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "fermi": {
+        "nice_name": "%pre Fermi",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "gaia": {
+        "nice_name": "%pre GAIA",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "ogle": {
+        "nice_name": "%pre OGLE",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "snls": {
+        "nice_name": "%pre SNLS",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "psthreepi": {
+        "nice_name": "%pre Pan-STARRS 3π",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "psmds": {
+        "nice_name": "%pre Pan-STARRS MDS",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "crts": {
+        "nice_name": "%pre CRTS",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "snhunt": {
+        "nice_name": "%pre SNhunt",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "nedd": {
+        "nice_name": "%pre NED-D",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "cpcs": {
+        "nice_name": "%pre CPCS",
+        "update": "True",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "ptf": {
+        "nice_name": "%pre PTF",
+		"update": "False",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "des": {
+        "nice_name": "%pre DES",
+		"update": "False",
+        "archived": "False",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "asassn": {
+        "nice_name": "%pre ASASSN",
+        "update": "True",
+        "module": "",
+        "function": "",
+        "priority": 10
+    },
+    "asiagospectra": {
+        "nice_name": "%pre Asiago spectra",
+        "update": "True",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "wiserepspectra": {
+        "nice_name": "%pre WISeREP spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "cfa_spectra": {
+        "nice_name": "%pre CfA archive spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "snlsspectra": {
+        "nice_name": "%pre SNLS spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "cspspectra": {
+        "nice_name": "%pre CSP spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "ucbspectra": {
+        "nice_name": "%pre UCB spectra",
+        "update": "True",
+        "archived": "True",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "suspect_spectra": {
+        "nice_name": "%pre SUSPECT spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "snfspectra": {
+        "nice_name": "%pre SNH spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "superfitspectra": {
+        "nice_name": "%pre Superfit spectra",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": 20
+    },
+    "mergeduplicates": {
+        "nice_name": "Merging duplicates",
+		"update": "False",
+        "module": "",
+        "function": "merge_duplicates",
+        "priority": -100
+    },
+    "setprefnames": {
+        "nice_name": "Setting preferred names",
+		"update": "False",
+        "module": "",
+        "function": "",
+        "priority": -10
+    },
+    "writeevents": {
+        "nice_name": "Writing events",
+		"update": "True",
+        "module": "",
+        "function": "write_all_events",
+        "priority": -1
+    }
+}
