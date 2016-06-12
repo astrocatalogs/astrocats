@@ -1,8 +1,6 @@
 """General utility functions used by multiple OSC scripts.
 """
 
-print("utils/__init__.py")
-
 from . import digits
 from . digits import *
 from . import events
