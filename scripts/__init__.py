@@ -9,6 +9,7 @@ _PATH_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 class PATH:
     ROOT = str(_PATH_ROOT)
     DATA = os.path.join(ROOT, 'scripts/aux_data')
+    IMPORT = os.path.join(ROOT, 'scripts/importers')
     REPO_BONEYARD = os.path.join(ROOT, 'sne-boneyard')
     REPO_INTERNAL = os.path.join(ROOT, 'sne-internal')
     REPO_EXTERNAL = os.path.join(ROOT, 'sne-external')
@@ -28,3 +29,4 @@ class FILENAME:
     IAUCS = os.path.join(PATH.DATA, 'iaucs.json')
     EXTINCT = os.path.join(PATH.DATA, 'extinctions.json')
     BIBAUTHORS = os.path.join(PATH.DATA, 'bibauthors.json')
+    TASK_LIST = os.path.join(PATH.IMPORT, 'tasks.json')

@@ -3,9 +3,9 @@
 
 print("scripts/__main__.py")
 
-from . import import_sn
+from . import importers
 from . import utils
 
 
 if __name__ == "__main__":
-    import_sn.importer.import_main()
+    importers.importer.import_main()
