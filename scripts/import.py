@@ -52,51 +52,51 @@ args = parser.parse_args()
 
 tasks = OrderedDict([
     ("deleteoldevents", {"nicename":"Deleting old events",          "update": False}),
-    ("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
-    ("radio",           {"nicename":"%pre radio data",              "update": False}),
-    ("xray",            {"nicename":"%pre X-ray data",              "update": False}),
-    ("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
-    ("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
-    ("donations",       {"nicename":"%pre donations",               "update": False}),
-    ("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
-    ("scp",             {"nicename":"%pre SCP",                     "update": False}),
+    #("internal",        {"nicename":"%pre metadata and photometry", "update": False}),
+    #("radio",           {"nicename":"%pre radio data",              "update": False}),
+    #("xray",            {"nicename":"%pre X-ray data",              "update": False}),
+    #("simbad",          {"nicename":"%pre SIMBAD",                  "update": False}),
+    #("vizier",          {"nicename":"%pre VizieR",                  "update": False}),
+    #("donations",       {"nicename":"%pre donations",               "update": False}),
+    #("pessto-dr1",      {"nicename":"%pre PESSTO DR1",              "update": False}),
+    #("scp",             {"nicename":"%pre SCP",                     "update": False}),
     ("ascii",           {"nicename":"%pre ASCII",                   "update": False}),
-    ("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
-    ("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
-    ("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
-    ("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
-    ("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
-    ("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
-    ("itep",            {"nicename":"%pre ITEP",                    "update": False}),
-    ("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
-    ("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
-    ("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
-    ("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
-    ("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
-    ("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
-    ("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
-    ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
-    ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
-    ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
-    ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
-    ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
-    ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
-    ("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
-    ("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
-    ("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
-    ("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
-    ("snf",             {"nicename":"%pre SNF",                     "update": False}),
-    ("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
-    ("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
-    ("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
-    ("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
-    ("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
-    ("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
-    ("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
-    ("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
-    ("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
-    ("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
-    ("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
+    #("cccp",            {"nicename":"%pre CCCP",                    "update": False, "archived": True}),
+    #("suspect",         {"nicename":"%pre SUSPECT",                 "update": False}),
+    #("cfa",             {"nicename":"%pre CfA archive photometry",  "update": False}),
+    #("ucb",             {"nicename":"%pre UCB photometry",          "update": False, "archived": True}),
+    #("sdss",            {"nicename":"%pre SDSS photometry",         "update": False}),
+    #("csp",             {"nicename":"%pre CSP photometry",          "update": False}),
+    #("itep",            {"nicename":"%pre ITEP",                    "update": False}),
+    #("asiago",          {"nicename":"%pre Asiago metadata",         "update": False}),
+    #("tns",             {"nicename":"%pre TNS metadata",            "update": True,  "archived": True}),
+    #("rochester",       {"nicename":"%pre Latest Supernovae",       "update": True,  "archived": False}),
+    #("lennarz",         {"nicename":"%pre Lennarz",                 "update": False}),
+    #("fermi",           {"nicename":"%pre Fermi",                   "update": False}),
+    #("gaia",            {"nicename":"%pre GAIA",                    "update": True,  "archived": False}),
+    #("ogle",            {"nicename":"%pre OGLE",                    "update": True,  "archived": False}),
+    #("snls",            {"nicename":"%pre SNLS",                    "update": False}),
+    #("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
+    #("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    #("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
+    #("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
+    #("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
+    #("cpcs",            {"nicename":"%pre CPCS",                    "update": True,  "archived": False}),
+    #("ptf",             {"nicename":"%pre PTF",                     "update": False, "archived": False}),
+    #("des",             {"nicename":"%pre DES",                     "update": False, "archived": False}),
+    #("asassn",          {"nicename":"%pre ASASSN",                  "update": True }),
+    #("snf",             {"nicename":"%pre SNF",                     "update": False}),
+    #("asiagospectra",   {"nicename":"%pre Asiago spectra",          "update": True }),
+    #("wiserepspectra",  {"nicename":"%pre WISeREP spectra",         "update": False}),
+    #("cfaspectra",      {"nicename":"%pre CfA archive spectra",     "update": False}),
+    #("snlsspectra",     {"nicename":"%pre SNLS spectra",            "update": False}),
+    #("cspspectra",      {"nicename":"%pre CSP spectra",             "update": False}),
+    #("ucbspectra",      {"nicename":"%pre UCB spectra",             "update": True,  "archived": True}),
+    #("suspectspectra",  {"nicename":"%pre SUSPECT spectra",         "update": False}),
+    #("snfspectra",      {"nicename":"%pre SNH spectra",             "update": False}),
+    #("superfitspectra", {"nicename":"%pre Superfit spectra",        "update": False}),
+    #("mergeduplicates", {"nicename":"Merging duplicates",           "update": False}),
+    #("setprefnames",    {"nicename":"Setting preferred names",      "update": False}),
     ("writeevents",     {"nicename":"Writing events",               "update": True })
 ])
 
@@ -650,8 +650,8 @@ def same_tag_num(photo, val, tag, canbelist = False):
     return issame
 
 def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
-                   magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "",
-                   observatory = "", observer = "", host = False, includeshost = False, survey = "",
+                   magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "", scorrected = "",
+                   observatory = "", observer = "", host = False, includeshost = False, survey = "", kcorrected = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
                    u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
                    e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = ""):
@@ -786,6 +786,10 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         photoentry['host'] = host
     if includeshost:
         photoentry['includeshost'] = includeshost
+    if kcorrected:
+        photoentry['kcorrected'] = kcorrected
+    if scorrected:
+        photoentry['scorrected'] = scorrected
     if observer:
         photoentry['observer'] = observer
     if survey:
@@ -3658,6 +3662,23 @@ for task in tasks:
                         continue
                     add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
                         instrument = 'LBT', source = source)
+        journal_events()
+
+        # 2000ApJ...533..320G
+        with open("../sne-external/2000ApJ...533..320G.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            (name, source) = new_event('SN1997cy', bibcode = '2000ApJ...533..320G')
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    bands = row[1:-1]
+                    continue
+                mjd = str(jd_to_mjd(Decimal(row[0])))
+                mags = row[1:len(bands)]
+                for mi, mag in enumerate(mags):
+                    if not is_number(mag):
+                        continue
+                    add_photometry(name, time = mjd, band = bands[mi], magnitude = mag,
+                        observatory = 'Mount Stromlo', telescope = 'MSSSO', source = source, kcorrected = True)
         journal_events()
 
     # CCCP
