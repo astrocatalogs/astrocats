@@ -565,6 +565,29 @@ def do_internal(events, args, tasks):
     return events
 
 
+def do_pessto(events, args, tasks):
+    with open(os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv'), 'r') as f:
+        tsvin = csv.reader(f, delimiter=',')
+        for ri, row in enumerate(tsvin):
+            if ri == 0:
+                bands = [x.split('_')[0] for x in row[3::2]]
+                systems = [x.split('_')[1].capitalize().replace('Ab', 'AB') for x in row[3::2]]
+                continue
+            name = row[1]
+            name = add_event(tasks, args, events, name)
+            source = add_source(events, name, bibcode='2015A&A...579A..40S')
+            add_quantity(events, name, 'alias', name, source)
+            for hi, ci in enumerate(range(3, len(row)-1, 2)):
+                if not row[ci]:
+                    continue
+                add_photometry(
+                    events, name, time=row[2], magnitude=row[ci], e_magnitude=row[ci+1],
+                    band=bands[hi], system=systems[hi], telescope='Swift' if systems[hi] == 'Swift' else '',
+                    source=source)
+
+    events = journal_events(tasks, args, events)
+    return events
+
 '''
 def do_simbad(events, args, tasks):
     Simbad.list_votable_fields()
