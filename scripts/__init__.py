@@ -9,7 +9,7 @@ _PATH_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 class PATH:
     ROOT = str(_PATH_ROOT)
     DATA = os.path.join(ROOT, 'scripts/aux_data')
-    IMPORT = os.path.join(ROOT, 'scripts/importers')
+    IMPORT = os.path.join(ROOT, 'scripts/importer')
     REPO_BONEYARD = os.path.join(ROOT, 'sne-boneyard')
     REPO_INTERNAL = os.path.join(ROOT, 'sne-internal')
     REPO_EXTERNAL = os.path.join(ROOT, 'sne-external')

@@ -1,8 +1,8 @@
 #!/usr/local/bin/python3.5
 
-import argparse
 import codecs
 from collections import OrderedDict
+import importlib
 import json
 import os
 import resource
@@ -16,63 +16,38 @@ from scripts import FILENAME
 from . constants import TASK
 
 
-def import_main():
+def import_main(args=None, **kwargs):
+    """Run all of the import tasks.
+
+    This is executed by the 'scripts.main.py' when the module is run as an executable.
+    This can also be run as a method, in which case default arguments are loaded, but can be
+    overriden using `**kwargs`.
     """
-    """
-    args = load_args()
+    # If this is called from `scripts.main`, then `args` will contain parameters.
+    #    If this is being called as an API function, we need to load default parameters which can
+    #    then be overwritten below
+    if args is None:
+        from .. import main
+        args = main.load_args(args=['importer'])
+
+    # If this is called as an API function, overwrite variables in `args` with those passed to the
+    #    function as keyword arguments.
+    for key, val in kwargs.items():
+        setattr(args, key, val)
+    print(vars(args))
+
+    tasks = load_task_list()
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
-    tasks = OrderedDict([
-        ('deleteoldevents', {'nicename': 'Deleting old events',          'update': False}),
-        ('internal',        {'nicename': '%pre metadata and photometry', 'update': False}),
-        ('radio',           {'nicename': '%pre radio data',              'update': False}),
-        ('xray',            {'nicename': '%pre X-ray data',              'update': False}),
-        ('simbad',          {'nicename': '%pre SIMBAD',                  'update': False}),
-        ('vizier',          {'nicename': '%pre VizieR',                  'update': False}),
-        ('donations',       {'nicename': '%pre donations',               'update': False}),
-        ('pessto-dr1',      {'nicename': '%pre PESSTO DR1',              'update': False}),
-        ('scp',             {'nicename': '%pre SCP',                     'update': False}),
-        ('ascii',           {'nicename': '%pre ASCII',                   'update': False}),
-        ('cccp',            {'nicename': '%pre CCCP',                    'update': False, 'archived': True}),
-        ('suspect_photo',   {'nicename': '%pre SUSPECT',                 'update': False}),
-        ('cfa_photo',       {'nicename': '%pre CfA archive photometry',  'update': False}),
-        ('ucb_photo',       {'nicename': '%pre UCB photometry',          'update': False, 'archived': True}),
-        ('sdss',            {'nicename': '%pre SDSS photometry',         'update': False}),
-        ('csp_photo',       {'nicename': '%pre CSP photometry',          'update': False}),
-        ('itep',            {'nicename': '%pre ITEP',                    'update': False}),
-        ('asiago_photo',    {'nicename': '%pre Asiago metadata',         'update': False}),
-        ('tns',             {'nicename': '%pre TNS metadata',            'update': True,  'archived': True}),
-        # ('rochester',       {'nicename': '%pre Latest Supernovae',       'update': True,  'archived': False}),
-        ('lennarz',         {'nicename': '%pre Lennarz',                 'update': False}),
-        ('fermi',           {'nicename': '%pre Fermi',                   'update': False}),
-        ('gaia',            {'nicename': '%pre GAIA',                    'update': True,  'archived': False}),
-        ('ogle',            {'nicename': '%pre OGLE',                    'update': True,  'archived': False}),
-        ('snls',            {'nicename': '%pre SNLS',                    'update': False}),
-        ('psthreepi',       {'nicename': '%pre Pan-STARRS 3π',           'update': True,  'archived': False}),
-        ('psmds',           {'nicename': '%pre Pan-STARRS MDS',          'update': False}),
-        ('crts',            {'nicename': '%pre CRTS',                    'update': True,  'archived': False}),
-        ('snhunt',          {'nicename': '%pre SNhunt',                  'update': True,  'archived': False}),
-        ('nedd',            {'nicename': '%pre NED-D',                   'update': False}),
-        ('cpcs',            {'nicename': '%pre CPCS',                    'update': True,  'archived': False}),
-        ('ptf',             {'nicename': '%pre PTF',                     'update': False, 'archived': False}),
-        ('des',             {'nicename': '%pre DES',                     'update': False, 'archived': False}),
-        ('asassn',          {'nicename': '%pre ASASSN',                  'update': True}),
-        ('asiago_spectra',  {'nicename': '%pre Asiago spectra',          'update': True}),
-        ('wiserep_spectra', {'nicename': '%pre WISeREP spectra',         'update': False}),
-        ('cfa_spectra',     {'nicename': '%pre CfA archive spectra',     'update': False}),
-        ('snls_spectra',    {'nicename': '%pre SNLS spectra',            'update': False}),
-        ('csp_spectra',     {'nicename': '%pre CSP spectra',             'update': False}),
-        ('ucb_spectra',     {'nicename': '%pre UCB spectra',             'update': True,  'archived': True}),
-        ('suspect_spectra', {'nicename': '%pre SUSPECT spectra',         'update': False}),
-        ('snf_spectra',     {'nicename': '%pre SNH spectra',             'update': False}),
-        ('superfit_spectra',{'nicename': '%pre Superfit spectra',        'update': False}),
-        ('mergeduplicates', {'nicename': 'Merging duplicates',           'update': False}),
-        ('setprefnames',    {'nicename': 'Setting preferred names',      'update': False}),
-        ('writeevents',     {'nicename': 'Writing events',               'update': True})
-    ])
+    for name, task in tasks.items():
+        print("\n", name, "\t-\t", task)
 
-    for task in tasks:
+        importlib.import_module('mtasks.general_data')
+
+
+        continue
+
         if do_task(tasks, args, task, 'deleteoldevents'):
             # Delete `current_task` here and wrap deletion in `pbar_strings` ??
             delete_old_event_files()
@@ -274,6 +249,10 @@ def import_main():
             from . funcs import set_preferred_names
             events = set_preferred_names(tasks, args, events)
 
+
+    return
+
+
     files = repo_file_list()
 
     bibauthor_dict = get_bibauthor_dict()
@@ -380,20 +359,12 @@ def load_task_list():
     #    [0, 1, 2, 2, 10, -100, -10, -1]
     #    Tuples are sorted by first element (here: '0' if positive), then second (here normal order)
     tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (t[1].priority < 0, t[1].priority)))
+    print("load_task_list")
+    for key, val in tasks.items():
+        print(key, val.nice_name)
+
+    print("\n\n")
     return tasks
-
-
-def load_args():
-    parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-    parser.add_argument('--update', '-u',       dest='update',      help='Only update catalog using live sources.',    default=False, action='store_true')
-    parser.add_argument('--verbose', '-v',      dest='verbose',     help='Print more messages to the screen.',         default=False, action='store_true')
-    parser.add_argument('--refresh', '-r',      dest='refresh',     help='Ignore most task caches.',                   default=False, action='store_true')
-    parser.add_argument('--full-refresh', '-f', dest='fullrefresh', help='Ignore all task caches.',                    default=False, action='store_true')
-    parser.add_argument('--archived', '-a',     dest='archived',    help='Always use task caches.',                    default=False, action='store_true')
-    parser.add_argument('--travis', '-tr',      dest='travis',      help='Run import script in test mode for Travis.', default=False, action='store_true')
-    parser.add_argument('--refreshlist', '-rl', dest='refreshlist', help='Comma-delimited list of caches to clear.',   default='')
-    args = parser.parse_args()
-    return args
 
 if __name__ == '__main__':
     import_main()

@@ -1,11 +1,6 @@
-"""Entry point for OCS import scripts.
+"""Entry point for OCS scripts.
 """
 
-print("scripts/__main__.py")
-
-from . import importers
-from . import utils
-
-
 if __name__ == "__main__":
-    importers.importer.import_main()
+    from . import main
+    main.main()
