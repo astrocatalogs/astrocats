@@ -16,6 +16,58 @@ from scripts import FILENAME
 from . constants import TASK
 
 
+def get_old_tasks():
+    tasks = OrderedDict([
+        ('deleteoldevents', {'nicename': 'Deleting old events',          'update': False}),
+        ('internal',        {'nicename': '%pre metadata and photometry', 'update': False}),
+        ('radio',           {'nicename': '%pre radio data',              'update': False}),
+        ('xray',            {'nicename': '%pre X-ray data',              'update': False}),
+        ('simbad',          {'nicename': '%pre SIMBAD',                  'update': False}),
+        ('vizier',          {'nicename': '%pre VizieR',                  'update': False}),
+        ('donations',       {'nicename': '%pre donations',               'update': False}),
+        ('pessto-dr1',      {'nicename': '%pre PESSTO DR1',              'update': False}),
+        ('scp',             {'nicename': '%pre SCP',                     'update': False}),
+        ('ascii',           {'nicename': '%pre ASCII',                   'update': False}),
+        ('cccp',            {'nicename': '%pre CCCP',                    'update': False, 'archived': True}),
+        ('suspect_photo',   {'nicename': '%pre SUSPECT',                 'update': False}),
+        ('cfa_photo',       {'nicename': '%pre CfA archive photometry',  'update': False}),
+        ('ucb_photo',       {'nicename': '%pre UCB photometry',          'update': False, 'archived': True}),
+        ('sdss',            {'nicename': '%pre SDSS photometry',         'update': False}),
+        ('csp_photo',       {'nicename': '%pre CSP photometry',          'update': False}),
+        ('itep',            {'nicename': '%pre ITEP',                    'update': False}),
+        ('asiago_photo',    {'nicename': '%pre Asiago metadata',         'update': False}),
+        ('tns',             {'nicename': '%pre TNS metadata',            'update': True,  'archived': True}),
+        # ('rochester',       {'nicename': '%pre Latest Supernovae',       'update': True,  'archived': False}),
+        ('lennarz',         {'nicename': '%pre Lennarz',                 'update': False}),
+        ('fermi',           {'nicename': '%pre Fermi',                   'update': False}),
+        ('gaia',            {'nicename': '%pre GAIA',                    'update': True,  'archived': False}),
+        ('ogle',            {'nicename': '%pre OGLE',                    'update': True,  'archived': False}),
+        ('snls',            {'nicename': '%pre SNLS',                    'update': False}),
+        ('psthreepi',       {'nicename': '%pre Pan-STARRS 3π',           'update': True,  'archived': False}),
+        ('psmds',           {'nicename': '%pre Pan-STARRS MDS',          'update': False}),
+        ('crts',            {'nicename': '%pre CRTS',                    'update': True,  'archived': False}),
+        ('snhunt',          {'nicename': '%pre SNhunt',                  'update': True,  'archived': False}),
+        ('nedd',            {'nicename': '%pre NED-D',                   'update': False}),
+        ('cpcs',            {'nicename': '%pre CPCS',                    'update': True,  'archived': False}),
+        ('ptf',             {'nicename': '%pre PTF',                     'update': False, 'archived': False}),
+        ('des',             {'nicename': '%pre DES',                     'update': False, 'archived': False}),
+        ('asassn',          {'nicename': '%pre ASASSN',                  'update': True}),
+        ('asiago_spectra',  {'nicename': '%pre Asiago spectra',          'update': True}),
+        ('wiserep_spectra', {'nicename': '%pre WISeREP spectra',         'update': False}),
+        ('cfa_spectra',     {'nicename': '%pre CfA archive spectra',     'update': False}),
+        ('snls_spectra',    {'nicename': '%pre SNLS spectra',            'update': False}),
+        ('csp_spectra',     {'nicename': '%pre CSP spectra',             'update': False}),
+        ('ucb_spectra',     {'nicename': '%pre UCB spectra',             'update': True,  'archived': True}),
+        ('suspect_spectra', {'nicename': '%pre SUSPECT spectra',         'update': False}),
+        ('snf_spectra',     {'nicename': '%pre SNH spectra',             'update': False}),
+        ('superfit_spectra', {'nicename': '%pre Superfit spectra',        'update': False}),
+        ('mergeduplicates', {'nicename': 'Merging duplicates',           'update': False}),
+        ('setprefnames',    {'nicename': 'Setting preferred names',      'update': False}),
+        ('writeevents',     {'nicename': 'Writing events',               'update': True})
+    ])
+    return tasks
+
+
 def import_main(args=None, **kwargs):
     """Run all of the import tasks.
 
@@ -36,16 +88,18 @@ def import_main(args=None, **kwargs):
         setattr(args, key, val)
     print(vars(args))
 
-    tasks = load_task_list()
+    tasks_list = load_task_list()
+    tasks = get_old_tasks()
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
-    for name, task in tasks.items():
-        print("\n", name, "\t-\t", task)
+    # for task, task_obj in tasks_list.items():
+    for task, (task_name, task_obj) in zip(tasks, tasks_list.items()):
+        print("\n", task, task_name, task in tasks)
 
-        importlib.import_module('mtasks.general_data')
-
-
+        mod = importlib.import_module('.importer.mtasks.general_data', package='scripts')
+        getattr(mod, 'do_internal')()
+        break
         continue
 
         if do_task(tasks, args, task, 'deleteoldevents'):
