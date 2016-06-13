@@ -1602,7 +1602,7 @@ def write_all_events(empty = False, gz = False, bury = False):
             if name.startswith(nonsneprefixes):
                 tprint('Burying ' + name + ', non-SNe prefix.')
                 continue
-            if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
+            if 'claimedtype' in events[name]:
                 for ct in events[name]['claimedtype']:
                     if ct['value'].upper() not in nonsnetypes and ct['value'].upper() != 'CANDIDATE':
                         buryevent = False
