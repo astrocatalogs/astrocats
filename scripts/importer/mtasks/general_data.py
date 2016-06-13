@@ -7,15 +7,17 @@ import csv
 from datetime import datetime
 from glob import glob
 from html import unescape
+from math import ceil
 import os
 import re
 import requests
 import urllib
 
-from .. scripts import PATH
-from .. funcs import add_event, add_photometry, add_source, add_quantity, archived_task, \
-    jd_to_mjd, journal_events, load_event_from_file, make_date_string
-from ... utils import Decimal, is_number, pbar, pbar_strings
+from scripts import PATH
+from .. funcs import add_event, add_photometry, add_source, add_spectrum, add_quantity, \
+    archived_task, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
+    make_date_string
+from scripts.utils import Decimal, is_number, pbar, pbar_strings, pretty_num
 
 
 def do_ascii(events, args, tasks):
@@ -510,7 +512,7 @@ def do_des(events, args, tasks):
     des_trans_url = des_url + 'transients/'
     ackn_url = 'http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause'
     des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')   # Make sure there is a trailing slash
-    html = load_cached_url(args, des_trans_url, des_path + 'transients.html'))
+    html = load_cached_url(args, des_trans_url, des_path + 'transients.html')
     if not html:
         return events
     bs = BeautifulSoup(html, 'html5lib')
@@ -643,7 +645,7 @@ def do_gaia(events, args, tasks):
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
     if not csvtxt:
-        continue
+        return events
     tsvin = csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True)
     reference = 'Gaia Photometric Science Alerts'
     refurl = 'http://gsaweb.ast.cam.ac.uk/alerts/alertsindex'
@@ -995,7 +997,7 @@ def do_superfit_spectra(events, args, tasks):
                 elif epoch[0] == 'p':
                     epoff = Decimal(epoch[1:])
                 else:
-                    epoff = -Decimal(epoch[1:]))
+                    epoff = -Decimal(epoch[1:])
             else:
                 epoff = ''
 
@@ -1029,14 +1031,14 @@ def do_superfit_spectra(events, args, tasks):
 
 
 def do_tns(events, args, tasks):
+    from datetime import timedelta
     session = requests.Session()
-    tns_url = ('https://wis-tns.weizmann.ac.il/'
-               'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0')
-    csvtxt = load_cached_url(
-        args, ,
-        os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
+    current_task = 'TNS'
+    tns_url = 'https://wis-tns.weizmann.ac.il/'
+    search_url = tns_url + 'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
+    csvtxt = load_cached_url(args, search_url, os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
-        continue
+        return events
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
     maxpages = ceil(int(maxid)/1000.)
 
@@ -1048,7 +1050,7 @@ def do_tns(events, args, tasks):
         else:
             with open(fname, 'w') as tns_file:
                 session = requests.Session()
-                ses_url = ('https://wis-tns.weizmann.ac.il/search?&num_page=1000&format=html&edit'
+                ses_url = (tns_url + 'search?&num_page=1000&format=html&edit'
                            '[type]=&edit[objname]=&edit[id]=&sort=asc&order=id&display[redshift]=1'
                            '&display[hostname]=1&display[host_redshift]=1'
                            '&display[source_group_name]=1&display[programs_name]=1'
@@ -1057,7 +1059,7 @@ def do_tns(events, args, tasks):
                            '&display[discoverymag]=1&display[discmagfilter]=1'
                            '&display[discoverydate]=1&display[discoverer]=1&display[sources]=1'
                            '&display[bibcode]=1&format=csv&page=' + str(page))
-                response = session.get()
+                response = session.get(ses_url)
                 csvtxt = response.text
                 tns_file.write(csvtxt)
 
@@ -1069,7 +1071,7 @@ def do_tns(events, args, tasks):
                 continue
             name = row[1].replace(' ', '')
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, refname='Transient Name Server', url='https://wis-tns.weizmann.ac.il')
+            source = add_source(events, name, refname='Transient Name Server', url=tns_url)
             add_quantity(events, name, 'alias', name, source)
             if row[2] and row[2] != '00:00:00.00':
                 add_quantity(events, name, 'ra', row[2], source)
