@@ -18,7 +18,7 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, add_sp
 from ... utils import Decimal, get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 
 
-def do_suspect_photometry(events, args, tasks):
+def do_suspect_photo(events, args, tasks):
     current_task = 'Suspect: Photometry'
     with open(os.path.join(PATH.REPO_EXTERNAL, 'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)

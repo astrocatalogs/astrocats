@@ -14,7 +14,7 @@ from .. constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
 from ... utils import pbar, pbar_strings, is_number, Decimal
 
 
-def do_cfa_photometry(events, args, tasks):
+def do_cfa_photo(events, args, tasks):
     from html import unescape
     import re
     current_task = 'CFA: Photometry'

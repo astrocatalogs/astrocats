@@ -7,20 +7,20 @@ import warnings
 # import sys
 from cdecimal import Decimal
 from collections import OrderedDict
-from math import log10, floor, sqrt  # , isnan, ceil
+from math import log10, floor, sqrt
 from astropy.time import Time as astrotime
 from astropy import units
 
 from scripts import PATH, FILENAME
-from .. utils import repo_file_list, is_number, get_repo_folders, get_event_filename, tprint, \
-    bandrepf, bandmetaf, get_sig_digits, zpad, pretty_num, round_sig, get_repo_years, tq
+from .. utils import bandrepf, bandmetaf, is_number, get_repo_folders, get_event_filename, \
+    get_repo_years, get_sig_digits, pbar, pretty_num, repo_file_list, round_sig, tprint, zpad
 
 from . constants import REPR_BETTER_QUANTITY, OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
     KM, MAX_BANDS
 
 __all__ = ['add_event', 'add_photometry', 'add_quantity', 'add_source', 'add_spectrum',
            'alias_priority', 'archived_task', 'clean_event', 'clear_events', 'convert_aq_output',
-           'copy_to_event', 'ct_priority', 'derive_and_sanitize', 'delete_old_event_files',
+           'copy_to_event', 'ct_priority', 'derive_and_sanitize',
            'do_task', 'event_attr_priority', 'event_exists', 'frame_priority', 'get_aliases',
            'get_atels_dict', 'get_bibauthor_dict', 'get_cbets_dict', 'get_extinctions_dict',
            'get_iaucs_dict', 'get_best_redshift', 'get_first_light', 'get_max_light',
@@ -1051,13 +1051,6 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
     return events, extinctions_dict, bibauthor_dict
 
 
-def delete_old_event_files():
-    # Delete all old event JSON files
-    files = repo_file_list()
-    for f in files:
-        os.remove(f)
-
-
 def do_task(tasks, args, checktask, task, quiet=False):
     """
     """
@@ -1357,14 +1350,14 @@ def load_stubs(tasks, args, events):
     #    namepath = '../names.min.json'
     #    with open(namepath, 'r') as f:
     #        names = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    #    for fi in tq(files):
+    #    for fi in pbar(files):
     #        name = os.path.basename(os.path.splitext(fi)[0])
     #        if name not in names:
     #            name = name.replace("_", "/")
     #        events[name] = OrderedDict(([['name', name], ['alias', [OrderedDict(([['value', x]])) for x in names[name]]], ['stub', True]]))
     # except:
     #    events = OrderedDict()
-    for fi in tq(files, currenttask):
+    for fi in pbar(files, currenttask):
         fname = fi
         if '.gz' in fi:
             import shutil
@@ -1425,20 +1418,37 @@ def make_date_string(year, month='', day=''):
 def merge_duplicates(tasks, args, events):
     """Merge and remove duplicate events
     """
-    if not len(events):
+    if len(events) == 0:
+        if args.update:
+            import sys
+            tprint('No sources changed, event files unchanged in update.')
+            sys.exit(1)
+
         load_stubs(tasks, args, events)
+
     currenttask = 'Merging duplicate events'
     keys = list(sorted(list(events.keys())))
-    for n1, name1 in enumerate(tq(keys[:], currenttask)):
+    for n1, name1 in enumerate(pbar(keys[:], currenttask)):
         if name1 not in events:
             continue
-        allnames1 = get_aliases(events, name1) + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else [])
+        # allnames1 = get_aliases(events, name1) + (['AT' + name1[2:]] if
+        #     (name1.startswith('SN') and is_number(name1[2:6])) else [])
+        allnames1 = get_aliases(events, name1)
+        if name1.startswith('SN') and is_number(name1[2:6]):
+            allnames1 += ['AT' + name1[2:]]
+
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
-            allnames2 = get_aliases(events, name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else [])
-            if any(i in allnames1 for i in allnames2):
-                tprint('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
+            # allnames2 = get_aliases(events, name2) + (['AT' + name2[2:]]
+            #    if (name2.startswith('SN') and is_number(name2[2:6])) else [])
+            allnames2 = get_aliases(events, name2)
+            if name2.startswith('SN') and is_number(name2[2:6]):
+                allnames2 += ['AT' + name2[2:]]
+            if any(ii in allnames1 for ii in allnames2):
+                tprint("Found single event with multiple entries ('{}' and '{}'), merging.".format(
+                    name1, name2))
+
                 load1 = load_event_from_file(events, args, tasks, name1, delete=True)
                 load2 = load_event_from_file(events, args, tasks, name2, delete=True)
                 if load1 and load2:
@@ -1462,6 +1472,8 @@ def merge_duplicates(tasks, args, events):
                 else:
                     print('Duplicate already deleted')
                 journal_events(tasks, args, events)
+
+    return events
 
 
 def name_clean(name):
@@ -1592,6 +1604,7 @@ def set_first_max_light(events, name):
 def set_preferred_names(tasks, args, events):
     if not len(events):
         load_stubs(tasks, args, events)
+
     for name in list(sorted(list(events.keys()))):
         if name not in events:
             continue
@@ -1655,6 +1668,8 @@ def set_preferred_names(tasks, args, events):
                 events[newname]['name'] = newname
                 del(events[name])
                 journal_events(tasks, args, events)
+
+    return events
 
 
 def clean_snname(string):
