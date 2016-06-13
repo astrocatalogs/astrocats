@@ -65,38 +65,38 @@
     "ascii": {
         "nice_name": "%pre ASCII",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_ascii",
         "priority": 10
     },
     "cccp": {
         "nice_name": "%pre CCCP",
 		"update": "False",
         "archived": "True",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_cccp",
         "priority": 10
     },
     "suspect_photo": {
         "nice_name": "%pre SUSPECT",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.suspect",
+        "function": "do_suspect_photo",
         "priority": 10
     },
     "cfa_photo": {
         "nice_name": "%pre CfA archive photometry",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.cfa",
+        "function": "do_cfa_photo",
         "priority": 10
     },
-    "ucb": {
+    "ucb_photo": {
         "nice_name": "%pre UCB photometry",
 		"update": "False",
         "archived": "True",
-        "module": "mtasks.general_data",
-        "function": "do_ucb",
+        "module": "mtasks.berkeley",
+        "function": "do_ucb_photo",
         "priority": 10
     },
     "sdss": {
@@ -106,211 +106,211 @@
         "function": "do_sdss",
         "priority": 10
     },
-    "csp": {
+    "csp_photo": {
         "nice_name": "%pre CSP photometry",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.carnegie",
+        "function": "do_csp_photo",
         "priority": 10
     },
     "itep": {
         "nice_name": "%pre ITEP",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_itep",
         "priority": 10
     },
-    "asiago": {
+    "asiago_photo": {
         "nice_name": "%pre Asiago metadata",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.asiago",
+        "function": "do_asiago_photo",
         "priority": 10
     },
     "tns": {
         "nice_name": "%pre TNS metadata",
         "update": "True",
         "archived": "True",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_tns",
         "priority": 10
     },
     "rochester": {
         "nice_name": "%pre Latest Supernovae",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.rochester",
+        "function": "do_rochester",
         "priority": 10
     },
     "lennarz": {
         "nice_name": "%pre Lennarz",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.vizier",
+        "function": "do_lennarz",
         "priority": 10
     },
     "fermi": {
         "nice_name": "%pre Fermi",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_fermi",
         "priority": 10
     },
     "gaia": {
         "nice_name": "%pre GAIA",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_gaia",
         "priority": 10
     },
     "ogle": {
         "nice_name": "%pre OGLE",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.ogle",
+        "function": "do_ogle",
         "priority": 10
     },
     "snls": {
         "nice_name": "%pre SNLS",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_snls",
         "priority": 10
     },
     "psthreepi": {
         "nice_name": "%pre Pan-STARRS 3π",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.panstarrs",
+        "function": "do_ps_threepi",
         "priority": 10
     },
     "psmds": {
         "nice_name": "%pre Pan-STARRS MDS",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.panstarrs",
+        "function": "do_ps_mds",
         "priority": 10
     },
     "crts": {
         "nice_name": "%pre CRTS",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_crts",
         "priority": 10
     },
     "snhunt": {
         "nice_name": "%pre SNhunt",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_snhunt",
         "priority": 10
     },
     "nedd": {
         "nice_name": "%pre NED-D",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_nedd",
         "priority": 10
     },
     "cpcs": {
         "nice_name": "%pre CPCS",
         "update": "True",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_cpcs",
         "priority": 10
     },
     "ptf": {
         "nice_name": "%pre PTF",
 		"update": "False",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.palomar",
+        "function": "do_ptf",
         "priority": 10
     },
     "des": {
         "nice_name": "%pre DES",
 		"update": "False",
         "archived": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_des",
         "priority": 10
     },
     "asassn": {
         "nice_name": "%pre ASASSN",
         "update": "True",
-        "module": "",
-        "function": "",
+        "module": "mtasks.asassn",
+        "function": "do_asassn",
         "priority": 10
     },
-    "asiagospectra": {
+    "asiago_spectra": {
         "nice_name": "%pre Asiago spectra",
         "update": "True",
-        "module": "",
-        "function": "",
+        "module": "mtasks.asiago",
+        "function": "do_asiago_spectra",
         "priority": 20
     },
-    "wiserepspectra": {
+    "wiserep_spectra": {
         "nice_name": "%pre WISeREP spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.wiserep",
+        "function": "do_wiserep_spectra",
         "priority": 20
     },
     "cfa_spectra": {
         "nice_name": "%pre CfA archive spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.cfa",
+        "function": "do_cfa_spectra",
         "priority": 20
     },
-    "snlsspectra": {
+    "snls_spectra": {
         "nice_name": "%pre SNLS spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.vizier",
+        "function": "do_snls_spectra",
         "priority": 20
     },
-    "cspspectra": {
+    "csp_spectra": {
         "nice_name": "%pre CSP spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.carnegie",
+        "function": "do_csp_spectra",
         "priority": 20
     },
-    "ucbspectra": {
+    "ucb_spectra": {
         "nice_name": "%pre UCB spectra",
         "update": "True",
         "archived": "True",
-        "module": "",
-        "function": "",
+        "module": "mtasks.berkeley",
+        "function": "do_ucb_spectra",
         "priority": 20
     },
     "suspect_spectra": {
         "nice_name": "%pre SUSPECT spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.suspect",
+        "function": "do_suspect_spectra",
         "priority": 20
     },
-    "snfspectra": {
+    "snf_spectra": {
         "nice_name": "%pre SNH spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.snfactory",
+        "function": "do_snf_specta",
         "priority": 20
     },
     "superfitspectra": {
         "nice_name": "%pre Superfit spectra",
 		"update": "False",
-        "module": "",
-        "function": "",
+        "module": "mtasks.general_data",
+        "function": "do_superfit_spectra",
         "priority": 20
     },
     "mergeduplicates": {
@@ -324,7 +324,7 @@
         "nice_name": "Setting preferred names",
 		"update": "False",
         "module": "",
-        "function": "",
+        "function": "set_preferred_names",
         "priority": -10
     },
     "writeevents": {
