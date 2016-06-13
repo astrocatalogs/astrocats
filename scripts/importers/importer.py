@@ -1,46 +1,25 @@
 #!/usr/local/bin/python3.5
 
 import argparse
-from astropy.time import Time as astrotime
-from bs4 import BeautifulSoup, Tag, NavigableString
-import calendar
-from cdecimal import Decimal
 import codecs
 from collections import OrderedDict
-import csv
-from datetime import timedelta
-from glob import glob
-from html import unescape
 import json
-from math import log10, floor, ceil
-import numpy as np
 import os
-import re
-import requests
 import resource
-from string import ascii_letters
-import sys
-import urllib
 import warnings
 
-from .. utils import get_sig_digits, pretty_num, pbar, pbar_strings, is_number, round_sig, tprint, \
-    repo_file_list
-from . funcs import add_event, add_photometry, add_quantity, add_source, add_spectrum, \
-    archived_task, clean_snname, derive_and_sanitize, delete_old_event_files, \
-    do_task, event_exists, get_aliases, get_bibauthor_dict, get_extinctions_dict, \
-    get_max_light, get_preferred_name, has_task, jd_to_mjd, journal_events, \
-    load_cached_url, make_date_string, merge_duplicates, \
-    set_preferred_names, uniq_cdl, utf8, write_all_events
-from scripts import PATH, FILENAME
-from . constants import TRAVIS_QUERY_LIMIT, TASK
+from .. utils import pbar, repo_file_list
+from . funcs import add_event, derive_and_sanitize, \
+    do_task, get_bibauthor_dict, get_extinctions_dict, \
+    has_task, write_all_events
+from scripts import FILENAME
+from . constants import TASK
 
 
 def import_main():
     """
     """
     args = load_args()
-    current_task = ''
-    # eventnames = []
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
@@ -79,15 +58,15 @@ def import_main():
         ('ptf',             {'nicename': '%pre PTF',                     'update': False, 'archived': False}),
         ('des',             {'nicename': '%pre DES',                     'update': False, 'archived': False}),
         ('asassn',          {'nicename': '%pre ASASSN',                  'update': True}),
-        ('asiago_spectra',   {'nicename': '%pre Asiago spectra',          'update': True}),
-        ('wiserepspectra',  {'nicename': '%pre WISeREP spectra',         'update': False}),
+        ('asiago_spectra',  {'nicename': '%pre Asiago spectra',          'update': True}),
+        ('wiserep_spectra', {'nicename': '%pre WISeREP spectra',         'update': False}),
         ('cfa_spectra',     {'nicename': '%pre CfA archive spectra',     'update': False}),
-        ('snlsspectra',     {'nicename': '%pre SNLS spectra',            'update': False}),
-        ('csp_spectra',      {'nicename': '%pre CSP spectra',             'update': False}),
-        ('ucb_spectra',      {'nicename': '%pre UCB spectra',             'update': True,  'archived': True}),
+        ('snls_spectra',    {'nicename': '%pre SNLS spectra',            'update': False}),
+        ('csp_spectra',     {'nicename': '%pre CSP spectra',             'update': False}),
+        ('ucb_spectra',     {'nicename': '%pre UCB spectra',             'update': True,  'archived': True}),
         ('suspect_spectra', {'nicename': '%pre SUSPECT spectra',         'update': False}),
-        ('snfspectra',      {'nicename': '%pre SNH spectra',             'update': False}),
-        ('superfitspectra', {'nicename': '%pre Superfit spectra',        'update': False}),
+        ('snf_spectra',     {'nicename': '%pre SNH spectra',             'update': False}),
+        ('superfit_spectra',{'nicename': '%pre Superfit spectra',        'update': False}),
         ('mergeduplicates', {'nicename': 'Merging duplicates',           'update': False}),
         ('setprefnames',    {'nicename': 'Setting preferred names',      'update': False}),
         ('writeevents',     {'nicename': 'Writing events',               'update': True})
@@ -96,10 +75,13 @@ def import_main():
     for task in tasks:
         if do_task(tasks, args, task, 'deleteoldevents'):
             # Delete `current_task` here and wrap deletion in `pbar_strings` ??
-            current_task = 'Deleting old events'
             delete_old_event_files()
 
-        # Import data provided directly to OSC, in standard format
+        # ========================================================================
+        # ========================================================================
+        # ========================================================================
+        # ========================================================================
+
         if do_task(tasks, args, task, 'internal'):
             from mtasks.general_data import do_internal
             events = do_internal(events, args, tasks)
@@ -130,8 +112,8 @@ def import_main():
 
         # Suspect catalog
         if do_task(tasks, args, task, 'suspect_photo'):
-            from mtasks.suspect import do_suspect_photometry
-            events = do_suspect_photometry(events, args, tasks)
+            from mtasks.suspect import do_suspect_photo
+            events = do_suspect_photo(events, args, tasks)
 
         if do_task(tasks, args, task, 'suspect_spectra'):
             from mtasks.suspect import do_suspect_spectra
@@ -139,14 +121,14 @@ def import_main():
 
         # CfA data
         if do_task(tasks, args, task, 'cfa_photo'):
-            from mtasks.cfa import do_cfa_photometry
-            events = do_cfa_photometry(events, args, tasks)
+            from mtasks.cfa import do_cfa_photo
+            events = do_cfa_photo(events, args, tasks)
 
         if do_task(tasks, args, task, 'cfa_spectra'):
             from mtasks.cfa import do_cfa_spectra
             events = do_cfa_spectra(events, args, tasks)
 
-        if do_task(tasks, args, task, 'wiserepspectra'):
+        if do_task(tasks, args, task, 'wiserep_spectra'):
             from mtasks.wiserep import do_wiserep_spectra
             events = do_wiserep_spectra(events, args, tasks)
 
@@ -159,7 +141,7 @@ def import_main():
             from mtasks.vizier import do_lennarz
             events = do_lennarz(events, args, tasks)
 
-        if do_task(tasks, args, task, 'snlsspectra'):
+        if do_task(tasks, args, task, 'snls_spectra'):
             from mtasks.vizier import do_snls_spectra
             events = do_snls_spectra(events, args, tasks)
 
@@ -254,7 +236,7 @@ def import_main():
             from mtasks.general_data import do_snhunt
             events = do_snhunt(events, args, tasks)
 
-        if do_task(tasks, args, task, 'snfspectra'):
+        if do_task(tasks, args, task, 'snf_spectra'):
             from mtasks.snfactory import do_snf_specta
             events = do_snf_specta(events, args, tasks)
 
@@ -275,18 +257,22 @@ def import_main():
             from mtasks.general_data import do_des
             events = do_des(events, args, tasks)
 
-        if do_task(tasks, args, task, 'superfitspectra'):
+        if do_task(tasks, args, task, 'superfit_spectra'):
             from mtasks.general_data import do_superfit_spectra
             events = do_superfit_spectra(events, args, tasks)
 
+        # ========================================================================
+        # ========================================================================
+        # ========================================================================
+        # ========================================================================
+
         if do_task(tasks, args, task, 'mergeduplicates'):
-            if args.update and not len(events):
-                tprint('No sources changed, event files unchanged in update.')
-                sys.exit(1)
-            merge_duplicates(tasks, args, events)
+            from . funcs import merge_duplicates
+            events = merge_duplicates(tasks, args, events)
 
         if do_task(tasks, args, task, 'setprefnames'):
-            set_preferred_names(tasks, args, events)
+            from . funcs import set_preferred_names
+            events = set_preferred_names(tasks, args, events)
 
     files = repo_file_list()
 
@@ -310,6 +296,68 @@ def import_main():
         f.write(jsonstring)
 
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
+    return
+
+
+def do_nedd(events, args, tasks):
+    import csv
+    from html import unescape
+    from . constants import PATH
+    from . funcs import add_quantity, add_source, journal_events, uniq_cdl
+    from .. utils import is_number, Decimal
+    nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
+    data = csv.reader(open(nedd_path, 'r'), delimiter=',', quotechar='"')
+    reference = 'NED-D'
+    refurl = 'http://ned.ipac.caltech.edu/Library/Distances/'
+    nedd_dict = OrderedDict()
+    oldhostname = ''
+    for r, row in enumerate(data):
+        if r <= 12:
+            continue
+        hostname = row[3]
+        if args.update and oldhostname != hostname:
+            events = journal_events(tasks, args, events)
+        # distmod = row[4]
+        # moderr = row[5]
+        dist = row[6]
+        bibcode = unescape(row[8])
+        name = ''
+        if hostname.startswith('SN '):
+            if is_number(hostname[3:7]):
+                name = 'SN' + hostname[3:]
+            else:
+                name = hostname[3:]
+        elif hostname.startswith('SNLS '):
+            name = 'SNLS-' + hostname[5:].split()[0]
+        else:
+            cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
+            if True in [x in cleanhost for x in ['UGC', 'PGC', 'IC']]:
+                cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
+            if 'ESO' in cleanhost:
+                cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
+            nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
+
+        if name:
+            name = add_event(tasks, args, events, name)
+            sec_source = add_source(events, name, refname=reference, url=refurl, secondary=True)
+            add_quantity(events, name, 'alias', name, sec_source)
+            if bibcode:
+                source = add_source(events, name, bibcode=bibcode)
+                sources = uniq_cdl([source, sec_source])
+            else:
+                sources = sec_source
+            add_quantity(events, name, 'comovingdist', dist, sources)
+        oldhostname = hostname
+
+    events = journal_events(tasks, args, events)
+    return events
+
+
+def delete_old_event_files():
+    # Delete all old event JSON files
+    repo_files = repo_file_list()
+    for rfil in pbar(repo_files, desc='Deleting old events'):
+        os.remove(rfil)
     return
 
 

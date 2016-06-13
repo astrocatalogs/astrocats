@@ -777,54 +777,6 @@ def do_itep(events, args, tasks):
     return events
 
 
-def do_nedd(events, args, tasks):
-    nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
-    data = csv.reader(open(nedd_path, 'r'), delimiter=',', quotechar='"')
-    reference = 'NED-D'
-    refurl = 'http://ned.ipac.caltech.edu/Library/Distances/'
-    nedd_dict = OrderedDict()
-    oldhostname = ''
-    for r, row in enumerate(data):
-        if r <= 12:
-            continue
-        hostname = row[3]
-        if args.update and oldhostname != hostname:
-            events = journal_events(tasks, args, events)
-        # distmod = row[4]
-        # moderr = row[5]
-        dist = row[6]
-        bibcode = unescape(row[8])
-        name = ''
-        if hostname.startswith('SN '):
-            if is_number(hostname[3:7]):
-                name = 'SN' + hostname[3:]
-            else:
-                name = hostname[3:]
-        elif hostname.startswith('SNLS '):
-            name = 'SNLS-' + hostname[5:].split()[0]
-        else:
-            cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
-            if True in [x in cleanhost for x in ['UGC', 'PGC', 'IC']]:
-                cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
-            if 'ESO' in cleanhost:
-                cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
-            nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
-
-        if name:
-            name = add_event(tasks, args, events, name)
-            sec_source = add_source(events, name, refname=reference, url=refurl, secondary=True)
-            add_quantity(events, name, 'alias', name, sec_source)
-            if bibcode:
-                source = add_source(events, name, bibcode=bibcode)
-                sources = uniq_cdl([source, sec_source])
-            else:
-                sources = sec_source
-            add_quantity(events, name, 'comovingdist', dist, sources)
-        oldhostname = hostname
-    events = journal_events(tasks, args, events)
-    return events
-
-
 def do_pessto(events, args, tasks):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
     tsvin = csv.reader(open(pessto_path, 'r'), delimiter=',')
