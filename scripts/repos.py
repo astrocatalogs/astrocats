@@ -9,9 +9,11 @@ with open('rep-folders.txt', 'r') as f:
 repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders)-1)]
 repoyears[0] -= 1
 
-def repo_file_list(bones = True):
+def repo_file_list(normal = True, bones = True):
     files = []
     for rep in repofolders:
+        if not 'boneyard' in rep and not normal:
+            continue
         if not bones and 'boneyard' in rep:
             continue
         files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")

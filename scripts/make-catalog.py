@@ -43,13 +43,15 @@ from statistics import mean
 from tq import *
 
 parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
-parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog', help='Don\'t write catalog file',          default=True, action='store_false')
-parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',    help='Don\'t write html plot files',       default=True, action='store_false')
-parser.add_argument('--no-collect-hosts', '-nch', dest='collecthosts', help='Don\'t collect host galaxy images',  default=True, action='store_false')
-parser.add_argument('--force-html', '-fh',        dest='forcehtml',    help='Force write html plot files',        default=False, action='store_true')
-parser.add_argument('--event-list', '-el',        dest='eventlist',    help='Process a list of events',           default=[], type=str, nargs='+')
-parser.add_argument('--test', '-te',              dest='test',         help='Test this script',                   default=False, action='store_true')
-parser.add_argument('--travis', '-tr',            dest='travis',       help='Set some options when using Travis', default=False, action='store_true')
+parser.add_argument('--no-write-catalog', '-nwc', dest='writecatalog',  help='Don\'t write catalog file',          default=True, action='store_false')
+parser.add_argument('--no-write-html', '-nwh',    dest='writehtml',     help='Don\'t write html plot files',       default=True, action='store_false')
+parser.add_argument('--no-collect-hosts', '-nch', dest='collecthosts',  help='Don\'t collect host galaxy images',  default=True, action='store_false')
+parser.add_argument('--force-html', '-fh',        dest='forcehtml',     help='Force write html plot files',        default=False, action='store_true')
+parser.add_argument('--event-list', '-el',        dest='eventlist',     help='Process a list of events',           default=[], type=str, nargs='+')
+parser.add_argument('--test', '-te',              dest='test',          help='Test this script',                   default=False, action='store_true')
+parser.add_argument('--travis', '-tr',            dest='travis',        help='Set some options when using Travis', default=False, action='store_true')
+parser.add_argument('--boneyard', '-by',          dest='boneyard',      help='Make "boneyard" catalog',            default=False, action='store_true')
+parser.add_argument('--delete-orphans', '-do',    dest='deleteorphans', help='Delete orphan JSON files',           default=False, action='store_true')
 args = parser.parse_args()
 
 infl = inflect.engine()
@@ -313,7 +315,7 @@ if os.path.isfile(outdir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = repo_file_list(bones = False)
+files = repo_file_list(normal = (not args.boneyard), bones = args.boneyard)
 
 md5s = []
 if os.path.isfile(outdir + 'md5s.json'):
@@ -1309,7 +1311,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     hasimage = False
     skyhtml = ''
-    if 'ra' in catalog[entry] and 'dec' in catalog[entry] and args.collecthosts:
+    if 'ra' in catalog[entry] and 'dec' in catalog[entry] and args.collecthosts and not args.boneyard:
         snra = catalog[entry]['ra'][0]['value']
         sndec = catalog[entry]['dec'][0]['value']
         try:
@@ -1641,95 +1643,101 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 if args.writecatalog and not args.eventlist:
     catalog = catalogcopy
 
-    #Write the MD5 checksums
-    jsonstring = json.dumps(md5s, indent='\t', separators=(',',':'))
-    with open(outdir + 'md5s.json' + testsuffix, 'w') as f:
-        f.write(jsonstring)
+    if not args.boneyard:
+        #Write the MD5 checksums
+        jsonstring = json.dumps(md5s, indent='\t', separators=(',',':'))
+        with open(outdir + 'md5s.json' + testsuffix, 'w') as f:
+            f.write(jsonstring)
 
-    #Write the host image info
-    jsonstring = json.dumps(hostimgs, indent='\t', separators=(',',':'))
-    with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
-        f.write(jsonstring)
+        #Write the host image info
+        jsonstring = json.dumps(hostimgs, indent='\t', separators=(',',':'))
+        with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
+            f.write(jsonstring)
 
-    # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift, r.a., dec., # obs., link
-    with open(outdir + 'snepages.csv' + testsuffix, 'w') as f:
-        csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
-        for row in snepages:
-            csvout.writerow(row)
+        # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift, r.a., dec., # obs., link
+        with open(outdir + 'snepages.csv' + testsuffix, 'w') as f:
+            csvout = csv.writer(f, quotechar='"', quoting=csv.QUOTE_ALL)
+            for row in snepages:
+                csvout.writerow(row)
 
-    # Make a few small files for generating charts
-    with open(outdir + 'sources.csv' + testsuffix, 'w') as f:
-        sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
-        csvout = csv.writer(f)
-        csvout.writerow(['Source','Number'])
-        for source in sortedsources:
-            csvout.writerow(source)
+        # Make a few small files for generating charts
+        with open(outdir + 'sources.csv' + testsuffix, 'w') as f:
+            sortedsources = sorted(list(sourcedict.items()), key=operator.itemgetter(1), reverse=True)
+            csvout = csv.writer(f)
+            csvout.writerow(['Source','Number'])
+            for source in sortedsources:
+                csvout.writerow(source)
 
-    with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
-        csvout = csv.writer(f)
-        csvout.writerow(['Category','Number'])
-        csvout.writerow(['Has light curve and spectra', sum(lcspye)])
-        csvout.writerow(['Has light curve only', sum(lconly)])
-        csvout.writerow(['Has spectra only', sum(sponly)])
-        csvout.writerow(['No light curve or spectra', sum(lcspno)])
+        with open(outdir + 'pie.csv' + testsuffix, 'w') as f:
+            csvout = csv.writer(f)
+            csvout.writerow(['Category','Number'])
+            csvout.writerow(['Has light curve and spectra', sum(lcspye)])
+            csvout.writerow(['Has light curve only', sum(lconly)])
+            csvout.writerow(['Has spectra only', sum(sponly)])
+            csvout.writerow(['No light curve or spectra', sum(lcspno)])
 
-    with open(outdir + 'info-snippets/hasphoto.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(sum(hasalc)))
-    with open(outdir + 'info-snippets/hasspectra.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(sum(hasasp)))
-    with open(outdir + 'info-snippets/snecount.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(len(catalog)))
-    with open(outdir + 'info-snippets/photocount.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(totalphoto))
-    with open(outdir + 'info-snippets/spectracount.html' + testsuffix, 'w') as f:
-        f.write("{:,}".format(totalspectra))
+        with open(outdir + 'info-snippets/hasphoto.html' + testsuffix, 'w') as f:
+            f.write("{:,}".format(sum(hasalc)))
+        with open(outdir + 'info-snippets/hasspectra.html' + testsuffix, 'w') as f:
+            f.write("{:,}".format(sum(hasasp)))
+        with open(outdir + 'info-snippets/snecount.html' + testsuffix, 'w') as f:
+            f.write("{:,}".format(len(catalog)))
+        with open(outdir + 'info-snippets/photocount.html' + testsuffix, 'w') as f:
+            f.write("{:,}".format(totalphoto))
+        with open(outdir + 'info-snippets/spectracount.html' + testsuffix, 'w') as f:
+            f.write("{:,}".format(totalspectra))
 
-    ctypedict = dict()
-    for entry in catalog:
-        cleanedtype = ''
-        if 'claimedtype' in catalog[entry] and catalog[entry]['claimedtype']:
-            maxsources = 0
-            for ct in catalog[entry]['claimedtype']:
-                sourcecount = len(ct['source'].split(','))
-                if sourcecount > maxsources:
-                    maxsources = sourcecount
-                    cleanedtype = ct['value'].strip('?* ')
-        if not cleanedtype:
-            cleanedtype = 'Unknown'
-        if cleanedtype in ctypedict:
-            ctypedict[cleanedtype] += 1
-        else:
-            ctypedict[cleanedtype] = 1
-    sortedctypes = sorted(list(ctypedict.items()), key=operator.itemgetter(1), reverse=True)
-    with open(outdir + 'types.csv' + testsuffix, 'w') as f:
-        csvout = csv.writer(f)
-        csvout.writerow(['Type','Number'])
-        for ctype in sortedctypes:
-            csvout.writerow(ctype)
+        ctypedict = dict()
+        for entry in catalog:
+            cleanedtype = ''
+            if 'claimedtype' in catalog[entry] and catalog[entry]['claimedtype']:
+                maxsources = 0
+                for ct in catalog[entry]['claimedtype']:
+                    sourcecount = len(ct['source'].split(','))
+                    if sourcecount > maxsources:
+                        maxsources = sourcecount
+                        cleanedtype = ct['value'].strip('?* ')
+            if not cleanedtype:
+                cleanedtype = 'Unknown'
+            if cleanedtype in ctypedict:
+                ctypedict[cleanedtype] += 1
+            else:
+                ctypedict[cleanedtype] = 1
+        sortedctypes = sorted(list(ctypedict.items()), key=operator.itemgetter(1), reverse=True)
+        with open(outdir + 'types.csv' + testsuffix, 'w') as f:
+            csvout = csv.writer(f)
+            csvout.writerow(['Type','Number'])
+            for ctype in sortedctypes:
+                csvout.writerow(ctype)
 
-    with open('../../sitemap.xml', 'w') as f:
-        sitemapxml = sitemaptemplate
-        sitemaplocs = ''
-        for key in catalog.keys():
-            sitemaplocs = sitemaplocs + "  <url>\n    <loc>https://sne.space/sne/" + key + "</loc>\n  </url>\n"
-        sitemapxml = sitemapxml.replace('{0}', sitemaplocs)
-        f.write(sitemapxml)
+        with open('../../sitemap.xml', 'w') as f:
+            sitemapxml = sitemaptemplate
+            sitemaplocs = ''
+            for key in catalog.keys():
+                sitemaplocs = sitemaplocs + "  <url>\n    <loc>https://sne.space/sne/" + key + "</loc>\n  </url>\n"
+            sitemapxml = sitemapxml.replace('{0}', sitemaplocs)
+            f.write(sitemapxml)
 
-    # Ping Google to let them know sitemap has been updated
-    response = urllib.request.urlopen(googlepingurl)
+        # Ping Google to let them know sitemap has been updated
+        response = urllib.request.urlopen(googlepingurl)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
 
+    if args.boneyard:
+        catprefix = 'bones'
+    else:
+        catprefix = 'catalog'
+
     jsonstring = json.dumps(catalog, separators=(',',':'))
-    with open(outdir + 'catalog.min.json' + testsuffix, 'w') as f:
+    with open(outdir + catprefix + '.min.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
     jsonstring = json.dumps(catalog, indent='\t', separators=(',',':'))
-    with open(outdir + 'catalog.json' + testsuffix, 'w') as f:
+    with open(outdir + catprefix + '.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
 
-    with open(outdir + 'table-templates/catalog.html' + testsuffix, 'w') as f:
+    with open(outdir + 'table-templates/' + catprefix + '.html' + testsuffix, 'w') as f:
         f.write('<table id="example" class="display" cellspacing="0" width="100%">\n')
         f.write('\t<thead>\n')
         f.write('\t\t<tr>\n')
@@ -1745,21 +1753,22 @@ if args.writecatalog and not args.eventlist:
         f.write('\t</tfoot>\n')
         f.write('</table>\n')
 
-    with open(outdir + 'catalog.min.json', 'rb') as f_in, gzip.open(outdir + 'catalog.min.json.gz', 'wb') as f_out:
+    with open(outdir + catprefix + '.min.json', 'rb') as f_in, gzip.open(outdir + catprefix + '.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
 
-    names = OrderedDict()
-    for ev in catalog:
-        names[ev['name']] = [x['value'] for x in ev['alias']]
-    jsonstring = json.dumps(names, separators=(',',':'))
-    with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
-        f.write(jsonstring)
+    if args.deleteorphans and not args.boneyard:
+        names = OrderedDict()
+        for ev in catalog:
+            names[ev['name']] = [x['value'] for x in ev['alias']]
+        jsonstring = json.dumps(names, separators=(',',':'))
+        with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
+            f.write(jsonstring)
 
-    safefiles = [os.path.basename(x) for x in files]
-    safefiles += ['catalog.json', 'catalog.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json', 'errata.json',
-        'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json', 'hosts.json', 'hosts.min.json']
+        safefiles = [os.path.basename(x) for x in files]
+        safefiles += ['catalog.json', 'catalog.min.json', 'bones.json', 'bones.min.json', 'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json', 'errata.json',
+            'bibauthors.json', 'extinctions.json', 'dupes.json', 'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json', 'hosts.json', 'hosts.min.json']
 
-    for myfile in glob('../*.json'):
-        if not os.path.basename(myfile) in safefiles:
-            print ('Deleting orphan ' + myfile)
-            os.remove(myfile)
+        for myfile in glob('../*.json'):
+            if not os.path.basename(myfile) in safefiles:
+                print ('Deleting orphan ' + myfile)
+                os.remove(myfile)
