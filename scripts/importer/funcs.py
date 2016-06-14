@@ -1267,8 +1267,8 @@ def journal_events(tasks, args, events, clear=True):
     """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
     """
     if 'writeevents' in tasks:
-        from . import importer
-        importer.write_all_events(events, args)
+        from . import Events
+        Events.write_all_events(events, args)
     if clear:
         clear_events(events)
     return events

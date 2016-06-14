@@ -316,21 +316,21 @@
     "mergeduplicates": {
         "nice_name": "Merging duplicates",
 		"update": "False",
-        "module": "importer.events",
+        "module": "importer.Events",
         "function": "merge_duplicates",
         "priority": -100
     },
     "setprefnames": {
         "nice_name": "Setting preferred names",
 		"update": "False",
-        "module": "importer.events",
+        "module": "importer.Events",
         "function": "set_preferred_names",
         "priority": -10
     },
     "writeevents": {
         "nice_name": "Writing events",
 		"update": "True",
-        "module": "importer.events",
+        "module": "importer.Events",
         "function": "write_all_events",
         "priority": -1
     }
