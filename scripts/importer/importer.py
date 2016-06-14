@@ -11,7 +11,7 @@ import warnings
 from .. utils import pbar, repo_file_list
 from . funcs import add_event, derive_and_sanitize, \
     do_task, get_bibauthor_dict, get_extinctions_dict, \
-    has_task, write_all_events
+    has_task
 from scripts import FILENAME
 from . constants import TASK
 
@@ -93,13 +93,28 @@ def import_main(args=None, **kwargs):
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
+    prev_priority = 0
+    prev_task_name = ''
     # for task, task_obj in tasks_list.items():
-    for task, (task_name, task_obj) in zip(tasks, tasks_list.items()):
-        print("\n", task, task_name, task in tasks)
+    for task_name, task_obj in tasks_list.items():
+        print("\n", task_name)
 
-        mod = importlib.import_module('.importer.mtasks.general_data', package='scripts')
-        getattr(mod, 'do_internal')()
-        break
+        nice_name = task_obj.nice_name
+        mod_name = task_obj.module
+        func_name = task_obj.function
+        priority = task_obj.priority
+        if priority < prev_priority:
+            raise RuntimeError("Priority for '{}': '{}', less than prev, '{}': '{}'.\n{}".format(
+                task_name, priority, prev_task_name, prev_priority, task_obj))
+        print("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
+        mod = importlib.import_module('.' + mod_name, package='scripts')
+        # events = getattr(mod, func_name)(events, args, tasks)
+        getattr(mod, func_name)(events, args, tasks)
+
+        prev_priority = priority
+        prev_task_name = task_name
+
+        # break
         continue
 
         if do_task(tasks, args, task, 'deleteoldevents'):
@@ -386,7 +401,7 @@ def do_nedd(events, args, tasks):
     return events
 
 
-def delete_old_event_files():
+def delete_old_event_files(*args):
     # Delete all old event JSON files
     repo_files = repo_file_list()
     for rfil in pbar(repo_files, desc='Deleting old events'):
