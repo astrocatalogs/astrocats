@@ -1,6 +1,6 @@
 from palettable import cubehelix, colorbrewer, wesanderson
 from collections import OrderedDict
-from random import shuffle, seed, randint, uniform
+from random import shuffle, seed
 
 __all__ = ['bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf', 'bandshortaliasf',
            'bandwavef', 'bandmetaf']
