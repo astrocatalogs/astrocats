@@ -3,6 +3,7 @@
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 from collections import OrderedDict
+from cdecimal import Decimal
 import csv
 from datetime import datetime
 from glob import glob
@@ -17,7 +18,7 @@ from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_spectrum, add_quantity, \
     archived_task, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
     make_date_string
-from scripts.utils import Decimal, is_number, pbar, pbar_strings, pretty_num
+from scripts.utils import is_number, pbar, pbar_strings, pretty_num
 
 
 def do_ascii(events, args, tasks):
