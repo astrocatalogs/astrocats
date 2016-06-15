@@ -52,8 +52,8 @@ class TASK():
                 raise ValueError("No attribute '{}'".format(key))
 
     def __repr__(self):
-        retval = ("TASK(name='{}', nice_name='{}', update='{}', archived='{}', "
+        retval = ("TASK(name='{}', nice_name='{}', active='{}', update='{}', archived='{}', "
                   "module='{}', function='{}', priority='{}'")
-        retval = retval.format(self.name, self.nice_name, self.update, self.archived,
+        retval = retval.format(self.name, self.nice_name, self.active, self.update, self.archived,
                                self.module, self.function, self.priority)
         return retval

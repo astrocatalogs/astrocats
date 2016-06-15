@@ -9,8 +9,7 @@ import resource
 import warnings
 
 from .. utils import pbar, repo_file_list
-from . funcs import add_event, derive_and_sanitize, \
-    do_task, get_bibauthor_dict, get_extinctions_dict, \
+from . funcs import add_event, derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
     has_task
 from scripts import FILENAME
 from . constants import TASK
@@ -97,6 +96,7 @@ def import_main(args=None, **kwargs):
     prev_task_name = ''
     # for task, task_obj in tasks_list.items():
     for task_name, task_obj in tasks_list.items():
+        if not task_obj.active: continue
         print("\n", task_name)
 
         nice_name = task_obj.nice_name
@@ -114,213 +114,7 @@ def import_main(args=None, **kwargs):
         prev_priority = priority
         prev_task_name = task_name
 
-        # break
-        continue
-
-        if do_task(tasks, args, task, 'deleteoldevents'):
-            # Delete `current_task` here and wrap deletion in `pbar_strings` ??
-            delete_old_event_files()
-
-        # ========================================================================
-        # ========================================================================
-        # ========================================================================
-        # ========================================================================
-
-        if do_task(tasks, args, task, 'internal'):
-            from mtasks.general_data import do_internal
-            events = do_internal(events, args, tasks)
-
-        if do_task(tasks, args, task, 'radio'):
-            from mtasks.general_data import do_external_radio
-            events = do_external_radio(events, args, tasks)
-
-        if do_task(tasks, args, task, 'xray'):
-            from mtasks.general_data import do_external_xray
-            events = do_external_xray(events, args, tasks)
-
-        # if do_task(tasks, args, task, 'simbad'):
-        #     from mtasks import do_simbad
-        #     events = do_simbad(events, args, tasks)
-
-        if do_task(tasks, args, task, 'donations'):
-            from mtasks.donations import do_donations
-            events = do_donations(events, args, tasks)
-
-        if do_task(tasks, args, task, 'ascii'):
-            from mtasks.general_data import do_ascii
-            events = do_ascii(events, args, tasks)
-
-        if do_task(tasks, args, task, 'cccp'):
-            from mtasks.general_data import do_cccp
-            events = do_cccp(events, args, tasks)
-
-        # Suspect catalog
-        if do_task(tasks, args, task, 'suspect_photo'):
-            from mtasks.suspect import do_suspect_photo
-            events = do_suspect_photo(events, args, tasks)
-
-        if do_task(tasks, args, task, 'suspect_spectra'):
-            from mtasks.suspect import do_suspect_spectra
-            events = do_suspect_spectra(events, args, tasks)
-
-        # CfA data
-        if do_task(tasks, args, task, 'cfa_photo'):
-            from mtasks.cfa import do_cfa_photo
-            events = do_cfa_photo(events, args, tasks)
-
-        if do_task(tasks, args, task, 'cfa_spectra'):
-            from mtasks.cfa import do_cfa_spectra
-            events = do_cfa_spectra(events, args, tasks)
-
-        if do_task(tasks, args, task, 'wiserep_spectra'):
-            from mtasks.wiserep import do_wiserep_spectra
-            events = do_wiserep_spectra(events, args, tasks)
-
-        # Import primary data sources from Vizier
-        if do_task(tasks, args, task, 'vizier'):
-            from mtasks.vizier import do_vizier
-            events = do_vizier(events, args, tasks)
-
-        if do_task(tasks, args, task, 'lennarz'):
-            from mtasks.vizier import do_lennarz
-            events = do_lennarz(events, args, tasks)
-
-        if do_task(tasks, args, task, 'snls_spectra'):
-            from mtasks.vizier import do_snls_spectra
-            events = do_snls_spectra(events, args, tasks)
-
-        if do_task(tasks, args, task, 'pessto-dr1'):
-            from mtasks.general_data import do_pessto
-            events = do_pessto(events, args, tasks)
-
-        if do_task(tasks, args, task, 'scp'):
-            from mtasks.general_data import do_scp
-            events = do_scp(events, args, tasks)
-
-        # New UCB import
-        if do_task(tasks, args, task, 'ucb_photo'):
-            from mtasks.berkeley import do_ucb_photo
-            events = do_ucb_photo(events, args, tasks)
-
-        if do_task(tasks, args, task, 'ucb_spectra'):
-            from mtasks.berkeley import do_ucb_spectra
-            events = do_ucb_spectra(events, args, tasks)
-
-        # Import SDSS
-        if do_task(tasks, args, task, 'sdss'):
-            from mtasks.general_data import do_sdss
-            events = do_sdss(events, args, tasks)
-
-        # Import GAIA
-        if do_task(tasks, args, task, 'gaia'):
-            from mtasks.general_data import do_gaia
-            events = do_gaia(events, args, tasks)
-
-        # Import CSP
-        # VizieR catalogs exist for this: J/AJ/139/519, J/AJ/142/156. Should replace eventually.
-        if do_task(tasks, args, task, 'csp_photo'):
-            from mtasks.carnegie import do_csp_photo
-            events = do_csp_photo(events, args, tasks)
-
-        if do_task(tasks, args, task, 'csp_spectra'):
-            from mtasks.carnegie import do_csp_spectra
-            events = do_csp_spectra(events, args, tasks)
-
-        if do_task(tasks, args, task, 'crts'):
-            from mtasks.general_data import do_crts
-            events = do_crts(events, args, tasks)
-
-        if do_task(tasks, args, task, 'rochester'):
-            from mtasks.rochester import do_rochester
-            events = do_rochester(events, args, tasks)
-
-        if do_task(tasks, args, task, 'ogle'):
-            from mtasks.ogle import do_ogle
-            events = do_ogle(events, args, tasks)
-
-        # Now import the Asiago catalog
-        if do_task(tasks, args, task, 'asiago_photo'):
-            from mtasks.asiago import do_asiago_photo
-            events = do_asiago_photo(events, args, tasks)
-
-        if do_task(tasks, args, task, 'asiago_spectra'):
-            from mtasks.asiago import do_asiago_spectra
-            events = do_asiago_spectra(events, args, tasks)
-
-        if do_task(tasks, args, task, 'snls'):
-            from mtasks.general_data import do_snls
-            events = do_snls(events, args, tasks)
-
-        if do_task(tasks, args, task, 'psmds'):
-            from mtasks.panstarrs import do_ps_mds
-            events = do_ps_mds(events, args, tasks)
-
-        if do_task(tasks, args, task, 'psthreepi'):
-            from mtasks.panstarrs import do_ps_threepi
-            events = do_ps_threepi(events, args, tasks)
-
-        if do_task(tasks, args, task, 'fermi'):
-            from mtasks.general_data import do_fermi
-            events = do_fermi(events, args, tasks)
-
-        if do_task(tasks, args, task, 'ptf'):
-            from mtasks.palomar import do_ptf
-            events = do_ptf(events, args, tasks)
-
-        # Import ITEP
-        if do_task(tasks, args, task, 'itep'):
-            from mtasks.general_data import do_itep
-            events = do_itep(events, args, tasks)
-
-        if do_task(tasks, args, task, 'tns'):
-            from mtasks.general_data import do_tns
-            events = do_tns(events, args, tasks)
-
-        if do_task(tasks, args, task, 'snhunt'):
-            from mtasks.general_data import do_snhunt
-            events = do_snhunt(events, args, tasks)
-
-        if do_task(tasks, args, task, 'snf_spectra'):
-            from mtasks.snfactory import do_snf_specta
-            events = do_snf_specta(events, args, tasks)
-
-        if do_task(tasks, args, task, 'asassn'):
-            from mtasks.asassn import do_asassn
-            events = do_asassn(events, args, tasks)
-
-        if do_task(tasks, args, task, 'nedd'):
-            from mtasks.general_data import do_nedd
-            events = do_nedd(events, args, tasks)
-
-        # Import CPCS
-        if do_task(tasks, args, task, 'cpcs'):
-            from mtasks.general_data import do_cpcs
-            events = do_cpcs(events, args, tasks)
-
-        if do_task(tasks, args, task, 'des'):
-            from mtasks.general_data import do_des
-            events = do_des(events, args, tasks)
-
-        if do_task(tasks, args, task, 'superfit_spectra'):
-            from mtasks.general_data import do_superfit_spectra
-            events = do_superfit_spectra(events, args, tasks)
-
-        # ========================================================================
-        # ========================================================================
-        # ========================================================================
-        # ========================================================================
-
-        if do_task(tasks, args, task, 'mergeduplicates'):
-            from . funcs import merge_duplicates
-            events = merge_duplicates(tasks, args, events)
-
-        if do_task(tasks, args, task, 'setprefnames'):
-            from . funcs import set_preferred_names
-            events = set_preferred_names(tasks, args, events)
-
-
     return
-
 
     files = repo_file_list()
 
@@ -428,11 +222,20 @@ def load_task_list():
     #    [0, 1, 2, 2, 10, -100, -10, -1]
     #    Tuples are sorted by first element (here: '0' if positive), then second (here normal order)
     tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (t[1].priority < 0, t[1].priority)))
-    print("load_task_list")
-    for key, val in tasks.items():
-        print(key, val.nice_name)
 
-    print("\n\n")
+    names_act = []
+    names_inact = []
+    for key, val in tasks.items():
+        if val.active:
+            names_act.append(key)
+        else:
+            names_inact.append(key)
+
+    print("Active Tasks:")
+    print("\t" + "\n\t".join(nn.ljust(20) for nn in names_act))
+
+    print("\nInactive Tasks:")
+    print("\t" + "\n\t".join(nn.ljust(20) for nn in names_inact))
     return tasks
 
 if __name__ == '__main__':
