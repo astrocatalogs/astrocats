@@ -130,14 +130,18 @@ def import_main(args=None, **kwargs):
         if has_task(tasks, args, 'writeevents'):
             write_all_events(events, args, empty=True, gz=True, bury=True)
 
-    jsonstring = json.dumps(bibauthor_dict, indent='\t', separators=(',', ':'), ensure_ascii=False)
-    with codecs.open('../bibauthors.json', 'w', encoding='utf8') as f:
-        f.write(jsonstring)
-    jsonstring = json.dumps(extinctions_dict, indent='\t', separators=(',', ':'), ensure_ascii=False)
-    with codecs.open('../extinctions.json', 'w', encoding='utf8') as f:
-        f.write(jsonstring)
+    def json_dump(adict, fname):
+        json_str = json.dumps(adict, indent='\t', separators=(',', ':'), ensure_ascii=False)
+        with codecs.open(fname, 'w', encoding='utf8') as jsf:
+            jsf.write(json_str)
 
-    print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
+    BIBAUTHORS_FILENAME = '../bibauthors.json'
+    EXTINCTIONS_FILENAME = '../extinctions.json'
+    json_dump(bibauthor_dict, BIBAUTHORS_FILENAME)
+    json_dump(extinctions_dict, EXTINCTIONS_FILENAME)
+
+    print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
+        resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024./1024.))
     return
 
 
