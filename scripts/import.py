@@ -1964,6 +1964,7 @@ for task in tasks:
         simbadbadcoordbib = ['2013ApJ...770..107C']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
+        customSimbad.TIMEOUT = 120
         customSimbad.add_votable_fields('otype', 'sptype', 'sp_bibcode', 'id')
         # 2000A&AS..143....9W
         table = customSimbad.query_criteria('maintype=SN | maintype="SN?"')
