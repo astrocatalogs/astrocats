@@ -1,5 +1,6 @@
 """Imports from the 'Vizier' catalog.
 """
+from cdecimal import Decimal
 import csv
 import os
 from math import isnan
@@ -7,11 +8,11 @@ from math import isnan
 from astroquery.vizier import Vizier
 from astropy.time import Time as astrotime
 
-from .. scripts import PATH
+from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     convert_aq_output, jd_to_mjd, journal_events, make_date_string, uniq_cdl
 from .. constants import KM, CLIGHT
-from ... utils import Decimal, get_sig_digits, is_number, pbar, pretty_num, round_sig
+from ... utils import get_sig_digits, is_number, pbar, pretty_num, round_sig
 
 
 def do_vizier(events, args, tasks):

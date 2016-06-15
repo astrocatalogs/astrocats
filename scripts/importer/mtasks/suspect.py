@@ -2,6 +2,7 @@
 """
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
+from cdecimal import Decimal
 import csv
 from glob import glob
 from html import unescape
@@ -15,7 +16,7 @@ from .. constants import TRAVIS_QUERY_LIMIT
 from .. scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
     get_preferred_name, jd_to_mjd, journal_events, uniq_cdl
-from ... utils import Decimal, get_sig_digits, is_number, pbar, pbar_strings, pretty_num
+from ... utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 
 
 def do_suspect_photo(events, args, tasks):
