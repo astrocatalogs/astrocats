@@ -1464,6 +1464,8 @@ def derive_and_sanitize():
                 add_quantity(name, 'ebv', str(extinctionsdict[name][0]), source, error = str(extinctionsdict[name][1]))
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
+            if not len(events[name]['claimedtype']:
+                del(events[name]['claimedtype'])
         if 'claimedtype' not in events[name] and name.startswith('AT'):
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
             add_quantity(name, 'claimedtype', 'Candidate', source)
@@ -4434,8 +4436,8 @@ for task in tasks:
     
     if do_task(task, 'rochester'): 
         rochestermirrors = ['http://www.rochesterastronomy.org/', 'http://www.supernova.thistlethwaites.com/']
-        rochesterpaths = ['snimages/snredshiftall.html', 'sn2016/snredshift.html']
-        rochesterupdate = [False, True]
+        rochesterpaths = ['snimages/snredshiftall.html', 'sn2016/snredshift.html', 'snimages/snredboneyard.html']
+        rochesterupdate = [False, True, True]
     
         for p, path in enumerate(tq(rochesterpaths, currenttask)):
             if args.update and not rochesterupdate[p]:
@@ -4852,10 +4854,19 @@ for task in tasks:
                             html2 = f.read()
                     else:
                         pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
-                        with open(fname2, 'w') as f:
-                            response2 = urllib.request.urlopen(pslink)
-                            html2 = response2.read().decode('utf-8')
-                            f.write(html2)
+                        try:
+                            session2 = requests.Session()
+                            response2 = session2.get(pslink)
+                        except:
+                            offline = True
+                            if not os.path.isfile(fname2):
+                                continue
+                            with open(fname2, 'r') as f:
+                                html2 = f.read()
+                        else:
+                            html2 = response2.text
+                            with open(fname2, 'w') as f:
+                                f.write(html2)
     
                 bs2 = BeautifulSoup(html2, "html5lib")
                 scripts = bs2.findAll('script')

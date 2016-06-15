@@ -691,7 +691,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p1.legend.label_height = 14
         p1.legend.glyph_height = 14
 
-        if any([x != 'raw' in photocorr]):
+        if any([x != 'raw' for x in photocorr]):
             photodicts = {}
             for ci, corr in enumerate(corrects):
                 for gi, gly in enumerate(glyphs[ci]):
@@ -1311,7 +1311,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     hasimage = False
     skyhtml = ''
-    if 'ra' in catalog[entry] and 'dec' in catalog[entry] and args.collecthosts and not args.boneyard:
+    if 'ra' in catalog[entry] and 'dec' in catalog[entry] and args.collecthosts:
         snra = catalog[entry]['ra'][0]['value']
         sndec = catalog[entry]['dec'][0]['value']
         try:
@@ -1771,4 +1771,4 @@ if args.writecatalog and not args.eventlist:
         for myfile in glob('../*.json'):
             if not os.path.basename(myfile) in safefiles:
                 print ('Deleting orphan ' + myfile)
-                os.remove(myfile)
+                #os.remove(myfile)
