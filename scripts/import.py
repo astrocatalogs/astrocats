@@ -3607,7 +3607,7 @@ for task in tasks:
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'redshift', row[5].replace('?', ''), source, error = row[6], kind = 'host')
-                add_quantity(name, 'claimedtype', row[6].replace('SN', '').strip(':* '), source)
+                add_quantity(name, 'claimedtype', row[7].replace('SN', '').strip(':* '), source)
         journal_events()
 
         # 2014MNRAS.444.2133S
