@@ -17,18 +17,6 @@ from . constants import REPR_BETTER_QUANTITY, OSC_BIBCODE, OSC_NAME, OSC_URL, CL
 from .. utils import bandrepf, bandmetaf, is_number, get_repo_folders, get_event_filename, \
     get_sig_digits, pbar, pretty_num, repo_file_list, round_sig, tprint, zpad
 
-# __all__ = ['add_event', 'add_photometry', 'add_quantity', 'add_source', 'add_spectrum',
-#            'alias_priority', 'archived_task', 'clean_event', 'clear_events', 'convert_aq_output',
-#            'copy_to_event', 'ct_priority', 'derive_and_sanitize',
-#            'do_task', 'event_attr_priority', 'event_exists', 'frame_priority', 'get_aliases',
-#            'get_atels_dict', 'get_bibauthor_dict', 'get_cbets_dict', 'get_extinctions_dict',
-#            'get_iaucs_dict', 'get_best_redshift', 'get_first_light', 'get_max_light',
-#            'get_preferred_name', 'get_source_by_alias', 'get_source_year', 'has_task',
-#            'is_erroneous', 'jd_to_mjd', 'journal_events', 'load_event_from_file', 'load_stubs',
-#            'load_cached_url', 'make_date_string', 'name_clean', 'null_field',
-#            'same_tag_num', 'same_tag_str', 'set_first_max_light',
-#            'clean_snname', 'trim_str_arr', 'uniq_cdl', 'utf8']
-
 
 def add_event(tasks, args, events, name, load=True, delete=True, source='', loadifempty=True):
     if loadifempty and args.update and not len(events):
