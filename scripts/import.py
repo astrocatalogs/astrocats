@@ -1464,7 +1464,7 @@ def derive_and_sanitize():
                 add_quantity(name, 'ebv', str(extinctionsdict[name][0]), source, error = str(extinctionsdict[name][1]))
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
-            if not len(events[name]['claimedtype']:
+            if not len(events[name]['claimedtype']):
                 del(events[name]['claimedtype'])
         if 'claimedtype' not in events[name] and name.startswith('AT'):
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
