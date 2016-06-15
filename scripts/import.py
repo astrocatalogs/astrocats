@@ -350,6 +350,10 @@ def name_clean(name):
         namesp = newname.split('-')
         if len(namesp) == 3 and is_number(namesp[0][4:]) and is_number(namesp[1]) and is_number(namesp[2]):
             newname = namesp[0] + '-' + namesp[1] + '-' + namesp[2].zfill(3)
+    if newname.startswith('SDSS-II SN'):
+        namesp = newname.split()
+        if len(namesp) == 3 and is_number(namesp[2]):
+            newname = 'SDSS-II SN ' + namesp[2].lstrip('0')
     if newname.startswith('SN CL'):
         newname = newname.replace('SN CL', 'CL', 1)
     if newname.startswith('SN HiTS '):
@@ -952,6 +956,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
     elif quantity == 'claimedtype':
         isq = False
         svalue = svalue.replace('young', '')
+        if svalue.lower() in ['unknown', 'unk', '?', '-']:
+            return
         if '?' in svalue:
             isq = True
             svalue = svalue.strip(' ?')
@@ -1600,7 +1606,7 @@ def write_all_events(empty = False, gz = False, bury = False):
         # Delete non-SN events here without IAU designations (those with only banned types)
         if bury:
             buryevent = False
-            nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA', 'EV*', 'V*')
+            nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA', 'EV*', 'V*', "Nova")
             if name.startswith(nonsneprefixes):
                 tprint('Burying ' + name + ', non-SNe prefix.')
                 continue
@@ -1988,7 +1994,7 @@ for task in tasks:
             if row['SP_BIBCODE']:
                 ssources = uniq_cdl([source, add_source(name, bibcode = row['SP_BIBCODE'])] +
                     ([add_source(name, bibcode = row['SP_BIBCODE_2'])] if row['SP_BIBCODE_2'] else []))
-                add_quantity(name, 'claimedtype', row['SP_TYPE'].replace('SN.', '').replace('SN', '').strip(': '), ssources)
+                add_quantity(name, 'claimedtype', row['SP_TYPE'].replace('SN.', '').replace('SN', '').replace('(~)', '').strip(': '), ssources)
         journal_events()
     
     # Import primary data sources from Vizier
