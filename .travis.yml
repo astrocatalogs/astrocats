@@ -18,7 +18,7 @@ before_install:
     - conda config --set always_yes yes --set changeps1 no
     - conda update -q conda
 install:
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
     - pip install -r requirements.txt
     - git clone --depth=1 git://github.com/astrocatalogs/sne-internal.git
     - git clone --depth=1 git://github.com/astrocatalogs/sne-external.git
