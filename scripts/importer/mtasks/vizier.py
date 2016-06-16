@@ -379,6 +379,7 @@ def do_vizier(events, args, tasks):
     result = Vizier.get_catalogs('J/MNRAS/442/844/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
+    instr = 'KAIT'
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
@@ -390,7 +391,8 @@ def do_vizier(events, args, tasks):
             if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
                 add_photometry(
                     events, name, time=row['MJD'], band=band, magnitude=row[bandtag],
-                    e_magnitude=row['e_' + bandtag], source=source, telescope='KAIT', instrument='KAIT')
+                    e_magnitude=row['e_' + bandtag], source=source, telescope=instr,
+                    instrument=instr)
     events = journal_events(tasks, args, events)
 
     # 2012MNRAS.425.1789S
@@ -405,8 +407,8 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'alias', 'SN' + row['SN'], source)
         add_quantity(events, name, 'host', row['Gal'], source)
-        red_str = str(round_sig(float(row['cz'])*KM/CLIGHT, sig=get_sig_digits(str(row['cz']))))
         if is_number(row['cz']):
+            red_str = str(round_sig(float(row['cz'])*KM/CLIGHT, sig=get_sig_digits(str(row['cz']))))
             add_quantity(events, name, 'redshift', red_str, source, kind='heliocentric')
         add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
     events = journal_events(tasks, args, events)
@@ -423,7 +425,8 @@ def do_vizier(events, args, tasks):
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'ra', row['RAJ2000'], source)
         add_quantity(events, name, 'dec', row['DEJ2000'], source)
-        add_quantity(events, name, 'redshift', row['z'], source, error=row['e_z'], kind='heliocentric')
+        add_quantity(events, name, 'redshift', row['z'], source,
+                     error=row['e_z'], kind='heliocentric')
         add_quantity(events, name, 'ebv', row['E_B-V_'], source)
         add_quantity(events, name, 'claimedtype', 'Ia', source)
     result = Vizier.get_catalogs('J/ApJS/219/13/table2')
@@ -436,8 +439,8 @@ def do_vizier(events, args, tasks):
         source = add_source(events, name, bibcode='2015ApJS..219...13W')
         add_quantity(events, name, 'alias', name, source)
         add_photometry(
-            events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument='QUEST', telescope='ESO Schmidt',
-            observatory='La Silla', band=row['Filt'],
+            events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument='QUEST',
+            observatory='La Silla', band=row['Filt'], telescope='ESO Schmidt',
             magnitude=row['mag'], e_magnitude=row['e_mag'], system='Swope', source=source)
     events = journal_events(tasks, args, events)
 
@@ -456,8 +459,8 @@ def do_vizier(events, args, tasks):
             bandtag = band + '_mag'
             if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
                 add_photometry(
-                    events, name, time=row['MJD' + band + '_'], band=band + "'", magnitude=row[bandtag],
-                    e_magnitude=row['e_' + bandtag], source=source)
+                    events, name, time=row['MJD' + band + '_'], band=band + "'",
+                    magnitude=row[bandtag], e_magnitude=row['e_' + bandtag], source=source)
 
     result = Vizier.get_catalogs('J/other/Nat/491.228/tablef2')
     table = result[list(result.keys())[0]]
@@ -473,8 +476,8 @@ def do_vizier(events, args, tasks):
             bandtag = band + '_mag'
             if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
                 add_photometry(
-                    events, name, time=row['MJD' + band + '_'], band=band + "'", magnitude=row[bandtag],
-                    e_magnitude=row['e_' + bandtag], source=source)
+                    events, name, time=row['MJD' + band + '_'], band=band + "'",
+                    magnitude=row[bandtag], e_magnitude=row['e_' + bandtag], source=source)
     events = journal_events(tasks, args, events)
 
     # 2011Natur.474..484Q
@@ -564,13 +567,16 @@ def do_vizier(events, args, tasks):
         for band in ['U', 'B', 'V', 'R', 'I']:
             bandtag = band + 'mag'
             if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                e_mag = (row['e_' + bandtag] if row['l_' + bandtag] != '>' else '')
+                upl = row['l_' + bandtag] == '>'
                 add_photometry(
-                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=band, magnitude=row[bandtag],
-                    e_magnitude=(row['e_' + bandtag] if row['l_' + bandtag] != '>' else ''),
-                    source=source, upperlimit=(row['l_' + bandtag] == '>'))
+                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=band,
+                    magnitude=row[bandtag], e_magnitude=e_mag,
+                    source=source, upperlimit=upl)
         if 'zmag' in row and is_number(row['zmag']) and not isnan(float(row['zmag'])):
-            add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band='z', magnitude=row['zmag'],
-                           e_magnitude=row['e_zmag'], source=source)
+            add_photometry(
+                events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band='z',
+                magnitude=row['zmag'], e_magnitude=row['e_zmag'], source=source)
 
     result = Vizier.get_catalogs('J/MNRAS/394/2266/table3')
     table = result[list(result.keys())[0]]
@@ -580,10 +586,11 @@ def do_vizier(events, args, tasks):
         for band in ['B', 'V', 'R']:
             bandtag = band + 'mag'
             if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                time = str(jd_to_mjd(Decimal(row['JD'])))
+                e_mag = (row['e_' + bandtag] if row['l_' + bandtag] != '>' else '')
                 add_photometry(
-                    events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=band, magnitude=row[bandtag],
-                    e_magnitude=(row['e_' + bandtag] if row['l_' + bandtag] != '>' else ''),
-                    source=source, upperlimit=(row['l_' + bandtag] == '>'))
+                    events, name, time=time, band=band, magnitude=row[bandtag],
+                    e_magnitude=e_mag, source=source, upperlimit=(row['l_' + bandtag] == '>'))
 
     result = Vizier.get_catalogs('J/MNRAS/394/2266/table4')
     table = result[list(result.keys())[0]]
