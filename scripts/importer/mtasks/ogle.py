@@ -85,7 +85,7 @@ def do_ogle(events, args, tasks):
                 # dec = radec[1]
 
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'OGLE/') + datafnames[ec]
-                if not args.fullrefresh and archived_task(tasks, args, 'ogle') and os.path.isfile(fname):
+                if not args.full_refresh and archived_task(tasks, args, 'ogle') and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:

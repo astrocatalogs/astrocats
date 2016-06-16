@@ -624,7 +624,8 @@ def alias_priority(name, attr):
 def archived_task(tasks, args, atask):
     if 'archived' in tasks[atask] and args.archived:
         return True
-    if ('archived' in tasks[atask] and tasks[atask]['archived'] and atask not in args.refreshlist.split(',') and not args.fullrefresh):
+    if (('archived' in tasks[atask] and tasks[atask]['archived'] and
+         atask not in args.refresh_list.split(',') and not args.full_refresh)):
         return True
     return False
 

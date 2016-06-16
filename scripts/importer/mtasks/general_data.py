@@ -474,7 +474,7 @@ def do_crts(events, args, tasks):
 
             fname2 = (PATH.REPO_EXTERNAL + '/' + fold + '/' +
                       lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html')
-            if ((not args.fullrefresh and archived_task(tasks, args, 'crts') and
+            if ((not args.full_refresh and archived_task(tasks, args, 'crts') and
                  os.path.isfile(fname2))):
                 with open(fname2, 'r') as ff:
                     html2 = ff.read()
@@ -684,7 +684,7 @@ def do_gaia(events, args, tasks):
                     break
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
-        if not args.fullrefresh and archived_task(tasks, args, 'gaia') and os.path.isfile(fname):
+        if not args.full_refresh and archived_task(tasks, args, 'gaia') and os.path.isfile(fname):
             with open(fname, 'r') as ff:
                 csvtxt = ff.read()
         else:

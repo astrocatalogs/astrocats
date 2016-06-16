@@ -71,7 +71,7 @@ def do_ps_threepi(events, args, tasks):
     oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
     for page in pbar(range(1, numpages), current_task):
         fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + str(page).zfill(2) + '.html'
-        if ((not args.fullrefresh and archived_task(tasks, args, 'psthreepi') and
+        if ((not args.full_refresh and archived_task(tasks, args, 'psthreepi') and
              os.path.isfile(fname) and page < oldnumpages)):
             with open(fname, 'r') as f:
                 html = f.read()
