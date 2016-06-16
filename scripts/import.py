@@ -3203,6 +3203,54 @@ for task in tasks:
             add_quantity(name, 'host', row['Gal'], source)
         journal_events()
 
+        # 2016ApJ...821...57D
+        (name, source) = new_event('SN2013ge', bibcode = "2016ApJ...821...57D")
+        result = Vizier.get_catalogs("J/ApJ/821/57/table1")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            for band in ['UVW2', 'UVM2', 'UVW1', 'U', 'B', 'V']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(row["MJD"]), band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], telescope = 'Swift', instrument = 'UVOT', source = source)
+        result = Vizier.get_catalogs("J/ApJ/821/57/table2")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            for band in ['B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(row["MJD"]), band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], instrument = 'CAO', source = source)
+        result = Vizier.get_catalogs("J/ApJ/821/57/table3")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            for band in ['B', 'V', "r'", "i'"]:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(row["MJD"]), band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], instrument = 'FLWO', source = source)
+        result = Vizier.get_catalogs("J/ApJ/821/57/table4")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            for band in ['r', 'i', 'z']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    upp = False
+                    if "l_" + bandtag in row and row["l_" + bandtag] == ">":
+                        upp = True
+                    add_photometry(name, time = str(row["MJD"]), band = band, magnitude = row[bandtag], upperlimit = upp,
+                                   e_magnitude = row["e_" + bandtag] if is_number(row["e_" + bandtag]) else '',
+                                   instrument = row["Inst"], source = source)
+        journal_events()
+
     if do_task(task, 'donations'):
         # Nicholl 04-01-16 donation
         with open("../sne-external/Nicholl-04-01-16/bibcodes.json", 'r') as f:
