@@ -16,7 +16,8 @@ def main():
 def load_args(args=None):
     import argparse
 
-    parser = argparse.ArgumentParser(description='Generate a catalog JSON file and plot HTML files from SNE data.')
+    parser = argparse.ArgumentParser(
+        description='Generate a catalog JSON file and plot HTML files from SNE data.')
     # parser.add_argument('--foo', action='store_true', help='foo help')
     subparsers = parser.add_subparsers(description='valid subcommands', dest='_name',
                                        help='sub-command help')
