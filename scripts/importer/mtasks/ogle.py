@@ -8,11 +8,11 @@ import urllib
 from scripts import PATH
 from ... utils import is_number, pbar, Decimal
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
-    archived_task, jd_to_mjd, journal_events, load_cached_url, uniq_cdl
+    jd_to_mjd, journal_events, load_cached_url, uniq_cdl
 
 
-def do_ogle(events, args, tasks):
-    current_task = 'OGLE'
+def do_ogle(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']
     oglenames = []
@@ -23,7 +23,7 @@ def do_ogle(events, args, tasks):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
         filepath += bn.replace('/', '-') + '-transients.html'
-        htmltxt = load_cached_url(args, 'http://ogle.astrouw.edu.pl/ogle4/' + bn +
+        htmltxt = load_cached_url(args, current_task, 'http://ogle.astrouw.edu.pl/ogle4/' + bn +
                                   '/transients.html', filepath)
         if not htmltxt:
             continue
@@ -85,7 +85,7 @@ def do_ogle(events, args, tasks):
                 # dec = radec[1]
 
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'OGLE/') + datafnames[ec]
-                if not args.full_refresh and archived_task(tasks, args, 'ogle') and os.path.isfile(fname):
+                if task_obj.load_archive(args) and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:

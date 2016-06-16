@@ -14,18 +14,18 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, \
 from ... utils import is_number, pbar
 
 
-def do_rochester(events, args, tasks):
+def do_rochester(events, args, tasks, task_obj):
     rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html',
                       'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     rochesterupdate = [False, True]
-    current_task = 'Rochester'
+    current_task = task_obj.current_task(args)
 
     for pp, path in enumerate(pbar(rochesterpaths, current_task)):
         if args.update and not rochesterupdate[pp]:
             continue
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
-        html = load_cached_url(args, path, filepath)
+        html = load_cached_url(args, current_task, path, filepath)
         if not html:
             continue
 

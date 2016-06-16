@@ -18,8 +18,8 @@ from .. constants import TRAVIS_QUERY_LIMIT
 from ... utils import pbar, pbar_strings, is_number, tprint
 
 
-def do_wiserep_spectra(events, args, tasks):
-    current_task = 'WISeREP Spectra'
+def do_wiserep_spectra(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
     secondarybibcode = '2012PASP..124..668Y'

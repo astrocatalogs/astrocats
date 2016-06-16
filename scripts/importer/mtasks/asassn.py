@@ -9,10 +9,10 @@ from .. funcs import add_event, add_source, add_quantity, \
 from ... utils import pbar
 
 
-def do_asassn(events, args, tasks):
-    current_task = 'asassn'
+def do_asassn(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
-    html = load_cached_url(args, asn_url, os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
+    html = load_cached_url(args, current_task, asn_url, os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
     if not html:
         return events
     bs = BeautifulSoup(html, 'html5lib')

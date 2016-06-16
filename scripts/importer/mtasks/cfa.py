@@ -14,10 +14,10 @@ from .. constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
 from ... utils import pbar, pbar_strings, is_number, Decimal
 
 
-def do_cfa_photo(events, args, tasks):
+def do_cfa_photo(events, args, tasks, task_obj):
     from html import unescape
     import re
-    current_task = 'CFA: Photometry'
+    current_task = task_obj.current_task(args)
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat'))
     for fname in pbar_strings(file_names, desc=current_task):
         f = open(fname, 'r')
@@ -132,8 +132,8 @@ def do_cfa_photo(events, args, tasks):
     return events
 
 
-def do_cfa_spectra(events, args, tasks):
-    current_task = 'CfA Spectra'
+def do_cfa_spectra(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     # Ia spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1]

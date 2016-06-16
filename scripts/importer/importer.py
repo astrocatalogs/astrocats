@@ -6,7 +6,7 @@ import importlib
 import json
 import os
 import resource
-# import sys
+import sys
 import warnings
 
 from .. utils import pbar, repo_file_list
@@ -109,8 +109,8 @@ def import_main(args=None, **kwargs):
                 task_name, priority, prev_task_name, prev_priority, task_obj))
         print("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
-        # events = getattr(mod, func_name)(events, args, tasks)
-        getattr(mod, func_name)(events, args, tasks)
+        # events = getattr(mod, func_name)(events, args, tasks, task_obj)
+        getattr(mod, func_name)(events, args, tasks, task_obj)
 
         prev_priority = priority
         prev_task_name = task_name
@@ -146,7 +146,7 @@ def import_main(args=None, **kwargs):
     return
 
 
-def do_nedd(events, args, tasks):
+def do_nedd(events, args, tasks, task_obj):
     import csv
     from html import unescape
     from . constants import PATH
@@ -215,6 +215,10 @@ def load_task_list(args):
     These are placed in an OrderedDict, sorted by the `priority` parameter, with positive values
     and then negative values, e.g. [0, 2, 10, -10, -1].
     """
+
+    # print("refresh_list = ", args.refresh_list)
+    # sys.exit(3189752)
+
     if args.args_task_list is not None:
         if args.yes_task_list is not None or args.no_task_list is not None:
             raise ValueError("If '--tasks' is used, '--yes' and '--no' shouldnt be.")

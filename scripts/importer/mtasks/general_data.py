@@ -17,13 +17,13 @@ import urllib
 
 from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_spectrum, add_quantity, \
-    archived_task, event_exists, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
+    event_exists, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
     make_date_string, uniq_cdl
 from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig
 
 
-def do_ascii(events, args, tasks):
-    current_task = 'ASCII'
+def do_ascii(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
 
     # 2006ApJ...645..841N
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2006ApJ...645..841N-table3.csv')
@@ -226,8 +226,8 @@ def do_ascii(events, args, tasks):
     return events
 
 
-def do_cccp(events, args, tasks):
-    current_task = 'CCCP'
+def do_cccp(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt'))
     for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
@@ -251,7 +251,7 @@ def do_cccp(events, args, tasks):
                                 events, name, time=mjd, band=band, magnitude=mag,
                                 e_magnitude=row[2*bb + 2], upperlimit=upl, source=source)
 
-    if archived_task(tasks, args, 'cccp'):
+    if task_obj.load_archive(args):
         with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'r') as ff:
             html = ff.read()
     else:
@@ -270,7 +270,7 @@ def do_cccp(events, args, tasks):
                                 url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
             add_quantity(events, name, 'alias', name, source)
 
-            if archived_task(tasks, args, 'cccp'):
+            if task_obj.load_archive(args):
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1]
                 with open(fname, 'r') as ff:
                     html2 = ff.read()
@@ -286,7 +286,7 @@ def do_cccp(events, args, tasks):
             for link2 in links2:
                 if '.txt' in link2['href'] and '_' in link2['href']:
                     band = link2['href'].split('_')[1].split('.')[0].upper()
-                    if archived_task(tasks, args, 'cccp'):
+                    if task_obj.load_archive(args):
                         fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
@@ -314,11 +314,11 @@ def do_cccp(events, args, tasks):
     return events
 
 
-def do_cpcs(events, args, tasks):
-    current_task = 'CPCS'
+def do_cpcs(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-    jsontxt = load_cached_url(args, cpcs_url, os.path.join(PATH.REPO_EXTERNAL, 'CPCS/index.json'))
+    jsontxt = load_cached_url(args, current_task, cpcs_url, os.path.join(PATH.REPO_EXTERNAL, 'CPCS/index.json'))
     if not jsontxt:
         return events
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
@@ -357,7 +357,7 @@ def do_cpcs(events, args, tasks):
         alerturl = 'http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=' + str(ai)
         source = add_source(events, name, refname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL, 'CPCS/alert-') + str(ai).zfill(2) + '.json'
-        if archived_task(tasks, args, 'cpcs') and os.path.isfile(fname):
+        if task_obj.load_archive(args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
                 jsonstr = ff.read()
         else:
@@ -389,12 +389,12 @@ def do_cpcs(events, args, tasks):
     return events
 
 
-def do_crts(events, args, tasks):
+def do_crts(events, args, tasks, task_obj):
     crtsnameerrors = ['2011ax']
-    current_task = 'CRTS'
+    current_task = task_obj.current_task(args)
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
-        html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html',
+        html = load_cached_url(args, current_task, 'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html',
                                os.path.join(PATH.REPO_EXTERNAL, 'CRTS', fold + '.html'))
         if not html:
             continue
@@ -474,8 +474,7 @@ def do_crts(events, args, tasks):
 
             fname2 = (PATH.REPO_EXTERNAL + '/' + fold + '/' +
                       lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html')
-            if ((not args.full_refresh and archived_task(tasks, args, 'crts') and
-                 os.path.isfile(fname2))):
+            if task_obj.load_archive(args) and os.path.isfile(fname2):
                 with open(fname2, 'r') as ff:
                     html2 = ff.read()
             else:
@@ -510,13 +509,13 @@ def do_crts(events, args, tasks):
     return events
 
 
-def do_des(events, args, tasks):
-    current_task = 'DES'
+def do_des(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
     ackn_url = 'http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause'
     des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')   # Make sure there is aa trailing slash
-    html = load_cached_url(args, des_trans_url, des_path + 'transients.html')
+    html = load_cached_url(args, current_task, des_trans_url, des_path + 'transients.html')
     if not html:
         return events
     bs = BeautifulSoup(html, 'html5lib')
@@ -553,7 +552,7 @@ def do_des(events, args, tasks):
         add_quantity(events, name, 'ra', ra, sources)
         add_quantity(events, name, 'dec', dec, sources)
 
-        html2 = load_cached_url(args, des_trans_url + name, des_path + name + '.html')
+        html2 = load_cached_url(args, current_task, des_trans_url + name, des_path + name + '.html')
         if not html2:
             continue
         lines = html2.splitlines()
@@ -572,8 +571,8 @@ def do_des(events, args, tasks):
     return events
 
 
-def do_external_radio(events, args, tasks):
-    current_task = 'External Radio'
+def do_external_radio(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
@@ -599,8 +598,8 @@ def do_external_radio(events, args, tasks):
     return events
 
 
-def do_external_xray(events, args, tasks):
-    current_task = 'External X-ray'
+def do_external_xray(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
@@ -624,8 +623,8 @@ def do_external_xray(events, args, tasks):
     return events
 
 
-def do_fermi(events, args, tasks):
-    current_task = 'Fermi'
+def do_fermi(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as ff:
         tsvin = csv.reader(ff, delimiter=',')
         for ri, row in enumerate(pbar(tsvin, current_task)):
@@ -646,10 +645,10 @@ def do_fermi(events, args, tasks):
     return events
 
 
-def do_gaia(events, args, tasks):
-    current_task = 'Gaia'
+def do_gaia(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
-    csvtxt = load_cached_url(args, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
+    csvtxt = load_cached_url(args, current_task, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
     if not csvtxt:
         return events
     tsvin = csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True)
@@ -684,7 +683,7 @@ def do_gaia(events, args, tasks):
                     break
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
-        if not args.full_refresh and archived_task(tasks, args, 'gaia') and os.path.isfile(fname):
+        if task_obj.load_archive(args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
                 csvtxt = ff.read()
         else:
@@ -714,10 +713,10 @@ def do_gaia(events, args, tasks):
     return events
 
 
-def do_internal(events, args, tasks):
+def do_internal(events, args, tasks, task_obj):
     """Load events from files in the 'internal' repository, and save them.
     """
-    current_task = 'Internal'
+    current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     for datafile in pbar_strings(files, desc=current_task):
@@ -734,8 +733,8 @@ def do_internal(events, args, tasks):
     return events
 
 
-def do_itep(events, args, tasks):
-    current_task = 'ITEP'
+def do_itep(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
     with open(os.path.join(PATH.REPO_EXTERNAL, 'itep-refs.txt'), 'r') as refs_file:
@@ -785,7 +784,7 @@ def do_itep(events, args, tasks):
     return events
 
 
-def do_pessto(events, args, tasks):
+def do_pessto(events, args, tasks, task_obj):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
     tsvin = csv.reader(open(pessto_path, 'r'), delimiter=',')
     for ri, row in enumerate(tsvin):
@@ -809,8 +808,8 @@ def do_pessto(events, args, tasks):
     return events
 
 
-def do_scp(events, args, tasks):
-    current_task = 'SCP'
+def do_scp(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     tsvin = csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r'), delimiter=',')
     for ri, row in enumerate(pbar(tsvin, current_task)):
         if ri == 0:
@@ -840,8 +839,8 @@ def do_scp(events, args, tasks):
     return events
 
 
-def do_sdss(events, args, tasks):
-    current_task = 'SDSS'
+def do_sdss(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
     sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -893,10 +892,10 @@ def do_sdss(events, args, tasks):
     return events
 
 
-def do_snhunt(events, args, tasks):
-    current_task = 'SNHunt'
+def do_snhunt(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
-    html = load_cached_url(args, snh_url, os.path.join(PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
+    html = load_cached_url(args, current_task, snh_url, os.path.join(PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
     if not html:
         return events
     text = html.splitlines()
@@ -943,7 +942,7 @@ def do_snhunt(events, args, tasks):
     return events
 
 
-def do_snls(events, args, tasks):
+def do_snls(events, args, tasks, task_obj):
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
     data = csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True)
@@ -973,9 +972,9 @@ def do_snls(events, args, tasks):
     return events
 
 
-def do_superfit_spectra(events, args, tasks):
+def do_superfit_spectra(events, args, tasks, task_obj):
     from .. funcs import get_max_light, get_preferred_name
-    current_task = 'SuperFit Spectra'
+    current_task = task_obj.current_task(args)
     sfdirs = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*'))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))
@@ -1042,13 +1041,13 @@ def do_superfit_spectra(events, args, tasks):
     return events
 
 
-def do_tns(events, args, tasks):
+def do_tns(events, args, tasks, task_obj):
     from datetime import timedelta
     session = requests.Session()
-    current_task = 'TNS'
+    current_task = task_obj.current_task(args)
     tns_url = 'https://wis-tns.weizmann.ac.il/'
     search_url = tns_url + 'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
-    csvtxt = load_cached_url(args, search_url, os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
+    csvtxt = load_cached_url(args, current_task, search_url, os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
         return events
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
@@ -1056,7 +1055,7 @@ def do_tns(events, args, tasks):
 
     for page in pbar(range(maxpages), current_task):
         fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + str(page).zfill(2) + '.csv'
-        if archived_task(tasks, args, 'tns') and os.path.isfile(fname) and page < 7:
+        if task_obj.load_archive(args) and os.path.isfile(fname) and page < 7:
             with open(fname, 'r') as tns_file:
                 csvtxt = tns_file.read()
         else:
@@ -1130,7 +1129,7 @@ def do_tns(events, args, tasks):
     return events
 
 '''
-def do_simbad(events, args, tasks):
+def do_simbad(events, args, tasks, task_obj):
     Simbad.list_votable_fields()
     customSimbad = Simbad()
     customSimbad.add_votable_fields('otype', 'id(opt)')

@@ -9,13 +9,13 @@ import urllib
 import warnings
 
 from scripts import PATH
-from .. funcs import add_event, add_photometry, add_source, add_quantity, archived_task, \
+from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     journal_events, load_cached_url, make_date_string, uniq_cdl
 from ... utils import is_number, pbar
 
 
-def do_ps_mds(events, args, tasks):
-    current_task = 'Pan-STARRS: MDS'
+def do_ps_mds(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
             if ri < 35:
@@ -35,12 +35,12 @@ def do_ps_mds(events, args, tasks):
     return events
 
 
-def do_ps_threepi(events, args, tasks):
-    current_task = 'Pan-STARRS: MDS'
+def do_ps_threepi(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
     ps_url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date'
-    html = load_cached_url(args, ps_url, fname, write=False)
+    html = load_cached_url(args, current_task, ps_url, fname, write=False)
     if not html:
         return events
 
@@ -71,7 +71,7 @@ def do_ps_threepi(events, args, tasks):
     oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
     for page in pbar(range(1, numpages), current_task):
         fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + str(page).zfill(2) + '.html'
-        if ((not args.full_refresh and archived_task(tasks, args, 'psthreepi') and
+        if ((task_obj.load_archive(args) and
              os.path.isfile(fname) and page < oldnumpages)):
             with open(fname, 'r') as f:
                 html = f.read()
@@ -153,7 +153,7 @@ def do_ps_threepi(events, args, tasks):
 
             fname2 = os.path.join(PATH.REPO_EXTERNAL, '3pi/candidate-')
             fname2 += pslink.rstrip('/').split('/')[-1] + '.html'
-            if archived_task(tasks, args, 'psthreepi') and os.path.isfile(fname2):
+            if task_obj.load_archive(args) and os.path.isfile(fname2):
                 with open(fname2, 'r') as f:
                     html2 = f.read()
             elif not offline:

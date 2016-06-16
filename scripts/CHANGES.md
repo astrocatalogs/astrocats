@@ -2,10 +2,12 @@
 
 ## To-Do ##
 
--   `import_sn/mtasks/vizier.py:do_vizier`
+-   `importer/mtasks/vizier.py:do_vizier`
     -    Break down into separate functions, or classes.  Can use significant templating to cleanup.
--   `import_sn/mtasks/donations.py:do_donations`
+-   `importer/mtasks/donations.py:do_donations`
     -    Break down into separate " " " ".
+-   `main.py`
+    -    Look at '--archived' vs. '--refresh[list]' and '--full-refresh'... what exactly is desired?
 
 ## Current ##
 

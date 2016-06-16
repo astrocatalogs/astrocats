@@ -12,7 +12,7 @@ from .. funcs import add_event, add_source, add_quantity, add_spectrum, \
 from ... utils import pretty_num
 
 
-def do_snf_specta(events, args, tasks):
+def do_snf_specta(events, args, tasks, task_obj):
     bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T',
                 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
     oldname = ''

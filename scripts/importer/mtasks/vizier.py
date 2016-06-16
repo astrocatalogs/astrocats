@@ -15,10 +15,10 @@ from .. constants import KM, CLIGHT
 from ... utils import get_sig_digits, is_number, pbar, pretty_num, round_sig
 
 
-def do_vizier(events, args, tasks):
+def do_vizier(events, args, tasks, task_obj):
     """
     """
-    current_task = 'Vizier Catalog'
+    current_task = task_obj.current_task(args)
 
     Vizier.ROW_LIMIT = -1
 
@@ -1096,10 +1096,10 @@ def do_vizier(events, args, tasks):
     return events
 
 
-def do_lennarz(events, args, tasks):
+def do_lennarz(events, args, tasks, task_obj):
     """
     """
-    current_task = 'Vizier: lennarz'
+    current_task = task_obj.current_task(args)
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs('J/A+A/538/A120/usc')
     table = result[list(result.keys())[0]]
@@ -1174,7 +1174,7 @@ def do_lennarz(events, args, tasks):
     return events
 
 
-def do_snls_spectra(events, args, tasks):
+def do_snls_spectra(events, args, tasks, task_obj):
     """
     """
     from glob import glob
@@ -1182,7 +1182,7 @@ def do_snls_spectra(events, args, tasks):
     from .. constants import TRAVIS_QUERY_LIMIT
     from ... utils import pbar_strings
 
-    current_task = 'Vizier: SNLS Spectra'
+    current_task = task_obj.current_task(args)
     result = Vizier.get_catalogs('J/A+A/507/85/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)

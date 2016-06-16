@@ -12,8 +12,8 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     journal_events
 
 
-def do_donations(events, args, tasks):
-    current_task = 'Donations'
+def do_donations(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     # Nicholl 04-01-16 donation
     with open(os.path.join(PATH.REPO_EXTERNAL, 'Nicholl-04-01-16/bibcodes.json'), 'r') as f:
         bcs = json.loads(f.read())

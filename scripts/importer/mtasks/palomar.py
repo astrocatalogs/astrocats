@@ -5,12 +5,11 @@ import os
 import requests
 
 from scripts import PATH
-from .. funcs import add_event, add_source, add_quantity, archived_task, \
-    journal_events
+from .. funcs import add_event, add_source, add_quantity, journal_events
 from ... utils import is_number
 
 
-def do_ptf(events, args, tasks):
+def do_ptf(events, args, tasks, task_obj):
     # response = urllib.request.urlopen('http://wiserep.weizmann.ac.il/objects/list')
     # bs = BeautifulSoup(response, 'html5lib')
     # select = bs.find('select', {'name': 'objid'})
@@ -22,7 +21,7 @@ def do_ptf(events, args, tasks):
     #        name.startswith('PTFS') or name.startswith('iPTF')):
     #        name = add_event(tasks, args, events, name)
 
-    if archived_task(tasks, args, 'ptf'):
+    if task_obj.load_archive(args):
         with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html'), 'r') as f:
             html = f.read()
     else:

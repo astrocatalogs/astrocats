@@ -11,12 +11,12 @@ import urllib
 from scripts import PATH
 from .. constants import TRAVIS_QUERY_LIMIT
 from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
-    archived_task, journal_events, load_cached_url, uniq_cdl
+    journal_events, load_cached_url, uniq_cdl
 from ... utils import get_sig_digits, pbar, pretty_num
 
 
-def do_ucb_photo(events, args, tasks):
-    current_task = 'UCB: Photometry'
+def do_ucb_photo(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
@@ -57,7 +57,7 @@ def do_ucb_photo(events, args, tasks):
             raise(ValueError('ID not found for SNDB phot!'))
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
-        if archived_task(tasks, args, 'ucb') and os.path.isfile(filepath):
+        if task_obj.load_archive(args) and os.path.isfile(filepath):
             with open(filepath, 'r') as ff:
                 phottxt = ff.read()
         else:
@@ -88,8 +88,8 @@ def do_ucb_photo(events, args, tasks):
     return events
 
 
-def do_ucb_spectra(events, args, tasks):
-    current_task = 'UCB: Spectra'
+def do_ucb_spectra(events, args, tasks, task_obj):
+    current_task = task_obj.current_task(args)
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
@@ -148,7 +148,7 @@ def do_ucb_spectra(events, args, tasks):
             raise(ValueError('ID not found for SNDB spectrum!'))
 
         filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
-        if archived_task('ucbspectra', tasks) and os.path.isfile(filepath):
+        if task_obj.load_archive(args) and os.path.isfile(filepath):
             with open(filepath, 'r') as ff:
                 spectxt = ff.read()
         else:

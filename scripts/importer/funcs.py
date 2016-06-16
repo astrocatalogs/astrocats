@@ -621,6 +621,7 @@ def alias_priority(name, attr):
     return 1
 
 
+'''
 def archived_task(tasks, args, atask):
     if 'archived' in tasks[atask] and args.archived:
         return True
@@ -628,6 +629,7 @@ def archived_task(tasks, args, atask):
          atask not in args.refresh_list.split(',') and not args.full_refresh)):
         return True
     return False
+'''
 
 
 def clean_event(events, dirtyevent):
@@ -1038,7 +1040,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
 
     return events, extinctions_dict, bibauthor_dict
 
-
+'''
 def do_task(tasks, args, checktask, task, quiet=False):
     """
     """
@@ -1047,6 +1049,7 @@ def do_task(tasks, args, checktask, task, quiet=False):
     if dotask and not quiet:
         currenttask = (tasks[task]['nicename'] if tasks[task]['nicename'] else task).replace('%pre', 'Updating' if args.update else 'Loading')
     return dotask
+'''
 
 
 def event_attr_priority(attr):
@@ -1361,7 +1364,7 @@ def load_stubs(tasks, args, events):
     return events
 
 
-def load_cached_url(args, url, filepath, timeout=120, write=True):
+def load_cached_url(args, current_task, url, filepath, timeout=120, write=True):
     import codecs
     from hashlib import md5
     filemd5 = ''
@@ -1382,7 +1385,7 @@ def load_cached_url(args, url, filepath, timeout=120, write=True):
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
         # tprint(filemd5 + ": " + newmd5)
         if args.update and newmd5 == filemd5:
-            tprint('Skipping file in "' + currenttask + '," local and remote copies identical [' + newmd5 + '].')
+            tprint('Skipping file in "' + current_task + '," local and remote copies identical [' + newmd5 + '].')
             return False
     except:
         return filetxt
