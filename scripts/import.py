@@ -900,7 +900,7 @@ def is_erroneous(name, field, sources):
                     return True
     return False
 
-def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
+def add_quantity(name, quantity, value, sources, forcereplacebetter = False, derived = '',
     lowerlimit = '', upperlimit = '', error = '', unit = '', kind = '', probability = '', extra = ''):
     if not quantity:
         raise(ValueError('Quantity must be specified for add_quantity.'))
@@ -1021,6 +1021,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False,
         quantaentry['lowerlimit'] = lowerlimit
     if upperlimit:
         quantaentry['upperlimit'] = upperlimit
+    if derived:
+        quantaentry['derived'] = derived
     if extra:
         quantaentry['extra'] = extra
     if (forcereplacebetter or quantity in repbetterquantity) and quantity in events[name]:
@@ -1201,8 +1203,9 @@ def get_best_redshift(name):
             bestz = z['value']
             bestkind = kind
             bestsig = sig
+            bestsrc = z['source']
 
-    return (bestz, bestkind, bestsig)
+    return (bestz, bestkind, bestsig, bestsrc)
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
@@ -1492,10 +1495,11 @@ def derive_and_sanitize():
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
                 if host['value'] in nedddict:
+                    source = add_source(name, bibcode = '2015arXiv150201589P')
                     secondarysource = add_source(name, refname = reference, url = refurl, secondary = True)
                     meddist = statistics.median(nedddict[host['value']])
                     redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(meddist) * un.Mpc), sig = get_sig_digits(str(meddist)))
-                    add_quantity(name, 'redshift', redshift, secondarysource, kind = 'host')
+                    add_quantity(name, 'redshift', redshift, uniq_cdl([source,secondarysource]), kind = 'host', derived = True)
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
@@ -1503,33 +1507,41 @@ def derive_and_sanitize():
                 sig = get_sig_digits(ld['value'])
                 if sig > bestsig:
                     bestld = ld['value']
+                    bestsrc = ld['source']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
                 source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                sources = uniq_cdl([source] + bestsrc.split(','))
                 add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
-                    5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig), source)
+                    5.0*(log10(float(bestld)*1.0e6) - 1.0), sig = bestsig), sources, derived = True)
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
-            (bestz, bestkind, bestsig) = get_best_redshift(name)
+            (bestz, bestkind, bestsig, bestsrc) = get_best_redshift(name)
             if bestsig > 0:
                 bestz = float(bestz)
                 if 'velocity' not in events[name]:
                     source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                    sources = uniq_cdl([source] + bestsrc.split(','))
                     add_quantity(name, 'velocity', pretty_num(clight/km*((bestz + 1.)**2. - 1.)/
-                        ((bestz + 1.)**2. + 1.), sig = bestsig), source, kind = prefkinds[bestkind])
+                        ((bestz + 1.)**2. + 1.), sig = bestsig), sources, kind = prefkinds[bestkind], derived = True)
                 if bestz > 0.:
                     if 'lumdist' not in events[name]:
                         dl = cosmo.luminosity_distance(bestz)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-                        add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), source, kind = prefkinds[bestkind])
+                        sources = [add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                            add_source(name, bibcode = '2015arXiv150201589P')]
+                        sources = uniq_cdl(sources + bestsrc.split(','))
+                        add_quantity(name, 'lumdist', pretty_num(dl.value, sig = bestsig), sources,
+                            kind = prefkinds[bestkind], derived = True)
                         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                             add_quantity(name, 'maxabsmag', pretty_num(float(events[name]['maxappmag'][0]['value']) -
-                                5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), source)
+                                5.0*(log10(dl.to('pc').value) - 1.0), sig = bestsig), sources, derived = True)
                     if 'comovingdist' not in events[name]:
-                        dl = cosmo.comoving_distance(bestz)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-                        add_quantity(name, 'comovingdist', pretty_num(dl.value, sig = bestsig), source)
+                        cd = cosmo.comoving_distance(bestz)
+                        sources = [add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                            add_source(name, bibcode = '2015arXiv150201589P')]
+                        sources = uniq_cdl(sources + bestsrc.split(','))
+                        add_quantity(name, 'comovingdist', pretty_num(cd.value, sig = bestsig), sources, derived = True)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
                 min([float(y) for y in x['time']])) if 'time' in x else 0.0,
