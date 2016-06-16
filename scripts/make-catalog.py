@@ -1490,7 +1490,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             if len(keysplit) == 3:
                                 keyhtml = keyhtml + '<br>[' + keysplit[1] + ' – ' + keysplit[2] + ' days from max]'
                     else:
-                        keyhtml = keyhtml + re.sub('<[^<]+?>', '', catalog[entry][key])
+                        subentry = re.sub('<[^<]+?>', '', catalog[entry][key])
+                        keyhtml = keyhtml + subentry
                 else:
                     for r, row in enumerate(catalog[entry][key]):
                         if 'value' in row and 'source' in row:
@@ -1501,7 +1502,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                 sourcehtml = sourcehtml + (', ' if s > 0 else '') + r'<a href="#source' + source + r'">' + source + r'</a>'
                             keyhtml = keyhtml + (r'<br>' if r > 0 else '')
                             keyhtml = keyhtml + "<div class='singletooltip'>"
-                            keyhtml = keyhtml + row['value']
+                            if 'derived' in row and row['derived']:
+                                keyhtml = keyhtml + '<span class="derived">' + row['value'] + '</span>'
+                            else:
+                                keyhtml = keyhtml + row['value']
                             if ((key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]
                                 and catalog[entry]['maxband']):
                                 keyhtml = keyhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
@@ -1535,7 +1539,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         r'</td><td width=250px class="event-cell">' + keyhtml)
 
                 newhtml = newhtml + r'</td></tr>\n'
-        newhtml = newhtml + r'</table></div>\n\1'
+        newhtml = newhtml + r'</table><em>Values that are colored <span class="derived">purple</span> were computed by the OSC using values provided by the specified sources.</em></div>\n\1'
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
         if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
@@ -1635,7 +1639,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             else:
                 catalogcopy[entry][col] = None
 
-        del catalog[entry]
+    del catalog[entry]
 
     if args.test and spectraavail and photoavail:
         break

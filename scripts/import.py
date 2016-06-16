@@ -1978,6 +1978,8 @@ for task in tasks:
         #Simbad.list_votable_fields()
         # Some coordinates that SIMBAD claims belong to the SNe actually belong to the host.
         simbadbadcoordbib = ['2013ApJ...770..107C']
+        simbadbadnamebib = ['2004AJ....127.2809W']
+        simbadbannedcats = ['[TBV2008]', 'OGLE-MBR']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
         customSimbad.TIMEOUT = 120
@@ -1991,6 +1993,10 @@ for task in tasks:
                 continue
             if not row['COO_BIBCODE'] and not row['SP_BIBCODE'] and not row['SP_BIBCODE_2']:
                 continue
+            if any([x in row['MAIN_ID'] for x in simbadbannedcats]):
+                continue
+            if row['COO_BIBCODE'] and row['COO_BIBCODE'] in simbadbadnamebib:
+                continue
             name = single_spaces(re.sub(r'\[[^)]*\]', '', row['MAIN_ID']).strip())
             if name == 'SN':
                 continue
@@ -1999,10 +2005,10 @@ for task in tasks:
                 url = "http://simbad.u-strasbg.fr/", secondary = True)
             aliases = row['ID'].split(',')
             for alias in aliases:
+                if any([x in alias for x in simbadbannedcats]):
+                    continue
                 ali = single_spaces(re.sub(r'\[[^)]*\]', '', alias).strip())
                 ali = name_clean(ali)
-                if 'OGLE-MBR' in ali:
-                    continue
                 add_quantity(name, 'alias', ali, source)
             if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
                 csources = ','.join([source, add_source(name, bibcode = row['COO_BIBCODE'])])
