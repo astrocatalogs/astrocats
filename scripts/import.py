@@ -2600,7 +2600,7 @@ for task in tasks:
             for band in ['B', 'V', 'R', 'I']:
                 bandtag = band + 'mag'
                 if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                    add_photometry(name, time = row["MJD"], telescope = row["Tel"], band = band, magnitude = row[bandtag],
+                    add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row["Tel"], band = band, magnitude = row[bandtag],
                                    e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/ApJ/728/14/table2")
@@ -2611,7 +2611,7 @@ for task in tasks:
             for band in ['u', 'g', 'r', 'i', 'z']:
                 bandtag = band + 'mag'
                 if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
-                    add_photometry(name, time = row["MJD"], telescope = row["Tel"], band = band + "'", magnitude = row[bandtag],
+                    add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row["Tel"], band = band + "'", magnitude = row[bandtag],
                                    e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/ApJ/728/14/table3")
