@@ -5017,7 +5017,7 @@ for task in tasks:
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'discoverdate', row[4], source)
-                add_quantity(name, 'claimedtype', row[6].replace('SN').strip('() '), source)
+                add_quantity(name, 'claimedtype', row[6].replace('SN', '').strip('() '), source)
         journal_events()
 
         # 1606.04795
