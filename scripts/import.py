@@ -78,6 +78,7 @@ tasks = OrderedDict([
     ("snls",            {"nicename":"%pre SNLS",                    "update": False}),
     ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
     ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
+    ("psst",            {"nicename":"%pre PSST",                    "update": False}),
     ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
     ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
     ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
@@ -5003,6 +5004,33 @@ for task in tasks:
                 add_quantity(name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
                 add_quantity(name, 'redshift', cols[5], source, kind = 'spectroscopic')
                 add_quantity(name, 'claimedtype', 'II P', source)
+        journal_events()
+
+    if do_task(task, 'psst'):
+        # 2016arXiv160204156S
+        with open("../sne-external/2016arXiv160204156S.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue
+                (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
+                add_quantity(name, 'ra', row[1], source)
+                add_quantity(name, 'dec', row[2], source)
+                add_quantity(name, 'discoverdate', row[4], source)
+                add_quantity(name, 'claimedtype', row[6].replace('SN').strip('() '), source)
+        journal_events()
+
+        # 1606.04795
+        with open("../sne-external/1606.04795.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue
+                (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', refurl = 'http://arxiv.org/abs/1606.04795')
+                add_quantity(name, 'ra', row[1], source)
+                add_quantity(name, 'dec', row[2], source)
+                add_quantity(name, 'discoverdate', row[3], source)
+                add_quantity(name, 'claimedtype', row[6], source)
         journal_events()
     
     if do_task(task, 'crts'):
