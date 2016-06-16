@@ -20,8 +20,8 @@ def do_rochester(events, args, tasks):
     rochesterupdate = [False, True]
     current_task = 'Rochester'
 
-    for p, path in enumerate(pbar(rochesterpaths, current_task)):
-        if args.update and not rochesterupdate[p]:
+    for pp, path in enumerate(pbar(rochesterpaths, current_task)):
+        if args.update and not rochesterupdate[pp]:
             continue
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
@@ -33,8 +33,8 @@ def do_rochester(events, args, tasks):
         rows = soup.findAll('tr')
         sec_ref = 'Latest Supernovae'
         sec_refurl = 'http://www.rochesterastronomy.org/snimages/snredshiftall.html'
-        for r, row in enumerate(pbar(rows, current_task)):
-            if r == 0:
+        for rr, row in enumerate(pbar(rows, current_task)):
+            if rr == 0:
                 continue
             cols = row.findAll('td')
             if not len(cols):
@@ -102,7 +102,7 @@ def do_rochester(events, args, tasks):
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
                 if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
-                     not any('GRB' in x for x in get_aliases(name)))):
+                     not any('GRB' in xx for xx in get_aliases(events, name)))):
                     mag = str(cols[8].contents[0]).strip()
                     add_photometry(
                         events, name, time=str(astrot.mjd), magnitude=mag, source=sources)
@@ -115,9 +115,10 @@ def do_rochester(events, args, tasks):
     if not args.update:
         vsnetfiles = ['latestsne.dat']
         for vsnetfile in vsnetfiles:
-            f = open(os.path.join(PATH.REPO_EXTERNAL, "" + vsnetfile, 'r', encoding='latin1'))
-            tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
-            for r, row in enumerate(tsvin):
+            file_name = os.path.join(PATH.REPO_EXTERNAL, "" + vsnetfile)
+            with open(file_name, 'r', encoding='latin1') as csv_file:
+                tsvin = csv.reader(csv_file, delimiter=' ', skipinitialspace=True)
+            for rr, row in enumerate(tsvin):
                 if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
                     continue
                 name = row[0].strip()
@@ -174,7 +175,6 @@ def do_rochester(events, args, tasks):
                 add_photometry(
                     events, name, time=mjd, band=band, magnitude=magnitude,
                     e_magnitude=e_magnitude, source=sources)
-            f.close()
 
     events = journal_events(tasks, args, events)
     return events

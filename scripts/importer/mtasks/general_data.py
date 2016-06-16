@@ -58,8 +58,8 @@ def do_ascii(events, args, tasks):
         else:
             system = 'Landolt'
 
-        with open(datafile, 'r') as f:
-            tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
+        with open(datafile, 'r') as ff:
+            tsvin = csv.reader(ff, delimiter=' ', skipinitialspace=True)
             for row in tsvin:
                 if not row[0]:
                     continue
@@ -97,8 +97,8 @@ def do_ascii(events, args, tasks):
     # 2015MNRAS.449..451W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015MNRAS.449..451W.dat')
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
-    for r, row in enumerate(pbar(data, current_task)):
-        if r == 0:
+    for rr, row in enumerate(pbar(data, current_task)):
+        if rr == 0:
             continue
         namesplit = row[0].split('/')
         name = namesplit[-1]
@@ -119,15 +119,15 @@ def do_ascii(events, args, tasks):
     name = add_event(tasks, args, events, 'LSQ13zm')
     source = add_source(events, name, bibcode='2016MNRAS.459.1039T')
     add_quantity(events, name, 'alias', name, source)
-    for r, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
-            bands = [x.replace('(err)', '') for x in row[3:-1]]
+            bands = [xx.replace('(err)', '') for xx in row[3:-1]]
             continue
         mjd = row[1]
-        mags = [re.sub(r'\([^)]*\)', '', x) for x in row[3:-1]]
-        upps = [True if '>' in x else '' for x in mags]
-        mags = [x.replace('>', '') for x in mags]
-        errs = [x[x.find('(')+1:x.find(')')] if '(' in x else '' for x in row[3:-1]]
+        mags = [re.sub(r'\([^)]*\)', '', xx) for xx in row[3:-1]]
+        upps = [True if '>' in xx else '' for xx in mags]
+        mags = [xx.replace('>', '') for xx in mags]
+        errs = [xx[xx.find('(')+1:xx.find(')')] if '(' in xx else '' for xx in row[3:-1]]
         for mi, mag in enumerate(mags):
             if not is_number(mag):
                 continue
@@ -142,8 +142,8 @@ def do_ascii(events, args, tasks):
     name = add_event(tasks, args, events, 'PS1-13arp')
     source = add_source(events, name, bibcode='2015ApJ...804...28G')
     add_quantity(events, name, 'alias', name, source)
-    for r, row in enumerate(pbar(data, current_task)):
-        if r == 0:
+    for rr, row in enumerate(pbar(data, current_task)):
+        if rr == 0:
             continue
         mjd = row[1]
         mag = row[3]
@@ -159,7 +159,7 @@ def do_ascii(events, args, tasks):
     # 2016ApJ...819...35A
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016ApJ...819...35A.tsv')
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
-    for r, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
         name = add_event(tasks, args, events, row[0])
@@ -168,7 +168,7 @@ def do_ascii(events, args, tasks):
         add_quantity(events, name, 'ra', row[1], source)
         add_quantity(events, name, 'dec', row[2], source)
         add_quantity(events, name, 'redshift', row[3], source)
-        disc_date = datetime.strptime(row[4], '%Y %b %d').isoformat()
+        disc_date = datetime.strptime(row[4], '%Y %bb %d').isoformat()
         disc_date = disc_date.split('T')[0].replace('-', '/')
         add_quantity(events, name, 'discoverdate', disc_date, source)
     events = journal_events(tasks, args, events)
@@ -176,7 +176,7 @@ def do_ascii(events, args, tasks):
     # 2014ApJ...784..105W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2014ApJ...784..105W.tsv')
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
-    for r, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
         name = add_event(tasks, args, events, row[0])
@@ -195,7 +195,7 @@ def do_ascii(events, args, tasks):
     # 2012MNRAS.425.1007B
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2012MNRAS.425.1007B.tsv')
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
-    for r, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             bands = row[2:]
             continue
@@ -203,8 +203,8 @@ def do_ascii(events, args, tasks):
         source = add_source(events, name, bibcode='2012MNRAS.425.1007B')
         add_quantity(events, name, 'alias', name, source)
         mjd = row[1]
-        mags = [x.split('±')[0].strip() for x in row[2:]]
-        errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[2:]]
+        mags = [xx.split('±')[0].strip() for xx in row[2:]]
+        errs = [xx.split('±')[1].strip() if '±' in xx else '' for xx in row[2:]]
         if row[0] == 'PTF09dlc':
             ins = 'HAWK-I'
             tel = 'VLT 8.1m'
@@ -231,35 +231,35 @@ def do_cccp(events, args, tasks):
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt'))
     for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
-        with open(datafile, 'r') as f:
-            tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
-            for r, row in enumerate(tsvin):
-                if r == 0:
+        with open(datafile, 'r') as ff:
+            tsvin = csv.reader(ff, delimiter='\t', skipinitialspace=True)
+            for rr, row in enumerate(tsvin):
+                if rr == 0:
                     continue
-                elif r == 1:
+                elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
                     name = add_event(tasks, args, events, name)
                     source = add_source(events, name, bibcode='2012ApJ...744...10K')
                     add_quantity(events, name, 'alias', name, source)
-                elif r >= 5:
+                elif rr >= 5:
                     mjd = str(Decimal(row[0]) + 53000)
-                    for b, band in enumerate(cccpbands):
-                        if row[2*b + 1]:
-                            mag = row[2*b + 1].strip('>')
-                            upl = (not row[2*b + 2])
+                    for bb, band in enumerate(cccpbands):
+                        if row[2*bb + 1]:
+                            mag = row[2*bb + 1].strip('>')
+                            upl = (not row[2*bb + 2])
                             add_photometry(
                                 events, name, time=mjd, band=band, magnitude=mag,
-                                e_magnitude=row[2*b + 2], upperlimit=upl, source=source)
+                                e_magnitude=row[2*bb + 2], upperlimit=upl, source=source)
 
     if archived_task(tasks, args, 'cccp'):
-        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'r') as f:
-            html = f.read()
+        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'r') as ff:
+            html = ff.read()
     else:
         session = requests.Session()
         response = session.get('https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
         html = response.text
-        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'w') as f:
-            f.write(html)
+        with open(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/sc_cccp.html'), 'w') as ff:
+            ff.write(html)
 
     soup = BeautifulSoup(html, 'html5lib')
     links = soup.body.findAll("a")
@@ -272,14 +272,14 @@ def do_cccp(events, args, tasks):
 
             if archived_task(tasks, args, 'cccp'):
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1]
-                with open(fname, 'r') as f:
-                    html2 = f.read()
+                with open(fname, 'r') as ff:
+                    html2 = ff.read()
             else:
                 response2 = session.get('https://webhome.weizmann.ac.il/home/iair/' + link['href'])
                 html2 = response2.text
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1]
-                with open(fname, 'w') as f:
-                    f.write(html2)
+                with open(fname, 'w') as ff:
+                    ff.write(html2)
 
             soup2 = BeautifulSoup(html2, 'html5lib')
             links2 = soup2.body.findAll("a")
@@ -291,8 +291,8 @@ def do_cccp(events, args, tasks):
                         fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
                             continue
-                        with open(fname, 'r') as f:
-                            html3 = f.read()
+                        with open(fname, 'r') as ff:
+                            html3 = ff.read()
                     else:
                         response3 = session.get('https://webhome.weizmann.ac.il/home/iair/cccp/' +
                                                 link2['href'])
@@ -301,10 +301,10 @@ def do_cccp(events, args, tasks):
                         html3 = response3.text
                         fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
                         fname += link2['href'].split('/')[-1]
-                        with open(fname, 'w') as f:
-                            f.write(html3)
-                    table = [[str(Decimal(y.strip())).rstrip('0') for y in x.split(',')]
-                             for x in list(filter(None, html3.split('\n')))]
+                        with open(fname, 'w') as ff:
+                            ff.write(html3)
+                    table = [[str(Decimal(yy.strip())).rstrip('0') for yy in xx.split(',')]
+                             for xx in list(filter(None, html3.split('\n')))]
                     for row in table:
                         add_photometry(
                             events, name, time=str(Decimal(row[0]) + 53000), band=band,
@@ -322,13 +322,13 @@ def do_cpcs(events, args, tasks):
     if not jsontxt:
         return events
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
-    ids = [x['id'] for x in alertindex]
-    for i, ai in enumerate(pbar(ids, current_task)):
-        name = alertindex[i]['ivorn'].split('/')[-1].strip()
-        # Skip a few weird entries
+    ids = [xx['id'] for xx in alertindex]
+    for ii, ai in enumerate(pbar(ids, current_task)):
+        name = alertindex[ii]['ivorn'].split('/')[-1].strip()
+        # Skip aa few weird entries
         if name == 'ASASSNli':
             continue
-        # Just use a whitelist for now since naming seems inconsistent
+        # Just use aa whitelist for now since naming seems inconsistent
         white_list = ['GAIA', 'OGLE', 'ASASSN', 'MASTER', 'OTJ', 'PS1', 'IPTF']
         if True in [xx in name.upper() for xx in white_list]:
             name = name.replace('Verif', '').replace('_', ' ')
@@ -351,31 +351,31 @@ def do_cpcs(events, args, tasks):
                                 url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
         unit_deg = 'floatdegrees'
-        add_quantity(events, name, 'ra', str(alertindex[i]['ra']), sec_source, unit=unit_deg)
-        add_quantity(events, name, 'dec', str(alertindex[i]['dec']), sec_source, unit=unit_deg)
+        add_quantity(events, name, 'ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
+        add_quantity(events, name, 'dec', str(alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = 'http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=' + str(ai)
         source = add_source(events, name, refname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL, 'CPCS/alert-') + str(ai).zfill(2) + '.json'
         if archived_task(tasks, args, 'cpcs') and os.path.isfile(fname):
-            with open(fname, 'r') as f:
-                jsonstr = f.read()
+            with open(fname, 'r') as ff:
+                jsonstr = ff.read()
         else:
             session = requests.Session()
             response = session.get(alerturl + '&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-            with open(fname, 'w') as f:
+            with open(fname, 'w') as ff:
                 jsonstr = response.text
-                f.write(jsonstr)
+                ff.write(jsonstr)
 
         try:
             cpcsalert = json.loads(jsonstr)
         except:
             continue
 
-        mjds = [round_sig(x, sig=9) for x in cpcsalert['mjd']]
-        mags = [round_sig(x, sig=6) for x in cpcsalert['mag']]
-        errs = [round_sig(x, sig=6) if (is_number(x) and float(x) > 0.0)
-                else '' for x in cpcsalert['magerr']]
+        mjds = [round_sig(xx, sig=9) for xx in cpcsalert['mjd']]
+        mags = [round_sig(xx, sig=6) for xx in cpcsalert['mag']]
+        errs = [round_sig(xx, sig=6) if (is_number(xx) and float(xx) > 0.0)
+                else '' for xx in cpcsalert['magerr']]
         bnds = cpcsalert['filter']
         obs  = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
@@ -420,7 +420,7 @@ def do_crts(events, args, tasks):
                     lclink = lclink.split("'")[1]
                 elif tdi == 13:
                     aliases = re.sub('[()]', '', re.sub('<[^<]+?>', '', td.contents[-1].strip()))
-                    aliases = [x.strip('; ') for x in list(filter(None, aliases.split(' ')))]
+                    aliases = [xx.strip('; ') for xx in list(filter(None, aliases.split(' ')))]
 
             name = ''
             hostmag = ''
@@ -476,13 +476,13 @@ def do_crts(events, args, tasks):
                       lclink.split('.')[-2].rstrip('p').split('/')[-1] + '.html')
             if ((not args.fullrefresh and archived_task(tasks, args, 'crts') and
                  os.path.isfile(fname2))):
-                with open(fname2, 'r') as f:
-                    html2 = f.read()
+                with open(fname2, 'r') as ff:
+                    html2 = ff.read()
             else:
-                with open(fname2, 'w') as f:
+                with open(fname2, 'w') as ff:
                     response2 = urllib.request.urlopen(lclink)
                     html2 = response2.read().decode('utf-8')
-                    f.write(html2)
+                    ff.write(html2)
 
             lines = html2.splitlines()
             teles = 'Catalina Schmidt'
@@ -515,7 +515,7 @@ def do_des(events, args, tasks):
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
     ackn_url = 'http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause'
-    des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')   # Make sure there is a trailing slash
+    des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')   # Make sure there is aa trailing slash
     html = load_cached_url(args, des_trans_url, des_path + 'transients.html')
     if not html:
         return events
@@ -531,7 +531,7 @@ def do_des(events, args, tasks):
             if tdi == 0:
                 name = add_event(tasks, args, events, td.text.strip())
             if tdi == 1:
-                (ra, dec) = [x.strip() for x in td.text.split('\xa0')]
+                (ra, dec) = [xx.strip() for xx in td.text.split('\xa0')]
             if tdi == 6:
                 atellink = td.find('a')
                 if atellink:
@@ -560,11 +560,11 @@ def do_des(events, args, tasks):
         for line in lines:
             if 'var data = ' in line:
                 jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
-                for i, band in enumerate(jsontxt['band']):
-                    upl = True if float(jsontxt['snr'][i]) <= 3.0 else ''
+                for ii, band in enumerate(jsontxt['band']):
+                    upl = True if float(jsontxt['snr'][ii]) <= 3.0 else ''
                     add_photometry(
-                        events, name, time=jsontxt['mjd'][i], magnitude=jsontxt['mag'][i],
-                        e_magnitude=jsontxt['mag_error'][i],
+                        events, name, time=jsontxt['mjd'][ii], magnitude=jsontxt['mag'][ii],
+                        e_magnitude=jsontxt['mag_error'][ii],
                         band=band, observatory='CTIO', telescope='Blanco 4m', instrument='DECam',
                         upperlimit=upl, source=sources)
 
@@ -578,13 +578,13 @@ def do_external_radio(events, args, tasks):
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
         radiosourcedict = OrderedDict()
-        with open(datafile, 'r') as f:
-            for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
+        with open(datafile, 'r') as ff:
+            for li, line in enumerate([xx.strip() for xx in ff.read().splitlines()]):
                 if line.startswith('(') and li <= len(radiosourcedict):
                     key = line.split()[0]
                     bibc = line.split()[-1]
                     radiosourcedict[key] = add_source(events, name, bibcode=bibc)
-                elif li in [x + len(radiosourcedict) for x in range(3)]:
+                elif li in [xx + len(radiosourcedict) for xx in range(3)]:
                     continue
                 else:
                     cols = list(filter(None, line.split()))
@@ -604,8 +604,8 @@ def do_external_xray(events, args, tasks):
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         name = add_event(tasks, args, events, os.path.basename(datafile).split('.')[0])
-        with open(datafile, 'r') as f:
-            for li, line in enumerate(f.read().splitlines()):
+        with open(datafile, 'r') as ff:
+            for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
                     source = add_source(events, name, bibcode=line.split()[-1])
                 elif li in [1, 2, 3]:
@@ -615,7 +615,7 @@ def do_external_xray(events, args, tasks):
                     add_photometry(
                         events, name, time=cols[:2],
                         energy=cols[2:4], u_energy='keV', counts=cols[4], flux=cols[6],
-                        unabsorbedflux=cols[8], u_flux='ergs/s/cm^2',
+                        unabsorbedflux=cols[8], u_flux='ergs/ss/cm^2',
                         photonindex=cols[15], instrument=cols[17], nhmw=cols[11],
                         upperlimit=(float(cols[5]) < 0), source=source)
                     add_quantity(events, name, 'alias', name, source)
@@ -626,8 +626,8 @@ def do_external_xray(events, args, tasks):
 
 def do_fermi(events, args, tasks):
     current_task = 'Fermi'
-    with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as f:
-        tsvin = csv.reader(f, delimiter=',')
+    with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as ff:
+        tsvin = csv.reader(ff, delimiter=',')
         for ri, row in enumerate(pbar(tsvin, current_task)):
             if row[0].startswith('#'):
                 if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
@@ -661,14 +661,14 @@ def do_gaia(events, args, tasks):
         name = add_event(tasks, args, events, row[0])
         source = add_source(events, name, refname=reference, url=refurl)
         add_quantity(events, name, 'alias', name, source)
-        year = '20' + re.findall(r'\d+', row[0])[0]
+        year = '20' + re.findall(r'\dd+', row[0])[0]
         add_quantity(events, name, 'discoverdate', year, source)
         add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
         add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
         if row[7] and row[7] != 'unknown':
             type = row[7].replace('SNe', '').replace('SN', '').strip()
             add_quantity(events, name, 'claimedtype', type, source)
-        elif any([x in row[9].upper() for x in ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
+        elif any([xx in row[9].upper() for xx in ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
             add_quantity(events, name, 'claimedtype', 'Candidate', source)
 
         if 'aka' in row[9].replace('gakaxy', 'galaxy').lower() and 'AKARI' not in row[9]:
@@ -685,14 +685,14 @@ def do_gaia(events, args, tasks):
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
         if not args.fullrefresh and archived_task(tasks, args, 'gaia') and os.path.isfile(fname):
-            with open(fname, 'r') as f:
-                csvtxt = f.read()
+            with open(fname, 'r') as ff:
+                csvtxt = ff.read()
         else:
             response = urllib.request.urlopen('http://gsaweb.ast.cam.ac.uk/alerts/alert/' +
                                               row[0] + '/lightcurve.csv')
-            with open(fname, 'w') as f:
+            with open(fname, 'w') as ff:
                 csvtxt = response.read().decode('utf-8')
-                f.write(csvtxt)
+                ff.write(csvtxt)
 
         tsvin2 = csv.reader(csvtxt.splitlines())
         for ri2, row2 in enumerate(tsvin2):
@@ -744,8 +744,8 @@ def do_itep(events, args, tasks):
     fname = os.path.join(PATH.REPO_EXTERNAL, 'itep-lc-cat-28dec2015.txt')
     tsvin = csv.reader(open(fname, 'r'), delimiter='|', skipinitialspace=True)
     curname = ''
-    for r, row in enumerate(pbar(tsvin, current_task)):
-        if r <= 1 or len(row) < 7:
+    for rr, row in enumerate(pbar(tsvin, current_task)):
+        if rr <= 1 or len(row) < 7:
             continue
         name = 'SN' + row[0].strip()
         mjd = str(jd_to_mjd(Decimal(row[1].strip())))
@@ -764,7 +764,7 @@ def do_itep(events, args, tasks):
                 events, name, refname=sec_reference, url=sec_refurl, secondary=True)
             add_quantity(events, name, 'alias', name, sec_source)
 
-            year = re.findall(r'\d+', name)[0]
+            year = re.findall(r'\dd+', name)[0]
             add_quantity(events, name, 'discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
@@ -777,10 +777,10 @@ def do_itep(events, args, tasks):
             add_photometry(events, name, time=mjd, band=band, magnitude=magnitude,
                            e_magnitude=e_magnitude, source=sec_source + ',' + source)
 
-    # Write out references that could use a bibcode
+    # Write out references that could use aa bibcode
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as bib_file:
-        bib_file.writelines(['%s\n' % ii for ii in needsbib])
+        bib_file.writelines(['%ss\n' % ii for ii in needsbib])
     events = journal_events(tasks, args, events)
     return events
 
@@ -790,8 +790,8 @@ def do_pessto(events, args, tasks):
     tsvin = csv.reader(open(pessto_path, 'r'), delimiter=',')
     for ri, row in enumerate(tsvin):
         if ri == 0:
-            bands = [x.split('_')[0] for x in row[3::2]]
-            systems = [x.split('_')[1].capitalize().replace('Ab', 'AB') for x in row[3::2]]
+            bands = [xx.split('_')[0] for xx in row[3::2]]
+            systems = [xx.split('_')[1].capitalize().replace('Ab', 'AB') for xx in row[3::2]]
             continue
         name = row[1]
         name = add_event(tasks, args, events, name)
@@ -854,8 +854,8 @@ def do_sdss(events, args, tasks):
         else:
             bibcode = '2008AJ....136.2306H'
 
-        for r, row in enumerate(tsvin):
-            if r == 0:
+        for rr, row in enumerate(tsvin):
+            if rr == 0:
                 if row[5] == 'RA:':
                     name = 'SDSS-II ' + row[3]
                 else:
@@ -866,16 +866,16 @@ def do_sdss(events, args, tasks):
                 add_quantity(events, name, 'alias', 'SDSS-II ' + row[3], source)
 
                 if row[5] != 'RA:':
-                    year = re.findall(r'\d+', name)[0]
+                    year = re.findall(r'\dd+', name)[0]
                     add_quantity(events, name, 'discoverdate', year, source)
 
                 add_quantity(events, name, 'ra', row[-4], source, unit='floatdegrees')
                 add_quantity(events, name, 'dec', row[-2], source, unit='floatdegrees')
-            if r == 1:
+            if rr == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
                 add_quantity(events, name, 'redshift', row[2], source, error=error,
                              kind='heliocentric')
-            if r >= 19:
+            if rr >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
                     continue
@@ -918,7 +918,7 @@ def do_snhunt(events, args, tasks):
     bs = BeautifulSoup(tablestr, 'html5lib')
     trs = bs.find('table').findAll('tr')
     for tr in pbar(trs, current_task):
-        cols = [str(x.text) for x in tr.findAll('td')]
+        cols = [str(xx.text) for xx in tr.findAll('td')]
         if not cols:
             continue
         name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
@@ -1017,13 +1017,13 @@ def do_superfit_spectra(events, args, tasks):
                                 url='http://www.dahowell.com/superfit.html', secondary=True)
             add_quantity(events, name, 'alias', name, source)
 
-            with open(sffile) as f:
-                rows = f.read().splitlines()
+            with open(sffile) as ff:
+                rows = ff.read().splitlines()
             specdata = []
             for row in rows:
                 if row.strip():
-                    specdata.append(list(filter(None, re.split('\t+|\s+', row, maxsplit=0))))
-            specdata = [[x.replace('D', 'E') for x in list(i)] for i in zip(*specdata)]
+                    specdata.append(list(filter(None, re.split('\tt+|\ss+', row, maxsplit=0))))
+            specdata = [[xx.replace('D', 'E') for xx in list(ii)] for ii in zip(*specdata)]
             wavelengths = specdata[0]
             fluxes = specdata[1]
 
@@ -1135,7 +1135,7 @@ def do_simbad(events, args, tasks):
     customSimbad = Simbad()
     customSimbad.add_votable_fields('otype', 'id(opt)')
     result = customSimbad.query_object('SN 20[0-9][0-9]*', wildcard=True)
-    for r, row in enumerate(result):
+    for rr, row in enumerate(result):
         if row['OTYPE'].decode() != 'SN':
             continue
         name = row['MAIN_ID'].decode()
