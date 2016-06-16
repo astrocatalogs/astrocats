@@ -2534,21 +2534,18 @@ for task in tasks:
         (name, source) = new_event(name, bibcode = "2013AJ....145...99A")
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = row["MJD"], band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"] if not row["l_Bmag"] else '',
-                               upperlimit = (row['l_Bmag'] == '>'), source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = row["MJD"], band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"] if is_number(row["e_Vmag"]) else '',
-                               upperlimit = (not is_number(row["e_Vmag"])), source = source)
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = row["MJD"], band = "R", magnitude = row["Rmag"],
-                               e_magnitude = row["e_Rmag"] if not row["l_Rmag"] else '',
-                               upperlimit = (row['l_Rmag'] == '>'), source = source)
-            if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                add_photometry(name, time = row["MJD"], band = "I", magnitude = row["Imag"],
-                               e_magnitude = row["e_Imag"], source = source)
+            for band in ['B', 'R']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD"], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag] if not row["l_" + bandtag] else '',
+                                   upperlimit = (row['l_' + bandtag] == '>'), source = source)
+            for band in ['V', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD"], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag] if is_number(row["e_" + bandtag]) else '',
+                                   upperlimit = (not is_number(row["e_" + bandtag])), source = source)
         journal_events()
     
         # 2011ApJ...729..143C
@@ -2568,15 +2565,11 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
-                add_photometry(name, time = row["MJD"], telescope = "PAIRITEL", band = "J", magnitude = row["Jmag"],
-                               e_magnitude = row["e_Jmag"], source = source)
-            if "Hmag" in row and is_number(row["Hmag"]) and not isnan(float(row["Hmag"])):
-                add_photometry(name, time = row["MJD"], telescope = "PAIRITEL", band = "H", magnitude = row["Hmag"],
-                               e_magnitude = row["e_Hmag"], source = source)
-            if "Ksmag" in row and is_number(row["Ksmag"]) and not isnan(float(row["Ksmag"])):
-                add_photometry(name, time = row["MJD"], telescope = "PAIRITEL", band = "Ks", magnitude = row["Ksmag"],
-                               e_magnitude = row["e_Ksmag"], source = source)
+            for band in ['J', 'H', 'Ks']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD"], telescope = "PAIRITEL", band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/ApJ/729/143/table4")
         table = result[list(result.keys())[0]]
@@ -2604,54 +2597,33 @@ for task in tasks:
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"], source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"], source = source)
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "R", magnitude = row["Rmag"],
-                               e_magnitude = row["e_Rmag"], source = source)
-            if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "I", magnitude = row["Imag"],
-                               e_magnitude = row["e_Imag"], source = source)
+            for band in ['B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD"], telescope = row["Tel"], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/ApJ/728/14/table2")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            if "u_mag" in row and is_number(row["u_mag"]) and not isnan(float(row["u_mag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "u'", magnitude = row["u_mag"],
-                               e_magnitude = row["e_u_mag"], source = source)
-            if "g_mag" in row and is_number(row["g_mag"]) and not isnan(float(row["g_mag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "g'", magnitude = row["g_mag"],
-                               e_magnitude = row["e_g_mag"], source = source)
-            if "r_mag" in row and is_number(row["r_mag"]) and not isnan(float(row["r_mag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "r'", magnitude = row["r_mag"],
-                               e_magnitude = row["e_r_mag"], source = source)
-            if "i_mag" in row and is_number(row["i_mag"]) and not isnan(float(row["i_mag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "i'", magnitude = row["i_mag"],
-                               e_magnitude = row["e_i_mag"], source = source)
-            if "z_mag" in row and is_number(row["z_mag"]) and not isnan(float(row["z_mag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), telescope = row['Tel'], band = "z'", magnitude = row["z_mag"],
-                               e_magnitude = row["e_z_mag"], source = source)
+            for band in ['u', 'g', 'r', 'i', 'z']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = row["MJD"], telescope = row["Tel"], band = band + "'", magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/ApJ/728/14/table3")
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
-            if "Ymag" in row and is_number(row["Ymag"]) and not isnan(float(row["Ymag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "Y", magnitude = row["Ymag"],
-                               e_magnitude = row["e_Ymag"], source = source)
-            if "Jmag" in row and is_number(row["Jmag"]) and not isnan(float(row["Jmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "J", magnitude = row["Jmag"],
-                               e_magnitude = row["e_Jmag"], source = source)
-            if "Hmag" in row and is_number(row["Hmag"]) and not isnan(float(row["Hmag"])):
-                add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = "H", magnitude = row["Hmag"],
-                               e_magnitude = row["e_Hmag"], source = source)
+            for band in ['Y', 'J', 'H']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = str(jd_to_mjd(Decimal(row["JD"]))), instrument = row['Inst'], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
         journal_events()
     
         # 2011PAZh...37..837T
@@ -2664,21 +2636,11 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2455000))
-            if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "U", magnitude = row["Umag"],
-                               e_magnitude = row["e_Umag"], source = source)
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"], source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"], source = source)
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "R", magnitude = row["Rmag"],
-                               e_magnitude = row["e_Rmag"], source = source)
-            if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "I", magnitude = row["Imag"],
-                               e_magnitude = row["e_Imag"], source = source)
+            for band in ['U', 'B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = mjd, telescope = row["Tel"], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
         journal_events()
     
         # 2013MNRAS.433.1871B
@@ -2691,21 +2653,11 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2456000))
-            if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "U", magnitude = row["Umag"],
-                               e_magnitude = row["e_Umag"], source = source)
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"], source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"], source = source)
-            if "Rcmag" in row and is_number(row["Rcmag"]) and not isnan(float(row["Rcmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "Rc", magnitude = row["Rcmag"],
-                               e_magnitude = row["e_Rcmag"], source = source)
-            if "Icmag" in row and is_number(row["Icmag"]) and not isnan(float(row["Icmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "Ic", magnitude = row["Icmag"],
-                               e_magnitude = row["e_Icmag"], source = source)
+            for band in ['U', 'B', 'V', 'Rc', 'Ic']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = mjd, telescope = row["Tel"], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/MNRAS/433/1871/table3b")
         table = result[list(result.keys())[0]]
@@ -2713,18 +2665,11 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             mjd = str(jd_to_mjd(Decimal(row["JD"]) + 2456000))
-            if "gmag" in row and is_number(row["gmag"]) and not isnan(float(row["gmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "g", magnitude = row["gmag"],
-                               e_magnitude = row["e_gmag"], source = source)
-            if "rmag" in row and is_number(row["rmag"]) and not isnan(float(row["rmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "r", magnitude = row["rmag"],
-                               e_magnitude = row["e_rmag"], source = source)
-            if "imag" in row and is_number(row["imag"]) and not isnan(float(row["imag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "i", magnitude = row["imag"],
-                               e_magnitude = row["e_imag"], source = source)
-            if "zmag" in row and is_number(row["zmag"]) and not isnan(float(row["zmag"])):
-                add_photometry(name, time = mjd, telescope = row['Tel'], band = "z", magnitude = row["zmag"],
-                               e_magnitude = row["e_zmag"], source = source)
+            for band in ['g', 'r', 'i', 'z']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = mjd, telescope = row["Tel"], band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
         journal_events()
     
         # 2014AJ....148....1Z
@@ -2737,18 +2682,11 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             mjd = row['MJD']
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"], source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"], source = source)
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "R", magnitude = row["Rmag"],
-                               e_magnitude = row["e_Rmag"], source = source)
-            if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = "I", magnitude = row["Imag"],
-                               e_magnitude = row["e_Imag"], source = source)
+            for band in ['B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = mjd, telescope = "LJT", instrument = "YFOSC", band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/AJ/148/1/table3")
         table = result[list(result.keys())[0]]
@@ -2756,24 +2694,11 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             mjd = row['MJD']
-            if "Umag" in row and is_number(row["Umag"]) and not isnan(float(row["Umag"])):
-                add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "U", magnitude = row["Umag"],
-                               e_magnitude = row["e_Umag"], source = source)
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"], source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"], source = source)
-            if "UVW1" in row and is_number(row["UVW1"]) and not isnan(float(row["UVW1"])):
-                add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "W1", magnitude = row["UVW1"],
-                               e_magnitude = row["e_UVW1"], source = source)
-            if "UVW2" in row and is_number(row["UVW2"]) and not isnan(float(row["UVW2"])):
-                add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "W2", magnitude = row["UVW2"],
-                               e_magnitude = row["e_UVW2"], source = source)
-            if "UVM2" in row and is_number(row["UVM2"]) and not isnan(float(row["UVM2"])):
-                add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = "M2", magnitude = row["UVM2"],
-                               e_magnitude = row["e_UVM2"], source = source)
+            for band in ['U', 'B', 'V', 'UVW1', 'UVW2', 'UVM2']:
+                bandtag = band + 'mag' if len(band) == 1 else band
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = mjd, telescope = "Swift", instrument = "UVOT", band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
     
         result = Vizier.get_catalogs("J/AJ/148/1/table5")
         table = result[list(result.keys())[0]]
@@ -2781,18 +2706,11 @@ for task in tasks:
         for row in tq(table, currenttask):
             row = convert_aq_output(row)
             mjd = row['MJD']
-            if "Bmag" in row and is_number(row["Bmag"]) and not isnan(float(row["Bmag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", band = "B", magnitude = row["Bmag"],
-                               e_magnitude = row["e_Bmag"], source = source)
-            if "Vmag" in row and is_number(row["Vmag"]) and not isnan(float(row["Vmag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", band = "V", magnitude = row["Vmag"],
-                               e_magnitude = row["e_Vmag"], source = source)
-            if "Rmag" in row and is_number(row["Rmag"]) and not isnan(float(row["Rmag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", band = "R", magnitude = row["Rmag"],
-                               e_magnitude = row["e_Rmag"], source = source)
-            if "Imag" in row and is_number(row["Imag"]) and not isnan(float(row["Imag"])):
-                add_photometry(name, time = mjd, telescope = "LJT", band = "I", magnitude = row["Imag"],
-                               e_magnitude = row["e_Imag"], source = source)
+            for band in ['B', 'V', 'R', 'I']:
+                bandtag = band + 'mag'
+                if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
+                    add_photometry(name, time = mjd, telescope = "LJT", band = band, magnitude = row[bandtag],
+                                   e_magnitude = row["e_" + bandtag], source = source)
         journal_events()
     
         # 2015ApJ...805...74B
