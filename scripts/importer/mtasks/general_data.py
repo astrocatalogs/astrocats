@@ -661,7 +661,7 @@ def do_gaia(events, args, tasks):
         name = add_event(tasks, args, events, row[0])
         source = add_source(events, name, refname=reference, url=refurl)
         add_quantity(events, name, 'alias', name, source)
-        year = '20' + re.findall(r'\dd+', row[0])[0]
+        year = '20' + re.findall(r'\d+', row[0])[0]
         add_quantity(events, name, 'discoverdate', year, source)
         add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
         add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
@@ -764,7 +764,7 @@ def do_itep(events, args, tasks):
                 events, name, refname=sec_reference, url=sec_refurl, secondary=True)
             add_quantity(events, name, 'alias', name, sec_source)
 
-            year = re.findall(r'\dd+', name)[0]
+            year = re.findall(r'\d+', name)[0]
             add_quantity(events, name, 'discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
@@ -866,7 +866,7 @@ def do_sdss(events, args, tasks):
                 add_quantity(events, name, 'alias', 'SDSS-II ' + row[3], source)
 
                 if row[5] != 'RA:':
-                    year = re.findall(r'\dd+', name)[0]
+                    year = re.findall(r'\d+', name)[0]
                     add_quantity(events, name, 'discoverdate', year, source)
 
                 add_quantity(events, name, 'ra', row[-4], source, unit='floatdegrees')
@@ -944,7 +944,7 @@ def do_snhunt(events, args, tasks):
 
 
 def do_snls(events, args, tasks):
-    from .. utils import get_sig_digits
+    from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
     data = csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True)
     for row in data:
