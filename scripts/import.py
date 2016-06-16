@@ -5026,7 +5026,7 @@ for task in tasks:
             for r, row in enumerate(tq(data, currenttask)):
                 if row[0][0] == '#':
                     continue
-                (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', refurl = 'http://arxiv.org/abs/1606.04795')
+                (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
                 add_quantity(name, 'discoverdate', row[3], source)
