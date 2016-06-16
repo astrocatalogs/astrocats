@@ -9,7 +9,6 @@ Multiple SN datasets on VizieR:
 
 Single SN dataset on VizieR:
 * SN2002cv - http://vizier.cfa.harvard.edu/viz-bin/VizieR-3?-source=J/MNRAS/384/107 (Use dust-corrected or not?)
-* SN2013ge - http://vizier.u-strasbg.fr/cgi-bin/VizieR?-source=J/ApJ/821/57
 
 Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
