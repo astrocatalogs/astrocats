@@ -1485,11 +1485,14 @@ def derive_and_sanitize():
                 sig = get_sig_digits(hv['value'])
                 if sig > bestsig:
                     besthv = hv['value']
+                    bestsrc = hv['source']
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/clight
                 source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-                add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), source, kind = 'heliocentric')
+                sources = uniq_cdl([source] + bestsrc.split(','))
+                add_quantity(name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), sources,
+                    kind = 'heliocentric', derived = True)
         if 'redshift' not in events[name] and has_task('nedd') and 'host' in events[name]:
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
