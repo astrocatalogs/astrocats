@@ -11,7 +11,7 @@ import warnings
 
 from astropy.time import Time as astrotime
 
-from .. scripts import PATH
+from scripts import PATH
 from .. funcs import add_event, add_source, add_quantity, add_spectrum, \
     journal_events, uniq_cdl, get_preferred_name
 from .. constants import TRAVIS_QUERY_LIMIT

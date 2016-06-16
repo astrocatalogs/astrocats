@@ -6,7 +6,7 @@ import csv
 from glob import glob
 import os
 
-from .. scripts import PATH, TRAVIS_QUERY_LIMIT
+from scripts import PATH, TRAVIS_QUERY_LIMIT
 from .. funcs import add_event, add_source, add_quantity, add_spectrum, \
     get_preferred_name, jd_to_mjd, journal_events, uniq_cdl
 from ... utils import pretty_num

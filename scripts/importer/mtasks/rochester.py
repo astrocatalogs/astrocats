@@ -8,10 +8,10 @@ import os
 import re
 from string import ascii_letters
 
-from .. scripts import PATH
-from ... utils import is_number, pbar
+from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     get_aliases, journal_events, load_cached_url, make_date_string, uniq_cdl
+from ... utils import is_number, pbar
 
 
 def do_rochester(events, args, tasks):

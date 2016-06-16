@@ -8,7 +8,8 @@ import os
 import requests
 import urllib
 
-from .. scripts import PATH, TRAVIS_QUERY_LIMIT
+from scripts import PATH
+from .. constants import TRAVIS_QUERY_LIMIT
 from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
     archived_task, journal_events, load_cached_url, uniq_cdl
 from ... utils import get_sig_digits, pbar, pretty_num

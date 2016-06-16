@@ -6,7 +6,7 @@ import os
 from glob import glob
 from math import isnan
 
-from .. scripts import PATH
+from scripts import PATH
 from ... utils import pbar, is_number, pbar_strings
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     journal_events

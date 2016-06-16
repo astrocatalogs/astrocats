@@ -8,10 +8,10 @@ import os
 import urllib
 import warnings
 
-from .. scripts import PATH
-from ... utils import is_number, pbar
+from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_quantity, archived_task, \
     journal_events, load_cached_url, make_date_string, uniq_cdl
+from ... utils import is_number, pbar
 
 
 def do_ps_mds(events, args, tasks):

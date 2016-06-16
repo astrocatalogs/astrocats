@@ -5,7 +5,7 @@ import os
 import re
 import urllib
 
-from .. scripts import PATH
+from scripts import PATH
 from ... utils import is_number, pbar, Decimal
 from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     archived_task, jd_to_mjd, journal_events, load_cached_url, uniq_cdl

@@ -6,7 +6,7 @@ import importlib
 import json
 import os
 import resource
-import sys
+# import sys
 import warnings
 
 from .. utils import pbar, repo_file_list

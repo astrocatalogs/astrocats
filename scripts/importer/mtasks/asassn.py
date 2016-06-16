@@ -3,10 +3,10 @@
 from bs4 import BeautifulSoup
 import os
 
-from .. scripts import PATH
-from ... utils import pbar
+from scripts import PATH
 from .. funcs import add_event, add_source, add_quantity, \
     journal_events, load_cached_url
+from ... utils import pbar
 
 
 def do_asassn(events, args, tasks):

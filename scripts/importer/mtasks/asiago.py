@@ -8,10 +8,10 @@ import os
 import re
 import urllib
 
-from .. scripts import PATH
-from ... utils import pbar, is_number
+from scripts import PATH
 from .. funcs import add_event, add_source, add_quantity, \
     clean_snname, journal_events, load_cached_url, uniq_cdl, utf8
+from ... utils import pbar, is_number
 
 
 def do_asiago_photo(events, args, tasks):

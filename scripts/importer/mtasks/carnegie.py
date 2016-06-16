@@ -5,7 +5,7 @@ import csv
 from glob import glob
 import os
 
-from .. scripts import PATH
+from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
     clean_snname, get_preferred_name, jd_to_mjd, journal_events
 from .. constants import TRAVIS_QUERY_LIMIT

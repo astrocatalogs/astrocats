@@ -8,7 +8,8 @@ import csv
 from datetime import datetime
 from glob import glob
 from html import unescape
-from math import ceil
+import json
+from math import ceil, log10
 import os
 import re
 import requests
@@ -16,9 +17,9 @@ import urllib
 
 from scripts import PATH
 from .. funcs import add_event, add_photometry, add_source, add_spectrum, add_quantity, \
-    archived_task, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
-    make_date_string
-from scripts.utils import is_number, pbar, pbar_strings, pretty_num
+    archived_task, event_exists, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
+    make_date_string, uniq_cdl
+from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig
 
 
 def do_ascii(events, args, tasks):
@@ -314,6 +315,7 @@ def do_cccp(events, args, tasks):
 
 
 def do_cpcs(events, args, tasks):
+    current_task = 'CPCS'
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
     jsontxt = load_cached_url(args, cpcs_url, os.path.join(PATH.REPO_EXTERNAL, 'CPCS/index.json'))
@@ -389,7 +391,7 @@ def do_cpcs(events, args, tasks):
 
 def do_crts(events, args, tasks):
     crtsnameerrors = ['2011ax']
-
+    current_task = 'CRTS'
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
         html = load_cached_url(args, 'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html',
@@ -402,10 +404,10 @@ def do_crts(events, args, tasks):
             tds = tr.findAll('td')
             if not tds:
                 continue
-            refs = []
+            # refs = []
             aliases = []
-            ttype = ''
-            ctype = ''
+            # ttype = ''
+            # ctype = ''
             for tdi, td in enumerate(tds):
                 if tdi == 0:
                     crtsname = td.contents[0].text.strip()
@@ -509,6 +511,7 @@ def do_crts(events, args, tasks):
 
 
 def do_des(events, args, tasks):
+    current_task = 'DES'
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
     ackn_url = 'http://www.noao.edu/noao/library/NOAO_Publications_Acknowledgments.html#DESdatause'
@@ -520,7 +523,7 @@ def do_des(events, args, tasks):
     trs = bs.find('tbody').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
         name = ''
-        source = ''
+        # source = ''
         if tri == 0:
             continue
         tds = tr.findAll('td')
@@ -622,6 +625,7 @@ def do_external_xray(events, args, tasks):
 
 
 def do_fermi(events, args, tasks):
+    current_task = 'Fermi'
     with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',')
         for ri, row in enumerate(pbar(tsvin, current_task)):
@@ -643,6 +647,7 @@ def do_fermi(events, args, tasks):
 
 
 def do_gaia(events, args, tasks):
+    current_task = 'Gaia'
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
     if not csvtxt:
@@ -730,8 +735,8 @@ def do_internal(events, args, tasks):
 
 
 def do_itep(events, args, tasks):
+    current_task = 'ITEP'
     itepbadsources = ['2004ApJ...602..571B']
-
     needsbib = []
     with open(os.path.join(PATH.REPO_EXTERNAL, 'itep-refs.txt'), 'r') as refs_file:
         refrep = refs_file.read().splitlines()
@@ -805,6 +810,7 @@ def do_pessto(events, args, tasks):
 
 
 def do_scp(events, args, tasks):
+    current_task = 'SCP'
     tsvin = csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r'), delimiter=',')
     for ri, row in enumerate(pbar(tsvin, current_task)):
         if ri == 0:
@@ -835,6 +841,7 @@ def do_scp(events, args, tasks):
 
 
 def do_sdss(events, args, tasks):
+    current_task = 'SDSS'
     with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
     sdssbands = ['u', 'g', 'r', 'i', 'z']
@@ -887,6 +894,7 @@ def do_sdss(events, args, tasks):
 
 
 def do_snhunt(events, args, tasks):
+    current_task = 'SNHunt'
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url(args, snh_url, os.path.join(PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
     if not html:
@@ -936,6 +944,7 @@ def do_snhunt(events, args, tasks):
 
 
 def do_snls(events, args, tasks):
+    from .. utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
     data = csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True)
     for row in data:
@@ -965,6 +974,8 @@ def do_snls(events, args, tasks):
 
 
 def do_superfit_spectra(events, args, tasks):
+    from .. funcs import get_max_light, get_preferred_name
+    current_task = 'SuperFit Spectra'
     sfdirs = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*'))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))

@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 import os
 import requests
 
-from .. scripts import PATH
-from ... utils import is_number
+from scripts import PATH
 from .. funcs import add_event, add_source, add_quantity, archived_task, \
     journal_events
+from ... utils import is_number
 
 
 def do_ptf(events, args, tasks):
