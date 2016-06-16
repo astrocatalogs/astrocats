@@ -33,7 +33,7 @@ MAX_BANDS = [
 PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', 'cluster', '']
 
 
-class TASK():
+class TASK:
     name = ''
     nice_name = ''   # Name for pretty printing
     update = False   # Perform task during update
@@ -82,3 +82,10 @@ class TASK():
             return True
 
         return False
+
+
+class EVENT:
+    name = ''
+
+    def __init__(self):
+        return
