@@ -6,6 +6,7 @@ import importlib
 import json
 import os
 import resource
+import sys
 import warnings
 
 from .. utils import pbar, repo_file_list
@@ -87,7 +88,7 @@ def import_main(args=None, **kwargs):
         setattr(args, key, val)
     print(vars(args))
 
-    tasks_list = load_task_list()
+    tasks_list = load_task_list(args)
     tasks = get_old_tasks()
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
@@ -207,20 +208,51 @@ def delete_old_event_files(*args):
     return
 
 
-def load_task_list():
+def load_task_list(args):
     """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
 
     A `TASK` object is created for each entry, with the parameters filled in.
     These are placed in an OrderedDict, sorted by the `priority` parameter, with positive values
     and then negative values, e.g. [0, 2, 10, -10, -1].
     """
+    if args.args_task_list is not None:
+        if args.yes_task_list is not None or args.no_task_list is not None:
+            raise ValueError("If '--tasks' is used, '--yes' and '--no' shouldnt be.")
+
     def_task_list_filename = FILENAME.TASK_LIST
     data = json.load(open(def_task_list_filename, 'r'))
+
+    # Make sure 'active' modification lists are all valid
+    args_lists = [args.args_task_list, args.yes_task_list, args.no_task_list]
+    args_names = ['--tasks', '--yes', '--no']
+    for arglist, lname in zip(args_lists, args_names):
+        if arglist is not None:
+            for tname in arglist:
+                if tname not in data.keys():
+                    raise ValueError("Value '{}' in '{}' list does not match any tasks".format(
+                        tname, lname))
 
     tasks = {}
     # `defaults` is a dictionary where each `key` is a task name, and values are its properties
     for key, val in data.items():
         tasks[key] = TASK(name=key, **val)
+        # Modify `active` tasks
+        # ---------------------
+        # If specific list of tasks is given, make only those active
+        if args.args_task_list is not None:
+            if key in args.args_task_list:
+                tasks[key].active = True
+            else:
+                tasks[key].active = False
+        else:
+            # Set 'yes' tasks to *active*
+            if args.yes_task_list is not None:
+                if key in args.yes_task_list:
+                    tasks[key].active = True
+            # Set 'no' tasks to *inactive*
+            if args.no_task_list is not None:
+                if key in args.no_task_list:
+                    tasks[key].active = False
 
     # Sort entries as positive values, then negative values
     #    [0, 1, 2, 2, 10, -100, -10, -1]
@@ -240,6 +272,7 @@ def load_task_list():
 
     print("\nInactive Tasks:")
     print("\t" + "\n\t".join(nn.ljust(20) for nn in names_inact))
+
     return tasks
 
 if __name__ == '__main__':

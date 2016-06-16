@@ -43,9 +43,15 @@ def load_args(args=None):
     pars_imp.add_argument('--archived', '-a', dest='archived',
                           default=False, action='store_true',
                           help='Always use task caches.')
-    pars_imp.add_argument('--refreshlist', '-rl', dest='refresh_list',
-                          default='',
+    pars_imp.add_argument('--refreshlist', '-rl', dest='refresh_list', default='',
                           help='Comma-delimited list of caches to clear.')
+
+    pars_imp.add_argument('--tasks', dest='args_task_list', nargs='+', default=None,
+                          help='space delimited list of tasks to perform.')
+    pars_imp.add_argument('--yes', dest='yes_task_list', nargs='+', default=None,
+                          help='space delimited list of tasks to perform.')
+    pars_imp.add_argument('--no', dest='no_task_list', nargs='+', default=None,
+                          help='space delimited list of tasks to perform.')
 
     args = parser.parse_args(args=args)
     if args._name is None:
