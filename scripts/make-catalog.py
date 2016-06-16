@@ -401,6 +401,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
 
     redshiftfactor = (1.0 / (1.0 + float(catalog[entry]['redshift'][0]['value']))) if ('redshift' in catalog[entry]) else 1.0
+    dayframe = 'Rest frame days' if 'redshift' in catalog[entry] else 'Observer frame days'
 
     mjdmax = ''
     if 'maxdate' in catalog[entry]:
@@ -572,7 +573,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             min_xm_range = (min_x_range - mjdmax) * redshiftfactor
             max_xm_range = (max_x_range - mjdmax) * redshiftfactor
             p1.extra_x_ranges["time since max"] = Range1d(start=min_xm_range, end=max_xm_range)
-            p1.add_layout(LinearAxis(axis_label = "Time since max (Rest frame days)", major_label_text_font_size = '8pt',
+            p1.add_layout(LinearAxis(axis_label = "Time since max (" + dayframe + ")", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 x_range_name = "time since max", axis_label_text_font_size = '11pt'), 'above')
 
@@ -1001,7 +1002,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             min_xm_range = (min_x_range - mjdmax) * redshiftfactor
             max_xm_range = (max_x_range - mjdmax) * redshiftfactor
             p3.extra_x_ranges["time since max"] = Range1d(start=min_xm_range, end=max_xm_range)
-            p3.add_layout(LinearAxis(axis_label = "Time since max (Rest frame days)", major_label_text_font_size = '8pt',
+            p3.add_layout(LinearAxis(axis_label = "Time since max (" + dayframe + ")", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 x_range_name = "time since max", axis_label_text_font_size = '11pt'), 'above')
 
@@ -1194,7 +1195,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             min_xm_range = (min_x_range - mjdmax) * redshiftfactor
             max_xm_range = (max_x_range - mjdmax) * redshiftfactor
             p4.extra_x_ranges["time since max"] = Range1d(start=min_xm_range, end=max_xm_range)
-            p4.add_layout(LinearAxis(axis_label = "Time since max (Rest frame days)", major_label_text_font_size = '8pt',
+            p4.add_layout(LinearAxis(axis_label = "Time since max (" + dayframe + ")", major_label_text_font_size = '8pt',
                 major_label_text_font = 'futura', axis_label_text_font = 'futura',
                 x_range_name = "time since max", axis_label_text_font_size = '11pt'), 'above')
 
