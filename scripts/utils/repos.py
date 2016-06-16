@@ -5,7 +5,8 @@ from . digits import is_number
 
 from scripts import PATH, FILENAME
 
-__all__ = ['repo_file_list', 'get_repo_folder_for_year', 'get_repo_folders', 'get_repo_years']
+__all__ = ['repo_file_list', 'get_repo_folder_for_year', 'get_repo_folders', 'get_repo_paths',
+           'get_repo_years']
 
 
 def repo_file_list(bones=True):
@@ -47,6 +48,12 @@ def get_repo_folders():
     with open(FILENAME.REPOS_LIST, 'r') as f:
         repo_folders = f.read().splitlines()
     return repo_folders
+
+
+def get_repo_paths():
+    repo_folders = get_repo_folders()
+    repo_paths = [os.path.join(PATH.ROOT, rf, '') for rf in repo_folders]
+    return repo_paths
 
 
 def get_repo_years(repo_folders):
