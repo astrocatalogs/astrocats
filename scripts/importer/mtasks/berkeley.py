@@ -28,7 +28,7 @@ def do_ucb_photo(events, args, tasks):
         return events
 
     photom = json.loads(jsontxt)
-    photom = sorted(photom, key=lambda k: k['ObjName'])
+    photom = sorted(photom, key=lambda kk: kk['ObjName'])
     for phot in pbar(photom, desc=current_task):
         name = phot['ObjName']
         name = add_event(tasks, args, events, name)
@@ -58,19 +58,19 @@ def do_ucb_photo(events, args, tasks):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
         if archived_task(tasks, args, 'ucb') and os.path.isfile(filepath):
-            with open(filepath, 'r') as f:
-                phottxt = f.read()
+            with open(filepath, 'r') as ff:
+                phottxt = ff.read()
         else:
             session = requests.Session()
             response = session.get('http://heracles.astro.berkeley.edu/sndb/download?id=dp:' +
                                    str(phot['PhotID']))
             phottxt = response.text
-            with open(filepath, 'w') as f:
-                f.write(phottxt)
+            with open(filepath, 'w') as ff:
+                ff.write(phottxt)
 
         tsvin = csv.reader(phottxt.splitlines(), delimiter=' ', skipinitialspace=True)
 
-        for r, row in enumerate(tsvin):
+        for rr, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
                 continue
             mjd = row[0]
@@ -102,7 +102,7 @@ def do_ucb_spectra(events, args, tasks):
         return events
 
     spectra = json.loads(jsontxt)
-    spectra = sorted(spectra, key=lambda k: k['ObjName'])
+    spectra = sorted(spectra, key=lambda kk: kk['ObjName'])
     oldname = ''
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
@@ -149,15 +149,15 @@ def do_ucb_spectra(events, args, tasks):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
         if archived_task('ucbspectra', tasks) and os.path.isfile(filepath):
-            with open(filepath, 'r') as f:
-                spectxt = f.read()
+            with open(filepath, 'r') as ff:
+                spectxt = ff.read()
         else:
             session = requests.Session()
             response = session.get('http://heracles.astro.berkeley.edu/sndb/download?id=ds:' +
                                    str(spectrum['SpecID']))
             spectxt = response.text
-            with open(filepath, 'w') as f:
-                f.write(spectxt)
+            with open(filepath, 'w') as ff:
+                ff.write(spectxt)
 
         specdata = list(csv.reader(spectxt.splitlines(), delimiter=' ', skipinitialspace=True))
         startrow = 0
@@ -169,7 +169,7 @@ def do_ucb_spectra(events, args, tasks):
         specdata = specdata[startrow:]
 
         haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
-        specdata = [list(i) for i in zip(*specdata)]
+        specdata = [list(ii) for ii in zip(*specdata)]
 
         wavelengths = specdata[0]
         fluxes = specdata[1]
