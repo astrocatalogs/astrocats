@@ -1,5 +1,5 @@
 {
-    "deleteoldevents": {
+    "delete_old": {
         "nice_name": "Deleting old events",
         "active": true,
         "active": true,
@@ -245,7 +245,7 @@
         "nice_name": "%pre NED-D",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.importer",
         "function": "do_nedd",
         "priority": 10
     },
