@@ -1279,65 +1279,53 @@ def load_event_from_file(events, args, tasks, name='', path='',
     repo_paths = get_repo_paths()
 
     # Try to find a path (`namepath`) in a repo, corresponding to given `name`
-    if name:
+    if name and not path:
+        for rep in repo_paths:
+            filename = get_event_filename(name)
+            newpath = os.path.join(rep, filename + '.json')
+            if os.path.isfile(path):
+                path = newpath
+                break
+
+    if not path:
+        return False
+
+    newevent = ''
+    newevent2 = ''
+    if name in events:
+        del events[name]
+
+    with open(path, 'r') as f:
+        newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
+
+    newevent2 = ''
+    if clean:
+        newevent = clean_event(events, newevent)
+    name = next(reversed(newevent))
+    if append:
         for rep in repo_paths:
             filename = get_event_filename(name)
             newpath = os.path.join(rep, filename + '.json')
             if os.path.isfile(newpath):
                 namepath = newpath
-                break
+        if namepath:
+            with open(namepath, 'r') as f:
+                newevent2 = json.loads(f.read(), object_pairs_hook=OrderedDict)
+                namename = next(reversed(newevent2))
 
-    if not path and not namepath:
-        return False
+    if newevent2:
+        # Needs to be fixed
+        newevent = OrderedDict([['temp', newevent[name]]])
+        copy_to_event(events, 'temp', namename)
+    else:
+        events.update(newevent)
 
-    newevent = ''
-    newevent2 = ''
-    if path or namepath:
-        if name in events:
-            del events[name]
+    if args.verbose and not args.travis:
+        tprint('Loaded ' + name)
 
-    if path:
-        with open(path, 'r') as f:
-            newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    elif namepath:
-        with open(namepath, 'r') as f:
-            newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-    print("\n\n")
-    print(name, path, namepath)
-    print("\n\n")
-    print(newevent)
-    sys.exit(232)
-
-    if newevent:
-        newevent2 = ''
-        if clean:
-            newevent = clean_event(events, newevent)
-        name = next(reversed(newevent))
-        if append:
-            for rep in repo_paths:
-                filename = get_event_filename(name)
-                newpath = os.path.join(rep, filename + '.json')
-                if os.path.isfile(newpath):
-                    namepath = newpath
-            if namepath:
-                with open(namepath, 'r') as f:
-                    newevent2 = json.loads(f.read(), object_pairs_hook=OrderedDict)
-                    namename = next(reversed(newevent2))
-
-        if newevent2:
-            # Needs to be fixed
-            newevent = OrderedDict([['temp', newevent[name]]])
-            copy_to_event(events, 'temp', namename)
-        else:
-            events.update(newevent)
-
-        if args.verbose and not args.travis:
-            tprint('Loaded ' + name)
-
-        if 'writeevents' in tasks and delete and namepath:
-            os.remove(namepath)
-        return name
+    if 'writeevents' in tasks and delete and namepath:
+        os.remove(namepath)
+    return name
 
 
 def load_stubs(tasks, args, events):
