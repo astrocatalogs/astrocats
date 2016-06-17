@@ -82,10 +82,3 @@ class TASK:
             return True
 
         return False
-
-
-class EVENT:
-    name = ''
-
-    def __init__(self):
-        return

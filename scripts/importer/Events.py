@@ -9,6 +9,13 @@ from .funcs import copy_to_event, get_aliases, journal_events, load_event_from_f
 from ..utils import is_number, pbar, tprint
 
 
+class EVENT:
+    name = ''
+
+    def __init__(self):
+        return
+
+
 def merge_duplicates(tasks, args, events):
     """Merge and remove duplicate events
     """
