@@ -1373,7 +1373,7 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[2:4], alias.replace(prefix, '')[4:6]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1387,7 +1387,7 @@ def derive_and_sanitize():
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1401,7 +1401,7 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[4:6], alias.replace(prefix, '')[6:8]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1415,7 +1415,7 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[2:4]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1428,7 +1428,7 @@ def derive_and_sanitize():
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
                         add_quantity(name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -1450,7 +1450,7 @@ def derive_and_sanitize():
                         dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                         if args.verbose:
                             tprint ('Added ra/dec from name: ' + ra + ' ' + dec)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
                         add_quantity(name, 'ra', ra, source)
                         add_quantity(name, 'dec', dec, source)
                         break
@@ -1978,7 +1978,7 @@ for task in tasks:
         #Simbad.list_votable_fields()
         # Some coordinates that SIMBAD claims belong to the SNe actually belong to the host.
         simbadbadcoordbib = ['2013ApJ...770..107C']
-        simbadbadnamebib = ['2004AJ....127.2809W']
+        simbadbadnamebib = ['2004AJ....127.2809W', '2005MNRAS.364.1419Z', '2015A&A...574A.112D', '2011MNRAS.417..916G']
         simbadbannedcats = ['[TBV2008]', 'OGLE-MBR']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
@@ -5136,6 +5136,7 @@ for task in tasks:
                 dist = row[6]
                 bibcode = unescape(row[8])
                 snname = name_clean(row[9])
+                redshift = row[10]
                 cleanhost = ''
 
                 if name != snname and (name + ' HOST' != snname):
@@ -5155,16 +5156,21 @@ for task in tasks:
                     else:
                         sources = secondarysource
 
-                    if name == snname and dist:
-                        add_quantity(snname, 'comovingdist', dist, sources)
-                        try:
-                            redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(dist) * un.Mpc, zmax = 5.0), sig = get_sig_digits(str(dist)))
-                        except (KeyboardInterrupt, SystemExit):
-                            raise
-                        except:
-                            pass
-                        else:
-                            add_quantity(snname, 'redshift', redshift, sources) 
+                    if name == snname
+                        if redshift:
+                            add_quantity(snname, 'redshift', redshift, sources)
+                        if dist:
+                            add_quantity(snname, 'comovingdist', dist, sources)
+                            if not redshift:
+                                try:
+                                    redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(dist) * un.Mpc, zmax = 5.0), sig = get_sig_digits(str(dist)))
+                                except (KeyboardInterrupt, SystemExit):
+                                    raise
+                                except:
+                                    pass
+                                else:
+                                    cosmosource = add_source(name, bibcode = '2015arXiv150201589P')
+                                    add_quantity(snname, 'redshift', redshift, uniq_cdl(sources.split(',') + [cosmosource])) 
 
                     if cleanhost:
                         add_quantity(snname, 'host', cleanhost, sources)
