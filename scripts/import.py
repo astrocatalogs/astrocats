@@ -4932,7 +4932,15 @@ for task in tasks:
 
     if do_task(task, 'psst'):
         # 2016arXiv160204156S
-        with open("../sne-external/2016arXiv160204156S.tsv", 'r') as f:
+        with open("../sne-external/2016arXiv160204156S-tab1.tsv", 'r') as f:
+            data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+            for r, row in enumerate(tq(data, currenttask)):
+                if row[0][0] == '#':
+                    continue
+                (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
+                add_quantity(name, 'claimedtype', row[3].replace('SN', '').strip('() '), source)
+                add_quantity(name, 'redshift', row[5].strip('() '), source, kind = 'spectroscopic')
+        with open("../sne-external/2016arXiv160204156S-tab2.tsv", 'r') as f:
             data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
             for r, row in enumerate(tq(data, currenttask)):
                 if row[0][0] == '#':
@@ -4940,8 +4948,9 @@ for task in tasks:
                 (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
-                add_quantity(name, 'discoverdate', row[4], source)
-                add_quantity(name, 'claimedtype', row[6].replace('SN', '').strip('() '), source)
+                mldt = astrotime(float(row[4]), format = 'mjd').datetime
+                discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
+                add_quantity(name, 'discoverdate', discoverdate, source)
         journal_events()
 
         # 1606.04795
@@ -4953,8 +4962,13 @@ for task in tasks:
                 (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
                 add_quantity(name, 'ra', row[1], source)
                 add_quantity(name, 'dec', row[2], source)
-                add_quantity(name, 'discoverdate', row[3], source)
+                mldt = astrotime(float(row[3]), format = 'mjd').datetime
+                discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
+                add_quantity(name, 'discoverdate', discoverdate, source)
                 add_quantity(name, 'claimedtype', row[6], source)
+                add_quantity(name, 'redshift', row[7], source, kind = 'spectroscopic')
+                for alias in [x.strip() for x in row[8].split(',')]:
+                    add_quantity(name, 'alias', alias, source)
         journal_events()
     
     if do_task(task, 'crts'):
