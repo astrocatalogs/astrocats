@@ -30,8 +30,9 @@ from astropy import units as un
 from astropy.io import fits
 from astropy.time import Time as astrotime
 from astropy.cosmology import Planck15 as cosmo, z_at_value
+from astropy.coordinates import SkyCoord as coord
 from collections import OrderedDict, Sequence
-from math import log10, floor, sqrt, isnan, ceil
+from math import log10, floor, sqrt, isnan, ceil, hypot, pi
 from bs4 import BeautifulSoup, Tag, NavigableString
 from string import ascii_letters
 from photometry import *
@@ -1373,8 +1374,8 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[2:4], alias.replace(prefix, '')[4:6]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
-                        add_quantity(name, 'discoverdate', discoverdate, source)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1387,8 +1388,8 @@ def derive_and_sanitize():
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
-                        add_quantity(name, 'discoverdate', discoverdate, source)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1401,8 +1402,8 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[4:6], alias.replace(prefix, '')[6:8]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
-                        add_quantity(name, 'discoverdate', discoverdate, source)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1415,8 +1416,8 @@ def derive_and_sanitize():
                             alias.replace(prefix, '')[2:4]])
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
-                        add_quantity(name, 'discoverdate', discoverdate, source)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1428,8 +1429,8 @@ def derive_and_sanitize():
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
                             tprint ('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
-                        add_quantity(name, 'discoverdate', discoverdate, source)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -1450,9 +1451,9 @@ def derive_and_sanitize():
                         dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                         if args.verbose:
                             tprint ('Added ra/dec from name: ' + ra + ' ' + dec)
-                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True, derived = True)
-                        add_quantity(name, 'ra', ra, source)
-                        add_quantity(name, 'dec', dec, source)
+                        source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        add_quantity(name, 'ra', ra, source, derived = True)
+                        add_quantity(name, 'dec', dec, source, derived = True)
                         break
                 if 'ra' in events[name]:
                     break
@@ -1470,8 +1471,30 @@ def derive_and_sanitize():
                     ebverr = result['ext SandF std'][0]
                     extinctionsdict[name] = [ebv, ebverr]
             if name in extinctionsdict:
-                source = add_source(name, bibcode = '2011ApJ...737..103S')
-                add_quantity(name, 'ebv', str(extinctionsdict[name][0]), source, error = str(extinctionsdict[name][1]))
+                sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True), 
+                    add_source(name, bibcode = '2011ApJ...737..103S')])
+                add_quantity(name, 'ebv', str(extinctionsdict[name][0]), sources, error = str(extinctionsdict[name][1]), derived = True)
+        if 'hostra' not in events[name] or 'hostdec' not in events[name]:
+            for alias in aliases:
+                if ' J' in alias and is_number(alias.split(' J')[-1][:6]):
+                    noprefix = alias.split(' J')[-1].split(':')[-1].replace('.', '')
+                    decsign = '+' if '+' in noprefix else '-'
+                    noprefix = noprefix.replace('+','|').replace('-','|')
+                    nops = noprefix.split('|')
+                    if len(nops) < 2:
+                        continue
+                    rastr = nops[0]
+                    decstr = nops[1]
+                    hostra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '') 
+                    hostdec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
+                    if args.verbose:
+                        tprint ('Added hostra/hostdec from name: ' + hostra + ' ' + hostdec)
+                    source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                    add_quantity(name, 'hostra', hostra, source, derived = True)
+                    add_quantity(name, 'hostdec', hostdec, source, derived = True)
+                    break
+                if 'hostra' in events[name]:
+                    break
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
             if not len(events[name]['claimedtype']):
@@ -1546,6 +1569,23 @@ def derive_and_sanitize():
                             add_source(name, bibcode = '2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
                         add_quantity(name, 'comovingdist', pretty_num(cd.value, sig = bestsig), sources, derived = True)
+        if all([x in events[name] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
+            # For now just using first coordinates that appear in entry
+            c1 = coord(ra=events[name]['ra'][0]['value'], dec=events[name]['dec'][0]['value'], unit=(un.hourangle, un.deg))
+            c2 = coord(ra=events[name]['hostra'][0]['value'], dec=events[name]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
+            sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                events[name]['ra'][0]['source'], events[name]['dec'][0]['source'],
+                events[name]['hostra'][0]['source'], events[name]['hostdec'][0]['source']])
+            add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
+                c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
+            if 'comovingdist' in events[name] and 'redshift' in events[name]:
+                offsetsig = get_sig_digits(events[name]['hostoffsetang'][0]['value'])
+                sources = uniq_cdl(sources.split(',') +
+                    [events[name]['comovingdist'][0]['source'], events[name]['redshift'][0]['source']])
+                add_quantity(name, 'hostoffsetdist',
+                    pretty_num(float(events[name]['hostoffsetang'][0]['value']) / 3600. * (pi / 180.) *
+                    float(events[name]['comovingdist'][0]['value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),
+                    sig = offsetsig), sources)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
                 min([float(y) for y in x['time']])) if 'time' in x else 0.0,
