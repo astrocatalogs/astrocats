@@ -5156,7 +5156,7 @@ for task in tasks:
                     else:
                         sources = secondarysource
 
-                    if name == snname
+                    if name == snname:
                         if redshift:
                             add_quantity(snname, 'redshift', redshift, sources)
                         if dist:
