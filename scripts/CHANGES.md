@@ -1,13 +1,29 @@
 # Change Log #
 
 ## To-Do ##
-
 -   `importer/mtasks/vizier.py:do_vizier`
-    -    Break down into separate functions, or classes.  Can use significant templating to cleanup.
+    -   Break down into separate functions, or classes.  Can use significant templating to cleanup.
 -   `importer/mtasks/donations.py:do_donations`
-    -    Break down into separate " " " ".
+    -   Break down into separate " " " ".
 -   `main.py`
-    -    Look at '--archived' vs. '--refresh[list]' and '--full-refresh'... what exactly is desired?
+    -   Look at '--archived' vs. '--refresh[list]' and '--full-refresh'... what exactly is desired?
+-   `name_clean`
+    -   FIX THIS!
+
+    
+## Questions ##
+-   What is `import_funcs.clear_events` doing?
+-   `mtasks.asiago.do_asiago_spectra` `mjd` and `epochstr` arent doing anything.
+-   Maybe unify things in 'csv' format, e.g. `do_snls` which seem to start the same way?
+-   `mtasks.general_data.do_snls` see note:
+    -   "NOTE: Datafiles avail for download suggest diff zeropoints than 30, need to inquire."
+-   `clean_event`
+    -   Why do the sources need to be 'rebuilt', what exactly is being cleaned here?
+        -   i.e. why are all of the other attributes (besides 'url', 'bibcode', and 'name') being deleted?
+        -   Is 'url' required if no 'bibcode'?
+-   `is_erroneous`
+    -   What is happening here?
+
 
 ## Current ##
 
