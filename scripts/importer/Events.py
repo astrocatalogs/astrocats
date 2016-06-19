@@ -9,14 +9,16 @@ import os
 from scripts import FILENAME
 from .constants import OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
 from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
-    journal_events, load_event_from_file, load_stubs, name_clean
-from ..utils import get_repo_paths, get_event_filename, get_sig_digits, is_number, pbar, \
+    journal_events, load_stubs, name_clean
+from ..utils import get_repo_paths, get_event_filename, get_sig_digits, is_number, \
+    jd_to_mjd, pbar, \
     pretty_num, tprint, zpad
 
 
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
+    DISTINCTS = 'distinctfrom'
     ERRORS = 'errors'
     NAME = 'name'
     SOURCES = 'sourcs'
@@ -162,7 +164,7 @@ class EVENT(OrderedDict):
         # Handle certain quantity
         if quantity == 'alias':
             svalue = name_clean(svalue)
-            for df in self.get('distinctfrom', []):
+            for df in self.get(KEYS.DISTINCTS, []):
                 if svalue == df['value']:
                     return
 
@@ -445,9 +447,11 @@ class EVENT(OrderedDict):
         raise ValueError("Source '{}': alias '{}' not found!".format(self.name, alias))
 
 
-def clean_event(events, dirty_event):
+def clean_event(dirty_event):
     """
 
+    FIX: instead of making changes in place to `dirty_event`, should a new event be created,
+         values filled, then returned??
     FIX: currently will fail if no bibcode and no url
     """
     bibcodes = []
@@ -469,28 +473,33 @@ def clean_event(events, dirty_event):
 
     # Clean some legacy fields
     if 'aliases' in dirty_event and isinstance(dirty_event['aliases'], list):
-        source = dirty_event.add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+        source = dirty_event.add_source(
+            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
         for alias in dirty_event['aliases']:
             dirty_event.add_quantity('alias', alias, source)
         del dirty_event['aliases']
 
-    if (('distinctfrom' in dirty_event and isinstance(dirty_event['distinctfrom'], list) and
-         isinstance(dirty_event['distinctfrom'][0], str))):
-            distinctfroms = [x for x in dirty_event['distinctfrom']]
-            del dirty_event['distinctfrom']
-            source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+    # FIX: should this be an error if false??
+    if ((KEYS.DISTINCTS in dirty_event and isinstance(dirty_event[KEYS.DISTINCTS], list) and
+         isinstance(dirty_event[KEYS.DISTINCTS][0], str))):
+            distinctfroms = [x for x in dirty_event[KEYS.DISTINCTS]]
+            del dirty_event[KEYS.DISTINCTS]
+            source = dirty_event.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             for df in distinctfroms:
-                add_quantity(events, 'temp', 'distinctfrom', df, source)
+                dirty_event.add_quantity(KEYS.DISTINCTS, df, source)
 
     if (('errors' in dirty_event and isinstance(dirty_event['errors'], list) and
          'sourcekind' in dirty_event['errors'][0])):
-            source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = dirty_event.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             for err in dirty_event['errors']:
-                add_quantity(events, 'temp', 'error', err['quantity'], source, kind=err['sourcekind'], extra=err['id'])
+                dirty_event.add_quantity(
+                    'error', err['quantity'], source, kind=err['sourcekind'], extra=err['id'])
             del dirty_event['errors']
 
     if not bibcodes:
-        add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+        dirty_event.add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
         bibcodes = [OSC_BIBCODE]
 
     # Go through all keys in 'dirty' event
@@ -503,17 +512,15 @@ def clean_event(events, dirty_event):
                     dirty_event['photometry'][p]['u_time'] = 'MJD'
                     dirty_event['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
                 if bibcodes and 'source' not in photo:
-                    source = add_source(events, 'temp', bibcode=bibcodes[0])
+                    source = dirty_event.add_source(bibcode=bibcodes[0])
                     dirty_event['photometry'][p]['source'] = source
         else:
             for qi, quantity in enumerate(dirty_event[key]):
                 if bibcodes and 'source' not in quantity:
-                    source = add_source(events, 'temp', bibcode=bibcodes[0])
+                    source = dirty_event.add_source(bibcode=bibcodes[0])
                     dirty_event[key][qi]['source'] = source
 
-    cleanevent = dirty_event
-    del dirty_event
-    return OrderedDict([[name, cleanevent]])
+    return dirty_event
 
 
 def load_event_from_file(events, args, tasks, name='', path='',
@@ -552,14 +559,14 @@ def load_event_from_file(events, args, tasks, name='', path='',
         del events[name]
 
     if clean:
-        new_event = clean_event(events, new_event)
+        new_event = clean_event(new_event)
 
     # FIX: This check should go into the `EVENT` object or something...
-    if len(newevent.keys()) != 1:
-        raise ValueError("newevent has multiple keys: {}".format(list(newevent.keys())))
-    name = next(iter(newevent.keys()))
+    if len(new_event.keys()) != 1:
+        raise ValueError("newevent has multiple keys: {}".format(list(new_event.keys())))
+    name = next(iter(new_event.keys()))
 
-    events.update(newevent)
+    events.update(new_event)
 
     # FIX: Use `logging` for this...
     if args.verbose and not args.travis:
