@@ -5,15 +5,538 @@ import json
 import os
 
 from scripts import FILENAME
-from .funcs import copy_to_event, get_aliases, journal_events, load_event_from_file, load_stubs
-from ..utils import is_number, pbar, tprint
+from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
+    journal_events, load_event_from_file, load_stubs
+from ..utils import get_repo_paths, get_event_filename, is_number, pbar, tprint
 
 
-class EVENT:
+class KEYS:
+    ALIAS = 'alias'
+    BIBCODE = 'bibcode'
+    NAME = 'name'
+    SOURCES = 'sourcs'
+    URL = 'url'
+
+
+class EVENT(OrderedDict):
+    """
+    FIX: does this need to be `ordered`???
+    FIX: check that no stored values are empty/invalid (delete key in that case?)
+
+    sources
+    -   All sources must have KEYS.NAME and 'alias' parameters
+    -   FIX: is url required if no bibcode???
+    -   FIX: consider changing 'alias' for each source to 'src_num' or something
+    -   FIX: Make source aliases integers (instead of strings of integers)??
+    -   FIX: have list of allowed 'source' parameters??
+
+    """
+
     name = ''
+    filename = ''
+    _source_syns = {}
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
+        # Load source-name synonyms
+        with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
+            self._source_syns = json.loads(f.read(), object_pairs_hook=OrderedDict)
         return
+
+    def load_data_from_json(self, fhand):
+        """FIX: check for overwrite??
+        """
+        # If this is a str, try to open it as a filepath
+        if isinstance(fhand, str):
+            with open(fhand, 'r') as jfil:
+                self.update(json.load(jfil, object_pairs_hook=OrderedDict))
+            self.filename = fhand
+        # Assume `fhand` is an already opened file
+        else:
+            self.update(json.load(fhand, object_pairs_hook=OrderedDict))
+            self.filename = fhand.filename
+        return
+
+    def add_source(self, srcname='', bibcode='', **src_kwargs):
+        """Add a new source to this events KEYS.SOURCES list.
+
+        FIX: if source already exists, should dictionary be updated to any new values??
+
+        Arguments
+        ---------
+
+        Returns
+        -------
+        src_alias : str (of integer)
+            The alias number for this source.
+
+        Notes
+        -----
+        Suggested `src_kwargs`:
+            'url', 'secondary', 'acknowledgment', 'reference'
+
+        """
+        # Try to figure out each `srcname` or `bibcode` from the other, when only one given
+        if not srcname or not bibcode:
+            srcname, bibcode = self._parse_srcname_bibcode(srcname, bibcode)
+
+        # These are empty lists if no sources
+        my_sources = self.get(KEYS.SOURCES, [])
+        my_src_aliases = [src[KEYS.ALIAS] for src in my_sources]
+        my_src_names = [src[KEYS.NAME] for src in my_sources]
+        my_src_bibs = [src[KEYS.BIBCODE] for src in my_sources]
+        nsources = len(my_sources)
+
+        # Try to find existing, matching source
+        # -------------------------------------
+        # If this source name already exists, return alias number
+        try:
+            name_idx = my_src_names.index(srcname)
+            return my_src_aliases[name_idx]
+        except ValueError:
+            pass
+
+        # If this bibcode already exists, return alias number
+        try:
+            bib_idx = my_src_bibs.index(bibcode)
+            return my_src_aliases[bib_idx]
+        except ValueError:
+            pass
+
+        # Add new source that doesnt exist
+        # --------------------------------
+        source_alias = str(nsources + 1)
+        new_src = OrderedDict()
+        new_src[KEYS.NAME] = srcname
+        if bibcode:
+            new_src[KEYS.BIBCODE] = bibcode
+        new_src[KEYS.ALIAS] = source_alias
+        # Add in any additional arguments passed (e.g. url, acknowledgment, etc)
+        new_src.update(src_kwargs)
+        self.setdefault(KEYS.SOURCES, []).append(new_src)
+
+        return source_alias
+
+    def add_quantity(events, name, quantity, value, sources, forcereplacebetter=False,
+                     lowerlimit='', upperlimit='', error='', unit='', kind='', extra=''):
+        if not quantity:
+            raise(ValueError('Quantity must be specified for add_quantity.'))
+        if not sources:
+            raise(ValueError('Source must be specified for quantity before it is added.'))
+        if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
+            raise(ValueError('Quantity must be a string or an array of strings.'))
+
+        with open(FILENAME.TYPE_SYNONYMS, 'r') as f:
+            typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
+
+        if is_erroneous(events, name, quantity, sources):
+            return
+
+        svalue = value.strip()
+        serror = error.strip()
+        skind = kind.strip()
+        sunit = ''
+
+        if not svalue or svalue == '--' or svalue == '-':
+            return
+        if serror and (not is_number(serror) or float(serror) < 0.):
+            raise(ValueError('Quanta error value must be a number and positive.'))
+
+        # Set default units
+        if not unit and quantity == 'velocity':
+            unit = 'KM/s'
+        if not unit and quantity == 'ra':
+            unit = 'hours'
+        if not unit and quantity == 'dec':
+            unit = 'degrees'
+        if not unit and quantity in ['lumdist', 'comovingdist']:
+            unit = 'Mpc'
+
+        # Handle certain quantity
+        if quantity == 'alias':
+            svalue = name_clean(svalue)
+            if 'distinctfrom' in events[name]:
+                if svalue in [x['value'] for x in events[name]['distinctfrom']]:
+                    return
+        if quantity in ['velocity', 'redshift', 'ebv', 'lumdist', 'comovingdist']:
+            if not is_number(svalue):
+                return
+        if quantity == 'host':
+            if is_number(svalue):
+                return
+            if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
+                return
+            if svalue.startswith('M ') and is_number(svalue[2:]):
+                svalue.replace('M ', 'M', 1)
+            svalue = svalue.strip("()").replace('  ', ' ', 1)
+            svalue = svalue.replace("Abell", "Abell ", 1)
+            svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
+            svalue = svalue.replace("ARP", "ARP ", 1)
+            svalue = svalue.replace("CGCG", "CGCG ", 1)
+            svalue = svalue.replace("HOLM", "HOLM ", 1)
+            svalue = svalue.replace("IC", "IC ", 1)
+            svalue = svalue.replace("Intergal.", "Intergalactic", 1)
+            svalue = svalue.replace("MCG+", "MCG +", 1)
+            svalue = svalue.replace("MCG-", "MCG -", 1)
+            svalue = svalue.replace("M+", "MCG +", 1)
+            svalue = svalue.replace("M-", "MCG -", 1)
+            svalue = svalue.replace("MGC ", "MCG ", 1)
+            svalue = svalue.replace("Mrk", "MRK", 1)
+            svalue = svalue.replace("MRK", "MRK ", 1)
+            svalue = svalue.replace("NGC", "NGC ", 1)
+            svalue = svalue.replace("PGC", "PGC ", 1)
+            svalue = svalue.replace("SDSS", "SDSS ", 1)
+            svalue = svalue.replace("UGC", "UGC ", 1)
+            if len(svalue) > 4 and svalue.startswith("PGC "):
+                svalue = svalue[:4] + svalue[4:].lstrip(" 0")
+            if len(svalue) > 4 and svalue.startswith("UGC "):
+                svalue = svalue[:4] + svalue[4:].lstrip(" 0")
+            if len(svalue) > 5 and svalue.startswith(("MCG +", "MCG -")):
+                svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
+            if len(svalue) > 5 and svalue.startswith("CGCG "):
+                svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
+            if (len(svalue) > 1 and svalue.startswith("E")) or (len(svalue) > 3 and svalue.startswith('ESO')):
+                if svalue[0] == "E":
+                    esplit = svalue[1:].split("-")
+                else:
+                    esplit = svalue[3:].split("-")
+                if len(esplit) == 2 and is_number(esplit[0].strip()):
+                    if esplit[1].strip()[0] == 'G':
+                        parttwo = esplit[1][1:].strip()
+                    else:
+                        parttwo = esplit[1].strip()
+                    if is_number(parttwo.strip()):
+                        svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
+            svalue = ' '.join(svalue.split())
+
+            is_abell = svalue.lower().startswith('abell') and is_number(svalue[5:].strip())
+            if (not skind and (is_abell or 'cluster' in svalue.lower())):
+                skind = 'cluster'
+
+        elif quantity == 'claimedtype':
+            isq = False
+            svalue = svalue.replace('young', '')
+            if '?' in svalue:
+                isq = True
+                svalue = svalue.strip(' ?')
+            for rep in typereps:
+                if svalue in typereps[rep]:
+                    svalue = rep
+                    break
+            if isq:
+                svalue = svalue + '?'
+
+        elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
+            if unit == 'floatdegrees':
+                deg = float('%g' % Decimal(svalue))
+                sig = get_sig_digits(svalue)
+                if 'ra' in quantity:
+                    flhours = deg / 360.0 * 24.0
+                    hours = floor(flhours)
+                    minutes = floor((flhours - hours) * 60.0)
+                    seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
+                    if seconds > 60.0:
+                        raise(ValueError('Invalid seconds value for ' + quantity))
+                    svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1))
+                elif 'dec' in quantity:
+                    fldeg = abs(deg)
+                    degree = floor(fldeg)
+                    minutes = floor((fldeg - degree) * 60.0)
+                    seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
+                    if seconds > 60.0:
+                        raise(ValueError('Invalid seconds value for ' + quantity))
+                    svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
+                              str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1)))
+
+            elif unit == 'nospace' and 'ra' in quantity:
+                svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
+
+            elif unit == 'nospace' and 'dec' in quantity:
+                if svalue.startswith(('+', '-')):
+                    svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
+                else:
+                    svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
+
+            else:
+                svalue = svalue.replace(' ', ':')
+                if 'dec' in quantity:
+                    valuesplit = svalue.split(':')
+                    svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
+                              (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
+                              (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
+
+            if 'ra' in quantity:
+                sunit = 'hours'
+            elif 'dec' in quantity:
+                sunit = 'degrees'
+
+            # Correct case of arcseconds = 60.0.
+            valuesplit = svalue.split(':')
+            if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
+                svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
+
+            # Strip trailing dots.
+            svalue = svalue.rstrip('.')
+        elif quantity == 'maxdate' or quantity == 'discoverdate':
+            # Make sure month and day have leading zeroes
+            sparts = svalue.split('/')
+            if len(sparts) >= 2:
+                svalue = sparts[0] + '/' + sparts[1].zfill(2)
+            if len(sparts) == 3:
+                svalue = svalue + '/' + sparts[2].zfill(2)
+
+            if quantity in events[name]:
+                for i, ct in enumerate(events[name][quantity]):
+                    # Only add dates if they have more information
+                    if len(ct['value'].split('/')) > len(svalue.split('/')):
+                        return
+
+        if is_number(svalue):
+            svalue = '%g' % Decimal(svalue)
+        if serror:
+            serror = '%g' % Decimal(serror)
+
+        if quantity in events[name]:
+            for i, ct in enumerate(events[name][quantity]):
+                if ct['value'] == svalue and sources:
+                    if 'kind' in ct and skind and ct['kind'] != skind:
+                        return
+                    for source in sources.split(','):
+                        if source not in events[name][quantity][i]['source'].split(','):
+                            events[name][quantity][i]['source'] += ',' + source
+                            if serror and 'error' not in events[name][quantity][i]:
+                                events[name][quantity][i]['error'] = serror
+                    return
+
+        if not sunit:
+            sunit = unit
+
+        quantaentry = OrderedDict()
+        quantaentry['value'] = svalue
+        if serror:
+            quantaentry['error'] = serror
+        if sources:
+            quantaentry['source'] = sources
+        if skind:
+            quantaentry['kind'] = skind
+        if sunit:
+            quantaentry['unit'] = sunit
+        if lowerlimit:
+            quantaentry['lowerlimit'] = lowerlimit
+        if upperlimit:
+            quantaentry['upperlimit'] = upperlimit
+        if extra:
+            quantaentry['extra'] = extra
+        if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and quantity in events[name]:
+            newquantities = []
+            isworse = True
+            if quantity in ['discoverdate', 'maxdate']:
+                for ct in events[name][quantity]:
+                    ctsplit = ct['value'].split('/')
+                    svsplit = svalue.split('/')
+                    if len(ctsplit) < len(svsplit):
+                        isworse = False
+                        continue
+                    elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
+                        if max(2, get_sig_digits(ctsplit[-1].lstrip('0'))) < max(2, get_sig_digits(svsplit[-1].lstrip('0'))):
+                            isworse = False
+                            continue
+                    newquantities.append(ct)
+            else:
+                newsig = get_sig_digits(svalue)
+                for ct in events[name][quantity]:
+                    if 'error' in ct:
+                        if serror:
+                            if float(serror) < float(ct['error']):
+                                isworse = False
+                                continue
+                        newquantities.append(ct)
+                    else:
+                        if serror:
+                            isworse = False
+                            continue
+                        oldsig = get_sig_digits(ct['value'])
+                        if oldsig >= newsig:
+                            newquantities.append(ct)
+                        if newsig >= oldsig:
+                            isworse = False
+            if not isworse:
+                newquantities.append(quantaentry)
+            events[name][quantity] = newquantities
+        else:
+            events[name].setdefault(quantity, []).append(quantaentry)
+
+
+    def _parse_srcname_bibcode(self, srcname, bibcode):
+        # If no `srcname` is given, use `bibcode` after checking its validity
+        if not srcname:
+            if not bibcode:
+                raise ValueError("`bibcode` must be specified if `srcname` is not.")
+            if len(bibcode) != 19:
+                raise ValueError("Bibcode '{}' must be exactly 19 characters long".format(bibcode))
+            srcname = bibcode
+
+        # If a `srcname` is given, try to set a `bibcode`
+        elif not bibcode:
+            if srcname.upper().startswith('ATEL'):
+                atels_dict = get_atels_dict()
+                srcname = srcname.replace('ATEL', 'ATel').replace('Atel', 'ATel')
+                srcname = srcname.replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
+                srcname = ' '.join(srcname.split())
+                atelnum = srcname.split()[-1]
+                if is_number(atelnum) and atelnum in atels_dict:
+                    bibcode = atels_dict[atelnum]
+
+            if srcname.upper().startswith('CBET'):
+                cbets_dict = get_cbets_dict()
+                srcname = srcname.replace('CBET', 'CBET ')
+                srcname = ' '.join(srcname.split())
+                cbetnum = srcname.split()[-1]
+                if is_number(cbetnum) and cbetnum in cbets_dict:
+                    bibcode = cbets_dict[cbetnum]
+
+            if srcname.upper().startswith('IAUC'):
+                iaucs_dict = get_iaucs_dict()
+                srcname = srcname.replace('IAUC', 'IAUC ')
+                srcname = ' '.join(srcname.split())
+                iaucnum = srcname.split()[-1]
+                if is_number(iaucnum) and iaucnum in iaucs_dict:
+                    bibcode = iaucs_dict[iaucnum]
+
+        for rep in self._source_syns:
+            if srcname in self._source_syns[rep]:
+                srcname = rep
+                break
+
+        return srcname, bibcode
+
+
+def clean_event(events, dirty_event):
+    """
+
+    FIX: currently will fail if no bibcode and no url
+    """
+    bibcodes = []
+    name = dirty_event.name
+    dirty_event[KEYS.NAME] = name
+
+    # Rebuild the sources
+    try:
+        old_sources = dirty_event[KEYS.SOURCES]
+        del dirty_event[KEYS.SOURCES]
+        for ss, source in enumerate(old_sources):
+            if KEYS.BIBCODE in source:
+                bibcodes.append(source[KEYS.BIBCODE])
+                dirty_event.add_source(bibcode=source[KEYS.BIBCODE])
+            else:
+                dirty_event.add_source(srcname=source[KEYS.NAME], url=source[KEYS.URL])
+    except ValueError:
+        pass
+
+    # Clean some legacy fields
+    if 'aliases' in dirty_event and isinstance(dirty_event['aliases'], list):
+        source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+        for alias in dirty_event['aliases']:
+            add_quantity(events, 'temp', 'alias', alias, source)
+        del(dirty_event['aliases'])
+
+    if (('distinctfrom' in dirty_event and isinstance(dirty_event['distinctfrom'], list) and
+         isinstance(dirty_event['distinctfrom'][0], str))):
+            distinctfroms = [x for x in dirty_event['distinctfrom']]
+            del(dirty_event['distinctfrom'])
+            source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            for df in distinctfroms:
+                add_quantity(events, 'temp', 'distinctfrom', df, source)
+
+    if (('errors' in dirty_event and isinstance(dirty_event['errors'], list) and
+         'sourcekind' in dirty_event['errors'][0])):
+            source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            for err in dirty_event['errors']:
+                add_quantity(events, 'temp', 'error', err['quantity'], source, kind=err['sourcekind'], extra=err['id'])
+            del(dirty_event['errors'])
+
+    if not bibcodes:
+        add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+        bibcodes = [OSC_BIBCODE]
+
+    # Go through all keys in 'dirty' event
+    for key in list(dirty_event.keys()):
+        if key in [KEYS.NAME, KEYS.SOURCES]:
+            pass
+        elif key == 'photometry':
+            for p, photo in enumerate(dirty_event['photometry']):
+                if photo['u_time'] == 'JD':
+                    dirty_event['photometry'][p]['u_time'] = 'MJD'
+                    dirty_event['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
+                if bibcodes and 'source' not in photo:
+                    source = add_source(events, 'temp', bibcode=bibcodes[0])
+                    dirty_event['photometry'][p]['source'] = source
+        else:
+            for qi, quantity in enumerate(dirty_event[key]):
+                if bibcodes and 'source' not in quantity:
+                    source = add_source(events, 'temp', bibcode=bibcodes[0])
+                    dirty_event[key][qi]['source'] = source
+
+    cleanevent = dirty_event
+    del dirty_event
+    return OrderedDict([[name, cleanevent]])
+
+
+def load_event_from_file(events, args, tasks, name='', path='',
+                         clean=False, delete=True, append=False):
+    """
+
+    FIX: currently will error if cant find a path from `name`
+    """
+    if not name and not path:
+        raise ValueError('Either event `name` or `path` must be specified to load event.')
+
+    if name and path:
+        raise ValueError('Either event `name` or `path` should be specified, not both.')
+
+    # If the path is given, load event from it
+    path_from_name = ''
+    if path:
+        load_path = path
+    else:
+        repo_paths = get_repo_paths()
+        for rep in repo_paths:
+            filename = get_event_filename(name)
+            newpath = os.path.join(rep, filename + '.json')
+            if os.path.isfile(path):
+                path_from_name = newpath
+                break
+
+        load_path = path_from_name
+
+    new_event = EVENT(name)
+    new_event.load_data_from_json(load_path)
+
+    # Delete old version
+    # FIX: this needs to be updated
+    if name in events:
+        del events[name]
+
+    if clean:
+        new_event = clean_event(events, new_event)
+
+    # FIX: This check should go into the `EVENT` object or something...
+    if len(newevent.keys()) != 1:
+        raise ValueError("newevent has multiple keys: {}".format(list(newevent.keys())))
+    name = next(iter(newevent.keys()))
+
+    events.update(newevent)
+
+    # FIX: Use `logging` for this...
+    if args.verbose and not args.travis:
+        tprint('Loaded ' + name)
+
+    # If this event loaded from an existing repo path and we will resave later, delete that version
+    # FIX: have this check done to determine if `delete` is passed as True, when calling this func
+    if 'writeevents' in tasks and delete and path_from_name:
+        os.remove(path_from_name)
+
+    return name
 
 
 def merge_duplicates(tasks, args, events):
@@ -141,7 +664,7 @@ def set_preferred_names(tasks, args, events):
             if load_event_from_file(events, args, tasks, name, delete=True):
                 tprint('Changing event name (' + name + ') to preferred name (' + newname + ').')
                 events[newname] = events[name]
-                events[newname]['name'] = newname
+                events[newname][KEYS.NAME] = newname
                 del(events[name])
                 journal_events(tasks, args, events)
 

@@ -40,7 +40,7 @@ def add_event(tasks, args, events, name, load=True, delete=True, source='', load
             loadedname = load_event_from_file(events, args, tasks, name=newname, delete=delete)
             if loadedname:
                 if 'stub' in events[loadedname]:
-                    raise(ValueError('Failed to find event file for stubbed event'))
+                    raise ValueError('Failed to find event file for stubbed event')
                 return loadedname
 
         if match:
@@ -212,333 +212,6 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
     events[name].setdefault('photometry', []).append(photoentry)
 
 
-def add_quantity(events, name, quantity, value, sources, forcereplacebetter=False,
-                 lowerlimit='', upperlimit='', error='', unit='', kind='', extra=''):
-    if not quantity:
-        raise(ValueError('Quantity must be specified for add_quantity.'))
-    if not sources:
-        raise(ValueError('Source must be specified for quantity before it is added.'))
-    if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
-        raise(ValueError('Quantity must be a string or an array of strings.'))
-
-    with open(FILENAME.TYPE_SYNONYMS, 'r') as f:
-        typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-    if is_erroneous(events, name, quantity, sources):
-        return
-
-    svalue = value.strip()
-    serror = error.strip()
-    skind = kind.strip()
-    sunit = ''
-
-    if not svalue or svalue == '--' or svalue == '-':
-        return
-    if serror and (not is_number(serror) or float(serror) < 0.):
-        raise(ValueError('Quanta error value must be a number and positive.'))
-
-    # Set default units
-    if not unit and quantity == 'velocity':
-        unit = 'KM/s'
-    if not unit and quantity == 'ra':
-        unit = 'hours'
-    if not unit and quantity == 'dec':
-        unit = 'degrees'
-    if not unit and quantity in ['lumdist', 'comovingdist']:
-        unit = 'Mpc'
-
-    # Handle certain quantity
-    if quantity == 'alias':
-        svalue = name_clean(svalue)
-        if 'distinctfrom' in events[name]:
-            if svalue in [x['value'] for x in events[name]['distinctfrom']]:
-                return
-    if quantity in ['velocity', 'redshift', 'ebv', 'lumdist', 'comovingdist']:
-        if not is_number(svalue):
-            return
-    if quantity == 'host':
-        if is_number(svalue):
-            return
-        if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
-            return
-        if svalue.startswith('M ') and is_number(svalue[2:]):
-            svalue.replace('M ', 'M', 1)
-        svalue = svalue.strip("()").replace('  ', ' ', 1)
-        svalue = svalue.replace("Abell", "Abell ", 1)
-        svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
-        svalue = svalue.replace("ARP", "ARP ", 1)
-        svalue = svalue.replace("CGCG", "CGCG ", 1)
-        svalue = svalue.replace("HOLM", "HOLM ", 1)
-        svalue = svalue.replace("IC", "IC ", 1)
-        svalue = svalue.replace("Intergal.", "Intergalactic", 1)
-        svalue = svalue.replace("MCG+", "MCG +", 1)
-        svalue = svalue.replace("MCG-", "MCG -", 1)
-        svalue = svalue.replace("M+", "MCG +", 1)
-        svalue = svalue.replace("M-", "MCG -", 1)
-        svalue = svalue.replace("MGC ", "MCG ", 1)
-        svalue = svalue.replace("Mrk", "MRK", 1)
-        svalue = svalue.replace("MRK", "MRK ", 1)
-        svalue = svalue.replace("NGC", "NGC ", 1)
-        svalue = svalue.replace("PGC", "PGC ", 1)
-        svalue = svalue.replace("SDSS", "SDSS ", 1)
-        svalue = svalue.replace("UGC", "UGC ", 1)
-        if len(svalue) > 4 and svalue.startswith("PGC "):
-            svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-        if len(svalue) > 4 and svalue.startswith("UGC "):
-            svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-        if len(svalue) > 5 and svalue.startswith(("MCG +", "MCG -")):
-            svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
-        if len(svalue) > 5 and svalue.startswith("CGCG "):
-            svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
-        if (len(svalue) > 1 and svalue.startswith("E")) or (len(svalue) > 3 and svalue.startswith('ESO')):
-            if svalue[0] == "E":
-                esplit = svalue[1:].split("-")
-            else:
-                esplit = svalue[3:].split("-")
-            if len(esplit) == 2 and is_number(esplit[0].strip()):
-                if esplit[1].strip()[0] == 'G':
-                    parttwo = esplit[1][1:].strip()
-                else:
-                    parttwo = esplit[1].strip()
-                if is_number(parttwo.strip()):
-                    svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
-        svalue = ' '.join(svalue.split())
-
-        is_abell = svalue.lower().startswith('abell') and is_number(svalue[5:].strip())
-        if (not skind and (is_abell or 'cluster' in svalue.lower())):
-            skind = 'cluster'
-
-    elif quantity == 'claimedtype':
-        isq = False
-        svalue = svalue.replace('young', '')
-        if '?' in svalue:
-            isq = True
-            svalue = svalue.strip(' ?')
-        for rep in typereps:
-            if svalue in typereps[rep]:
-                svalue = rep
-                break
-        if isq:
-            svalue = svalue + '?'
-
-    elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-        if unit == 'floatdegrees':
-            deg = float('%g' % Decimal(svalue))
-            sig = get_sig_digits(svalue)
-            if 'ra' in quantity:
-                flhours = deg / 360.0 * 24.0
-                hours = floor(flhours)
-                minutes = floor((flhours - hours) * 60.0)
-                seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
-                if seconds > 60.0:
-                    raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1))
-            elif 'dec' in quantity:
-                fldeg = abs(deg)
-                degree = floor(fldeg)
-                minutes = floor((fldeg - degree) * 60.0)
-                seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
-                if seconds > 60.0:
-                    raise(ValueError('Invalid seconds value for ' + quantity))
-                svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
-                          str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1)))
-
-        elif unit == 'nospace' and 'ra' in quantity:
-            svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
-
-        elif unit == 'nospace' and 'dec' in quantity:
-            if svalue.startswith(('+', '-')):
-                svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
-            else:
-                svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
-
-        else:
-            svalue = svalue.replace(' ', ':')
-            if 'dec' in quantity:
-                valuesplit = svalue.split(':')
-                svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
-                          (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
-                          (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
-
-        if 'ra' in quantity:
-            sunit = 'hours'
-        elif 'dec' in quantity:
-            sunit = 'degrees'
-
-        # Correct case of arcseconds = 60.0.
-        valuesplit = svalue.split(':')
-        if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
-            svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
-
-        # Strip trailing dots.
-        svalue = svalue.rstrip('.')
-    elif quantity == 'maxdate' or quantity == 'discoverdate':
-        # Make sure month and day have leading zeroes
-        sparts = svalue.split('/')
-        if len(sparts) >= 2:
-            svalue = sparts[0] + '/' + sparts[1].zfill(2)
-        if len(sparts) == 3:
-            svalue = svalue + '/' + sparts[2].zfill(2)
-
-        if quantity in events[name]:
-            for i, ct in enumerate(events[name][quantity]):
-                # Only add dates if they have more information
-                if len(ct['value'].split('/')) > len(svalue.split('/')):
-                    return
-
-    if is_number(svalue):
-        svalue = '%g' % Decimal(svalue)
-    if serror:
-        serror = '%g' % Decimal(serror)
-
-    if quantity in events[name]:
-        for i, ct in enumerate(events[name][quantity]):
-            if ct['value'] == svalue and sources:
-                if 'kind' in ct and skind and ct['kind'] != skind:
-                    return
-                for source in sources.split(','):
-                    if source not in events[name][quantity][i]['source'].split(','):
-                        events[name][quantity][i]['source'] += ',' + source
-                        if serror and 'error' not in events[name][quantity][i]:
-                            events[name][quantity][i]['error'] = serror
-                return
-
-    if not sunit:
-        sunit = unit
-
-    quantaentry = OrderedDict()
-    quantaentry['value'] = svalue
-    if serror:
-        quantaentry['error'] = serror
-    if sources:
-        quantaentry['source'] = sources
-    if skind:
-        quantaentry['kind'] = skind
-    if sunit:
-        quantaentry['unit'] = sunit
-    if lowerlimit:
-        quantaentry['lowerlimit'] = lowerlimit
-    if upperlimit:
-        quantaentry['upperlimit'] = upperlimit
-    if extra:
-        quantaentry['extra'] = extra
-    if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and quantity in events[name]:
-        newquantities = []
-        isworse = True
-        if quantity in ['discoverdate', 'maxdate']:
-            for ct in events[name][quantity]:
-                ctsplit = ct['value'].split('/')
-                svsplit = svalue.split('/')
-                if len(ctsplit) < len(svsplit):
-                    isworse = False
-                    continue
-                elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
-                    if max(2, get_sig_digits(ctsplit[-1].lstrip('0'))) < max(2, get_sig_digits(svsplit[-1].lstrip('0'))):
-                        isworse = False
-                        continue
-                newquantities.append(ct)
-        else:
-            newsig = get_sig_digits(svalue)
-            for ct in events[name][quantity]:
-                if 'error' in ct:
-                    if serror:
-                        if float(serror) < float(ct['error']):
-                            isworse = False
-                            continue
-                    newquantities.append(ct)
-                else:
-                    if serror:
-                        isworse = False
-                        continue
-                    oldsig = get_sig_digits(ct['value'])
-                    if oldsig >= newsig:
-                        newquantities.append(ct)
-                    if newsig >= oldsig:
-                        isworse = False
-        if not isworse:
-            newquantities.append(quantaentry)
-        events[name][quantity] = newquantities
-    else:
-        events[name].setdefault(quantity, []).append(quantaentry)
-
-
-def add_source(events, name, refname='', reference='', url='', bibcode='', secondary='', acknowledgment=''):
-    with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
-        sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-    nsources = len(events[name]['sources']) if 'sources' in events[name] else 0
-    if not refname:
-        if not bibcode:
-            raise(ValueError('Bibcode must be specified if name is not.'))
-
-        if bibcode and len(bibcode) != 19:
-            raise(ValueError('Bibcode "' + bibcode + '" must be exactly 19 characters long'))
-
-        refname = bibcode
-
-    if refname.upper().startswith('ATEL') and not bibcode:
-        atels_dict = get_atels_dict()
-        refname = refname.replace('ATEL', 'ATel').replace('Atel', 'ATel').replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
-        refname = ' '.join(refname.split())
-        atelnum = refname.split()[-1]
-        if is_number(atelnum) and atelnum in atels_dict:
-            bibcode = atels_dict[atelnum]
-
-    if refname.upper().startswith('CBET') and not bibcode:
-        cbets_dict = get_cbets_dict()
-        refname = refname.replace('CBET', 'CBET ')
-        refname = ' '.join(refname.split())
-        cbetnum = refname.split()[-1]
-        if is_number(cbetnum) and cbetnum in cbets_dict:
-            bibcode = cbets_dict[cbetnum]
-
-    if refname.upper().startswith('IAUC') and not bibcode:
-        iaucs_dict = get_iaucs_dict()
-        refname = refname.replace('IAUC', 'IAUC ')
-        refname = ' '.join(refname.split())
-        iaucnum = refname.split()[-1]
-        if is_number(iaucnum) and iaucnum in iaucs_dict:
-            bibcode = iaucs_dict[iaucnum]
-
-    for rep in sourcereps:
-        if refname in sourcereps[rep]:
-            refname = rep
-            break
-
-    no_source = 'sources' not in events[name]
-    no_ref = no_bib = True
-    if not no_source:
-        no_ref = refname not in [x['name'] for x in events[name]['sources']]
-        no_bib = (not bibcode or
-                  bibcode not in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']])
-    if no_source or (no_ref and no_bib):
-        source = str(nsources + 1)
-        newsource = OrderedDict()
-        newsource['name'] = refname
-        if url:
-            newsource['url'] = url
-        if reference:
-            newsource['reference'] = reference
-        if bibcode:
-            newsource['bibcode'] = bibcode
-        if acknowledgment:
-            newsource['acknowledgment'] = acknowledgment
-        newsource['alias'] = source
-        if secondary:
-            newsource['secondary'] = True
-        events[name].setdefault('sources', []).append(newsource)
-    else:
-        if refname in [x['name'] for x in events[name]['sources']]:
-            source = [x['alias'] for x in events[name]['sources']][
-                [x['name'] for x in events[name]['sources']].index(refname)]
-        elif bibcode and bibcode in [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']]:
-            source = [x['alias'] for x in events[name]['sources']][
-                [x['bibcode'] if 'bibcode' in x else '' for x in events[name]['sources']].index(bibcode)]
-        else:
-            raise(ValueError("Couldn't find source that should exist!"))
-    return source
-
-
 def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_time="", time="",
                  instrument="", deredshifted="", dereddened="", errorunit="", errors="", source="",
                  snr="", telescope="", observer="", reducer="", filename="", observatory="",
@@ -632,76 +305,6 @@ def archived_task(tasks, args, atask):
     return False
 '''
 
-
-def clean_event(events, dirtyevent):
-    """
-    """
-    bibcodes = []
-    name = next(reversed(dirtyevent))
-
-    # This is very hacky and is only necessary because we don't have a proper 'Event' object yet.
-    events['temp'] = dirtyevent[name]
-
-    if 'name' not in events['temp']:
-        events['temp']['name'] = name
-    if 'sources' in events['temp']:
-        # Rebuild the sources
-        # newsources = []
-        oldsources = events['temp']['sources']
-        del(events['temp']['sources'])
-        for s, source in enumerate(oldsources):
-            if 'bibcode' in source:
-                bibcodes.append(source['bibcode'])
-                add_source(events, 'temp', bibcode=source['bibcode'])
-            else:
-                add_source(events, 'temp', refname=source['name'], url=source['url'])
-
-    # Clean some legacy fields
-    if 'aliases' in events['temp'] and isinstance(events['temp']['aliases'], list):
-        source = add_source(events, 'temp', bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-        for alias in events['temp']['aliases']:
-            add_quantity(events, 'temp', 'alias', alias, source)
-        del(events['temp']['aliases'])
-
-    if (('distinctfrom' in events['temp'] and isinstance(events['temp']['distinctfrom'], list) and
-         isinstance(events['temp']['distinctfrom'][0], str))):
-            distinctfroms = [x for x in events['temp']['distinctfrom']]
-            del(events['temp']['distinctfrom'])
-            source = add_source(events, 'temp', bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-            for df in distinctfroms:
-                add_quantity(events, 'temp', 'distinctfrom', df, source)
-
-    if (('errors' in events['temp'] and isinstance(events['temp']['errors'], list) and
-         'sourcekind' in events['temp']['errors'][0])):
-            source = add_source(events, 'temp', bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-            for err in events['temp']['errors']:
-                add_quantity(events, 'temp', 'error', err['quantity'], source, kind=err['sourcekind'], extra=err['id'])
-            del(events['temp']['errors'])
-
-    if not bibcodes:
-        add_source(events, 'temp', bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
-        bibcodes = [OSC_BIBCODE]
-
-    for key in list(events['temp'].keys()):
-        if key in ['name', 'sources']:
-            pass
-        elif key == 'photometry':
-            for p, photo in enumerate(events['temp']['photometry']):
-                if photo['u_time'] == 'JD':
-                    events['temp']['photometry'][p]['u_time'] = 'MJD'
-                    events['temp']['photometry'][p]['time'] = str(jd_to_mjd(Decimal(photo['time'])))
-                if bibcodes and 'source' not in photo:
-                    source = add_source(events, 'temp', bibcode=bibcodes[0])
-                    events['temp']['photometry'][p]['source'] = source
-        else:
-            for qi, quantity in enumerate(events['temp'][key]):
-                if bibcodes and 'source' not in quantity:
-                    source = add_source(events, 'temp', bibcode=bibcodes[0])
-                    events['temp'][key][qi]['source'] = source
-
-    cleanevent = events['temp']
-    del (events['temp'])
-    return OrderedDict([[name, cleanevent]])
 
 
 def clear_events(events):
@@ -812,13 +415,13 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             if 'sources' in events[name]:
                 add_quantity(events, name, 'alias', name, '1')
             else:
-                source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                 add_quantity(events, name, 'alias', name, source)
 
         if ((name.startswith('SN') and is_number(name[2:6]) and 'discoverdate' in events[name] and
              int(events[name]['discoverdate'][0]['value'].split('/')[0]) >= 2016 and
              not any(['AT' in x for x in aliases]))):
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'alias', 'AT' + name[2:], source)
 
         events[name]['alias'] = list(sorted(events[name]['alias'], key=lambda key: alias_priority(name, key)))
@@ -838,7 +441,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                                                 alias.replace(prefix, '')[4:6]])
                         if args.verbose:
                             tprint('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -851,7 +454,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if args.verbose:
                             tprint('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -866,7 +469,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                                                  alias.replace(prefix, '')[6:8]])
                         if args.verbose:
                             tprint('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -879,7 +482,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
                             tprint('Added discoverdate from name: ' + discoverdate)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'discoverdate', discoverdate, source)
                         break
                 if 'discoverdate' in events[name]:
@@ -901,7 +504,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                         dec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                         if args.verbose:
                             tprint('Added ra/dec from name: ' + ra + ' ' + dec)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'ra', ra, source)
                         add_quantity(events, name, 'dec', dec, source)
                         break
@@ -928,7 +531,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'][:] = [ct for ct in events[name]['claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
         if 'claimedtype' not in events[name] and name.startswith('AT'):
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'claimedtype', 'Candidate', source)
         if 'redshift' not in events[name] and 'velocity' in events[name]:
             # Find the "best" velocity to use for this
@@ -940,7 +543,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv)*1.e5/CLIGHT
-                source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                 add_quantity(events, name, 'redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig=bestsig), source, kind='heliocentric')
         if 'redshift' not in events[name] and has_task(tasks, args, 'nedd') and 'host' in events[name]:
             from astropy.cosmology import Planck15 as cosmo, z_at_value
@@ -949,7 +552,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
                 if host['value'] in nedd_dict:
-                    secondarysource = add_source(events, name, refname=reference, url=refurl, secondary=True)
+                    secondarysource = add_source(events, name, srcname=reference, url=refurl, secondary=True)
                     meddist = statistics.median(nedd_dict[host['value']])
                     redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(meddist) * units.Mpc), sig=get_sig_digits(str(meddist)))
                     add_quantity(events, name, 'redshift', redshift, secondarysource, kind='host')
@@ -962,7 +565,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     bestld = ld['value']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                 pnum = float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0)
                 pnum = pretty_num(pnum, sig=bestsig)
                 add_quantity(events, name, 'maxabsmag', pnum, source)
@@ -972,7 +575,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             if bestsig > 0:
                 bestz = float(bestz)
                 if 'velocity' not in events[name]:
-                    source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                    source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                     pnum = CLIGHT/KM*((bestz + 1.)**2. - 1.)/((bestz + 1.)**2. + 1.)
                     pnum = pretty_num(pnum, sig=bestsig)
                     add_quantity(events, name, 'velocity', pnum, source, kind=PREF_KINDS[bestkind])
@@ -980,15 +583,15 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     from astropy.cosmology import Planck15 as cosmo
                     if 'lumdist' not in events[name]:
                         dl = cosmo.luminosity_distance(bestz)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'lumdist', pretty_num(dl.value, sig=bestsig), source, kind=PREF_KINDS[bestkind])
                         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
-                            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                             pnum = pretty_num(float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig=bestsig)
                             add_quantity(events, name, 'maxabsmag', pnum, source)
                     if 'comovingdist' not in events[name]:
                         dl = cosmo.comoving_distance(bestz)
-                        source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+                        source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                         add_quantity(events, name, 'comovingdist', pretty_num(dl.value, sig=bestsig), source)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(
@@ -1223,7 +826,7 @@ def get_source_by_alias(events, name, alias):
     for source in events[name]['sources']:
         if source['alias'] == alias:
             return source
-    raise(ValueError('Source alias not found!'))
+    raise ValueError('Source alias not found!')
 
 
 def get_source_year(source):
@@ -1232,7 +835,7 @@ def get_source_year(source):
             return int(source['bibcode'][:4])
         else:
             return -10000
-    raise(ValueError('No bibcode available for source!'))
+    raise ValueError('No bibcode available for source!')
 
 
 def has_task(tasks, args, task):
@@ -1265,67 +868,6 @@ def journal_events(tasks, args, events, clear=True):
     if clear:
         clear_events(events)
     return events
-
-
-def load_event_from_file(events, args, tasks, name='', path='',
-                         clean=False, delete=True, append=False):
-    """
-    """
-    if not name and not path:
-        raise ValueError('Either event `name` or `path` must be specified to load event')
-
-    namepath = ''
-    # repo_folders = get_repo_folders()
-    repo_paths = get_repo_paths()
-
-    # Try to find a path (`namepath`) in a repo, corresponding to given `name`
-    if name and not path:
-        for rep in repo_paths:
-            filename = get_event_filename(name)
-            newpath = os.path.join(rep, filename + '.json')
-            if os.path.isfile(path):
-                path = newpath
-                break
-
-    if not path:
-        return False
-
-    newevent = ''
-    newevent2 = ''
-    if name in events:
-        del events[name]
-
-    with open(path, 'r') as f:
-        newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-    newevent2 = ''
-    if clean:
-        newevent = clean_event(events, newevent)
-    name = next(reversed(newevent))
-    if append:
-        for rep in repo_paths:
-            filename = get_event_filename(name)
-            newpath = os.path.join(rep, filename + '.json')
-            if os.path.isfile(newpath):
-                namepath = newpath
-        if namepath:
-            with open(namepath, 'r') as f:
-                newevent2 = json.loads(f.read(), object_pairs_hook=OrderedDict)
-                namename = next(reversed(newevent2))
-
-    if newevent2:
-        # Needs to be fixed
-        newevent = OrderedDict([['temp', newevent[name]]])
-        copy_to_event(events, 'temp', namename)
-    else:
-        events.update(newevent)
-
-    if args.verbose and not args.travis:
-        tprint('Loaded ' + name)
-
-    if 'writeevents' in tasks and delete and namepath:
-        os.remove(namepath)
-    return name
 
 
 def load_stubs(tasks, args, events):
@@ -1493,19 +1035,19 @@ def set_first_max_light(events, name):
     if 'maxappmag' not in events[name]:
         (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
         if mldt:
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source, mlsource]))
         if mlmag:
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'maxappmag', pretty_num(mlmag), uniq_cdl([source, mlsource]))
         if mlband:
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'maxband', mlband, uniq_cdl([source, mlsource]))
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         (fldt, flsource) = get_first_light(events, name)
         if fldt:
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source, flsource]))
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
@@ -1525,7 +1067,7 @@ def set_first_max_light(events, name):
 
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
-            source = add_source(events, name, bibcode=OSC_BIBCODE, refname=OSC_NAME, url=OSC_URL, secondary=True)
+            source = add_source(events, name, bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             add_quantity(events, name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
 
 
