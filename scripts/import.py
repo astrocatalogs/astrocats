@@ -80,6 +80,7 @@ tasks = OrderedDict([
     ("psthreepi",       {"nicename":"%pre Pan-STARRS 3π",           "update": True,  "archived": False}),
     ("psmds",           {"nicename":"%pre Pan-STARRS MDS",          "update": False}),
     ("psst",            {"nicename":"%pre PSST",                    "update": False}),
+    ("grb",             {"nicename":"%pre GRB catalog",             "update": True,  "archived": False}),
     ("crts",            {"nicename":"%pre CRTS",                    "update": True,  "archived": False}),
     ("snhunt",          {"nicename":"%pre SNhunt",                  "update": True,  "archived": False}),
     ("nedd",            {"nicename":"%pre NED-D",                   "update": False}),
@@ -212,7 +213,7 @@ def get_source_year(source):
 def radec_clean(svalue, quantity, unit = ''):
     if unit == 'floatdegrees':
         if not is_number(svalue):
-            return svalue
+            return (svalue, unit)
         deg = float('%g' % Decimal(svalue))
         sig = get_sig_digits(svalue)
         if 'ra' in quantity:
@@ -263,7 +264,7 @@ def radec_clean(svalue, quantity, unit = ''):
     # Strip trailing dots.
     svalue = svalue.rstrip('.')
 
-    return svalue
+    return (svalue, sunit)
 
 def host_clean(name):
     newname = name.strip(' ;,*')
@@ -364,6 +365,10 @@ def name_clean(name):
         newname = newname.replace('GAIA', 'Gaia', 1)
     if newname.startswith('Gaia '):
         newname = newname.replace('Gaia ', 'Gaia', 1)
+    if newname.startswith('Gaia'):
+        newname = 'Gaia' + newname[4:].lower()
+    if newname.startswith('GRB'):
+        newname = newname.replace('GRB', 'GRB ', 1)
     if newname.startswith('LSQ '):
         newname = newname.replace('LSQ ', 'LSQ', 1)
     if newname.startswith('KSN '):
@@ -436,12 +441,16 @@ def name_clean(name):
         newname = newname.replace('ROTSE3J', 'ROTSE3 J', 1)
     if newname.startswith('MACSJ'):
         newname = newname.replace('MACSJ', 'MACS J', 1)
+    if newname.startswith('MWSNR'):
+        newname = newname.replace('MWSNR', 'MWSNR ', 1)
     if newname.startswith('SN HUNT'):
         newname = newname.replace('SN HUNT', 'SNhunt', 1)
     if newname.startswith('SN Hunt'):
         newname = newname.replace(' ', '')
     if newname.startswith('SNHunt'):
         newname = newname.replace('SNHunt', 'SNhunt', 1)
+    if newname.startswith('SNhunt '):
+        newname = newname.replace('SNhunt ', 'SNhunt', 1)
     if newname.startswith('ptf'):
         newname = newname.replace('ptf', 'PTF', 1)
     if newname.startswith('SN PTF'):
@@ -970,7 +979,7 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, der
         if isq:
             svalue = svalue + '?'
     elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-        svalue = radec_clean(svalue, quantity, unit = unit)
+        (svalue, sunit) = radec_clean(svalue, quantity, unit = unit)
     elif quantity == 'maxdate' or quantity == 'discoverdate':
         # Make sure month and day have leading zeroes
         sparts = svalue.split('/')
@@ -1366,7 +1375,7 @@ def derive_and_sanitize():
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'] = list(sorted(events[name]['claimedtype'], key=lambda key: ct_priority(name, key)))
         if 'discoverdate' not in events[name]:
-            prefixes = ['MLS', 'SSS', 'CSS']
+            prefixes = ['MLS', 'SSS', 'CSS', 'GRB ']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
@@ -1571,21 +1580,27 @@ def derive_and_sanitize():
                         add_quantity(name, 'comovingdist', pretty_num(cd.value, sig = bestsig), sources, derived = True)
         if all([x in events[name] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
             # For now just using first coordinates that appear in entry
-            c1 = coord(ra=events[name]['ra'][0]['value'], dec=events[name]['dec'][0]['value'], unit=(un.hourangle, un.deg))
-            c2 = coord(ra=events[name]['hostra'][0]['value'], dec=events[name]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
-            sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
-                events[name]['ra'][0]['source'], events[name]['dec'][0]['source'],
-                events[name]['hostra'][0]['source'], events[name]['hostdec'][0]['source']])
-            add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
-                c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
-            if 'comovingdist' in events[name] and 'redshift' in events[name]:
-                offsetsig = get_sig_digits(events[name]['hostoffsetang'][0]['value'])
-                sources = uniq_cdl(sources.split(',') +
-                    [events[name]['comovingdist'][0]['source'], events[name]['redshift'][0]['source']])
-                add_quantity(name, 'hostoffsetdist',
-                    pretty_num(float(events[name]['hostoffsetang'][0]['value']) / 3600. * (pi / 180.) *
-                    float(events[name]['comovingdist'][0]['value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),
-                    sig = offsetsig), sources)
+            try:
+                c1 = coord(ra=events[name]['ra'][0]['value'], dec=events[name]['dec'][0]['value'], unit=(un.hourangle, un.deg))
+                c2 = coord(ra=events[name]['hostra'][0]['value'], dec=events[name]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except:
+                pass
+            else:
+                sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                    events[name]['ra'][0]['source'], events[name]['dec'][0]['source'],
+                    events[name]['hostra'][0]['source'], events[name]['hostdec'][0]['source']])
+                add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
+                    c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
+                if 'comovingdist' in events[name] and 'redshift' in events[name]:
+                    offsetsig = get_sig_digits(events[name]['hostoffsetang'][0]['value'])
+                    sources = uniq_cdl(sources.split(',') +
+                        [events[name]['comovingdist'][0]['source'], events[name]['redshift'][0]['source']])
+                    add_quantity(name, 'hostoffsetdist',
+                        pretty_num(float(events[name]['hostoffsetang'][0]['value']) / 3600. * (pi / 180.) *
+                        float(events[name]['comovingdist'][0]['value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),
+                        sig = offsetsig), sources)
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
                 min([float(y) for y in x['time']])) if 'time' in x else 0.0,
@@ -2023,6 +2038,7 @@ for task in tasks:
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
         customSimbad.TIMEOUT = 120
+        customSimbad.SIMBAD_URL = 'http://simbad.harvard.edu/simbad/sim-script'
         customSimbad.add_votable_fields('otype', 'sptype', 'sp_bibcode', 'id')
         # 2000A&AS..143....9W
         table = customSimbad.query_criteria('maintype=SN | maintype="SN?"')
@@ -3144,8 +3160,8 @@ for task in tasks:
             table = result[list(result.keys())[0]]
             table.convert_bytestring_to_unicode(python3_only=True)
             for ri, row in enumerate(tq(table, currenttask)):
-                ra = row['RAJ2000'] if isinstance(row['RAJ2000'], str) else radec_clean(str(row['RAJ2000']), 'ra', unit = 'floatdegrees')
-                dec = row['DEJ2000'] if isinstance(row['DEJ2000'], str) else radec_clean(str(row['DEJ2000']), 'dec', unit = 'floatdegrees')
+                ra = row['RAJ2000'] if isinstance(row['RAJ2000'], str) else radec_clean(str(row['RAJ2000']), 'ra', unit = 'floatdegrees')[0]
+                dec = row['DEJ2000'] if isinstance(row['DEJ2000'], str) else radec_clean(str(row['DEJ2000']), 'dec', unit = 'floatdegrees')[0]
                 name = tab.upper() + 'SNR J' + rep_chars(ra, ' :.') + rep_chars(dec, ' :.')
                 (name, source) = new_event(name, bibcode = "2015MNRAS.446..943V")
                 add_quantity(name, 'ra', ra, source)
@@ -3214,6 +3230,37 @@ for task in tasks:
                     add_photometry(name, time = str(row["MJD"]), band = band, magnitude = row[bandtag], upperlimit = upp,
                                    e_magnitude = row["e_" + bandtag] if is_number(row["e_" + bandtag]) else '',
                                    instrument = row["Inst"], source = source)
+        journal_events()
+
+        # 2004ApJ...607..665R
+        result = Vizier.get_catalogs("J/ApJ/607/665/table1")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = row['Name'].replace('SN ', 'SN')
+            (name, source) = new_event(name, bibcode = "2004ApJ...607..665R")
+            add_quantity(name, 'alias', row['OName'], source)
+            add_quantity(name, 'ra', row['RAJ2000'], source)
+            add_quantity(name, 'dec', row['DEJ2000'], source)
+        result = Vizier.get_catalogs("J/ApJ/607/665/table2")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = row['Name'].replace('SN ', 'SN')
+            (name, source) = new_event(name, bibcode = "2004ApJ...607..665R")
+            mjd = str(jd_to_mjd(Decimal(row['HJD'])))
+            add_photometry(name, time = mjd, band = row['Filt'], magnitude = row['Vega'], system = 'Vega',
+                           e_magnitude = row['e_Vega'], source = source)
+        result = Vizier.get_catalogs("J/ApJ/607/665/table5")
+        table = result[list(result.keys())[0]]
+        table.convert_bytestring_to_unicode(python3_only=True)
+        for row in tq(table, currenttask):
+            row = convert_aq_output(row)
+            name = row['Name'].replace('SN ', 'SN')
+            (name, source) = new_event(name, bibcode = "2004ApJ...607..665R")
+            add_quantity(name, 'redshift', row['z'], source, kind = 'spectroscopic')
         journal_events()
 
     if do_task(task, 'donations'):
@@ -5009,6 +5056,22 @@ for task in tasks:
                 add_quantity(name, 'redshift', row[7], source, kind = 'spectroscopic')
                 for alias in [x.strip() for x in row[8].split(',')]:
                     add_quantity(name, 'alias', alias, source)
+        journal_events()
+
+    if do_task(task, 'grb'):
+        csvtxt = load_cached_url('http://grb.pa.msu.edu/grbcatalog/download_data?cut_0_min=10&cut_0=BAT%20T90&cut_0_max=100000&num_cuts=1&no_date_cut=True',
+            '../sne-external/GRB-catalog/catalog.csv')
+        if not csvtxt:
+            continue
+        data = csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if r == 0:
+                continue
+            (name, source) = new_event('GRB ' + row[0], refname = 'Gamma-ray Bursts Catalog', url = 'http://grbcatalog.org')
+            add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
+            add_quantity(name, 'dec', row[3], source, unit = 'floatdegrees')
+            add_quantity(name, 'redshift', row[8], source)
+            add_quantity(name, 'host', row[9], source)
         journal_events()
     
     if do_task(task, 'crts'):
