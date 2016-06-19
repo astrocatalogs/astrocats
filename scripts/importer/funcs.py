@@ -231,7 +231,7 @@ def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_
                 # Don't add duplicate spectra
                 if 'data' in spectrum:
                     return
-                del(events[name]['spectra'][si])
+                del events[name]['spectra'][si]
                 break
 
     if not waveunit:

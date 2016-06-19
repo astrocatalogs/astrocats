@@ -97,7 +97,7 @@ def do_wiserep_spectra(events, args, tasks, task_obj):
                                                     for fi, fname in enumerate(lfiles):
                                                         if specfile in fname:
                                                             specpath = fname
-                                                            del(tfiles[fi])
+                                                            del tfiles[fi]
                                                             lfiles = deepcopy(tfiles)
                                                             raise StopIteration
                                         except StopIteration:

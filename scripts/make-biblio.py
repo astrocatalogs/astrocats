@@ -131,7 +131,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
 
 for bc in biblio:
     biblio[bc]['events'] = [x for (y,x) in sorted(zip(biblio[bc]['eventdates'], biblio[bc]['events']))]
-    del(biblio[bc]['eventdates'])
+    del biblio[bc]['eventdates']
 
 # Convert to array since that's what datatables expects
 biblio = list(biblio.values())

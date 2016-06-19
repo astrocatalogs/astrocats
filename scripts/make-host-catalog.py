@@ -149,7 +149,7 @@ for hn in hosts:
     else:
         hosts[hn]['rate'] = ''
     hosts[hn]['events'] = [x for (y,x) in sorted(zip(hosts[hn]['eventdates'], hosts[hn]['events']), key = lambda ev: ev[0])]
-    del(hosts[hn]['eventdates'])
+    del hosts[hn]['eventdates']
 
 # Convert to array since that's what datatables expects
 hosts = list(hosts.values())
