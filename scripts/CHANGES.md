@@ -8,8 +8,12 @@
 -   `main.py`
     -   Look at '--archived' vs. '--refresh[list]' and '--full-refresh'... what exactly is desired?
 -   `name_clean`
-    -   FIX THIS!
-
+    -   FIX: IMPROVE THIS!
+-   `EVENTS.add_quantity`
+    -   FIX: IMPROVE THIS!
+-   Create methods for parsing/cleaning RA & DEC  (e.g. to go into `add_quantity`)
+-   `scripts/constants.py`
+    -   Combine `OSC_` values into a class
     
 ## Questions ##
 -   What is `import_funcs.clear_events` doing?
