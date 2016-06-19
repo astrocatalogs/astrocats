@@ -186,7 +186,7 @@ def do_nedd(events, args, tasks, task_obj):
 
         if name:
             name = add_event(tasks, args, events, name)
-            sec_source = add_source(events, name, refname=reference, url=refurl, secondary=True)
+            sec_source = add_source(events, name, srcname=reference, url=refurl, secondary=True)
             add_quantity(events, name, 'alias', name, sec_source)
             if bibcode:
                 source = add_source(events, name, bibcode=bibcode)

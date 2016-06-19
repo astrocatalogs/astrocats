@@ -42,7 +42,7 @@ def do_cfa_photo(events, args, tasks, task_obj):
         name = add_event(tasks, args, events, name)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        secondarysource = add_source(events, name, refname=secondaryname, url=secondaryurl,
+        secondarysource = add_source(events, name, srcname=secondaryname, url=secondaryurl,
                                      secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, secondarysource)
 
@@ -151,7 +151,7 @@ def do_cfa_spectra(events, args, tasks, task_obj):
         name = add_event(tasks, args, events, name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = add_source(events, name, refname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -196,7 +196,7 @@ def do_cfa_spectra(events, args, tasks, task_obj):
         name = add_event(tasks, args, events, name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = add_source(events, name, refname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -236,7 +236,7 @@ def do_cfa_spectra(events, args, tasks, task_obj):
         name = add_event(tasks, args, events, name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = add_source(events, name, refname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             if not os.path.isfile(fname):

@@ -312,7 +312,7 @@ def do_vizier(events, args, tasks, task_obj):
         if row['r_m'] in ii189bibdict:
             source = add_source(events, name, bibcode=ii189bibdict[row['r_m']])
         else:
-            source = add_source(events, name, refname=ii189refdict[row['r_m']])
+            source = add_source(events, name, srcname=ii189refdict[row['r_m']])
         add_quantity(events, name, 'alias', name, source)
 
         add_photometry(events, name, time=mjd, band=band, magnitude=mag, source=uniq_cdl([source, secsource]))
@@ -343,7 +343,7 @@ def do_vizier(events, args, tasks, task_obj):
 
         name = add_event(tasks, args, events, name)
         source = (add_source(events, name, bibcode='2014BASI...42...47G') + ',' +
-                  add_source(events, name, refname='Galactic SNRs',
+                  add_source(events, name, srcname='Galactic SNRs',
                              url='https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
         add_quantity(events, name, 'alias', name, source)
 

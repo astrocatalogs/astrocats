@@ -27,7 +27,7 @@ def do_donations(events, args, tasks, task_obj):
             if name in bcs[bc]:
                 bibcode = bc
         if not bibcode:
-            raise(ValueError('Bibcode not found!'))
+            raise ValueError('Bibcode not found!')
         source = add_source(events, name, bibcode=bibcode)
         add_quantity(events, name, 'alias', name, source)
         with open(datafile, 'r') as f:
@@ -81,7 +81,7 @@ def do_donations(events, args, tasks, task_obj):
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, refname='Pierre Maggi')
+            source = add_source(events, name, srcname='Pierre Maggi')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'alias', row[1], source)
             add_quantity(events, name, 'alias', row[2], source)

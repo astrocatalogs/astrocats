@@ -135,11 +135,11 @@ def do_ps_threepi(events, args, tasks, task_obj):
             if not name:
                 name = psname
             name = add_event(tasks, args, events, name)
-            sources = [add_source(events, name, refname='Pan-STARRS 3Pi',
+            sources = [add_source(events, name, srcname='Pan-STARRS 3Pi',
                                   url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
             add_quantity(events, name, 'alias', name, sources[0])
             for ref in refs:
-                sources.append(add_source(events, name, refname=ref[0], url=ref[1]))
+                sources.append(add_source(events, name, srcname=ref[0], url=ref[1]))
             source = uniq_cdl(sources)
             for alias in aliases:
                 newalias = alias

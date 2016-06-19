@@ -33,7 +33,7 @@ def do_ucb_photo(events, args, tasks, task_obj):
         name = phot['ObjName']
         name = add_event(tasks, args, events, name)
 
-        sec_source = add_source(events, name, refname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
+        sec_source = add_source(events, name, srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
                                 secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
         sources = [sec_source]
@@ -52,9 +52,9 @@ def do_ucb_photo(events, args, tasks, task_obj):
         filename = phot['Filename'] if phot['Filename'] else ''
 
         if not filename:
-            raise(ValueError('Filename not found for SNDB phot!'))
+            raise ValueError('Filename not found for SNDB phot!')
         if not phot['PhotID']:
-            raise(ValueError('ID not found for SNDB phot!'))
+            raise ValueError('ID not found for SNDB phot!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
         if task_obj.load_archive(args) and os.path.isfile(filepath):
@@ -143,9 +143,9 @@ def do_ucb_spectra(events, args, tasks, task_obj):
         snr = str(spectrum['SNR']) if spectrum['SNR'] else ''
 
         if not filename:
-            raise(ValueError('Filename not found for SNDB spectrum!'))
+            raise ValueError('Filename not found for SNDB spectrum!')
         if not spectrum['SpecID']:
-            raise(ValueError('ID not found for SNDB spectrum!'))
+            raise ValueError('ID not found for SNDB spectrum!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
         if task_obj.load_archive(args) and os.path.isfile(filepath):

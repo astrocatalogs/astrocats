@@ -266,7 +266,7 @@ def do_cccp(events, args, tasks, task_obj):
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
             name = add_event(tasks, args, events, link.text.replace(' ', ''))
-            source = add_source(events, name, refname='CCCP',
+            source = add_source(events, name, srcname='CCCP',
                                 url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
             add_quantity(events, name, 'alias', name, source)
 
@@ -347,7 +347,7 @@ def do_cpcs(events, args, tasks, task_obj):
         else:
             continue
 
-        sec_source = add_source(events, name, refname='Cambridge Photometric Calibration Server',
+        sec_source = add_source(events, name, srcname='Cambridge Photometric Calibration Server',
                                 url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
         unit_deg = 'floatdegrees'
@@ -355,7 +355,7 @@ def do_cpcs(events, args, tasks, task_obj):
         add_quantity(events, name, 'dec', str(alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = 'http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=' + str(ai)
-        source = add_source(events, name, refname='CPCS Alert ' + str(ai), url=alerturl)
+        source = add_source(events, name, srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL, 'CPCS/alert-') + str(ai).zfill(2) + '.json'
         if task_obj.load_archive(args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
@@ -538,11 +538,11 @@ def do_des(events, args, tasks, task_obj):
                 else:
                     atellink = ''
 
-        sources = [add_source(events, name, url=des_url, refname='DES Bright Transients',
+        sources = [add_source(events, name, url=des_url, srcname='DES Bright Transients',
                               acknowledgment=ackn_url)]
         if atellink:
             sources.append(
-                add_source(events, name, refname='ATel ' + atellink.split('=')[-1], url=atellink))
+                add_source(events, name, srcname='ATel ' + atellink.split('=')[-1], url=atellink))
         sources += [add_source(events, name, bibcode='2012ApJ...753..152B'),
                     add_source(events, name, bibcode='2015AJ....150..150F'),
                     add_source(events, name, bibcode='2015AJ....150...82G'),
@@ -658,7 +658,7 @@ def do_gaia(events, args, tasks, task_obj):
         if ri == 0 or not row:
             continue
         name = add_event(tasks, args, events, row[0])
-        source = add_source(events, name, refname=reference, url=refurl)
+        source = add_source(events, name, srcname=reference, url=refurl)
         add_quantity(events, name, 'alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
         add_quantity(events, name, 'discoverdate', year, source)
@@ -770,7 +770,7 @@ def do_itep(events, args, tasks, task_obj):
             source = add_source(events, name, bibcode=bibcode)
         else:
             needsbib.append(reference)
-            source = add_source(events, name, refname=reference) if reference else ''
+            source = add_source(events, name, srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:
             add_photometry(events, name, time=mjd, band=band, magnitude=magnitude,
@@ -816,7 +816,7 @@ def do_scp(events, args, tasks, task_obj):
             continue
         name = row[0].replace('SCP', 'SCP-')
         name = add_event(tasks, args, events, name)
-        source = add_source(events, name, refname='Supernova Cosmology Project',
+        source = add_source(events, name, srcname='Supernova Cosmology Project',
                             url='http://supernova.lbl.gov/2009ClusterSurvey/')
         add_quantity(events, name, 'alias', name, source)
         if row[1]:
@@ -922,7 +922,7 @@ def do_snhunt(events, args, tasks, task_obj):
             continue
         name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         name = add_event(tasks, args, events, name)
-        source = add_source(events, name, refname='Supernova Hunt', url=snh_url)
+        source = add_source(events, name, srcname='Supernova Hunt', url=snh_url)
         add_quantity(events, name, 'alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
         add_quantity(events, name, 'host', host, source)
@@ -1012,7 +1012,7 @@ def do_superfit_spectra(events, args, tasks, task_obj):
             else:
                 epoff = ''
 
-            source = add_source(events, name, refname='Superfit',
+            source = add_source(events, name, srcname='Superfit',
                                 url='http://www.dahowell.com/superfit.html', secondary=True)
             add_quantity(events, name, 'alias', name, source)
 
@@ -1082,7 +1082,7 @@ def do_tns(events, args, tasks, task_obj):
                 continue
             name = row[1].replace(' ', '')
             name = add_event(tasks, args, events, name)
-            source = add_source(events, name, refname='Transient Name Server', url=tns_url)
+            source = add_source(events, name, srcname='Transient Name Server', url=tns_url)
             add_quantity(events, name, 'alias', name, source)
             if row[2] and row[2] != '00:00:00.00':
                 add_quantity(events, name, 'ra', row[2], source)

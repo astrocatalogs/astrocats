@@ -58,14 +58,14 @@ def do_asassn(events, args, tasks, task_obj):
             if tdi == 12:
                 host = td.text
 
-        sources = [add_source(events, name, url=asn_url, refname='ASAS-SN Supernovae')]
+        sources = [add_source(events, name, url=asn_url, srcname='ASAS-SN Supernovae')]
         typesources = sources[:]
         if atellink:
             sources.append(
-                add_source(events, name, refname='ATel ' + atellink.split('=')[-1], url=atellink))
+                add_source(events, name, srcname='ATel ' + atellink.split('=')[-1], url=atellink))
         if typelink:
             typesources.append(
-                add_source(events, name, refname='ATel ' + typelink.split('=')[-1], url=typelink))
+                add_source(events, name, srcname='ATel ' + typelink.split('=')[-1], url=typelink))
         sources = ','.join(sources)
         typesources = ','.join(typesources)
         add_quantity(events, name, 'alias', name, sources)

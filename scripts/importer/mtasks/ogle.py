@@ -95,10 +95,10 @@ def do_ogle(events, args, tasks, task_obj):
                         f.write(csvtxt)
 
                 lcdat = csvtxt.splitlines()
-                sources = [add_source(events, name, refname=reference, url=refurl)]
+                sources = [add_source(events, name, srcname=reference, url=refurl)]
                 add_quantity(events, name, 'alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
-                    sources.append(add_source(events, name, refname=atelref, url=atelurl))
+                    sources.append(add_source(events, name, srcname=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
 
                 if name.startswith('OGLE'):

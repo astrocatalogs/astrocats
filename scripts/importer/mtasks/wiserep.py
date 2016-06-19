@@ -99,7 +99,7 @@ def do_wiserep_spectra(events, args, tasks, task_obj):
                                                             specpath = fname
                                                             del(tfiles[fi])
                                                             lfiles = deepcopy(tfiles)
-                                                            raise(StopIteration)
+                                                            raise StopIteration
                                         except StopIteration:
                                             pass
                                         if not specpath:
@@ -143,7 +143,7 @@ def do_wiserep_spectra(events, args, tasks, task_obj):
 
                             # print(name + ' ' + claimedtype + ' ' + epoch + ' ' + observer + ' ' + reducer + ' ' + specfile + ' ' + bibcode + ' ' + redshift)
 
-                            secondarysource = add_source(events, name, refname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
+                            secondarysource = add_source(events, name, srcname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
                             add_quantity(events, name, 'alias', name, secondarysource)
                             if bibcode:
                                 newbibcode = bibcode
@@ -152,7 +152,7 @@ def do_wiserep_spectra(events, args, tasks, task_obj):
                                 if newbibcode:
                                     source = add_source(events, name, bibcode=unescape(newbibcode))
                                 else:
-                                    source = add_source(events, name, refname=unescape(bibcode))
+                                    source = add_source(events, name, srcname=unescape(bibcode))
                                 sources = uniq_cdl([source, secondarysource])
                             else:
                                 sources = secondarysource

@@ -27,7 +27,7 @@ def do_csp_photo(events, args, tasks, task_obj):
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
         refurl = 'http://csp.obs.carnegiescience.edu/data'
-        source = add_source(events, name, bibcode=refbib, refname=reference, url=refurl)
+        source = add_source(events, name, bibcode=refbib, srcname=reference, url=refurl)
         add_quantity(events, name, 'alias', name, source)
 
         year = re.findall(r'\d+', name)[0]

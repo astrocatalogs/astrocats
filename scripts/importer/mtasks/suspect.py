@@ -53,7 +53,7 @@ def do_suspect_photo(events, args, tasks, task_obj):
 
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
-        sec_source = add_source(events, name, refname=sec_ref, url=sec_refurl, secondary=True)
+        sec_source = add_source(events, name, srcname=sec_ref, url=sec_refurl, secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
 
         if ei == 1:

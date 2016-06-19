@@ -259,11 +259,11 @@ sitemaptemplate = (
 )
 
 if len(columnkey) != len(header):
-    raise(ValueError('Header not same length as key list.'))
+    raise ValueError('Header not same length as key list.')
     sys.exit(0)
 
 if len(columnkey) != len(eventpageheader):
-    raise(ValueError('Event page header not same length as key list.'))
+    raise ValueError('Event page header not same length as key list.')
     sys.exit(0)
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
@@ -1503,7 +1503,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                             sourceids.append(source['name'])
                                             idtypes.append('name')
                             if not sourceids or not idtypes:
-                                raise(ValueError('Unable to find associated source by alias!'))
+                                raise ValueError('Unable to find associated source by alias!')
                             edit = "true" if os.path.isfile('../sne-internal/' + get_event_filename(entry) + '.json') else "false"
                             keyhtml = (keyhtml + "<span class='singletooltiptext'><button class='singlemarkerror' type='button' onclick='markError(\"" +
                                 entry + "\", \"" + key + "\", \"" + ','.join(idtypes) +

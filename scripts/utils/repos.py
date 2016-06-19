@@ -31,7 +31,7 @@ def get_repo_folder_for_year(entry):
     if 'discoverdate' not in entry:
         return repo_folders[0]
     if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
-        raise(ValueError('Discovery year is not a number!'))
+        raise ValueError('Discovery year is not a number!')
         sys.exit()
 
     repo_years = get_repo_years(repo_folders)

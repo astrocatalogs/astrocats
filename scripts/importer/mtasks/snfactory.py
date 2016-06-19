@@ -81,7 +81,7 @@ def do_snf_specta(events, args, tasks, task_obj):
                 else:
                     newspec.append(row)
             if not time:
-                raise(ValueError('Time missing from spectrum.'))
+                raise ValueError('Time missing from spectrum.')
             specdata = newspec
             haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
             specdata = [list(i) for i in zip(*specdata)]
