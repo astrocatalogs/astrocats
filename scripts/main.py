@@ -4,7 +4,23 @@
 
 def main():
     from . import importer
+    from .utils import logger
     args = load_args()
+
+    # Load a logger object
+    # --------------------
+    # Determine verbosity ('None' means use default)
+    log_stream_level = None
+    if args.debug:
+        log_stream_level = logger.DEBUG
+    elif args.verbose:
+        log_stream_level = logger.INFO
+
+    # Destination of log-file ('None' means no file)
+    log = logger.get_logger(stream_level=log_stream_level, tofile=args.log_filename)
+    log.debug("some debug stuff")
+    log.info("some info stuff")
+    log.warning("some warning stuff")
 
     # Choose which submodule to run (note: can also use `set_default` with function)
     if args._name == 'importer':
@@ -26,8 +42,12 @@ def load_args(args=None):
     pars_parent = argparse.ArgumentParser(add_help=False)
     pars_parent.add_argument('--verbose', '-v', dest='verbose', default=False, action='store_true',
                              help='Print more messages to the screen.')
+    pars_parent.add_argument('--debug', '-d', dest='debug', default=False, action='store_true',
+                             help='Print excessive messages to the screen.')
     pars_parent.add_argument('--travis', '-t',  dest='travis',  default=False, action='store_true',
                              help='Run import script in test mode for Travis.')
+    pars_parent.add_argument('--log',  dest='log_filename',  default=None,
+                             help='Filename to which to store logging information.')
 
     # Construct the subparser for `importer` submodule --- importing supernova data
     pars_imp = subparsers.add_parser("importer", parents=[pars_parent],
