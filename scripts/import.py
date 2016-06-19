@@ -3454,7 +3454,8 @@ for task in tasks:
                             upp = True
                         add_photometry(name, time = mjd, magnitude = col, e_magnitude = emag,
                                        upperlimit = upp, band = bands[ci], source = source,
-                                       telescope = telescope, instrument = 'UVOT' if telescope == 'Swift' else '')
+                                       telescope = telescope, instrument = 'UVOT' if telescope == 'Swift' else '',
+                                       system = 'Vega' if telescope == 'Swift' else 'AB')
         journal_events()
     
     if do_task(task, 'pessto-dr1'):
