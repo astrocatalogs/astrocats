@@ -1,13 +1,17 @@
 """
 """
+from cdecimal import Decimal
 from collections import OrderedDict
 import json
+from math import floor
 import os
 
 from scripts import FILENAME
+from .constants import OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
 from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
-    journal_events, load_event_from_file, load_stubs
-from ..utils import get_repo_paths, get_event_filename, is_number, pbar, tprint
+    journal_events, load_event_from_file, load_stubs, name_clean
+from ..utils import get_repo_paths, get_event_filename, get_sig_digits, is_number, pbar, \
+    pretty_num, tprint, zpad
 
 
 class KEYS:
@@ -133,6 +137,8 @@ class EVENT(OrderedDict):
         if self.is_erroneous(quantity, sources):
             return None
 
+        my_quantity_list = self.get(quantity, [])
+
         svalue = value.strip()
         serror = error.strip()
         skind = kind.strip()
@@ -156,9 +162,10 @@ class EVENT(OrderedDict):
         # Handle certain quantity
         if quantity == 'alias':
             svalue = name_clean(svalue)
-            if 'distinctfrom' in events[name]:
-                if svalue in [x['value'] for x in events[name]['distinctfrom']]:
+            for df in self.get('distinctfrom', []):
+                if svalue == df['value']:
                     return
+
         if quantity in ['velocity', 'redshift', 'ebv', 'lumdist', 'comovingdist']:
             if not is_number(svalue):
                 return
@@ -196,7 +203,8 @@ class EVENT(OrderedDict):
                 svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
             if len(svalue) > 5 and svalue.startswith("CGCG "):
                 svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
-            if (len(svalue) > 1 and svalue.startswith("E")) or (len(svalue) > 3 and svalue.startswith('ESO')):
+            if (((len(svalue) > 1 and svalue.startswith("E")) or
+                 (len(svalue) > 3 and svalue.startswith('ESO')))):
                 if svalue[0] == "E":
                     esplit = svalue[1:].split("-")
                 else:
@@ -211,7 +219,7 @@ class EVENT(OrderedDict):
             svalue = ' '.join(svalue.split())
 
             is_abell = svalue.lower().startswith('abell') and is_number(svalue[5:].strip())
-            if (not skind and (is_abell or 'cluster' in svalue.lower())):
+            if not skind and (is_abell or 'cluster' in svalue.lower()):
                 skind = 'cluster'
 
         elif quantity == 'claimedtype':
@@ -238,7 +246,8 @@ class EVENT(OrderedDict):
                     seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
                     if seconds > 60.0:
                         raise ValueError('Invalid seconds value for ' + quantity)
-                    svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1))
+                    svalue = (str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' +
+                              zpad(pretty_num(seconds, sig=sig-1)))
                 elif 'dec' in quantity:
                     fldeg = abs(deg)
                     degree = floor(fldeg)
@@ -246,23 +255,25 @@ class EVENT(OrderedDict):
                     seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
                     if seconds > 60.0:
                         raise ValueError('Invalid seconds value for ' + quantity)
-                    svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
-                              str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1)))
-
+                    svalue = '+' if deg >= 0.0 else '-'
+                    svalue += (str(degree).strip('+-').zfill(2) + ':' +
+                               str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1)))
             elif unit == 'nospace' and 'ra' in quantity:
-                svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
-
+                svalue = (svalue[:2] + ':' + svalue[2:4] +
+                          ((':' + zpad(svalue[4:])) if len(svalue) > 4 else ''))
             elif unit == 'nospace' and 'dec' in quantity:
                 if svalue.startswith(('+', '-')):
-                    svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
+                    svalue = (svalue[:3] + ':' + svalue[3:5] +
+                              ((':' + zpad(svalue[5:])) if len(svalue) > 5 else ''))
                 else:
-                    svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
-
+                    svalue = ('+' + svalue[:2] + ':' + svalue[2:4] +
+                              ((':' + zpad(svalue[4:])) if len(svalue) > 4 else ''))
             else:
                 svalue = svalue.replace(' ', ':')
                 if 'dec' in quantity:
                     valuesplit = svalue.split(':')
-                    svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
+                    svalue = (('-' if valuesplit[0].startswith('-') else '+') +
+                              valuesplit[0].strip('+-').zfill(2) +
                               (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
                               (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
 
@@ -274,10 +285,12 @@ class EVENT(OrderedDict):
             # Correct case of arcseconds = 60.0.
             valuesplit = svalue.split(':')
             if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
-                svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
+                svalue = (valuesplit[0] + ':' + str(Decimal(valuesplit[1]) +
+                          Decimal(1.0)) + ':' + "00.0")
 
             # Strip trailing dots.
             svalue = svalue.rstrip('.')
+
         elif quantity == 'maxdate' or quantity == 'discoverdate':
             # Make sure month and day have leading zeroes
             sparts = svalue.split('/')
@@ -286,53 +299,51 @@ class EVENT(OrderedDict):
             if len(sparts) == 3:
                 svalue = svalue + '/' + sparts[2].zfill(2)
 
-            if quantity in events[name]:
-                for i, ct in enumerate(events[name][quantity]):
-                    # Only add dates if they have more information
-                    if len(ct['value'].split('/')) > len(svalue.split('/')):
-                        return
+            for ii, ct in enumerate(my_quantity_list):
+                # Only add dates if they have more information
+                if len(ct['value'].split('/')) > len(svalue.split('/')):
+                    return
 
         if is_number(svalue):
             svalue = '%g' % Decimal(svalue)
         if serror:
             serror = '%g' % Decimal(serror)
 
-        if quantity in events[name]:
-            for i, ct in enumerate(events[name][quantity]):
-                if ct['value'] == svalue and sources:
-                    if 'kind' in ct and skind and ct['kind'] != skind:
-                        return
-                    for source in sources.split(','):
-                        if source not in events[name][quantity][i]['source'].split(','):
-                            events[name][quantity][i]['source'] += ',' + source
-                            if serror and 'error' not in events[name][quantity][i]:
-                                events[name][quantity][i]['error'] = serror
+        for ii, ct in enumerate(my_quantity_list):
+            if ct['value'] == svalue and sources:
+                if 'kind' in ct and skind and ct['kind'] != skind:
                     return
+                for source in sources.split(','):
+                    if source not in my_quantity_list[ii]['source'].split(','):
+                        my_quantity_list[ii]['source'] += ',' + source
+                        if serror and 'error' not in my_quantity_list[ii]:
+                            my_quantity_list[ii]['error'] = serror
+                return
 
         if not sunit:
             sunit = unit
 
-        quantaentry = OrderedDict()
-        quantaentry['value'] = svalue
+        quanta_entry = OrderedDict()
+        quanta_entry['value'] = svalue
         if serror:
-            quantaentry['error'] = serror
+            quanta_entry['error'] = serror
         if sources:
-            quantaentry['source'] = sources
+            quanta_entry['source'] = sources
         if skind:
-            quantaentry['kind'] = skind
+            quanta_entry['kind'] = skind
         if sunit:
-            quantaentry['unit'] = sunit
+            quanta_entry['unit'] = sunit
         if lowerlimit:
-            quantaentry['lowerlimit'] = lowerlimit
+            quanta_entry['lowerlimit'] = lowerlimit
         if upperlimit:
-            quantaentry['upperlimit'] = upperlimit
+            quanta_entry['upperlimit'] = upperlimit
         if extra:
-            quantaentry['extra'] = extra
-        if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and quantity in events[name]:
+            quanta_entry['extra'] = extra
+        if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and len(my_quantity_list):
             newquantities = []
             isworse = True
             if quantity in ['discoverdate', 'maxdate']:
-                for ct in events[name][quantity]:
+                for ct in my_quantity_list:
                     ctsplit = ct['value'].split('/')
                     svsplit = svalue.split('/')
                     if len(ctsplit) < len(svsplit):
@@ -345,7 +356,7 @@ class EVENT(OrderedDict):
                     newquantities.append(ct)
             else:
                 newsig = get_sig_digits(svalue)
-                for ct in events[name][quantity]:
+                for ct in my_quantity_list:
                     if 'error' in ct:
                         if serror:
                             if float(serror) < float(ct['error']):
@@ -362,10 +373,10 @@ class EVENT(OrderedDict):
                         if newsig >= oldsig:
                             isworse = False
             if not isworse:
-                newquantities.append(quantaentry)
-            events[name][quantity] = newquantities
+                newquantities.append(quanta_entry)
+            self[quantity] = newquantities
         else:
-            events[name].setdefault(quantity, []).append(quantaentry)
+            self.setdefault(quantity, []).append(quanta_entry)
 
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
@@ -458,15 +469,15 @@ def clean_event(events, dirty_event):
 
     # Clean some legacy fields
     if 'aliases' in dirty_event and isinstance(dirty_event['aliases'], list):
-        source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+        source = dirty_event.add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
         for alias in dirty_event['aliases']:
-            add_quantity(events, 'temp', 'alias', alias, source)
-        del(dirty_event['aliases'])
+            dirty_event.add_quantity('alias', alias, source)
+        del dirty_event['aliases']
 
     if (('distinctfrom' in dirty_event and isinstance(dirty_event['distinctfrom'], list) and
          isinstance(dirty_event['distinctfrom'][0], str))):
             distinctfroms = [x for x in dirty_event['distinctfrom']]
-            del(dirty_event['distinctfrom'])
+            del dirty_event['distinctfrom']
             source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             for df in distinctfroms:
                 add_quantity(events, 'temp', 'distinctfrom', df, source)
@@ -476,7 +487,7 @@ def clean_event(events, dirty_event):
             source = add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             for err in dirty_event['errors']:
                 add_quantity(events, 'temp', 'error', err['quantity'], source, kind=err['sourcekind'], extra=err['id'])
-            del(dirty_event['errors'])
+            del dirty_event['errors']
 
     if not bibcodes:
         add_source(events, 'temp', bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
@@ -611,11 +622,11 @@ def merge_duplicates(tasks, args, events):
                     if priority1 > priority2:
                         copy_to_event(events, name2, name1)
                         keys.append(name1)
-                        del(events[name2])
+                        del events[name2]
                     else:
                         copy_to_event(events, name1, name2)
                         keys.append(name2)
-                        del(events[name1])
+                        del events[name1]
                 else:
                     print('Duplicate already deleted')
                 journal_events(tasks, args, events)
@@ -688,7 +699,7 @@ def set_preferred_names(tasks, args, events):
                 tprint('Changing event name (' + name + ') to preferred name (' + newname + ').')
                 events[newname] = events[name]
                 events[newname][KEYS.NAME] = newname
-                del(events[name])
+                del events[name]
                 journal_events(tasks, args, events)
 
     return events
@@ -713,7 +724,7 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
             if not empty:
                 continue
             else:
-                del(events[name]['stub'])
+                del events[name]['stub']
         if args.verbose and not args.travis:
             tprint('Writing ' + name)
         filename = get_event_filename(name)
