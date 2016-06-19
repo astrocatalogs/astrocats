@@ -13,6 +13,7 @@ from ..utils import get_repo_paths, get_event_filename, is_number, pbar, tprint
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
+    ERRORS = 'errors'
     NAME = 'name'
     SOURCES = 'sourcs'
     URL = 'url'
@@ -29,6 +30,8 @@ class EVENT(OrderedDict):
     -   FIX: consider changing 'alias' for each source to 'src_num' or something
     -   FIX: Make source aliases integers (instead of strings of integers)??
     -   FIX: have list of allowed 'source' parameters??
+    -   FIX: create class for 'errors'
+    -   FIX: class or list of valid quantities and units
 
     """
 
@@ -117,20 +120,18 @@ class EVENT(OrderedDict):
 
         return source_alias
 
-    def add_quantity(events, name, quantity, value, sources, forcereplacebetter=False,
+    def add_quantity(self, quantity, value, sources, forcereplacebetter=False,
                      lowerlimit='', upperlimit='', error='', unit='', kind='', extra=''):
         if not quantity:
-            raise(ValueError('Quantity must be specified for add_quantity.'))
+            raise ValueError('Quantity must be specified for add_quantity.')
         if not sources:
-            raise(ValueError('Source must be specified for quantity before it is added.'))
-        if not isinstance(value, str) and (not isinstance(value, list) or not isinstance(value[0], str)):
-            raise(ValueError('Quantity must be a string or an array of strings.'))
+            raise ValueError('Source must be specified for quantity before it is added.')
+        if ((not isinstance(value, str) and
+             (not isinstance(value, list) or not isinstance(value[0], str)))):
+            raise ValueError('Quantity must be a string or an array of strings.')
 
-        with open(FILENAME.TYPE_SYNONYMS, 'r') as f:
-            typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
-
-        if is_erroneous(events, name, quantity, sources):
-            return
+        if self.is_erroneous(quantity, sources):
+            return None
 
         svalue = value.strip()
         serror = error.strip()
@@ -139,8 +140,8 @@ class EVENT(OrderedDict):
 
         if not svalue or svalue == '--' or svalue == '-':
             return
-        if serror and (not is_number(serror) or float(serror) < 0.):
-            raise(ValueError('Quanta error value must be a number and positive.'))
+        if serror and (not is_number(serror) or float(serror) < 0):
+            raise ValueError('Quanta error value must be a number and positive.')
 
         # Set default units
         if not unit and quantity == 'velocity':
@@ -219,8 +220,8 @@ class EVENT(OrderedDict):
             if '?' in svalue:
                 isq = True
                 svalue = svalue.strip(' ?')
-            for rep in typereps:
-                if svalue in typereps[rep]:
+            for rep in self._source_syns:
+                if svalue in self._source_syns[rep]:
                     svalue = rep
                     break
             if isq:
@@ -236,7 +237,7 @@ class EVENT(OrderedDict):
                     minutes = floor((flhours - hours) * 60.0)
                     seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
                     if seconds > 60.0:
-                        raise(ValueError('Invalid seconds value for ' + quantity))
+                        raise ValueError('Invalid seconds value for ' + quantity)
                     svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1))
                 elif 'dec' in quantity:
                     fldeg = abs(deg)
@@ -244,7 +245,7 @@ class EVENT(OrderedDict):
                     minutes = floor((fldeg - degree) * 60.0)
                     seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
                     if seconds > 60.0:
-                        raise(ValueError('Invalid seconds value for ' + quantity))
+                        raise ValueError('Invalid seconds value for ' + quantity)
                     svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
                               str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1)))
 
@@ -366,7 +367,6 @@ class EVENT(OrderedDict):
         else:
             events[name].setdefault(quantity, []).append(quantaentry)
 
-
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
         if not srcname:
@@ -409,6 +409,29 @@ class EVENT(OrderedDict):
                 break
 
         return srcname, bibcode
+
+    def is_erroneous(self, field, sources):
+        if hasattr(self, KEYS.ERRORS):
+            my_errors = self['errors']
+            for alias in sources.split(','):
+                source = self.get_source_by_alias(alias)
+                bib_err_values = [err['value'] for err in my_errors
+                                  if err['kind'] == 'bibcode' and err['extra'] == field]
+                if 'bibcode' in source and source['bibcode'] in bib_err_values:
+                    return True
+
+                name_err_values = [err['value'] for err in my_errors
+                                   if err['kind'] == 'name' and err['extra'] == field]
+                if 'name' in source and source['name'] in name_err_values:
+                    return True
+
+        return False
+
+    def get_source_by_alias(self, alias):
+        for source in self.get(KEYS.SOURCES, []):
+            if source['alias'] == alias:
+                return source
+        raise ValueError("Source '{}': alias '{}' not found!".format(self.name, alias))
 
 
 def clean_event(events, dirty_event):

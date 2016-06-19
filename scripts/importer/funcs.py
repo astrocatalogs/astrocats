@@ -822,13 +822,6 @@ def get_preferred_name(events, name):
         return name
 
 
-def get_source_by_alias(events, name, alias):
-    for source in events[name]['sources']:
-        if source['alias'] == alias:
-            return source
-    raise ValueError('Source alias not found!')
-
-
 def get_source_year(source):
     if 'bibcode' in source:
         if is_number(source['bibcode'][:4]):
@@ -840,19 +833,6 @@ def get_source_year(source):
 
 def has_task(tasks, args, task):
     return task in tasks and (not args.update or tasks[task]['update'])
-
-
-def is_erroneous(events, name, field, sources):
-    if 'errors' in events[name]:
-        for alias in sources.split(','):
-            source = get_source_by_alias(events, name, alias)
-            if (('bibcode' in source and source['bibcode'] in
-                 [x['value'] for x in events[name]['errors'] if x['kind'] == 'bibcode' and x['extra'] == field])):
-                    return True
-            if (('name' in source and source['name'] in
-                 [x['value'] for x in events[name]['errors'] if x['kind'] == 'name' and x['extra'] == field])):
-                    return True
-    return False
 
 
 def jd_to_mjd(jd):
