@@ -1591,7 +1591,7 @@ def derive_and_sanitize():
             except:
                 pass
             else:
-                sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)]
+                sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)] +
                     events[name]['ra'][0]['source'].split(',') + events[name]['dec'][0]['source'].split(',') +
                     events[name]['hostra'][0]['source'].split(',') + events[name]['hostdec'][0]['source'].split(','))
                 add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
