@@ -148,7 +148,7 @@ maxbands = [
 ]
 
 def uniq_cdl(values):
-    return ','.join(list(OrderedDict.fromkeys(values).keys()))
+    return ','.join(sorted(list(set(values))))
 
 def rep_chars(string, chars, rep = ''):
     for c in chars:
@@ -369,6 +369,8 @@ def name_clean(name):
         newname = 'Gaia' + newname[4:].lower()
     if newname.startswith('GRB'):
         newname = newname.replace('GRB', 'GRB ', 1)
+    if newname.startswith('GRB ') and is_number(newname[4:].strip()):
+        newname = 'GRB ' + newname[4:].strip() + 'A'
     if newname.startswith('LSQ '):
         newname = newname.replace('LSQ ', 'LSQ', 1)
     if newname.startswith('KSN '):
@@ -1483,8 +1485,9 @@ def derive_and_sanitize():
                 sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True), 
                     add_source(name, bibcode = '2011ApJ...737..103S')])
                 add_quantity(name, 'ebv', str(extinctionsdict[name][0]), sources, error = str(extinctionsdict[name][1]), derived = True)
-        if 'hostra' not in events[name] or 'hostdec' not in events[name]:
-            for alias in aliases:
+        if 'host' in events[name] and ('hostra' not in events[name] or 'hostdec' not in events[name]):
+            for host in events[name]['host']:
+                alias = host['value']
                 if ' J' in alias and is_number(alias.split(' J')[-1][:6]):
                     noprefix = alias.split(' J')[-1].split(':')[-1].replace('.', '')
                     decsign = '+' if '+' in noprefix else '-'
@@ -5072,7 +5075,6 @@ for task in tasks:
             add_quantity(name, 'ra', row[2], source, unit = 'floatdegrees')
             add_quantity(name, 'dec', row[3], source, unit = 'floatdegrees')
             add_quantity(name, 'redshift', row[8], source)
-            add_quantity(name, 'host', row[9], source)
         journal_events()
     
     if do_task(task, 'crts'):

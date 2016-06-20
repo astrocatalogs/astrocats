@@ -364,12 +364,16 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     catalog[entry]['hostoffkpc'] = ''
     if all([x in catalog[entry] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
-        c1 = coord(ra=catalog[entry]['ra'][0]['value'], dec=catalog[entry]['dec'][0]['value'], unit=(un.hourangle, un.deg))
-        c2 = coord(ra=catalog[entry]['hostra'][0]['value'], dec=catalog[entry]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
-        catalog[entry]['hostoffmin'] = pretty_num(hypot(c1.ra.degree - c2.ra.degree, c1.dec.degree - c2.dec.degree)*60.)
-        if 'comovingdist' in catalog[entry] and 'redshift' in catalog[entry]:
-            catalog[entry]['hostoffkpc'] = pretty_num(float(catalog[entry]['hostoffmin']) / 60. * (pi / 180.) *
-                float(catalog[entry]['comovingdist'][0]['value']) * 1000. / (1.0 + float(catalog[entry]['redshift'][0]['value'])))
+        try:
+            c1 = coord(ra=catalog[entry]['ra'][0]['value'], dec=catalog[entry]['dec'][0]['value'], unit=(un.hourangle, un.deg))
+            c2 = coord(ra=catalog[entry]['hostra'][0]['value'], dec=catalog[entry]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
+        except:
+            catalog[entry]['hostoffmin'] = ''
+        else:
+            catalog[entry]['hostoffmin'] = pretty_num(hypot(c1.ra.degree - c2.ra.degree, c1.dec.degree - c2.dec.degree)*60.)
+            if 'comovingdist' in catalog[entry] and 'redshift' in catalog[entry]:
+                catalog[entry]['hostoffkpc'] = pretty_num(float(catalog[entry]['hostoffmin']) / 60. * (pi / 180.) *
+                    float(catalog[entry]['comovingdist'][0]['value']) * 1000. / (1.0 + float(catalog[entry]['redshift'][0]['value'])))
     else:
         catalog[entry]['hostoffmin'] = ''
 
