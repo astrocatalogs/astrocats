@@ -1308,22 +1308,22 @@ def merge_duplicates():
     for n1, name1 in enumerate(tq(keys[:], currenttask)):
         if name1 not in events:
             continue
-        allnames1 = get_aliases(name1) + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else [])
+        allnames1 = set(get_aliases(name1) + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []))
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
-            allnames2 = get_aliases(name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else [])
-            if any(i in allnames1 for i in allnames2):
+            allnames2 = set(get_aliases(name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else []))
+            if bool(allnames1 & allnames2):
                 tprint('Found single event with multiple entries (' + name1 + ' and ' + name2 + '), merging.')
                 load1 = load_event_from_file(name1, delete = True)
                 load2 = load_event_from_file(name2, delete = True)
                 if load1 and load2:
                     priority1 = 0
                     priority2 = 0
-                    for an in allnames1:
+                    for an in list(allnames1):
                         if len(an) >= 2 and an.startswith(('SN', 'AT')):
                             priority1 = priority1 + 1
-                    for an in allnames2:
+                    for an in list(allnames2):
                         if len(an) >= 2 and an.startswith(('SN', 'AT')):
                             priority2 = priority2 + 1
 
