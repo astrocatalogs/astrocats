@@ -1,4 +1,9 @@
 .event-download {
+    width: 100%;
+    text-align: center;
+}
+
+.event-download a {
     font-size: 18pt;
     color: darkgreen !important;
     font-weight: bold;
@@ -10,6 +15,28 @@
 }
 
 .event-download:hover {
+	text-decoration: underline;
+}
+
+.event-issue {
+    width: 100%;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.event-issue a {
+    font-size: 18pt;
+    color: darkorange !important;
+    font-weight: bold;
+    text-decoration: none;
+    background: gold;
+    width: 100%;
+	padding-left: 5px;
+	padding-right: 5px;
+    margin-top: 10px;
+}
+
+.event-issue:hover {
 	text-decoration: underline;
 }
 

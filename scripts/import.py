@@ -1172,19 +1172,19 @@ def set_first_max_light(name):
         (mldt, mlmag, mlband, mlsource) = get_max_light(name)
         if mldt:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source,mlsource]))
+            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source]+mlsource.split(',')))
         if mlmag:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'maxappmag', pretty_num(mlmag), uniq_cdl([source,mlsource]))
+            add_quantity(name, 'maxappmag', pretty_num(mlmag), uniq_cdl([source]+mlsource.split(',')))
         if mlband:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'maxband', mlband, uniq_cdl([source,mlsource]))
+            add_quantity(name, 'maxband', mlband, uniq_cdl([source]+mlsource.split(',')))
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         (fldt, flsource) = get_first_light(name)
         if fldt:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source,flsource]))
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source]+flsource.split(',')))
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
@@ -1204,7 +1204,7 @@ def set_first_max_light(name):
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source]+minspecsource.split(',')))
 
 def get_best_redshift(name):
     bestsig = -1
@@ -1591,15 +1591,15 @@ def derive_and_sanitize():
             except:
                 pass
             else:
-                sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
-                    events[name]['ra'][0]['source'], events[name]['dec'][0]['source'],
-                    events[name]['hostra'][0]['source'], events[name]['hostdec'][0]['source']])
+                sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)]
+                    events[name]['ra'][0]['source'].split(',') + events[name]['dec'][0]['source'].split(',') +
+                    events[name]['hostra'][0]['source'].split(',') + events[name]['hostdec'][0]['source'].split(','))
                 add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
                     c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
                 if 'comovingdist' in events[name] and 'redshift' in events[name]:
                     offsetsig = get_sig_digits(events[name]['hostoffsetang'][0]['value'])
                     sources = uniq_cdl(sources.split(',') +
-                        [events[name]['comovingdist'][0]['source'], events[name]['redshift'][0]['source']])
+                        events[name]['comovingdist'][0]['source'].split(',') + events[name]['redshift'][0]['source'].split(','))
                     add_quantity(name, 'hostoffsetdist',
                         pretty_num(float(events[name]['hostoffsetang'][0]['value']) / 3600. * (pi / 180.) *
                         float(events[name]['comovingdist'][0]['value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),

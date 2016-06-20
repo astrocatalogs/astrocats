@@ -1477,8 +1477,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             , html)
 
         repfolder = get_rep_folder(catalog[entry])
-        html = re.sub(r'(\<\/body\>)', '<div style="width:100%; text-align:center;">' + r'<a class="event-download" href="' +
-            linkdir + fileeventname + r'.json" download>' + r'Click to download all data for ' + eventname + ' in JSON format' +
+        html = re.sub(r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
+            linkdir + fileeventname + r'.json" download>' + r'Download all data for ' + eventname + 
+            r'</a></div>\n\1', html)
+        issueargs = '?title=' + ('[' + eventname + '] <Descriptive issue title>').encode('ascii', 'xmlcharrefreplace').decode("utf-8") + '&body=' + \
+            ('Please describe the issue with ' + eventname +'\'s data here, be as descriptive as possible! ' +
+             'If you believe the issue appears in other events as well, please identify which other events the issue possibly extends to.').encode('ascii', 'xmlcharrefreplace').decode("utf-8")
+        html = re.sub(r'(\<\/body\>)', '<div class="event-issue">' + r'<a href="https://github.com/astrocatalogs/sne/issues/new' +
+            issueargs + r'" target="_blank">' + r'Report an issue with ' + eventname +
             r'</a></div>\n\1', html)
 
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
