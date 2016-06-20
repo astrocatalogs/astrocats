@@ -1172,19 +1172,19 @@ def set_first_max_light(name):
         (mldt, mlmag, mlband, mlsource) = get_max_light(name)
         if mldt:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source]+mlsource.split(',')))
+            add_quantity(name, 'maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source]+mlsource.split(',')), derived = True)
         if mlmag:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'maxappmag', pretty_num(mlmag), uniq_cdl([source]+mlsource.split(',')))
+            add_quantity(name, 'maxappmag', pretty_num(mlmag), uniq_cdl([source]+mlsource.split(',')), derived = True)
         if mlband:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'maxband', mlband, uniq_cdl([source]+mlsource.split(',')))
+            add_quantity(name, 'maxband', mlband, uniq_cdl([source]+mlsource.split(',')), derived = True)
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         (fldt, flsource) = get_first_light(name)
         if fldt:
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source]+flsource.split(',')))
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source]+flsource.split(',')), derived = True)
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
@@ -1204,7 +1204,7 @@ def set_first_max_light(name):
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
-            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source]+minspecsource.split(',')))
+            add_quantity(name, 'discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source]+minspecsource.split(',')), derived = True)
 
 def get_best_redshift(name):
     bestsig = -1
