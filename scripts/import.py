@@ -985,6 +985,8 @@ def add_quantity(name, quantity, value, sources, forcereplacebetter = False, der
     elif quantity == 'maxdate' or quantity == 'discoverdate':
         # Make sure month and day have leading zeroes
         sparts = svalue.split('/')
+        if len(sparts[0]) > 4 and int(sparts[0]) > 0:
+            raise ValueError('Date years limited to four digits.')
         if len(sparts) >= 2:
             svalue = sparts[0] + '/' + sparts[1].zfill(2)
         if len(sparts) == 3:
@@ -1384,7 +1386,7 @@ def derive_and_sanitize():
                         discoverdate = '/'.join(['20' + alias.replace(prefix, '')[:2],
                             alias.replace(prefix, '')[2:4], alias.replace(prefix, '')[4:6]])
                         if args.verbose:
-                            tprint ('Added discoverdate from name: ' + discoverdate)
+                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
@@ -1398,7 +1400,7 @@ def derive_and_sanitize():
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if args.verbose:
-                            tprint ('Added discoverdate from name: ' + discoverdate)
+                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
@@ -1412,7 +1414,7 @@ def derive_and_sanitize():
                         discoverdate = '/'.join([alias.replace(prefix, '')[:4],
                             alias.replace(prefix, '')[4:6], alias.replace(prefix, '')[6:8]])
                         if args.verbose:
-                            tprint ('Added discoverdate from name: ' + discoverdate)
+                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
@@ -1426,7 +1428,7 @@ def derive_and_sanitize():
                         discoverdate = '/'.join(['20' + alias.replace(prefix, '')[:2],
                             alias.replace(prefix, '')[2:4]])
                         if args.verbose:
-                            tprint ('Added discoverdate from name: ' + discoverdate)
+                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
@@ -1439,7 +1441,7 @@ def derive_and_sanitize():
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]) and '.' not in alias.replace(prefix, '')[:4]:
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
-                            tprint ('Added discoverdate from name: ' + discoverdate)
+                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
                         add_quantity(name, 'discoverdate', discoverdate, source, derived = True)
                         break
@@ -2035,16 +2037,24 @@ for task in tasks:
     if do_task(task, 'simbad'):
         #Simbad.list_votable_fields()
         # Some coordinates that SIMBAD claims belong to the SNe actually belong to the host.
+        simbadmirrors = ['http://simbad.harvard.edu/simbad/sim-script', 'http://simbad.u-strasbg.fr/simbad/sim-script']
         simbadbadcoordbib = ['2013ApJ...770..107C']
         simbadbadnamebib = ['2004AJ....127.2809W', '2005MNRAS.364.1419Z', '2015A&A...574A.112D', '2011MNRAS.417..916G']
         simbadbannedcats = ['[TBV2008]', 'OGLE-MBR']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
         customSimbad.TIMEOUT = 120
-        customSimbad.SIMBAD_URL = 'http://simbad.harvard.edu/simbad/sim-script'
         customSimbad.add_votable_fields('otype', 'sptype', 'sp_bibcode', 'id')
+        for mirror in simbadmirrors:
+            customSimbad.SIMBAD_URL = mirror
+            try:
+                table = customSimbad.query_criteria('maintype=SN | maintype="SN?"')
+            except:
+                continue
+            else:
+                break
+
         # 2000A&AS..143....9W
-        table = customSimbad.query_criteria('maintype=SN | maintype="SN?"')
         for brow in tq(table, currenttask = currenttask):
             row = {x:re.sub(r'b\'(.*)\'', r'\1', str(brow[x])) for x in brow.colnames}
             # Skip items with no bibliographic info aside from SIMBAD, too error-prone
@@ -4293,14 +4303,14 @@ for task in tasks:
     
         for record in tq(records, currenttask):
             if len(record) > 1 and record[1] != '':
-                name = snname("SN" + record[1]).strip('?')
+                oldname = snname("SN" + record[1]).strip('?')
     
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 refbib = '1989A&AS...81..421B'
-                (name, source) = new_event(name, refname = reference, url = refurl, bibcode = refbib, secondary = True)
+                (name, source) = new_event(oldname, refname = reference, url = refurl, bibcode = refbib, secondary = True)
     
-                year = re.findall(r'\d+', name)[0]
+                year = re.findall(r'\d+', oldname)[0]
                 add_quantity(name, 'discoverdate', year, source)
     
                 hostname = record[2]
@@ -4328,7 +4338,7 @@ for task in tasks:
                     if dayarr:
                         daystr = dayarr[0]
                         datestring = datestring + '/' + daystr
-    
+
                 add_quantity(name, datekey + 'date', datestring, source)
     
                 velocity = ''
@@ -4555,7 +4565,7 @@ for task in tasks:
                         aka = 'SN' + aka.strip('?') + 'A'
                         oldname = aka
                         name = add_event(aka)
-                    elif len(aka) >= 4 and is_number(aka[:4]):
+                    elif len(aka) == 4 and is_number(aka[:4]):
                         aka = 'SN' + aka
                         oldname = aka
                         name = add_event(aka)
@@ -4566,7 +4576,7 @@ for task in tasks:
                 sn = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
                 if is_number(sn.strip('?')):
                     sn = 'SN' + sn.strip('?') + 'A'
-                elif len(sn) >= 4 and is_number(sn[:4]):
+                elif len(sn) == 4 and is_number(sn[:4]):
                     sn = 'SN' + sn
                 if not name:
                     if not sn:
