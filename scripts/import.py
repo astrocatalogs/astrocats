@@ -148,7 +148,10 @@ maxbands = [
     ['R', 'r']       # if not, R-like bands
 ]
 
-gitrevhash = subprocess.check_output(['git', 'log', '-n', '1', '--format="%H"', '--', '../OSC-JSON-format.md']).strip()
+gitrevhash = subprocess.check_output(['git', 'log', '-n', '1', '--format="%H"',
+    '--', '../OSC-JSON-format.md']).decode('ascii').strip().strip('"').strip()
+def get_schema():
+    return 'https://github.com/astrocatalogs/sne/blob/' + gitrevhash + '/OSC-JSON-format.md'
 
 def uniq_cdl(values):
     return ','.join(sorted(list(set(values))))
@@ -550,7 +553,7 @@ def add_event(name, load = True, delete = True, loadifempty = True):
             return match
 
         events[newname] = OrderedDict()
-        events[newname]['schema'] = 'https://github.com/astrocatalogs/sne/blob/' + gitrevhash + '/OSC-JSON-format.md'
+        events[newname]['schema'] = get_schema()
         events[newname]['name'] = newname
         if args.verbose and 'stub' not in events[newname]:
             tprint('Added new event ' + newname)
@@ -1829,6 +1832,8 @@ def clean_event(dirtyevent):
     # This is very hacky and is only necessary because we don't have a proper 'Event' object yet.
     events['temp'] = dirtyevent[name]
 
+    if 'schema' not in events['temp']:
+        events['temp']['schema'] = get_schema()
     if 'name' not in events['temp']:
         events['temp']['name'] = name
     if 'sources' in events['temp']:
