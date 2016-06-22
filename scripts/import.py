@@ -16,6 +16,7 @@ import io
 import shutil
 import statistics
 import warnings
+import subprocess
 from datetime import timedelta, datetime
 from glob import glob
 from hashlib import md5
@@ -147,6 +148,8 @@ maxbands = [
     ['R', 'r']       # if not, R-like bands
 ]
 
+gitrevhash = subprocess.check_output(['git', 'log', '-n', '1', '--format="%H"', '--', '../OSC-JSON-format.md']).strip()
+
 def uniq_cdl(values):
     return ','.join(sorted(list(set(values))))
 
@@ -161,15 +164,17 @@ def single_spaces(string):
 
 def event_attr_priority(attr):
     if attr == 'photometry':
-        return 'zzzzzzzy'
+        return 'zzy'
     if attr == 'spectra':
-        return 'zzzzzzzz'
+        return 'zzz'
+    if attr == 'schema':
+        return 'aaa'
     if attr == 'name':
-        return 'aaaaaaaa'
+        return 'aab'
     if attr == 'sources':
-        return 'aaaaaaab'
+        return 'aac'
     if attr == 'alias':
-        return 'aaaaaaac'
+        return 'aad'
     return attr
 
 prefkinds = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', 'cluster', '']
@@ -545,7 +550,7 @@ def add_event(name, load = True, delete = True, loadifempty = True):
             return match
 
         events[newname] = OrderedDict()
-        events[newname]['schema'] = 'https://github.com/astrocatalogs/sne/blob/c0ff86b8bfe2a5f510b7855b56c3f1a3cccace2b/OSC-JSON-format.md'
+        events[newname]['schema'] = 'https://github.com/astrocatalogs/sne/blob/' + gitrevhash + '/OSC-JSON-format.md'
         events[newname]['name'] = newname
         if args.verbose and 'stub' not in events[newname]:
             tprint('Added new event ' + newname)
