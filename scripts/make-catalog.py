@@ -1513,14 +1513,15 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             keyhtml = keyhtml + (r'<br>' if r > 0 else '')
                             keyhtml = keyhtml + "<div class='singletooltip'>"
                             if 'derived' in row and row['derived']:
-                                keyhtml = keyhtml + '<span class="derived">' + row['value'] + '</span>'
-                            else:
-                                keyhtml = keyhtml + row['value']
+                                keyhtml = keyhtml + '<span class="derived">'
+                            keyhtml = keyhtml + row['value']
                             if ((key == 'maxdate' or key == 'maxabsmag' or key == 'maxappmag') and 'maxband' in catalog[entry]
                                 and catalog[entry]['maxband']):
                                 keyhtml = keyhtml + r' [' + catalog[entry]['maxband'][0]['value'] + ']'
                             if 'error' in row:
                                 keyhtml = keyhtml + r' ± ' + row['error']
+                            if 'derived' in row and row['derived']:
+                                keyhtml = keyhtml + '</span>'
 
                             # Mark erroneous button
                             sourceids = []
