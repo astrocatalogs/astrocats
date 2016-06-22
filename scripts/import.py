@@ -545,6 +545,7 @@ def add_event(name, load = True, delete = True, loadifempty = True):
             return match
 
         events[newname] = OrderedDict()
+        events[newname]['schema'] = 'https://github.com/astrocatalogs/sne/blob/c0ff86b8bfe2a5f510b7855b56c3f1a3cccace2b/OSC-JSON-format.md'
         events[newname]['name'] = newname
         if args.verbose and 'stub' not in events[newname]:
             tprint('Added new event ' + newname)
@@ -1735,7 +1736,7 @@ def copy_to_event(fromname, destname):
             events[destname].setdefault('errors',[]).append(err)
 
     for key in keys:
-        if key not in ['name', 'sources', 'errors']:
+        if key not in ['schema', 'name', 'sources', 'errors']:
             for item in events[fromname][key]:
                 isd = False
                 sources = []
@@ -1771,7 +1772,7 @@ def copy_to_event(fromname, destname):
                     add_quantity(destname, key, item['value'], sources, error = null_field(item, "error"),
                         unit = null_field(item, "unit"), probability = null_field(item, "probability"), kind = null_field(item, "kind"))
 
-def load_event_from_file(name = '', location = '', clean = False, delete = True, append = False):
+def load_event_from_file(name = '', location = '', clean = False, delete = True):
     if not name and not location:
         raise ValueError('Either event name or location must be specified to load event')
 
@@ -1791,16 +1792,11 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True,
         return False
     else:
         newevent = ''
-        newevent2 = ''
         if path or namepath:
             if name in events:
                 del events[name]
 
-        if path and namepath:
-            with open(path, 'r') as f, open(namepath, 'r') as nf:
-                newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
-                newevent2 = json.loads(nf.read(), object_pairs_hook=OrderedDict)
-        elif path:
+        if path:
             with open(path, 'r') as f:
                 newevent = json.loads(f.read(), object_pairs_hook=OrderedDict)
         elif namepath:
@@ -1811,25 +1807,8 @@ def load_event_from_file(name = '', location = '', clean = False, delete = True,
             if clean:
                 newevent = clean_event(newevent)
             name = next(reversed(newevent))
-            if append:
-                indir = '../'
-                for rep in repofolders:
-                    filename = get_event_filename(name)
-                    newpath = indir + rep + '/' + filename + '.json'
-                    if os.path.isfile(newpath):
-                        namepath = newpath
-                if namepath:
-                    with open(namepath, 'r') as f:
-                        newevent2 = json.loads(f.read(), object_pairs_hook=OrderedDict)
-                        namename = next(reversed(newevent2))
 
-
-            if newevent2:
-                # Needs to be fixed
-                newevent = OrderedDict([['temp',newevent[name]]])
-                copy_to_event('temp', namename)
-            else:
-                events.update(newevent)
+            events.update(newevent)
 
             if args.verbose and not args.travis:
                 tprint('Loaded ' + name)
@@ -1886,7 +1865,7 @@ def clean_event(dirtyevent):
         bibcodes = [oscbibcode]
 
     for key in list(events['temp'].keys()):
-        if key in ['name', 'sources', 'errors']:
+        if key in ['name', 'schema', 'sources', 'errors']:
             pass
         elif key == 'photometry':
             for p, photo in enumerate(events['temp']['photometry']):
@@ -1989,12 +1968,8 @@ for task in tasks:
     # Import data provided directly to OSC
     if do_task(task, 'internal'):
         for datafile in tq(sorted(glob("../sne-internal/*.json"), key=lambda s: s.lower()), currenttask):
-            if args.update:
-                if not load_event_from_file(location = datafile, clean = True, delete = False, append = True):
-                    raise IOError('Failed to find specified file.')
-            else:
-                if not load_event_from_file(location = datafile, clean = True, delete = False):
-                    raise IOError('Failed to find specified file.')
+            if not load_event_from_file(location = datafile, clean = True, delete = False):
+                raise IOError('Failed to find specified file.')
         journal_events()
     
     if do_task(task, 'radio'):
