@@ -550,6 +550,22 @@ def clean_event(dirty_event):
     return dirty_event
 
 
+
+def get_event_filename(name):
+    return(name.replace('/', '_'))
+
+
+def get_event_text(eventfile):
+    import gzip
+    if eventfile.split('.')[-1] == 'gz':
+        with gzip.open(eventfile, 'rt') as f:
+            filetext = f.read()
+    else:
+        with open(eventfile, 'r') as f:
+            filetext = f.read()
+    return filetext
+
+
 def load_event_from_file(events, args, tasks, log, name='', path='',
                          clean=False, delete=True, append=False):
     """
@@ -740,6 +756,7 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
     repo_folders = get_repo_folders()
     non_sne_types = None
     if bury:
+        # FIX: store this somewhere instead of re-loading each time
         with open(FILENAME.NON_SNE_TYPES, 'r') as f:
             non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
             non_sne_types = [x.upper() for x in non_sne_types]
@@ -751,9 +768,11 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
                 continue
             else:
                 del events[name]['stub']
-        if args.verbose and not args.travis:
-            tprint('Writing ' + name)
+
+        # if args.verbose and not args.travis:
+        #     tprint('Writing ' + name)
         filename = get_event_filename(name)
+        log.debug("Writing '{}' to '{}'".format(name, filename))
 
         # outdir = '../'
         outdir = str(PATH.ROOT)
