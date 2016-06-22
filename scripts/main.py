@@ -3,8 +3,12 @@
 
 
 def main():
+    from datetime import datetime
+
     from . import importer
     from .utils import logger
+
+    beg_time = datetime.now()
     args = load_args()
 
     # Load a logger object
@@ -18,14 +22,17 @@ def main():
 
     # Destination of log-file ('None' means no file)
     log = logger.get_logger(stream_level=log_stream_level, tofile=args.log_filename)
-    log.debug("some debug stuff")
-    log.info("some info stuff")
-    log.warning("some warning stuff")
+    git_vers = get_git()
+    title_str = "Open Supernova Catalog, version: {}".format(git_vers)
+    log.warning("\n\n{}\n{}\n{}\n".format(title_str, '='*len(title_str), beg_time.ctime()))
 
     # Choose which submodule to run (note: can also use `set_default` with function)
     if args._name == 'importer':
+        log.info("Running `importer`.")
         importer.importer.import_main(args)
 
+    end_time = datetime.now()
+    log.warning("All complete at {}, After {}".format(end_time, end_time-beg_time))
     return
 
 
@@ -79,3 +86,11 @@ def load_args(args=None):
         parser.print_help()
 
     return args
+
+
+def get_git():
+    """Get a string representing the current git status --- i.e. tag and commit hash.
+    """
+    import subprocess
+    git_vers = subprocess.getoutput(["git describe --always"]).strip()
+    return git_vers
