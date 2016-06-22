@@ -24,6 +24,8 @@ REPR_BETTER_QUANTITY = {
     'maxdate'
 }
 
+COMPRESS_ABOVE_FILESIZE = 90000000   # FIX: units?
+
 MAX_BANDS = [
     ['B', 'b', 'g'],  # B-like bands first
     ['V', 'G'],       # if not, V-like bands
@@ -31,6 +33,8 @@ MAX_BANDS = [
 ]
 
 PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host', 'cluster', '']
+
+NON_SNE_PREFIXES = ['PNVJ', 'PNV J', 'OGLE-2013-NOVA']
 
 
 class TASK:
