@@ -16,9 +16,10 @@ import requests
 import urllib
 
 from scripts import PATH
-from .. funcs import add_event, add_photometry, add_source, add_spectrum, add_quantity, \
-    event_exists, jd_to_mjd, journal_events, load_cached_url, load_event_from_file, \
+from .. funcs import add_event, add_photometry, add_spectrum, \
+    event_exists, jd_to_mjd, load_cached_url, \
     make_date_string, uniq_cdl
+from .. Events import load_event_from_file
 from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig
 
 
@@ -713,13 +714,17 @@ def do_gaia(events, args, tasks, task_obj):
     return events
 
 
-def do_internal(events, args, tasks, task_obj):
+def do_internal(events, args, tasks, task_obj, log):
     """Load events from files in the 'internal' repository, and save them.
     """
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
+    log.debug("found {} files matching '{}'".format(len(files), path_pattern))
+    log.exception("`do_internal` 'update' section is disabled")
     for datafile in pbar_strings(files, desc=current_task):
+        # FIX: do we still need this difference?
+        '''
         if args.update:
             if not load_event_from_file(events, args, tasks, path=datafile,
                                         clean=True, delete=False, append=True):
@@ -728,8 +733,11 @@ def do_internal(events, args, tasks, task_obj):
             if not load_event_from_file(events, args, tasks, path=datafile,
                                         clean=True, delete=False):
                 raise IOError('Failed to find specified file.')
+        '''
+        new_event = load_event_from_file(events, args, tasks, log, path=datafile,
+                                         clean=True, delete=False)
+        events.update({new_event.name: new_event})
 
-    events = journal_events(tasks, args, events)
     return events
 
 
