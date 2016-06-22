@@ -8,11 +8,12 @@ Each supernova is contained with a single JSON file that contains a single objec
 }
 ```
 
-To comply with the standard, the object should contain a `name` key, where the `name` key should be identical to the object field name:
+To comply with the standard, the object should contain a `schema` key, where `schema` is a permanent URL to the version of this document defining the file's schema (with `commithash` replaced appropriately), and a `name` key, where the `name` key should be identical to the object field name:
 
 ```JSON
 {
 	"SN1987A":{
+		"schema":"https://github.com/astrocatalogs/sne/blob/commithash/OSC-JSON-format.md",
 		"name":"SN1987A"
 	}
 }
