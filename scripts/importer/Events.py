@@ -80,6 +80,7 @@ class EVENT(OrderedDict):
             warnings.warn("Object name '{}' does not match name in json: '{}'".format(
                 self.name, name))
 
+        self.check()
         return
 
     def add_source(self, srcname='', bibcode='', **src_kwargs):
@@ -462,6 +463,17 @@ class EVENT(OrderedDict):
                 return source
         raise ValueError("Source '{}': alias '{}' not found!".format(self.name, alias))
 
+    def check(self):
+        # Make sure there is a name key in dict
+        if KEYS.NAME not in self.keys():
+            self[KEYS.NAME] = self.name
+            if len(self[KEYS.NAME]) == 0:
+                raise ValueError("Event name is empty:\n\t{}".format(json.dumps(self, indent=2)))
+        # Make sure there is a name attribute in object
+        if len(self.name) == '' and len(self[KEYS.NAME]) > 0:
+            self.name = str(self[KEYS.NAME])
+        return
+
 
 def clean_event(dirty_event):
     """
@@ -534,11 +546,7 @@ def clean_event(dirty_event):
                     source = dirty_event.add_source(bibcode=bibcodes[0])
                     dirty_event[key][qi]['source'] = source
 
-    if not hasattr(dirty_event, KEYS.NAME):
-        dirty_event[KEYS.NAME] = dirty_event.name
-        if len(dirty_event[KEYS.NAME]) == 0:
-            raise ValueError("Event name is empty:\n\t{}".format(json.dumps(dirty_event, indent=2)))
-
+    dirty_event.check()
     return dirty_event
 
 
@@ -571,25 +579,15 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
 
     new_event = EVENT(name)
     new_event.load_data_from_json(load_path)
-    try:
-        temp = new_event[KEYS.NAME]
-    except:
-        print("\n\n\nname = {}, filename = {}".format(new_event.name, new_event.filename))
-        print(json.dumps(new_event))
-        print("\n\n")
-        raise
 
     # Delete old version
     if name in events:
         del events[name]
-    temp = new_event[KEYS.NAME]
 
     if clean:
         new_event = clean_event(new_event)
-    temp = new_event[KEYS.NAME]
 
     name = new_event[KEYS.NAME]
-
     log.log(log._LOADED, "Loaded {} from '{}'".format(name.ljust(20), load_path))
 
     # If this event loaded from an existing repo path and we will resave later, delete that version
