@@ -32,6 +32,7 @@ Sources of data contain five fields, three of which are optional:
 `url` | Web address of source | yes
 `bibcode` | 19 character NASA ADS bibcode | yes
 `secondary` | Boolean specifying if source collected rather than generated data | yes
+`acknowledgment` | Acknowledgment requested by source if data is used in publication | yes
 
 The sources object contains an array of such objects:
 
