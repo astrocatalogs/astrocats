@@ -13,3 +13,4 @@ cd /var/www/html/sne/sne/scripts
 ./make-errata.py &
 ./make-host-catalog.py &
 ./hammertime.py &
+./make-histograms.py &

@@ -97,7 +97,7 @@
 		"alias":[
 			{
 				"value":"SN1990af",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -115,36 +115,36 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...716..712A,NED-D,2006ApJ...645..488W,1998AJ....116.1009R,2009ApJS..185...32K,2013MNRAS.433.2240G,2009ApJ...700.1097H,2007ApJ...659..122J,2006A&A...447...31A,2006ApJ...647..501P,2007ApJ...666..694W,2008ApJ...686..749K,2004ApJ...607..665R,1996ApJ...473..588R,2011ApJS..192....1C",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2006ApJ...645..488W,1998AJ....116.1009R,2009ApJS..185...32K,2013MNRAS.433.2240G,2009ApJ...700.1097H,2007ApJ...659..122J,2006A&A...447...31A,2006ApJ...647..501P,2007ApJ...666..694W,2008ApJ...686..749K,2004ApJ...607..665R,1996ApJ...473..588R,2011ApJS..192....1C",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"1995ApJ...445L..91R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1995ApJ...445L..91R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...473...88R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...473...88R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...457..500H,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...457..500H,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -231,8 +231,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1996ApJ...465L..83R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"1996ApJ...465L..83R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -320,7 +320,7 @@
 				"source":"1,2,5,6,7,10,11,12,13,14,15,23,26"
 			},
 			{
-				"value":"GRB 911125",
+				"value":"GRB 911125A",
 				"source":"2"
 			},
 			{
@@ -401,24 +401,24 @@
 		],
 		"sources":[
 			{
-				"id":"1999A&A...349..877D,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1999A&A...349..877D,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2006ApJ...645..488W,NED-D,2007ApJ...659..122J",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2006ApJ...645..488W,2007ApJ...659..122J",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996AJ....112.2398H,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996AJ....112.2398H,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -427,7 +427,7 @@
 		"alias":[
 			{
 				"value":"SN1992ag",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -444,12 +444,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -458,7 +458,7 @@
 		"alias":[
 			{
 				"value":"SN1992al",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -478,24 +478,24 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -504,7 +504,7 @@
 		"alias":[
 			{
 				"value":"SN1992au",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -518,20 +518,20 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -540,7 +540,7 @@
 		"alias":[
 			{
 				"value":"SN1992bc",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -560,24 +560,24 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1995ApJ...445L..91R,NED-D,2015arXiv150201589P,2000ApJ...540..634P",
-				"idtype":"bibcode,name,bibcode,bibcode"
+				"id":"NED-D,1995ApJ...445L..91R,2015arXiv150201589P,2000ApJ...540..634P",
+				"idtype":"name,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P,2000ApJ...540..634P",
-				"idtype":"bibcode,name,bibcode,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P,2000ApJ...540..634P",
+				"idtype":"name,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...473...88R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...473...88R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -586,7 +586,7 @@
 		"alias":[
 			{
 				"value":"SN1992bg",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -600,20 +600,20 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -622,7 +622,7 @@
 		"alias":[
 			{
 				"value":"SN1992bh",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			},
 			{
 				"value":"F119-024",
@@ -642,28 +642,28 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -672,7 +672,7 @@
 		"alias":[
 			{
 				"value":"SN1992bk",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -687,24 +687,24 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...716..712A,NED-D,2006ApJ...645..488W,2006ApJ...647..501P,2007ApJ...659..122J,2008ApJ...686..749K,2004ApJ...607..665R,2009ApJ...700.1097H,2013MNRAS.433.2240G",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2006ApJ...645..488W,2006ApJ...647..501P,2007ApJ...659..122J,2008ApJ...686..749K,2004ApJ...607..665R,2009ApJ...700.1097H,2013MNRAS.433.2240G",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -713,7 +713,7 @@
 		"alias":[
 			{
 				"value":"SN1992bl",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -728,24 +728,24 @@
 		],
 		"sources":[
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -754,7 +754,7 @@
 		"alias":[
 			{
 				"value":"SN1992bp",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -768,20 +768,20 @@
 		],
 		"sources":[
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -790,7 +790,7 @@
 		"alias":[
 			{
 				"value":"SN1992br",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -803,16 +803,16 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -821,7 +821,7 @@
 		"alias":[
 			{
 				"value":"SN1992bs",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -835,20 +835,20 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -873,12 +873,12 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2007ApJ...659..122J,NED-D,1996ApJ...473..588R",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2007ApJ...659..122J,1996ApJ...473..588R",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...473...88R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...473...88R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -899,12 +899,12 @@
 		],
 		"sources":[
 			{
-				"id":"1996AJ....111.1286C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,1996AJ....111.1286C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015ApJ...799..215P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015ApJ...799..215P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -913,7 +913,7 @@
 		"alias":[
 			{
 				"value":"SN1992J",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -930,32 +930,32 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...473...88R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...473...88R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1995ApJ...445L..91R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1995ApJ...445L..91R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -964,7 +964,7 @@
 		"alias":[
 			{
 				"value":"SN1992P",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -978,20 +978,20 @@
 		],
 		"sources":[
 			{
-				"id":"2004ApJ...607..665R,2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,bibcode,name"
-			},
-			{
-				"id":"2010ApJ...716..712A,NED-D,2011ApJS..192....1C,2006ApJ...647..501P,2013MNRAS.433.2240G,2009ApJS..185...32K,2006ApJ...645..488W,2008ApJ...686..749K,2009ApJ...700.1097H,2007ApJ...659..122J,2006A&A...447...31A,1998AJ....116.1009R,2007ApJ...666..694W,1996ApJ...473..588R,2004ApJ...607..665R",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
-			},
-			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
+				"id":"2004ApJ...607..665R,NED-D,2014ApJ...795...44R",
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2011ApJS..192....1C,2006ApJ...647..501P,2013MNRAS.433.2240G,2009ApJS..185...32K,2006ApJ...645..488W,2008ApJ...686..749K,2009ApJ...700.1097H,2007ApJ...659..122J,2006A&A...447...31A,1998AJ....116.1009R,2007ApJ...666..694W,1996ApJ...473..588R,2004ApJ...607..665R",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+			},
+			{
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
+			},
+			{
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1087,20 +1087,20 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P,2008MNRAS.389.1577T",
-				"idtype":"bibcode,name,bibcode,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P,2008MNRAS.389.1577T",
+				"idtype":"name,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...473...88R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...473...88R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -1113,7 +1113,7 @@
 		"alias":[
 			{
 				"value":"SN1993ag",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -1129,28 +1129,28 @@
 		],
 		"sources":[
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1159,7 +1159,7 @@
 		"alias":[
 			{
 				"value":"SN1993B",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -1175,28 +1175,28 @@
 		],
 		"sources":[
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2000ApJ...540..634P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2000ApJ...540..634P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2005ApJ...624..532R",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2000ApJ...540..634P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1205,7 +1205,7 @@
 		"alias":[
 			{
 				"value":"SN1993O",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -1220,24 +1220,24 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1277,7 +1277,7 @@
 		"alias":[
 			{
 				"value":"SN1993S",
-				"source":"1,3,4,5,7,8,9,10,11,12"
+				"source":"1,3,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -1294,8 +1294,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1993IAUC.5812....3M,Latest Supernovae",
-				"idtype":"bibcode,name"
+				"id":"Latest Supernovae,1993IAUC.5812....3M",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2012A&A...538A.120L",
@@ -1308,7 +1308,7 @@
 		"alias":[
 			{
 				"value":"SN1993S",
-				"source":"1,3,4,5,7,8,9,10,11,12"
+				"source":"1,3,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -1325,8 +1325,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1993IAUC.5812....3M,Latest Supernovae",
-				"idtype":"bibcode,name"
+				"id":"Latest Supernovae,1993IAUC.5812....3M",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2012A&A...538A.120L",
@@ -1362,40 +1362,40 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2006ApJ...645..488W,NED-D,2007ApJ...659..122J",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2006ApJ...645..488W,2007ApJ...659..122J",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
-				"id":"1995A&A...294L...9W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1995A&A...294L...9W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2001ApJ...557..266L,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2001ApJ...557..266L,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1995ApJ...443...89H,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1995ApJ...443...89H,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008A&ARv..15..289T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008A&ARv..15..289T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996AJ....112.2398H,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996AJ....112.2398H,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1420,12 +1420,12 @@
 		],
 		"sources":[
 			{
-				"id":"1994ApJ...437L.115I,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994ApJ...437L.115I,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996AJ....111..327R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,1996AJ....111..327R",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1537,24 +1537,24 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2011ApJS..192....1C,2006ApJ...647..501P,2008ApJ...686..749K,2006A&A...447...31A,2013MNRAS.433.2240G,2009ApJS..185...32K,2007ApJ...659..122J,2009ApJ...700.1097H,2004ApJ...607..665R,2006ApJ...645..488W,2007ApJ...666..694W,1998AJ....116.1009R,2012PASP..124..668Y",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2011ApJS..192....1C,2006ApJ...647..501P,2008ApJ...686..749K,2006A&A...447...31A,2013MNRAS.433.2240G,2009ApJS..185...32K,2007ApJ...659..122J,2009ApJ...700.1097H,2004ApJ...607..665R,2006ApJ...645..488W,2007ApJ...666..694W,1998AJ....116.1009R,2012PASP..124..668Y",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1586,40 +1586,40 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2006ApJ...645..488W,2008ApJ...686..749K,2007ApJ...659..122J",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2006ApJ...645..488W,2008ApJ...686..749K,2007ApJ...659..122J",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2011ApJ...730..119R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...730..119R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2009ApJS..183..109R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2009ApJS..183..109R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008A&ARv..15..289T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008A&ARv..15..289T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1671,12 +1671,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2010ApJ...716..712A,NED-D,2006ApJ...645..488W,2008ApJ...686..749K,2006ApJ...647..501P,2009ApJ...700.1097H,2007ApJ...659..122J,1998AJ....116.1009R,2006A&A...447...31A,2004ApJ...607..665R,2012PASP..124..668Y",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2006ApJ...645..488W,2008ApJ...686..749K,2006ApJ...647..501P,2009ApJ...700.1097H,2007ApJ...659..122J,1998AJ....116.1009R,2006A&A...447...31A,2004ApJ...607..665R,2012PASP..124..668Y",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1697,12 +1697,12 @@
 		],
 		"sources":[
 			{
-				"id":"2004ApJ...607..665R,1995IAUC.6160....2A,Latest Supernovae,2010arXiv1006.2112L,NED-D,1998ApJ...493L..53G,1998ApJ...507...46S,2010ApJ...716..712A,2008ApJ...686..749K,1998AJ....116.1009R,2009ApJ...700.1097H",
-				"idtype":"bibcode,bibcode,name,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2004ApJ...607..665R,1995IAUC.6160....2A,Latest Supernovae,NED-D,2010arXiv1006.2112L,1998ApJ...493L..53G,1998ApJ...507...46S,2010ApJ...716..712A,2008ApJ...686..749K,1998AJ....116.1009R,2009ApJ...700.1097H",
+				"idtype":"bibcode,bibcode,name,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"1998ApJ...504..935R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1998ApJ...504..935R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1753,12 +1753,12 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2006ApJ...645..488W,NED-D,2010ApJ...716..712A,2007ApJ...659..122J,2008ApJ...686..749K",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2006ApJ...645..488W,2010ApJ...716..712A,2007ApJ...659..122J,2008ApJ...686..749K",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1823,24 +1823,24 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1899,24 +1899,24 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -1992,16 +1992,16 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...716..712A,NED-D,2006ApJ...645..488W,2007ApJ...659..122J,2008ApJ...686..749K",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2006ApJ...645..488W,2007ApJ...659..122J,2008ApJ...686..749K",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2078,7 +2078,7 @@
 				"source":"1,4,5,7,9,10,11,12,13,14,24"
 			},
 			{
-				"value":"GRB 970331",
+				"value":"GRB 970331A",
 				"source":"1"
 			},
 			{
@@ -2096,16 +2096,16 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...716..712A,NED-D,2006ApJ...647..501P,2006ApJ...645..488W,2008ApJ...686..749K,2007ApJ...659..122J",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2006ApJ...647..501P,2006ApJ...645..488W,2008ApJ...686..749K,2007ApJ...659..122J",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2127,7 +2127,7 @@
 		],
 		"sources":[
 			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,2012PASP..124..668Y,2012MNRAS.425.1789S,2001AJ....121.1648M",
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,2012PASP..124..668Y,2001AJ....121.1648M,2012MNRAS.425.1789S",
 				"idtype":"bibcode,bibcode,bibcode,name,bibcode,bibcode,bibcode"
 			},
 			{
@@ -2157,12 +2157,12 @@
 		],
 		"sources":[
 			{
-				"id":"2015Sci...347.1459K,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2015Sci...347.1459K",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015Sci...347.1459K,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2015Sci...347.1459K",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2244,8 +2244,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...504..935R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1998ApJ...504..935R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2385,12 +2385,12 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2006ApJ...647..501P,NED-D,2007ApJ...659..122J",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2006ApJ...647..501P,2007ApJ...659..122J",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -2423,8 +2423,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2010ApJ...716..712A,NED-D,2007ApJ...659..122J,2008ApJ...686..749K",
-				"idtype":"bibcode,name,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2007ApJ...659..122J,2008ApJ...686..749K",
+				"idtype":"name,bibcode,bibcode,bibcode"
 			}
 		]
 	},
@@ -2447,20 +2447,20 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2013MNRAS.433.2240G,2006ApJ...647..501P,2007ApJ...659..122J,2008ApJ...686..749K,2012PASP..124..668Y",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2013MNRAS.433.2240G,2006ApJ...647..501P,2007ApJ...659..122J,2008ApJ...686..749K,2012PASP..124..668Y",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"1998IAUC.7022....2G,Latest Supernovae",
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2005ApJ...624..532R",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2469,7 +2469,7 @@
 		"alias":[
 			{
 				"value":"SN1998en",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -2511,12 +2511,12 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2674,7 +2674,7 @@
 		],
 		"sources":[
 			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,2012A&A...538A.120L,2012PASP..124..668Y,2012MNRAS.425.1789S,2001AJ....121.1648M",
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,2012A&A...538A.120L,2012PASP..124..668Y,2001AJ....121.1648M,2012MNRAS.425.1789S",
 				"idtype":"bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
@@ -2696,7 +2696,7 @@
 		"alias":[
 			{
 				"value":"SN1999bw",
-				"source":"1,4,5,7,8,9,10,11"
+				"source":"1,4,5,7,8,10,9,11"
 			},
 			{
 				"value":"EQ J101948.8+453135",
@@ -2726,8 +2726,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1999IAUC.7149....3Q,Latest Supernovae",
-				"idtype":"bibcode,name"
+				"id":"Latest Supernovae,1999IAUC.7149....3Q",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -2790,24 +2790,24 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2008ApJ...689..377W,2009ApJ...704..629M,2013MNRAS.433.2240G,2011ApJ...731..120M,2006ApJ...645..488W,2008ApJ...686..749K,2009ApJ...700.1097H,2006ApJ...647..501P,2007ApJ...659..122J,2000ApJ...539..658K,2004ApJ...607..665R",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2008ApJ...689..377W,2009ApJ...704..629M,2013MNRAS.433.2240G,2011ApJ...731..120M,2006ApJ...645..488W,2008ApJ...686..749K,2009ApJ...700.1097H,2006ApJ...647..501P,2007ApJ...659..122J,2000ApJ...539..658K,2004ApJ...607..665R",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"2004ApJ...607..665R",
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2014ApJ...784..105W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014ApJ...784..105W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -2862,12 +2862,12 @@
 		],
 		"sources":[
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -2929,20 +2929,20 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2006AJ....131.1639K,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2006AJ....131.1639K",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -3032,28 +3032,28 @@
 		],
 		"sources":[
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2011ApJ...731..120M,NED-D,2007ApJ...659..122J,2006ApJ...645..488W,2008ApJ...689..377W,2009ApJ...704..629M",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2011ApJ...731..120M,2007ApJ...659..122J,2006ApJ...645..488W,2008ApJ...689..377W,2009ApJ...704..629M",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...784..105W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014ApJ...784..105W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008A&ARv..15..289T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008A&ARv..15..289T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2003ApJ...595..779V,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2003ApJ...595..779V",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -3252,7 +3252,7 @@
 		"alias":[
 			{
 				"value":"SN2000J",
-				"source":"1,4,5,7,8,9,10,11,12"
+				"source":"1,4,5,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -3264,8 +3264,8 @@
 		],
 		"sources":[
 			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,2000IAUC.7362....3P,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name,bibcode"
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,Latest Supernovae,2000IAUC.7362....3P,2012A&A...538A.120L",
+				"idtype":"bibcode,bibcode,bibcode,name,name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y,2012MNRAS.425.1789S",
@@ -3304,7 +3304,7 @@
 		"alias":[
 			{
 				"value":"SN2001cn",
-				"source":"1,4,7,8,9,10,11,12"
+				"source":"1,4,7,8,10,9,11,12"
 			}
 		],
 		"edit":false,
@@ -3316,12 +3316,12 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...716..712A,NED-D,2009ApJ...704..629M,2008ApJ...689..377W,2013MNRAS.433.2240G,2014ApJ...795...44R,2011ApJ...731..120M,2006ApJ...647..501P,2006ApJ...645..488W,2008ApJ...686..749K,2007ApJ...666..694W,2009ApJ...700.1097H,2007ApJ...659..122J,2006A&A...447...31A,2011ApJS..192....1C",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2009ApJ...704..629M,2008ApJ...689..377W,2013MNRAS.433.2240G,2014ApJ...795...44R,2011ApJ...731..120M,2006ApJ...647..501P,2006ApJ...645..488W,2008ApJ...686..749K,2007ApJ...666..694W,2009ApJ...700.1097H,2007ApJ...659..122J,2006A&A...447...31A,2011ApJS..192....1C",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...784..105W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014ApJ...784..105W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -3348,20 +3348,20 @@
 		],
 		"sources":[
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -3370,7 +3370,7 @@
 		"alias":[
 			{
 				"value":"SN2001es",
-				"source":"1,4,5,7,8,9,10,11,12,14"
+				"source":"1,4,5,7,8,10,9,11,12,14"
 			}
 		],
 		"edit":false,
@@ -3392,38 +3392,38 @@
 		]
 	},
 	{
-		"name":"SN2001ga",
+		"name":"SN2001hk",
 		"alias":[
 			{
-				"value":"SN2001ga",
-				"source":"1,4,6,7,8,9,10"
+				"value":"SN2001hk",
+				"source":"1,3,4,2,5,6"
 			},
 			{
-				"value":"SN2001hk",
-				"source":"8,9,1,6,7,10"
+				"value":"SN2001ga",
+				"source":"2,5,1,3,4,6,9"
 			}
 		],
 		"edit":false,
 		"quantity":"dec",
-		"difference":"0.009501",
+		"difference":"0.009416",
 		"values":[
-			"+00:37:20.9",
-			"+00:37:20.89",
 			"+00:36:59.8",
-			"+00:36:59.80"
+			"+00:36:59.80",
+			"+00:37:20.9",
+			"+00:37:20.89"
 		],
 		"sources":[
 			{
-				"id":"2000A&AS..143....9W,2001IAUC.7755....2B,1989A&AS...81..421B,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,bibcode,bibcode"
+				"id":"2000A&AS..143....9W,2001IAUC.7767....1B,1989A&AS...81..421B,Latest Supernovae,2012A&A...538A.120L",
+				"idtype":"bibcode,bibcode,bibcode,name,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
 				"idtype":"name"
 			},
 			{
-				"id":"2001IAUC.7767....1B,Latest Supernovae,2000A&AS..143....9W,1989A&AS...81..421B,2012A&A...538A.120L",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode"
+				"id":"2000A&AS..143....9W,1989A&AS...81..421B,2012A&A...538A.120L,2001IAUC.7755....2B",
+				"idtype":"bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -3461,7 +3461,7 @@
 				"idtype":"bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"Transient Name Server,2001IAUC.7772....3A,Latest Supernovae,2012MNRAS.425.1789S,2009PASP..121..689S",
+				"id":"Transient Name Server,2001IAUC.7772....3A,Latest Supernovae,2009PASP..121..689S,2012MNRAS.425.1789S",
 				"idtype":"name,bibcode,name,bibcode,bibcode"
 			},
 			{
@@ -3698,7 +3698,7 @@
 		"alias":[
 			{
 				"value":"SN2002ao",
-				"source":"1,4,5,7,8,9,10,11,12,14"
+				"source":"1,4,5,7,8,10,9,11,12,14"
 			},
 			{
 				"value":"AAVSO 1424+00",
@@ -3729,8 +3729,8 @@
 				"idtype":"bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2002IAUC.7809....4P,Latest Supernovae",
-				"idtype":"bibcode,name"
+				"id":"Latest Supernovae,2002IAUC.7809....4P",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -3761,7 +3761,7 @@
 		],
 		"sources":[
 			{
-				"id":"2012A&A...538A.120L,2012MNRAS.425.1789S,2010Sci...327...58P",
+				"id":"2012A&A...538A.120L,2010Sci...327...58P,2012MNRAS.425.1789S",
 				"idtype":"bibcode,bibcode,bibcode"
 			},
 			{
@@ -3802,24 +3802,24 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2006ApJ...645..488W,2008ApJ...689..377W,2011ApJ...731..120M,2007ApJ...659..122J,2009ApJ...704..629M",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2006ApJ...645..488W,2008ApJ...689..377W,2011ApJ...731..120M,2007ApJ...659..122J,2009ApJ...704..629M",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2008MNRAS.389.1577T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008MNRAS.389.1577T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...784..105W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014ApJ...784..105W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008A&ARv..15..289T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008A&ARv..15..289T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -3844,12 +3844,12 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2011ApJ...731..120M,2013MNRAS.433.2240G,2009ApJ...700.1097H",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2011ApJ...731..120M,2013MNRAS.433.2240G,2009ApJ...700.1097H",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -3870,8 +3870,8 @@
 		],
 		"sources":[
 			{
-				"id":"2004ApJ...607..665R,2010arXiv1006.2112L,NED-D,2010ApJ...716..712A,2008ApJ...686..749K,2009ApJ...700.1097H,2007ApJ...659...98R,2003ApJ...589..693B",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2004ApJ...607..665R,NED-D,2010arXiv1006.2112L,2010ApJ...716..712A,2008ApJ...686..749K,2009ApJ...700.1097H,2007ApJ...659...98R,2003ApJ...589..693B",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"2012A&A...538A.120L",
@@ -4075,8 +4075,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2009ApJ...694.1067P,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2009ApJ...694.1067P",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -4128,12 +4128,12 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2011ApJS..192....1C,2011ApJ...731..120M,2013MNRAS.433.2240G,2009ApJ...700.1097H,2011A&A...526A..81B,2012PASP..124..668Y",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2011ApJS..192....1C,2011ApJ...731..120M,2013MNRAS.433.2240G,2009ApJ...700.1097H,2011A&A...526A..81B,2012PASP..124..668Y",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2014ApJ...795...44R,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014ApJ...795...44R",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -4168,7 +4168,7 @@
 		"alias":[
 			{
 				"value":"SN2003bg",
-				"source":"1,4,5,7,8,9,10,11,12,14,15"
+				"source":"1,4,5,7,8,10,9,11,12,14,15"
 			}
 		],
 		"edit":false,
@@ -4186,8 +4186,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,2003IAUC.8082....2B,Latest Supernovae,2012A&A...538A.120L,2012MNRAS.425.1789S,2009ApJ...703.1612H",
-				"idtype":"bibcode,bibcode,bibcode,bibcode,name,bibcode,bibcode,bibcode"
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Latest Supernovae,2003IAUC.8082....2B,2012A&A...538A.120L,2009ApJ...703.1612H,2012MNRAS.425.1789S",
+				"idtype":"bibcode,bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -4322,7 +4322,7 @@
 		"alias":[
 			{
 				"value":"SN2004A",
-				"source":"1,4,7,8,9,10,11,12,17"
+				"source":"1,4,7,8,10,9,11,12,17"
 			}
 		],
 		"edit":false,
@@ -4334,12 +4334,12 @@
 		],
 		"sources":[
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -4360,8 +4360,8 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...716..712A,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2010ApJ...716..712A",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -4443,8 +4443,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2009ApJ...704.1036F,NED-D,2013MNRAS.433.2240G,2008ApJ...689..377W,2010AJ....139..120F,2009ApJ...704..629M,2011ApJ...731..120M,2011ApJS..192....1C",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2009ApJ...704.1036F,2013MNRAS.433.2240G,2008ApJ...689..377W,2010AJ....139..120F,2009ApJ...704..629M,2011ApJ...731..120M,2011ApJS..192....1C",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -4473,8 +4473,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJS..192....1C,NED-D,2009ApJ...704.1036F,2010AJ....139..120F,2013MNRAS.433.2240G",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode"
+				"id":"NED-D,2011ApJS..192....1C,2009ApJ...704.1036F,2010AJ....139..120F,2013MNRAS.433.2240G",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode"
 			}
 		]
 	},
@@ -4603,8 +4603,8 @@
 		],
 		"sources":[
 			{
-				"id":"2006ApJ...645..841N,2009ApJ...694.1067P,NED-D",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2006ApJ...645..841N,NED-D,2009ApJ...694.1067P",
+				"idtype":"bibcode,name,bibcode"
 			},
 			{
 				"id":"2006ApJ...645..841N,NED-D,2015arXiv150201589P",
@@ -4727,8 +4727,8 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2010ApJ...721.1608B",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2010ApJ...721.1608B",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"2010AJ....139..519C",
@@ -4845,46 +4845,12 @@
 		],
 		"sources":[
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
-			}
-		]
-	},
-	{
-		"name":"SN2005cv",
-		"alias":[
-			{
-				"value":"SN2005cv",
-				"source":"1,4,5,6,7,8,9,10"
-			},
-			{
-				"value":"PSN J01534240+295610",
-				"source":"9,10"
-			},
-			{
-				"value":"PSN J01534240+2956107",
-				"source":"9,10,11,7"
-			}
-		],
-		"edit":false,
-		"quantity":"claimedtype",
-		"difference":"",
-		"values":[
-			"II",
-			"Ia"
-		],
-		"sources":[
-			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,2005IAUC.8563....4C,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name,bibcode"
-			},
-			{
-				"id":"CBAT TOCP,Latest Supernovae",
-				"idtype":"name,name"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -4978,7 +4944,7 @@
 		"alias":[
 			{
 				"value":"SN2005fa",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"2MASS J01393600-0045289",
@@ -5027,8 +4993,8 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2005IAUC.8616....3B,Latest Supernovae",
-				"idtype":"bibcode,name"
+				"id":"Latest Supernovae,2005IAUC.8616....3B",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -5166,7 +5132,7 @@
 		"alias":[
 			{
 				"value":"SN2005gd",
-				"source":"2,6,5,7,8,9,10,11,12"
+				"source":"2,6,5,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 3317",
@@ -5191,8 +5157,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,Transient Name Server,2005IAUC.8616....3B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,name,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Transient Name Server,Latest Supernovae,2005IAUC.8616....3B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,name,bibcode,bibcode"
 			}
 		]
 	},
@@ -5209,11 +5175,11 @@
 			},
 			{
 				"value":"SDSS-II SN 1580",
-				"source":"6,15,3,23,8,24"
+				"source":"6,15,23,24,3,8"
 			},
 			{
 				"value":"SN2005fb",
-				"source":"3,23,8,24,10,11,12,13,14,15"
+				"source":"10,11,12,13,14,15,23,24,3,8"
 			}
 		],
 		"edit":true,
@@ -5258,7 +5224,7 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2000A&AS..143....9W,2010ApJ...722..566L",
+				"id":"2010ApJ...722..566L,2000A&AS..143....9W",
 				"idtype":"bibcode,bibcode"
 			},
 			{
@@ -5284,7 +5250,7 @@
 		"alias":[
 			{
 				"value":"SN2005gv",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 4577",
@@ -5309,8 +5275,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -5319,7 +5285,7 @@
 		"alias":[
 			{
 				"value":"SN2005gw",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 4046",
@@ -5344,8 +5310,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -5459,7 +5425,7 @@
 		"alias":[
 			{
 				"value":"SN2005ia",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 5717",
@@ -5500,8 +5466,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2005IAUC.8627....3F,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2005IAUC.8627....3F,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -5579,7 +5545,7 @@
 		"alias":[
 			{
 				"value":"SN2005iw",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 6127",
@@ -5620,8 +5586,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2005IAUC.8629....3G,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2005IAUC.8629....3G,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -5642,11 +5608,11 @@
 			},
 			{
 				"value":"SDSS-II SN 1112",
-				"source":"4,11,1,5,14"
+				"source":"4,11,1,14,5"
 			},
 			{
 				"value":"SN2005fg",
-				"source":"1,5,14,6,7,15,9,10,11"
+				"source":"1,10,11,14,15,5,6,7,9"
 			}
 		],
 		"edit":false,
@@ -5692,7 +5658,7 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2000A&AS..143....9W,2008AJ....135.1766Z,1989A&AS...81..421B,2012A&A...538A.120L",
+				"id":"2000A&AS..143....9W,2012A&A...538A.120L,2008AJ....135.1766Z,1989A&AS...81..421B",
 				"idtype":"bibcode,bibcode,bibcode,bibcode"
 			},
 			{
@@ -5722,7 +5688,7 @@
 		"alias":[
 			{
 				"value":"SN2005jd",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 6649",
@@ -5747,8 +5713,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -5807,7 +5773,7 @@
 		"alias":[
 			{
 				"value":"SN2005jg",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 7143",
@@ -5834,16 +5800,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2013ApJ...763...88C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2013ApJ...763...88C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -6032,7 +5998,7 @@
 		"alias":[
 			{
 				"value":"SN2005jt",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 8598",
@@ -6052,8 +6018,8 @@
 		],
 		"sources":[
 			{
-				"id":"2000A&AS..143....9W,2008AJ....135.1766Z,1989A&AS...81..421B,2005IAUC.8629....3G,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,bibcode,bibcode,name,bibcode"
+				"id":"2000A&AS..143....9W,2008AJ....135.1766Z,1989A&AS...81..421B,Latest Supernovae,2005IAUC.8629....3G,2012A&A...538A.120L",
+				"idtype":"bibcode,bibcode,bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"2008AJ....136.2306H",
@@ -6082,7 +6048,7 @@
 		"alias":[
 			{
 				"value":"SN2005jw",
-				"source":"1,5,6,4,7,8,9,10,11,12"
+				"source":"1,5,6,4,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 7779",
@@ -6123,8 +6089,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2005IAUC.8629....3G,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2005IAUC.8629....3G,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -6149,7 +6115,7 @@
 			},
 			{
 				"value":"SN2005ib",
-				"source":"2,6,7,8,9,21,11,12,13"
+				"source":"11,12,13,2,21,6,7,8,9"
 			}
 		],
 		"edit":true,
@@ -6237,8 +6203,8 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D,2011ApJ...731..120M,2009ApJ...700.1097H,2009ApJ...704.1036F,2010AJ....139..120F,2013MNRAS.433.2240G,2011ApJS..192....1C,2013ApJ...773...53F",
-				"idtype":"bibcode,bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A,2011ApJ...731..120M,2009ApJ...700.1097H,2009ApJ...704.1036F,2010AJ....139..120F,2013MNRAS.433.2240G,2011ApJS..192....1C,2013ApJ...773...53F",
+				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
 				"id":"2010AJ....139..519C",
@@ -6590,12 +6556,8 @@
 				"source":"1,4,5,7,8,9,10,11,12,14,19"
 			},
 			{
-				"value":"GRB 060218",
-				"source":"1,10,11"
-			},
-			{
 				"value":"GRB 060218A",
-				"source":"1,13"
+				"source":"1,10,11,13"
 			},
 			{
 				"value":"XRF 060218",
@@ -6800,7 +6762,7 @@
 		"alias":[
 			{
 				"value":"SN2006ej",
-				"source":"1,4,5,7,8,10,11,2,12,13,14,26,18"
+				"source":"1,4,5,7,8,10,11,12,2,13,14,26,18"
 			}
 		],
 		"edit":false,
@@ -6816,8 +6778,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2010ApJ...716..712A,NED-D,2011ApJ...731..120M,2013MNRAS.433.2240G,2009ApJ...700.1097H,2010ApJ...721.1608B,2011ApJS..192....1C",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode,bibcode,bibcode"
+				"id":"NED-D,2010ApJ...716..712A,2011ApJ...731..120M,2013MNRAS.433.2240G,2009ApJ...700.1097H,2010ApJ...721.1608B,2011ApJS..192....1C",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode,bibcode,bibcode"
 			}
 		]
 	},
@@ -6826,7 +6788,7 @@
 		"alias":[
 			{
 				"value":"SN2006ex",
-				"source":"1,4,5,6,7,8,9,10,11,12,16"
+				"source":"1,4,5,6,7,8,10,9,11,12,16"
 			},
 			{
 				"value":"SDSS-II SN 12930",
@@ -6857,8 +6819,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006IAUC.8749....2F,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006IAUC.8749....2F,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -6986,7 +6948,7 @@
 		"alias":[
 			{
 				"value":"SN2006fm",
-				"source":"1,4,5,6,7,8,9,10,11,12,17"
+				"source":"1,4,5,6,7,8,10,9,11,12,17"
 			},
 			{
 				"value":"SDSS-II SN 13044",
@@ -7017,8 +6979,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006IAUC.8749....2F,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006IAUC.8749....2F,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7051,8 +7013,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -7187,12 +7149,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -7201,7 +7163,7 @@
 		"alias":[
 			{
 				"value":"SN2006hl",
-				"source":"1,4,5,6,7,8,9,10,11,12,17"
+				"source":"1,4,5,6,7,8,10,9,11,12,17"
 			},
 			{
 				"value":"SDSS-II SN 13796",
@@ -7232,8 +7194,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..650....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..650....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7246,7 +7208,7 @@
 		"alias":[
 			{
 				"value":"SN2006hp",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 13835",
@@ -7277,8 +7239,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..654....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..654....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7291,7 +7253,7 @@
 		"alias":[
 			{
 				"value":"SN2006ht",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 14024",
@@ -7322,8 +7284,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..654....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..654....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7352,8 +7314,8 @@
 		],
 		"sources":[
 			{
-				"id":"2008AJ....135..348S,2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"2008AJ....135..348S,2011ApJ...740...92G,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,bibcode,name"
 			},
 			{
 				"id":"1989A&AS...81..421B,2006CBET..667....1B,Latest Supernovae,2012A&A...538A.120L",
@@ -7422,7 +7384,7 @@
 		"alias":[
 			{
 				"value":"SN2006jh",
-				"source":"1,4,5,6,7,8,9,10,11,12,16"
+				"source":"1,4,5,6,7,8,10,9,11,12,16"
 			},
 			{
 				"value":"SDSS-II SN 13894",
@@ -7453,8 +7415,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..680....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..680....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7488,12 +7450,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -7524,16 +7486,16 @@
 				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -7542,7 +7504,7 @@
 		"alias":[
 			{
 				"value":"SN2006jn",
-				"source":"1,4,5,6,7,8,9,10,11,12,16"
+				"source":"1,4,5,6,7,8,10,9,11,12,16"
 			},
 			{
 				"value":"SDSS-II SN 14846",
@@ -7572,8 +7534,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..680....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..680....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			}
 		]
 	},
@@ -7582,7 +7544,7 @@
 		"alias":[
 			{
 				"value":"SN2006jq",
-				"source":"1,4,5,6,7,8,9,10,11,12,16"
+				"source":"1,4,5,6,7,8,10,9,11,12,16"
 			},
 			{
 				"value":"SDSS-II SN 14871",
@@ -7613,8 +7575,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..680....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..680....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7627,7 +7589,7 @@
 		"alias":[
 			{
 				"value":"SN2006jt",
-				"source":"1,4,5,6,7,8,9,10,11,12,17"
+				"source":"1,4,5,6,7,8,10,9,11,12,17"
 			},
 			{
 				"value":"SDSS-II SN 15132",
@@ -7658,8 +7620,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..680....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..680....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7672,7 +7634,7 @@
 		"alias":[
 			{
 				"value":"SN2006jz",
-				"source":"1,4,5,6,7,8,9,10,11,12,16"
+				"source":"1,4,5,6,7,8,10,9,11,12,16"
 			},
 			{
 				"value":"2MASS J00112456+0042070",
@@ -7707,8 +7669,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..680....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..680....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7721,7 +7683,7 @@
 		"alias":[
 			{
 				"value":"SN2006ka",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 15219",
@@ -7752,8 +7714,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..680....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..680....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7766,7 +7728,7 @@
 		"alias":[
 			{
 				"value":"SN2006kl",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 14331",
@@ -7797,8 +7759,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..688....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..688....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -7831,8 +7793,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -7930,7 +7892,7 @@
 		"alias":[
 			{
 				"value":"SN2006ks",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"2MASS J22300456+0000112",
@@ -7960,8 +7922,8 @@
 				"idtype":"bibcode,bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..688....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..688....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -8042,16 +8004,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013MNRAS.434.1443X,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2013MNRAS.434.1443X,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -8095,7 +8057,7 @@
 		"alias":[
 			{
 				"value":"SN2006lj",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"2MASS J00104359+0012065",
@@ -8130,8 +8092,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..713....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..713....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -8166,16 +8128,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8205,12 +8167,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8235,12 +8197,12 @@
 		],
 		"sources":[
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8315,12 +8277,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8329,7 +8291,7 @@
 		"alias":[
 			{
 				"value":"SN2006ls",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 15508",
@@ -8360,8 +8322,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..713....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..713....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -8400,7 +8362,7 @@
 		"alias":[
 			{
 				"value":"SN2006mz",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"SDSS-II SN 15466",
@@ -8431,8 +8393,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..735....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..735....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -8467,16 +8429,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8485,7 +8447,7 @@
 		"alias":[
 			{
 				"value":"SN2006nc",
-				"source":"1,4,5,6,7,8,9,10,11,12,17"
+				"source":"1,4,5,6,7,8,10,9,11,12,17"
 			},
 			{
 				"value":"SDSS-II SN 16021",
@@ -8516,8 +8478,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..735....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..735....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -8661,12 +8623,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8675,7 +8637,7 @@
 		"alias":[
 			{
 				"value":"SN2006ni",
-				"source":"1,4,5,6,7,8,9,10,11,12"
+				"source":"1,4,5,6,7,8,10,9,11,12"
 			},
 			{
 				"value":"2MASS J20545251-0011448",
@@ -8710,8 +8672,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1989A&AS...81..421B,2006CBET..740....1B,Latest Supernovae,2012A&A...538A.120L",
-				"idtype":"bibcode,bibcode,name,bibcode"
+				"id":"1989A&AS...81..421B,Latest Supernovae,2006CBET..740....1B,2012A&A...538A.120L",
+				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -8825,12 +8787,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -8895,12 +8857,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9054,12 +9016,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9084,12 +9046,12 @@
 		],
 		"sources":[
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9168,16 +9130,16 @@
 		],
 		"sources":[
 			{
-				"id":"2013MNRAS.434.1443X,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2013MNRAS.434.1443X,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -9412,8 +9374,8 @@
 		],
 		"sources":[
 			{
-				"id":"2012MNRAS.425.1789S,2010ApJ...716..712A,NED-D",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2012MNRAS.425.1789S,NED-D,2010ApJ...716..712A",
+				"idtype":"bibcode,name,bibcode"
 			},
 			{
 				"id":"2010AJ....139..519C",
@@ -9785,12 +9747,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9819,8 +9781,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9850,12 +9812,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9884,8 +9846,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -9915,12 +9877,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10352,8 +10314,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014arXiv1401.3317S",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -10382,8 +10344,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10452,8 +10414,8 @@
 				"idtype":"bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10478,12 +10440,12 @@
 		],
 		"sources":[
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2011ApJ...740...92G,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015arXiv150201589P,2013ApJ...763...88C,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -10563,16 +10525,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10681,8 +10643,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10704,16 +10666,16 @@
 		],
 		"sources":[
 			{
-				"id":"2015ApJ...799..215P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015ApJ...799..215P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2012MNRAS.422.1178I,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2012MNRAS.422.1178I",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2012MNRAS.422.1178I,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2012MNRAS.422.1178I",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10856,8 +10818,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10895,12 +10857,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2013ApJ...763...88C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10931,16 +10893,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -10966,16 +10928,16 @@
 		],
 		"sources":[
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2011ApJ...740...92G,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015arXiv150201589P,2013ApJ...763...88C,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015arXiv150201589P,2013ApJ...763...88C,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -11000,12 +10962,12 @@
 		],
 		"sources":[
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015arXiv150201589P,2013ApJ...763...88C,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2011ApJ...740...92G,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -11034,8 +10996,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -11106,16 +11068,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -11144,8 +11106,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -11359,8 +11321,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -11426,16 +11388,16 @@
 				"idtype":"bibcode,bibcode"
 			},
 			{
-				"id":"2011ApJ...740...92G,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011ApJ...740...92G,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -11571,7 +11533,7 @@
 		"alias":[
 			{
 				"value":"SN2008bk",
-				"source":"1,4,5,7,8,9,10,11,12,16"
+				"source":"1,4,5,7,8,10,9,11,12,16"
 			}
 		],
 		"edit":false,
@@ -11585,20 +11547,20 @@
 		],
 		"sources":[
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015A&A...580L..15P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -12041,16 +12003,16 @@
 		],
 		"sources":[
 			{
-				"id":"2015MNRAS.450.3137T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.450.3137T,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.450.3137T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.450.3137T,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.450.3137T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.450.3137T,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -12144,12 +12106,12 @@
 		],
 		"sources":[
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2014AJ....148..107R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -12204,7 +12166,7 @@
 				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2010ApJ...717L..52B,NED-D,2015arXiv150201589P",
+				"id":"2015arXiv150201589P,NED-D,2010ApJ...717L..52B",
 				"idtype":"bibcode,name,bibcode"
 			}
 		]
@@ -12485,12 +12447,12 @@
 				"idtype":"bibcode,bibcode"
 			},
 			{
-				"id":"2000A&AS..143....9W,2014MNRAS.441..289B",
+				"id":"2014MNRAS.441..289B,2000A&AS..143....9W",
 				"idtype":"bibcode,bibcode"
 			},
 			{
-				"id":"2012ATel.4512....1T,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2012ATel.4512....1T",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2012ATel.4498....1D,Latest Supernovae",
@@ -12623,8 +12585,8 @@
 				"idtype":"name,name"
 			},
 			{
-				"id":"2014ATel.6290....1T,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2014ATel.6290....1T",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -13048,7 +13010,7 @@
 			},
 			{
 				"value":"MASTER OT JJ044212.20+230616.7",
-				"source":"5,2"
+				"source":"2,5"
 			}
 		],
 		"edit":false,
@@ -13064,8 +13026,8 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2014ATel.6488....1O,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2014ATel.6488....1O",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -13168,7 +13130,7 @@
 				"idtype":"bibcode,bibcode,bibcode,name"
 			},
 			{
-				"id":"OGLE page,Latest Supernovae",
+				"id":"Latest Supernovae,OGLE page",
 				"idtype":"name,name"
 			}
 		]
@@ -13194,7 +13156,7 @@
 				"idtype":"bibcode,bibcode,bibcode,name"
 			},
 			{
-				"id":"OGLE page,Latest Supernovae",
+				"id":"Latest Supernovae,OGLE page",
 				"idtype":"name,name"
 			}
 		]
@@ -13657,7 +13619,7 @@
 			},
 			{
 				"value":"SNF20080512-000",
-				"source":"1,3,5,4"
+				"source":"1,3,4,5"
 			}
 		],
 		"edit":false,
@@ -13673,7 +13635,7 @@
 				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"SN Factory,Latest Supernovae",
+				"id":"Latest Supernovae,SN Factory",
 				"idtype":"name,name"
 			}
 		]
@@ -13770,7 +13732,7 @@
 			},
 			{
 				"value":"PTF12hws",
-				"source":"1,4,5,3"
+				"source":"1,3,4,5"
 			}
 		],
 		"edit":false,
@@ -13813,8 +13775,8 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2015ApJ...799..215P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015ApJ...799..215P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
 				"id":"2012PASP..124..668Y",
@@ -14446,7 +14408,7 @@
 			},
 			{
 				"value":"PSN J20471088-3554484",
-				"source":"8,6"
+				"source":"6,8"
 			}
 		],
 		"edit":false,
@@ -14467,7 +14429,7 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae",
+				"id":"Latest Supernovae,CBAT TOCP",
 				"idtype":"name,name"
 			}
 		]
@@ -14489,7 +14451,7 @@
 			},
 			{
 				"value":"PSN J20471088-3554484",
-				"source":"8,6"
+				"source":"6,8"
 			}
 		],
 		"edit":false,
@@ -14515,7 +14477,7 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae",
+				"id":"Latest Supernovae,CBAT TOCP",
 				"idtype":"name,name"
 			}
 		]
@@ -14555,7 +14517,7 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae",
+				"id":"Latest Supernovae,CBAT TOCP",
 				"idtype":"name,name"
 			},
 			{
@@ -14604,7 +14566,7 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae",
+				"id":"Latest Supernovae,CBAT TOCP",
 				"idtype":"name,name"
 			},
 			{
@@ -14638,8 +14600,8 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2014ApJ...784..105W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2014ApJ...784..105W",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -14673,7 +14635,7 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2011CBET.2871....4Z,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2011CBET.2871....4Z",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -14737,8 +14699,8 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2014ApJ...784..105W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2014ApJ...784..105W",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -14771,7 +14733,7 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2011CBET.2890....1T,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2011CBET.2890....1T",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -14798,7 +14760,7 @@
 		],
 		"sources":[
 			{
-				"id":"2011CBET.2906....2V,1989A&AS...81..421B,2012PASP..124..668Y",
+				"id":"1989A&AS...81..421B,2011CBET.2906....2V,2012PASP..124..668Y",
 				"idtype":"bibcode,bibcode,bibcode"
 			},
 			{
@@ -14985,7 +14947,7 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2011CBET.2956....2T,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2011CBET.2956....2T",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15015,28 +14977,28 @@
 		],
 		"sources":[
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2014AJ....148..107R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2014AJ....148..107R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -15071,36 +15033,36 @@
 		],
 		"sources":[
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015A&A...580L..15P,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015A&A...580L..15P,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P,2015A&A...580L..15P",
-				"idtype":"bibcode,name,bibcode,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D,2015A&A...580L..15P",
+				"idtype":"bibcode,bibcode,name,bibcode"
 			},
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015MNRAS.448.2312B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015MNRAS.448.2312B,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2015A&A...580L..15P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2015A&A...580L..15P,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2014AJ....148..107R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2014AJ....148..107R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -15129,7 +15091,7 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2012CBET.3055....2T,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2012CBET.3055....2T",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15163,7 +15125,7 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2012CBET.3062....3T,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2012CBET.3062....3T",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15197,7 +15159,7 @@
 				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name"
 			},
 			{
-				"id":"2012CBET.3160....3T,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2012CBET.3160....3T",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15227,7 +15189,7 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2012CBET.2981....2T,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2012CBET.2981....2T",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15287,7 +15249,7 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2012CBET.2991....3M,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2012CBET.2991....3M",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15403,7 +15365,7 @@
 			},
 			{
 				"value":"iPTF13adc",
-				"source":"5,6,1,8,7"
+				"source":"5,6,1,7,8"
 			}
 		],
 		"edit":false,
@@ -15419,8 +15381,8 @@
 				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name"
 			},
 			{
-				"id":"2000A&AS..143....9W,2013ATel.5019....1C,Latest Supernovae",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2000A&AS..143....9W,Latest Supernovae,2013ATel.5019....1C",
+				"idtype":"bibcode,name,bibcode"
 			}
 		]
 	},
@@ -15437,7 +15399,7 @@
 			},
 			{
 				"value":"iPTF13adc",
-				"source":"5,6,1,8,7"
+				"source":"5,6,1,7,8"
 			}
 		],
 		"edit":false,
@@ -15458,8 +15420,8 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2000A&AS..143....9W,2013ATel.5019....1C,Latest Supernovae",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2000A&AS..143....9W,Latest Supernovae,2013ATel.5019....1C",
+				"idtype":"bibcode,name,bibcode"
 			}
 		]
 	},
@@ -15476,7 +15438,7 @@
 			},
 			{
 				"value":"iPTF13adc",
-				"source":"5,6,1,8,7"
+				"source":"5,6,1,7,8"
 			}
 		],
 		"edit":false,
@@ -15488,7 +15450,7 @@
 		],
 		"sources":[
 			{
-				"id":"2013CBET.3501....1Z,Latest Supernovae,2013ATel.5019....1C,2012PASP..124..668Y",
+				"id":"2013CBET.3501....1Z,Latest Supernovae,2012PASP..124..668Y,2013ATel.5019....1C",
 				"idtype":"bibcode,name,bibcode,bibcode"
 			},
 			{
@@ -15522,7 +15484,7 @@
 				"idtype":"bibcode,name"
 			},
 			{
-				"id":"2013CBET.3577....1C,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2013CBET.3577....1C",
 				"idtype":"bibcode,bibcode"
 			}
 		]
@@ -15548,12 +15510,12 @@
 		],
 		"sources":[
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2014AJ....148..107R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			},
 			{
-				"id":"2014AJ....148..107R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"2014AJ....148..107R,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -15738,11 +15700,11 @@
 			},
 			{
 				"value":"SN2012T",
-				"source":"1,3,4,8,6"
+				"source":"1,3,4,6,8"
 			},
 			{
 				"value":"PSN J14014169+3349339",
-				"source":"1,8,6"
+				"source":"1,6,8"
 			}
 		],
 		"edit":false,
@@ -15758,8 +15720,8 @@
 				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name,name"
 			},
 			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,2012CBET.3005....2M,Latest Supernovae",
-				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name"
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,Latest Supernovae,2012CBET.3005....2M",
+				"idtype":"bibcode,bibcode,bibcode,name,name,bibcode"
 			}
 		]
 	},
@@ -15780,11 +15742,11 @@
 			},
 			{
 				"value":"SN2012T",
-				"source":"1,3,4,8,6"
+				"source":"1,3,4,6,8"
 			},
 			{
 				"value":"PSN J14014169+3349339",
-				"source":"1,8,6"
+				"source":"1,6,8"
 			}
 		],
 		"edit":false,
@@ -15811,8 +15773,8 @@
 				"idtype":"name"
 			},
 			{
-				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,2012CBET.3005....2M,Latest Supernovae",
-				"idtype":"bibcode,bibcode,bibcode,bibcode,name"
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Latest Supernovae,2012CBET.3005....2M",
+				"idtype":"bibcode,bibcode,bibcode,name,bibcode"
 			},
 			{
 				"id":"Transient Name Server",
@@ -15915,12 +15877,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2014MNRAS.443.2887F,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2014MNRAS.443.2887F",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2015ApJ...798...39M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015ApJ...798...39M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -15955,11 +15917,11 @@
 		"alias":[
 			{
 				"value":"ASASSN-15hy",
-				"source":"1,2,3,4,5,6"
+				"source":"1,2,4,5,3,6,7"
 			},
 			{
 				"value":"PS15aou",
-				"source":"1,2"
+				"source":"2,4"
 			}
 		],
 		"edit":false,
@@ -16084,15 +16046,11 @@
 			},
 			{
 				"value":"AT2016cdl",
-				"source":"1,2,4,3"
+				"source":"1,3,4"
 			},
 			{
 				"value":"CSS160429:142624-133325",
-				"source":"2,4,3,5"
-			},
-			{
-				"value":"MLS160426:142624-133325",
-				"source":"2"
+				"source":"3,4,5"
 			}
 		],
 		"edit":false,
@@ -16101,9 +16059,7 @@
 		"values":[
 			"14:22:23.83",
 			"14:22:23.820",
-			"14:22:23.82",
 			"14:26:23.75",
-			"14:26:23.74",
 			"14:26:23.78",
 			"14:26:23.76"
 		],
@@ -16117,19 +16073,11 @@
 				"idtype":"name,name"
 			},
 			{
-				"id":"Pan-STARRS 3Pi",
-				"idtype":"name"
-			},
-			{
 				"id":"Transient Name Server",
 				"idtype":"name"
 			},
 			{
-				"id":"Pan-STARRS 3Pi",
-				"idtype":"name"
-			},
-			{
-				"id":"CRTS SN page,Latest Supernovae",
+				"id":"Latest Supernovae,CRTS SN page",
 				"idtype":"name,name"
 			},
 			{
@@ -16155,15 +16103,11 @@
 			},
 			{
 				"value":"AT2016cdl",
-				"source":"1,2,4,3"
+				"source":"1,3,4"
 			},
 			{
 				"value":"CSS160429:142624-133325",
-				"source":"2,4,3,5"
-			},
-			{
-				"value":"MLS160426:142624-133325",
-				"source":"2"
+				"source":"3,4,5"
 			}
 		],
 		"edit":false,
@@ -16172,10 +16116,9 @@
 		"values":[
 			"-15:19:38.74",
 			"-15:19:38.70",
-			"-15:19:38.7",
 			"-13:33:25.30",
-			"-13:33:25.2",
-			"-13:33:25.3"
+			"-13:33:25.3",
+			"-13:33:25.2"
 		],
 		"sources":[
 			{
@@ -16187,20 +16130,16 @@
 				"idtype":"name,name"
 			},
 			{
-				"id":"Pan-STARRS 3Pi",
-				"idtype":"name"
-			},
-			{
 				"id":"Transient Name Server",
 				"idtype":"name"
 			},
 			{
-				"id":"Pan-STARRS 3Pi,2009ApJ...696..870D",
-				"idtype":"name,bibcode"
+				"id":"Latest Supernovae,CRTS SN page",
+				"idtype":"name,name"
 			},
 			{
-				"id":"CRTS SN page,Latest Supernovae",
-				"idtype":"name,name"
+				"id":"2009ApJ...696..870D",
+				"idtype":"bibcode"
 			}
 		]
 	},
@@ -16287,36 +16226,6 @@
 			{
 				"id":"2015ATel.7049....1M,Latest Supernovae,2012PASP..124..668Y",
 				"idtype":"bibcode,name,bibcode"
-			}
-		]
-	},
-	{
-		"name":"LSQ15mj",
-		"alias":[
-			{
-				"value":"LSQ15mj",
-				"source":"1,2,3,4,5,6"
-			},
-			{
-				"value":"PS15ze",
-				"source":"2,3"
-			}
-		],
-		"edit":false,
-		"quantity":"claimedtype",
-		"difference":"",
-		"values":[
-			"II",
-			"Ib/c"
-		],
-		"sources":[
-			{
-				"id":"2000A&AS..143....9W,2015ATel.7102....1L,Latest Supernovae",
-				"idtype":"bibcode,bibcode,name"
-			},
-			{
-				"id":"Pan-STARRS 3Pi,2015ATel.7102....1L,2015ATel.7375....1P",
-				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -16434,11 +16343,11 @@
 		"alias":[
 			{
 				"value":"PS15cvn",
-				"source":"1,2,5"
+				"source":"1,2,4"
 			},
 			{
 				"value":"MLS151203:000922-000407",
-				"source":"1,2,4"
+				"source":"1,2,3"
 			}
 		],
 		"edit":false,
@@ -16450,8 +16359,8 @@
 		],
 		"sources":[
 			{
-				"id":"Pan-STARRS 3Pi,Latest Supernovae,2015ATel.8296....1K",
-				"idtype":"name,name,bibcode"
+				"id":"Pan-STARRS 3Pi,Latest Supernovae",
+				"idtype":"name,name"
 			},
 			{
 				"id":"2009ApJ...696..870D",
@@ -16490,7 +16399,7 @@
 		"alias":[
 			{
 				"value":"PS15cwo",
-				"source":"1,2,5,7"
+				"source":"1,2,3,5"
 			}
 		],
 		"edit":false,
@@ -16502,12 +16411,12 @@
 		],
 		"sources":[
 			{
-				"id":"Pan-STARRS 3Pi,Latest Supernovae,2015ATel.8294....1W,2015ATel.8296....1K",
-				"idtype":"name,name,bibcode,bibcode"
+				"id":"Pan-STARRS 3Pi,Latest Supernovae",
+				"idtype":"name,name"
 			},
 			{
-				"id":"2015ATel.8301....1T,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2015ATel.8301....1T",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -16516,7 +16425,7 @@
 		"alias":[
 			{
 				"value":"PS15cwx",
-				"source":"1,2,4"
+				"source":"1,2,3"
 			}
 		],
 		"edit":false,
@@ -16532,8 +16441,8 @@
 				"idtype":"name,name"
 			},
 			{
-				"id":"2015ATel.8301....1T,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2015ATel.8301....1T",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -16542,7 +16451,7 @@
 		"alias":[
 			{
 				"value":"PS15dlq",
-				"source":"1,2,4"
+				"source":"1,2,3"
 			}
 		],
 		"edit":false,
@@ -16560,6 +16469,36 @@
 			{
 				"id":"2012PASP..124..668Y",
 				"idtype":"bibcode"
+			}
+		]
+	},
+	{
+		"name":"PS15ze",
+		"alias":[
+			{
+				"value":"PS15ze",
+				"source":"1,2,3,4,6"
+			},
+			{
+				"value":"LSQ15mj",
+				"source":"1,2,3,4,5"
+			}
+		],
+		"edit":false,
+		"quantity":"claimedtype",
+		"difference":"",
+		"values":[
+			"II",
+			"Ib/c"
+		],
+		"sources":[
+			{
+				"id":"2000A&AS..143....9W,2015ATel.7102....1L,Latest Supernovae",
+				"idtype":"bibcode,bibcode,name"
+			},
+			{
+				"id":"2015ATel.7102....1L,Pan-STARRS 3Pi,2015ATel.7375....1P",
+				"idtype":"bibcode,name,bibcode"
 			}
 		]
 	},
@@ -16592,12 +16531,12 @@
 		],
 		"sources":[
 			{
-				"id":"CBAT TOCP,Latest Supernovae,Pan-STARRS 3Pi,2015ATel.7845....1K,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,name,bibcode,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Pan-STARRS 3Pi,2015ATel.7845....1K,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode,name,bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode"
 			}
 		]
 	},
@@ -16631,16 +16570,16 @@
 		],
 		"sources":[
 			{
-				"id":"CBAT TOCP,Latest Supernovae,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode"
 			},
 			{
 				"id":"Pan-STARRS 3Pi,2015ATel.7845....1K",
 				"idtype":"name,bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode"
 			}
 		]
 	},
@@ -16673,12 +16612,12 @@
 		],
 		"sources":[
 			{
-				"id":"CBAT TOCP,Latest Supernovae,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode"
 			}
 		]
 	},
@@ -16712,12 +16651,12 @@
 		],
 		"sources":[
 			{
-				"id":"2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"CBAT TOCP,Latest Supernovae,2015ATel.7787....1T,Asiago Supernova Catalogue",
-				"idtype":"name,name,bibcode,name"
+				"id":"CBAT TOCP,Latest Supernovae,Asiago Supernova Catalogue,2015ATel.7787....1T",
+				"idtype":"name,name,name,bibcode"
 			},
 			{
 				"id":"CBAT TOCP,Latest Supernovae",
@@ -16850,7 +16789,7 @@
 		],
 		"sources":[
 			{
-				"id":"2015ATel.7042....1E,1989A&AS...81..421B",
+				"id":"1989A&AS...81..421B,2015ATel.7042....1E",
 				"idtype":"bibcode,bibcode"
 			},
 			{
@@ -16872,7 +16811,7 @@
 			},
 			{
 				"value":"PSN J09023787+2556042",
-				"source":"5,6,7"
+				"source":"1,5,6,7"
 			},
 			{
 				"value":"Gaia15aet",
@@ -16956,8 +16895,8 @@
 				"idtype":"name,name"
 			},
 			{
-				"id":"2016ATel.8847....1T,Asiago Supernova Catalogue",
-				"idtype":"bibcode,name"
+				"id":"Asiago Supernova Catalogue,2016ATel.8847....1T",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -17000,7 +16939,7 @@
 		"alias":[
 			{
 				"value":"SN2016brw",
-				"source":"1,2,4,5"
+				"source":"1,2"
 			},
 			{
 				"value":"Gaia16alk",
@@ -17008,7 +16947,7 @@
 			},
 			{
 				"value":"AT2016brw",
-				"source":"3,4,5"
+				"source":"3"
 			}
 		],
 		"edit":false,
@@ -18388,12 +18327,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -18419,8 +18358,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014arXiv1401.3317S",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2011ApJ...738..162S,NED-D,2015arXiv150201589P",
@@ -18919,11 +18858,7 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...713.1026D,2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,bibcode,name"
-			},
-			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
+				"id":"2010ApJ...713.1026D,NED-D,2014arXiv1401.3317S",
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
@@ -18931,8 +18866,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013MNRAS.434.1443X,NED-D,2015arXiv150201589P",
+				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
 				"idtype":"bibcode,name,bibcode"
+			},
+			{
+				"id":"NED-D,2015arXiv150201589P,2013MNRAS.434.1443X",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -20024,12 +19963,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -20309,12 +20248,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -20647,16 +20586,16 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014arXiv1401.3317S",
+				"idtype":"name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -20681,8 +20620,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -20966,8 +20905,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -21033,8 +20972,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -21682,12 +21621,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -21718,12 +21657,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -21754,12 +21693,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -21781,8 +21720,8 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...713.1026D,2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2010ApJ...713.1026D,NED-D,2014arXiv1401.3317S",
+				"idtype":"bibcode,name,bibcode"
 			},
 			{
 				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
@@ -22304,12 +22243,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -22883,8 +22822,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -22936,12 +22875,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -23257,12 +23196,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -23713,8 +23652,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -23744,8 +23683,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -24276,8 +24215,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -24615,8 +24554,8 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...713.1026D,2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2010ApJ...713.1026D,NED-D,2014arXiv1401.3317S",
+				"idtype":"bibcode,name,bibcode"
 			},
 			{
 				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
@@ -24642,16 +24581,16 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...713.1026D,2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,bibcode,name"
-			},
-			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
+				"id":"2010ApJ...713.1026D,NED-D,2014arXiv1401.3317S",
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2013ApJ...763...88C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
+			},
+			{
+				"id":"NED-D,2013ApJ...763...88C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -24724,8 +24663,8 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...713.1026D,2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,bibcode,name"
+				"id":"2010ApJ...713.1026D,NED-D,2014arXiv1401.3317S",
+				"idtype":"bibcode,name,bibcode"
 			},
 			{
 				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
@@ -24786,12 +24725,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -25238,12 +25177,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -25399,12 +25338,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -25585,8 +25524,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -25715,8 +25654,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -25882,8 +25821,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014arXiv1401.3317S",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2011ApJ...738..162S,NED-D,2015arXiv150201589P",
@@ -25944,12 +25883,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -25975,8 +25914,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014arXiv1401.3317S",
+				"idtype":"name,bibcode"
 			},
 			{
 				"id":"2011ApJ...738..162S,NED-D,2015arXiv150201589P",
@@ -26093,8 +26032,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -26421,12 +26360,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -26902,12 +26841,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -26932,8 +26871,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -27052,12 +26991,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -27113,8 +27052,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2014arXiv1401.3317S,NED-D",
-				"idtype":"bibcode,name"
+				"id":"NED-D,2014arXiv1401.3317S",
+				"idtype":"name,bibcode"
 			}
 		]
 	},
@@ -27228,12 +27167,12 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -27465,8 +27404,8 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -27762,12 +27701,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2013ApJ...763...88C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,2013ApJ...763...88C",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -27860,12 +27799,12 @@
 		],
 		"sources":[
 			{
-				"id":"2010ApJ...715..833O,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2010ApJ...715..833O,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2010ApJ...715..833O,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2010ApJ...715..833O,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -28468,12 +28407,12 @@
 		],
 		"sources":[
 			{
-				"id":"1992ApJ...390L..45P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...390L..45P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1993ApJ...415....1S,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1993ApJ...415....1S,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -28482,7 +28421,7 @@
 		"alias":[
 			{
 				"value":"SN1920A",
-				"source":"1,5,6,2,7,8,9,10,11"
+				"source":"1,5,6,2,7,8,10,9,11"
 			}
 		],
 		"edit":false,
@@ -28560,16 +28499,16 @@
 		],
 		"sources":[
 			{
-				"id":"1992ApJ...390L..45P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...390L..45P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2011A&A...532A.154C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011A&A...532A.154C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29319,12 +29258,12 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29567,20 +29506,20 @@
 		],
 		"sources":[
 			{
-				"id":"1992ApJ...390L..45P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...390L..45P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2011A&A...532A.154C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2011A&A...532A.154C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1992ARA&A..30..359B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ARA&A..30..359B,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29646,16 +29585,16 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,1988SSRv...48....1R",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29679,24 +29618,24 @@
 		],
 		"sources":[
 			{
-				"id":"1992ApJ...390L..45P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...390L..45P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008A&ARv..15..289T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008A&ARv..15..289T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29717,12 +29656,12 @@
 		],
 		"sources":[
 			{
-				"id":"1992ApJ...390L..45P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...390L..45P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29743,12 +29682,12 @@
 		],
 		"sources":[
 			{
-				"id":"1990ApJ...350..110C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1990ApJ...350..110C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29773,12 +29712,12 @@
 		],
 		"sources":[
 			{
-				"id":"1992ApJ...390L..45P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...390L..45P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1992ARA&A..30..359B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2015arXiv150201589P,1992ARA&A..30..359B",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29862,16 +29801,16 @@
 		],
 		"sources":[
 			{
-				"id":"1990ApJ...350..110C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1990ApJ...350..110C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29892,12 +29831,12 @@
 		],
 		"sources":[
 			{
-				"id":"1990ApJ...350..110C,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1990ApJ...350..110C,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29922,8 +29861,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -29948,8 +29887,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30059,16 +29998,16 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30175,7 +30114,7 @@
 		"alias":[
 			{
 				"value":"SN1966N",
-				"source":"1,5,6,7,8,9,10,11"
+				"source":"1,5,6,7,8,10,9,11"
 			}
 		],
 		"edit":false,
@@ -30192,7 +30131,7 @@
 				"idtype":"bibcode,bibcode"
 			},
 			{
-				"id":"IAUC 1978,Latest Supernovae",
+				"id":"Latest Supernovae,IAUC 1978",
 				"idtype":"name,name"
 			},
 			{
@@ -30286,16 +30225,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30382,8 +30321,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1992ApJ...395..366S,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1992ApJ...395..366S,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30630,12 +30569,12 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P,1994ApJ...432...42S,1992ApJ...395..366S",
-				"idtype":"bibcode,name,bibcode,bibcode,bibcode"
+				"id":"NED-D,1998ApJ...500...51W,2015arXiv150201589P,1994ApJ...432...42S,1992ApJ...395..366S",
+				"idtype":"name,bibcode,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"1974ApJ...193...27K,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1974ApJ...193...27K,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30662,16 +30601,16 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30700,8 +30639,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30722,12 +30661,12 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30851,16 +30790,16 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -30918,20 +30857,20 @@
 		],
 		"sources":[
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31170,16 +31109,16 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31298,20 +31237,20 @@
 		],
 		"sources":[
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1996ApJ...457..500H,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1996ApJ...457..500H,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31332,12 +31271,12 @@
 		],
 		"sources":[
 			{
-				"id":"1982ApJ...254....1A,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1982ApJ...254....1A,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31358,12 +31297,12 @@
 		],
 		"sources":[
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31384,12 +31323,12 @@
 		],
 		"sources":[
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P,2000ApJ...540..634P",
-				"idtype":"bibcode,name,bibcode,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P,2000ApJ...540..634P",
+				"idtype":"name,bibcode,bibcode,bibcode"
 			},
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31450,8 +31389,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31565,12 +31504,12 @@
 		],
 		"sources":[
 			{
-				"id":"2000ApJ...540..634P,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2000ApJ...540..634P,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31729,8 +31668,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1998ApJ...500...51W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31765,20 +31704,20 @@
 		],
 		"sources":[
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1998ApJ...500...51W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2003ApJ...591..301B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2003ApJ...591..301B,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1985LNP...224..107B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1985LNP...224..107B,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2003ApJ...591..301B,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2003ApJ...591..301B,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31829,8 +31768,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"1998ApJ...500...51W,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -31855,12 +31794,12 @@
 		],
 		"sources":[
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2005ApJ...624..532R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2005ApJ...624..532R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -31958,16 +31897,16 @@
 				"idtype":"bibcode,name,bibcode"
 			},
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"2008A&ARv..15..289T,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2008A&ARv..15..289T,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1988SSRv...48....1R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1988SSRv...48....1R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -32099,7 +32038,7 @@
 		"alias":[
 			{
 				"value":"SN1986E",
-				"source":"1,4,7,8,9,10,11,12,15"
+				"source":"1,4,7,8,10,9,11,12,15"
 			}
 		],
 		"edit":false,
@@ -32115,8 +32054,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1998ApJ...500...51W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -32146,16 +32085,16 @@
 		],
 		"sources":[
 			{
-				"id":"2007ApJ...659..122J,NED-D,2006ApJ...645..488W",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,2007ApJ...659..122J,2006ApJ...645..488W",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1993ApJ...417..547R,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1993ApJ...417..547R,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			},
 			{
-				"id":"1994A&A...281...51M,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1994A&A...281...51M,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},
@@ -32180,8 +32119,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"1998ApJ...500...51W,2015arXiv150201589P,NED-D",
+				"idtype":"bibcode,bibcode,name"
 			}
 		]
 	},
@@ -32494,8 +32433,8 @@
 				"idtype":"bibcode"
 			},
 			{
-				"id":"1998ApJ...500...51W,NED-D,2015arXiv150201589P",
-				"idtype":"bibcode,name,bibcode"
+				"id":"NED-D,1998ApJ...500...51W,2015arXiv150201589P",
+				"idtype":"name,bibcode,bibcode"
 			}
 		]
 	},

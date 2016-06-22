@@ -1596,9 +1596,10 @@ def derive_and_sanitize():
                 sources = uniq_cdl([add_source(name, bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)] +
                     events[name]['ra'][0]['source'].split(',') + events[name]['dec'][0]['source'].split(',') +
                     events[name]['hostra'][0]['source'].split(',') + events[name]['hostdec'][0]['source'].split(','))
-                add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
-                    c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
-                if 'comovingdist' in events[name] and 'redshift' in events[name]:
+                if 'hostoffsetang' not in events[name]:
+                    add_quantity(name, 'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
+                        c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
+                if 'comovingdist' in events[name] and 'redshift' in events[name] and 'hostoffsetdist' not in events[name]:
                     offsetsig = get_sig_digits(events[name]['hostoffsetang'][0]['value'])
                     sources = uniq_cdl(sources.split(',') +
                         events[name]['comovingdist'][0]['source'].split(',') + events[name]['redshift'][0]['source'].split(','))
@@ -1679,7 +1680,8 @@ def write_all_events(empty = False, gz = False, bury = False):
                     outdir = "../" + str(repofolders[r])
                     break
 
-        # Delete non-SN events here without IAU designations (those with only banned types)
+        # Bury non-SN events here if only claimed type is non-SN type, or if primary
+        # name starts with a non-SN prefix.
         if bury:
             buryevent = False
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA', 'EV*', 'V*', "Nova")
@@ -2039,7 +2041,7 @@ for task in tasks:
         # Some coordinates that SIMBAD claims belong to the SNe actually belong to the host.
         simbadmirrors = ['http://simbad.harvard.edu/simbad/sim-script', 'http://simbad.u-strasbg.fr/simbad/sim-script']
         simbadbadcoordbib = ['2013ApJ...770..107C']
-        simbadbadnamebib = ['2004AJ....127.2809W', '2005MNRAS.364.1419Z', '2015A&A...574A.112D', '2011MNRAS.417..916G']
+        simbadbadnamebib = ['2004AJ....127.2809W', '2005MNRAS.364.1419Z', '2015A&A...574A.112D', '2011MNRAS.417..916G', '2002ApJ...566..880G']
         simbadbannedcats = ['[TBV2008]', 'OGLE-MBR']
         customSimbad = Simbad()
         customSimbad.ROW_LIMIT = -1
@@ -2971,7 +2973,7 @@ for task in tasks:
             add_quantity(name, 'dec', row['DEJ2000'], source)
             add_quantity(name, 'redshift', row['zsp'] if row['zsp'] else row['zph'], source, kind = 'host')
             add_quantity(name, 'discoverdate', '20' + row['SNSDF'][:2] + '/' + row['SNSDF'][2:4], source, kind = 'host')
-            add_quantity(name, 'hostoffset', row['Offset'], source, unit = 'arcseconds')
+            add_quantity(name, 'hostoffsetang', row['Offset'], source, unit = 'arcseconds')
             add_quantity(name, 'claimedtype', row['Type'], source)
         journal_events()
 
@@ -3002,7 +3004,7 @@ for task in tasks:
             add_quantity(name, 'redshift', row['zSN'], source, kind = 'heliocentric', error = row['e_zSN'])
             add_quantity(name, 'hostra', row['RAG'], source)
             add_quantity(name, 'hostdec', row['DEG'], source)
-            add_quantity(name, 'hostoffset', row['ASep'], source, unit = 'arcseconds')
+            add_quantity(name, 'hostoffsetang', row['ASep'], source, unit = 'arcseconds')
             add_quantity(name, 'redshift', row['zhost'], source, kind = 'host', error = row['e_zhost'])
         result = Vizier.get_catalogs("J/AJ/148/13/low_z")
         table = result[list(result.keys())[0]]
@@ -3016,7 +3018,7 @@ for task in tasks:
             add_quantity(name, 'redshift', row['zSN'], source, kind = 'heliocentric', error = row['e_zSN'])
             add_quantity(name, 'hostra', row['RAG'], source)
             add_quantity(name, 'hostdec', row['DEG'], source)
-            add_quantity(name, 'hostoffset', row['ASep'], source, unit = 'arcseconds')
+            add_quantity(name, 'hostoffsetang', row['ASep'], source, unit = 'arcseconds')
             add_quantity(name, 'redshift', row['zhost'], source, kind = 'host', error = row['e_zhost'])
         journal_events()
 
@@ -5107,6 +5109,10 @@ for task in tasks:
                     continue
                 refs = []
                 aliases = []
+                crtsname = ''
+                ra = ''
+                dec = ''
+                lclink = ''
                 ttype = ''
                 ctype = ''
                 for tdi, td in enumerate(tds):
@@ -5141,11 +5147,10 @@ for task in tasks:
                                 ind = ai-1
                             if '>' in aliases[ind]:
                                 hostupper = True
-                            hostmag = aliases[ind].strip('>~').replace(',', '.')
+                            hostmag = aliases[ind].strip('>~').replace(',', '.').replace('m', '.')
                         continue
                     if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
                         name = 'SN' + alias
-                    lalias = alias.lower()
                     if (('asassn' in alias and len(alias) > 6) or ('ptf' in alias and len(alias) > 3) or
                         ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
                         ('mls' in alias and len(alias) > 3) or 'gaia' in alias or ('lsq' in alias and len(alias) > 3)):
@@ -5541,7 +5546,7 @@ for task in tasks:
             add_quantity(name, 'ra', ra, sources, unit = 'floatdegrees')
             add_quantity(name, 'dec', dec, sources, unit = 'floatdegrees')
             add_quantity(name, 'redshift', redshift, sources)
-            add_quantity(name, 'hostoffset', hostoff, sources, unit = 'arcseconds')
+            add_quantity(name, 'hostoffsetang', hostoff, sources, unit = 'arcseconds')
             for ct in claimedtype.split('/'):
                 if ct != 'Unk':
                     add_quantity(name, 'claimedtype', ct, typesources)
