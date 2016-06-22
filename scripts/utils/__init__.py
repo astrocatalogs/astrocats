@@ -5,6 +5,8 @@ from . import digits
 from . digits import *
 from . import events
 from . events import *
+from . import logger
+from . logger import *
 from . import photometry
 from . photometry import *
 from . import repos
@@ -15,6 +17,7 @@ from . tq_funcs import *
 __all__ = []
 __all__.extend(digits.__all__)
 __all__.extend(events.__all__)
+__all__.extend(logger.__all__)
 __all__.extend(photometry.__all__)
 __all__.extend(repos.__all__)
 __all__.extend(tq_funcs.__all__)
