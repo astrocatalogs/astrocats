@@ -14,6 +14,8 @@
 -   Create methods for parsing/cleaning RA & DEC  (e.g. to go into `add_quantity`)
 -   `scripts/constants.py`
     -   Combine `OSC_` values into a class
+-   Work on fuzzy finding for events, e.g. for 'ASASSN-13ax' perhaps include alias '13ax'?
+
     
 ## Questions ##
 -   What is `import_funcs.clear_events` doing?
