@@ -64,7 +64,6 @@ class EVENT(OrderedDict):
         """
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
-            json.dump(data, open('dirty_event_raw', 'w'), indent=2)
             name = list(data.keys())
             if len(name) != 1:
                 raise ValueError("json file '{}' has multiple keys: {}".format(
