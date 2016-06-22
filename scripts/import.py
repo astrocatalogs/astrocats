@@ -2069,6 +2069,8 @@ for task in tasks:
             name = single_spaces(re.sub(r'\[[^)]*\]', '', row['MAIN_ID']).strip())
             if name == 'SN':
                 continue
+            if is_number(name):
+                continue
             name = add_event(name)
             source = add_source(name, refname = 'SIMBAD astronomical database', bibcode = "2000A&AS..143....9W",
                 url = "http://simbad.u-strasbg.fr/", secondary = True)
@@ -2077,6 +2079,8 @@ for task in tasks:
                 if any([x in alias for x in simbadbannedcats]):
                     continue
                 ali = single_spaces(re.sub(r'\[[^)]*\]', '', alias).strip())
+                if is_number(ali):
+                    continue
                 ali = name_clean(ali)
                 add_quantity(name, 'alias', ali, source)
             if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
