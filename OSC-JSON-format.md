@@ -104,6 +104,8 @@ Currently, the OSC explicitly tracks the following quantities for each event, if
 | `host` | Host galaxy of the supernova |
 | `hostra` | Right ascension of the host galaxy in hours (`hh:mm:ss`) |
 | `hostdec` | Declination of the host galaxy in degrees |
+| `hostoffsetang` | Offset angle between host and supernova |
+| `hostoffsetdist` | Offset angular diameter distance between host and supernova |
 | `maxappmag` | Maximum apparent magnitude |
 | `maxband` | Band that maximum was determined from |
 | `maxabsmag` | Maximum absolute magnitude |
