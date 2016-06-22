@@ -839,17 +839,6 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def journal_events(tasks, args, events, clear=True):
-    """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
-    """
-    if 'writeevents' in tasks:
-        from . import Events
-        Events.write_all_events(events, args)
-    if clear:
-        clear_events(events)
-    return events
-
-
 def load_stubs(tasks, args, events):
     currenttask = 'Loading event stubs'
     files = repo_file_list()

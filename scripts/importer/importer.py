@@ -9,7 +9,7 @@ import resource
 import sys
 import warnings
 
-from .. utils import pbar, repo_file_list
+from .. utils import pbar, repo_file_list, get_logger
 from . funcs import add_event, derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
     has_task
 from scripts import FILENAME
@@ -75,20 +75,24 @@ def import_main(args=None, **kwargs):
     This can also be run as a method, in which case default arguments are loaded, but can be
     overriden using `**kwargs`.
     """
+    log = get_logger()
+
     # If this is called from `scripts.main`, then `args` will contain parameters.
     #    If this is being called as an API function, we need to load default parameters which can
     #    then be overwritten below
     if args is None:
+        log.debug("`args` not provided, loading new")
         from .. import main
         args = main.load_args(args=['importer'])
 
     # If this is called as an API function, overwrite variables in `args` with those passed to the
     #    function as keyword arguments.
     for key, val in kwargs.items():
+        log.debug("Overriding `args` '{}' = '{}'".format(key, val))
         setattr(args, key, val)
-    print(vars(args))
+    log.debug("`args` : " + str(vars(args)))
 
-    tasks_list = load_task_list(args)
+    tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
     events = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
@@ -98,7 +102,7 @@ def import_main(args=None, **kwargs):
     # for task, task_obj in tasks_list.items():
     for task_name, task_obj in tasks_list.items():
         if not task_obj.active: continue
-        print("\n", task_name)
+        log.info("Task: '{}'".format(task_name))
 
         nice_name = task_obj.nice_name
         mod_name = task_obj.module
@@ -107,10 +111,13 @@ def import_main(args=None, **kwargs):
         if priority < prev_priority:
             raise RuntimeError("Priority for '{}': '{}', less than prev, '{}': '{}'.\n{}".format(
                 task_name, priority, prev_task_name, prev_priority, task_obj))
-        print("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
+        log.debug("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
-        getattr(mod, func_name)(events, args, tasks, task_obj)
+        getattr(mod, func_name)(events, args, tasks, task_obj, log)
+        log.debug("{} Events".format(len(events)))
+        events = journal_events(tasks, args, events)
+        return
 
         prev_priority = priority
         prev_task_name = task_name
@@ -208,7 +215,18 @@ def delete_old_event_files(*args):
     return
 
 
-def load_task_list(args):
+def journal_events(tasks, args, events, clear=True):
+    """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
+    """
+    if 'writeevents' in tasks:
+        from . import Events
+        Events.write_all_events(events, args)
+    if clear:
+        clear_events(events)
+    return events
+
+
+def load_task_list(args, log):
     """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
 
     A `TASK` object is created for each entry, with the parameters filled in.
@@ -224,6 +242,7 @@ def load_task_list(args):
             raise ValueError("If '--tasks' is used, '--yes' and '--no' shouldnt be.")
 
     def_task_list_filename = FILENAME.TASK_LIST
+    log.debug("Loading task-list from '{}'".format(def_task_list_filename))
     data = json.load(open(def_task_list_filename, 'r'))
 
     # Make sure 'active' modification lists are all valid
@@ -271,13 +290,6 @@ def load_task_list(args):
         else:
             names_inact.append(key)
 
-    print("Active Tasks:")
-    print("\t" + "\n\t".join(nn.ljust(20) for nn in names_act))
-
-    print("\nInactive Tasks:")
-    print("\t" + "\n\t".join(nn.ljust(20) for nn in names_inact))
-
+    log.info("Active Tasks:\n\t" + ", ".join(nn for nn in names_act))
+    log.debug("Inactive Tasks:\n\t" + ", ".join(nn for nn in names_inact))
     return tasks
-
-if __name__ == '__main__':
-    import_main()
