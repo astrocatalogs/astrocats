@@ -8,6 +8,8 @@ import numpy as np
 
 _FILE_LEVEL_DEF = DEBUG
 _STREAM_LEVEL_DEF = WARNING
+_LOADED_LEVEL = INFO
+
 
 __all__ = ["get_logger", "DEBUG", "WARNING", "INFO"]
 
@@ -63,8 +65,6 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         Logger object to use for logging.
 
     """
-    print("get_logger()")
-
     if tofile is None and not tostr:
         raise ValueError("Must log to something: `tofile` or `tostr` must be 'True'.")
 
@@ -74,6 +74,9 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         return logger
     else:
         logger._OSC_LOGGER = True
+
+    # Set other custom parameters
+    logger._LOADED = _LOADED_LEVEL
 
     # Make sure handlers don't get duplicated (ipython issue)
     while len(logger.handlers) > 0:
