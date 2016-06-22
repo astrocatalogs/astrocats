@@ -5,13 +5,14 @@ from collections import OrderedDict
 import json
 from math import floor
 import os
+import warnings
 
 from scripts import FILENAME
 from .constants import OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
 from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
-    journal_events, load_stubs, name_clean
+    jd_to_mjd, load_stubs, name_clean
 from ..utils import get_repo_paths, get_event_filename, get_sig_digits, is_number, \
-    jd_to_mjd, pbar, \
+    pbar, \
     pretty_num, tprint, zpad
 
 
@@ -27,8 +28,13 @@ class KEYS:
 
 class EVENT(OrderedDict):
     """
+    NOTE: OrderedDict data is just the `name` values from the JSON file.
+          I.e. it does not include the highest nesting level { name: DATA }, it *just* includes
+               DATA
+
     FIX: does this need to be `ordered`???
     FIX: check that no stored values are empty/invalid (delete key in that case?)
+    FIX: be careful / remove duplicity between EVENT.name and EVENT['name'].
 
     sources
     -   All sources must have KEYS.NAME and 'alias' parameters
@@ -55,15 +61,25 @@ class EVENT(OrderedDict):
     def load_data_from_json(self, fhand):
         """FIX: check for overwrite??
         """
-        # If this is a str, try to open it as a filepath
-        if isinstance(fhand, str):
-            with open(fhand, 'r') as jfil:
-                self.update(json.load(jfil, object_pairs_hook=OrderedDict))
-            self.filename = fhand
-        # Assume `fhand` is an already opened file
-        else:
-            self.update(json.load(fhand, object_pairs_hook=OrderedDict))
-            self.filename = fhand.filename
+        with open(fhand, 'r') as jfil:
+            data = json.load(jfil, object_pairs_hook=OrderedDict)
+            json.dump(data, open('dirty_event_raw', 'w'), indent=2)
+            name = list(data.keys())
+            if len(name) != 1:
+                raise ValueError("json file '{}' has multiple keys: {}".format(
+                    fhand, list(name)))
+            name = name[0]
+            data = data[name]
+            self.update(data)
+        self.filename = fhand
+        # If object doesnt have a name yet, but json does, store it
+        if len(self.name) == 0:
+            self.name = name
+        # Warn if there is a name mismatch
+        elif self.name.lower().strip() != name.lower().strip():
+            warnings.warn("Object name '{}' does not match name in json: '{}'".format(
+                self.name, name))
+
         return
 
     def add_source(self, srcname='', bibcode='', **src_kwargs):
@@ -455,8 +471,6 @@ def clean_event(dirty_event):
     FIX: currently will fail if no bibcode and no url
     """
     bibcodes = []
-    name = dirty_event.name
-    dirty_event[KEYS.NAME] = name
 
     # Rebuild the sources
     try:
@@ -468,7 +482,7 @@ def clean_event(dirty_event):
                 dirty_event.add_source(bibcode=source[KEYS.BIBCODE])
             else:
                 dirty_event.add_source(srcname=source[KEYS.NAME], url=source[KEYS.URL])
-    except ValueError:
+    except KeyError:
         pass
 
     # Clean some legacy fields
@@ -503,8 +517,8 @@ def clean_event(dirty_event):
         bibcodes = [OSC_BIBCODE]
 
     # Go through all keys in 'dirty' event
-    for key in list(dirty_event.keys()):
-        if key in [KEYS.NAME, KEYS.SOURCES]:
+    for key in dirty_event.keys():
+        if key in [KEYS.NAME, KEYS.SOURCES, KEYS.ERRORS]:
             pass
         elif key == 'photometry':
             for p, photo in enumerate(dirty_event['photometry']):
@@ -520,10 +534,15 @@ def clean_event(dirty_event):
                     source = dirty_event.add_source(bibcode=bibcodes[0])
                     dirty_event[key][qi]['source'] = source
 
+    if not hasattr(dirty_event, KEYS.NAME):
+        dirty_event[KEYS.NAME] = dirty_event.name
+        if len(dirty_event[KEYS.NAME]) == 0:
+            raise ValueError("Event name is empty:\n\t{}".format(json.dumps(dirty_event, indent=2)))
+
     return dirty_event
 
 
-def load_event_from_file(events, args, tasks, name='', path='',
+def load_event_from_file(events, args, tasks, log, name='', path='',
                          clean=False, delete=True, append=False):
     """
 
@@ -552,32 +571,34 @@ def load_event_from_file(events, args, tasks, name='', path='',
 
     new_event = EVENT(name)
     new_event.load_data_from_json(load_path)
+    try:
+        temp = new_event[KEYS.NAME]
+    except:
+        print("\n\n\nname = {}, filename = {}".format(new_event.name, new_event.filename))
+        print(json.dumps(new_event))
+        print("\n\n")
+        raise
 
     # Delete old version
-    # FIX: this needs to be updated
     if name in events:
         del events[name]
+    temp = new_event[KEYS.NAME]
 
     if clean:
         new_event = clean_event(new_event)
+    temp = new_event[KEYS.NAME]
 
-    # FIX: This check should go into the `EVENT` object or something...
-    if len(new_event.keys()) != 1:
-        raise ValueError("newevent has multiple keys: {}".format(list(new_event.keys())))
-    name = next(iter(new_event.keys()))
+    name = new_event[KEYS.NAME]
 
-    events.update(new_event)
-
-    # FIX: Use `logging` for this...
-    if args.verbose and not args.travis:
-        tprint('Loaded ' + name)
+    log.log(log._LOADED, "Loaded {} from '{}'".format(name.ljust(20), load_path))
 
     # If this event loaded from an existing repo path and we will resave later, delete that version
     # FIX: have this check done to determine if `delete` is passed as True, when calling this func
     if 'writeevents' in tasks and delete and path_from_name:
         os.remove(path_from_name)
+        log.debug("Deleted '{}'".format(path_from_name))
 
-    return name
+    return new_event
 
 
 def merge_duplicates(tasks, args, events):
