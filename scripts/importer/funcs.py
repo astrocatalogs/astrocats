@@ -7,16 +7,15 @@ import warnings
 # import sys
 from cdecimal import Decimal
 from collections import OrderedDict
-from math import log10, floor, sqrt
+from math import log10, sqrt
 from astropy.time import Time as astrotime
 from astropy import units
-import sys
 
-from scripts import FILENAME, PATH
-from . constants import REPR_BETTER_QUANTITY, OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
+from scripts import FILENAME
+from . constants import OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
     KM, MAX_BANDS
-from .. utils import bandrepf, bandmetaf, is_number, get_repo_paths, get_event_filename, \
-    get_sig_digits, pbar, pretty_num, repo_file_list, round_sig, tprint, zpad
+from .. utils import bandrepf, bandmetaf, is_number, \
+    get_sig_digits, pbar, pretty_num, repo_file_list, round_sig, tprint
 
 
 def add_event(tasks, args, events, name, load=True, delete=True, source='', loadifempty=True):
@@ -304,16 +303,6 @@ def archived_task(tasks, args, atask):
         return True
     return False
 '''
-
-
-
-def clear_events(events):
-    """
-    """
-    events = OrderedDict((k, OrderedDict([['name', events[k]['name']]] +
-                          ([['alias', events[k]['alias']]] if 'alias' in events[k] else []) +
-                          [['stub', True]]))
-                         for k in events)
 
 
 def convert_aq_output(row):

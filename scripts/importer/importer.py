@@ -116,7 +116,7 @@ def import_main(args=None, **kwargs):
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
         getattr(mod, func_name)(events, args, tasks, task_obj, log)
         log.debug("{} Events".format(len(events)))
-        events = journal_events(tasks, args, events)
+        events = journal_events(tasks, args, events, log)
         return
 
         prev_priority = priority
@@ -215,14 +215,14 @@ def delete_old_event_files(*args):
     return
 
 
-def journal_events(tasks, args, events, clear=True):
+def journal_events(tasks, args, events, log, clear=True):
     """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
     """
     if 'writeevents' in tasks:
         from . import Events
-        Events.write_all_events(events, args)
+        Events.write_all_events(events, args, log)
     if clear:
-        clear_events(events)
+        events = Events.clear_events(events, log)
     return events
 
 

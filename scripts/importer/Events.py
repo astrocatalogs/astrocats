@@ -11,7 +11,7 @@ from scripts import FILENAME
 from .constants import OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
 from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
     jd_to_mjd, load_stubs, name_clean
-from ..utils import get_repo_paths, get_event_filename, get_sig_digits, is_number, \
+from ..utils import get_repo_paths, get_sig_digits, is_number, \
     pbar, \
     pretty_num, tprint, zpad
 
@@ -35,6 +35,7 @@ class EVENT(OrderedDict):
     FIX: does this need to be `ordered`???
     FIX: check that no stored values are empty/invalid (delete key in that case?)
     FIX: be careful / remove duplicity between EVENT.name and EVENT['name'].
+    FIX: distinguish between '.filename' and 'get_filename'
 
     sources
     -   All sources must have KEYS.NAME and 'alias' parameters
@@ -457,6 +458,9 @@ class EVENT(OrderedDict):
 
         return False
 
+    def get_filename(self):
+        return get_event_filename(self.name)
+
     def get_source_by_alias(self, alias):
         for source in self.get(KEYS.SOURCES, []):
             if source['alias'] == alias:
@@ -550,9 +554,8 @@ def clean_event(dirty_event):
     return dirty_event
 
 
-
 def get_event_filename(name):
-    return(name.replace('/', '_'))
+    return name.replace('/', '_')
 
 
 def get_event_text(eventfile):
@@ -676,6 +679,16 @@ def merge_duplicates(tasks, args, events):
     return events
 
 
+def clear_events(events, log):
+    """
+    """
+    events = OrderedDict((k, OrderedDict([['name', events[k]['name']]] +
+                          ([['alias', events[k]['alias']]] if 'alias' in events[k] else []) +
+                          [['stub', True]]))
+                         for k in events)
+    return events
+
+
 def set_preferred_names(tasks, args, events):
     if not len(events):
         load_stubs(tasks, args, events)
@@ -747,12 +760,12 @@ def set_preferred_names(tasks, args, events):
     return events
 
 
-def write_all_events(events, args, empty=False, gz=False, bury=False):
+def write_all_events(events, args, log, empty=False, gz=False, bury=False):
     """Save all `events` to files.
     """
     import codecs
     from scripts import PATH
-    from .. utils import get_event_filename, get_repo_folders, get_repo_years, is_number, tprint
+    from .. utils import get_repo_folders, get_repo_years, is_number, tprint
     repo_folders = get_repo_folders()
     non_sne_types = None
     if bury:
@@ -762,19 +775,18 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
             non_sne_types = [x.upper() for x in non_sne_types]
 
     # Write it all out!
-    for name in events:
-        if 'stub' in events[name]:
+    for name, event_obj in events.items():
+        if 'stub' in event_obj.keys():
             if not empty:
                 continue
             else:
-                del events[name]['stub']
+                del event_obj['stub']
 
         # if args.verbose and not args.travis:
         #     tprint('Writing ' + name)
-        filename = get_event_filename(name)
-        log.debug("Writing '{}' to '{}'".format(name, filename))
+        filename = event_obj.get_filename()
+        log.debug("Writing '{}'".format(name))
 
-        # outdir = '../'
         outdir = str(PATH.ROOT)
         if 'discoverdate' in events[name]:
             repo_years = get_repo_years(repo_folders)
@@ -792,7 +804,7 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
             buryevent = False
             nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
             if name.startswith(nonsneprefixes):
-                tprint('Burying ' + name + ', non-SNe prefix.')
+                log.debug("Burying '{}', non-SNe prefix.".format(name))
                 continue
             if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
                 for ct in events[name]['claimedtype']:
@@ -802,12 +814,12 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
                     if ct['value'].upper() in non_sne_types:
                         buryevent = True
                 if buryevent:
-                    tprint('Burying ' + name + ' (' + ct['value'] + ').')
+                    log.debug("Burying '{}', {}.".format(name, ct['value']))
                     # outdir = '../sne-boneyard'
                     outdir = str(PATH.REPO_BONEYARD)  # os.path.join(PATH.ROOT, 'sne-boneyard')
 
+        # FIX: use 'dump' not 'dumps'
         jsonstring = json.dumps({name: events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
-
         # path = outdir + '/' + filename + '.json'
         path = os.path.join(outdir, filename + '.json')
         with codecs.open(path, 'w', encoding='utf8') as f:
@@ -822,6 +834,7 @@ def write_all_events(events, args, empty=False, gz=False, bury=False):
                 with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
                 os.remove(path)
+                # FIX: use subprocess
                 os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
 
     return
