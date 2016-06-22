@@ -15,7 +15,9 @@
 -   `scripts/constants.py`
     -   Combine `OSC_` values into a class
 -   Work on fuzzy finding for events, e.g. for 'ASASSN-13ax' perhaps include alias '13ax'?
-
+-   `write_all_events`: save `non_sne_types` data somewhere instead of reloading each time
+    -   Move all of the stuff inside the names loop into the EVENT class.
+-   Change 'writevents' from a task to an argument parameter?  (e.g. for `journal_events`)
     
 ## Questions ##
 -   What is `import_funcs.clear_events` doing?
@@ -29,6 +31,7 @@
         -   Is 'url' required if no 'bibcode'?
 -   `is_erroneous`
     -   What is happening here?
+-   What are stubs?  Why?
 
 
 ## Current ##
