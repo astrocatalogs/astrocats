@@ -627,7 +627,8 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
         non_sne_types = [x.upper() for x in non_sne_types]
 
     # Write it all out!
-    for name, event_obj in events.items():
+    # NOTE: this needs to use a `list` wrapper to allow modification of dictionary
+    for name in list(events.keys()):
         if 'writeevents' in tasks:
             # See if this event should be burried
             # Delete non-SN events here without IAU designations (those with only banned types)
@@ -654,7 +655,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
                         log.debug("Burying '{}', {}.".format(name, ct_val))
 
             if save_event:
-                save_name = event_obj.save(bury=buryevent)
+                save_name = events[name].save(bury=buryevent)
                 log.info("Saved '{}' to '{}'.".format(name, save_name))
                 if gz and os.path.getsize(save_name) > COMPRESS_ABOVE_FILESIZE:
                     save_name = _compress_gz(save_name)
@@ -667,7 +668,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
 
         if clear:
             # Store stub of this object
-            stubs.update({name: event_obj.stub()})
+            stubs.update({name: events[name].get_stub()})
             # Delete object
             del events[name]
             log.debug("Added stub for '{}', deleted event.".format(name))
