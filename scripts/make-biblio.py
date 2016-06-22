@@ -120,8 +120,9 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                     #    tqdm.write(str(lc))
 
                 for key in list(item.keys()):
+                    bcalias = source['alias']
                     lc = 0
-                    if key in ['name', 'sources', 'photometry', 'spectra']:
+                    if key in ['name', 'sources', 'photometry', 'spectra', 'errors']:
                         continue
                     for quantum in item[key]:
                         if bcalias in quantum['source'].split(','):

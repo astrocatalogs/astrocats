@@ -8,11 +8,12 @@ Each supernova is contained with a single JSON file that contains a single objec
 }
 ```
 
-To comply with the standard, the object should contain a `name` key, where the `name` key should be identical to the object field name:
+To comply with the standard, the object should contain a `schema` key, where `schema` is a permanent URL to the version of this document defining the file's schema (with `commithash` replaced appropriately), and a `name` key, where the `name` key should be identical to the object field name:
 
 ```JSON
 {
 	"SN1987A":{
+		"schema":"https://github.com/astrocatalogs/sne/blob/commithash/OSC-JSON-format.md",
 		"name":"SN1987A"
 	}
 }
@@ -31,6 +32,7 @@ Sources of data contain five fields, three of which are optional:
 `url` | Web address of source | yes
 `bibcode` | 19 character NASA ADS bibcode | yes
 `secondary` | Boolean specifying if source collected rather than generated data | yes
+`acknowledgment` | Acknowledgment requested by source if data is used in publication | yes
 
 The sources object contains an array of such objects:
 
@@ -104,6 +106,8 @@ Currently, the OSC explicitly tracks the following quantities for each event, if
 | `host` | Host galaxy of the supernova |
 | `hostra` | Right ascension of the host galaxy in hours (`hh:mm:ss`) |
 | `hostdec` | Declination of the host galaxy in degrees |
+| `hostoffsetang` | Offset angle between host and supernova |
+| `hostoffsetdist` | Offset angular diameter distance between host and supernova |
 | `maxappmag` | Maximum apparent magnitude |
 | `maxband` | Band that maximum was determined from |
 | `maxabsmag` | Maximum absolute magnitude |
@@ -114,13 +118,17 @@ Photometry and spectra are stored in a similar way, but have different and many 
 | :--- | :--- | :---
 | `time` | Time of observation (can be a two-element array for start/stop) | yes
 | `e_time` | Error in the time | yes
+| `e_lower_time` | Lower error in the time | yes
+| `e_upper_time` | Upper error in the time | yes
 | `u_time` | Unit for time | yes
 | `system` | Photometric system used | yes
+| `survey` | Name of survey observations were collected by | yes
 | `instrument` | Instrument used for observation | yes
 | `telescope` | Telescope used for observation | yes
 | `observatory` | Observatory used for observation | yes
 | `observer` | Person(s) who conducted the observation | yes
 | `reducer` | Person(s) who reduced the observation | yes
+| `includeshost` | Host galaxy light not subtracted from observation | yes
 | `source` | A list of integer aliases to sources for the data | no
 
 For IR/optical/UV photometry specifically, typical field names are:
@@ -129,8 +137,13 @@ For IR/optical/UV photometry specifically, typical field names are:
 | :--- | :--- | :---
 | `magnitude` | Apparent magnitude | no
 | `e_magnitude` | Error in the magnitude | yes
+| `e_lower_magnitude` | Lower (i.e. more negative) error in the magnitude | yes
+| `e_upper_magnitude` | Upper (i.e. more positive) error in the magnitude | yes
 | `band` | Photometric band filter used | yes
 | `upperlimit` | Measurement is an upper limit | yes
+| `kcorrected` | Photometry has been K-corrected for redshift effects | yes
+| `scorrected` | Photometry has been S-corrected for extinction in host galaxy | yes
+| `mcorrected` | Photometry has been S-corrected for extinction from Milky Way | yes
 
 For radio, a few more field names are used:
 
@@ -169,6 +182,7 @@ And finally for spectra, these fields are used:
 | `filename` | Name of file spectra was extracted from | yes
 | `deredshifted` | Data is known to have been deredshifted from observer frame | yes
 | `dereddened` | Data is known to have been dereddened | yes
+| `exclude` | Suggested wavelengths (in &#8491;) to exclude when plotting/analyzing, can be `above`, `below`, or `range`, e.g. `"above":"10000"` would suggested excluding data from wavelengths greater than 10,000 &#8491;, `"range":["8000","8100"]` would suggested excluding data from wavelengths in between 8,000 and 8,100 &#8491; | yes
 | `source` | A list of integer aliases to sources for the data | no
 
 So long as it is reasonable, the OSC is open to adding more field names should additional information need to be stored in an event file beyond the quantities and data we have chosen to track here, please contact us and let us know if you have any suggestions on how the standard format can be improved.

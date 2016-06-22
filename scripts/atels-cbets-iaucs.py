@@ -40,7 +40,7 @@ with codecs.open(path, 'w', encoding='utf8') as f:
     f.write(jsonstring)
 
 iaucs = OrderedDict()
-yearseps = range(1920, 2020, 4)
+yearseps = range(1920, 2020, 2)
 for i in tqdm(range(len(yearseps)-1)):
     adsquery = ('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=ALL&version=1&bibcode=*IAUC.*' +
         '&data_type=Custom&nr_to_return=10000&format=%25R&start_mon=&start_year=' +

@@ -1,7 +1,7 @@
 ####Below are known sources of data that need to be added to the catalog. 
 
 Donated datasets:
-* 2016arXiv160304748N ("nicholl-05-03-16" in sne-external)
+* None to add at this time.
 
 Multiple SN datasets on VizieR:
 * http://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJ/756/173 (Data in text files attached to catalog)
@@ -14,9 +14,8 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/1938ApJ....88..285B (Historical SN data)
 * http://adsabs.harvard.edu/abs/1999AJ....117..725F (1979C, 1980K)
 * http://iopscience.iop.org/article/10.1088/0004-637X/743/2/114/meta (PS1-10awh, PS1-10ky)
-* http://iopscience.iop.org/article/10.1088/0004-637X/770/2/128/meta (PTF11rks, SN2011ke, SN2011kf, SN2012il)
 * http://mnras.oxfordjournals.org/content/452/4/3869.full (24 SLSNe) [Erratum: http://mnras.oxfordjournals.org/content/457/3/2514.full]
-* http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810,SN2013dg)
+* http://mnras.oxfordjournals.org/content/444/3/2096.full (LSQ12dlf, SSS120810, SN2013dg)
 * http://adsabs.harvard.edu/abs/2014arXiv1401.3317S (SDSS SNe light curves, broken link - http://sdssdp62.fnal.gov/sdsssn/DataRelease/index.html)
 * http://mnras.oxfordjournals.org/content/446/4/3895 (18 Ia SNe, but counts not magnitudes)
 * http://arxiv.org/abs/1603.03823
@@ -26,13 +25,11 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2014A%26A...568A..19C (SN2013ez, SN2013fu)
 * http://adsabs.harvard.edu/abs/1997AJ....114.2054A (SN 1995al, 1997Y, 1997bp)
 * http://adsabs.harvard.edu/abs/2012A%26A...545L...7T (SN 2006V, 2006au)
-* http://www.jstor.org/stable/984985?seq=1#page_scan_tab_contents
 * http://adsabs.harvard.edu/abs/1979AcC.....8....5F (Lists references for many historical LCs)
-* http://adsabs.harvard.edu/abs/2012MNRAS.425.1007B (IR photometry for about a dozen PTF events)
 * http://adsabs.harvard.edu/abs/2006ApJ...645..841N (SNLS LCs)
-* http://adsabs.harvard.edu/abs/2014ApJ...784..105W
 * http://adsabs.harvard.edu/abs/2016arXiv160105955F (Late-time Iax spectra)
 * http://adsabs.harvard.edu/abs/2016ApJ...819...35A (rapid risers)
+* http://adsabs.harvard.edu/abs/2015arXiv151201303C (radio upper limits for Ibc SNe)
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
@@ -108,6 +105,7 @@ Other single SN datasets:
 * SN2010ev - http://adsabs.harvard.edu/abs/2016arXiv160107863G
 * SN2010jl - http://adsabs.harvard.edu/abs/2014ApJ...797..118F, http://adsabs.harvard.edu/abs/2014ApJ...781...42O
 * SN2010mb - http://adsabs.harvard.edu/abs/2014ApJ...785...37B
+* SN2010X - http://adsabs.harvard.edu/abs/2010ApJ...723L..98K
 * PS1-10afx - http://adsabs.harvard.edu/abs/2013ApJ...767..162C
 * PS1-10bzj - http://adsabs.harvard.edu/abs/2013ApJ...771...97L
 * SN2011ay - http://adsabs.harvard.edu/abs/2015MNRAS.453.2103S
@@ -116,7 +114,7 @@ Other single SN datasets:
 * SN2011ht - http://adsabs.harvard.edu/abs/2013MNRAS.431.2599M
 * SN2011kl - http://adsabs.harvard.edu/abs/2015Natur.523..189G
 * PTF11iqb - http://adsabs.harvard.edu/abs/2015MNRAS.449.1876S
-* PS1-11ap - http://mnras.oxfordjournals.org/content/437/1/656.full
+* PS1-11ap - http://mnras.oxfordjournals.org/content/437/1/656.full (Missing spectra)
 * SN2012ap - http://adsabs.harvard.edu/abs/2015RAA....15..225L
 * SN2012au - http://adsabs.harvard.edu/abs/2013ApJ...770L..38M, http://adsabs.harvard.edu/abs/2013ApJ...772L..17T
 * SN2012aw - http://adsabs.harvard.edu/abs/2013MNRAS.433.1871B, http://adsabs.harvard.edu/abs/2014ApJ...787..139D
@@ -125,24 +123,22 @@ Other single SN datasets:
 * SN2013ab - http://adsabs.harvard.edu/abs/2015MNRAS.450.2373B
 * SN2013am - http://adsabs.harvard.edu/abs/2014ApJ...797....5Z
 * SN2013cq - http://adsabs.harvard.edu/abs/2014A%26A...567A..29M
+* SN2013cu - http://adsabs.harvard.edu/abs/2014Natur.509..471G
 * SN2013df - http://adsabs.harvard.edu/abs/2014MNRAS.445.1647M, http://adsabs.harvard.edu/abs/2015ApJ...803...40B, http://adsabs.harvard.edu/abs/2015ApJ...807...35M
 * SN2013ej - http://adsabs.harvard.edu/abs/2015arXiv150901721D, http://adsabs.harvard.edu/abs/2015ApJ...807...59H
 * SN2013en - http://adsabs.harvard.edu/abs/2015MNRAS.452..838L
 * SN2013hx - Inserra+ 2013 in prep.?
+* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450
 * iPTF13ajg - http://iopscience.iop.org/article/10.1088/0004-637X/797/1/24/meta
 * iPTF13asv - http://adsabs.harvard.edu/abs/2016arXiv160100686C
-* iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html
-* PS1-13arp - http://adsabs.harvard.edu/abs/2015ApJ...804...28G
-* LSQ13zm - http://arxiv.org/abs/1604.00013
+* iPTF13ebh - http://www.aanda.org/articles/aa/full_html/2015/06/aa25297-14/aa25297-14.html (LC available but spread over several misformatted tables)
 * SN2014J - http://adsabs.harvard.edu/abs/2014ApJ...795L...4K, http://adsabs.harvard.edu/abs/2014ApJ...784L..12G, http://adsabs.harvard.edu/abs/2015ApJ...804...66V, http://adsabs.harvard.edu/abs/2015ApJ...798...93T, http://adsabs.harvard.edu/abs/2015ApJ...798...39M, http://adsabs.harvard.edu/abs/2015MNRAS.451.4104J, http://adsabs.harvard.edu/abs/2016MNRAS.457.1000S
-* SN2014C - http://adsabs.harvard.edu/abs/2015ApJ...815..120M
-* iPTF14atg - http://adsabs.harvard.edu/abs/2015Natur.521..328C
-* LSQ14bdq - http://iopscience.iop.org/article/10.1088/2041-8205/807/1/L18/meta
-* SN2015H - http://adsabs.harvard.edu/abs/2016A%26A...589A..89M
+* SN2014C - http://adsabs.harvard.edu/abs/2015ApJ...815..120M  (LC & spectra, data not in paper)
+* iPTF14atg - http://adsabs.harvard.edu/abs/2015Natur.521..328C (LC, data not in paper)
+* SN2015H - http://adsabs.harvard.edu/abs/2016A%26A...589A..89M (LC, data not in paper)
 * SN2015U - http://arxiv.org/abs/1603.04866
 * SN2015bn - http://arxiv.org/abs/1603.04748
 * iPTF15dtg - http://arxiv.org/abs/1605.02491
-* PTF13efv (SNhunt275) - http://arxiv.org/abs/1605.02450* 
 
 Spectra to recover that were donated to SuSpect (bad wavelength solutions, etc):
 * 2000E_20000130_3274_7356_00.dat
@@ -183,7 +179,6 @@ Spectra to recover that were donated to SuSpect (bad wavelength solutions, etc):
 
 SNR catalogs:
 * Chandra SNR catalog - http://hea-www.cfa.harvard.edu/ChandraSNR/
-* Fermi SNR catalog - http://arxiv.org/abs/1511.06778
 * GALEX SNR catalog?
 * GRBs (BATSE, Swift, FERMI). LGRBs are definitely SNe, should we considered SGRBs to be SNe?
 

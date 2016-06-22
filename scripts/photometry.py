@@ -4,16 +4,16 @@ from random import shuffle, seed, randint, uniform
 
 bandreps = {
     'Ks': ['K_s'],
-    'M2': ['uvm2', 'UVM2', 'Um2', 'm2', 'um2'],
-    'W1': ['uvw1', 'UVW1', 'Uw1', 'w1', 'uw1'],
-    'W2': ['uvw2', 'UVW2', 'Uw2', 'w2', 'uw2']
+    'M2': ['uvm2', 'UVM2', 'UVm2', 'Um2', 'm2', 'um2'],
+    'W1': ['uvw1', 'UVW1', 'UVw1', 'Uw1', 'w1', 'uw1'],
+    'W2': ['uvw2', 'UVW2', 'UVw2', 'Uw2', 'w2', 'uw2']
 }
 
 # Some bands are uniquely tied to an instrument/telescope/system, add this info here.
 bandmeta = {
-    'M2':     {'telescope': 'Swift', 'instrument': 'UVOT', 'system': 'Swift'},
-    'W1':     {'telescope': 'Swift', 'instrument': 'UVOT', 'system': 'Swift'},
-    'W2':     {'telescope': 'Swift', 'instrument': 'UVOT', 'system': 'Swift'},
+    'M2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
+    'W1':     {'telescope': 'Swift', 'instrument': 'UVOT'},
+    'W2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
     'F110W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
     'F775W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
     'F850LP': {'telescope': 'Hubble', 'instrument': 'WFC3'}
@@ -69,10 +69,7 @@ bandaliases = OrderedDict([
     ("g_SDSS", "g (SDSS)"),
     ("r_SDSS", "r (SDSS)"),
     ("i_SDSS", "i (SDSS)"),
-    ("z_SDSS", "z (SDSS)"),
-    ("M2"  , "M2 (UVOT)"),
-    ("W1"  , "W1 (UVOT)"),
-    ("W2"  , "W2 (UVOT)")
+    ("z_SDSS", "z (SDSS)")
 ])
 
 bandshortaliases = OrderedDict([

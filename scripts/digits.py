@@ -28,12 +28,17 @@ def is_integer(s):
 def is_number(s):
     if isinstance(s, list) and not isinstance(s, str):
         try:
+            for x in s:
+                if isinstance(x, str) and ' ' in x:
+                    raise ValueError
             [float(x) for x in s]
             return True
         except ValueError:
             return False
     else:
         try:
+            if isinstance(s, str) and ' ' in s:
+                raise ValueError
             float(s)
             return True
         except ValueError:
