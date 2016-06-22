@@ -1,25 +1,27 @@
 """
 """
 from cdecimal import Decimal
+import codecs
 from collections import OrderedDict
 import json
 from math import floor
 import os
 import warnings
 
-from scripts import FILENAME
-from .constants import OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
+from scripts import FILENAME, PATH
+from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
+    OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
 from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
     jd_to_mjd, load_stubs, name_clean
-from ..utils import get_repo_paths, get_sig_digits, is_number, \
-    pbar, \
-    pretty_num, tprint, zpad
+from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
+    pbar, pretty_num, tprint, zpad
 
 
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
     DISTINCTS = 'distinctfrom'
+    DISCOVERY_DATE = 'discoverdate'
     ERRORS = 'errors'
     NAME = 'name'
     SOURCES = 'sourcs'
@@ -54,6 +56,7 @@ class EVENT(OrderedDict):
 
     def __init__(self, name):
         self.name = name
+        # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
         with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
             self._source_syns = json.loads(f.read(), object_pairs_hook=OrderedDict)
@@ -369,7 +372,9 @@ class EVENT(OrderedDict):
                         isworse = False
                         continue
                     elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
-                        if max(2, get_sig_digits(ctsplit[-1].lstrip('0'))) < max(2, get_sig_digits(svsplit[-1].lstrip('0'))):
+                        val_one = max(2, get_sig_digits(ctsplit[-1].lstrip('0')))
+                        val_two = max(2, get_sig_digits(svsplit[-1].lstrip('0')))
+                        if val_one < val_two:
                             isworse = False
                             continue
                     newquantities.append(ct)
@@ -411,7 +416,8 @@ class EVENT(OrderedDict):
             if srcname.upper().startswith('ATEL'):
                 atels_dict = get_atels_dict()
                 srcname = srcname.replace('ATEL', 'ATel').replace('Atel', 'ATel')
-                srcname = srcname.replace('ATel #', 'ATel ').replace('ATel#', 'ATel').replace('ATel', 'ATel ')
+                srcname = srcname.replace('ATel #', 'ATel ').replace('ATel#', 'ATel')
+                srcname = srcname.replace('ATel', 'ATel ')
                 srcname = ' '.join(srcname.split())
                 atelnum = srcname.split()[-1]
                 if is_number(atelnum) and atelnum in atels_dict:
@@ -457,9 +463,6 @@ class EVENT(OrderedDict):
 
         return False
 
-    def get_filename(self):
-        return get_event_filename(self.name)
-
     def get_source_by_alias(self, alias):
         for source in self.get(KEYS.SOURCES, []):
             if source['alias'] == alias:
@@ -475,7 +478,54 @@ class EVENT(OrderedDict):
         # Make sure there is a name attribute in object
         if len(self.name) == '' and len(self[KEYS.NAME]) > 0:
             self.name = str(self[KEYS.NAME])
+
         return
+
+    def _get_save_path(self, bury=False):
+        filename = get_event_filename(self.name)
+
+        # Put non-SNe in the boneyard
+        if bury:
+            outdir = str(PATH.REPO_BONEYARD)
+
+        # Get normal repository save directory
+        else:
+            repo_folders = get_repo_folders()
+            outdir = str(PATH.ROOT)
+            if KEYS.DISCOVERY_DATE in self.keys():
+                repo_years = get_repo_years(repo_folders)
+                for r, year in enumerate(repo_years):
+                    if int(self[KEYS.DISCOVERY_DATE][0]['value'].split('/')[0]) <= year:
+                        outdir = os.path.join(outdir, repo_folders[r])
+                        break
+            else:
+                outdir = os.path.join(outdir, repo_folders[0])
+
+        return outdir, filename
+
+    def save(self, empty=False, bury=False, gz=False):
+        warnings.warn("Supressing 'stub' behavior in `EVENT.save`!")
+        # if 'stub' in event_obj.keys():
+        #     if not empty:
+        #         continue
+        #     else:
+        #         del event_obj['stub']
+        outdir, filename = self._get_save_path(bury=bury)
+
+        # FIX: use 'dump' not 'dumps'
+        jsonstring = json.dumps({self.name: self},
+                                indent='\t', separators=(',', ':'), ensure_ascii=False)
+        save_name = os.path.join(outdir, filename + '.json')
+        with codecs.open(save_name, 'w', encoding='utf8') as sf:
+            sf.write(jsonstring)
+
+        return save_name
+
+    def get_stub(self):
+        stub = OrderedDict({KEYS.NAME: self[KEYS.NAME]})
+        if KEYS.ALIAS in self.keys():
+            stub[KEYS.ALIAS] = self[KEYS.ALIAS]
+        return stub
 
 
 def clean_event(dirty_event):
@@ -566,6 +616,63 @@ def get_event_text(eventfile):
         with open(eventfile, 'r') as f:
             filetext = f.read()
     return filetext
+
+
+def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=False):
+    """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
+    """
+    # FIX: store this somewhere instead of re-loading each time
+    with open(FILENAME.NON_SNE_TYPES, 'r') as f:
+        non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
+        non_sne_types = [x.upper() for x in non_sne_types]
+
+    # Write it all out!
+    for name, event_obj in events.items():
+        if 'writeevents' in tasks:
+            # See if this event should be burried
+            # Delete non-SN events here without IAU designations (those with only banned types)
+            buryevent = False
+            save_event = True
+            ct_val = None
+            if bury:
+                if name.startswith(NON_SNE_PREFIXES):
+                    log.debug("Killing '{}', non-SNe prefix.".format(name))
+                    save_event = False
+                else:
+                    has_sn_name = name.startswith('SN') and is_number(name[2:6])
+                    if 'claimedtype' in events[name] and not has_sn_name:
+                        for ct in events[name]['claimedtype']:
+                            up_val = ct['value'].upper()
+                            if up_val not in non_sne_types and up_val != 'CANDIDATE':
+                                buryevent = False
+                                break
+                            if up_val in non_sne_types:
+                                buryevent = True
+                                ct_val = ct['value']
+
+                    if buryevent:
+                        log.debug("Burying '{}', {}.".format(name, ct_val))
+
+            if save_event:
+                save_name = event_obj.save(bury=buryevent)
+                log.info("Saved '{}' to '{}'.".format(name, save_name))
+                if gz and os.path.getsize(save_name) > COMPRESS_ABOVE_FILESIZE:
+                    save_name = _compress_gz(save_name)
+                    log.debug("Compressed '{}' to '{}'".format(name, save_name))
+                    # FIX: use subprocess
+                    outdir, filename = os.path.split(save_name)
+                    filename = filename.split('.')[:-1]
+                    os.system('cd ' + outdir + '; git rm ' + filename + '.json;' +
+                              ' git add -f ' + filename + '.json.gz; cd ' + '../scripts')
+
+        if clear:
+            # Store stub of this object
+            stubs.update({name: event_obj.stub()})
+            # Delete object
+            del events[name]
+            log.debug("Added stub for '{}', deleted event.".format(name))
+
+    return events, stubs
 
 
 def load_event_from_file(events, args, tasks, log, name='', path='',
@@ -678,16 +785,6 @@ def merge_duplicates(tasks, args, events):
     return events
 
 
-def clear_events(events, log):
-    """
-    """
-    events = OrderedDict((k, OrderedDict([['name', events[k]['name']]] +
-                          ([['alias', events[k]['alias']]] if 'alias' in events[k] else []) +
-                          [['stub', True]]))
-                         for k in events)
-    return events
-
-
 def set_preferred_names(tasks, args, events):
     if not len(events):
         load_stubs(tasks, args, events)
@@ -759,81 +856,11 @@ def set_preferred_names(tasks, args, events):
     return events
 
 
-def write_all_events(events, args, log, empty=False, gz=False, bury=False):
-    """Save all `events` to files.
-    """
-    import codecs
-    from scripts import PATH
-    from .. utils import get_repo_folders, get_repo_years, is_number, tprint
-    repo_folders = get_repo_folders()
-    non_sne_types = None
-    if bury:
-        # FIX: store this somewhere instead of re-loading each time
-        with open(FILENAME.NON_SNE_TYPES, 'r') as f:
-            non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
-            non_sne_types = [x.upper() for x in non_sne_types]
-
-    # Write it all out!
-    for name, event_obj in events.items():
-        if 'stub' in event_obj.keys():
-            if not empty:
-                continue
-            else:
-                del event_obj['stub']
-
-        # if args.verbose and not args.travis:
-        #     tprint('Writing ' + name)
-        filename = event_obj.get_filename()
-        log.debug("Writing '{}'".format(name))
-
-        outdir = str(PATH.ROOT)
-        if 'discoverdate' in events[name]:
-            repo_years = get_repo_years(repo_folders)
-            for r, year in enumerate(repo_years):
-                if int(events[name]['discoverdate'][0]['value'].split('/')[0]) <= year:
-                    # outdir += repo_folders[r]
-                    outdir = os.path.join(outdir, repo_folders[r])
-                    break
-        else:
-            # outdir += str(repo_folders[0])
-            outdir = os.path.join(outdir, repo_folders[0])
-
-        # Delete non-SN events here without IAU designations (those with only banned types)
-        if bury:
-            buryevent = False
-            nonsneprefixes = ('PNVJ', 'PNV J', 'OGLE-2013-NOVA')
-            if name.startswith(nonsneprefixes):
-                log.debug("Burying '{}', non-SNe prefix.".format(name))
-                continue
-            if 'claimedtype' in events[name] and not (name.startswith('SN') and is_number(name[2:6])):
-                for ct in events[name]['claimedtype']:
-                    if ct['value'].upper() not in non_sne_types and ct['value'].upper() != 'CANDIDATE':
-                        buryevent = False
-                        break
-                    if ct['value'].upper() in non_sne_types:
-                        buryevent = True
-                if buryevent:
-                    log.debug("Burying '{}', {}.".format(name, ct['value']))
-                    # outdir = '../sne-boneyard'
-                    outdir = str(PATH.REPO_BONEYARD)  # os.path.join(PATH.ROOT, 'sne-boneyard')
-
-        # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({name: events[name]}, indent='\t', separators=(',', ':'), ensure_ascii=False)
-        # path = outdir + '/' + filename + '.json'
-        path = os.path.join(outdir, filename + '.json')
-        with codecs.open(path, 'w', encoding='utf8') as f:
-            f.write(jsonstring)
-
-        if gz:
-            if os.path.getsize(path) > 90000000:
-                import shutil
-                import gzip
-                if not args.travis:
-                    tprint('Compressing ' + name)
-                with open(path, 'rb') as f_in, gzip.open(path + '.gz', 'wb') as f_out:
-                    shutil.copyfileobj(f_in, f_out)
-                os.remove(path)
-                # FIX: use subprocess
-                os.system('cd ' + outdir + '; git rm ' + filename + '.json; git add -f ' + filename + '.json.gz; cd ' + '../scripts')
-
-    return
+def _compress_gz(fname):
+    import shutil
+    import gzip
+    comp_fname = fname + '.gz'
+    with open(fname, 'rb') as f_in, gzip.open(comp_fname, 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    os.remove(fname)
+    return comp_fname

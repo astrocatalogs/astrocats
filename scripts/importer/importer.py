@@ -9,11 +9,12 @@ import resource
 import sys
 import warnings
 
-from .. utils import pbar, repo_file_list, get_logger
+from scripts import FILENAME
+from . import Events
 from . funcs import add_event, derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
     has_task
-from scripts import FILENAME
 from . constants import TASK
+from .. utils import pbar, repo_file_list, get_logger
 
 
 def get_old_tasks():
@@ -95,6 +96,7 @@ def import_main(args=None, **kwargs):
     tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
     events = OrderedDict()
+    stubs = OrderedDict()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
     prev_priority = 0
@@ -116,7 +118,8 @@ def import_main(args=None, **kwargs):
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
         getattr(mod, func_name)(events, args, tasks, task_obj, log)
         log.debug("{} Events".format(len(events)))
-        events = journal_events(tasks, args, events, log)
+        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+        log.debug("... {} Events, {} Stubs".format(len(events), len(stubs)))
         return
 
         prev_priority = priority
@@ -213,17 +216,6 @@ def delete_old_event_files(*args):
     for rfil in pbar(repo_files, desc='Deleting old events'):
         os.remove(rfil)
     return
-
-
-def journal_events(tasks, args, events, log, clear=True):
-    """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
-    """
-    if 'writeevents' in tasks:
-        from . import Events
-        Events.write_all_events(events, args, log)
-    if clear:
-        events = Events.clear_events(events, log)
-    return events
 
 
 def load_task_list(args, log):
