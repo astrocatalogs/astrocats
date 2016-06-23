@@ -57,6 +57,7 @@ class EVENT(OrderedDict):
 
     def __init__(self, name):
         self.name = name
+        self[KEYS.NAME] = name
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
         with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
@@ -540,45 +541,6 @@ class EVENT(OrderedDict):
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
 
-'''
-def add_event(tasks, args, events, name, load=True, delete=True, source='', load_stubs_if_empty=True):
-    if load_stubs_if_empty and args.update and not len(events):
-        load_stubs(tasks, args, events)
-
-    newname = name_clean(name)
-    if newname not in events or 'stub' in events[newname]:
-        match = ''
-        if newname not in events:
-            for event in events:
-                aliases = events[event].get_aliases()
-                if (len(aliases) > 1 and (newname in aliases) and ('distinctfrom' not in events[event] or newname not in events[event]['distinctfrom'])):
-                    match = event
-                    break
-            # FIX: is this supposed to be here??
-            if match:
-                newname = match
-
-        if load:
-            loadedname = load_event_from_file(events, args, tasks, name=newname, delete=delete)
-            if loadedname:
-                if 'stub' in events[loadedname]:
-                    raise ValueError('Failed to find event file for stubbed event')
-                return loadedname
-
-        if match:
-            return match
-
-        events[newname] = OrderedDict()
-        events[newname]['name'] = newname
-        if source:
-            add_quantity(events, newname, 'alias', newname, source)
-        if args.verbose and 'stub' not in events[newname]:
-            tprint('Added new event ' + newname)
-        return newname
-    else:
-        return newname
-'''
-
 
 def add_event(tasks, args, events, name, log, load=True, delete=True, source=''):
     """Find an existing event in, or add a new one to, the `events` dict.
@@ -594,25 +556,31 @@ def add_event(tasks, args, events, name, log, load=True, delete=True, source='')
     newname = name_clean(name)
     # If event already exists, return
     if newname in events:
+        log.debug("`newname`: '{}' (name: '{}') already exists.".format(newname, name))
         return events, newname
 
     # If event is alias of another event, find and return that
-    match_name = find_event_name_of_alias(newname)
+    match_name = find_event_name_of_alias(events, newname)
     if match_name is not None:
+        log.debug("`newname`: '{}' (name: '{}') already exist as alias for '{}'.".format(
+            newname, name, match_name))
         return events, match_name
 
     # Load Event from file
     if load:
         loaded_event = load_event_from_file(events, args, tasks, log, name=newname, delete=delete)
-        events[newname] = loaded_event
-        log.debug("Added '{}' to `events`".format(newname))
-        return events, loaded_event
+        if loaded_event is not None:
+            events[newname] = loaded_event
+            log.debug("Added '{}', from '{}', to `events`".format(newname, loaded_event.filename))
+            return events, loaded_event
 
     # Create new event
     new_event = EVENT(newname)
-    log.log(log._LOADED, "Create new, empty event for '{}'".format(newname))
+    log.log(log._LOADED, "Created new, empty event for '{}'".format(newname))
     if source:
         new_event.add_quantity('alias', newname, source)
+    # Add event to dictionary
+    events[newname] = new_event
 
     return events, newname
 
@@ -809,6 +777,10 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
                 break
 
         load_path = path_from_name
+
+    if not load_path or not os.path.isfile(load_path):
+        log.debug("No path found for name: '{}', path: '{}'".format(name, path))
+        return None
 
     new_event = EVENT(name)
     new_event.load_data_from_json(load_path)
