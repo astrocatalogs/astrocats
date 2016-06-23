@@ -6,12 +6,12 @@ import importlib
 import json
 import os
 import resource
-import sys
+# import sys
 import warnings
 
 from scripts import FILENAME
 from . import Events
-from . funcs import add_event, derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
+from . funcs import derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
     has_task
 from . constants import TASK
 from .. utils import pbar, repo_file_list, get_logger
@@ -97,8 +97,9 @@ def import_main(args=None, **kwargs):
     tasks = get_old_tasks()
     events = OrderedDict()
     # FIX: stubs only need to be loaded for `args.update` ??
-    # stubs = OrderedDict()
-    stubs = Events.load_stubs()
+    stubs = OrderedDict()
+    log.exception("WARNING: not loading stubs for testing!!!")
+    # stubs = Events.load_stubs(tasks, args, events, log)
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
     prev_priority = 0
@@ -137,11 +138,11 @@ def import_main(args=None, **kwargs):
     for fi in pbar(files, 'Sanitizing and deriving quantities for events'):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        events, name = add_event(tasks, args, events, name, log, load_stubs_if_empty=False)
+        events, name = Events.add_event(tasks, args, events, name, log, load_stubs_if_empty=False)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict)
         if has_task(tasks, args, 'writeevents'):
-            write_all_events(events, args, empty=True, gz=True, bury=True)
+            Events.write_all_events(events, args, empty=True, gz=True, bury=True)
 
     def json_dump(adict, fname):
         json_str = json.dumps(adict, indent='\t', separators=(',', ':'), ensure_ascii=False)
@@ -162,7 +163,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
     import csv
     from html import unescape
     from . constants import PATH
-    from . funcs import add_quantity, add_source, journal_events, uniq_cdl
+    from . funcs import journal_events, uniq_cdl
     from .. utils import is_number, Decimal
     nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
     data = csv.reader(open(nedd_path, 'r'), delimiter=',', quotechar='"')
@@ -197,7 +198,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
 
         if name:
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
             sec_source = events[name].add_source(srcname=reference, url=refurl, secondary=True)
             events[name].add_quantity('alias', name, sec_source)
             if bibcode:
