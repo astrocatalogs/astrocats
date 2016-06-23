@@ -131,7 +131,7 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         events, name, time=mjd, band='I', magnitude=magnitude, e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if args.update:
-                    events = journal_events(tasks, args, events)
+                    events, stubs = journal_events(tasks, args, events, stubs, log)
 
-        events = journal_events(tasks, args, events)
+        events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

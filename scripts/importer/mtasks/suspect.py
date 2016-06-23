@@ -95,7 +95,7 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, band=band, magnitude=mag, e_magnitude=e_magnitude,
                 source=sec_source + ',' + source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -124,7 +124,7 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 name = 'SN' + name
             name = get_preferred_name(events, name)
             if oldname and name != oldname:
-                events = journal_events(tasks, args, events)
+                events, stubs = journal_events(tasks, args, events, stubs, log)
             oldname = name
             events, name = add_event(tasks, args, events, name, log)
             sec_ref = 'SUSPECT'
@@ -192,5 +192,5 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

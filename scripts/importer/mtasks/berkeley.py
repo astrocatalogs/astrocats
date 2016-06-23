@@ -84,7 +84,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
                 e_magnitude=e_mag, source=sources)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -107,7 +107,7 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
         oldname = name
         events, name = add_event(tasks, args, events, name, log)
 
@@ -190,5 +190,5 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

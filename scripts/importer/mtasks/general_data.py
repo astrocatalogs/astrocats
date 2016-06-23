@@ -38,7 +38,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
         astrot = astrotime(float(row[4]) + 2450000., format='jd').datetime
         date_str = make_date_string(astrot.year, astrot.month, astrot.day)
         events[name].add_quantity('discoverdate', date_str, source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # Anderson 2014
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat'))
@@ -68,7 +68,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
                 add_photometry(
                     events, name, time=time, band='V', magnitude=row[1], e_magnitude=row[2],
                     system=system, source=source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # stromlo
     stromlobands = ['B', 'V', 'R', 'I', 'VM', 'RM']
@@ -93,7 +93,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, band=band, magnitude=row[ci],
                 e_upper_magnitude=e_upper_magnitude, e_lower_magnitude=e_lower_magnitude,
                 upperlimit=upperlimit, telescope=teles, instrument=instr, source=source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # 2015MNRAS.449..451W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015MNRAS.449..451W.dat')
@@ -112,7 +112,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('alias', namesplit[0], source)
         events[name].add_quantity('claimedtype', row[1], source)
         add_photometry(events, name, time=row[2], band=row[4], magnitude=row[3], source=source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # 2016MNRAS.459.1039T
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016MNRAS.459.1039T.tsv')
@@ -135,7 +135,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
             add_photometry(
                 events, name, time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=row[-1], upperlimit=upps[mi], source=source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # 2015ApJ...804...28G
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015ApJ...804...28G.tsv')
@@ -155,7 +155,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
         add_photometry(
             events, name, time=mjd, band=row[0], magnitude=mag, e_magnitude=err,
             instrument=ins, upperlimit=upp, source=source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # 2016ApJ...819...35A
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016ApJ...819...35A.tsv')
@@ -172,7 +172,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
         disc_date = datetime.strptime(row[4], '%Y %bb %d').isoformat()
         disc_date = disc_date.split('T')[0].replace('-', '/')
         events[name].add_quantity('discoverdate', disc_date, source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # 2014ApJ...784..105W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2014ApJ...784..105W.tsv')
@@ -191,7 +191,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
             events, name, time=mjd, band=row[2], magnitude=mag, e_magnitude=err,
             instrument='WHIRC', telescope='WIYN 3.5 m', observatory='NOAO',
             system='WHIRC', source=source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     # 2012MNRAS.425.1007B
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2012MNRAS.425.1007B.tsv')
@@ -223,7 +223,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
                 instrument=ins, telescope=tel, observatory=obs,
                 system='Natural', source=source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -311,7 +311,7 @@ def do_cccp(events, stubs, args, tasks, task_obj, log):
                             events, name, time=str(Decimal(row[0]) + 53000), band=band,
                             magnitude=row[1], e_magnitude=row[2], source=source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -384,9 +384,9 @@ def do_cpcs(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, magnitude=mags[mi], e_magnitude=errs[mi],
                 band=bnds[mi], observatory=obs[mi], source=uniq_cdl([source, sec_source]))
         if args.update:
-            events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -504,9 +504,9 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
                     events, name, time=mjd, band='C', magnitude=mag, source=source,
                     includeshost=True, telescope=teles, e_magnitude=e_mag, upperlimit=upl)
             if args.update:
-                events = journal_events(tasks, args, events)
+                events, stubs = journal_events(tasks, args, events, stubs, log)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -568,7 +568,7 @@ def do_des(events, stubs, args, tasks, task_obj, log):
                         band=band, observatory='CTIO', telescope='Blanco 4m', instrument='DECam',
                         upperlimit=upl, source=sources)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -595,7 +595,7 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
                         instrument=cols[5], source=source)
                     events[name].add_quantity('alias', name, source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -620,7 +620,7 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
                         upperlimit=(float(cols[5]) < 0), source=source)
                     events[name].add_quantity('alias', name, source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -642,7 +642,7 @@ def do_fermi(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('alias', row[0].replace('SNR', 'MWSNR'), source)
             events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
             events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -709,8 +709,8 @@ def do_gaia(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
                 e_magnitude=e_mag, source=source)
         if args.update:
-            events = journal_events(tasks, args, events)
-    events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -788,7 +788,7 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as bib_file:
         bib_file.writelines(['%ss\n' % ii for ii in needsbib])
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -812,7 +812,7 @@ def do_pessto(events, stubs, args, tasks, task_obj, log):
                 events, name, time=row[2], magnitude=row[ci], e_magnitude=row[ci+1],
                 band=bands[hi], system=systems[hi], telescope=teles, source=source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -843,7 +843,7 @@ def do_scp(events, stubs, args, tasks, task_obj, log):
             if claimedtype != '?':
                 events[name].add_quantity('claimedtype', claimedtype, source, kind=kind)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -896,7 +896,7 @@ def do_sdss(events, stubs, args, tasks, task_obj, log):
                     events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
                     e_magnitude=e_mag, source=source, system='SDSS')
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -944,9 +944,9 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('discoverer', 'CRTS', source)
             events[name].add_quantity('discoverer', discoverer, source)
         if args.update:
-            events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -976,7 +976,7 @@ def do_snls(events, stubs, args, tasks, task_obj, log):
             events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
             e_counts=err, source=source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -1005,7 +1005,7 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
                 if 'spectra' in events[prefname] and lastname != prefname:
                     continue
             if oldname and name != oldname:
-                events = journal_events(tasks, args, events)
+                events, stubs = journal_events(tasks, args, events, stubs, log)
             oldname = name
             events, name = add_event(tasks, args, events, name, log)
             epoch = basename.split('.')[1]
@@ -1045,7 +1045,7 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
 
             lastname = name
 
-        events = journal_events(tasks, args, events)
+        events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -1131,9 +1131,9 @@ def do_tns(events, stubs, args, tasks, task_obj, log):
                         date += pretty_num(dt.total_seconds()/(24*60*60), sig=6).lstrip('0')
                     events[name].add_quantity('discoverdate', date, source)
             if args.update:
-                events = journal_events(tasks, args, events)
+                events, stubs = journal_events(tasks, args, events, stubs, log)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 '''
@@ -1153,6 +1153,6 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
         if name[:2] == 'SN' and is_number(name[2:]):
             name = name + 'A'
         events, name = add_event(tasks, args, events, name, log)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 '''

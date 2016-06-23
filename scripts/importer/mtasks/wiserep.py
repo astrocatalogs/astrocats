@@ -137,7 +137,7 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                 name = name.replace('PSNJ', 'PSN J')
                             name = get_preferred_name(events, name)
                             if oldname and name != oldname:
-                                events = journal_events(tasks, args, events)
+                                events, stubs = journal_events(tasks, args, events, stubs, log)
                             oldname = name
                             events, name = add_event(tasks, args, events, name, log)
 
@@ -203,5 +203,5 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
 
                 tprint('Unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

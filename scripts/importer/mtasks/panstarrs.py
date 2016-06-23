@@ -31,7 +31,7 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('discoverdate', ddate, source)
             events[name].add_quantity('redshift', cols[5], source, kind='spectroscopic')
             events[name].add_quantity('claimedtype', 'II P', source)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -214,7 +214,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             if redshift:
                 events[name].add_quantity('redshift', redshift, source, kind='host')
             if args.update:
-                events = journal_events(tasks, args, events)
-        events = journal_events(tasks, args, events)
+                events, stubs = journal_events(tasks, args, events, stubs, log)
+        events, stubs = journal_events(tasks, args, events, stubs, log)
 
     return events

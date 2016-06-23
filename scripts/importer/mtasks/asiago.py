@@ -107,7 +107,7 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             if (discoverer != ''):
                 events[name].add_quantity('discoverer', discoverer, source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -209,5 +209,5 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
             #    print(scidata[3])
             #    sys.exit()
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

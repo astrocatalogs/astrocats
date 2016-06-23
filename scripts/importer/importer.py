@@ -175,7 +175,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             continue
         hostname = row[3]
         if args.update and oldhostname != hostname:
-            events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
         # distmod = row[4]
         # moderr = row[5]
         dist = row[6]
@@ -208,7 +208,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('comovingdist', dist, sources)
         oldhostname = hostname
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 

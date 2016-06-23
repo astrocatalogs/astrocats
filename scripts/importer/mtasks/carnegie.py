@@ -50,7 +50,7 @@ def do_csp_photo(events, stubs, args, tasks, task_obj, log):
                             events, name, time=mjd, observatory='LCO', band=cspbands[(v-1)//2],
                             system='CSP', magnitude=row[v], e_magnitude=row[v+1], source=source)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -68,7 +68,7 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         name = 'SN20' + fileparts[0][2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
         oldname = name
         events, name = add_event(tasks, args, events, name, log)
         telescope = fileparts[-2]
@@ -98,5 +98,5 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

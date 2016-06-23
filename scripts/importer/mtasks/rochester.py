@@ -110,7 +110,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('redshift', str(cols[11].contents[0]).strip(), sources)
             events[name].add_quantity('discoverer', str(cols[13].contents[0]).strip(), sources)
             if args.update:
-                events = journal_events(tasks, args, events)
+                events, stubs = journal_events(tasks, args, events, stubs, log)
 
     if not args.update:
         vsnetfiles = ['latestsne.dat']
@@ -176,5 +176,5 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                     events, name, time=mjd, band=band, magnitude=magnitude,
                     e_magnitude=e_magnitude, source=sources)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

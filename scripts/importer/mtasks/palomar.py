@@ -74,5 +74,5 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('ebv', cols[7], source, kind='spectroscopic')
             events, name = add_event(tasks, args, events, 'PTF' + suffix, log)
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

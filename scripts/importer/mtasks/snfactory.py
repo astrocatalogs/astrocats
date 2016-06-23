@@ -22,7 +22,7 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
         name = eventfolder
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events = journal_events(tasks, args, events)
+            events, stubs = journal_events(tasks, args, events, stubs, log)
         oldname = name
         events, name = add_event(tasks, args, events, name, log)
         sec_reference = 'Nearby Supernova Factory'
@@ -103,5 +103,5 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
             if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events

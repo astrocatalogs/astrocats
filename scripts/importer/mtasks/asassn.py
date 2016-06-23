@@ -79,5 +79,5 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('claimedtype', ct, typesources)
         if host != 'Uncatalogued':
             events[name].add_quantity('host', host, sources)
-    events = journal_events(tasks, args, events)
+    events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
