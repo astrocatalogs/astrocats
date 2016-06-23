@@ -120,10 +120,9 @@ def import_main(args=None, **kwargs):
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
         getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
-        log.debug("{} Events".format(len(events)))
+        log.debug("Task finished.  Events: {},  Stubs: {}".format(len(events), len(stubs)))
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-        log.debug("... {} Events, {} Stubs".format(len(events), len(stubs)))
-        return
+        log.debug("Journal finished.  Events: {}, Stubs: {}".format(len(events), len(stubs)))
 
         prev_priority = priority
         prev_task_name = task_name
