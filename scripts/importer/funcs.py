@@ -320,12 +320,12 @@ def copy_to_event(events, fromname, destname):
                         reducer=null_field(item, "reducer"), filename=null_field(item, "filename"),
                         observatory=null_field(item, "observatory"))
                 elif key == 'errors':
-                    add_quantity(
-                        events, destname, key, item['value'], sources,
+                    events[destname].add_quantity(
+                        key, item['value'], sources,
                         kind=null_field(item, "kind"), extra=null_field(item, "extra"))
                 else:
-                    add_quantity(
-                        events, destname, key, item['value'], sources, error=null_field(item, "error"),
+                    events[destname].add_quantity(
+                        key, item['value'], sources, error=null_field(item, "error"),
                         unit=null_field(item, "unit"), kind=null_field(item, "kind"))
 
 
@@ -338,7 +338,7 @@ def ct_priority(events, name, attr):
     for alias in aliases:
         if alias == 'D':
             continue
-        source = get_source_by_alias(events, name, alias)
+        source = events[name].get_source_by_alias(alias)
         if 'bibcode' in source:
             source_year = get_source_year(source)
             if source_year > max_source_year:
