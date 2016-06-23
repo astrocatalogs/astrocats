@@ -11,10 +11,10 @@ import warnings
 from scripts import FILENAME, PATH
 from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
     OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
-from .funcs import copy_to_event, get_aliases, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
-    jd_to_mjd, load_stubs, name_clean
+from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
+    jd_to_mjd, name_clean
 from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
-    pbar, pretty_num, tprint, zpad
+    pbar, pretty_num, tprint, zpad, repo_file_list
 
 
 class KEYS:
@@ -470,8 +470,8 @@ class EVENT(OrderedDict):
     def get_aliases(self, includename=True):
         # empty list if doesnt exist
         aliases = self.get(KEYS.ALIAS, [])
-        if includename and name not in aliases:
-            aliases = [name] + aliases
+        if includename and self.name not in aliases:
+            aliases = [self.name] + aliases
         return aliases
 
     def get_source_by_alias(self, alias):
@@ -548,7 +548,7 @@ def add_event(tasks, args, events, name, load=True, delete=True, source='', load
         match = ''
         if newname not in events:
             for event in events:
-                aliases = get_aliases(events, event)
+                aliases = events[event].get_aliases()
                 if (len(aliases) > 1 and (newname in aliases) and ('distinctfrom' not in events[event] or newname not in events[event]['distinctfrom'])):
                     match = event
                     break
@@ -625,14 +625,11 @@ def find_event_name_of_alias(events, alias):
     """
     for name, event in events.items():
         aliases = event.get_aliases()
-        if newname in aliases:
-            if (KEYS.DISTINCS not in event.keys()) or (newname not in event[KEYS.DISTINCS]):
+        if alias in aliases:
+            if (KEYS.DISTINCS not in event.keys()) or (alias not in event[KEYS.DISTINCS]):
                 return name
 
     return None
-
-
-def get_aliases(events, name, includename=True):
 
 
 def clean_event(dirty_event):
@@ -876,18 +873,18 @@ def merge_duplicates(tasks, args, events):
     for n1, name1 in enumerate(pbar(keys[:], currenttask)):
         if name1 not in events:
             continue
-        # allnames1 = get_aliases(events, name1) + (['AT' + name1[2:]] if
+        # allnames1 = events[name1].get_aliases() + (['AT' + name1[2:]] if
         #     (name1.startswith('SN') and is_number(name1[2:6])) else [])
-        allnames1 = get_aliases(events, name1)
+        allnames1 = events[name1].get_aliases()
         if name1.startswith('SN') and is_number(name1[2:6]):
             allnames1 += ['AT' + name1[2:]]
 
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
-            # allnames2 = get_aliases(events, name2) + (['AT' + name2[2:]]
+            # allnames2 = events[name2].get_aliases() + (['AT' + name2[2:]]
             #    if (name2.startswith('SN') and is_number(name2[2:6])) else [])
-            allnames2 = get_aliases(events, name2)
+            allnames2 = events[name2].get_aliases()
             if name2.startswith('SN') and is_number(name2[2:6]):
                 allnames2 += ['AT' + name2[2:]]
             if any(ii in allnames1 for ii in allnames2):
@@ -929,7 +926,7 @@ def set_preferred_names(tasks, args, events):
         if name not in events:
             continue
         newname = ''
-        aliases = get_aliases(events, name)
+        aliases = events[name].get_aliases()
         if len(aliases) <= 1:
             continue
         if (name.startswith('SN') and ((is_number(name[2:6]) and not is_number(name[6:])) or
@@ -1001,11 +998,12 @@ def _compress_gz(fname):
     os.remove(fname)
     return comp_fname
 
+
 def _uncompress_gz(fname):
     import shutil
     import gzip
-    uncomp_name = fi.replace('.gz', '')
-    with gzip.open(fi, 'rb') as f_in, open(uncomp_name, 'wb') as f_out:
+    uncomp_name = fname.replace('.gz', '')
+    with gzip.open(fname, 'rb') as f_in, open(uncomp_name, 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
-    os.remove(fi)
+    os.remove(fname)
     return uncomp_name

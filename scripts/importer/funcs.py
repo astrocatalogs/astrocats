@@ -15,7 +15,7 @@ from scripts import FILENAME
 from . constants import OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
     KM, MAX_BANDS
 from .. utils import bandrepf, bandmetaf, is_number, \
-    get_sig_digits, pbar, pretty_num, repo_file_list, round_sig, tprint
+    get_sig_digits, pretty_num, round_sig, tprint
 
 
 def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="", instrument="", band="",
@@ -55,7 +55,7 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
     if not source:
         ValueError('Photometry must have source before being added!')
 
-    if is_erroneous(events, name, 'photometry', source):
+    if events[name].is_erroneous('photometry', source):
         return
 
     # Do some basic homogenization
@@ -178,7 +178,7 @@ def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_
                  snr="", telescope="", observer="", reducer="", filename="", observatory="",
                  data=""):
 
-    if is_erroneous(events, name, 'spectra', source):
+    if events[name].is_erroneous('spectra', source):
         return
 
     spectrumentry = OrderedDict()
@@ -361,7 +361,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
 
     # Calculate some columns based on imported data, sanitize some fields
     for name in events:
-        aliases = get_aliases(events, name, includename=False)
+        aliases = events[name].get_aliases(includename=False)
         if name not in aliases:
             if 'sources' in events[name]:
                 events[name].add_quantity('alias', name, '1')
@@ -376,7 +376,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             events[name].add_quantity('alias', 'AT' + name[2:], source)
 
         events[name]['alias'] = list(sorted(events[name]['alias'], key=lambda key: alias_priority(name, key)))
-        aliases = get_aliases(events, name)
+        aliases = events[name].get_aliases()
 
         set_first_max_light(events, name)
 
@@ -625,7 +625,7 @@ def event_exists(events, name):
     if name in events:
         return True
     for ev in events:
-        if name in get_aliases(events, ev):
+        if name in events[ev].get_aliases():
             return True
     return False
 
@@ -754,7 +754,7 @@ def get_preferred_name(events, name):
     if name not in events:
         # matches = []
         for event in events:
-            aliases = get_aliases(events, event)
+            aliases = events[event].get_aliases()
             if len(aliases) > 1 and name in aliases:
                 return event
         return name

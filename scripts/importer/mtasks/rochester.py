@@ -102,7 +102,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
                 if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
-                     not any('GRB' in xx for xx in get_aliases(events, name)))):
+                     not any('GRB' in xx for xx in events[name].get_aliases()))):
                     mag = str(cols[8].contents[0]).strip()
                     add_photometry(
                         events, name, time=str(astrot.mjd), magnitude=mag, source=sources)
