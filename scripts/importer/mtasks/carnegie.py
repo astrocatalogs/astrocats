@@ -22,7 +22,7 @@ def do_csp_photo(events, args, tasks, task_obj, log):
         eventname = os.path.basename(os.path.splitext(fname)[0])
         eventparts = eventname.split('opt+')
         name = clean_snname(eventparts[0])
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
 
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
@@ -70,7 +70,7 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
         if oldname and name != oldname:
             events = journal_events(tasks, args, events)
         oldname = name
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
         source = add_source(events, name, bibcode='2013ApJ...773...53F')

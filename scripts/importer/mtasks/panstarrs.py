@@ -21,7 +21,7 @@ def do_ps_mds(events, args, tasks, task_obj, log):
             if ri < 35:
                 continue
             cols = [x.strip() for x in row.split(',')]
-            name = add_event(tasks, args, events, cols[0])
+            events, name = add_event(tasks, args, events, cols[0], log)
             source = add_source(events, name, bibcode='2015ApJ...799..208S')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'ra', cols[2], source)
@@ -134,7 +134,7 @@ def do_ps_threepi(events, args, tasks, task_obj, log):
                     name = alias
             if not name:
                 name = psname
-            name = add_event(tasks, args, events, name)
+            events, name = add_event(tasks, args, events, name, log)
             sources = [add_source(events, name, srcname='Pan-STARRS 3Pi',
                                   url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
             add_quantity(events, name, 'alias', name, sources[0])

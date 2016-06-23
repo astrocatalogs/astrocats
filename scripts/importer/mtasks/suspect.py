@@ -32,7 +32,7 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
         name = basesplit[1]
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
         if name.startswith('SN') and is_number(name[2:]):
             name = name + 'A'
         band = basesplit[3].split('.')[0]
@@ -126,7 +126,7 @@ def do_suspect_spectra(events, args, tasks, task_obj, log):
             if oldname and name != oldname:
                 events = journal_events(tasks, args, events)
             oldname = name
-            name = add_event(tasks, args, events, name)
+            events, name = add_event(tasks, args, events, name, log)
             sec_ref = 'SUSPECT'
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'

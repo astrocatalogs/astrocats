@@ -31,7 +31,7 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
     for phot in pbar(photom, desc=current_task):
         name = phot['ObjName']
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
 
         sec_source = add_source(events, name, srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
                                 secondary=True)
@@ -109,7 +109,7 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
         if oldname and name != oldname:
             events = journal_events(tasks, args, events)
         oldname = name
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
 
         sec_source = add_source(
             events, name, refname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)

@@ -56,7 +56,7 @@ def do_ogle(events, args, tasks, task_obj, log):
                     continue
                 oglenames.append(name)
 
-                name = add_event(tasks, args, events, name)
+                events, name = add_event(tasks, args, events, name, log)
 
                 mySibling = sibling.nextSibling
                 atelref = ''

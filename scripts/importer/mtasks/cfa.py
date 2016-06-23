@@ -39,7 +39,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
         eventparts = eventname.split('_')
 
         name = clean_snname(eventparts[0])
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = add_source(events, name, srcname=secondaryname, url=secondaryurl,
@@ -106,7 +106,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
             else:
                 name = row[0].strip()
 
-            name = add_event(tasks, args, events, name)
+            events, name = add_event(tasks, args, events, name, log)
 
             source = add_source(events, name, bibcode='2012ApJS..200...12H')
             add_quantity(events, name, 'alias', name, source)
@@ -120,7 +120,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
-            name = add_event(tasks, args, events, name)
+            events, name = add_event(tasks, args, events, name, log)
 
             source = add_source(events, name, bibcode='2014ApJS..213...19B')
             add_quantity(events, name, 'alias', name, source)
@@ -148,7 +148,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         if oldname and name != oldname:
             events = journal_events(tasks, args, events)
         oldname = name
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
@@ -193,7 +193,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         if oldname and name != oldname:
             events = journal_events(tasks, args, events)
         oldname = name
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
@@ -233,7 +233,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         if oldname and name != oldname:
             events = journal_events(tasks, args, events)
         oldname = name
-        name = add_event(tasks, args, events, name)
+        events, name = add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)

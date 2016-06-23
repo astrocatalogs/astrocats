@@ -36,7 +36,7 @@ def do_asiago_photo(events, args, tasks, task_obj, log):
     for record in pbar(records, current_task):
         if len(record) > 1 and record[1] != '':
             name = clean_snname('SN' + record[1]).strip('?')
-            name = add_event(tasks, args, events, name)
+            events, name = add_event(tasks, args, events, name, log)
 
             reference = 'Asiago Supernova Catalogue'
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
@@ -142,7 +142,7 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
                     name = alias
                 if is_number(name[:4]):
                     name = 'SN' + name
-                name = add_event(tasks, args, events, name)
+                events, name = add_event(tasks, args, events, name, log)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = add_source(

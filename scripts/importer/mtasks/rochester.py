@@ -45,10 +45,10 @@ def do_rochester(events, args, tasks, task_obj, log):
                 aka = str(cols[14].contents[0]).strip()
                 if is_number(aka.strip('?')):
                     aka = 'SN' + aka.strip('?') + 'A'
-                    name = add_event(tasks, args, events, aka)
+                    events, name = add_event(tasks, args, events, aka, log)
                 elif len(aka) >= 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
-                    name = add_event(tasks, args, events, aka)
+                    events, name = add_event(tasks, args, events, aka, log)
 
             ra = str(cols[3].contents[0]).strip()
             dec = str(cols[4].contents[0]).strip()
@@ -66,7 +66,7 @@ def do_rochester(events, args, tasks, task_obj, log):
                 if 'POSSIBLE' in sn.upper() and ra and dec:
                     sn = 'PSN J' + ra.replace(':', '').replace('.', '')
                     sn += dec.replace(':', '').replace('.', '')
-                name = add_event(tasks, args, events, sn)
+                events, name = add_event(tasks, args, events, sn, log)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()
@@ -128,7 +128,7 @@ def do_rochester(events, args, tasks, task_obj, log):
                     name = 'PSN J' + name[4:]
                 if name.startswith('MASTEROTJ'):
                     name = name.replace('MASTEROTJ', 'MASTER OT J')
-                name = add_event(tasks, args, events, name)
+                events, name = add_event(tasks, args, events, name, log)
                 sec_source = add_source(
                     events, name, refname=sec_ref, url=sec_refurl, secondary=True)
                 add_quantity(events, name, 'alias', name, sec_source)

@@ -137,7 +137,7 @@ def import_main(args=None, **kwargs):
     for fi in pbar(files, 'Sanitizing and deriving quantities for events'):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        events, name = add_event(tasks, args, events, name, log, log, load_stubs_if_empty=False)
+        events, name = add_event(tasks, args, events, name, log, load_stubs_if_empty=False)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict)
         if has_task(tasks, args, 'writeevents'):

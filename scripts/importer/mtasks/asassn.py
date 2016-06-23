@@ -32,7 +32,7 @@ def do_asassn(events, args, tasks, task_obj, log):
         tds = tr.findAll('td')
         for tdi, td in enumerate(tds):
             if tdi == 1:
-                name = add_event(tasks, args, events, td.text.strip())
+                events, name = add_event(tasks, args, events, td.text.strip(), log)
                 atellink = td.find('a')
                 if atellink:
                     atellink = atellink['href']
