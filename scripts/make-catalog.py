@@ -1651,9 +1651,10 @@ if args.writecatalog and not args.eventlist:
             f.write(jsonstring)
 
         #Write the host image info
-        jsonstring = json.dumps(hostimgs, indent='\t', separators=(',',':'))
-        with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
-            f.write(jsonstring)
+        if args.collecthosts:
+            jsonstring = json.dumps(hostimgs, indent='\t', separators=(',',':'))
+            with open(outdir + 'hostimgs.json' + testsuffix, 'w') as f:
+                f.write(jsonstring)
 
         # Things David wants in this file: names (aliases), max mag, max mag date (gregorian), type, redshift, r.a., dec., # obs., link
         with open(outdir + 'snepages.csv' + testsuffix, 'w') as f:
