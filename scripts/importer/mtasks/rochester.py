@@ -14,7 +14,7 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, \
 from ... utils import is_number, pbar
 
 
-def do_rochester(events, args, tasks, task_obj):
+def do_rochester(events, args, tasks, task_obj, log):
     rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html',
                       'http://www.rochesterastronomy.org/sn2016/snredshift.html']
     rochesterupdate = [False, True]

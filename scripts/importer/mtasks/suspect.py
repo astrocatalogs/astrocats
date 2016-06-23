@@ -19,7 +19,7 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, add_sp
 from ... utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 
 
-def do_suspect_photo(events, args, tasks, task_obj):
+def do_suspect_photo(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
@@ -99,7 +99,7 @@ def do_suspect_photo(events, args, tasks, task_obj):
     return events
 
 
-def do_suspect_spectra(events, args, tasks, task_obj):
+def do_suspect_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())

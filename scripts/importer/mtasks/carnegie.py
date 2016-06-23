@@ -12,7 +12,7 @@ from .. constants import TRAVIS_QUERY_LIMIT
 from ... utils import pbar_strings
 
 
-def do_csp_photo(events, args, tasks, task_obj):
+def do_csp_photo(events, args, tasks, task_obj, log):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
@@ -54,7 +54,7 @@ def do_csp_photo(events, args, tasks, task_obj):
     return events
 
 
-def do_csp_spectra(events, args, tasks, task_obj):
+def do_csp_spectra(events, args, tasks, task_obj, log):
     oldname = ''
     current_task = task_obj.current_task(args)
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))

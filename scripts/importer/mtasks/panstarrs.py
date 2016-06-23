@@ -14,7 +14,7 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, \
 from ... utils import is_number, pbar
 
 
-def do_ps_mds(events, args, tasks, task_obj):
+def do_ps_mds(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
@@ -35,7 +35,7 @@ def do_ps_mds(events, args, tasks, task_obj):
     return events
 
 
-def do_ps_threepi(events, args, tasks, task_obj):
+def do_ps_threepi(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')

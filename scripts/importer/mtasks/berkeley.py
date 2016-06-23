@@ -15,7 +15,7 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, add_sp
 from ... utils import get_sig_digits, pbar, pretty_num
 
 
-def do_ucb_photo(events, args, tasks, task_obj):
+def do_ucb_photo(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
@@ -88,7 +88,7 @@ def do_ucb_photo(events, args, tasks, task_obj):
     return events
 
 
-def do_ucb_spectra(events, args, tasks, task_obj):
+def do_ucb_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'

@@ -11,7 +11,7 @@ from .. funcs import add_event, add_photometry, add_source, add_quantity, \
     jd_to_mjd, journal_events, load_cached_url, uniq_cdl
 
 
-def do_ogle(events, args, tasks, task_obj):
+def do_ogle(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']

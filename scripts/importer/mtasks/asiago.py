@@ -14,7 +14,7 @@ from .. funcs import add_event, add_source, add_quantity, \
 from ... utils import pbar, is_number
 
 
-def do_asiago_photo(events, args, tasks, task_obj):
+def do_asiago_photo(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
     path = os.path.abspath(os.path.join(PATH.REPO_EXTERNAL, 'asiago-cat.php'))
@@ -111,7 +111,7 @@ def do_asiago_photo(events, args, tasks, task_obj):
     return events
 
 
-def do_asiago_spectra(events, args, tasks, task_obj):
+def do_asiago_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     html = load_cached_url(args, current_task, 'http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990',
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Asiago/spectra.html'))
