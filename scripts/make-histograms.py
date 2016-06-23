@@ -39,7 +39,7 @@ for event in meta:
                     break
             if not ctv:
                 continue
-            if ctv not in sntypes and ctv.upper() not in nonsnetypes and ctv not in ['nIa'] \
+            if ctv not in sntypes and ctv.upper() not in nonsnetypes and ctv not in ['nIa', 'Candidate'] \
                 and not is_number(ctv) and '\\' not in ctv: #temporarily ignoring bad types from import
                 sntypes.append(ctv) 
 
@@ -55,11 +55,11 @@ p = Figure(x_range = [0., 100.], y_range = [0., 1.], title = 'Supernova Host Off
     title_text_font = 'futura', title_text_font_size = '14pt')
 p.add_tools(hover)
 
-for si, sntype in enumerate(sntypes):
+for si, sntype in enumerate(tq(sntypes)):
     for event in meta:
-        if 'hostoffkpc' in event and is_number(event['hostoffkpc']) \
+        if 'hostoffsetdist' in event and event['hostoffsetdist'] and is_number(event['hostoffsetdist'][0]['value']) \
             and 'claimedtype' in event and event['claimedtype'] and sntype in [x['value'] for x in event['claimedtype']]:
-            snoffs[si].append(float(event['hostoffkpc']))
+            snoffs[si].append(float(event['hostoffsetdist'][0]['value']))
     snoffs[si] = sorted(snoffs[si])
 
 colors = sns.color_palette("hls", n_colors = sum([1 if len(snoffs[i]) >= mincnt else 0 for i, x in enumerate(snoffs)])).as_hex()
