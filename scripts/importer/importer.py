@@ -96,7 +96,9 @@ def import_main(args=None, **kwargs):
     tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
     events = OrderedDict()
-    stubs = OrderedDict()
+    # FIX: stubs only need to be loaded for `args.update` ??
+    # stubs = OrderedDict()
+    stubs = Events.load_stubs()
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
     prev_priority = 0
@@ -135,7 +137,7 @@ def import_main(args=None, **kwargs):
     for fi in pbar(files, 'Sanitizing and deriving quantities for events'):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        name = add_event(tasks, args, events, args, name, loadifempty=False)
+        events, name = add_event(tasks, args, events, name, log, log, load_stubs_if_empty=False)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict)
         if has_task(tasks, args, 'writeevents'):
@@ -195,7 +197,7 @@ def do_nedd(events, args, tasks, task_obj, log):
             nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
 
         if name:
-            name = add_event(tasks, args, events, name)
+            events, name = add_event(tasks, args, events, name, log)
             sec_source = add_source(events, name, srcname=reference, url=refurl, secondary=True)
             add_quantity(events, name, 'alias', name, sec_source)
             if bibcode:

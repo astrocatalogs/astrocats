@@ -18,44 +18,6 @@ from .. utils import bandrepf, bandmetaf, is_number, \
     get_sig_digits, pbar, pretty_num, repo_file_list, round_sig, tprint
 
 
-def add_event(tasks, args, events, name, load=True, delete=True, source='', loadifempty=True):
-    if loadifempty and args.update and not len(events):
-        load_stubs(tasks, args, events)
-
-    newname = name_clean(name)
-    if newname not in events or 'stub' in events[newname]:
-        match = ''
-        if newname not in events:
-            for event in events:
-                aliases = get_aliases(events, event)
-                if (len(aliases) > 1 and (newname in aliases) and ('distinctfrom' not in events[event] or newname not in events[event]['distinctfrom'])):
-                    match = event
-                    break
-            # FIX: is this supposed to be here??
-            if match:
-                newname = match
-
-        if load:
-            loadedname = load_event_from_file(events, args, tasks, name=newname, delete=delete)
-            if loadedname:
-                if 'stub' in events[loadedname]:
-                    raise ValueError('Failed to find event file for stubbed event')
-                return loadedname
-
-        if match:
-            return match
-
-        events[newname] = OrderedDict()
-        events[newname]['name'] = newname
-        if source:
-            add_quantity(events, newname, 'alias', newname, source)
-        if args.verbose and 'stub' not in events[newname]:
-            tprint('Added new event ' + newname)
-        return newname
-    else:
-        return newname
-
-
 def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="", instrument="", band="",
                    magnitude="", e_magnitude="", source="", upperlimit=False, system="",
                    observatory="", observer="", host=False, includeshost=False, survey="",
@@ -677,17 +639,6 @@ def frame_priority(attr):
     return len(PREF_KINDS)
 
 
-def get_aliases(events, name, includename=True):
-    if 'alias' in events[name]:
-        aliases = [x['value'] for x in events[name]['alias']]
-        if includename and name not in aliases:
-            return [name] + aliases
-        return aliases
-    if includename:
-        return [name]
-    return []
-
-
 def get_atels_dict():
     # path = '../atels.json'
     if os.path.isfile(FILENAME.ATELS):
@@ -826,38 +777,6 @@ def has_task(tasks, args, task):
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
-
-
-def load_stubs(tasks, args, events):
-    currenttask = 'Loading event stubs'
-    files = repo_file_list()
-
-    # try:
-    #    namepath = '../names.min.json'
-    #    with open(namepath, 'r') as f:
-    #        names = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    #    for fi in pbar(files):
-    #        name = os.path.basename(os.path.splitext(fi)[0])
-    #        if name not in names:
-    #            name = name.replace("_", "/")
-    #        events[name] = OrderedDict(([['name', name], ['alias', [OrderedDict(([['value', x]]))
-    #            for x in names[name]]], ['stub', True]]))
-    # except:
-    #    events = OrderedDict()
-    for fi in pbar(files, currenttask):
-        fname = fi
-        if '.gz' in fi:
-            import shutil
-            import gzip
-            fname = fi.replace('.gz', '')
-            with gzip.open(fi, 'rb') as f_in, open(fname, 'wb') as f_out:
-                shutil.copyfileobj(f_in, f_out)
-            os.remove(fi)
-        name = os.path.basename(os.path.splitext(fname)[0]).replace('.json', '')
-        name = add_event(tasks, args, events, name, delete=False, loadifempty=False)
-        events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
-
-    return events
 
 
 def load_cached_url(args, current_task, url, filepath, timeout=120, write=True):

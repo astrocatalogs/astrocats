@@ -149,6 +149,8 @@ class EVENT(OrderedDict):
 
     def add_quantity(self, quantity, value, sources, forcereplacebetter=False,
                      lowerlimit='', upperlimit='', error='', unit='', kind='', extra=''):
+        """
+        """
         if not quantity:
             raise ValueError('Quantity must be specified for add_quantity.')
         if not sources:
@@ -402,6 +404,7 @@ class EVENT(OrderedDict):
             self[quantity] = newquantities
         else:
             self.setdefault(quantity, []).append(quanta_entry)
+        return
 
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
@@ -463,6 +466,13 @@ class EVENT(OrderedDict):
                     return True
 
         return False
+
+    def get_aliases(self, includename=True):
+        # empty list if doesnt exist
+        aliases = self.get(KEYS.ALIAS, [])
+        if includename and name not in aliases:
+            aliases = [name] + aliases
+        return aliases
 
     def get_source_by_alias(self, alias):
         for source in self.get(KEYS.SOURCES, []):
@@ -527,6 +537,102 @@ class EVENT(OrderedDict):
         if KEYS.ALIAS in self.keys():
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
+
+'''
+def add_event(tasks, args, events, name, load=True, delete=True, source='', load_stubs_if_empty=True):
+    if load_stubs_if_empty and args.update and not len(events):
+        load_stubs(tasks, args, events)
+
+    newname = name_clean(name)
+    if newname not in events or 'stub' in events[newname]:
+        match = ''
+        if newname not in events:
+            for event in events:
+                aliases = get_aliases(events, event)
+                if (len(aliases) > 1 and (newname in aliases) and ('distinctfrom' not in events[event] or newname not in events[event]['distinctfrom'])):
+                    match = event
+                    break
+            # FIX: is this supposed to be here??
+            if match:
+                newname = match
+
+        if load:
+            loadedname = load_event_from_file(events, args, tasks, name=newname, delete=delete)
+            if loadedname:
+                if 'stub' in events[loadedname]:
+                    raise ValueError('Failed to find event file for stubbed event')
+                return loadedname
+
+        if match:
+            return match
+
+        events[newname] = OrderedDict()
+        events[newname]['name'] = newname
+        if source:
+            add_quantity(events, newname, 'alias', newname, source)
+        if args.verbose and 'stub' not in events[newname]:
+            tprint('Added new event ' + newname)
+        return newname
+    else:
+        return newname
+'''
+
+
+def add_event(tasks, args, events, name, log, load=True, delete=True, source=''):
+    """Find an existing event in, or add a new one to, the `events` dict.
+
+    FIX: rename to `create_event`???
+
+    Returns
+    -------
+    events : OrderedDict of EVENT objects
+    newname : str
+        Name of matching event found in `events`, or new event added to `events`
+    """
+    newname = name_clean(name)
+    # If event already exists, return
+    if newname in events:
+        return events, newname
+
+    # If event is alias of another event, find and return that
+    match_name = find_event_name_of_alias(newname)
+    if match_name is not None:
+        return events, match_name
+
+    # Load Event from file
+    if load:
+        loaded_event = load_event_from_file(events, args, tasks, log, name=newname, delete=delete)
+        events[newname] = loaded_event
+        log.debug("Added '{}' to `events`".format(newname))
+        return events, loaded_event
+
+    # Create new event
+    new_event = EVENT(newname)
+    log.log(log._LOADED, "Create new, empty event for '{}'".format(newname))
+    if source:
+        new_event.add_quantity('alias', newname, source)
+
+    return events, newname
+
+
+def find_event_name_of_alias(events, alias):
+    """Return the first event name with the given 'alias' included in its list of aliases.
+
+    Returns
+    -------
+    name of matching event (str) or 'None' if no matches
+
+    """
+    for name, event in events.items():
+        aliases = event.get_aliases()
+        if newname in aliases:
+            if (KEYS.DISTINCS not in event.keys()) or (newname not in event[KEYS.DISTINCS]):
+                return name
+
+    return None
+
+
+def get_aliases(events, name, includename=True):
 
 
 def clean_event(dirty_event):
@@ -689,10 +795,11 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
     if name and path:
         raise ValueError('Either event `name` or `path` should be specified, not both.')
 
-    # If the path is given, load event from it
+    # If the path is given, use that to load from
     path_from_name = ''
     if path:
         load_path = path
+    # If the name is given, try to find a path for it
     else:
         repo_paths = get_repo_paths()
         for rep in repo_paths:
@@ -724,6 +831,33 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
         log.debug("Deleted '{}'".format(path_from_name))
 
     return new_event
+
+
+def load_stubs(tasks, args, events, log):
+    """Load a 'stub' dictionary for all repository files.
+
+    'stubs' only contain an event's name and aliases for cross-referencing.
+
+    Returns
+    -------
+    stubs : OrderedDict,
+        Dictionary of (name: stub), pairs where the stub contains the `KEYS.NAME` and `KEYS.ALIAS`
+        parameters only.
+
+    """
+    currenttask = 'Loading event stubs'
+    files = repo_file_list()
+    stubs = OrderedDict()
+    for fi in pbar(files, currenttask):
+        fname = fi
+        if '.gz' in fi:
+            fname = _uncompress_gz(fi)
+        name = os.path.basename(os.path.splitext(fname)[0]).replace('.json', '')
+        new_event = load_event_from_file(events, args, tasks, log, path=fname, delete=False)
+        stubs[name] = new_event.get_stub()
+        log.debug("Added stub for '{}'".format(name))
+
+    return stubs
 
 
 def merge_duplicates(tasks, args, events):
@@ -866,3 +1000,12 @@ def _compress_gz(fname):
         shutil.copyfileobj(f_in, f_out)
     os.remove(fname)
     return comp_fname
+
+def _uncompress_gz(fname):
+    import shutil
+    import gzip
+    uncomp_name = fi.replace('.gz', '')
+    with gzip.open(fi, 'rb') as f_in, open(uncomp_name, 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    os.remove(fi)
+    return uncomp_name
