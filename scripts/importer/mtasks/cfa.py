@@ -14,7 +14,7 @@ from .. constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
 from ... utils import pbar, pbar_strings, is_number, Decimal
 
 
-def do_cfa_photo(events, args, tasks, task_obj, log):
+def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
     from html import unescape
     import re
     current_task = task_obj.current_task(args)
@@ -132,7 +132,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_cfa_spectra(events, args, tasks, task_obj, log):
+def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # Ia spectra
     oldname = ''

@@ -23,7 +23,7 @@ from .. Events import load_event_from_file
 from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig
 
 
-def do_ascii(events, args, tasks, task_obj, log):
+def do_ascii(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
 
     # 2006ApJ...645..841N
@@ -227,7 +227,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     return events
 
 
-def do_cccp(events, args, tasks, task_obj, log):
+def do_cccp(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt'))
@@ -315,7 +315,7 @@ def do_cccp(events, args, tasks, task_obj, log):
     return events
 
 
-def do_cpcs(events, args, tasks, task_obj, log):
+def do_cpcs(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
@@ -390,7 +390,7 @@ def do_cpcs(events, args, tasks, task_obj, log):
     return events
 
 
-def do_crts(events, args, tasks, task_obj, log):
+def do_crts(events, stubs, args, tasks, task_obj, log):
     crtsnameerrors = ['2011ax']
     current_task = task_obj.current_task(args)
     folders = ['catalina', 'MLS', 'SSS']
@@ -510,7 +510,7 @@ def do_crts(events, args, tasks, task_obj, log):
     return events
 
 
-def do_des(events, args, tasks, task_obj, log):
+def do_des(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
@@ -572,7 +572,7 @@ def do_des(events, args, tasks, task_obj, log):
     return events
 
 
-def do_external_radio(events, args, tasks, task_obj, log):
+def do_external_radio(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
@@ -599,7 +599,7 @@ def do_external_radio(events, args, tasks, task_obj, log):
     return events
 
 
-def do_external_xray(events, args, tasks, task_obj, log):
+def do_external_xray(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
@@ -624,7 +624,7 @@ def do_external_xray(events, args, tasks, task_obj, log):
     return events
 
 
-def do_fermi(events, args, tasks, task_obj, log):
+def do_fermi(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as ff:
         tsvin = csv.reader(ff, delimiter=',')
@@ -646,7 +646,7 @@ def do_fermi(events, args, tasks, task_obj, log):
     return events
 
 
-def do_gaia(events, args, tasks, task_obj, log):
+def do_gaia(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, current_task, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
@@ -714,7 +714,7 @@ def do_gaia(events, args, tasks, task_obj, log):
     return events
 
 
-def do_internal(events, args, tasks, task_obj, log):
+def do_internal(events, stubs, args, tasks, task_obj, log):
     """Load events from files in the 'internal' repository, and save them.
     """
     current_task = task_obj.current_task(args)
@@ -741,7 +741,7 @@ def do_internal(events, args, tasks, task_obj, log):
     return events
 
 
-def do_itep(events, args, tasks, task_obj, log):
+def do_itep(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
@@ -792,7 +792,7 @@ def do_itep(events, args, tasks, task_obj, log):
     return events
 
 
-def do_pessto(events, args, tasks, task_obj, log):
+def do_pessto(events, stubs, args, tasks, task_obj, log):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
     tsvin = csv.reader(open(pessto_path, 'r'), delimiter=',')
     for ri, row in enumerate(tsvin):
@@ -816,7 +816,7 @@ def do_pessto(events, args, tasks, task_obj, log):
     return events
 
 
-def do_scp(events, args, tasks, task_obj, log):
+def do_scp(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     tsvin = csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r'), delimiter=',')
     for ri, row in enumerate(pbar(tsvin, current_task)):
@@ -847,7 +847,7 @@ def do_scp(events, args, tasks, task_obj, log):
     return events
 
 
-def do_sdss(events, args, tasks, task_obj, log):
+def do_sdss(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
@@ -900,7 +900,7 @@ def do_sdss(events, args, tasks, task_obj, log):
     return events
 
 
-def do_snhunt(events, args, tasks, task_obj, log):
+def do_snhunt(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url(args, current_task, snh_url, os.path.join(PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
@@ -950,7 +950,7 @@ def do_snhunt(events, args, tasks, task_obj, log):
     return events
 
 
-def do_snls(events, args, tasks, task_obj, log):
+def do_snls(events, stubs, args, tasks, task_obj, log):
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
     data = csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True)
@@ -980,7 +980,7 @@ def do_snls(events, args, tasks, task_obj, log):
     return events
 
 
-def do_superfit_spectra(events, args, tasks, task_obj, log):
+def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
     from .. funcs import get_max_light, get_preferred_name
     current_task = task_obj.current_task(args)
     sfdirs = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*'))
@@ -1049,7 +1049,7 @@ def do_superfit_spectra(events, args, tasks, task_obj, log):
     return events
 
 
-def do_tns(events, args, tasks, task_obj, log):
+def do_tns(events, stubs, args, tasks, task_obj, log):
     from datetime import timedelta
     session = requests.Session()
     current_task = task_obj.current_task(args)
@@ -1137,7 +1137,7 @@ def do_tns(events, args, tasks, task_obj, log):
     return events
 
 '''
-def do_simbad(events, args, tasks, task_obj, log):
+def do_simbad(events, stubs, args, tasks, task_obj, log):
     Simbad.list_votable_fields()
     customSimbad = Simbad()
     customSimbad.add_votable_fields('otype', 'id(opt)')

@@ -9,7 +9,7 @@ from .. funcs import add_event, add_source, add_quantity, journal_events
 from ... utils import is_number
 
 
-def do_ptf(events, args, tasks, task_obj, log):
+def do_ptf(events, stubs, args, tasks, task_obj, log):
     # response = urllib.request.urlopen('http://wiserep.weizmann.ac.il/objects/list')
     # bs = BeautifulSoup(response, 'html5lib')
     # select = bs.find('select', {'name': 'objid'})

@@ -15,7 +15,7 @@ from .. constants import KM, CLIGHT
 from ... utils import get_sig_digits, is_number, pbar, pretty_num, round_sig
 
 
-def do_vizier(events, args, tasks, task_obj, log):
+def do_vizier(events, stubs, args, tasks, task_obj, log):
     """
     """
     current_task = task_obj.current_task(args)
@@ -1096,7 +1096,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     return events
 
 
-def do_lennarz(events, args, tasks, task_obj, log):
+def do_lennarz(events, stubs, args, tasks, task_obj, log):
     """
     """
     current_task = task_obj.current_task(args)
@@ -1174,7 +1174,7 @@ def do_lennarz(events, args, tasks, task_obj, log):
     return events
 
 
-def do_snls_spectra(events, args, tasks, task_obj, log):
+def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
     """
     """
     from glob import glob

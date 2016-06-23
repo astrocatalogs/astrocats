@@ -158,7 +158,7 @@ def import_main(args=None, **kwargs):
     return
 
 
-def do_nedd(events, args, tasks, task_obj, log):
+def do_nedd(events, stubs, args, tasks, task_obj, log):
     import csv
     from html import unescape
     from . constants import PATH
