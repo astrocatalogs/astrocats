@@ -33,11 +33,11 @@ def do_ascii(events, args, tasks, task_obj, log):
         name = 'SNLS-' + row[0]
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2006ApJ...645..841N')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'redshift', row[1], source, kind='spectroscopic')
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('redshift', row[1], source, kind='spectroscopic')
         astrot = astrotime(float(row[4]) + 2450000., format='jd').datetime
         date_str = make_date_string(astrot.year, astrot.month, astrot.day)
-        add_quantity(events, name, 'discoverdate', date_str, source)
+        events[name].add_quantity('discoverdate', date_str, source)
     events = journal_events(tasks, args, events)
 
     # Anderson 2014
@@ -52,7 +52,7 @@ def do_ascii(events, args, tasks, task_obj, log):
             name = ('SN20' if int(basename[:2]) < 50 else 'SN19') + basename.split('_')[0]
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014ApJ...786...67A')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
         if name in ['SN1999ca', 'SN2003dq', 'SN2008aw']:
             system = 'Swope'
@@ -78,7 +78,7 @@ def do_ascii(events, args, tasks, task_obj, log):
         name = row[0]
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2004A&A...415..863G')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         mjd = str(jd_to_mjd(Decimal(row[1])))
         for ri, ci in enumerate(range(2, len(row), 3)):
             if not row[ci]:
@@ -107,10 +107,10 @@ def do_ascii(events, args, tasks, task_obj, log):
             name = name.replace(' ', '')
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.449..451W')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         if len(namesplit) > 1:
-            add_quantity(events, name, 'alias', namesplit[0], source)
-        add_quantity(events, name, 'claimedtype', row[1], source)
+            events[name].add_quantity('alias', namesplit[0], source)
+        events[name].add_quantity('claimedtype', row[1], source)
         add_photometry(events, name, time=row[2], band=row[4], magnitude=row[3], source=source)
     events = journal_events(tasks, args, events)
 
@@ -119,7 +119,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
     events, name = add_event(tasks, args, events, 'LSQ13zm', log)
     source = events[name].add_source(bibcode='2016MNRAS.459.1039T')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             bands = [xx.replace('(err)', '') for xx in row[3:-1]]
@@ -142,7 +142,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
     events, name = add_event(tasks, args, events, 'PS1-13arp', log)
     source = events[name].add_source(bibcode='2015ApJ...804...28G')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
         if rr == 0:
             continue
@@ -165,13 +165,13 @@ def do_ascii(events, args, tasks, task_obj, log):
             continue
         events, name = add_event(tasks, args, events, row[0], log)
         source = events[name].add_source(bibcode='2016ApJ...819...35A')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'ra', row[1], source)
-        add_quantity(events, name, 'dec', row[2], source)
-        add_quantity(events, name, 'redshift', row[3], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('ra', row[1], source)
+        events[name].add_quantity('dec', row[2], source)
+        events[name].add_quantity('redshift', row[3], source)
         disc_date = datetime.strptime(row[4], '%Y %bb %d').isoformat()
         disc_date = disc_date.split('T')[0].replace('-', '/')
-        add_quantity(events, name, 'discoverdate', disc_date, source)
+        events[name].add_quantity('discoverdate', disc_date, source)
     events = journal_events(tasks, args, events)
 
     # 2014ApJ...784..105W
@@ -182,7 +182,7 @@ def do_ascii(events, args, tasks, task_obj, log):
             continue
         events, name = add_event(tasks, args, events, row[0], log)
         source = events[name].add_source(bibcode='2014ApJ...784..105W')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         mjd = row[1]
         band = row[2]
         mag = row[3]
@@ -202,7 +202,7 @@ def do_ascii(events, args, tasks, task_obj, log):
             continue
         events, name = add_event(tasks, args, events, row[0], log)
         source = events[name].add_source(bibcode='2012MNRAS.425.1007B')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         mjd = row[1]
         mags = [xx.split('±')[0].strip() for xx in row[2:]]
         errs = [xx.split('±')[1].strip() if '±' in xx else '' for xx in row[2:]]
@@ -241,7 +241,7 @@ def do_cccp(events, args, tasks, task_obj, log):
                     name = 'SN' + row[0].split('SN ')[-1]
                     events, name = add_event(tasks, args, events, name, log)
                     source = events[name].add_source(bibcode='2012ApJ...744...10K')
-                    add_quantity(events, name, 'alias', name, source)
+                    events[name].add_quantity('alias', name, source)
                 elif rr >= 5:
                     mjd = str(Decimal(row[0]) + 53000)
                     for bb, band in enumerate(cccpbands):
@@ -269,7 +269,7 @@ def do_cccp(events, args, tasks, task_obj, log):
             events, name = add_event(tasks, args, events, link.text.replace(' ', ''), log)
             source = events[name].add_source(srcname='CCCP',
                                 url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
 
             if task_obj.load_archive(args):
                 fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/') + link['href'].split('/')[-1]
@@ -350,10 +350,10 @@ def do_cpcs(events, args, tasks, task_obj, log):
 
         sec_source = events[name].add_source(srcname='Cambridge Photometric Calibration Server',
                                 url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
-        add_quantity(events, name, 'alias', name, sec_source)
+        events[name].add_quantity('alias', name, sec_source)
         unit_deg = 'floatdegrees'
-        add_quantity(events, name, 'ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
-        add_quantity(events, name, 'dec', str(alertindex[ii]['dec']), sec_source, unit=unit_deg)
+        events[name].add_quantity('ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
+        events[name].add_quantity('dec', str(alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = 'http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=' + str(ai)
         source = events[name].add_source(srcname='CPCS Alert ' + str(ai), url=alerturl)
@@ -460,11 +460,11 @@ def do_crts(events, args, tasks, task_obj, log):
             source = add_source(
                 events, name, refname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
             for alias in validaliases:
-                add_quantity(events, name, 'alias', alias, source)
-            add_quantity(events, name, 'ra', ra, source, unit='floatdegrees')
-            add_quantity(events, name, 'dec', dec, source, unit='floatdegrees')
+                events[name].add_quantity('alias', alias, source)
+            events[name].add_quantity('ra', ra, source, unit='floatdegrees')
+            events[name].add_quantity('dec', dec, source, unit='floatdegrees')
 
             if hostmag:
                 # 1.0 magnitude error based on Drake 2009 assertion that SN are only considered
@@ -549,9 +549,9 @@ def do_des(events, args, tasks, task_obj, log):
                     events[name].add_source(bibcode='2015AJ....150...82G'),
                     events[name].add_source(bibcode='2015AJ....150..172K')]
         sources = ','.join(sources)
-        add_quantity(events, name, 'alias', name, sources)
-        add_quantity(events, name, 'ra', ra, sources)
-        add_quantity(events, name, 'dec', dec, sources)
+        events[name].add_quantity('alias', name, sources)
+        events[name].add_quantity('ra', ra, sources)
+        events[name].add_quantity('dec', dec, sources)
 
         html2 = load_cached_url(args, current_task, des_trans_url + name, des_path + name + '.html')
         if not html2:
@@ -593,7 +593,7 @@ def do_external_radio(events, args, tasks, task_obj, log):
                         events, name, time=cols[0], frequency=cols[2], u_frequency='GHz',
                         fluxdensity=cols[3], e_fluxdensity=cols[4], u_fluxdensity='µJy',
                         instrument=cols[5], source=source)
-                    add_quantity(events, name, 'alias', name, source)
+                    events[name].add_quantity('alias', name, source)
 
     events = journal_events(tasks, args, events)
     return events
@@ -618,7 +618,7 @@ def do_external_xray(events, args, tasks, task_obj, log):
                         unabsorbedflux=cols[8], u_flux='ergs/ss/cm^2',
                         photonindex=cols[15], instrument=cols[17], nhmw=cols[11],
                         upperlimit=(float(cols[5]) < 0), source=source)
-                    add_quantity(events, name, 'alias', name, source)
+                    events[name].add_quantity('alias', name, source)
 
     events = journal_events(tasks, args, events)
     return events
@@ -638,10 +638,10 @@ def do_fermi(events, args, tasks, task_obj, log):
             name = row[0].replace('SNR', 'G')
             events, name = add_event(tasks, args, events, name, log)
             source = events[name].add_source(bibcode='2016ApJS..224....8A')
-            add_quantity(events, name, 'alias', name, source)
-            add_quantity(events, name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
-            add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
-            add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
+            events[name].add_quantity('alias', name, source)
+            events[name].add_quantity('alias', row[0].replace('SNR', 'MWSNR'), source)
+            events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
+            events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
     events = journal_events(tasks, args, events)
     return events
 
@@ -660,16 +660,16 @@ def do_gaia(events, args, tasks, task_obj, log):
             continue
         events, name = add_event(tasks, args, events, row[0], log)
         source = events[name].add_source(srcname=reference, url=refurl)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
-        add_quantity(events, name, 'discoverdate', year, source)
-        add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row[3], source, unit='floatdegrees')
+        events[name].add_quantity('discoverdate', year, source)
+        events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
         if row[7] and row[7] != 'unknown':
             type = row[7].replace('SNe', '').replace('SN', '').strip()
-            add_quantity(events, name, 'claimedtype', type, source)
+            events[name].add_quantity('claimedtype', type, source)
         elif any([xx in row[9].upper() for xx in ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
-            add_quantity(events, name, 'claimedtype', 'Candidate', source)
+            events[name].add_quantity('claimedtype', 'Candidate', source)
 
         if 'aka' in row[9].replace('gakaxy', 'galaxy').lower() and 'AKARI' not in row[9]:
             commentsplit = (row[9].replace('_', ' ').replace('MLS ', 'MLS').replace('CSS ', 'CSS').
@@ -680,7 +680,7 @@ def do_gaia(events, args, tasks, task_obj, log):
                     alias = commentsplit[csi+1].strip('(),:.').replace('PSNJ', 'PSN J')
                     if alias[:6] == 'ASASSN' and alias[6] != '-':
                         alias = 'ASASSN-' + alias[6:]
-                    add_quantity(events, name, 'alias', alias, source)
+                    events[name].add_quantity('alias', alias, source)
                     break
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
@@ -769,10 +769,10 @@ def do_itep(events, args, tasks, task_obj, log):
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
             sec_source = add_source(
                 events, name, refname=sec_reference, url=sec_refurl, secondary=True)
-            add_quantity(events, name, 'alias', name, sec_source)
+            events[name].add_quantity('alias', name, sec_source)
 
             year = re.findall(r'\d+', name)[0]
-            add_quantity(events, name, 'discoverdate', year, sec_source)
+            events[name].add_quantity('discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
             source = events[name].add_source(bibcode=bibcode)
@@ -803,7 +803,7 @@ def do_pessto(events, args, tasks, task_obj, log):
         name = row[1]
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015A&A...579A..40S')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         for hi, ci in enumerate(range(3, len(row)-1, 2)):
             if not row[ci]:
                 continue
@@ -826,14 +826,14 @@ def do_scp(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(srcname='Supernova Cosmology Project',
                             url='http://supernova.lbl.gov/2009ClusterSurvey/')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         if row[1]:
-            add_quantity(events, name, 'alias', row[1], source)
+            events[name].add_quantity('alias', row[1], source)
         if row[2]:
             kind = 'spectroscopic' if row[3] == 'sn' else 'host'
-            add_quantity(events, name, 'redshift', row[2], source, kind=kind)
+            events[name].add_quantity('redshift', row[2], source, kind=kind)
         if row[4]:
-            add_quantity(events, name, 'redshift', row[2], source, kind='cluster')
+            events[name].add_quantity('redshift', row[2], source, kind='cluster')
         if row[6]:
             claimedtype = row[6].replace('SN ', '')
             kind = ('spectroscopic/light curve' if 'a' in row[7] and 'c' in row[7] else
@@ -841,7 +841,7 @@ def do_scp(events, args, tasks, task_obj, log):
                     'light curve' if 'c' in row[7]
                     else '')
             if claimedtype != '?':
-                add_quantity(events, name, 'claimedtype', claimedtype, source, kind=kind)
+                events[name].add_quantity('claimedtype', claimedtype, source, kind=kind)
 
     events = journal_events(tasks, args, events)
     return events
@@ -869,18 +869,18 @@ def do_sdss(events, args, tasks, task_obj, log):
                     name = 'SN' + row[5]
                 events, name = add_event(tasks, args, events, name, log)
                 source = events[name].add_source(bibcode=bibcode)
-                add_quantity(events, name, 'alias', name, source)
-                add_quantity(events, name, 'alias', 'SDSS-II ' + row[3], source)
+                events[name].add_quantity('alias', name, source)
+                events[name].add_quantity('alias', 'SDSS-II ' + row[3], source)
 
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
-                    add_quantity(events, name, 'discoverdate', year, source)
+                    events[name].add_quantity('discoverdate', year, source)
 
-                add_quantity(events, name, 'ra', row[-4], source, unit='floatdegrees')
-                add_quantity(events, name, 'dec', row[-2], source, unit='floatdegrees')
+                events[name].add_quantity('ra', row[-4], source, unit='floatdegrees')
+                events[name].add_quantity('dec', row[-2], source, unit='floatdegrees')
             if rr == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
-                add_quantity(events, name, 'redshift', row[2], source, error=error,
+                events[name].add_quantity('redshift', row[2], source, error=error,
                              kind='heliocentric')
             if rr >= 19:
                 # Skip bad measurements
@@ -931,18 +931,18 @@ def do_snhunt(events, args, tasks, task_obj, log):
         name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(srcname='Supernova Hunt', url=snh_url)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
-        add_quantity(events, name, 'host', host, source)
-        add_quantity(events, name, 'ra', cols[2], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', cols[3], source, unit='floatdegrees')
+        events[name].add_quantity('host', host, source)
+        events[name].add_quantity('ra', cols[2], source, unit='floatdegrees')
+        events[name].add_quantity('dec', cols[3], source, unit='floatdegrees')
         dd = cols[0]
         discoverdate = dd[:4] + '/' + dd[4:6] + '/' + dd[6:8]
-        add_quantity(events, name, 'discoverdate', discoverdate, source)
+        events[name].add_quantity('discoverdate', discoverdate, source)
         discoverers = cols[5].split('/')
         for discoverer in discoverers:
-            add_quantity(events, name, 'discoverer', 'CRTS', source)
-            add_quantity(events, name, 'discoverer', discoverer, source)
+            events[name].add_quantity('discoverer', 'CRTS', source)
+            events[name].add_quantity('discoverer', discoverer, source)
         if args.update:
             events = journal_events(tasks, args, events)
 
@@ -963,7 +963,7 @@ def do_snls(events, args, tasks, task_obj, log):
         name = 'SNLS-' + row[0]
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2010A&A...523A...7G')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         band = row[1]
         mjd = row[2]
         sig = get_sig_digits(flux.split('E')[0])+1
@@ -1022,7 +1022,7 @@ def do_superfit_spectra(events, args, tasks, task_obj, log):
 
             source = events[name].add_source(srcname='Superfit',
                                 url='http://www.dahowell.com/superfit.html', secondary=True)
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
 
             with open(sffile) as ff:
                 rows = ff.read().splitlines()
@@ -1091,28 +1091,28 @@ def do_tns(events, args, tasks, task_obj, log):
             name = row[1].replace(' ', '')
             events, name = add_event(tasks, args, events, name, log)
             source = events[name].add_source(srcname='Transient Name Server', url=tns_url)
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
             if row[2] and row[2] != '00:00:00.00':
-                add_quantity(events, name, 'ra', row[2], source)
+                events[name].add_quantity('ra', row[2], source)
             if row[3] and row[3] != '+00:00:00.00':
-                add_quantity(events, name, 'dec', row[3], source)
+                events[name].add_quantity('dec', row[3], source)
             if row[4]:
-                add_quantity(events, name, 'claimedtype', row[4].replace('SN', '').strip(), source)
+                events[name].add_quantity('claimedtype', row[4].replace('SN', '').strip(), source)
             if row[5]:
-                add_quantity(events, name, 'redshift', row[5], source, kind='spectroscopic')
+                events[name].add_quantity('redshift', row[5], source, kind='spectroscopic')
             if row[6]:
-                add_quantity(events, name, 'host', row[6], source)
+                events[name].add_quantity('host', row[6], source)
             if row[7]:
-                add_quantity(events, name, 'redshift', row[7], source, kind='host')
+                events[name].add_quantity('redshift', row[7], source, kind='host')
             if row[8]:
-                add_quantity(events, name, 'discoverer', row[8], source)
+                events[name].add_quantity('discoverer', row[8], source)
             # Currently, all events listing all possible observers. TNS bug?
             # if row[9]:
             #    observers = row[9].split(',')
             #    for observer in observers:
-            #        add_quantity(events, name, 'observer', observer.strip(), source)
+            #        events[name].add_quantity('observer', observer.strip(), source)
             if row[10]:
-                add_quantity(events, name, 'alias', row[10], source)
+                events[name].add_quantity('alias', row[10], source)
             if row[8] and row[14] and row[15] and row[16]:
                 survey = row[8]
                 magnitude = row[14]
@@ -1129,7 +1129,7 @@ def do_tns(events, args, tasks, task_obj, log):
                         ts = time.split(':')
                         dt = timedelta(hours=int(ts[0]), minutes=int(ts[1]), seconds=int(ts[2]))
                         date += pretty_num(dt.total_seconds()/(24*60*60), sig=6).lstrip('0')
-                    add_quantity(events, name, 'discoverdate', date, source)
+                    events[name].add_quantity('discoverdate', date, source)
             if args.update:
                 events = journal_events(tasks, args, events)
 

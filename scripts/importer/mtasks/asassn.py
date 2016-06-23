@@ -68,16 +68,16 @@ def do_asassn(events, args, tasks, task_obj, log):
                 events[name].add_source(srcname='ATel ' + typelink.split('=')[-1], url=typelink))
         sources = ','.join(sources)
         typesources = ','.join(typesources)
-        add_quantity(events, name, 'alias', name, sources)
-        add_quantity(events, name, 'discoverdate', discdate, sources)
-        add_quantity(events, name, 'ra', ra, sources, unit='floatdegrees')
-        add_quantity(events, name, 'dec', dec, sources, unit='floatdegrees')
-        add_quantity(events, name, 'redshift', redshift, sources)
-        add_quantity(events, name, 'hostoffset', hostoff, sources, unit='arcseconds')
+        events[name].add_quantity('alias', name, sources)
+        events[name].add_quantity('discoverdate', discdate, sources)
+        events[name].add_quantity('ra', ra, sources, unit='floatdegrees')
+        events[name].add_quantity('dec', dec, sources, unit='floatdegrees')
+        events[name].add_quantity('redshift', redshift, sources)
+        events[name].add_quantity('hostoffset', hostoff, sources, unit='arcseconds')
         for ct in claimedtype.split('/'):
             if ct != 'Unk':
-                add_quantity(events, name, 'claimedtype', ct, typesources)
+                events[name].add_quantity('claimedtype', ct, typesources)
         if host != 'Uncatalogued':
-            add_quantity(events, name, 'host', host, sources)
+            events[name].add_quantity('host', host, sources)
     events = journal_events(tasks, args, events)
     return events

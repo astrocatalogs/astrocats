@@ -54,12 +54,12 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
         sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, secondary=True)
-        add_quantity(events, name, 'alias', name, sec_source)
+        events[name].add_quantity('alias', name, sec_source)
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
-            add_quantity(events, name, 'discoverdate', year, sec_source)
-            add_quantity(events, name, 'host', names[1].split(':')[1].strip(), sec_source)
+            events[name].add_quantity('discoverdate', year, sec_source)
+            events[name].add_quantity('host', names[1].split(':')[1].strip(), sec_source)
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
@@ -69,7 +69,7 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
             # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric Velocity'))
             # if hvels:
             #     vel = hvels[0].split(':')[1].strip().split(' ')[0]
-            #     add_quantity(events, name, 'velocity', vel, sec_source, kind='heliocentric')
+            #     events[name].add_quantity('velocity', vel, sec_source, kind='heliocentric')
             types = bandsoup.body.findAll(text=re.compile('Type'))
 
             add_quantity(
@@ -132,7 +132,7 @@ def do_suspect_spectra(events, args, tasks, task_obj, log):
             sec_bibc = '2001AAS...199.8408R'
             sec_source = add_source(
                 events, name, refname=sec_ref, url=sec_refurl, bibcode=sec_bibc, secondary=True)
-            add_quantity(events, name, 'alias', name, sec_source)
+            events[name].add_quantity('alias', name, sec_source)
             fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder, eventfolder)
             eventspectra = next(os.walk(fpath))[2]
             for spectrum in eventspectra:

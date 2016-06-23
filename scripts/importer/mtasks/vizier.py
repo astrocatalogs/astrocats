@@ -33,14 +33,14 @@ def do_vizier(events, args, tasks, task_obj, log):
             name = 'SN' + name
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2012ApJS..200...12H')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         if '[' not in row['Gal']:
-            add_quantity(events, name, 'host', row['Gal'].replace('_', ' '), source)
-        add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric')
-        add_quantity(events, name, 'redshift', str(row['zCMB']), source, kind='cmb')
-        add_quantity(events, name, 'ebv', str(row['E_B-V_']), source, error=str(row['e_E_B-V_']) if row['e_E_B-V_'] else '')
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+            events[name].add_quantity('host', row['Gal'].replace('_', ' '), source)
+        events[name].add_quantity('redshift', str(row['z']), source, kind='heliocentric')
+        events[name].add_quantity('redshift', str(row['zCMB']), source, kind='cmb')
+        events[name].add_quantity('ebv', str(row['E_B-V_']), source, error=str(row['e_E_B-V_']) if row['e_E_B-V_'] else '')
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
 
     # 2012ApJ...746...85S
     result = Vizier.get_catalogs('J/ApJ/746/85/table1')
@@ -51,16 +51,16 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = row['Name'].replace('SCP', 'SCP-')
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2012ApJ...746...85S')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         if row['f_Name']:
-            add_quantity(events, name, 'claimedtype', 'Ia', source)
+            events[name].add_quantity('claimedtype', 'Ia', source)
         if row['z']:
-            add_quantity(events, name, 'redshift', str(row['z']), source, kind='spectroscopic')
+            events[name].add_quantity('redshift', str(row['z']), source, kind='spectroscopic')
         else:
-            add_quantity(events, name, 'redshift', str(row['zCl']), source, kind='cluster')
-        add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+            events[name].add_quantity('redshift', str(row['zCl']), source, kind='cluster')
+        events[name].add_quantity('ebv', str(row['E_B-V_']), source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
 
     result = Vizier.get_catalogs('J/ApJ/746/85/table2')
     table = result[list(result.keys())[0]]
@@ -80,7 +80,7 @@ def do_vizier(events, args, tasks, task_obj, log):
             continue
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2012ApJ...746...85S')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         add_photometry(
             events, name, time=str(row['MJD']), band=row['Filter'], instrument=row['Inst'],
             magnitude=magnitude, e_magnitude=e_magnitude, source=source)
@@ -103,7 +103,7 @@ def do_vizier(events, args, tasks, task_obj, log):
             continue
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2004ApJ...602..571B')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         band = row['Filt']
         system = ''
         telescope = ''
@@ -127,10 +127,10 @@ def do_vizier(events, args, tasks, task_obj, log):
         oldname = name
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014MNRAS.444.3258M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric', error=str(row['e_z']))
-        add_quantity(events, name, 'ra', str(row['_RA']), source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', str(row['_DE']), source, unit='floatdegrees')
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('redshift', str(row['z']), source, kind='heliocentric', error=str(row['e_z']))
+        events[name].add_quantity('ra', str(row['_RA']), source, unit='floatdegrees')
+        events[name].add_quantity('dec', str(row['_DE']), source, unit='floatdegrees')
     events = journal_events(tasks, args, events)
 
     # 2014MNRAS.438.1391P
@@ -141,10 +141,10 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = row['SN']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014MNRAS.438.1391P')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'redshift', str(row['zh']), source, kind='heliocentric')
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('redshift', str(row['zh']), source, kind='heliocentric')
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
     events = journal_events(tasks, args, events)
 
     # 2012ApJ...749...18B
@@ -155,7 +155,7 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = row['Name'].replace(' ', '')
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2012ApJ...749...18B')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         mjd = str(astrotime(2450000.+row['JD'], format='jd').mjd)
         band = row['Filt']
         magnitude = str(row['mag'])
@@ -175,16 +175,16 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = 'SNLS-' + row['SNLS']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2010A&A...523A...7G')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         astrot = astrotime(2450000.+row['Date1'], format='jd').datetime
-        add_quantity(events, name, 'discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
-        add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
-        add_quantity(events, name, 'redshift', str(row['z']), source, kind='heliocentric')
+        events[name].add_quantity('discoverdate', make_date_string(astrot.year, astrot.month, astrot.day), source)
+        events[name].add_quantity('ebv', str(row['E_B-V_']), source)
+        events[name].add_quantity('redshift', str(row['z']), source, kind='heliocentric')
         type_str = row['Type'].replace('*', '?').replace('SN', '').replace('(pec)', ' P').replace('Ia? P?', 'Ia P?')
         add_quantity(
             events, name, 'claimedtype', type_str, source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
     events = journal_events(tasks, args, events)
 
     # 2004A&A...415..863G
@@ -195,18 +195,18 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = 'SN' + row['SN']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2004A&A...415..863G')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         datesplit = row['Date'].split('-')
         date_str = make_date_string(datesplit[0], datesplit[1].lstrip('0'), datesplit[2].lstrip('0'))
-        add_quantity(events, name, 'discoverdate', date_str, source)
-        add_quantity(events, name, 'host', 'Abell ' + str(row['Abell']), source)
-        add_quantity(events, name, 'claimedtype', row['Type'], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        events[name].add_quantity('discoverdate', date_str, source)
+        events[name].add_quantity('host', 'Abell ' + str(row['Abell']), source)
+        events[name].add_quantity('claimedtype', row['Type'], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
         if row['zSN']:
-            add_quantity(events, name, 'redshift', str(row['zSN']), source, kind='spectroscopic')
+            events[name].add_quantity('redshift', str(row['zSN']), source, kind='spectroscopic')
         else:
-            add_quantity(events, name, 'redshift', str(row['zCl']), source, kind='cluster')
+            events[name].add_quantity('redshift', str(row['zCl']), source, kind='cluster')
     events = journal_events(tasks, args, events)
 
     # 2008AJ....136.2306H
@@ -217,10 +217,10 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = 'SDSS-II ' + str(row['SNID'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2008AJ....136.2306H')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
 
     # 2010ApJ...708..661D
     result = Vizier.get_catalogs('J/ApJ/708/661/sn')
@@ -234,11 +234,11 @@ def do_vizier(events, args, tasks, task_obj, log):
             name = 'SN' + name
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2010ApJ...708..661D')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'alias', 'SDSS-II ' + str(row['SDSS-II']), source)
-        add_quantity(events, name, 'claimedtype', 'II P', source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('alias', 'SDSS-II ' + str(row['SDSS-II']), source)
+        events[name].add_quantity('claimedtype', 'II P', source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
 
     result = Vizier.get_catalogs('J/ApJ/708/661/table1')
     table = result[list(result.keys())[0]]
@@ -250,8 +250,8 @@ def do_vizier(events, args, tasks, task_obj, log):
             name = 'SN' + row['SN']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2010ApJ...708..661D')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'redshift', str(row['z']), source, error=str(row['e_z']))
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('redshift', str(row['z']), source, error=str(row['e_z']))
     events = journal_events(tasks, args, events)
 
     # 2014ApJ...795...44R
@@ -262,13 +262,13 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = row['SN']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014ApJ...795...44R')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         astrot = astrotime(row['tdisc'], format='mjd').datetime
-        add_quantity(events, name, 'discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
-        add_quantity(events, name, 'redshift', str(row['z']), source, error=str(row['e_z']), kind='heliocentric')
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
-        add_quantity(events, name, 'claimedtype', 'Ia', source)
+        events[name].add_quantity('discoverdate',  make_date_string(astrot.year, astrot.month, astrot.day), source)
+        events[name].add_quantity('redshift', str(row['z']), source, error=str(row['e_z']), kind='heliocentric')
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
+        events[name].add_quantity('claimedtype', 'Ia', source)
 
     result = Vizier.get_catalogs('J/ApJ/795/44/table6')
     table = result[list(result.keys())[0]]
@@ -277,7 +277,7 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = row['SN']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014ApJ...795...44R')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         if row['mag'] != '--':
             add_photometry(
                 events, name, time=str(row['MJD']), band=row['Filt'], magnitude=str(row['mag']),
@@ -313,7 +313,7 @@ def do_vizier(events, args, tasks, task_obj, log):
             source = events[name].add_source(bibcode=ii189bibdict[row['r_m']])
         else:
             source = events[name].add_source(srcname=ii189refdict[row['r_m']])
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
         add_photometry(events, name, time=mjd, band=band, magnitude=mag, source=uniq_cdl([source, secsource]))
     events = journal_events(tasks, args, events)
@@ -345,21 +345,21 @@ def do_vizier(events, args, tasks, task_obj, log):
         source = (events[name].add_source(bibcode='2014BASI...42...47G') + ',' +
                   events[name].add_source(srcname='Galactic SNRs',
                              url='https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
-        add_quantity(events, name, 'alias', row['SNR'].strip(), source)
-        add_quantity(events, name, 'alias', 'MWSNR '+row['SNR'].strip('G '), source)
+        events[name].add_quantity('alias', row['SNR'].strip(), source)
+        events[name].add_quantity('alias', 'MWSNR '+row['SNR'].strip('G '), source)
 
         if row['Names']:
             names = row['Names'].split(',')
             for nam in names:
-                add_quantity(events, name, 'alias', nam.replace('Vela (XYZ)', 'Vela').strip('()').strip(), source)
+                events[name].add_quantity('alias', nam.replace('Vela (XYZ)', 'Vela').strip('()').strip(), source)
                 if nam.strip()[:2] == 'SN':
-                    add_quantity(events, name, 'discoverdate', nam.strip()[2:], source)
+                    events[name].add_quantity('discoverdate', nam.strip()[2:], source)
 
-        add_quantity(events, name, 'host', 'Milky Way', source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
+        events[name].add_quantity('host', 'Milky Way', source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
     events = journal_events(tasks, args, events)
 
     # 2014MNRAS.442..844F
@@ -371,9 +371,9 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = 'SN' + row['SN']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014MNRAS.442..844F')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'redshift', str(row['zhost']), source, kind='host')
-        add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('redshift', str(row['zhost']), source, kind='host')
+        events[name].add_quantity('ebv', str(row['E_B-V_']), source)
     events = journal_events(tasks, args, events)
 
     result = Vizier.get_catalogs('J/MNRAS/442/844/table2')
@@ -385,7 +385,7 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = 'SN' + str(row['SN'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2014MNRAS.442..844F')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         for band in ['B', 'V', 'R', 'I']:
             bandtag = band + 'mag'
             if bandtag in row and is_number(row[bandtag]) and not isnan(float(row[bandtag])):
@@ -404,13 +404,13 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = ''.join(row['SimbadName'].split(' '))
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2012MNRAS.425.1789S')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'alias', 'SN' + row['SN'], source)
-        add_quantity(events, name, 'host', row['Gal'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('alias', 'SN' + row['SN'], source)
+        events[name].add_quantity('host', row['Gal'], source)
         if is_number(row['cz']):
             red_str = str(round_sig(float(row['cz'])*KM/CLIGHT, sig=get_sig_digits(str(row['cz']))))
-            add_quantity(events, name, 'redshift', red_str, source, kind='heliocentric')
-        add_quantity(events, name, 'ebv', str(row['E_B-V_']), source)
+            events[name].add_quantity('redshift', red_str, source, kind='heliocentric')
+        events[name].add_quantity('ebv', str(row['E_B-V_']), source)
     events = journal_events(tasks, args, events)
 
     # 2015ApJS..219...13W
@@ -422,13 +422,13 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = u'LSQ' + str(row['LSQ'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015ApJS..219...13W')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source)
-        add_quantity(events, name, 'dec', row['DEJ2000'], source)
-        add_quantity(events, name, 'redshift', row['z'], source,
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('ra', row['RAJ2000'], source)
+        events[name].add_quantity('dec', row['DEJ2000'], source)
+        events[name].add_quantity('redshift', row['z'], source,
                      error=row['e_z'], kind='heliocentric')
-        add_quantity(events, name, 'ebv', row['E_B-V_'], source)
-        add_quantity(events, name, 'claimedtype', 'Ia', source)
+        events[name].add_quantity('ebv', row['E_B-V_'], source)
+        events[name].add_quantity('claimedtype', 'Ia', source)
     result = Vizier.get_catalogs('J/ApJS/219/13/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -437,7 +437,7 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = 'LSQ' + row['LSQ']
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015ApJS..219...13W')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         add_photometry(
             events, name, time=str(jd_to_mjd(Decimal(row['JD']))), instrument='QUEST',
             observatory='La Silla', band=row['Filt'], telescope='ESO Schmidt',
@@ -451,8 +451,8 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2213-1745'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2012Natur.491..228C')
-    add_quantity(events, name, 'alias', name, source)
-    add_quantity(events, name, 'claimedtype', 'SLSN-R', source)
+    events[name].add_quantity('alias', name, source)
+    events[name].add_quantity('claimedtype', 'SLSN-R', source)
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         for band in ['g', 'r', 'i']:
@@ -468,8 +468,8 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN1000+0216'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2012Natur.491..228C')
-    add_quantity(events, name, 'alias', name, source)
-    add_quantity(events, name, 'claimedtype', 'SLSN-II?', source)
+    events[name].add_quantity('alias', name, source)
+    events[name].add_quantity('claimedtype', 'SLSN-II?', source)
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         for band in ['g', 'r', 'i']:
@@ -489,7 +489,7 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2011Natur.474..484Q')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         add_photometry(
             events, name, time=row['MJD'], band=row['Filt'], telescope=row['Tel'],
             magnitude=row['mag'], e_magnitude=row['e_mag'], source=source)
@@ -502,7 +502,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'PTF10vdl'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2011ApJ...736..159G')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         add_photometry(
@@ -519,7 +519,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'PTF12gzk'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2012ApJ...760L..33B')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         # Fixing a typo in VizieR table
@@ -537,7 +537,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'PS1-12sk'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2013ApJ...769...39S')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         instrument = ''
@@ -558,7 +558,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2005cs'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2009MNRAS.394.2266P')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     result = Vizier.get_catalogs('J/MNRAS/394/2266/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -613,7 +613,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2003ie'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2013AJ....145...99A')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         if 'Bmag' in row and is_number(row['Bmag']) and not isnan(float(row['Bmag'])):
@@ -637,7 +637,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2008am'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2011ApJ...729..143C')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
 
     result = Vizier.get_catalogs('J/ApJ/729/143/table1')
     table = result[list(result.keys())[0]]
@@ -686,7 +686,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2009bb'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2011ApJ...728...14P')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
 
     result = Vizier.get_catalogs('J/ApJ/728/14/table1')
     table = result[list(result.keys())[0]]
@@ -751,7 +751,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2009nr'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2011PAZh...37..837T')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
 
     result = Vizier.get_catalogs('J/PAZh/37/837/table2')
     table = result[list(result.keys())[0]]
@@ -780,7 +780,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2012aw'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2013MNRAS.433.1871B')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
 
     result = Vizier.get_catalogs('J/MNRAS/433/1871/table3a')
     table = result[list(result.keys())[0]]
@@ -828,7 +828,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2012fr'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2014AJ....148....1Z')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
 
     result = Vizier.get_catalogs('J/AJ/148/1/table2')
     table = result[list(result.keys())[0]]
@@ -898,7 +898,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     name = 'SN2014J'
     events, name = add_event(tasks, args, events, name, log)
     source = events[name].add_source(bibcode='2014AJ....148....1Z')
-    add_quantity(events, name, 'alias', name, source)
+    events[name].add_quantity('alias', name, source)
 
     result = Vizier.get_catalogs('J/ApJ/805/74/table1')
     table = result[list(result.keys())[0]]
@@ -923,7 +923,7 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['SN'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2011ApJ...741...97D')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         add_photometry(events, name, time=str(jd_to_mjd(Decimal(row['JD']))), band=row['Filt'], magnitude=row['mag'],
                        e_magnitude=row['e_mag'] if is_number(row['e_mag']) else '', upperlimit=(not is_number(row['e_mag'])), source=source)
     events = journal_events(tasks, args, events)
@@ -938,14 +938,14 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.448.1206M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'redshift', row['zsp'], source, kind='spectroscopic')
-        add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
-        add_quantity(events, name, 'maxband', 'r', source)
-        add_quantity(events, name, 'claimedtype', 'Ia', source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('redshift', row['zsp'], source, kind='spectroscopic')
+        events[name].add_quantity('maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
+        events[name].add_quantity('maxband', 'r', source)
+        events[name].add_quantity('claimedtype', 'Ia', source)
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table4')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -954,14 +954,14 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.448.1206M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'redshift', row['zph'], source, error=row['e_zph'], kind='photometric')
-        add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
-        add_quantity(events, name, 'maxband', 'r', source)
-        add_quantity(events, name, 'claimedtype', 'Ia?', source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('redshift', row['zph'], source, error=row['e_zph'], kind='photometric')
+        events[name].add_quantity('maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
+        events[name].add_quantity('maxband', 'r', source)
+        events[name].add_quantity('claimedtype', 'Ia?', source)
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table5')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -970,14 +970,14 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.448.1206M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'redshift', row['zsp'], source, kind='spectroscopic')
-        add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
-        add_quantity(events, name, 'maxband', 'r', source)
-        add_quantity(events, name, 'claimedtype', row['Type'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('redshift', row['zsp'], source, kind='spectroscopic')
+        events[name].add_quantity('maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
+        events[name].add_quantity('maxband', 'r', source)
+        events[name].add_quantity('claimedtype', row['Type'], source)
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table6')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -986,13 +986,13 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.448.1206M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
-        add_quantity(events, name, 'maxband', 'r', source)
-        add_quantity(events, name, 'claimedtype', row['Type'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
+        events[name].add_quantity('maxband', 'r', source)
+        events[name].add_quantity('claimedtype', row['Type'], source)
     result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -1001,14 +1001,14 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.448.1206M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
-        add_quantity(events, name, 'maxband', 'r', source)
-        add_quantity(events, name, 'claimedtype', row['Typesoft']+'?', source)
-        add_quantity(events, name, 'claimedtype', row['Typepsnid']+'?', source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
+        events[name].add_quantity('maxband', 'r', source)
+        events[name].add_quantity('claimedtype', row['Typesoft']+'?', source)
+        events[name].add_quantity('claimedtype', row['Typepsnid']+'?', source)
     result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -1017,13 +1017,13 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['Name'])
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2015MNRAS.448.1206M')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'discoverdate', '20' + name[4:6], source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
-        add_quantity(events, name, 'maxband', 'r', source)
-        add_quantity(events, name, 'claimedtype', 'Candidate', source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
+        events[name].add_quantity('maxband', 'r', source)
+        events[name].add_quantity('claimedtype', 'Candidate', source)
     events = journal_events(tasks, args, events)
 
     # 2012AJ....143..126B
@@ -1037,8 +1037,8 @@ def do_vizier(events, args, tasks, task_obj, log):
         name = str(row['SN']).replace(' ', '')
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2012AJ....143..126B')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'claimedtype', 'Ia-' + row['Wcl'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('claimedtype', 'Ia-' + row['Wcl'], source)
     events = journal_events(tasks, args, events)
 
     # 2015ApJS..220....9F
@@ -1050,18 +1050,18 @@ def do_vizier(events, args, tasks, task_obj, log):
             row = convert_aq_output(row)
             events, name = add_event(tasks, args, events, row['SN'], log)
             source = events[name].add_source(bibcode='2015ApJS..220....9F')
-            add_quantity(events, name, 'alias', name, source)
-            add_quantity(events, name, 'claimedtype', row['Type'], source)
-            add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-            add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
+            events[name].add_quantity('alias', name, source)
+            events[name].add_quantity('claimedtype', row['Type'], source)
+            events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+            events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
             if '?' not in row['Host']:
-                add_quantity(events, name, 'host', row['Host'].replace('_', ' '), source)
+                events[name].add_quantity('host', row['Host'].replace('_', ' '), source)
             kind = ''
             if 'Host' in row['n_z']:
                 kind = 'host'
             elif 'Spectrum' in row['n_z']:
                 kind = 'spectroscopic'
-            add_quantity(events, name, 'redshift', row['z'], source, error=row['e_z'], kind=kind)
+            events[name].add_quantity('redshift', row['z'], source, error=row['e_z'], kind=kind)
 
     result = Vizier.get_catalogs('J/ApJS/220/9/table8')
     table = result[list(result.keys())[0]]
@@ -1070,8 +1070,8 @@ def do_vizier(events, args, tasks, task_obj, log):
         row = convert_aq_output(row)
         events, name = add_event(tasks, args, events, row['SN'], log)
         source = events[name].add_source(bibcode='2015ApJS..220....9F')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'claimedtype', row['Type'], source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('claimedtype', row['Type'], source)
         add_photometry(
             events, name, time=row['MJD'], band=row['Band'], magnitude=row['mag'],
             e_magnitude=row['e_mag'], telescope=row['Tel'], source=source)
@@ -1084,13 +1084,13 @@ def do_vizier(events, args, tasks, task_obj, log):
         row = convert_aq_output(row)
         events, name = add_event(tasks, args, events, 'SN'+row['SN'], log)
         source = events[name].add_source(bibcode='2008ApJ...673..999P')
-        add_quantity(events, name, 'alias', name, source)
-        add_quantity(events, name, 'ra', row['RAJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'dec', row['DEJ2000'], source, unit='floatdegrees')
-        add_quantity(events, name, 'redshift', row['z'], source, kind='host')
-        add_quantity(events, name, 'hostra', row['RAGdeg'], source, unit='floatdegrees')
-        add_quantity(events, name, 'hostdec', row['DEGdeg'], source, unit='floatdegrees')
-        add_quantity(events, name, 'claimedtype', row['Type'].strip(':'), source)
+        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('ra', row['RAJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('dec', row['DEJ2000'], source, unit='floatdegrees')
+        events[name].add_quantity('redshift', row['z'], source, kind='host')
+        events[name].add_quantity('hostra', row['RAGdeg'], source, unit='floatdegrees')
+        events[name].add_quantity('hostdec', row['DEGdeg'], source, unit='floatdegrees')
+        events[name].add_quantity('claimedtype', row['Type'].strip(':'), source)
     events = journal_events(tasks, args, events)
 
     return events
@@ -1112,35 +1112,35 @@ def do_lennarz(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
 
         source = events[name].add_source(bibcode=bibcode)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
         if row['RAJ2000']:
-            add_quantity(events, name, 'ra', row['RAJ2000'], source)
+            events[name].add_quantity('ra', row['RAJ2000'], source)
         if row['DEJ2000']:
-            add_quantity(events, name, 'dec', row['DEJ2000'], source)
+            events[name].add_quantity('dec', row['DEJ2000'], source)
         if row['RAG']:
-            add_quantity(events, name, 'hostra', row['RAG'], source)
+            events[name].add_quantity('hostra', row['RAG'], source)
         if row['DEG']:
-            add_quantity(events, name, 'hostdec', row['DEG'], source)
+            events[name].add_quantity('hostdec', row['DEG'], source)
         if row['Gal']:
-            add_quantity(events, name, 'host', row['Gal'], source)
+            events[name].add_quantity('host', row['Gal'], source)
         if row['Type']:
             claimedtypes = row['Type'].split('|')
             for claimedtype in claimedtypes:
-                add_quantity(events, name, 'claimedtype', claimedtype.strip(' -'), source)
+                events[name].add_quantity('claimedtype', claimedtype.strip(' -'), source)
         if row['z']:
             if name not in ['SN1985D', 'SN2004cq']:
-                add_quantity(events, name, 'redshift', row['z'], source, kind='host')
+                events[name].add_quantity('redshift', row['z'], source, kind='host')
         if row['Dist']:
             if row['e_Dist']:
-                add_quantity(events, name, 'lumdist', row['Dist'], source, error=row['e_Dist'], kind='host')
+                events[name].add_quantity('lumdist', row['Dist'], source, error=row['e_Dist'], kind='host')
             else:
-                add_quantity(events, name, 'lumdist', row['Dist'], source, kind='host')
+                events[name].add_quantity('lumdist', row['Dist'], source, kind='host')
 
         if row['Ddate']:
             datestring = row['Ddate'].replace('-', '/')
 
-            add_quantity(events, name, 'discoverdate', datestring, source)
+            events[name].add_quantity('discoverdate', datestring, source)
 
             if 'photometry' not in events[name]:
                 if 'Dmag' in row and is_number(row['Dmag']) and not isnan(float(row['Dmag'])):
@@ -1156,7 +1156,7 @@ def do_lennarz(events, args, tasks, task_obj, log):
         if row['Mdate']:
             datestring = row['Mdate'].replace('-', '/')
 
-            add_quantity(events, name, 'maxdate', datestring, source)
+            events[name].add_quantity('maxdate', datestring, source)
 
             if 'photometry' not in events[name]:
                 if 'MMag' in row and is_number(row['MMag']) and not isnan(float(row['MMag'])):
@@ -1202,9 +1202,9 @@ def do_snls_spectra(events, args, tasks, task_obj, log):
         oldname = name
         events, name = add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2009A&A...507...85B')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
-        add_quantity(events, name, 'discoverdate', '20' + fileparts[1][:2], source)
+        events[name].add_quantity('discoverdate', '20' + fileparts[1][:2], source)
 
         f = open(fname, 'r')
         data = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -1213,7 +1213,7 @@ def do_snls_spectra(events, args, tasks, task_obj, log):
             if row[0] == '@TELESCOPE':
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                add_quantity(events, name, 'redshift', row[1].strip(), source)
+                events[name].add_quantity('redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))

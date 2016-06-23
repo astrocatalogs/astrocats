@@ -43,7 +43,7 @@ def do_ptf(events, args, tasks, task_obj, log):
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
                 events, name = add_event(tasks, args, events, name, log)
                 source = events[name].add_source(bibcode='2012PASP..124..668Y')
-                add_quantity(events, name, 'alias', alias, source)
+                events[name].add_quantity('alias', alias, source)
             else:
                 events, name = add_event(tasks, args, events, name, log)
 
@@ -61,17 +61,17 @@ def do_ptf(events, args, tasks, task_obj, log):
                 name = 'PTF' + cols[0]
             events, name = add_event(tasks, args, events, name, log)
             source = events[name].add_source(bibcode='2016arXiv160408207P')
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
             if alias:
-                add_quantity(events, name, 'alias', alias, source)
-            add_quantity(events, name, 'ra', cols[1], source)
-            add_quantity(events, name, 'dec', cols[2], source)
-            add_quantity(events, name, 'claimedtype', 'SLSN-' + cols[3], source)
-            add_quantity(events, name, 'redshift', cols[4], source, kind='spectroscopic')
+                events[name].add_quantity('alias', alias, source)
+            events[name].add_quantity('ra', cols[1], source)
+            events[name].add_quantity('dec', cols[2], source)
+            events[name].add_quantity('claimedtype', 'SLSN-' + cols[3], source)
+            events[name].add_quantity('redshift', cols[4], source, kind='spectroscopic')
             maxdate = cols[6].replace('-', '/')
             upl = maxdate.startswith('<')
-            add_quantity(events, name, 'maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
-            add_quantity(events, name, 'ebv', cols[7], source, kind='spectroscopic')
+            events[name].add_quantity('maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
+            events[name].add_quantity('ebv', cols[7], source, kind='spectroscopic')
             events, name = add_event(tasks, args, events, 'PTF' + suffix, log)
 
     events = journal_events(tasks, args, events)

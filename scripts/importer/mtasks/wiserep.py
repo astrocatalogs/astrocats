@@ -144,7 +144,7 @@ def do_wiserep_spectra(events, args, tasks, task_obj, log):
                             # print(name + ' ' + claimedtype + ' ' + epoch + ' ' + observer + ' ' + reducer + ' ' + specfile + ' ' + bibcode + ' ' + redshift)
 
                             secondarysource = events[name].add_source(srcname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
-                            add_quantity(events, name, 'alias', name, secondarysource)
+                            events[name].add_quantity('alias', name, secondarysource)
                             if bibcode:
                                 newbibcode = bibcode
                                 if bibcode in wiserepbibcorrectdict:
@@ -158,8 +158,8 @@ def do_wiserep_spectra(events, args, tasks, task_obj, log):
                                 sources = secondarysource
 
                             if claimedtype not in ['Other']:
-                                add_quantity(events, name, 'claimedtype', claimedtype, secondarysource)
-                            add_quantity(events, name, 'redshift', redshift, secondarysource)
+                                events[name].add_quantity('claimedtype', claimedtype, secondarysource)
+                            events[name].add_quantity('redshift', redshift, secondarysource)
 
                             if not specpath:
                                 continue

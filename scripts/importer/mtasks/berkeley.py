@@ -35,7 +35,7 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
 
         sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
                                 secondary=True)
-        add_quantity(events, name, 'alias', name, sec_source)
+        events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if phot['Reference']:
             sources += [events[name].add_source(bibcode=phot['Reference'])]
@@ -43,12 +43,12 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
             for ct in phot['Type'].strip().split(','):
-                add_quantity(events, name, 'claimedtype', ct.replace('-norm', '').strip(), sources)
+                events[name].add_quantity('claimedtype', ct.replace('-norm', '').strip(), sources)
         if phot['DiscDate']:
-            add_quantity(events, name, 'discoverdate', phot['DiscDate'].replace('-', '/'), sources)
+            events[name].add_quantity('discoverdate', phot['DiscDate'].replace('-', '/'), sources)
         if phot['HostName']:
             host = urllib.parse.unquote(phot['HostName']).replace('*', '')
-            add_quantity(events, name, 'host', host, sources)
+            events[name].add_quantity('host', host, sources)
         filename = phot['Filename'] if phot['Filename'] else ''
 
         if not filename:
@@ -113,7 +113,7 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
 
         sec_source = add_source(
             events, name, refname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)
-        add_quantity(events, name, 'alias', name, sec_source)
+        events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
             sources += [events[name].add_source(bibcode=spectrum['Reference'])]
@@ -121,13 +121,13 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
             for ct in spectrum['Type'].strip().split(','):
-                add_quantity(events, name, 'claimedtype', ct.replace('-norm', '').strip(), sources)
+                events[name].add_quantity('claimedtype', ct.replace('-norm', '').strip(), sources)
         if spectrum['DiscDate']:
             ddate = spectrum['DiscDate'].replace('-', '/')
-            add_quantity(events, name, 'discoverdate', ddate, sources)
+            events[name].add_quantity('discoverdate', ddate, sources)
         if spectrum['HostName']:
             host = urllib.parse.unquote(spectrum['HostName']).replace('*', '')
-            add_quantity(events, name, 'host', host, sources)
+            events[name].add_quantity('host', host, sources)
         if spectrum['UT_Date']:
             epoch = str(spectrum['UT_Date'])
             year = epoch[:4]

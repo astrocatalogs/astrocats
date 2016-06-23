@@ -23,14 +23,14 @@ def do_ps_mds(events, args, tasks, task_obj, log):
             cols = [x.strip() for x in row.split(',')]
             events, name = add_event(tasks, args, events, cols[0], log)
             source = events[name].add_source(bibcode='2015ApJ...799..208S')
-            add_quantity(events, name, 'alias', name, source)
-            add_quantity(events, name, 'ra', cols[2], source)
-            add_quantity(events, name, 'dec', cols[3], source)
+            events[name].add_quantity('alias', name, source)
+            events[name].add_quantity('ra', cols[2], source)
+            events[name].add_quantity('dec', cols[3], source)
             astrot = astrotime(float(cols[4]), format='mjd').datetime
             ddate = make_date_string(astrot.year, astrot.month, astrot.day)
-            add_quantity(events, name, 'discoverdate', ddate, source)
-            add_quantity(events, name, 'redshift', cols[5], source, kind='spectroscopic')
-            add_quantity(events, name, 'claimedtype', 'II P', source)
+            events[name].add_quantity('discoverdate', ddate, source)
+            events[name].add_quantity('redshift', cols[5], source, kind='spectroscopic')
+            events[name].add_quantity('claimedtype', 'II P', source)
     events = journal_events(tasks, args, events)
     return events
 
@@ -137,7 +137,7 @@ def do_ps_threepi(events, args, tasks, task_obj, log):
             events, name = add_event(tasks, args, events, name, log)
             sources = [events[name].add_source(srcname='Pan-STARRS 3Pi',
                                   url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
-            add_quantity(events, name, 'alias', name, sources[0])
+            events[name].add_quantity('alias', name, sources[0])
             for ref in refs:
                 sources.append(events[name].add_source(srcname=ref[0], url=ref[1]))
             source = uniq_cdl(sources)
@@ -146,10 +146,10 @@ def do_ps_threepi(events, args, tasks, task_obj, log):
                 if alias[:3] in ['CSS', 'SSS', 'MLS']:
                     newalias = alias.replace('-', ':', 1)
                 newalias = newalias.replace('PSNJ', 'PSN J')
-                add_quantity(events, name, 'alias', newalias, source)
-            add_quantity(events, name, 'ra', ra, source)
-            add_quantity(events, name, 'dec', dec, source)
-            add_quantity(events, name, 'claimedtype', ctype, source)
+                events[name].add_quantity('alias', newalias, source)
+            events[name].add_quantity('ra', ra, source)
+            events[name].add_quantity('dec', dec, source)
+            events[name].add_quantity('claimedtype', ctype, source)
 
             fname2 = os.path.join(PATH.REPO_EXTERNAL, '3pi/candidate-')
             fname2 += pslink.rstrip('/').split('/')[-1] + '.html'
@@ -210,9 +210,9 @@ def do_ps_threepi(events, args, tasks, task_obj, log):
             # Skip galaxies with just SDSS id
             if is_number(hostname):
                 continue
-            add_quantity(events, name, 'host', hostname, source)
+            events[name].add_quantity('host', hostname, source)
             if redshift:
-                add_quantity(events, name, 'redshift', redshift, source, kind='host')
+                events[name].add_quantity('redshift', redshift, source, kind='host')
             if args.update:
                 events = journal_events(tasks, args, events)
         events = journal_events(tasks, args, events)

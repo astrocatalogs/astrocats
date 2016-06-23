@@ -96,7 +96,7 @@ def do_ogle(events, args, tasks, task_obj, log):
 
                 lcdat = csvtxt.splitlines()
                 sources = [events[name].add_source(srcname=reference, url=refurl)]
-                add_quantity(events, name, 'alias', name, sources[0])
+                events[name].add_quantity('alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
                     sources.append(events[name].add_source(srcname=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
@@ -104,18 +104,18 @@ def do_ogle(events, args, tasks, task_obj, log):
                 if name.startswith('OGLE'):
                     if name[4] == '-':
                         if is_number(name[5:9]):
-                            add_quantity(events, name, 'discoverdate', name[5:9], sources)
+                            events[name].add_quantity('discoverdate', name[5:9], sources)
                     else:
                         if is_number(name[4:6]):
-                            add_quantity(events, name, 'discoverdate', '20' + name[4:6], sources)
+                            events[name].add_quantity('discoverdate', '20' + name[4:6], sources)
 
                 # RA and Dec from OGLE pages currently not reliable
-                # add_quantity(events, name, 'ra', ra, sources)
-                # add_quantity(events, name, 'dec', dec, sources)
+                # events[name].add_quantity('ra', ra, sources)
+                # events[name].add_quantity('dec', dec, sources)
                 if claimedtype and claimedtype != '-':
-                    add_quantity(events, name, 'claimedtype', claimedtype, sources)
+                    events[name].add_quantity('claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
-                    add_quantity(events, name, 'claimedtype', 'Candidate', sources)
+                    events[name].add_quantity('claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()
                     mjd = str(jd_to_mjd(Decimal(row[0])))

@@ -28,18 +28,18 @@ def do_csp_photo(events, args, tasks, task_obj, log):
         refbib = '2010AJ....139..519C'
         refurl = 'http://csp.obs.carnegiescience.edu/data'
         source = events[name].add_source(bibcode=refbib, srcname=reference, url=refurl)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
         year = re.findall(r'\d+', name)[0]
-        add_quantity(events, name, 'discoverdate', year, source)
+        events[name].add_quantity('discoverdate', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
                     redz = row[0].split(' ')[-1]
-                    add_quantity(events, name, 'redshift', redz, source, kind='cmb')
-                    add_quantity(events, name, 'ra', row[1].split(' ')[-1], source)
-                    add_quantity(events, name, 'dec', row[2].split(' ')[-1], source)
+                    events[name].add_quantity('redshift', redz, source, kind='cmb')
+                    events[name].add_quantity('ra', row[1].split(' ')[-1], source)
+                    events[name].add_quantity('dec', row[2].split(' ')[-1], source)
                 continue
             for v, val in enumerate(row):
                 if v == 0:
@@ -74,7 +74,7 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
         telescope = fileparts[-2]
         instrument = fileparts[-1]
         source = events[name].add_source(bibcode='2013ApJ...773...53F')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
 
         data = csv.reader(open(fname, 'r'), delimiter=' ', skipinitialspace=True)
         specdata = []
@@ -83,7 +83,7 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
                 jd = row[1].strip()
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
-                add_quantity(events, name, 'redshift', row[1].strip(), source)
+                events[name].add_quantity('redshift', row[1].strip(), source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))

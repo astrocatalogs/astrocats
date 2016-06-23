@@ -29,7 +29,7 @@ def do_donations(events, args, tasks, task_obj, log):
         if not bibcode:
             raise ValueError('Bibcode not found!')
         source = events[name].add_source(bibcode=bibcode)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         with open(datafile, 'r') as f:
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
             for r, rrow in enumerate(tsvin):
@@ -66,28 +66,28 @@ def do_donations(events, args, tasks, task_obj, log):
             name = 'MCSNR ' + row[0]
             events, name = add_event(tasks, args, events, name, log)
             source = events[name].add_source(bibcode='2016A&A...585A.162M')
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
             if row[1] != 'noname':
-                add_quantity(events, name, 'alias', row[1], source)
-            add_quantity(events, name, 'ra', row[2], source)
-            add_quantity(events, name, 'dec', row[3], source)
-            add_quantity(events, name, 'host', 'LMC', source)
+                events[name].add_quantity('alias', row[1], source)
+            events[name].add_quantity('ra', row[2], source)
+            events[name].add_quantity('dec', row[3], source)
+            events[name].add_quantity('host', 'LMC', source)
             if row[4] == '1':
-                add_quantity(events, name, 'claimedtype', 'Ia', source)
+                events[name].add_quantity('claimedtype', 'Ia', source)
             elif row[4] == '2':
-                add_quantity(events, name, 'claimedtype', 'CC', source)
+                events[name].add_quantity('claimedtype', 'CC', source)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'Maggi-04-11-16/SMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             events, name = add_event(tasks, args, events, name, log)
             source = events[name].add_source(srcname='Pierre Maggi')
-            add_quantity(events, name, 'alias', name, source)
-            add_quantity(events, name, 'alias', row[1], source)
-            add_quantity(events, name, 'alias', row[2], source)
-            add_quantity(events, name, 'ra', row[3], source)
-            add_quantity(events, name, 'dec', row[4], source)
-            add_quantity(events, name, 'host', 'SMC', source)
+            events[name].add_quantity('alias', name, source)
+            events[name].add_quantity('alias', row[1], source)
+            events[name].add_quantity('alias', row[2], source)
+            events[name].add_quantity('ra', row[3], source)
+            events[name].add_quantity('dec', row[4], source)
+            events[name].add_quantity('host', 'SMC', source)
     events = journal_events(tasks, args, events)
 
     # Galbany 04-18-16 donation
@@ -112,10 +112,10 @@ def do_donations(events, args, tasks, task_obj, log):
                         name += (value[6].upper() if len(value) == 7 else value[6:])
                         events, name = add_event(tasks, args, events, name, log)
                         source = events[name].add_source(bibcode=bibcode)
-                        add_quantity(events, name, 'alias', name, source)
+                        events[name].add_quantity('alias', name, source)
                     elif field == 'type':
                         claimedtype = value.replace('SN', '')
-                        add_quantity(events, name, 'claimedtype', claimedtype, source)
+                        events[name].add_quantity('claimedtype', claimedtype, source)
                     elif field == 'zhel':
                         zhel = value
                     elif field == 'redshift_error':
@@ -123,17 +123,17 @@ def do_donations(events, args, tasks, task_obj, log):
                     elif field == 'zcmb':
                         zcmb = value
                     elif field == 'ra':
-                        add_quantity(events, name, 'ra', value, source, unit='floatdegrees')
+                        events[name].add_quantity('ra', value, source, unit='floatdegrees')
                     elif field == 'dec':
-                        add_quantity(events, name, 'dec', value, source, unit='floatdegrees')
+                        events[name].add_quantity('dec', value, source, unit='floatdegrees')
                     elif field == 'host':
                         value = value.replace('- ', '-').replace('G ', 'G')
-                        add_quantity(events, name, 'host', value, source)
+                        events[name].add_quantity('host', value, source)
                     elif field == 'e(b-v)_mw':
-                        add_quantity(events, name, 'ebv', value, source)
+                        events[name].add_quantity('ebv', value, source)
 
-        add_quantity(events, name, 'redshift', zhel, source, error=zerr, kind='heliocentric')
-        add_quantity(events, name, 'redshift', zcmb, source, error=zerr, kind='cmb')
+        events[name].add_quantity('redshift', zhel, source, error=zerr, kind='heliocentric')
+        events[name].add_quantity('redshift', zcmb, source, error=zerr, kind='cmb')
 
         for path in photfiles:
             with open(path, 'r') as f:
@@ -161,7 +161,7 @@ def do_donations(events, args, tasks, task_obj, log):
         source = add_source(
             events, name, refname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
             url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         with open(fi, 'r') as f:
             lines = f.read().splitlines()
             for line in lines:
@@ -186,8 +186,8 @@ def do_donations(events, args, tasks, task_obj, log):
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
     events, name = add_event(tasks, args, events, 'SN2015bn', log)
     source = events[name].add_source(bibcode='2016arXiv160304748N')
-    add_quantity(events, name, 'alias', name, source)
-    add_quantity(events, name, 'alias', 'PS15ae', source)
+    events[name].add_quantity('alias', name, source)
+    events[name].add_quantity('alias', 'PS15ae', source)
     for fi in pbar(files, current_task):
         telescope = os.path.basename(fi).split('_')[1]
         with open(fi, 'r') as f:

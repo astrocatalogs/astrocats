@@ -31,7 +31,7 @@ def do_snf_specta(events, args, tasks, task_obj, log):
         sec_source = add_source(
             events, name, refname=sec_reference, url=sec_refurl, bibcode=sec_bibcode,
             secondary=True)
-        add_quantity(events, name, 'alias', name, sec_source)
+        events[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]
         source = events[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])

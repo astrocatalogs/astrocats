@@ -44,10 +44,10 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = events[name].add_source(srcname=secondaryname, url=secondaryurl,
                                      secondary=True, acknowledgment=ACKN_CFA)
-        add_quantity(events, name, 'alias', name, secondarysource)
+        events[name].add_quantity('alias', name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
-        add_quantity(events, name, 'discoverdate', year, secondarysource)
+        events[name].add_quantity('discoverdate', year, secondarysource)
 
         eventbands = list(eventparts[1])
 
@@ -109,8 +109,8 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
             events, name = add_event(tasks, args, events, name, log)
 
             source = events[name].add_source(bibcode='2012ApJS..200...12H')
-            add_quantity(events, name, 'alias', name, source)
-            add_quantity(events, name, 'claimedtype', 'Ia', source)
+            events[name].add_quantity('alias', name, source)
+            events[name].add_quantity('claimedtype', 'Ia', source)
             add_photometry(
                 events, name, u_time='MJD', time=row[2].strip(), band=row[1].strip(),
                 magnitude=row[6].strip(), e_magnitude=row[7].strip(), source=source)
@@ -123,7 +123,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
             events, name = add_event(tasks, args, events, name, log)
 
             source = events[name].add_source(bibcode='2014ApJS..213...19B')
-            add_quantity(events, name, 'alias', name, source)
+            events[name].add_quantity('alias', name, source)
             add_photometry(
                 events, name, u_time='MJD', time=row[2], band=row[1], magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard', source=source)
@@ -152,7 +152,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
@@ -197,7 +197,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
@@ -237,7 +237,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
-        add_quantity(events, name, 'alias', name, source)
+        events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             if not os.path.isfile(fname):
                 continue

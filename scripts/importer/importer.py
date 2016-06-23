@@ -118,7 +118,7 @@ def import_main(args=None, **kwargs):
         log.debug("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
-        getattr(mod, func_name)(events, args, tasks, task_obj, log)
+        getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
         log.debug("{} Events".format(len(events)))
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         log.debug("... {} Events, {} Stubs".format(len(events), len(stubs)))
@@ -199,13 +199,13 @@ def do_nedd(events, args, tasks, task_obj, log):
         if name:
             events, name = add_event(tasks, args, events, name, log)
             sec_source = events[name].add_source(srcname=reference, url=refurl, secondary=True)
-            add_quantity(events, name, 'alias', name, sec_source)
+            events[name].add_quantity('alias', name, sec_source)
             if bibcode:
                 source = events[name].add_source(bibcode=bibcode)
                 sources = uniq_cdl([source, sec_source])
             else:
                 sources = sec_source
-            add_quantity(events, name, 'comovingdist', dist, sources)
+            events[name].add_quantity('comovingdist', dist, sources)
         oldhostname = hostname
 
     events = journal_events(tasks, args, events)

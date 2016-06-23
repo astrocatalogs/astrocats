@@ -73,8 +73,8 @@ def do_rochester(events, args, tasks, task_obj, log):
             source = events[name].add_source(srcname=reference, url=refurl)
             sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, secondary=True)
             sources = uniq_cdl(list(filter(None, [source, sec_source])))
-            add_quantity(events, name, 'alias', name, sources)
-            add_quantity(events, name, 'alias', sn, sources)
+            events[name].add_quantity('alias', name, sources)
+            events[name].add_quantity('alias', sn, sources)
 
             if cols[14].contents:
                 if aka == 'SNR G1.9+0.3':
@@ -86,19 +86,19 @@ def do_rochester(events, args, tasks, task_obj, log):
                 if 'POSSIBLE' in aka.upper() and ra and dec:
                     aka = 'PSN J' + ra.replace(':', '').replace('.', '')
                     aka += dec.replace(':', '').replace('.', '')
-                add_quantity(events, name, 'alias', aka, sources)
+                events[name].add_quantity('alias', aka, sources)
 
             if str(cols[1].contents[0]).strip() != 'unk':
                 type = str(cols[1].contents[0]).strip(' :,')
-                add_quantity(events, name, 'claimedtype', type, sources)
+                events[name].add_quantity('claimedtype', type, sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
-                add_quantity(events, name, 'host', str(cols[2].contents[0]).strip(), sources)
-            add_quantity(events, name, 'ra', ra, sources)
-            add_quantity(events, name, 'dec', dec, sources)
+                events[name].add_quantity('host', str(cols[2].contents[0]).strip(), sources)
+            events[name].add_quantity('ra', ra, sources)
+            events[name].add_quantity('dec', dec, sources)
             if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[6].contents[0]).strip()), format='jd').datetime
                 ddate = make_date_string(astrot.year, astrot.month, astrot.day)
-                add_quantity(events, name, 'discoverdate', ddate, sources)
+                events[name].add_quantity('discoverdate', ddate, sources)
             if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
                 astrot = astrotime(float(str(cols[7].contents[0]).strip()), format='jd')
                 if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
@@ -107,8 +107,8 @@ def do_rochester(events, args, tasks, task_obj, log):
                     add_photometry(
                         events, name, time=str(astrot.mjd), magnitude=mag, source=sources)
             if cols[11].contents[0] != 'n/a':
-                add_quantity(events, name, 'redshift', str(cols[11].contents[0]).strip(), sources)
-            add_quantity(events, name, 'discoverer', str(cols[13].contents[0]).strip(), sources)
+                events[name].add_quantity('redshift', str(cols[11].contents[0]).strip(), sources)
+            events[name].add_quantity('discoverer', str(cols[13].contents[0]).strip(), sources)
             if args.update:
                 events = journal_events(tasks, args, events)
 
@@ -131,7 +131,7 @@ def do_rochester(events, args, tasks, task_obj, log):
                 events, name = add_event(tasks, args, events, name, log)
                 sec_source = add_source(
                     events, name, refname=sec_ref, url=sec_refurl, secondary=True)
-                add_quantity(events, name, 'alias', name, sec_source)
+                events[name].add_quantity('alias', name, sec_source)
 
                 if not is_number(row[1]):
                     continue
@@ -165,7 +165,7 @@ def do_rochester(events, args, tasks, task_obj, log):
                     else:
                         reference = ' '.join(row[refind:])
                         source = events[name].add_source(srcname=reference)
-                        add_quantity(events, name, 'alias', name, sec_source)
+                        events[name].add_quantity('alias', name, sec_source)
                         sources = uniq_cdl([source, sec_source])
                 else:
                     sources = sec_source
