@@ -70,8 +70,8 @@ def do_rochester(events, args, tasks, task_obj, log):
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()
-            source = add_source(events, name, srcname=reference, url=refurl)
-            sec_source = add_source(events, name, srcname=sec_ref, url=sec_refurl, secondary=True)
+            source = events[name].add_source(srcname=reference, url=refurl)
+            sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, secondary=True)
             sources = uniq_cdl(list(filter(None, [source, sec_source])))
             add_quantity(events, name, 'alias', name, sources)
             add_quantity(events, name, 'alias', sn, sources)
@@ -164,7 +164,7 @@ def do_rochester(events, args, tasks, task_obj, log):
                         sources = sec_source
                     else:
                         reference = ' '.join(row[refind:])
-                        source = add_source(events, name, srcname=reference)
+                        source = events[name].add_source(srcname=reference)
                         add_quantity(events, name, 'alias', name, sec_source)
                         sources = uniq_cdl([source, sec_source])
                 else:

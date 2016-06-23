@@ -42,7 +42,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        secondarysource = add_source(events, name, srcname=secondaryname, url=secondaryurl,
+        secondarysource = events[name].add_source(srcname=secondaryname, url=secondaryurl,
                                      secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, secondarysource)
 
@@ -68,7 +68,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
                             refstr = ' '.join(row[2+ci:])
                             refstr = refstr.replace('(', '').replace(')', '')
                             bibcode = unescape(refstr)
-                            source = add_source(events, name, bibcode=bibcode)
+                            source = events[name].add_source(bibcode=bibcode)
                 elif len(row) > 1 and row[1] == 'HJD':
                     tu = 'HJD'
                 continue
@@ -108,7 +108,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
 
             events, name = add_event(tasks, args, events, name, log)
 
-            source = add_source(events, name, bibcode='2012ApJS..200...12H')
+            source = events[name].add_source(bibcode='2012ApJS..200...12H')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'claimedtype', 'Ia', source)
             add_photometry(
@@ -122,7 +122,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
             name = 'SN' + row[0]
             events, name = add_event(tasks, args, events, name, log)
 
-            source = add_source(events, name, bibcode='2014ApJS..213...19B')
+            source = events[name].add_source(bibcode='2014ApJS..213...19B')
             add_quantity(events, name, 'alias', name, source)
             add_photometry(
                 events, name, u_time='MJD', time=row[2], band=row[1], magnitude=row[3],
@@ -151,7 +151,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -173,7 +173,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
-            sources = uniq_cdl([source, add_source(events, name, bibcode='2012AJ....143..126B'), add_source(events, name, bibcode='2008AJ....135.1598M')])
+            sources = uniq_cdl([source, events[name].add_source(bibcode='2012AJ....143..126B'), events[name].add_source(bibcode='2008AJ....135.1598M')])
             add_spectrum(
                 name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', filename=filename,
                 wavelengths=wavelengths, fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument,
@@ -196,7 +196,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -213,7 +213,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
-            sources = uniq_cdl([source, add_source(events, name, bibcode='2014AJ....147...99M')])
+            sources = uniq_cdl([source, events[name].add_source(bibcode='2014AJ....147...99M')])
             add_spectrum(
                 name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=sources,
@@ -236,7 +236,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = add_source(events, name, srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         add_quantity(events, name, 'alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             if not os.path.isfile(fname):

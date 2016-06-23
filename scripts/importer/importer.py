@@ -198,10 +198,10 @@ def do_nedd(events, args, tasks, task_obj, log):
 
         if name:
             events, name = add_event(tasks, args, events, name, log)
-            sec_source = add_source(events, name, srcname=reference, url=refurl, secondary=True)
+            sec_source = events[name].add_source(srcname=reference, url=refurl, secondary=True)
             add_quantity(events, name, 'alias', name, sec_source)
             if bibcode:
-                source = add_source(events, name, bibcode=bibcode)
+                source = events[name].add_source(bibcode=bibcode)
                 sources = uniq_cdl([source, sec_source])
             else:
                 sources = sec_source

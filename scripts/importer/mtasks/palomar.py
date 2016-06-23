@@ -42,7 +42,7 @@ def do_ptf(events, args, tasks, task_obj, log):
                 alias = name.split('(')[0].strip(' ')
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
                 events, name = add_event(tasks, args, events, name, log)
-                source = add_source(events, name, bibcode='2012PASP..124..668Y')
+                source = events[name].add_source(bibcode='2012PASP..124..668Y')
                 add_quantity(events, name, 'alias', alias, source)
             else:
                 events, name = add_event(tasks, args, events, name, log)
@@ -60,7 +60,7 @@ def do_ptf(events, args, tasks, task_obj, log):
             else:
                 name = 'PTF' + cols[0]
             events, name = add_event(tasks, args, events, name, log)
-            source = add_source(events, name, bibcode='2016arXiv160408207P')
+            source = events[name].add_source(bibcode='2016arXiv160408207P')
             add_quantity(events, name, 'alias', name, source)
             if alias:
                 add_quantity(events, name, 'alias', alias, source)

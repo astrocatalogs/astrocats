@@ -28,7 +28,7 @@ def do_donations(events, args, tasks, task_obj, log):
                 bibcode = bc
         if not bibcode:
             raise ValueError('Bibcode not found!')
-        source = add_source(events, name, bibcode=bibcode)
+        source = events[name].add_source(bibcode=bibcode)
         add_quantity(events, name, 'alias', name, source)
         with open(datafile, 'r') as f:
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
@@ -65,7 +65,7 @@ def do_donations(events, args, tasks, task_obj, log):
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/LMCSNRs'):
             name = 'MCSNR ' + row[0]
             events, name = add_event(tasks, args, events, name, log)
-            source = add_source(events, name, bibcode='2016A&A...585A.162M')
+            source = events[name].add_source(bibcode='2016A&A...585A.162M')
             add_quantity(events, name, 'alias', name, source)
             if row[1] != 'noname':
                 add_quantity(events, name, 'alias', row[1], source)
@@ -81,7 +81,7 @@ def do_donations(events, args, tasks, task_obj, log):
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             events, name = add_event(tasks, args, events, name, log)
-            source = add_source(events, name, srcname='Pierre Maggi')
+            source = events[name].add_source(srcname='Pierre Maggi')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'alias', row[1], source)
             add_quantity(events, name, 'alias', row[2], source)
@@ -111,7 +111,7 @@ def do_donations(events, args, tasks, task_obj, log):
                         name = value[:6].upper()
                         name += (value[6].upper() if len(value) == 7 else value[6:])
                         events, name = add_event(tasks, args, events, name, log)
-                        source = add_source(events, name, bibcode=bibcode)
+                        source = events[name].add_source(bibcode=bibcode)
                         add_quantity(events, name, 'alias', name, source)
                     elif field == 'type':
                         claimedtype = value.replace('SN', '')
@@ -185,7 +185,7 @@ def do_donations(events, args, tasks, task_obj, log):
     # Nicholl 05-03-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
     events, name = add_event(tasks, args, events, 'SN2015bn', log)
-    source = add_source(events, name, bibcode='2016arXiv160304748N')
+    source = events[name].add_source(bibcode='2016arXiv160304748N')
     add_quantity(events, name, 'alias', name, source)
     add_quantity(events, name, 'alias', 'PS15ae', source)
     for fi in pbar(files, current_task):

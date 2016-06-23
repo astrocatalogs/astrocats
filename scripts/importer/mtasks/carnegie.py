@@ -27,7 +27,7 @@ def do_csp_photo(events, args, tasks, task_obj, log):
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
         refurl = 'http://csp.obs.carnegiescience.edu/data'
-        source = add_source(events, name, bibcode=refbib, srcname=reference, url=refurl)
+        source = events[name].add_source(bibcode=refbib, srcname=reference, url=refurl)
         add_quantity(events, name, 'alias', name, source)
 
         year = re.findall(r'\d+', name)[0]
@@ -73,7 +73,7 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
         events, name = add_event(tasks, args, events, name, log)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
-        source = add_source(events, name, bibcode='2013ApJ...773...53F')
+        source = events[name].add_source(bibcode='2013ApJ...773...53F')
         add_quantity(events, name, 'alias', name, source)
 
         data = csv.reader(open(fname, 'r'), delimiter=' ', skipinitialspace=True)

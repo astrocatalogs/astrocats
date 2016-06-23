@@ -33,7 +33,7 @@ def do_snf_specta(events, args, tasks, task_obj, log):
             secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
         bibcode = bibcodes[name]
-        source = add_source(events, name, bibcode=bibcode)
+        source = events[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])
         use_path = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')
         eventspectra = glob(use_path)

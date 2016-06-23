@@ -182,7 +182,7 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
                         reference = ref.text
                         refurl = ref['href']
                 if reference:
-                    source = add_source(events, name, srcname=reference, url=refurl)
+                    source = events[name].add_source(srcname=reference, url=refurl)
                 add_quantity(events, name, 'alias', name, secondarysource)
                 sources = uniq_cdl(list(filter(None, [source, secondarysource])))
             elif tdi == 12:

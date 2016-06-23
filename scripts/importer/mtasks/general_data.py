@@ -32,7 +32,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     for ri, row in enumerate(pbar(tsvin, current_task)):
         name = 'SNLS-' + row[0]
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, bibcode='2006ApJ...645..841N')
+        source = events[name].add_source(bibcode='2006ApJ...645..841N')
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'redshift', row[1], source, kind='spectroscopic')
         astrot = astrotime(float(row[4]) + 2450000., format='jd').datetime
@@ -51,7 +51,7 @@ def do_ascii(events, args, tasks, task_obj, log):
         else:
             name = ('SN20' if int(basename[:2]) < 50 else 'SN19') + basename.split('_')[0]
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, bibcode='2014ApJ...786...67A')
+        source = events[name].add_source(bibcode='2014ApJ...786...67A')
         add_quantity(events, name, 'alias', name, source)
 
         if name in ['SN1999ca', 'SN2003dq', 'SN2008aw']:
@@ -77,7 +77,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     for row in pbar(tsvin, current_task):
         name = row[0]
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, bibcode='2004A&A...415..863G')
+        source = events[name].add_source(bibcode='2004A&A...415..863G')
         add_quantity(events, name, 'alias', name, source)
         mjd = str(jd_to_mjd(Decimal(row[1])))
         for ri, ci in enumerate(range(2, len(row), 3)):
@@ -106,7 +106,7 @@ def do_ascii(events, args, tasks, task_obj, log):
         if name.startswith('SN'):
             name = name.replace(' ', '')
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, bibcode='2015MNRAS.449..451W')
+        source = events[name].add_source(bibcode='2015MNRAS.449..451W')
         add_quantity(events, name, 'alias', name, source)
         if len(namesplit) > 1:
             add_quantity(events, name, 'alias', namesplit[0], source)
@@ -118,7 +118,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016MNRAS.459.1039T.tsv')
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
     events, name = add_event(tasks, args, events, 'LSQ13zm', log)
-    source = add_source(events, name, bibcode='2016MNRAS.459.1039T')
+    source = events[name].add_source(bibcode='2016MNRAS.459.1039T')
     add_quantity(events, name, 'alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
@@ -141,7 +141,7 @@ def do_ascii(events, args, tasks, task_obj, log):
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015ApJ...804...28G.tsv')
     data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
     events, name = add_event(tasks, args, events, 'PS1-13arp', log)
-    source = add_source(events, name, bibcode='2015ApJ...804...28G')
+    source = events[name].add_source(bibcode='2015ApJ...804...28G')
     add_quantity(events, name, 'alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
         if rr == 0:
@@ -164,7 +164,7 @@ def do_ascii(events, args, tasks, task_obj, log):
         if row[0][0] == '#':
             continue
         events, name = add_event(tasks, args, events, row[0], log)
-        source = add_source(events, name, bibcode='2016ApJ...819...35A')
+        source = events[name].add_source(bibcode='2016ApJ...819...35A')
         add_quantity(events, name, 'alias', name, source)
         add_quantity(events, name, 'ra', row[1], source)
         add_quantity(events, name, 'dec', row[2], source)
@@ -181,7 +181,7 @@ def do_ascii(events, args, tasks, task_obj, log):
         if row[0][0] == '#':
             continue
         events, name = add_event(tasks, args, events, row[0], log)
-        source = add_source(events, name, bibcode='2014ApJ...784..105W')
+        source = events[name].add_source(bibcode='2014ApJ...784..105W')
         add_quantity(events, name, 'alias', name, source)
         mjd = row[1]
         band = row[2]
@@ -201,7 +201,7 @@ def do_ascii(events, args, tasks, task_obj, log):
             bands = row[2:]
             continue
         events, name = add_event(tasks, args, events, row[0], log)
-        source = add_source(events, name, bibcode='2012MNRAS.425.1007B')
+        source = events[name].add_source(bibcode='2012MNRAS.425.1007B')
         add_quantity(events, name, 'alias', name, source)
         mjd = row[1]
         mags = [xx.split('±')[0].strip() for xx in row[2:]]
@@ -240,7 +240,7 @@ def do_cccp(events, args, tasks, task_obj, log):
                 elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
                     events, name = add_event(tasks, args, events, name, log)
-                    source = add_source(events, name, bibcode='2012ApJ...744...10K')
+                    source = events[name].add_source(bibcode='2012ApJ...744...10K')
                     add_quantity(events, name, 'alias', name, source)
                 elif rr >= 5:
                     mjd = str(Decimal(row[0]) + 53000)
@@ -267,7 +267,7 @@ def do_cccp(events, args, tasks, task_obj, log):
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
             events, name = add_event(tasks, args, events, link.text.replace(' ', ''), log)
-            source = add_source(events, name, srcname='CCCP',
+            source = events[name].add_source(srcname='CCCP',
                                 url='https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
             add_quantity(events, name, 'alias', name, source)
 
@@ -348,7 +348,7 @@ def do_cpcs(events, args, tasks, task_obj, log):
         else:
             continue
 
-        sec_source = add_source(events, name, srcname='Cambridge Photometric Calibration Server',
+        sec_source = events[name].add_source(srcname='Cambridge Photometric Calibration Server',
                                 url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
         unit_deg = 'floatdegrees'
@@ -356,7 +356,7 @@ def do_cpcs(events, args, tasks, task_obj, log):
         add_quantity(events, name, 'dec', str(alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = 'http://gsaweb.ast.cam.ac.uk/followup/get_alert_lc_data?alert_id=' + str(ai)
-        source = add_source(events, name, srcname='CPCS Alert ' + str(ai), url=alerturl)
+        source = events[name].add_source(srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL, 'CPCS/alert-') + str(ai).zfill(2) + '.json'
         if task_obj.load_archive(args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
@@ -539,15 +539,15 @@ def do_des(events, args, tasks, task_obj, log):
                 else:
                     atellink = ''
 
-        sources = [add_source(events, name, url=des_url, srcname='DES Bright Transients',
+        sources = [events[name].add_source(url=des_url, srcname='DES Bright Transients',
                               acknowledgment=ackn_url)]
         if atellink:
             sources.append(
-                add_source(events, name, srcname='ATel ' + atellink.split('=')[-1], url=atellink))
-        sources += [add_source(events, name, bibcode='2012ApJ...753..152B'),
-                    add_source(events, name, bibcode='2015AJ....150..150F'),
-                    add_source(events, name, bibcode='2015AJ....150...82G'),
-                    add_source(events, name, bibcode='2015AJ....150..172K')]
+                events[name].add_source(srcname='ATel ' + atellink.split('=')[-1], url=atellink))
+        sources += [events[name].add_source(bibcode='2012ApJ...753..152B'),
+                    events[name].add_source(bibcode='2015AJ....150..150F'),
+                    events[name].add_source(bibcode='2015AJ....150...82G'),
+                    events[name].add_source(bibcode='2015AJ....150..172K')]
         sources = ','.join(sources)
         add_quantity(events, name, 'alias', name, sources)
         add_quantity(events, name, 'ra', ra, sources)
@@ -583,7 +583,7 @@ def do_external_radio(events, args, tasks, task_obj, log):
                 if line.startswith('(') and li <= len(radiosourcedict):
                     key = line.split()[0]
                     bibc = line.split()[-1]
-                    radiosourcedict[key] = add_source(events, name, bibcode=bibc)
+                    radiosourcedict[key] = events[name].add_source(bibcode=bibc)
                 elif li in [xx + len(radiosourcedict) for xx in range(3)]:
                     continue
                 else:
@@ -607,7 +607,7 @@ def do_external_xray(events, args, tasks, task_obj, log):
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
-                    source = add_source(events, name, bibcode=line.split()[-1])
+                    source = events[name].add_source(bibcode=line.split()[-1])
                 elif li in [1, 2, 3]:
                     continue
                 else:
@@ -637,7 +637,7 @@ def do_fermi(events, args, tasks, task_obj, log):
                 continue
             name = row[0].replace('SNR', 'G')
             events, name = add_event(tasks, args, events, name, log)
-            source = add_source(events, name, bibcode='2016ApJS..224....8A')
+            source = events[name].add_source(bibcode='2016ApJS..224....8A')
             add_quantity(events, name, 'alias', name, source)
             add_quantity(events, name, 'alias', row[0].replace('SNR', 'MWSNR'), source)
             add_quantity(events, name, 'ra', row[2], source, unit='floatdegrees')
@@ -659,7 +659,7 @@ def do_gaia(events, args, tasks, task_obj, log):
         if ri == 0 or not row:
             continue
         events, name = add_event(tasks, args, events, row[0], log)
-        source = add_source(events, name, srcname=reference, url=refurl)
+        source = events[name].add_source(srcname=reference, url=refurl)
         add_quantity(events, name, 'alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
         add_quantity(events, name, 'discoverdate', year, source)
@@ -775,10 +775,10 @@ def do_itep(events, args, tasks, task_obj, log):
             add_quantity(events, name, 'discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
-            source = add_source(events, name, bibcode=bibcode)
+            source = events[name].add_source(bibcode=bibcode)
         else:
             needsbib.append(reference)
-            source = add_source(events, name, srcname=reference) if reference else ''
+            source = events[name].add_source(srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:
             add_photometry(events, name, time=mjd, band=band, magnitude=magnitude,
@@ -802,7 +802,7 @@ def do_pessto(events, args, tasks, task_obj, log):
             continue
         name = row[1]
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, bibcode='2015A&A...579A..40S')
+        source = events[name].add_source(bibcode='2015A&A...579A..40S')
         add_quantity(events, name, 'alias', name, source)
         for hi, ci in enumerate(range(3, len(row)-1, 2)):
             if not row[ci]:
@@ -824,7 +824,7 @@ def do_scp(events, args, tasks, task_obj, log):
             continue
         name = row[0].replace('SCP', 'SCP-')
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, srcname='Supernova Cosmology Project',
+        source = events[name].add_source(srcname='Supernova Cosmology Project',
                             url='http://supernova.lbl.gov/2009ClusterSurvey/')
         add_quantity(events, name, 'alias', name, source)
         if row[1]:
@@ -868,7 +868,7 @@ def do_sdss(events, args, tasks, task_obj, log):
                 else:
                     name = 'SN' + row[5]
                 events, name = add_event(tasks, args, events, name, log)
-                source = add_source(events, name, bibcode=bibcode)
+                source = events[name].add_source(bibcode=bibcode)
                 add_quantity(events, name, 'alias', name, source)
                 add_quantity(events, name, 'alias', 'SDSS-II ' + row[3], source)
 
@@ -930,7 +930,7 @@ def do_snhunt(events, args, tasks, task_obj, log):
             continue
         name = re.sub('<[^<]+?>', '', cols[4]).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, srcname='Supernova Hunt', url=snh_url)
+        source = events[name].add_source(srcname='Supernova Hunt', url=snh_url)
         add_quantity(events, name, 'alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
         add_quantity(events, name, 'host', host, source)
@@ -962,7 +962,7 @@ def do_snls(events, args, tasks, task_obj, log):
             continue
         name = 'SNLS-' + row[0]
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(events, name, bibcode='2010A&A...523A...7G')
+        source = events[name].add_source(bibcode='2010A&A...523A...7G')
         add_quantity(events, name, 'alias', name, source)
         band = row[1]
         mjd = row[2]
@@ -1020,7 +1020,7 @@ def do_superfit_spectra(events, args, tasks, task_obj, log):
             else:
                 epoff = ''
 
-            source = add_source(events, name, srcname='Superfit',
+            source = events[name].add_source(srcname='Superfit',
                                 url='http://www.dahowell.com/superfit.html', secondary=True)
             add_quantity(events, name, 'alias', name, source)
 
@@ -1090,7 +1090,7 @@ def do_tns(events, args, tasks, task_obj, log):
                 continue
             name = row[1].replace(' ', '')
             events, name = add_event(tasks, args, events, name, log)
-            source = add_source(events, name, srcname='Transient Name Server', url=tns_url)
+            source = events[name].add_source(srcname='Transient Name Server', url=tns_url)
             add_quantity(events, name, 'alias', name, source)
             if row[2] and row[2] != '00:00:00.00':
                 add_quantity(events, name, 'ra', row[2], source)

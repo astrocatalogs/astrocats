@@ -33,12 +33,12 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
         name = phot['ObjName']
         events, name = add_event(tasks, args, events, name, log)
 
-        sec_source = add_source(events, name, srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
+        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
                                 secondary=True)
         add_quantity(events, name, 'alias', name, sec_source)
         sources = [sec_source]
         if phot['Reference']:
-            sources += [add_source(events, name, bibcode=phot['Reference'])]
+            sources += [events[name].add_source(bibcode=phot['Reference'])]
         sources = uniq_cdl(sources)
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
@@ -116,7 +116,7 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
         add_quantity(events, name, 'alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
-            sources += [add_source(events, name, bibcode=spectrum['Reference'])]
+            sources += [events[name].add_source(bibcode=spectrum['Reference'])]
         sources = uniq_cdl(sources)
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
