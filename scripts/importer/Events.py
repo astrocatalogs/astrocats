@@ -113,24 +113,24 @@ class EVENT(OrderedDict):
         # These are empty lists if no sources
         my_sources = self.get(KEYS.SOURCES, [])
         my_src_aliases = [src[KEYS.ALIAS] for src in my_sources]
-        my_src_names = [src[KEYS.NAME] for src in my_sources]
-        my_src_bibs = [src[KEYS.BIBCODE] for src in my_sources]
         nsources = len(my_sources)
 
         # Try to find existing, matching source
         # -------------------------------------
         # If this source name already exists, return alias number
         try:
+            my_src_names = [src[KEYS.NAME] for src in my_sources]
             name_idx = my_src_names.index(srcname)
             return my_src_aliases[name_idx]
-        except ValueError:
+        except KeyError:
             pass
 
         # If this bibcode already exists, return alias number
         try:
+            my_src_bibs = [src[KEYS.BIBCODE] for src in my_sources]
             bib_idx = my_src_bibs.index(bibcode)
             return my_src_aliases[bib_idx]
-        except ValueError:
+        except KeyError:
             pass
 
         # Add new source that doesnt exist
