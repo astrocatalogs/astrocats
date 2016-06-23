@@ -170,7 +170,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
         events[name].add_quantity('ra', row[1], source)
         events[name].add_quantity('dec', row[2], source)
         events[name].add_quantity('redshift', row[3], source)
-        disc_date = datetime.strptime(row[4], '%Y %bb %d').isoformat()
+        disc_date = datetime.strptime(row[4], '%Y %b %d').isoformat()
         disc_date = disc_date.split('T')[0].replace('-', '/')
         events[name].add_quantity('discoverdate', disc_date, source)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
