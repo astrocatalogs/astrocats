@@ -20,11 +20,12 @@ from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_di
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
+    CLAIMED_TYPE = 'claimedtype'
     DISTINCTS = 'distinctfrom'
     DISCOVERY_DATE = 'discoverdate'
     ERRORS = 'errors'
     NAME = 'name'
-    SOURCES = 'sourcs'
+    SOURCES = 'sources'
     URL = 'url'
 
 
@@ -244,7 +245,7 @@ class EVENT(OrderedDict):
             if not skind and (is_abell or 'cluster' in svalue.lower()):
                 skind = 'cluster'
 
-        elif quantity == 'claimedtype':
+        elif quantity == KEYS.CLAIMED_TYPE:
             isq = False
             svalue = svalue.replace('young', '')
             if '?' in svalue:
@@ -641,8 +642,8 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
                     save_event = False
                 else:
                     has_sn_name = name.startswith('SN') and is_number(name[2:6])
-                    if 'claimedtype' in events[name] and not has_sn_name:
-                        for ct in events[name]['claimedtype']:
+                    if KEYS.CLAIMED_TYPE in events[name] and not has_sn_name:
+                        for ct in events[name][KEYS.CLAIMED_TYPE]:
                             up_val = ct['value'].upper()
                             if up_val not in non_sne_types and up_val != 'CANDIDATE':
                                 buryevent = False
@@ -656,7 +657,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
 
             if save_event:
                 save_name = events[name].save(bury=buryevent)
-                log.info("Saved '{}' to '{}'.".format(name, save_name))
+                log.info("Saved {} to '{}'.".format(name.ljust(20), save_name))
                 if gz and os.path.getsize(save_name) > COMPRESS_ABOVE_FILESIZE:
                     save_name = _compress_gz(save_name)
                     log.debug("Compressed '{}' to '{}'".format(name, save_name))
@@ -671,7 +672,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
             stubs.update({name: events[name].get_stub()})
             # Delete object
             del events[name]
-            log.debug("Added stub for '{}', deleted event.".format(name))
+            log.debug("Added stub for {}, deleted event.".format(name))
 
     return events, stubs
 
