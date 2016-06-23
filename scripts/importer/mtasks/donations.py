@@ -158,8 +158,8 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
     for fi in pbar(files, current_task):
         name = os.path.basename(fi).split('_')[0]
         events, name = add_event(tasks, args, events, name, log)
-        source = add_source(
-            events, name, refname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
+        source = events[name].add_source(
+            refname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
             url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
         events[name].add_quantity('alias', name, source)
         with open(fi, 'r') as f:

@@ -458,8 +458,8 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
             if not name:
                 name = crtsname
             events, name = add_event(tasks, args, events, name, log)
-            source = add_source(
-                events, name, refname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
+            source = events[name].add_source(
+                refname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
             events[name].add_quantity('alias', name, source)
             for alias in validaliases:
@@ -768,8 +768,8 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
 
             sec_reference = 'Sternberg Astronomical Institute Supernova Light Curve Catalogue'
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
-            sec_source = add_source(
-                events, name, refname=sec_reference, url=sec_refurl, secondary=True)
+            sec_source = events[name].add_source(
+                refname=sec_reference, url=sec_refurl, secondary=True)
             events[name].add_quantity('alias', name, sec_source)
 
             year = re.findall(r'\d+', name)[0]

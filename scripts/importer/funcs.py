@@ -278,8 +278,8 @@ def copy_to_event(events, fromname, destname):
 
     if 'sources' in events[fromname]:
         for source in events[fromname]['sources']:
-            newsourcealiases[source['alias']] = add_source(
-                events, destname, bibcode=source['bibcode'] if 'bibcode' in source else '',
+            newsourcealiases[source['alias']] = events[destname].add_source(
+                bibcode=source['bibcode'] if 'bibcode' in source else '',
                 refname=source['name'] if 'name' in source else '',
                 reference=source['reference'] if 'reference' in source else '',
                 url=source['url'] if 'url' in source else '')
