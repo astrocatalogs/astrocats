@@ -122,7 +122,8 @@ class EVENT(OrderedDict):
             my_src_names = [src[KEYS.NAME] for src in my_sources]
             name_idx = my_src_names.index(srcname)
             return my_src_aliases[name_idx]
-        except KeyError:
+        # `KeyError` from `KEYS.NAME` not existing, `ValueError` from `srcname` not existing
+        except (KeyError, ValueError):
             pass
 
         # If this bibcode already exists, return alias number
@@ -130,7 +131,8 @@ class EVENT(OrderedDict):
             my_src_bibs = [src[KEYS.BIBCODE] for src in my_sources]
             bib_idx = my_src_bibs.index(bibcode)
             return my_src_aliases[bib_idx]
-        except KeyError:
+        # `KeyError` from `KEYS.BIBCODE` not existing, `ValueError` from `bibcode` not existing
+        except (KeyError, ValueError):
             pass
 
         # Add new source that doesnt exist
