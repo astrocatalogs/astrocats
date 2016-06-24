@@ -944,13 +944,13 @@ def do_sdss(events, stubs, args, tasks, task_obj, log):
         for rr, row in enumerate(tsvin):
             if rr == 0:
                 if row[5] == 'RA:':
-                    name = 'SDSS-II ' + row[3]
+                    name = 'SDSS-II SN ' + row[3]
                 else:
                     name = 'SN' + row[5]
                 events, name = Events.add_event(tasks, args, events, name, log)
                 source = events[name].add_source(bibcode=bibcode)
                 events[name].add_quantity('alias', name, source)
-                events[name].add_quantity('alias', 'SDSS-II ' + row[3], source)
+                events[name].add_quantity('alias', 'SDSS-II SN ' + row[3], source)
 
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
