@@ -19,6 +19,7 @@
     -   Move all of the stuff inside the names loop into the EVENT class.
 -   Change 'writevents' from a task to an argument parameter?  (e.g. for `journal_events`)
 -   Combine `EVENT.check` with `Events.clean_event`
+-   `load_cached_url` add warnings for failures
     
     
 ## Questions ##
