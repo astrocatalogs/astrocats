@@ -8,8 +8,9 @@ import os
 from astropy.time import Time as astrotime
 
 from scripts import PATH
-from .. funcs import add_event, add_source, add_photometry, add_quantity, add_spectrum, \
-    clean_snname, get_preferred_name, jd_to_mjd, journal_events, uniq_cdl
+from .. import Events
+from .. funcs import add_photometry, add_spectrum, \
+    clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl
 from .. constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
 from ... utils import pbar, pbar_strings, is_number, Decimal
 
@@ -39,7 +40,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
         eventparts = eventname.split('_')
 
         name = clean_snname(eventparts[0])
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = events[name].add_source(srcname=secondaryname, url=secondaryurl,
@@ -106,7 +107,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
             else:
                 name = row[0].strip()
 
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
 
             source = events[name].add_source(bibcode='2012ApJS..200...12H')
             events[name].add_quantity('alias', name, source)
@@ -120,7 +121,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
 
             source = events[name].add_source(bibcode='2014ApJS..213...19B')
             events[name].add_quantity('alias', name, source)
@@ -128,7 +129,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
                 events, name, u_time='MJD', time=row[2], band=row[1], magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard', source=source)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -146,9 +147,9 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SNF' + name[3:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         oldname = name
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
@@ -180,7 +181,7 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 errorunit='ergs/s/cm^2/Angstrom', errors=errors, source=sources, dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Ibc spectra
     oldname = ''
@@ -191,9 +192,9 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SN' + name[2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         oldname = name
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
@@ -220,7 +221,7 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Other spectra
     oldname = ''
@@ -231,9 +232,9 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SN' + name[2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         oldname = name
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
@@ -268,5 +269,5 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

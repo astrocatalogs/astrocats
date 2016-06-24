@@ -9,8 +9,8 @@ import re
 from string import ascii_letters
 
 from scripts import PATH
-from .. funcs import add_event, add_photometry, add_source, add_quantity, \
-    get_aliases, journal_events, load_cached_url, make_date_string, uniq_cdl
+from .. import Events
+from .. funcs import add_photometry, get_aliases, load_cached_url, make_date_string, uniq_cdl
 from ... utils import is_number, pbar
 
 
@@ -50,11 +50,11 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                 if is_number(aka.strip('?')):
                     aka = 'SN' + aka.strip('?') + 'A'
                     oldname = aka
-                    events, name = add_event(tasks, args, events, aka, log)
+                    events, name = Events.add_event(tasks, args, events, aka, log)
                 elif len(aka) = 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
                     oldname = aka
-                    events, name = add_event(tasks, args, events, aka, log)
+                    events, name = Events.add_event(tasks, args, events, aka, log)
 
             ra = str(cols[3].contents[0]).strip()
             dec = str(cols[4].contents[0]).strip()
@@ -73,7 +73,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                     sn = 'PSN J' + ra.replace(':', '').replace('.', '')
                     sn += dec.replace(':', '').replace('.', '')
                 oldname = sn
-                events, name = add_event(tasks, args, events, sn, log)
+                events, name = Events.add_event(tasks, args, events, sn, log)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()
@@ -117,7 +117,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('redshift', str(cols[11].contents[0]).strip(), sources)
             events[name].add_quantity('discoverer', str(cols[13].contents[0]).strip(), sources)
             if args.update:
-                events, stubs = journal_events(tasks, args, events, stubs, log)
+                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     if not args.update:
         vsnetfiles = ['latestsne.dat']
@@ -135,7 +135,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                     name = 'PSN J' + name[4:]
                 if name.startswith('MASTEROTJ'):
                     name = name.replace('MASTEROTJ', 'MASTER OT J')
-                events, name = add_event(tasks, args, events, name, log)
+                events, name = Events.add_event(tasks, args, events, name, log)
                 sec_source = events[name].add_source(
                     refname=sec_ref, url=sec_refurl, secondary=True)
                 events[name].add_quantity('alias', name, sec_source)
@@ -183,5 +183,5 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                     events, name, time=mjd, band=band, magnitude=magnitude,
                     e_magnitude=e_magnitude, source=sources)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

@@ -164,7 +164,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
     import csv
     from html import unescape
     from . constants import PATH
-    from . funcs import journal_events, uniq_cdl
+    from . funcs import uniq_cdl
     from .. utils import is_number, Decimal
     nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
     with open(nedd_path, 'r') as f:

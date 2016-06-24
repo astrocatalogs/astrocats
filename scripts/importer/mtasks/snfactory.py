@@ -7,8 +7,8 @@ from glob import glob
 import os
 
 from scripts import PATH, TRAVIS_QUERY_LIMIT
-from .. funcs import add_event, add_source, add_quantity, add_spectrum, \
-    get_preferred_name, jd_to_mjd, journal_events, uniq_cdl
+from .. import Events
+from .. funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
 from ... utils import pretty_num
 
 
@@ -22,7 +22,7 @@ def do_snf_aliases(events, stubs, args, tasks, task_obj, log):
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
-    
+
 
 def do_snf_specta(events, stubs, args, tasks, task_obj, log):
     bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T',
@@ -34,9 +34,9 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
         name = eventfolder
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         oldname = name
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         sec_reference = 'Nearby Supernova Factory'
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
@@ -114,5 +114,5 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
             if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

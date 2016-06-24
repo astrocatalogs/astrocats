@@ -10,8 +10,8 @@ import urllib
 
 from scripts import PATH
 from .. constants import TRAVIS_QUERY_LIMIT
-from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
-    journal_events, load_cached_url, uniq_cdl
+from .. import Events
+from .. funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 from ... utils import get_sig_digits, pbar, pretty_num
 
 
@@ -31,7 +31,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
     for phot in pbar(photom, desc=current_task):
         oldname = phot['ObjName']
-        events, name = add_event(tasks, args, events, oldname, log)
+        events, name = Events.add_event(tasks, args, events, oldname, log)
 
         sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
                                 secondary=True)
@@ -84,7 +84,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
                 e_magnitude=e_mag, source=sources)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -107,9 +107,9 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         oldname = name
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
 
         sec_source = events[name].add_source(
             refname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)
@@ -190,5 +190,5 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
