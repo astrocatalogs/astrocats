@@ -18,7 +18,7 @@ from .. utils import bandrepf, bandmetaf, is_number, \
     get_sig_digits, pretty_num, round_sig, tprint, zpad
 
 
-def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
+def add_photometry(events, name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
                    magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "", scorrected = "",
                    observatory = "", observer = "", host = False, includeshost = False, survey = "", kcorrected = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
@@ -516,7 +516,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     ebverr = result['ext SandF std'][0]
                     extinctions_dict[name] = [ebv, ebverr]
             if name in extinctions_dict:
-                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True), 
+                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
                     events[name].add_source(bibcode = '2011ApJ...737..103S')])
                 events[name].add_quantity('ebv', str(extinctionsdict[name][0]), sources, error = str(extinctionsdict[name][1]), derived = True)
         if 'host' in events[name] and ('hostra' not in events[name] or 'hostdec' not in events[name]):
@@ -531,7 +531,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                         continue
                     rastr = nops[0]
                     decstr = nops[1]
-                    hostra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '') 
+                    hostra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '')
                     hostdec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                     if args.verbose:
                         tprint ('Added hostra/hostdec from name: ' + hostra + ' ' + hostdec)
