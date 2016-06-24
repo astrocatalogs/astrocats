@@ -8,7 +8,7 @@ from math import floor
 import os
 import warnings
 
-from scripts import FILENAME, PATH
+from scripts import FILENAME, PATH, SCHEMA
 from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
     OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY, TRAVIS_QUERY_LIMIT
 from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
@@ -26,6 +26,7 @@ class KEYS:
     ERRORS = 'errors'
     NAME = 'name'
     SOURCES = 'sources'
+    SCHEMA = 'schema'
     URL = 'url'
 
 
@@ -400,6 +401,9 @@ class EVENT(OrderedDict):
         raise ValueError("Source '{}': alias '{}' not found!".format(self.name, alias))
 
     def check(self):
+        # Make sure there is a schema key in dict
+        if KEYS.SCHEMA not in self.keys():
+            self[KEYS.SCHEMA] = SCHEMA.URL
         # Make sure there is a name key in dict
         if KEYS.NAME not in self.keys():
             self[KEYS.NAME] = self.name
@@ -583,7 +587,7 @@ def clean_event(dirty_event):
 
     # Go through all keys in 'dirty' event
     for key in dirty_event.keys():
-        if key in [KEYS.NAME, KEYS.SOURCES, KEYS.ERRORS]:
+        if key in [KEYS.NAME, KEYS.SCHEMA, KEYS.SOURCES, KEYS.ERRORS]:
             pass
         elif key == 'photometry':
             for p, photo in enumerate(dirty_event['photometry']):
