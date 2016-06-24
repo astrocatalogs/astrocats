@@ -814,7 +814,7 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
 def do_fermi(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL, '1SC_catalog_v01.asc'), 'r') as ff:
-        tsvin = csv.reader(ff, delimiter=',')
+        tsvin = list(csv.reader(ff, delimiter=','))
         for ri, row in enumerate(pbar(tsvin, current_task)):
             if row[0].startswith('#'):
                 if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
@@ -839,7 +839,7 @@ def do_gaia(events, stubs, args, tasks, task_obj, log):
     csvtxt = load_cached_url(args, current_task, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
     if not csvtxt:
         return events
-    tsvin = csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True)
+    tsvin = list(csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True))
     reference = 'Gaia Photometric Science Alerts'
     refurl = 'http://gsaweb.ast.cam.ac.uk/alerts/alertsindex'
     for ri, row in enumerate(pbar(tsvin, current_task)):
@@ -936,7 +936,7 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
         refrep = refs_file.read().splitlines()
     refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
     fname = os.path.join(PATH.REPO_EXTERNAL, 'itep-lc-cat-28dec2015.txt')
-    tsvin = csv.reader(open(fname, 'r'), delimiter='|', skipinitialspace=True)
+    tsvin = list(csv.reader(open(fname, 'r'), delimiter='|', skipinitialspace=True))
     curname = ''
     for rr, row in enumerate(pbar(tsvin, current_task)):
         if rr <= 1 or len(row) < 7:
@@ -981,7 +981,7 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
 
 def do_pessto(events, stubs, args, tasks, task_obj, log):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
-    tsvin = csv.reader(open(pessto_path, 'r'), delimiter=',')
+    tsvin = list(csv.reader(open(pessto_path, 'r'), delimiter=','))
     for ri, row in enumerate(tsvin):
         if ri == 0:
             bands = [xx.split('_')[0] for xx in row[3::2]]
@@ -1005,7 +1005,7 @@ def do_pessto(events, stubs, args, tasks, task_obj, log):
 
 def do_scp(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    tsvin = csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r'), delimiter=',')
+    tsvin = list(csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'), 'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
         if ri == 0:
             continue
@@ -1140,8 +1140,8 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
 def do_snls(events, stubs, args, tasks, task_obj, log):
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
-    data = csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True)
-    for row in data:
+    data = list(csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True))
+    for row in pbar(data):
         flux = row[3]
         err = row[4]
         # Being extra strict here with the flux constraint, see note below.
@@ -1171,7 +1171,7 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = task_obj.current_task(args)
-    sfdirs = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*'))
+    sfdirs = list(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*')))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))
         lastname = ''

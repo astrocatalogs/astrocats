@@ -3,6 +3,7 @@
 import csv
 from glob import glob
 from math import floor
+from cdecimal import Decimal
 import os
 
 from astropy.time import Time as astrotime
@@ -12,7 +13,7 @@ from .. import Events
 from .. funcs import add_photometry, add_spectrum, \
     clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl
 from .. constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-from ... utils import pbar, pbar_strings, is_number, Decimal
+from ... utils import pbar, pbar_strings, is_number
 
 
 def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
