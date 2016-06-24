@@ -10,7 +10,7 @@ import warnings
 
 from scripts import FILENAME, PATH
 from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
-    OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY
+    OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY, TRAVIS_QUERY_LIMIT
 from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
     jd_to_mjd, name_clean
 from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
@@ -819,10 +819,11 @@ def merge_duplicates(tasks, args, events):
 
 
 def set_preferred_names(tasks, args, events):
+    currenttask = 'Setting preferred names'
     if not len(events):
         load_stubs(tasks, args, events)
 
-    for name in list(sorted(list(events.keys()))):
+    for ni, name in pbar(list(sorted(list(events.keys()))), currenttask):
         if name not in events:
             continue
         newname = ''
@@ -885,6 +886,8 @@ def set_preferred_names(tasks, args, events):
                 events[newname][KEYS.NAME] = newname
                 del events[name]
                 journal_events(tasks, args, events)
+        if args.travis and ni > TRAVIS_QUERY_LIMIT:
+            break
 
     return events
 
