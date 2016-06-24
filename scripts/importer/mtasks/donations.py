@@ -9,7 +9,7 @@ from math import isnan
 from scripts import PATH
 from .. import Events
 from .. funcs import add_photometry
-from ... utils import pbar, is_number, pbar_strings
+from ... utils import pbar, is_number, pbar_strings, rep_chars
 
 
 def do_donations(events, stubs, args, tasks, task_obj, log):
