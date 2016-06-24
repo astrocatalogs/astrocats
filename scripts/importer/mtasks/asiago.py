@@ -142,12 +142,13 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
                     name = alias
                 if is_number(name[:4]):
                     name = 'SN' + name
+                oldname = name
                 events, name = add_event(tasks, args, events, name, log)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = events[name].add_source(
                     refname=reference, url=refurl, secondary=True)
-                events[name].add_quantity('alias', name, secondarysource)
+                events[name].add_quantity('alias', oldname, secondarysource)
                 if alias != name:
                     events[name].add_quantity('alias', alias, secondarysource)
             elif tdi == 2:

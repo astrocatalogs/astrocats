@@ -100,10 +100,12 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                                             del tfiles[fi]
                                                             lfiles = deepcopy(tfiles)
                                                             raise StopIteration
+                                        except (KeyboardInterrupt, SystemExit):
+                                            raise
                                         except StopIteration:
                                             pass
-                                        if not specpath:
-                                            warnings.warn('Spectrum file not found, '' + specfile + ''')
+                                        #if not specpath:
+                                            #    warnings.warn('Spectrum file not found, "' + specfile + '"')
                                     else:
                                         continue
                         if 'Spec Type:</span>' in str(tr.contents) and produceoutput:

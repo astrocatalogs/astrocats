@@ -73,7 +73,7 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
         events[name].add_quantity('ra', ra, sources, unit='floatdegrees')
         events[name].add_quantity('dec', dec, sources, unit='floatdegrees')
         events[name].add_quantity('redshift', redshift, sources)
-        events[name].add_quantity('hostoffset', hostoff, sources, unit='arcseconds')
+        events[name].add_quantity('hostoffsetang', hostoff, sources, unit='arcseconds')
         for ct in claimedtype.split('/'):
             if ct != 'Unk':
                 events[name].add_quantity('claimedtype', ct, typesources)

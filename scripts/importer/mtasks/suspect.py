@@ -148,7 +148,7 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                     bibcode = sourcedict[name]
                 if bibcode:
                     source = events[name].add_source(bibcode=unescape(bibcode))
-                    sources += source
+                    sources += [source]
                 sources = uniq_cdl(sources)
 
                 date = spectrum.split('_')[1]
