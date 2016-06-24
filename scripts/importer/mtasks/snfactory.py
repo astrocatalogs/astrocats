@@ -7,18 +7,19 @@ from glob import glob
 import os
 
 from scripts import PATH
-from . constants import TRAVIS_QUERY_LIMIT
+from .. constants import TRAVIS_QUERY_LIMIT, OSC_BIBCODE, OSC_NAME, OSC_URL
 from .. import Events
 from .. funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
 from ... utils import pretty_num
 
 
 def do_snf_aliases(events, stubs, args, tasks, task_obj, log):
-    with open('../sne-external/SNF/snf-aliases.csv') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
+    with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
-                                                    bibcode = oscbibcode, refname = oscname,
-                                                    url = oscurl, secondary = True)
+                                                    bibcode = OSC_BIBCODE, srcname = OSC_NAME,
+                                                    url = OSC_URL, secondary = True)
             events[name].add_quantity('alias', row[1], source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
