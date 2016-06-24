@@ -413,6 +413,7 @@ def do_cpcs(events, stubs, args, tasks, task_obj, log):
             # Only add events that are classified as SN.
             if event_exists(events, name):
                 continue
+            oldname = name
             events, name = Events.add_event(tasks, args, events, name, log)
         else:
             continue
@@ -420,7 +421,7 @@ def do_cpcs(events, stubs, args, tasks, task_obj, log):
         sec_source = events[name].add_source(
             srcname='Cambridge Photometric Calibration Server',
             url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
-        events[name].add_quantity('alias', name, sec_source)
+        events[name].add_quantity('alias', oldname, sec_source)
         unit_deg = 'floatdegrees'
         events[name].add_quantity('ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
         events[name].add_quantity('dec', str(alertindex[ii]['dec']), sec_source, unit=unit_deg)
