@@ -1142,10 +1142,11 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
 
 
 def do_snls(events, stubs, args, tasks, task_obj, log):
+    current_task = 'SNLS'
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
     data = list(csv.reader(open(snls_path, 'r'), delimiter=' ', quotechar='"', skipinitialspace=True))
-    for row in pbar(data):
+    for row in pbar(data, current_task):
         flux = row[3]
         err = row[4]
         # Being extra strict here with the flux constraint, see note below.
