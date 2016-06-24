@@ -834,22 +834,22 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
     for rr, row in enumerate(pbar(tsvin, current_task)):
         if rr <= 1 or len(row) < 7:
             continue
-        name = 'SN' + row[0].strip()
+        oldname = 'SN' + row[0].strip()
         mjd = str(jd_to_mjd(Decimal(row[1].strip())))
         band = row[2].strip()
         magnitude = row[3].strip()
         e_magnitude = row[4].strip()
         reference = row[6].strip().strip(',')
 
-        if curname != name:
-            curname = name
-            events, name = Events.add_event(tasks, args, events, name, log)
+        if curname != oldname:
+            curname = oldname
+            events, name = Events.add_event(tasks, args, events, oldname, log)
 
             sec_reference = 'Sternberg Astronomical Institute Supernova Light Curve Catalogue'
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
             sec_source = events[name].add_source(
                 refname=sec_reference, url=sec_refurl, secondary=True)
-            events[name].add_quantity('alias', name, sec_source)
+            events[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
             events[name].add_quantity('discoverdate', year, sec_source)
