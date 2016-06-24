@@ -1,0 +1,384 @@
+{
+    "delete_old": {
+        "nice_name": "Deleting old events",
+        "active": true,
+        "active": true,
+        "update": false,
+        "module": "importer.importer",
+        "function": "delete_old_event_files",
+        "priority": 0
+    },
+    "internal": {
+        "nice_name": "%pre metadata and photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_internal",
+        "priority": 1
+    },
+    "radio": {
+        "nice_name": "%pre radio data",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_external_radio",
+        "priority": 2
+    },
+    "xray": {
+        "nice_name": "%pre X-ray data",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_external_xray",
+        "priority": 2
+    },
+    "simbad": {
+        "nice_name": "%pre SIMBAD",
+        "active": false,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_simbad",
+        "priority": 3
+    },
+    "vizier": {
+        "nice_name": "%pre VizieR",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.vizier",
+        "function": "do_vizier",
+        "priority": 3
+    },
+    "donations": {
+        "nice_name": "%pre donations",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.donations",
+        "function": "do_donations",
+        "priority": 4
+    },
+    "pessto-dr1": {
+        "nice_name": "%pre PESSTO DR1",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_pessto",
+        "priority": 10
+    },
+    "scp": {
+        "nice_name": "%pre SCP",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_scp",
+        "priority": 10
+    },
+    "ascii": {
+        "nice_name": "%pre ASCII",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_ascii",
+        "priority": 10
+    },
+    "cccp": {
+        "nice_name": "%pre CCCP",
+        "active": true,
+        "update": false,
+        "archived": true,
+        "module": "importer.mtasks.general_data",
+        "function": "do_cccp",
+        "priority": 10
+    },
+    "suspect_photo": {
+        "nice_name": "%pre SUSPECT",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.suspect",
+        "function": "do_suspect_photo",
+        "priority": 10
+    },
+    "cfa_photo": {
+        "nice_name": "%pre CfA archive photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.cfa",
+        "function": "do_cfa_photo",
+        "priority": 10
+    },
+    "ucb_photo": {
+        "nice_name": "%pre UCB photometry",
+        "active": true,
+        "update": false,
+        "archived": true,
+        "module": "importer.mtasks.berkeley",
+        "function": "do_ucb_photo",
+        "priority": 10
+    },
+    "sdss": {
+        "nice_name": "%pre SDSS photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_sdss",
+        "priority": 10
+    },
+    "csp_photo": {
+        "nice_name": "%pre CSP photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.carnegie",
+        "function": "do_csp_photo",
+        "priority": 10
+    },
+    "itep": {
+        "nice_name": "%pre ITEP",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_itep",
+        "priority": 10
+    },
+    "asiago_photo": {
+        "nice_name": "%pre Asiago metadata",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.asiago",
+        "function": "do_asiago_photo",
+        "priority": 10
+    },
+    "tns": {
+        "nice_name": "%pre TNS metadata",
+        "active": true,
+        "update": true,
+        "archived": true,
+        "module": "importer.mtasks.general_data",
+        "function": "do_tns",
+        "priority": 10
+    },
+    "rochester": {
+        "nice_name": "%pre Latest Supernovae",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.rochester",
+        "function": "do_rochester",
+        "priority": 10
+    },
+    "lennarz": {
+        "nice_name": "%pre Lennarz",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.vizier",
+        "function": "do_lennarz",
+        "priority": 10
+    },
+    "fermi": {
+        "nice_name": "%pre Fermi",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_fermi",
+        "priority": 10
+    },
+    "gaia": {
+        "nice_name": "%pre GAIA",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_gaia",
+        "priority": 10
+    },
+    "ogle": {
+        "nice_name": "%pre OGLE",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.ogle",
+        "function": "do_ogle",
+        "priority": 10
+    },
+    "snls": {
+        "nice_name": "%pre SNLS",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_snls",
+        "priority": 10
+    },
+    "psthreepi": {
+        "nice_name": "%pre Pan-STARRS 3π",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.panstarrs",
+        "function": "do_ps_threepi",
+        "priority": 10
+    },
+    "psmds": {
+        "nice_name": "%pre Pan-STARRS MDS",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.panstarrs",
+        "function": "do_ps_mds",
+        "priority": 10
+    },
+    "crts": {
+        "nice_name": "%pre CRTS",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_crts",
+        "priority": 10
+    },
+    "snhunt": {
+        "nice_name": "%pre SNhunt",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_snhunt",
+        "priority": 10
+    },
+    "nedd": {
+        "nice_name": "%pre NED-D",
+        "active": true,
+        "update": false,
+        "module": "importer.importer",
+        "function": "do_nedd",
+        "priority": 10
+    },
+    "cpcs": {
+        "nice_name": "%pre CPCS",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_cpcs",
+        "priority": 10
+    },
+    "ptf": {
+        "nice_name": "%pre PTF",
+        "active": true,
+        "update": false,
+        "archived": false,
+        "module": "importer.mtasks.palomar",
+        "function": "do_ptf",
+        "priority": 10
+    },
+    "des": {
+        "nice_name": "%pre DES",
+        "active": true,
+        "update": false,
+        "archived": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_des",
+        "priority": 10
+    },
+    "asassn": {
+        "nice_name": "%pre ASASSN",
+        "active": true,
+        "update": true,
+        "module": "importer.mtasks.asassn",
+        "function": "do_asassn",
+        "priority": 10
+    },
+    "asiago_spectra": {
+        "nice_name": "%pre Asiago spectra",
+        "active": true,
+        "update": true,
+        "module": "importer.mtasks.asiago",
+        "function": "do_asiago_spectra",
+        "priority": 20
+    },
+    "wiserep_spectra": {
+        "nice_name": "%pre WISeREP spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.wiserep",
+        "function": "do_wiserep_spectra",
+        "priority": 20
+    },
+    "cfa_spectra": {
+        "nice_name": "%pre CfA archive spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.cfa",
+        "function": "do_cfa_spectra",
+        "priority": 20
+    },
+    "snls_spectra": {
+        "nice_name": "%pre SNLS spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.vizier",
+        "function": "do_snls_spectra",
+        "priority": 20
+    },
+    "csp_spectra": {
+        "nice_name": "%pre CSP spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.carnegie",
+        "function": "do_csp_spectra",
+        "priority": 20
+    },
+    "ucb_spectra": {
+        "nice_name": "%pre UCB spectra",
+        "active": true,
+        "update": true,
+        "archived": true,
+        "module": "importer.mtasks.berkeley",
+        "function": "do_ucb_spectra",
+        "priority": 20
+    },
+    "suspect_spectra": {
+        "nice_name": "%pre SUSPECT spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.suspect",
+        "function": "do_suspect_spectra",
+        "priority": 20
+    },
+    "snf_spectra": {
+        "nice_name": "%pre SNH spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.snfactory",
+        "function": "do_snf_specta",
+        "priority": 20
+    },
+    "superfitspectra": {
+        "nice_name": "%pre Superfit spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_superfit_spectra",
+        "priority": 20
+    },
+    "mergeduplicates": {
+        "nice_name": "Merging duplicates",
+        "active": true,
+        "update": false,
+        "module": "importer.Events",
+        "function": "merge_duplicates",
+        "priority": -100
+    },
+    "setprefnames": {
+        "nice_name": "Setting preferred names",
+        "active": true,
+        "update": false,
+        "module": "importer.Events",
+        "function": "set_preferred_names",
+        "priority": -10
+    },
+    "writeevents": {
+        "nice_name": "Writing events",
+        "active": true,
+        "update": true,
+        "module": "importer.Events",
+        "function": "write_all_events",
+        "priority": -1
+    }
+}

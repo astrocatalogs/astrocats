@@ -1,8 +1,11 @@
 from palettable import cubehelix, colorbrewer, wesanderson
 from collections import OrderedDict
-from random import shuffle, seed, randint, uniform
+from random import shuffle, seed
 
-bandreps = {
+__all__ = ['bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf', 'bandshortaliasf',
+           'bandwavef', 'bandmetaf']
+
+BAND_REPS = {
     'Ks': ['K_s'],
     'M2': ['uvm2', 'UVM2', 'UVm2', 'Um2', 'm2', 'um2'],
     'W1': ['uvw1', 'UVW1', 'UVw1', 'Uw1', 'w1', 'uw1'],
@@ -10,7 +13,7 @@ bandreps = {
 }
 
 # Some bands are uniquely tied to an instrument/telescope/system, add this info here.
-bandmeta = {
+BAND_META = {
     'M2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
     'W1':     {'telescope': 'Swift', 'instrument': 'UVOT'},
     'W2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
@@ -19,7 +22,7 @@ bandmeta = {
     'F850LP': {'telescope': 'Hubble', 'instrument': 'WFC3'}
 }
 
-bandcodes = [
+BAND_CODES = [
     "u",
     "g",
     "r",
@@ -64,7 +67,7 @@ bandcodes = [
     "Ks"
 ]
 
-bandaliases = OrderedDict([
+BAND_ALIASES = OrderedDict([
     ("u_SDSS", "u (SDSS)"),
     ("g_SDSS", "g (SDSS)"),
     ("r_SDSS", "r (SDSS)"),
@@ -72,7 +75,7 @@ bandaliases = OrderedDict([
     ("z_SDSS", "z (SDSS)")
 ])
 
-bandshortaliases = OrderedDict([
+BAND_ALIASES_SHORT = OrderedDict([
     ("u_SDSS", "u"),
     ("g_SDSS", "g"),
     ("r_SDSS", "r"),
@@ -81,7 +84,7 @@ bandshortaliases = OrderedDict([
     ("G"     , "" )
 ])
 
-bandwavelengths = {
+BAND_WAVELENGTHS = {
     "u"      : 354.,
     "g"      : 475.,
     "r"      : 622.,
@@ -111,36 +114,37 @@ bandwavelengths = {
     "W2"     : 192.8
 }
 
-radiocodes = [
+RADIO_CODES = [
     "5.9"
 ]
-xraycodes = [
+XRAY_CODES = [
     "0.3 - 10",
     "0.5 - 8"
 ]
 
 seed(101)
-#bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF) for x in range(len(bandcodes))]
+#bandcolors = ["#%06x" % round(float(x)/float(len(BAND_CODES))*0xFFFEFF) for x in range(len(BAND_CODES))]
 bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
 shuffle(bandcolors)
 bandcolors2 = cubehelix.perceptual_rainbow_16.hex_colors
 shuffle(bandcolors2)
 bandcolors = bandcolors + bandcolors2
-bandcolordict = dict(list(zip(bandcodes,bandcolors)))
+bandcolordict = dict(list(zip(BAND_CODES,bandcolors)))
 
 radiocolors = wesanderson.Zissou_5.hex_colors
 shuffle(radiocolors)
-radiocolordict = dict(list(zip(radiocodes,radiocolors)))
+radiocolordict = dict(list(zip(RADIO_CODES,radiocolors)))
 
 xraycolors = colorbrewer.sequential.Oranges_9.hex_colors[2:]
 shuffle(xraycolors)
-xraycolordict = dict(list(zip(xraycodes,xraycolors)))
+xraycolordict = dict(list(zip(XRAY_CODES,xraycolors)))
 
 def bandrepf(code):
-    for rep in bandreps:
-        if code in bandreps[rep]:
+    for rep in BAND_REPS:
+        if code in BAND_REPS[rep]:
             return rep
     return code
+
 
 def bandcolorf(code):
     newcode = bandrepf(code)
@@ -148,36 +152,42 @@ def bandcolorf(code):
         return bandcolordict[newcode]
     return 'black'
 
+
 def radiocolorf(code):
     if code in radiocolordict:
         return radiocolordict[code]
     return 'black'
+
 
 def xraycolorf(code):
     if code in xraycolordict:
         return xraycolordict[code]
     return 'black'
 
+
 def bandaliasf(code):
     newcode = bandrepf(code)
-    if newcode in bandaliases:
-        return bandaliases[newcode]
+    if newcode in BAND_ALIASES:
+        return BAND_ALIASES[newcode]
     return newcode
+
 
 def bandshortaliasf(code):
     newcode = bandrepf(code)
-    if newcode in bandshortaliases:
-        return bandshortaliases[newcode]
+    if newcode in BAND_ALIASES_SHORT:
+        return BAND_ALIASES_SHORT[newcode]
     return newcode
+
 
 def bandwavef(code):
     newcode = bandrepf(code)
-    if newcode in bandwavelengths:
-        return bandwavelengths[newcode]
+    if newcode in BAND_WAVELENGTHS:
+        return BAND_WAVELENGTHS[newcode]
     return 0.
 
+
 def bandmetaf(band, field):
-    if band in bandmeta:
-        if field in bandmeta[band]:
-            return bandmeta[band][field]
+    if band in BAND_META:
+        if field in BAND_META[band]:
+            return BAND_META[band][field]
     return ''

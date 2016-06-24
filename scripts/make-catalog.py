@@ -227,11 +227,11 @@ with open('sitemap-template.xml', 'r') as f:
     sitemaptemplate = f.read()
 
 if len(columnkey) != len(header):
-    raise(ValueError('Header not same length as key list.'))
+    raise ValueError('Header not same length as key list.')
     sys.exit(0)
 
 if len(columnkey) != len(eventpageheader):
-    raise(ValueError('Event page header not same length as key list.'))
+    raise ValueError('Event page header not same length as key list.')
     sys.exit(0)
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
@@ -350,7 +350,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     tprint(eventfile + ' [' + checksum + ']')
 
-    repfolder = get_rep_folder(catalog[entry])
+    repfolder = get_repo_folder_for_year(catalog[entry])
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
         catalog[entry]['download'] = 'e'
     else:
@@ -1461,7 +1461,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             </script>'''
             , html)
 
-        repfolder = get_rep_folder(catalog[entry])
+        repfolder = get_rep_folder_for_year(catalog[entry])
         html = re.sub(r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
             linkdir + fileeventname + r'.json" download>' + r'Download all data for ' + eventname + 
             r'</a></div>\n\1', html)
@@ -1521,7 +1521,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                             sourceids.append(source['name'])
                                             idtypes.append('name')
                             if not sourceids or not idtypes:
-                                raise(ValueError('Unable to find associated source by alias!'))
+                                raise ValueError('Unable to find associated source by alias!')
                             edit = "true" if os.path.isfile('../sne-internal/' + get_event_filename(entry) + '.json') else "false"
                             keyhtml = (keyhtml + "<span class='singletooltiptext'><button class='singlemarkerror' type='button' onclick='markError(\"" +
                                 entry + "\", \"" + key + "\", \"" + ','.join(idtypes) +
