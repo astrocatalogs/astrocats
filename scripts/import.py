@@ -681,7 +681,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
                    flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
                    u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
                    e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = "",
-                   e_lower_time = "", e_upper_time = ""):
+                   e_lower_time = "", e_upper_time = "", mcorrected = ""):
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         warnings.warn('Time or brightness not specified when adding photometry, not adding.')
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
