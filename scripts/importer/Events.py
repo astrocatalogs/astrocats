@@ -275,7 +275,7 @@ class EVENT(OrderedDict):
         if skind:
             quanta_entry['kind'] = skind
         if sprob:
-            quantaentry['probability'] = sprob
+            quanta_entry['probability'] = sprob
         if sunit:
             quanta_entry['unit'] = sunit
         if lowerlimit:
@@ -283,7 +283,7 @@ class EVENT(OrderedDict):
         if upperlimit:
             quanta_entry['upperlimit'] = upperlimit
         if derived:
-            quantaentry['derived'] = derived
+            quanta_entry['derived'] = derived
         if extra:
             quanta_entry['extra'] = extra
         if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and len(my_quantity_list):
@@ -509,7 +509,7 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
 def new_event(tasks, args, events, name, log, load = True, delete = True, loadifempty = True,
               refname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
     oldname = name
-    events, name = add_event(tasks, args, events, name, load = load, delete = delete)
+    events, name = add_event(tasks, args, events, name, log, load = load, delete = delete)
     source = events[name].add_source(name, bibcode=bibcode, refname=refname, reference=reference,
                                      url=url, secondary = secondary, acknowledgment = acknowledgment)
     events[name].add_quantity('alias', oldname, source)
