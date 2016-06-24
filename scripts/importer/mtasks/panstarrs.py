@@ -77,7 +77,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if not args.fullrefresh and task_obj.load_archive(args) and page < oldnumpages and os.path.isfile(fname) :
+            if not args.full_refresh and task_obj.load_archive(args) and page < oldnumpages and os.path.isfile(fname) :
                 with open(fname, 'r') as f:
                     html = f.read()
             else:

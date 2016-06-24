@@ -48,8 +48,9 @@ def do_grb(events, stubs, args, tasks, task_obj, log):
 def do_psst(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # 2016arXiv160204156S
-    with open("../sne-external/2016arXiv160204156S-tab1.tsv", 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2016arXiv160204156S-tab1.tsv')
+    with open(file_path, 'r') as f:
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
@@ -58,8 +59,9 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('claimedtype', row[3].replace('SN', '').strip('() '), source)
             events[name].add_quantity('redshift', row[5].strip('() '), source, kind = 'spectroscopic')
 
-    with open("../sne-external/2016arXiv160204156S-tab2.tsv", 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2016arXiv160204156S-tab2.tsv')
+    with open(file_path, 'r') as f:
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
@@ -74,8 +76,9 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 1606.04795
-    with open("../sne-external/1606.04795.tsv", 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '1606.04795.tsv')
+    with open(file_path, 'r') as f:
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
