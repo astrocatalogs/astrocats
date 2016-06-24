@@ -18,12 +18,13 @@ from .. utils import bandrepf, bandmetaf, is_number, \
     get_sig_digits, pretty_num, round_sig, tprint
 
 
-def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="", instrument="", band="",
-                   magnitude="", e_magnitude="", source="", upperlimit=False, system="",
-                   observatory="", observer="", host=False, includeshost=False, survey="",
-                   flux="", fluxdensity="", e_flux="", e_fluxdensity="", u_flux="", u_fluxdensity="", frequency="",
-                   u_frequency="", counts="", e_counts="", nhmw="", photonindex="", unabsorbedflux="",
-                   e_unabsorbedflux="", energy="", u_energy="", e_lower_magnitude="", e_upper_magnitude=""):
+def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
+                   magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "", scorrected = "",
+                   observatory = "", observer = "", host = False, includeshost = False, survey = "", kcorrected = "",
+                   flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
+                   u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
+                   e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = "",
+                   e_lower_time = "", e_upper_time = ""):
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         warnings.warn('Time or brightness not specified when adding photometry, not adding.')
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -84,16 +85,22 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
                  same_tag_num(photo, unabsorbedflux, 'unabsorbedflux') and
                  same_tag_num(photo, fluxdensity, 'fluxdensity') and
                  same_tag_num(photo, counts, 'counts') and
-                 same_tag_num(photo, energy, 'energy') and
+                 same_tag_num(photo, energy, 'energy', canbelist = True) and
                  same_tag_num(photo, frequency, 'frequency') and
                  same_tag_num(photo, photonindex, 'photonindex') and
                  same_tag_num(photo, e_magnitude, 'e_magnitude') and
+                 same_tag_num(photo, e_lower_time, 'e_lower_time') and
+                 same_tag_num(photo, e_upper_time, 'e_upper_time') and
                  same_tag_num(photo, e_lower_magnitude, 'e_lower_magnitude') and
                  same_tag_num(photo, e_upper_magnitude, 'e_upper_magnitude') and
                  same_tag_num(photo, e_flux, 'e_flux') and
                  same_tag_num(photo, e_unabsorbedflux, 'e_unabsorbedflux') and
                  same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
                  same_tag_num(photo, e_counts, 'e_counts') and
+                 same_tag_str(photo, u_flux, 'u_flux') and
+                 same_tag_str(photo, u_fluxdensity, 'u_fluxdensity') and
+                 same_tag_str(photo, u_frequency, 'u_frequency') and
+                 same_tag_str(photo, u_energy, 'u_energy') and
                  same_tag_num(photo, u_flux, 'u_flux') and
                  same_tag_num(photo, u_fluxdensity, 'u_fluxdensity') and
                  same_tag_num(photo, u_frequency, 'u_frequency') and
@@ -106,6 +113,10 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
         photoentry['time'] = time if isinstance(time, list) or isinstance(time, str) else str(time)
     if e_time:
         photoentry['e_time'] = str(e_time)
+    if e_lower_time:
+        photoentry['e_lower_time'] = str(e_lower_time)
+    if e_upper_time:
+        photoentry['e_upper_time'] = str(e_upper_time)
     if u_time:
         photoentry['u_time'] = u_time
     if sband:
@@ -156,6 +167,12 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
         photoentry['host'] = host
     if includeshost:
         photoentry['includeshost'] = includeshost
+    if kcorrected:
+        photoentry['kcorrected'] = kcorrected
+    if scorrected:
+        photoentry['scorrected'] = scorrected
+    if mcorrected:
+        photoentry['mcorrected'] = mcorrected
     if observer:
         photoentry['observer'] = observer
     if survey:
@@ -175,7 +192,7 @@ def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="",
 
 def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_time="", time="",
                  instrument="", deredshifted="", dereddened="", errorunit="", errors="", source="",
-                 snr="", telescope="", observer="", reducer="", filename="", observatory="",
+                 snr="", telescope="", observer="", survey="", reducer="", filename="", observatory="",
                  data=""):
 
     if events[name].is_erroneous('spectra', source):
@@ -228,6 +245,8 @@ def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_
         spectrumentry['observer'] = observer
     if reducer:
         spectrumentry['reducer'] = reducer
+    if survey:
+        spectrumentry['survey'] = survey
     if filename:
         spectrumentry['filename'] = filename
 

@@ -542,7 +542,7 @@ class EVENT(OrderedDict):
         return stub
 
 
-def add_event(tasks, args, events, name, log, load=True, delete=True, source=''):
+def add_event(tasks, args, events, name, log, load=True, delete=True):
     """Find an existing event in, or add a new one to, the `events` dict.
 
     FIX: rename to `create_event`???
@@ -576,9 +576,8 @@ def add_event(tasks, args, events, name, log, load=True, delete=True, source='')
 
     # Create new event
     new_event = EVENT(newname)
+    new_event['schema'] = SCHEMA.URL
     log.log(log._LOADED, "Created new, empty event for '{}'".format(newname))
-    if source:
-        new_event.add_quantity('alias', newname, source)
     # Add event to dictionary
     events[newname] = new_event
 
