@@ -609,15 +609,17 @@ def do_task(tasks, args, checktask, task, quiet=False):
 
 def event_attr_priority(attr):
     if attr == 'photometry':
-        return 'zzzzzzzy'
+        return 'zzy'
     if attr == 'spectra':
-        return 'zzzzzzzz'
+        return 'zzz'
+    if attr == 'schema':
+        return 'aaa'
     if attr == 'name':
-        return 'aaaaaaaa'
+        return 'aab'
     if attr == 'sources':
-        return 'aaaaaaab'
+        return 'aac'
     if attr == 'alias':
-        return 'aaaaaaac'
+        return 'aad'
     return attr
 
 
@@ -967,7 +969,7 @@ def trim_str_arr(arr, length=10):
 
 
 def uniq_cdl(values):
-    return ','.join(list(OrderedDict.fromkeys(values).keys()))
+    return ','.join(sorted(list(set(values))))
 
 
 def utf8(x):

@@ -2,6 +2,7 @@
 """
 
 import os
+from subprocess import check_output
 
 _PATH_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -30,3 +31,9 @@ class FILENAME:
     EXTINCT = os.path.join(PATH.DATA, 'extinctions.json')
     BIBAUTHORS = os.path.join(PATH.DATA, 'bibauthors.json')
     TASK_LIST = os.path.join(PATH.IMPORT, 'tasks.json')
+
+
+class SCHEMA:
+    SCHEMA_HASH = check_output(['git', 'log', '-n', '1', '--format="%H"',
+        '--', '../OSC-JSON-format.md']).decode('ascii').strip().strip('"').strip()
+    SCHEMA_URL = 'https://github.com/astrocatalogs/sne/blob/' + SCHEMA_HASH + '/OSC-JSON-format.md'
