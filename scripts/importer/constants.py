@@ -79,7 +79,7 @@ class TASK:
         if not self.archived:
             return False
         # If we're running in 'archived' mode, and only loading 'archived' things, then True
-        if args.archived:
+        if args.archived not in args.refresh_list and not args.full_refresh:
             return True
         # For normal running, if we are not sepcifically refreshing this task, then True
         if self.name not in args.refresh_list and not args.full_refresh:

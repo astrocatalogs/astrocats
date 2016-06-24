@@ -654,7 +654,8 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
-        events, name = Events.add_event(tasks, args, events, os.path.basename(datafile).split('.')[0], log)
+        oldname = os.path.basename(datafile).split('.')[0]
+        events, name = Events.add_event(tasks, args, events, oldname, log)
         radiosourcedict = OrderedDict()
         with open(datafile, 'r') as ff:
             for li, line in enumerate([xx.strip() for xx in ff.read().splitlines()]):
@@ -671,7 +672,7 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
                         events, name, time=cols[0], frequency=cols[2], u_frequency='GHz',
                         fluxdensity=cols[3], e_fluxdensity=cols[4], u_fluxdensity='µJy',
                         instrument=cols[5], source=source)
-                    events[name].add_quantity('alias', name, source)
+                    events[name].add_quantity('alias', oldname, source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
@@ -681,7 +682,8 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
-        events, name = Events.add_event(tasks, args, events, os.path.basename(datafile).split('.')[0], log)
+        oldname = os.path.basename(datafile).split('.')[0]
+        events, name = Events.add_event(tasks, args, events, oldname, log)
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
@@ -696,7 +698,7 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
                         unabsorbedflux=cols[8], u_flux='ergs/ss/cm^2',
                         photonindex=cols[15], instrument=cols[17], nhmw=cols[11],
                         upperlimit=(float(cols[5]) < 0), source=source)
-                    events[name].add_quantity('alias', name, source)
+                    events[name].add_quantity('alias', oldname, source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
