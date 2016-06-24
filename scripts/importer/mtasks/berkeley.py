@@ -22,7 +22,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
     sec_refbib = '2012MNRAS.425.1789S'
 
     jsontxt = load_cached_url(
-        args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
+        args, current_task, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
         return events
