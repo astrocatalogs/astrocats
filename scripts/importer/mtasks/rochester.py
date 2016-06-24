@@ -15,9 +15,9 @@ from ... utils import is_number, pbar
 
 
 def do_rochester(events, stubs, args, tasks, task_obj, log):
-    rochesterpaths = ['http://www.rochesterastronomy.org/snimages/snredshiftall.html',
-                      'http://www.rochesterastronomy.org/sn2016/snredshift.html']
-    rochesterupdate = [False, True]
+    rochestermirrors = ['http://www.rochesterastronomy.org/', 'http://www.supernova.thistlethwaites.com/']
+    rochesterpaths = ['snimages/snredshiftall.html', 'sn2016/snredshift.html', 'snimages/snredboneyard.html']
+    rochesterupdate = [False, True, True]
     current_task = task_obj.current_task(args)
 
     for pp, path in enumerate(pbar(rochesterpaths, current_task)):
@@ -26,6 +26,11 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
         html = load_cached_url(args, current_task, path, filepath)
+        for mirror in rochestermirrors:
+            html = load_cached_url(mirror + path, filepath, failhard = (mirror != rochestermirrors[-1]))
+            if html:
+                break
+
         if not html:
             continue
 
@@ -45,9 +50,11 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                 aka = str(cols[14].contents[0]).strip()
                 if is_number(aka.strip('?')):
                     aka = 'SN' + aka.strip('?') + 'A'
+                    oldname = aka
                     events, name = add_event(tasks, args, events, aka, log)
-                elif len(aka) >= 4 and is_number(aka[:4]):
+                elif len(aka) = 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
+                    oldname = aka
                     events, name = add_event(tasks, args, events, aka, log)
 
             ra = str(cols[3].contents[0]).strip()
@@ -56,7 +63,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             sn = re.sub('<[^<]+?>', '', str(cols[0].contents[0])).strip()
             if is_number(sn.strip('?')):
                 sn = 'SN' + sn.strip('?') + 'A'
-            elif len(sn) >= 4 and is_number(sn[:4]):
+            elif len(sn) == 4 and is_number(sn[:4]):
                 sn = 'SN' + sn
             if not name:
                 if not sn:
@@ -66,6 +73,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                 if 'POSSIBLE' in sn.upper() and ra and dec:
                     sn = 'PSN J' + ra.replace(':', '').replace('.', '')
                     sn += dec.replace(':', '').replace('.', '')
+                oldname = sn
                 events, name = add_event(tasks, args, events, sn, log)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
@@ -73,7 +81,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             source = events[name].add_source(srcname=reference, url=refurl)
             sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, secondary=True)
             sources = uniq_cdl(list(filter(None, [source, sec_source])))
-            events[name].add_quantity('alias', name, sources)
+            events[name].add_quantity('alias', oldname, sources)
             events[name].add_quantity('alias', sn, sources)
 
             if cols[14].contents:
