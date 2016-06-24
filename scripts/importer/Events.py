@@ -630,8 +630,10 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
     # NOTE: this needs to use a `list` wrapper to allow modification of dictionary
     for name in list(events.keys()):
         if 'writeevents' in tasks:
-            # See if this event should be burried
-            # Delete non-SN events here without IAU designations (those with only banned types)
+            # See if this event should be buried
+
+	    # Bury non-SN events here if only claimed type is non-SN type, or if primary
+	    # name starts with a non-SN prefix.
             buryevent = False
             save_event = True
             ct_val = None
@@ -640,8 +642,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
                     log.debug("Killing '{}', non-SNe prefix.".format(name))
                     save_event = False
                 else:
-                    has_sn_name = name.startswith('SN') and is_number(name[2:6])
-                    if KEYS.CLAIMED_TYPE in events[name] and not has_sn_name:
+                    if KEYS.CLAIMED_TYPE in events[name]:
                         for ct in events[name][KEYS.CLAIMED_TYPE]:
                             up_val = ct['value'].upper()
                             if up_val not in non_sne_types and up_val != 'CANDIDATE':
