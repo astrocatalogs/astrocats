@@ -609,15 +609,17 @@ def do_task(tasks, args, checktask, task, quiet=False):
 
 def event_attr_priority(attr):
     if attr == 'photometry':
-        return 'zzzzzzzy'
+        return 'zzy'
     if attr == 'spectra':
-        return 'zzzzzzzz'
+        return 'zzz'
+    if attr == 'schema':
+        return 'aaa'
     if attr == 'name':
-        return 'aaaaaaaa'
+        return 'aab'
     if attr == 'sources':
-        return 'aaaaaaab'
+        return 'aac'
     if attr == 'alias':
-        return 'aaaaaaac'
+        return 'aad'
     return attr
 
 
