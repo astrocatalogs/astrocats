@@ -9,8 +9,8 @@ import re
 import urllib
 
 from scripts import PATH
-from .. funcs import add_event, add_source, add_quantity, \
-    clean_snname, journal_events, load_cached_url, uniq_cdl, utf8
+from .. import Events
+from .. funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 from ... utils import pbar, is_number
 
 
@@ -40,7 +40,7 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            events, name, source = new_event(
+            events, name, source = Events.new_event(
                 oldname, refname = reference, url = refurl, bibcode = refbib, secondary = True)
 
             year = re.findall(r'\d+', oldname)[0]
@@ -105,7 +105,7 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             if (discoverer != ''):
                 events[name].add_quantity('discoverer', discoverer, source)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -141,7 +141,7 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
                 if is_number(name[:4]):
                     name = 'SN' + name
                 oldname = name
-                events, name = add_event(tasks, args, events, name, log)
+                events, name = Events.add_event(tasks, args, events, name, log)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = events[name].add_source(
@@ -208,5 +208,5 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
             #    print(scidata[3])
             #    sys.exit()
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
