@@ -25,7 +25,6 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             continue
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
-        html = load_cached_url(args, current_task, path, filepath)
         for mirror in rochestermirrors:
             html = load_cached_url(mirror + path, filepath, failhard = (mirror != rochestermirrors[-1]))
             if html:
