@@ -137,7 +137,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                         name = name.replace('MASTEROTJ', 'MASTER OT J')
                     events, name = Events.add_event(tasks, args, events, name, log)
                     sec_source = events[name].add_source(
-                        refname=sec_ref, url=sec_refurl, secondary=True)
+                        srcname=sec_ref, url=sec_refurl, secondary=True)
                     events[name].add_quantity('alias', name, sec_source)
 
                     if not is_number(row[1]):
