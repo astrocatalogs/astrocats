@@ -15,7 +15,7 @@ from scripts import FILENAME
 from . constants import OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
     KM, MAX_BANDS
 from .. utils import bandrepf, bandmetaf, is_number, \
-    get_sig_digits, pretty_num, round_sig, tprint
+    get_sig_digits, pretty_num, round_sig, tprint, zpad
 
 
 def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",

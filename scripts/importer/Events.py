@@ -12,7 +12,7 @@ from scripts import FILENAME, PATH, SCHEMA
 from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
     OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY, TRAVIS_QUERY_LIMIT
 from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
-    jd_to_mjd, name_clean
+    jd_to_mjd, name_clean, host_clean, radec_clean
 from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
     pbar, pretty_num, tprint, zpad, repo_file_list
 
@@ -208,9 +208,11 @@ class EVENT(OrderedDict):
 
             svalue = host_clean(svalue)
 
-            if not skind and (is_abell or 'cluster' in svalue.lower()):
+            if (not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
+                'cluster' in svalue.lower())):
                 skind = 'cluster'
-
+                if not skind and (is_abell or 'cluster' in svalue.lower()):
+                    skind = 'cluster'
         elif quantity == KEYS.CLAIMED_TYPE:
             isq = False
             svalue = svalue.replace('young', '')
@@ -636,8 +638,8 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
         if 'writeevents' in tasks:
             # See if this event should be buried
 
-	    # Bury non-SN events here if only claimed type is non-SN type, or if primary
-	    # name starts with a non-SN prefix.
+            # Bury non-SN events here if only claimed type is non-SN type, or if primary
+            # name starts with a non-SN prefix.
             buryevent = False
             save_event = True
             ct_val = None

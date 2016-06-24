@@ -10,7 +10,7 @@ from astropy.time import Time as astrotime
 
 from scripts import PATH
 from .. funcs import add_photometry, \
-    convert_aq_output, jd_to_mjd, journal_events, make_date_string, uniq_cdl
+    convert_aq_output, jd_to_mjd, make_date_string, uniq_cdl
 from .. import Events
 from .. constants import KM, CLIGHT
 from ... utils import get_sig_digits, is_number, pbar, pretty_num, round_sig
