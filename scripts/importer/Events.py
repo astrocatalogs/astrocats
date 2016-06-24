@@ -775,19 +775,15 @@ def merge_duplicates(tasks, args, events):
             continue
         # allnames1 = events[name1].get_aliases() + (['AT' + name1[2:]] if
         #     (name1.startswith('SN') and is_number(name1[2:6])) else [])
-        allnames1 = events[name1].get_aliases()
-        if name1.startswith('SN') and is_number(name1[2:6]):
-            allnames1 += ['AT' + name1[2:]]
+        allnames1 = set(events[name1].get_aliases(name1) + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []))
 
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
             # allnames2 = events[name2].get_aliases() + (['AT' + name2[2:]]
             #    if (name2.startswith('SN') and is_number(name2[2:6])) else [])
-            allnames2 = events[name2].get_aliases()
-            if name2.startswith('SN') and is_number(name2[2:6]):
-                allnames2 += ['AT' + name2[2:]]
-            if any(ii in allnames1 for ii in allnames2):
+            allnames2 = set(events[name2].get_aliases(name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else []))
+            if bool(allnames1 & allnames2):
                 tprint("Found single event with multiple entries ('{}' and '{}'), merging.".format(
                     name1, name2))
 
@@ -796,10 +792,10 @@ def merge_duplicates(tasks, args, events):
                 if load1 and load2:
                     priority1 = 0
                     priority2 = 0
-                    for an in allnames1:
+                    for an in list(allnames1):
                         if len(an) >= 2 and an.startswith(('SN', 'AT')):
                             priority1 = priority1 + 1
-                    for an in allnames2:
+                    for an in list(allnames2):
                         if len(an) >= 2 and an.startswith(('SN', 'AT')):
                             priority2 = priority2 + 1
 
@@ -814,6 +810,8 @@ def merge_duplicates(tasks, args, events):
                 else:
                     print('Duplicate already deleted')
                 journal_events(tasks, args, events)
+        if args.travis and n1 > TRAVIS_QUERY_LIMIT:
+            break
 
     return events
 
