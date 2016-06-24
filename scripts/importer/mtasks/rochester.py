@@ -10,7 +10,7 @@ from string import ascii_letters
 
 from scripts import PATH
 from .. import Events
-from .. funcs import add_photometry, get_aliases, load_cached_url, make_date_string, uniq_cdl
+from .. funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 from ... utils import is_number, pbar
 
 
@@ -26,7 +26,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
         for mirror in rochestermirrors:
-            html = load_cached_url(mirror + path, filepath, failhard = (mirror != rochestermirrors[-1]))
+            html = load_cached_url(args, current_task, mirror + path, filepath, failhard = (mirror != rochestermirrors[-1]))
             if html:
                 break
 
@@ -51,7 +51,7 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                     aka = 'SN' + aka.strip('?') + 'A'
                     oldname = aka
                     events, name = Events.add_event(tasks, args, events, aka, log)
-                elif len(aka) = 4 and is_number(aka[:4]):
+                elif len(aka) == 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
                     oldname = aka
                     events, name = Events.add_event(tasks, args, events, aka, log)
@@ -125,63 +125,63 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             file_name = os.path.join(PATH.REPO_EXTERNAL, "" + vsnetfile)
             with open(file_name, 'r', encoding='latin1') as csv_file:
                 tsvin = csv.reader(csv_file, delimiter=' ', skipinitialspace=True)
-            for rr, row in enumerate(tsvin):
-                if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
-                    continue
-                name = row[0].strip()
-                if name[:4].isdigit():
-                    name = 'SN' + name
-                if name.startswith('PSNJ'):
-                    name = 'PSN J' + name[4:]
-                if name.startswith('MASTEROTJ'):
-                    name = name.replace('MASTEROTJ', 'MASTER OT J')
-                events, name = Events.add_event(tasks, args, events, name, log)
-                sec_source = events[name].add_source(
-                    refname=sec_ref, url=sec_refurl, secondary=True)
-                events[name].add_quantity('alias', name, sec_source)
+                for rr, row in enumerate(tsvin):
+                    if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
+                        continue
+                    name = row[0].strip()
+                    if name[:4].isdigit():
+                        name = 'SN' + name
+                    if name.startswith('PSNJ'):
+                        name = 'PSN J' + name[4:]
+                    if name.startswith('MASTEROTJ'):
+                        name = name.replace('MASTEROTJ', 'MASTER OT J')
+                    events, name = Events.add_event(tasks, args, events, name, log)
+                    sec_source = events[name].add_source(
+                        refname=sec_ref, url=sec_refurl, secondary=True)
+                    events[name].add_quantity('alias', name, sec_source)
 
-                if not is_number(row[1]):
-                    continue
-                year = row[1][:4]
-                month = row[1][4:6]
-                day = row[1][6:]
-                if '.' not in day:
-                    day = day[:2] + '.' + day[2:]
-                mjd = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd
-                mjd += float(day) - floor(float(day))
-                magnitude = row[2].rstrip(ascii_letters)
-                if not is_number(magnitude):
-                    continue
-                if magnitude.isdigit():
-                    if int(magnitude) > 100:
-                        magnitude = magnitude[:2] + '.' + magnitude[2:]
+                    if not is_number(row[1]):
+                        continue
+                    year = row[1][:4]
+                    month = row[1][4:6]
+                    day = row[1][6:]
+                    if '.' not in day:
+                        day = day[:2] + '.' + day[2:]
+                    mjd = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd
+                    mjd += float(day) - floor(float(day))
+                    magnitude = row[2].rstrip(ascii_letters)
+                    if not is_number(magnitude):
+                        continue
+                    if magnitude.isdigit():
+                        if int(magnitude) > 100:
+                            magnitude = magnitude[:2] + '.' + magnitude[2:]
 
-                if float(str(cols[8].contents[0]).strip()) >= 90.0:
-                    continue
+                    if float(str(cols[8].contents[0]).strip()) >= 90.0:
+                        continue
 
-                if len(row) >= 4:
-                    if is_number(row[3]):
-                        e_magnitude = row[3]
-                        refind = 4
+                    if len(row) >= 4:
+                        if is_number(row[3]):
+                            e_magnitude = row[3]
+                            refind = 4
+                        else:
+                            e_magnitude = ''
+                            refind = 3
+
+                        if refind >= len(row):
+                            sources = sec_source
+                        else:
+                            reference = ' '.join(row[refind:])
+                            source = events[name].add_source(srcname=reference)
+                            events[name].add_quantity('alias', name, sec_source)
+                            sources = uniq_cdl([source, sec_source])
                     else:
-                        e_magnitude = ''
-                        refind = 3
-
-                    if refind >= len(row):
                         sources = sec_source
-                    else:
-                        reference = ' '.join(row[refind:])
-                        source = events[name].add_source(srcname=reference)
-                        events[name].add_quantity('alias', name, sec_source)
-                        sources = uniq_cdl([source, sec_source])
-                else:
-                    sources = sec_source
 
-                band = row[2].lstrip('1234567890.')
+                    band = row[2].lstrip('1234567890.')
 
-                add_photometry(
-                    events, name, time=mjd, band=band, magnitude=magnitude,
-                    e_magnitude=e_magnitude, source=sources)
+                    add_photometry(
+                        events, name, time=mjd, band=band, magnitude=magnitude,
+                        e_magnitude=e_magnitude, source=sources)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

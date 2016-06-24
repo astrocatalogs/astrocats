@@ -146,7 +146,7 @@ class EVENT(OrderedDict):
             new_src[KEYS.BIBCODE] = bibcode
         new_src[KEYS.ALIAS] = source_alias
         # Add in any additional arguments passed (e.g. url, acknowledgment, etc)
-        new_src.update(src_kwargs)
+        new_src.update({k:v for (k,v) in src_kwargs.items() if k})
         self.setdefault(KEYS.SOURCES, []).append(new_src)
 
         return source_alias
