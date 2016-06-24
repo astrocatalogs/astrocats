@@ -20,16 +20,16 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
 
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'Nicholl-04-01-16/*.txt'))
     for datafile in pbar_strings(file_names, current_task + ': Nicholl-04-01-16'):
-        name = os.path.basename(datafile).split('_')[0]
-        events, name = add_event(tasks, args, events, name, log)
+        inpname = os.path.basename(datafile).split('_')[0]
+        events, name = add_event(tasks, args, events, inpname, log)
         bibcode = ''
         for bc in bcs:
-            if name in bcs[bc]:
+            if inpname in bcs[bc]:
                 bibcode = bc
         if not bibcode:
             raise ValueError('Bibcode not found!')
         source = events[name].add_source(bibcode=bibcode)
-        events[name].add_quantity('alias', name, source)
+        events[name].add_quantity('alias', inpname, source)
         with open(datafile, 'r') as f:
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
             for r, rrow in enumerate(tsvin):
@@ -65,7 +65,10 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/LMCSNRs'):
             name = 'MCSNR ' + row[0]
             events, name = add_event(tasks, args, events, name, log)
+            ra = row[2]
+            dec = row[3]
             source = events[name].add_source(bibcode='2016A&A...585A.162M')
+            events[name].add_quantity('alias', 'LMCSNR J' + rep_chars(ra, ' :.') + rep_chars(dec, ' :.'), source)
             events[name].add_quantity('alias', name, source)
             if row[1] != 'noname':
                 events[name].add_quantity('alias', row[1], source)
@@ -82,6 +85,9 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
             name = 'MCSNR ' + row[0]
             events, name = add_event(tasks, args, events, name, log)
             source = events[name].add_source(srcname='Pierre Maggi')
+            ra = row[3]
+            dec = row[4]
+            events[name].add_quantity(name, 'alias', 'SMCSNR J' + ra.replace(':', '')[:6] + dec.replace(':', '')[:7], source)
             events[name].add_quantity('alias', name, source)
             events[name].add_quantity('alias', row[1], source)
             events[name].add_quantity('alias', row[2], source)
@@ -215,7 +221,8 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                     instrument = 'UVOT' if telescope == 'Swift' else ''
                     add_photometry(
                         events, name, time=mjd, magnitude=col, e_magnitude=emag, upperlimit=upp,
-                        band=bands[ci], source=source, telescope=telescope, instrument=instrument)
+                        band=bands[ci], source=source, telescope=telescope, instrument=instrument,
+                        system = 'Vega' if telescope == 'Swift' else 'AB')
 
     events, stubs = journal_events(tasks, args, events, stubs, log)
     return events
