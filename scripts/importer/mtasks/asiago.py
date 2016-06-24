@@ -41,7 +41,7 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             refbib = '1989A&AS...81..421B'
 
             events, name, source = Events.new_event(tasks, args, events,
-                oldname, log, refname = reference, url = refurl, bibcode = refbib, secondary = True)
+                oldname, log, srcname = reference, url = refurl, bibcode = refbib, secondary = True)
 
             year = re.findall(r'\d+', oldname)[0]
             events[name].add_quantity('discoverdate', year, source)
@@ -145,7 +145,7 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = events[name].add_source(
-                    refname=reference, url=refurl, secondary=True)
+                    srcname=reference, url=refurl, secondary=True)
                 events[name].add_quantity('alias', oldname, secondarysource)
                 if alias != name:
                     events[name].add_quantity('alias', alias, secondarysource)

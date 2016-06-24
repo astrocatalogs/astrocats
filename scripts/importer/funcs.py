@@ -299,7 +299,7 @@ def copy_to_event(events, fromname, destname):
         for source in events[fromname]['sources']:
             newsourcealiases[source['alias']] = events[destname].add_source(
                 bibcode=source['bibcode'] if 'bibcode' in source else '',
-                refname=source['name'] if 'name' in source else '',
+                srcname=source['name'] if 'name' in source else '',
                 reference=source['reference'] if 'reference' in source else '',
                 url=source['url'] if 'url' in source else '')
 
@@ -458,7 +458,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                             alias.replace(prefix, '')[2:4]])
                         if args.verbose:
                             tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
-                        source = events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                        source = events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True)
                         events[name].add_quantity('discoverdate', discoverdate, source, derived = True)
                         break
                 if 'discoverdate' in events[name]:
@@ -516,7 +516,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     ebverr = result['ext SandF std'][0]
                     extinctions_dict[name] = [ebv, ebverr]
             if name in extinctions_dict:
-                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True),
                     events[name].add_source(bibcode = '2011ApJ...737..103S')])
                 events[name].add_quantity('ebv', str(extinctionsdict[name][0]), sources, error = str(extinctionsdict[name][1]), derived = True)
         if 'host' in events[name] and ('hostra' not in events[name] or 'hostdec' not in events[name]):
@@ -535,7 +535,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     hostdec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                     if args.verbose:
                         tprint ('Added hostra/hostdec from name: ' + hostra + ' ' + hostdec)
-                    source = events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)
+                    source = events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True)
                     events[name].add_quantity('hostra', hostra, source, derived = True)
                     events[name].add_quantity('hostdec', hostdec, source, derived = True)
                     break
@@ -604,7 +604,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     from astropy.cosmology import Planck15 as cosmo
                     if 'lumdist' not in events[name]:
                         dl = cosmo.luminosity_distance(bestz)
-                        sources = [events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                        sources = [events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True),
                             events[name].add_source(bibcode = '2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
                         events[name].add_quantity('lumdist', pretty_num(dl.value, sig = bestsig), sources,
@@ -615,7 +615,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                             events[name].add_quantity('maxabsmag', pnum, sources, derived = True)
                     if 'comovingdist' not in events[name]:
                         cd = cosmo.comoving_distance(bestz)
-                        sources = [events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True),
+                        sources = [events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True),
                             events[name].add_source(bibcode = '2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
                         events[name].add_quantity('comovingdist', pretty_num(cd.value, sig = bestsig), sources, derived = True)
@@ -629,7 +629,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             except:
                 pass
             else:
-                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, refname = oscname, url = oscurl, secondary = True)] +
+                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True)] +
                     events[name]['ra'][0]['source'].split(',') + events[name]['dec'][0]['source'].split(',') +
                     events[name]['hostra'][0]['source'].split(',') + events[name]['hostdec'][0]['source'].split(','))
                 if 'hostoffsetang' not in events[name]:

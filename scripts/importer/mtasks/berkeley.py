@@ -112,7 +112,7 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         events, name = Events.add_event(tasks, args, events, name, log)
 
         sec_source = events[name].add_source(
-            refname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)
+            srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)
         events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:

@@ -43,7 +43,7 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
         sec_source = events[name].add_source(
-            refname=sec_reference, url=sec_refurl, bibcode=sec_bibcode, secondary=True)
+            srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode, secondary=True)
         events[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]
         source = events[name].add_source(bibcode=bibcode)

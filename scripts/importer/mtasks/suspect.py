@@ -132,7 +132,7 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'
             sec_source = events[name].add_source(
-                refname=sec_ref, url=sec_refurl, bibcode=sec_bibc, secondary=True)
+                srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc, secondary=True)
             events[name].add_quantity('alias', name, sec_source)
             fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder, eventfolder)
             eventspectra = next(os.walk(fpath))[2]
