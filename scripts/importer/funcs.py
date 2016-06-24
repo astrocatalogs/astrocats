@@ -889,6 +889,123 @@ def name_clean(name):
     return newname
 
 
+def radec_clean(svalue, quantity, unit = ''):
+    if unit == 'floatdegrees':
+        if not is_number(svalue):
+            return (svalue, unit)
+        deg = float('%g' % Decimal(svalue))
+        sig = get_sig_digits(svalue)
+        if 'ra' in quantity:
+            flhours = deg / 360.0 * 24.0
+            hours = floor(flhours)
+            minutes = floor((flhours - hours) * 60.0)
+            seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
+            hours = 0 if hours < 1.e-6 else hours
+            minutes = 0 if minutes < 1.e-6 else minutes
+            seconds = 0.0 if seconds < 1.e-6 else seconds
+            if seconds > 60.0:
+                raise(ValueError('Invalid seconds value for ' + quantity))
+            svalue = str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1))
+        elif 'dec' in quantity:
+            fldeg = abs(deg)
+            degree = floor(fldeg)
+            minutes = floor((fldeg - degree) * 60.0)
+            seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
+            if seconds > 60.0:
+                raise(ValueError('Invalid seconds value for ' + quantity))
+            svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
+                str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig = sig - 1)))
+    elif unit == 'nospace' and 'ra' in quantity:
+        svalue = svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
+    elif unit == 'nospace' and 'dec' in quantity:
+        if svalue.startswith(('+', '-')):
+            svalue = svalue[:3] + ':' + svalue[3:5] + ((':' + zpad(svalue[5:])) if len(svalue) > 5 else '')
+        else:
+            svalue = '+' + svalue[:2] + ':' + svalue[2:4] + ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
+    else:
+        svalue = svalue.replace(' ', ':')
+        if 'dec' in quantity:
+            valuesplit = svalue.split(':')
+            svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
+                (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
+                (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
+
+    if 'ra' in quantity:
+        sunit = 'hours'
+    elif 'dec' in quantity:
+        sunit = 'degrees'
+
+    # Correct case of arcseconds = 60.0.
+    valuesplit = svalue.split(':')
+    if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
+        svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
+
+    # Strip trailing dots.
+    svalue = svalue.rstrip('.')
+
+    return (svalue, sunit)
+
+
+def host_clean(name):
+    newname = name.strip(' ;,*')
+
+    # Handle some special cases
+    hostcases = {'M051a':'M51A', 'M051b':'M51B'}
+    for k in hostcases:
+        if newname == k:
+            newname = hostcases[k]
+
+    # Some general cases
+    newname = newname.strip("()").replace('  ', ' ', 1)
+    newname = newname.replace("ABELL", "Abell", 1)
+    newname = newname.replace("Abell", "Abell ", 1)
+    newname = newname.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
+    newname = newname.replace("ARP", "ARP ", 1)
+    newname = newname.replace("CGCG", "CGCG ", 1)
+    newname = newname.replace("HOLM", "HOLM ", 1)
+    newname = newname.replace("IC", "IC ", 1)
+    newname = newname.replace("Intergal.", "Intergalactic", 1)
+    newname = newname.replace("MCG+", "MCG +", 1)
+    newname = newname.replace("MCG-", "MCG -", 1)
+    newname = newname.replace("M+", "MCG +", 1)
+    newname = newname.replace("M-", "MCG -", 1)
+    newname = newname.replace("MGC ", "MCG ", 1)
+    newname = newname.replace("Mrk", "MRK", 1)
+    newname = newname.replace("MRK", "MRK ", 1)
+    newname = newname.replace("NGC", "NGC ", 1)
+    newname = newname.replace("PGC", "PGC ", 1)
+    newname = newname.replace("SDSS", "SDSS ", 1)
+    newname = newname.replace("UGC", "UGC ", 1)
+    if newname.startswith('MESSIER '):
+        newname = newname.replace('MESSIER ', 'M', 1)
+    if newname.startswith('M ') and is_number(newname[2:]):
+        newname = newname.replace('M ', 'M', 1)
+    if newname.startswith('M') and is_number(newname[1:]):
+        newname = 'M' + newname[1:].lstrip(" 0")
+    if len(newname) > 4 and newname.startswith("PGC "):
+        newname = newname[:4] + newname[4:].lstrip(" 0")
+    if len(newname) > 4 and newname.startswith("UGC "):
+        newname = newname[:4] + newname[4:].lstrip(" 0")
+    if len(newname) > 5 and newname.startswith(("MCG +", "MCG -")):
+        newname = newname[:5] + '-'.join([x.zfill(2) for x in newname[5:].strip().split("-")])
+    if len(newname) > 5 and newname.startswith("CGCG "):
+        newname = newname[:5] + '-'.join([x.zfill(3) for x in newname[5:].strip().split("-")])
+    if (len(newname) > 1 and newname.startswith("E")) or (len(newname) > 3 and newname.startswith('ESO')):
+        if newname[0] == "E":
+            esplit = newname[1:].split("-")
+        else:
+            esplit = newname[3:].split("-")
+        if len(esplit) == 2 and is_number(esplit[0].strip()):
+            if esplit[1].strip()[0] == 'G':
+                parttwo = esplit[1][1:].strip()
+            else:
+                parttwo = esplit[1].strip()
+            if is_number(parttwo.strip()):
+                newname = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
+    newname = ' '.join(newname.split())
+    return newname
+
+
 def null_field(obj, field):
     return obj[field] if field in obj else ''
 
