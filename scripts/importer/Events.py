@@ -156,13 +156,13 @@ class EVENT(OrderedDict):
         """
         """
         if not quantity:
-            raise(ValueError(name + "'s quantity must be specified for add_quantity."))
+            raise(ValueError(self.name + "'s quantity must be specified for add_quantity."))
         if not sources:
-            raise(ValueError(name + "'s source must be specified for quantity " +
+            raise(ValueError(self.name + "'s source must be specified for quantity " +
                 quantity + ' before it is added.'))
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise(ValueError(name + "'s Quantity " + quantity + " must be a string or an array of strings."))
+            raise(ValueError(self.name + "'s Quantity " + quantity + " must be a string or an array of strings."))
 
         if self.is_erroneous(quantity, sources):
             return None
@@ -178,7 +178,7 @@ class EVENT(OrderedDict):
         if not svalue or svalue == '--' or svalue == '-':
             return
         if serror and (not is_number(serror) or float(serror) < 0):
-            raise(ValueError(name + "'s quanta " + quantity + ' error value must be a number and positive.'))
+            raise(ValueError(self.name + "'s quanta " + quantity + ' error value must be a number and positive.'))
 
         # Set default units
         if not unit and quantity == 'velocity':

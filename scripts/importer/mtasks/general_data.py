@@ -1354,7 +1354,7 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
             continue
         if is_number(name):
             continue
-	events, name = Events.add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         source = events[name].add_source(refname = 'SIMBAD astronomical database', bibcode = "2000A&AS..143....9W",
             url = "http://simbad.u-strasbg.fr/", secondary = True)
         aliases = row['ID'].split(',')

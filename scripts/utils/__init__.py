@@ -3,6 +3,8 @@
 
 from . import digits
 from . digits import *
+from . import strings
+from . strings import *
 from . import logger
 from . logger import *
 from . import photometry
