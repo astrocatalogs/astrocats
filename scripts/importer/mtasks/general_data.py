@@ -32,21 +32,25 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
                 continue
-            (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
-            add_quantity(name, 'claimedtype', row[3].replace('SN', '').strip('() '), source)
-            add_quantity(name, 'redshift', row[5].strip('() '), source, kind = 'spectroscopic')
+            events, name, source = Events.new_event(tasks, args, events, row[0], log,
+                                                    bibcode = '2016arXiv160204156S')
+            events[name].add_quantity('claimedtype', row[3].replace('SN', '').strip('() '), source)
+            events[name].add_quantity('redshift', row[5].strip('() '), source, kind = 'spectroscopic')
+
     with open("../sne-external/2016arXiv160204156S-tab2.tsv", 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
                 continue
-            (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
-            add_quantity(name, 'ra', row[1], source)
-            add_quantity(name, 'dec', row[2], source)
+            events, name, source = Events.new_event(tasks, args, events, row[0], log,
+                                            bibcode = '2016arXiv160204156S')
+            events[name].add_quantity('ra', row[1], source)
+            events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[4]), format = 'mjd').datetime
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
-            add_quantity(name, 'discoverdate', discoverdate, source)
-    journal_events()
+            events[name].add_quantity('discoverdate', discoverdate, source)
+
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 1606.04795
     with open("../sne-external/1606.04795.tsv", 'r') as f:
@@ -55,18 +59,20 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
             if row[0][0] == '#':
                 continue
             (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
-            add_quantity(name, 'ra', row[1], source)
-            add_quantity(name, 'dec', row[2], source)
+            events[name].add_quantity('ra', row[1], source)
+            events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[3]), format = 'mjd').datetime
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
-            add_quantity(name, 'discoverdate', discoverdate, source)
-            add_quantity(name, 'claimedtype', row[6], source)
-            add_quantity(name, 'redshift', row[7], source, kind = 'spectroscopic')
+            events[name].add_quantity('discoverdate', discoverdate, source)
+            events[name].add_quantity('claimedtype', row[6], source)
+            events[name].add_quantity('redshift', row[7], source, kind = 'spectroscopic')
             for alias in [x.strip() for x in row[8].split(',')]:
-                add_quantity(name, 'alias', alias, source)
-    journal_events()
+                events[name].add_quantity('alias', alias, source)
+
+    events, stubs = journal_events(tasks, args, events, stubs, log)
 
     return events
+
 
 def do_ascii(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
