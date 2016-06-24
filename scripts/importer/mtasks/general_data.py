@@ -24,6 +24,50 @@ from .. Events import load_event_from_file
 from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig
 
 
+def do_psst(events, stubs, args, tasks, task_obj, log):
+    currenttask = task_obj.current_task(args)
+    # 2016arXiv160204156S
+    with open("../sne-external/2016arXiv160204156S-tab1.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                continue
+            (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
+            add_quantity(name, 'claimedtype', row[3].replace('SN', '').strip('() '), source)
+            add_quantity(name, 'redshift', row[5].strip('() '), source, kind = 'spectroscopic')
+    with open("../sne-external/2016arXiv160204156S-tab2.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                continue
+            (name, source) = new_event(row[0], bibcode = '2016arXiv160204156S')
+            add_quantity(name, 'ra', row[1], source)
+            add_quantity(name, 'dec', row[2], source)
+            mldt = astrotime(float(row[4]), format = 'mjd').datetime
+            discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
+            add_quantity(name, 'discoverdate', discoverdate, source)
+    journal_events()
+
+    # 1606.04795
+    with open("../sne-external/1606.04795.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                continue
+            (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
+            add_quantity(name, 'ra', row[1], source)
+            add_quantity(name, 'dec', row[2], source)
+            mldt = astrotime(float(row[3]), format = 'mjd').datetime
+            discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
+            add_quantity(name, 'discoverdate', discoverdate, source)
+            add_quantity(name, 'claimedtype', row[6], source)
+            add_quantity(name, 'redshift', row[7], source, kind = 'spectroscopic')
+            for alias in [x.strip() for x in row[8].split(',')]:
+                add_quantity(name, 'alias', alias, source)
+    journal_events()
+
+    return events
+
 def do_ascii(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
 
