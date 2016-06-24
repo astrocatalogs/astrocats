@@ -720,8 +720,9 @@ def get_best_redshift(events, name):
             bestz = z['value']
             bestkind = kind
             bestsig = sig
+            bestsrc = z['source']
 
-    return (bestz, bestkind, bestsig)
+    return (bestz, bestkind, bestsig, bestsrc)
 
 
 def get_first_light(events, name):
