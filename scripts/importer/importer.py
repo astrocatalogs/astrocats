@@ -12,7 +12,7 @@ import warnings
 from scripts import FILENAME
 from . import Events
 from . funcs import derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
-    has_task
+    has_task, name_clean
 from . constants import TASK, TRAVIS_QUERY_LIMIT
 from .. utils import pbar, repo_file_list, get_logger
 
@@ -167,52 +167,70 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
     from . funcs import journal_events, uniq_cdl
     from .. utils import is_number, Decimal
     nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
-    data = csv.reader(open(nedd_path, 'r'), delimiter=',', quotechar='"')
-    reference = 'NED-D'
-    refurl = 'http://ned.ipac.caltech.edu/Library/Distances/'
-    nedd_dict = OrderedDict()
-    oldhostname = ''
-    for r, row in enumerate(data):
-        if r <= 12:
-            continue
-        hostname = row[3]
-        if args.update and oldhostname != hostname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
-        # distmod = row[4]
-        # moderr = row[5]
-        dist = row[6]
-        bibcode = unescape(row[8])
-        name = ''
-        if hostname.startswith('SN '):
-            if is_number(hostname[3:7]):
-                name = 'SN' + hostname[3:]
-            else:
-                name = hostname[3:]
-        elif hostname.startswith('SNLS '):
-            name = 'SNLS-' + hostname[5:].split()[0]
-        else:
-            cleanhost = hostname.replace('MESSIER 0', 'M').replace('MESSIER ', 'M').strip()
-            if True in [x in cleanhost for x in ['UGC', 'PGC', 'IC']]:
-                cleanhost = ' '.join([x.lstrip('0') for x in cleanhost.split()])
-            if 'ESO' in cleanhost:
-                cleanhost = cleanhost.replace(' ', '').replace('ESO', 'ESO ')
-            nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
+    with open(nedd_path, 'r') as f:
+        data = sorted(list(csv.reader(f, delimiter=',', quotechar='"'))[13:], key=lambda x: (x[9], x[3]))
+        reference = "NED-D"
+        refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
+        nedddict = OrderedDict()
+        olddistname = ''
+        for r, row in enumerate(tq(data, currenttask = currenttask)):
+            if r <= 12:
+                continue
+            distname = row[3]
+            name = name_clean(distname)
+            distmod = row[4]
+            moderr = row[5]
+            dist = row[6]
+            bibcode = unescape(row[8])
+            snname = name_clean(row[9])
+            redshift = row[10]
+            cleanhost = ''
 
-        if name:
-            events, name = Events.add_event(tasks, args, events, name, log)
-            sec_source = events[name].add_source(srcname=reference, url=refurl, secondary=True)
-            events[name].add_quantity('alias', name, sec_source)
-            if bibcode:
-                source = events[name].add_source(bibcode=bibcode)
-                sources = uniq_cdl([source, sec_source])
-            else:
-                sources = sec_source
-            events[name].add_quantity('comovingdist', dist, sources)
-        oldhostname = hostname
+            if name != snname and (name + ' HOST' != snname):
+                cleanhost = host_clean(distname)
+                if cleanhost.endswith(' HOST'):
+                    cleanhost = ''
+                if not is_number(dist):
+                    print(dist)
+                if dist:
+                    nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+            if snname and 'HOST' not in snname:
+                events, snname, secondarysource = Events.new_event(
+                    tasks, args, events, snname, log,
+                    refname = reference, url = refurl, secondary = True)
+                if bibcode:
+                    source = events[snname].add_source(bibcode = bibcode)
+                    sources = uniq_cdl([source, secondarysource])
+                else:
+                    sources = secondarysource
+
+                if name == snname:
+                    if redshift:
+                        events[snname].add_quantity('redshift', redshift, sources)
+                    if dist:
+                        events[snname].add_quantity('comovingdist', dist, sources)
+                        if not redshift:
+                            try:
+                                redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(dist) * un.Mpc, zmax = 5.0), sig = get_sig_digits(str(dist)))
+                            except (KeyboardInterrupt, SystemExit):
+                                raise
+                            except:
+                                pass
+                            else:
+                                cosmosource = events[name].add_source(bibcode='2015arXiv150201589P')
+                                events[snname].add_quantity('redshift', redshift, uniq_cdl(sources.split(',') + [cosmosource]))
+
+                if cleanhost:
+                    events[snname].add_quantity('host', cleanhost, sources)
+
+                if args.update and olddistname != distname:
+                    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            olddistname = distname
+
+        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
     return events
-
 
 def delete_old_event_files(*args):
     # Delete all old event JSON files
