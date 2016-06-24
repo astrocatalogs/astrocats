@@ -162,7 +162,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
     import csv
     from html import unescape
     from . constants import PATH
-    from . funcs import journal_events, uniq_cdl
+    from . funcs import uniq_cdl
     from .. utils import is_number, Decimal
     nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
     data = csv.reader(open(nedd_path, 'r'), delimiter=',', quotechar='"')
@@ -175,7 +175,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             continue
         hostname = row[3]
         if args.update and oldhostname != hostname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         # distmod = row[4]
         # moderr = row[5]
         dist = row[6]
@@ -208,7 +208,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('comovingdist', dist, sources)
         oldhostname = hostname
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 

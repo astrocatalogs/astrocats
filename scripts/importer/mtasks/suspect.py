@@ -14,8 +14,9 @@ import urllib
 
 from scripts import PATH
 from .. constants import TRAVIS_QUERY_LIMIT
-from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
-    get_preferred_name, jd_to_mjd, journal_events, uniq_cdl
+from .. import Events
+from .. funcs import add_photometry, add_spectrum, \
+    get_preferred_name, jd_to_mjd, uniq_cdl
 from ... utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 
 
@@ -32,7 +33,7 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
         name = basesplit[1]
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         if name.startswith('SN') and is_number(name[2:]):
             name = name + 'A'
         band = basesplit[3].split('.')[0]
@@ -63,18 +64,16 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
-                add_quantity(
-                    events, name, 'redshift', redshifts[0].split(':')[1].strip(),
-                    sec_source, kind='heliocentric')
+                events[name].add_quantity('redshift', redshifts[0].split(':')[1].strip(),
+                                          sec_source, kind='heliocentric')
             # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric Velocity'))
             # if hvels:
             #     vel = hvels[0].split(':')[1].strip().split(' ')[0]
             #     events[name].add_quantity('velocity', vel, sec_source, kind='heliocentric')
             types = bandsoup.body.findAll(text=re.compile('Type'))
 
-            add_quantity(
-                events, name, 'claimedtype', types[0].split(':')[1].strip().split(' ')[0],
-                sec_source)
+            types = types[0].split(':')[1].strip().split(' ')[0]
+            events[name].add_quantity('claimedtype', types, sec_source)
 
         for r, row in enumerate(bandtable.findAll('tr')):
             if r == 0:
@@ -95,7 +94,7 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, band=band, magnitude=mag, e_magnitude=e_magnitude,
                 source=sec_source + ',' + source)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -124,9 +123,9 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 name = 'SN' + name
             name = get_preferred_name(events, name)
             if oldname and name != oldname:
-                events, stubs = journal_events(tasks, args, events, stubs, log)
+                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
             oldname = name
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
             sec_ref = 'SUSPECT'
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'
@@ -192,5 +191,5 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

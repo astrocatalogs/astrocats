@@ -12,8 +12,8 @@ import warnings
 from astropy.time import Time as astrotime
 
 from scripts import PATH
-from .. funcs import add_event, add_source, add_quantity, add_spectrum, \
-    journal_events, uniq_cdl, get_preferred_name
+from .. import Events
+from .. funcs import add_spectrum, uniq_cdl, get_preferred_name
 from .. constants import TRAVIS_QUERY_LIMIT
 from ... utils import pbar, pbar_strings, is_number, tprint
 
@@ -137,9 +137,9 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                 name = name.replace('PSNJ', 'PSN J')
                             name = get_preferred_name(events, name)
                             if oldname and name != oldname:
-                                events, stubs = journal_events(tasks, args, events, stubs, log)
+                                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
                             oldname = name
-                            events, name = add_event(tasks, args, events, name, log)
+                            events, name = Events.add_event(tasks, args, events, name, log)
 
                             # print(name + ' ' + claimedtype + ' ' + epoch + ' ' + observer + ' ' + reducer + ' ' + specfile + ' ' + bibcode + ' ' + redshift)
 
@@ -203,5 +203,5 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
 
                 tprint('Unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

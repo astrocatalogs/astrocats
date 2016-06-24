@@ -5,7 +5,7 @@ import os
 import requests
 
 from scripts import PATH
-from .. funcs import add_event, add_source, add_quantity, journal_events
+from .. import Events
 from ... utils import is_number
 
 
@@ -19,7 +19,7 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
     #    name = option.text
     #    if ((name.startswith('PTF') and is_number(name[3:5])) or
     #        name.startswith('PTFS') or name.startswith('iPTF')):
-    events, #        name = add_event(tasks, args, events, name, log)
+    # events, name = Events.add_event(tasks, args, events, name, log)
 
     if task_obj.load_archive(args):
         with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html'), 'r') as f:
@@ -41,15 +41,15 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
             if '(' in name:
                 alias = name.split('(')[0].strip(' ')
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
-                events, name = add_event(tasks, args, events, name, log)
+                events, name = Events.add_event(tasks, args, events, name, log)
                 source = events[name].add_source(bibcode='2012PASP..124..668Y')
                 events[name].add_quantity('alias', alias, source)
             else:
-                events, name = add_event(tasks, args, events, name, log)
+                events, name = Events.add_event(tasks, args, events, name, log)
 
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():
-            events, name = add_event(tasks, args, events, 'PTF' + suffix, log)
+            events, name = Events.add_event(tasks, args, events, 'PTF' + suffix, log)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/perly-2016.csv')) as f:
         for row in f.read().splitlines():
             cols = [x.strip() for x in row.split(',')]
@@ -59,7 +59,7 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
                 alias = 'PTF' + cols[0]
             else:
                 name = 'PTF' + cols[0]
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
             source = events[name].add_source(bibcode='2016arXiv160408207P')
             events[name].add_quantity('alias', name, source)
             if alias:
@@ -72,7 +72,7 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
             upl = maxdate.startswith('<')
             events[name].add_quantity('maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
             events[name].add_quantity('ebv', cols[7], source, kind='spectroscopic')
-            events, name = add_event(tasks, args, events, 'PTF' + suffix, log)
+            events, name = Events.add_event(tasks, args, events, 'PTF' + suffix, log)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

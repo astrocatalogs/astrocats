@@ -9,8 +9,8 @@ import urllib
 import warnings
 
 from scripts import PATH
-from .. funcs import add_event, add_photometry, add_source, add_quantity, \
-    journal_events, load_cached_url, make_date_string, uniq_cdl
+from .. import Events
+from .. funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 from ... utils import is_number, pbar
 
 
@@ -21,7 +21,7 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             if ri < 35:
                 continue
             cols = [x.strip() for x in row.split(',')]
-            events, name = add_event(tasks, args, events, cols[0], log)
+            events, name = Events.add_event(tasks, args, events, cols[0], log)
             source = events[name].add_source(bibcode='2015ApJ...799..208S')
             events[name].add_quantity('alias', name, source)
             events[name].add_quantity('ra', cols[2], source)
@@ -31,7 +31,7 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('discoverdate', ddate, source)
             events[name].add_quantity('redshift', cols[5], source, kind='spectroscopic')
             events[name].add_quantity('claimedtype', 'II P', source)
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -134,9 +134,9 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                     name = alias
             if not name:
                 name = psname
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
             sources = [events[name].add_source(srcname='Pan-STARRS 3Pi',
-                                  url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
+                                               url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
             events[name].add_quantity('alias', name, sources[0])
             for ref in refs:
                 sources.append(events[name].add_source(srcname=ref[0], url=ref[1]))
@@ -214,7 +214,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             if redshift:
                 events[name].add_quantity('redshift', redshift, source, kind='host')
             if args.update:
-                events, stubs = journal_events(tasks, args, events, stubs, log)
-        events, stubs = journal_events(tasks, args, events, stubs, log)
+                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     return events

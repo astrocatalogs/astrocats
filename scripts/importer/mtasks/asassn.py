@@ -4,15 +4,16 @@ from bs4 import BeautifulSoup
 import os
 
 from scripts import PATH
-from .. funcs import add_event, add_source, add_quantity, \
-    journal_events, load_cached_url
+from .. import Events
+from .. funcs import load_cached_url
 from ... utils import pbar
 
 
 def do_asassn(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
-    html = load_cached_url(args, current_task, asn_url, os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
+    asn_path = os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html')
+    html = load_cached_url(args, current_task, asn_url, asn_path)
     if not html:
         return events
     bs = BeautifulSoup(html, 'html5lib')
@@ -32,7 +33,7 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
         tds = tr.findAll('td')
         for tdi, td in enumerate(tds):
             if tdi == 1:
-                events, name = add_event(tasks, args, events, td.text.strip(), log)
+                events, name = Events.add_event(tasks, args, events, td.text.strip(), log)
                 atellink = td.find('a')
                 if atellink:
                     atellink = atellink['href']
@@ -79,5 +80,5 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('claimedtype', ct, typesources)
         if host != 'Uncatalogued':
             events[name].add_quantity('host', host, sources)
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

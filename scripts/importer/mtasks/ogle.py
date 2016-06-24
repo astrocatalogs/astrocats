@@ -6,9 +6,9 @@ import re
 import urllib
 
 from scripts import PATH
+from .. import Events
+from .. funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 from ... utils import is_number, pbar, Decimal
-from .. funcs import add_event, add_photometry, add_source, add_quantity, \
-    jd_to_mjd, journal_events, load_cached_url, uniq_cdl
 
 
 def do_ogle(events, stubs, args, tasks, task_obj, log):
@@ -56,7 +56,7 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                     continue
                 oglenames.append(name)
 
-                events, name = add_event(tasks, args, events, name, log)
+                events, name = Events.add_event(tasks, args, events, name, log)
 
                 mySibling = sibling.nextSibling
                 atelref = ''
@@ -131,7 +131,7 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         events, name, time=mjd, band='I', magnitude=magnitude, e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if args.update:
-                    events, stubs = journal_events(tasks, args, events, stubs, log)
+                    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
-        events, stubs = journal_events(tasks, args, events, stubs, log)
+        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

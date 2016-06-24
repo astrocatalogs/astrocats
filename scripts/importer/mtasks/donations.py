@@ -7,9 +7,9 @@ from glob import glob
 from math import isnan
 
 from scripts import PATH
+from .. import Events
+from .. funcs import add_photometry
 from ... utils import pbar, is_number, pbar_strings
-from .. funcs import add_event, add_photometry, add_source, add_quantity, \
-    journal_events
 
 
 def do_donations(events, stubs, args, tasks, task_obj, log):
@@ -21,7 +21,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'Nicholl-04-01-16/*.txt'))
     for datafile in pbar_strings(file_names, current_task + ': Nicholl-04-01-16'):
         name = os.path.basename(datafile).split('_')[0]
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         bibcode = ''
         for bc in bcs:
             if name in bcs[bc]:
@@ -57,14 +57,14 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                     add_photometry(
                         events, name, time=mjd, band=bands[v], magnitude=mag,
                         e_magnitude=err, upperlimit=upperlimit, source=source)
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Maggi 04-11-16 donation (MC SNRs)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'Maggi-04-11-16/LMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/LMCSNRs'):
             name = 'MCSNR ' + row[0]
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
             source = events[name].add_source(bibcode='2016A&A...585A.162M')
             events[name].add_quantity('alias', name, source)
             if row[1] != 'noname':
@@ -80,7 +80,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
         tsvin = csv.reader(f, delimiter=',')
         for row in pbar(tsvin, current_task + ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
-            events, name = add_event(tasks, args, events, name, log)
+            events, name = Events.add_event(tasks, args, events, name, log)
             source = events[name].add_source(srcname='Pierre Maggi')
             events[name].add_quantity('alias', name, source)
             events[name].add_quantity('alias', row[1], source)
@@ -88,7 +88,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('ra', row[3], source)
             events[name].add_quantity('dec', row[4], source)
             events[name].add_quantity('host', 'SMC', source)
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Galbany 04-18-16 donation
     folders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL, 'galbany-04-18-16/')))[1]
@@ -110,7 +110,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                     if field == 'name':
                         name = value[:6].upper()
                         name += (value[6].upper() if len(value) == 7 else value[6:])
-                        events, name = add_event(tasks, args, events, name, log)
+                        events, name = Events.add_event(tasks, args, events, name, log)
                         source = events[name].add_source(bibcode=bibcode)
                         events[name].add_quantity('alias', name, source)
                     elif field == 'type':
@@ -151,13 +151,13 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                         add_photometry(
                             events, name, time=cols[0], magnitude=cols[1], e_magnitude=cols[2],
                             band=band, system=cols[3], telescope=cols[4], source=source)
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Brown 05-14-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
     for fi in pbar(files, current_task):
         name = os.path.basename(fi).split('_')[0]
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         source = events[name].add_source(
             refname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
             url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
@@ -180,11 +180,11 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                 add_photometry(events, name, time=mjd, magnitude=mag, e_magnitude=e_mag,
                                upperlimit=upp, band=band, source=source,
                                telescope='Swift', instrument='UVOT', system='Vega')
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Nicholl 05-03-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
-    events, name = add_event(tasks, args, events, 'SN2015bn', log)
+    events, name = Events.add_event(tasks, args, events, 'SN2015bn', log)
     source = events[name].add_source(bibcode='2016arXiv160304748N')
     events[name].add_quantity('alias', name, source)
     events[name].add_quantity('alias', 'PS15ae', source)
@@ -217,5 +217,5 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                         events, name, time=mjd, magnitude=col, e_magnitude=emag, upperlimit=upp,
                         band=bands[ci], source=source, telescope=telescope, instrument=instrument)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

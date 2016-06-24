@@ -6,8 +6,7 @@ from glob import glob
 import os
 
 from scripts import PATH
-from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
-    clean_snname, get_preferred_name, jd_to_mjd, journal_events
+from .. funcs import add_photometry, add_spectrum, clean_snname, get_preferred_name, jd_to_mjd
 from .. constants import TRAVIS_QUERY_LIMIT
 from ... utils import pbar_strings
 
@@ -22,7 +21,7 @@ def do_csp_photo(events, stubs, args, tasks, task_obj, log):
         eventname = os.path.basename(os.path.splitext(fname)[0])
         eventparts = eventname.split('opt+')
         name = clean_snname(eventparts[0])
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
 
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
@@ -50,7 +49,7 @@ def do_csp_photo(events, stubs, args, tasks, task_obj, log):
                             events, name, time=mjd, observatory='LCO', band=cspbands[(v-1)//2],
                             system='CSP', magnitude=row[v], e_magnitude=row[v+1], source=source)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
 
 
@@ -68,9 +67,9 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         name = 'SN20' + fileparts[0][2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         oldname = name
-        events, name = add_event(tasks, args, events, name, log)
+        events, name = Events.add_event(tasks, args, events, name, log)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
         source = events[name].add_source(bibcode='2013ApJ...773...53F')
@@ -98,5 +97,5 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
