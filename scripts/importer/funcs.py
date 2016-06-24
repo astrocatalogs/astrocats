@@ -800,7 +800,7 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def load_cached_url(args, current_task, url, filepath, timeout=120, write=True):
+def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, failhard = False):
     import codecs
     from hashlib import md5
     filemd5 = ''
@@ -815,20 +815,27 @@ def load_cached_url(args, current_task, url, filepath, timeout=120, write=True):
         import requests
         session = requests.Session()
         response = session.get(url, timeout=timeout)
-        if any([x.status_code == 307 for x in response.history]):
-            raise
+        response.raise_for_status()
+        for x in response.history:
+            x.raise_for_status()
+            if x.status_code == 500 or x.status_code == 307 or x.status_code == 404:
+                raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
         # tprint(filemd5 + ": " + newmd5)
         if args.update and newmd5 == filemd5:
             tprint('Skipping file in "' + current_task + '," local and remote copies identical [' + newmd5 + '].')
             return False
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
+        if failhard:
+            return ''
         return filetxt
     else:
         if write:
             with codecs.open(filepath, 'w', encoding='utf8') as f:
-                f.write(txt)
+                f.write(txt if txt else filetxt)
     return txt
 
 
