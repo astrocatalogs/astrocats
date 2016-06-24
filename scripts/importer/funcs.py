@@ -967,7 +967,7 @@ def trim_str_arr(arr, length=10):
 
 
 def uniq_cdl(values):
-    return ','.join(list(OrderedDict.fromkeys(values).keys()))
+    return ','.join(sorted(list(set(values))))
 
 
 def utf8(x):
