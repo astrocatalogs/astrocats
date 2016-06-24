@@ -34,7 +34,7 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
 
     for record in pbar(records, current_task):
         if len(record) > 1 and record[1] != '':
-            oldname = snname("SN" + record[1]).strip('?')
+            oldname = clean_snname("SN" + record[1]).strip('?')
 
             reference = 'Asiago Supernova Catalogue'
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'

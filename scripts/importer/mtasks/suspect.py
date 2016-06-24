@@ -14,8 +14,9 @@ import urllib
 
 from scripts import PATH
 from .. constants import TRAVIS_QUERY_LIMIT
-from .. funcs import add_event, add_photometry, add_source, add_quantity, add_spectrum, \
+from .. funcs import add_photometry, add_source, add_quantity, add_spectrum, \
     get_preferred_name, jd_to_mjd, journal_events, uniq_cdl
+from .. import Events
 from ... utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 
 

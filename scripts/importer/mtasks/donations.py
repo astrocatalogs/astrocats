@@ -62,7 +62,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
     # Maggi 04-11-16 donation (MC SNRs)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'Maggi-04-11-16/LMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
-        for row in pbar(tsvin, current_task + ': Maggi-04-11-16/LMCSNRs'):
+        for row in pbar(list(tsvin), current_task + ': Maggi-04-11-16/LMCSNRs'):
             name = 'MCSNR ' + row[0]
             events, name = Events.add_event(tasks, args, events, name, log)
             ra = row[2]
@@ -81,7 +81,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('claimedtype', 'CC', source)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'Maggi-04-11-16/SMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
-        for row in pbar(tsvin, current_task + ': Maggi-04-11-16/SMCSNRs'):
+        for row in pbar(list(tsvin), current_task + ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             events, name = Events.add_event(tasks, args, events, name, log)
             source = events[name].add_source(srcname='Pierre Maggi')

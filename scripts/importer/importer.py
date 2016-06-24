@@ -294,7 +294,7 @@ def load_task_list(args, log):
     # Sort entries as positive values, then negative values
     #    [0, 1, 2, 2, 10, -100, -10, -1]
     #    Tuples are sorted by first element (here: '0' if positive), then second (here normal order)
-    tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (t[1].priority < 0, t[1].priority)))
+    tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (t[1].priority < 0, t[1].priority, t[1].name)))
 
     names_act = []
     names_inact = []

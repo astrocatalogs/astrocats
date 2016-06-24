@@ -26,8 +26,9 @@ from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig, 
 
 
 def do_grb(events, stubs, args, tasks, task_obj, log):
+    file_path = os.path.join(PATH.REPO_EXTERNAL, 'GRB-catalog/catalog.csv')
     csvtxt = load_cached_url('http://grb.pa.msu.edu/grbcatalog/download_data?cut_0_min=10&cut_0=BAT%20T90&cut_0_max=100000&num_cuts=1&no_date_cut=True',
-        '../sne-external/GRB-catalog/catalog.csv')
+        file_path)
     if not csvtxt:
         return events
     data = csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True)
@@ -296,7 +297,8 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2014ApJ...783...28G
-    with open("../sne-external/apj490105t2_ascii.txt", 'r') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, 'apj490105t2_ascii.txt')
+    with open(file_path, 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
@@ -310,7 +312,8 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2005ApJ...634.1190H
-    with open("../sne-external/2005ApJ...634.1190H.tsv", 'r') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2005ApJ...634.1190H.tsv')
+    with open(file_path, 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(tq(data, currenttask)):
             events, name, source = Events.new_event('SNLS-' + row[0], bibcode = '2005ApJ...634.1190H')
@@ -322,7 +325,8 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2014MNRAS.444.2133S
-    with open("../sne-external/2014MNRAS.444.2133S.tsv", 'r') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2014MNRAS.444.2133S.tsv')
+    with open(file_path, 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
@@ -337,7 +341,8 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2009MNRAS.398.1041B
-    with open("../sne-external/2009MNRAS.398.1041B.tsv", 'r') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2009MNRAS.398.1041B.tsv')
+    with open(file_path, 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
@@ -359,7 +364,8 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2010arXiv1007.0011P
-    with open("../sne-external/2010arXiv1007.0011P.tsv", 'r') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2010arXiv1007.0011P.tsv')
+    with open(file_path, 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
@@ -378,7 +384,8 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2000ApJ...533..320G
-    with open("../sne-external/2000ApJ...533..320G.tsv", 'r') as f:
+    file_path = os.path.join(PATH.REPO_EXTERNAL, '2000ApJ...533..320G.tsv')
+    with open(file_path, 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
         events, name, source = Events.new_event('SN1997cy', bibcode = '2000ApJ...533..320G')
         for r, row in enumerate(tq(data, currenttask)):
