@@ -34,6 +34,6 @@ class FILENAME:
 
 
 class SCHEMA:
-    SCHEMA_HASH = check_output(['git', 'log', '-n', '1', '--format="%H"',
+    HASH = check_output(['git', 'log', '-n', '1', '--format="%H"',
         '--', '../OSC-JSON-format.md']).decode('ascii').strip().strip('"').strip()
-    SCHEMA_URL = 'https://github.com/astrocatalogs/sne/blob/' + SCHEMA_HASH + '/OSC-JSON-format.md'
+    URL = 'https://github.com/astrocatalogs/sne/blob/' + HASH + '/OSC-JSON-format.md'
