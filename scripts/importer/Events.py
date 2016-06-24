@@ -150,17 +150,18 @@ class EVENT(OrderedDict):
 
         return source_alias
 
-    def add_quantity(self, quantity, value, sources, forcereplacebetter=False,
-                     lowerlimit='', upperlimit='', error='', unit='', kind='', extra=''):
+    def add_quantity(self, quantity, value, sources, forcereplacebetter=False, derived='',
+                     lowerlimit='', upperlimit='', error='', unit='', kind='', extra='', probability=''):
         """
         """
         if not quantity:
-            raise ValueError('Quantity must be specified for add_quantity.')
+            raise(ValueError(name + "'s quantity must be specified for add_quantity."))
         if not sources:
-            raise ValueError('Source must be specified for quantity before it is added.')
+            raise(ValueError(name + "'s source must be specified for quantity " +
+                quantity + ' before it is added.'))
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise ValueError('Quantity must be a string or an array of strings.')
+            raise(ValueError(name + "'s Quantity " + quantity + " must be a string or an array of strings."))
 
         if self.is_erroneous(quantity, sources):
             return None
@@ -170,12 +171,13 @@ class EVENT(OrderedDict):
         svalue = value.strip()
         serror = error.strip()
         skind = kind.strip()
+        sprob = probability.strip()
         sunit = ''
 
         if not svalue or svalue == '--' or svalue == '-':
             return
         if serror and (not is_number(serror) or float(serror) < 0):
-            raise ValueError('Quanta error value must be a number and positive.')
+            raise(ValueError(name + "'s quanta " + quantity + ' error value must be a number and positive.'))
 
         # Set default units
         if not unit and quantity == 'velocity':
@@ -202,57 +204,17 @@ class EVENT(OrderedDict):
                 return
             if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
                 return
-            if svalue.startswith('M ') and is_number(svalue[2:]):
-                svalue.replace('M ', 'M', 1)
-            svalue = svalue.strip("()").replace('  ', ' ', 1)
-            svalue = svalue.replace("Abell", "Abell ", 1)
-            svalue = svalue.replace("APMUKS(BJ)", "APMUKS(BJ) ", 1)
-            svalue = svalue.replace("ARP", "ARP ", 1)
-            svalue = svalue.replace("CGCG", "CGCG ", 1)
-            svalue = svalue.replace("HOLM", "HOLM ", 1)
-            svalue = svalue.replace("IC", "IC ", 1)
-            svalue = svalue.replace("Intergal.", "Intergalactic", 1)
-            svalue = svalue.replace("MCG+", "MCG +", 1)
-            svalue = svalue.replace("MCG-", "MCG -", 1)
-            svalue = svalue.replace("M+", "MCG +", 1)
-            svalue = svalue.replace("M-", "MCG -", 1)
-            svalue = svalue.replace("MGC ", "MCG ", 1)
-            svalue = svalue.replace("Mrk", "MRK", 1)
-            svalue = svalue.replace("MRK", "MRK ", 1)
-            svalue = svalue.replace("NGC", "NGC ", 1)
-            svalue = svalue.replace("PGC", "PGC ", 1)
-            svalue = svalue.replace("SDSS", "SDSS ", 1)
-            svalue = svalue.replace("UGC", "UGC ", 1)
-            if len(svalue) > 4 and svalue.startswith("PGC "):
-                svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-            if len(svalue) > 4 and svalue.startswith("UGC "):
-                svalue = svalue[:4] + svalue[4:].lstrip(" 0")
-            if len(svalue) > 5 and svalue.startswith(("MCG +", "MCG -")):
-                svalue = svalue[:5] + '-'.join([x.zfill(2) for x in svalue[5:].strip().split("-")])
-            if len(svalue) > 5 and svalue.startswith("CGCG "):
-                svalue = svalue[:5] + '-'.join([x.zfill(3) for x in svalue[5:].strip().split("-")])
-            if (((len(svalue) > 1 and svalue.startswith("E")) or
-                 (len(svalue) > 3 and svalue.startswith('ESO')))):
-                if svalue[0] == "E":
-                    esplit = svalue[1:].split("-")
-                else:
-                    esplit = svalue[3:].split("-")
-                if len(esplit) == 2 and is_number(esplit[0].strip()):
-                    if esplit[1].strip()[0] == 'G':
-                        parttwo = esplit[1][1:].strip()
-                    else:
-                        parttwo = esplit[1].strip()
-                    if is_number(parttwo.strip()):
-                        svalue = 'ESO ' + esplit[0].lstrip('0') + '-G' + parttwo.lstrip('0')
-            svalue = ' '.join(svalue.split())
 
-            is_abell = svalue.lower().startswith('abell') and is_number(svalue[5:].strip())
+            svalue = host_clean(svalue)
+
             if not skind and (is_abell or 'cluster' in svalue.lower()):
                 skind = 'cluster'
 
         elif quantity == KEYS.CLAIMED_TYPE:
             isq = False
             svalue = svalue.replace('young', '')
+            if svalue.lower() in ['unknown', 'unk', '?', '-']:
+                return
             if '?' in svalue:
                 isq = True
                 svalue = svalue.strip(' ?')
@@ -264,64 +226,12 @@ class EVENT(OrderedDict):
                 svalue = svalue + '?'
 
         elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-            if unit == 'floatdegrees':
-                deg = float('%g' % Decimal(svalue))
-                sig = get_sig_digits(svalue)
-                if 'ra' in quantity:
-                    flhours = deg / 360.0 * 24.0
-                    hours = floor(flhours)
-                    minutes = floor((flhours - hours) * 60.0)
-                    seconds = (flhours * 60.0 - (hours * 60.0 + minutes)) * 60.0
-                    if seconds > 60.0:
-                        raise ValueError('Invalid seconds value for ' + quantity)
-                    svalue = (str(hours).zfill(2) + ':' + str(minutes).zfill(2) + ':' +
-                              zpad(pretty_num(seconds, sig=sig-1)))
-                elif 'dec' in quantity:
-                    fldeg = abs(deg)
-                    degree = floor(fldeg)
-                    minutes = floor((fldeg - degree) * 60.0)
-                    seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
-                    if seconds > 60.0:
-                        raise ValueError('Invalid seconds value for ' + quantity)
-                    svalue = '+' if deg >= 0.0 else '-'
-                    svalue += (str(degree).strip('+-').zfill(2) + ':' +
-                               str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig-1)))
-            elif unit == 'nospace' and 'ra' in quantity:
-                svalue = (svalue[:2] + ':' + svalue[2:4] +
-                          ((':' + zpad(svalue[4:])) if len(svalue) > 4 else ''))
-            elif unit == 'nospace' and 'dec' in quantity:
-                if svalue.startswith(('+', '-')):
-                    svalue = (svalue[:3] + ':' + svalue[3:5] +
-                              ((':' + zpad(svalue[5:])) if len(svalue) > 5 else ''))
-                else:
-                    svalue = ('+' + svalue[:2] + ':' + svalue[2:4] +
-                              ((':' + zpad(svalue[4:])) if len(svalue) > 4 else ''))
-            else:
-                svalue = svalue.replace(' ', ':')
-                if 'dec' in quantity:
-                    valuesplit = svalue.split(':')
-                    svalue = (('-' if valuesplit[0].startswith('-') else '+') +
-                              valuesplit[0].strip('+-').zfill(2) +
-                              (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
-                              (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
-
-            if 'ra' in quantity:
-                sunit = 'hours'
-            elif 'dec' in quantity:
-                sunit = 'degrees'
-
-            # Correct case of arcseconds = 60.0.
-            valuesplit = svalue.split(':')
-            if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
-                svalue = (valuesplit[0] + ':' + str(Decimal(valuesplit[1]) +
-                          Decimal(1.0)) + ':' + "00.0")
-
-            # Strip trailing dots.
-            svalue = svalue.rstrip('.')
-
+            (svalue, sunit) = radec_clean(svalue, quantity, unit = unit)
         elif quantity == 'maxdate' or quantity == 'discoverdate':
             # Make sure month and day have leading zeroes
             sparts = svalue.split('/')
+            if len(sparts[0]) > 4 and int(sparts[0]) > 0:
+                raise ValueError('Date years limited to four digits.')
             if len(sparts) >= 2:
                 svalue = sparts[0] + '/' + sparts[1].zfill(2)
             if len(sparts) == 3:
@@ -346,6 +256,8 @@ class EVENT(OrderedDict):
                         my_quantity_list[ii]['source'] += ',' + source
                         if serror and 'error' not in my_quantity_list[ii]:
                             my_quantity_list[ii]['error'] = serror
+                        if sprob and 'probability' not in my_quantity_list[ii]:
+                            my_quantity_list[ii]['probability'] = sprob
                 return
 
         if not sunit:
@@ -359,12 +271,16 @@ class EVENT(OrderedDict):
             quanta_entry['source'] = sources
         if skind:
             quanta_entry['kind'] = skind
+        if sprob:
+            quantaentry['probability'] = sprob
         if sunit:
             quanta_entry['unit'] = sunit
         if lowerlimit:
             quanta_entry['lowerlimit'] = lowerlimit
         if upperlimit:
             quanta_entry['upperlimit'] = upperlimit
+        if derived:
+            quantaentry['derived'] = derived
         if extra:
             quanta_entry['extra'] = extra
         if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and len(my_quantity_list):
