@@ -16,6 +16,7 @@ import requests
 import urllib
 
 from scripts import PATH
+from .. constants import TRAVIS_QUERY_LIMIT
 from .. funcs import add_photometry, add_spectrum, \
     event_exists, jd_to_mjd, load_cached_url, \
     make_date_string, uniq_cdl
@@ -472,12 +473,16 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
             continue
         bs = BeautifulSoup(html, 'html5lib')
         trs = bs.findAll('tr')
-        for tr in pbar(trs, current_task):
+        for tri, tr in enumerate(pbar(trs, current_task)):
             tds = tr.findAll('td')
             if not tds:
                 continue
             # refs = []
             aliases = []
+            crtsname = ''
+            ra = ''
+            dec = ''
+            lclink = ''
             # ttype = ''
             # ctype = ''
             for tdi, td in enumerate(tds):
@@ -512,11 +517,10 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
                             ind = ai-1
                         if '>' in aliases[ind]:
                             hostupper = True
-                        hostmag = aliases[ind].strip('>~').replace(',', '.')
+                        hostmag = aliases[ind].strip('>~').replace(',', '.').replace('m', '.')
                     continue
                 if is_number(alias[:4]) and alias[:2] == '20' and len(alias) > 4:
                     name = 'SN' + alias
-                # lalias = alias.lower()
                 if ((('asassn' in alias and len(alias) > 6) or
                      ('ptf' in alias and len(alias) > 3) or
                      ('ps1' in alias and len(alias) > 3) or 'snhunt' in alias or
@@ -576,6 +580,9 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
                     includeshost=True, telescope=teles, e_magnitude=e_mag, upperlimit=upl)
             if args.update:
                 events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+        if args.travis and tri > TRAVIS_QUERY_LIMIT:
+            break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
