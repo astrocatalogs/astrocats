@@ -87,7 +87,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
             for alias in [x.strip() for x in row[8].split(',')]:
                 events[name].add_quantity('alias', alias, source)
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     return events
 
