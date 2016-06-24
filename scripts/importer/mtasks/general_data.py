@@ -1273,7 +1273,7 @@ def do_tns(events, stubs, args, tasks, task_obj, log):
                 csvtxt = response.text
                 tns_file.write(csvtxt)
 
-        tsvin = csv.reader(csvtxt.splitlines(), delimiter=',')
+        tsvin = list(csv.reader(csvtxt.splitlines(), delimiter=','))
         for ri, row in enumerate(pbar(tsvin, current_task, leave=False)):
             if ri == 0:
                 continue
