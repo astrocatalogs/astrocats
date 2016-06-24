@@ -62,7 +62,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
             if row[0][0] == '#':
                 continue
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
-                                            bibcode = '2016arXiv160204156S')
+                                                    bibcode = '2016arXiv160204156S')
             events[name].add_quantity('ra', row[1], source)
             events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[4]), format = 'mjd').datetime
@@ -77,7 +77,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
         for r, row in enumerate(tq(data, currenttask)):
             if row[0][0] == '#':
                 continue
-            (name, source) = new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
+            events, name, source = Events.new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
             events[name].add_quantity('ra', row[1], source)
             events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[3]), format = 'mjd').datetime
@@ -292,6 +292,106 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=ins, telescope=tel, observatory=obs,
                 system='Natural', source=source)
+
+        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+    # 2014ApJ...783...28G
+    with open("../sne-external/apj490105t2_ascii.txt", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                continue
+            events, name, source = Events.new_event(row[0], bibcode = '2014ApJ...783...28G')
+            events[name].add_quantity('alias', row[1], source)
+            events[name].add_quantity('discoverdate', '20' + row[0][3:5], source)
+            events[name].add_quantity('ra', row[2], source)
+            events[name].add_quantity('dec', row[3], source)
+            events[name].add_quantity('redshift', row[13] if is_number(row[13]) else row[10], source)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+    # 2005ApJ...634.1190H
+    with open("../sne-external/2005ApJ...634.1190H.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            events, name, source = Events.new_event('SNLS-' + row[0], bibcode = '2005ApJ...634.1190H')
+            events[name].add_quantity('discoverdate', '20' + row[0][:2], source)
+            events[name].add_quantity('ra', row[1], source)
+            events[name].add_quantity('dec', row[2], source)
+            events[name].add_quantity('redshift', row[5].replace('?', ''), source, error = row[6], kind = 'host')
+            events[name].add_quantity('claimedtype', row[7].replace('SN', '').strip(':* '), source)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+    # 2014MNRAS.444.2133S
+    with open("../sne-external/2014MNRAS.444.2133S.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                continue
+            name = row[0]
+            if is_number(name[:4]):
+                name = 'SN' + name
+            events, name, source = Events.new_event(name, bibcode = '2014MNRAS.444.2133S')
+            events[name].add_quantity('ra', row[1], source)
+            events[name].add_quantity('dec', row[2], source)
+            events[name].add_quantity('redshift', row[3], source, kind = 'host')
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+    # 2009MNRAS.398.1041B
+    with open("../sne-external/2009MNRAS.398.1041B.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                bands = row[2:-1]
+                continue
+            events, name, source = Events.new_event('SN2008S', bibcode = '2009MNRAS.398.1041B')
+            mjd = str(jd_to_mjd(Decimal(row[0])))
+            mags = [x.split('±')[0].strip() for x in row[2:]]
+            upps = [('<' in x.split('±')[0]) for x in row[2:]]
+            errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[2:]]
+
+            instrument = row[-1]
+
+            for mi, mag in enumerate(mags):
+                if not is_number(mag):
+                    continue
+                add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                    instrument = ins, source = source)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+    # 2010arXiv1007.0011P
+    with open("../sne-external/2010arXiv1007.0011P.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                bands = row[1:]
+                continue
+            events, name, source = Events.new_event('SN2008S', bibcode = '2010arXiv1007.0011P')
+            mjd = row[0]
+            mags = [x.split('±')[0].strip() for x in row[1:]]
+            errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[1:]]
+
+            for mi, mag in enumerate(mags):
+                if not is_number(mag):
+                    continue
+                add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                    instrument = 'LBT', source = source)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+
+    # 2000ApJ...533..320G
+    with open("../sne-external/2000ApJ...533..320G.tsv", 'r') as f:
+        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
+        events, name, source = Events.new_event('SN1997cy', bibcode = '2000ApJ...533..320G')
+        for r, row in enumerate(tq(data, currenttask)):
+            if row[0][0] == '#':
+                bands = row[1:-1]
+                continue
+            mjd = str(jd_to_mjd(Decimal(row[0])))
+            mags = row[1:len(bands)]
+            for mi, mag in enumerate(mags):
+                if not is_number(mag):
+                    continue
+                add_photometry(name, time = mjd, band = bands[mi], magnitude = mag,
+                    observatory = 'Mount Stromlo', telescope = 'MSSSO', source = source, kcorrected = True)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
