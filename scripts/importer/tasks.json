@@ -163,6 +163,15 @@
         "function": "do_tns",
         "priority": 10
     },
+    "snf": {
+        "nice_name": "%pre SNF aliases",
+        "active": true,
+        "update": false,
+        "archived": true,
+        "module": "importer.mtasks.snfactory",
+        "function": "do_snf_aliases",
+        "priority": 10
+    },
     "grb": {
         "nice_name": "%pre GRB catalog",
         "active": true,
