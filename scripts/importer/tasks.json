@@ -64,6 +64,14 @@
         "function": "do_pessto",
         "priority": 10
     },
+    "psst": {
+        "nice_name": "%pre PSST",
+        "active": true,
+        "update": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_psst",
+        "priority": 10
+    },
     "scp": {
         "nice_name": "%pre SCP",
         "active": true,

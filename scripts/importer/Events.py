@@ -585,6 +585,17 @@ def add_event(tasks, args, events, name, log, load=True, delete=True, source='')
     return events, newname
 
 
+def new_event(tasks, args, events, name, log, load = True, delete = True, loadifempty = True,
+              refname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
+    oldname = name
+    events, name = add_event(tasks, args, events, name, load = load, delete = delete)
+    source = events[name].add_source(name, bibcode=bibcode, refname=refname, reference=reference,
+                                     url=url, secondary = secondary, acknowledgment = acknowledgment)
+    events[name].add_quantity('alias', oldname, source)
+    return events, name, source
+
+
+
 def find_event_name_of_alias(events, alias):
     """Return the first event name with the given 'alias' included in its list of aliases.
 
