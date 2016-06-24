@@ -20,6 +20,7 @@
 -   Change 'writevents' from a task to an argument parameter?  (e.g. for `journal_events`)
 -   Combine `EVENT.check` with `Events.clean_event`
 -   `load_cached_url` add warnings for failures
+-   Have the different `add_` methods accept lists and add each
     
     
 ## Questions ##
