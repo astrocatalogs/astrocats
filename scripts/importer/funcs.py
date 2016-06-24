@@ -192,7 +192,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
 
 def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_time="", time="",
                  instrument="", deredshifted="", dereddened="", errorunit="", errors="", source="",
-                 snr="", telescope="", observer="", reducer="", filename="", observatory="",
+                 snr="", telescope="", observer="", survey="", reducer="", filename="", observatory="",
                  data=""):
 
     if events[name].is_erroneous('spectra', source):
@@ -245,6 +245,8 @@ def add_spectrum(events, name, waveunit, fluxunit, wavelengths="", fluxes="", u_
         spectrumentry['observer'] = observer
     if reducer:
         spectrumentry['reducer'] = reducer
+    if survey:
+        spectrumentry['survey'] = survey
     if filename:
         spectrumentry['filename'] = filename
 
