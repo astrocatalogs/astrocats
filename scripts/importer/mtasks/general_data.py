@@ -26,16 +26,17 @@ from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig, 
 
 
 def do_grb(events, stubs, args, tasks, task_obj, log):
+    current_task = 'GRB'
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'GRB-catalog/catalog.csv')
-    csvtxt = load_cached_url('http://grb.pa.msu.edu/grbcatalog/download_data?cut_0_min=10&cut_0=BAT%20T90&cut_0_max=100000&num_cuts=1&no_date_cut=True',
+    csvtxt = load_cached_url(args, current_task, 'http://grb.pa.msu.edu/grbcatalog/download_data?cut_0_min=10&cut_0=BAT%20T90&cut_0_max=100000&num_cuts=1&no_date_cut=True',
         file_path)
     if not csvtxt:
         return events
-    data = csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True)
+    data = list(csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True))
     for r, row in enumerate(pbar(data, current_task)):
         if r == 0:
             continue
-        events, name, source = Events.new_event(tasks, args, events, 'GRB ' + row[0], log, refname = 'Gamma-ray Bursts Catalog', url = 'http://grbcatalog.org')
+        events, name, source = Events.new_event(tasks, args, events, 'GRB ' + row[0], log, srcname = 'Gamma-ray Bursts Catalog', url = 'http://grbcatalog.org')
         events[name].add_quantity('ra', row[2], source, unit = 'floatdegrees')
         events[name].add_quantity('dec', row[3], source, unit = 'floatdegrees')
         events[name].add_quantity('redshift', row[8], source)
@@ -78,7 +79,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            events, name, source = Events.new_event(tasks, args, events, row[0], log, refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
+            events, name, source = Events.new_event(tasks, args, events, row[0], log, srcname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
             events[name].add_quantity('ra', row[1], source)
             events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[3]), format = 'mjd').datetime
@@ -640,7 +641,7 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
                 name = crtsname
             events, name = Events.add_event(tasks, args, events, name, log)
             source = events[name].add_source(
-                refname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
+                srcname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
             events[name].add_quantity('alias', name, source)
             for alias in validaliases:
@@ -955,7 +956,7 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
             sec_reference = 'Sternberg Astronomical Institute Supernova Light Curve Catalogue'
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
             sec_source = events[name].add_source(
-                refname=sec_reference, url=sec_refurl, secondary=True)
+                srcname=sec_reference, url=sec_refurl, secondary=True)
             events[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
@@ -1362,7 +1363,7 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
         if is_number(name):
             continue
         events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(refname = 'SIMBAD astronomical database', bibcode = "2000A&AS..143....9W",
+        source = events[name].add_source(srcname = 'SIMBAD astronomical database', bibcode = "2000A&AS..143....9W",
             url = "http://simbad.u-strasbg.fr/", secondary = True)
         aliases = row['ID'].split(',')
         for alias in aliases:

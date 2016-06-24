@@ -6,15 +6,17 @@ import importlib
 import json
 import os
 import resource
-# import sys
 import warnings
+import csv
+from html import unescape
+from cdecimal import Decimal
 
-from scripts import FILENAME
+from scripts import FILENAME, PATH
 from . import Events
 from . funcs import derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
-    has_task, name_clean
+    has_task, name_clean, host_clean, uniq_cdl
 from . constants import TASK, TRAVIS_QUERY_LIMIT
-from .. utils import pbar, repo_file_list, get_logger
+from .. utils import pbar, repo_file_list, get_logger, is_number
 
 
 def get_old_tasks():
@@ -134,7 +136,7 @@ def import_main(args=None, **kwargs):
     bibauthor_dict = get_bibauthor_dict()
     extinctions_dict = get_extinctions_dict()
 
-    for ii, fi in enumerate(tq(files, 'Sanitizing and deriving quantities for events')):
+    for ii, fi in enumerate(pbar(files, 'Sanitizing and deriving quantities for events')):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         events, name = Events.add_event(tasks, args, events, name, log, load_stubs_if_empty=False)
@@ -161,19 +163,15 @@ def import_main(args=None, **kwargs):
 
 
 def do_nedd(events, stubs, args, tasks, task_obj, log):
-    import csv
-    from html import unescape
-    from . constants import PATH
-    from . funcs import uniq_cdl
-    from .. utils import is_number, Decimal
-    nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED25.12.1-D-10.4.0-20151123.csv')
+    current_task = 'NED-D'
+    nedd_path = os.path.join(PATH.REPO_EXTERNAL, 'NED26.05.1-D-12.1.0-20160501.csv')
     with open(nedd_path, 'r') as f:
         data = sorted(list(csv.reader(f, delimiter=',', quotechar='"'))[13:], key=lambda x: (x[9], x[3]))
         reference = "NED-D"
         refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
         nedddict = OrderedDict()
         olddistname = ''
-        for r, row in enumerate(tq(data, currenttask = currenttask)):
+        for r, row in enumerate(pbar(data, current_task)):
             if r <= 12:
                 continue
             distname = row[3]
@@ -198,7 +196,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             if snname and 'HOST' not in snname:
                 events, snname, secondarysource = Events.new_event(
                     tasks, args, events, snname, log,
-                    refname = reference, url = refurl, secondary = True)
+                    srcname = reference, url = refurl, secondary = True)
                 if bibcode:
                     source = events[snname].add_source(bibcode = bibcode)
                     sources = uniq_cdl([source, secondarysource])

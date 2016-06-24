@@ -1,6 +1,7 @@
 """Import data from OGLE.
 """
 from bs4 import BeautifulSoup, Tag, NavigableString
+from cdecimal import Decimal
 import os
 import re
 import urllib
@@ -8,7 +9,7 @@ import urllib
 from scripts import PATH
 from .. import Events
 from .. funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
-from ... utils import is_number, pbar, Decimal
+from ... utils import is_number, pbar
 
 
 def do_ogle(events, stubs, args, tasks, task_obj, log):

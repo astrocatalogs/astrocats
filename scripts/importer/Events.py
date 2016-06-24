@@ -507,10 +507,10 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
 
 
 def new_event(tasks, args, events, name, log, load = True, delete = True, loadifempty = True,
-              refname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
+              srcname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
     oldname = name
     events, name = add_event(tasks, args, events, name, log, load = load, delete = delete)
-    source = events[name].add_source(name, bibcode=bibcode, refname=refname, reference=reference,
+    source = events[name].add_source(bibcode=bibcode, srcname=srcname, reference=reference,
                                      url=url, secondary = secondary, acknowledgment = acknowledgment)
     events[name].add_quantity('alias', oldname, source)
     return events, name, source
