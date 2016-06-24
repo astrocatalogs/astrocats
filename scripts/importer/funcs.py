@@ -303,8 +303,12 @@ def copy_to_event(events, fromname, destname):
                 reference=source['reference'] if 'reference' in source else '',
                 url=source['url'] if 'url' in source else '')
 
+    if 'errors' in events[fromname]:
+        for err in events[fromname]['errors']:
+            events[destname].setdefault('errors',[]).append(err)
+
     for key in keys:
-        if key not in ['name', 'sources']:
+        if key not in ['schema', 'name', 'sources', 'errors']:
             for item in events[fromname][key]:
                 # isd = False
                 sources = []
@@ -345,7 +349,7 @@ def copy_to_event(events, fromname, destname):
                 else:
                     events[destname].add_quantity(
                         key, item['value'], sources, error=null_field(item, "error"),
-                        unit=null_field(item, "unit"), kind=null_field(item, "kind"))
+                        unit = null_field(item, "unit"), probability=null_field(item, "probability"), kind=null_field(item, "kind"))
 
 
 def ct_priority(events, name, attr):
