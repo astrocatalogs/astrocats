@@ -40,11 +40,11 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            events, name, source = Events.new_event(
-                oldname, refname = reference, url = refurl, bibcode = refbib, secondary = True)
+            events, name, source = Events.new_event(tasks, args, events,
+                oldname, log, refname = reference, url = refurl, bibcode = refbib, secondary = True)
 
             year = re.findall(r'\d+', oldname)[0]
-            add_quantity(name, 'discoverdate', year, source)
+            events[name].add_quantity('discoverdate', year, source)
 
             hostname = record[2]
             hostra = record[3]

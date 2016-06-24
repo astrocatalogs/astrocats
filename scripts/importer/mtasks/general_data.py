@@ -32,10 +32,10 @@ def do_grb(events, stubs, args, tasks, task_obj, log):
     if not csvtxt:
         return events
     data = csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True)
-    for r, row in enumerate(tq(data, currenttask)):
+    for r, row in enumerate(pbar(data, current_task)):
         if r == 0:
             continue
-        events, name, source = Events.new_event('GRB ' + row[0], refname = 'Gamma-ray Bursts Catalog', url = 'http://grbcatalog.org')
+        events, name, source = Events.new_event(tasks, args, events, 'GRB ' + row[0], log, refname = 'Gamma-ray Bursts Catalog', url = 'http://grbcatalog.org')
         events[name].add_quantity('ra', row[2], source, unit = 'floatdegrees')
         events[name].add_quantity('dec', row[3], source, unit = 'floatdegrees')
         events[name].add_quantity('redshift', row[8], source)
@@ -45,11 +45,11 @@ def do_grb(events, stubs, args, tasks, task_obj, log):
 
 
 def do_psst(events, stubs, args, tasks, task_obj, log):
-    currenttask = task_obj.current_task(args)
+    current_task = task_obj.current_task(args)
     # 2016arXiv160204156S
     with open("../sne-external/2016arXiv160204156S-tab1.tsv", 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
@@ -59,7 +59,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
 
     with open("../sne-external/2016arXiv160204156S-tab2.tsv", 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
@@ -75,10 +75,10 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
     # 1606.04795
     with open("../sne-external/1606.04795.tsv", 'r') as f:
         data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            events, name, source = Events.new_event(row[0], refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
+            events, name, source = Events.new_event(tasks, args, events, row[0], log, refname = 'Smartt et al. 2016', url = 'http://arxiv.org/abs/1606.04795')
             events[name].add_quantity('ra', row[1], source)
             events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[3]), format = 'mjd').datetime
@@ -99,7 +99,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2006ApJ...645..841N
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2006ApJ...645..841N-table3.csv')
-    tsvin = csv.reader(open(file_path, 'r'), delimiter=',')
+    tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
         name = 'SNLS-' + row[0]
         events, name = Events.add_event(tasks, args, events, name, log)
@@ -112,7 +112,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # Anderson 2014
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat'))
+    file_names = list(glob(os.path.join(PATH.REPO_EXTERNAL, 'SNII_anderson2014/*.dat')))
     for datafile in pbar_strings(file_names, desc=current_task):
         basename = os.path.basename(datafile)
         if not is_number(basename[:2]):
@@ -144,7 +144,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     # stromlo
     stromlobands = ['B', 'V', 'R', 'I', 'VM', 'RM']
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'J_A+A_415_863-1/photometry.csv')
-    tsvin = csv.reader(open(file_path, 'r'), delimiter=',')
+    tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for row in pbar(tsvin, current_task):
         name = row[0]
         events, name = Events.add_event(tasks, args, events, name, log)
@@ -168,7 +168,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2015MNRAS.449..451W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015MNRAS.449..451W.dat')
-    data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
+    data = list(csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
         if rr == 0:
             continue
@@ -187,7 +187,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2016MNRAS.459.1039T
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016MNRAS.459.1039T.tsv')
-    data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
+    data = list(csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True))
     events, name = Events.add_event(tasks, args, events, 'LSQ13zm', log)
     source = events[name].add_source(bibcode='2016MNRAS.459.1039T')
     events[name].add_quantity('alias', name, source)
@@ -210,7 +210,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2015ApJ...804...28G
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015ApJ...804...28G.tsv')
-    data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
+    data = list(csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True))
     events, name = Events.add_event(tasks, args, events, 'PS1-13arp', log)
     source = events[name].add_source(bibcode='2015ApJ...804...28G')
     events[name].add_quantity('alias', name, source)
@@ -230,7 +230,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2016ApJ...819...35A
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016ApJ...819...35A.tsv')
-    data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
+    data = list(csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
@@ -247,7 +247,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2014ApJ...784..105W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2014ApJ...784..105W.tsv')
-    data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
+    data = list(csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
@@ -266,7 +266,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 
     # 2012MNRAS.425.1007B
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2012MNRAS.425.1007B.tsv')
-    data = csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True)
+    data = list(csv.reader(open(file_path, 'r'), delimiter='\t', quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             bands = row[2:]
@@ -299,11 +299,11 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     # 2014ApJ...783...28G
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'apj490105t2_ascii.txt')
     with open(file_path, 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            events, name, source = Events.new_event(row[0], bibcode = '2014ApJ...783...28G')
+            events, name, source = Events.new_event(tasks, args, events, row[0], log, bibcode = '2014ApJ...783...28G')
             events[name].add_quantity('alias', row[1], source)
             events[name].add_quantity('discoverdate', '20' + row[0][3:5], source)
             events[name].add_quantity('ra', row[2], source)
@@ -314,9 +314,9 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     # 2005ApJ...634.1190H
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2005ApJ...634.1190H.tsv')
     with open(file_path, 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
-            events, name, source = Events.new_event('SNLS-' + row[0], bibcode = '2005ApJ...634.1190H')
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
+        for r, row in enumerate(pbar(data, current_task)):
+            events, name, source = Events.new_event(tasks, args, events, 'SNLS-' + row[0], log, bibcode = '2005ApJ...634.1190H')
             events[name].add_quantity('discoverdate', '20' + row[0][:2], source)
             events[name].add_quantity('ra', row[1], source)
             events[name].add_quantity('dec', row[2], source)
@@ -327,14 +327,14 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     # 2014MNRAS.444.2133S
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2014MNRAS.444.2133S.tsv')
     with open(file_path, 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
             name = row[0]
             if is_number(name[:4]):
                 name = 'SN' + name
-            events, name, source = Events.new_event(name, bibcode = '2014MNRAS.444.2133S')
+            events, name, source = Events.new_event(tasks, args, events, name, log, bibcode = '2014MNRAS.444.2133S')
             events[name].add_quantity('ra', row[1], source)
             events[name].add_quantity('dec', row[2], source)
             events[name].add_quantity('redshift', row[3], source, kind = 'host')
@@ -343,12 +343,12 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
     # 2009MNRAS.398.1041B
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2009MNRAS.398.1041B.tsv')
     with open(file_path, 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 bands = row[2:-1]
                 continue
-            events, name, source = Events.new_event('SN2008S', bibcode = '2009MNRAS.398.1041B')
+            events, name, source = Events.new_event(tasks, args, events, 'SN2008S', log, bibcode = '2009MNRAS.398.1041B')
             mjd = str(jd_to_mjd(Decimal(row[0])))
             mags = [x.split('±')[0].strip() for x in row[2:]]
             upps = [('<' in x.split('±')[0]) for x in row[2:]]
@@ -359,19 +359,19 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                add_photometry(events, name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
                     instrument = ins, source = source)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2010arXiv1007.0011P
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2010arXiv1007.0011P.tsv')
     with open(file_path, 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        for r, row in enumerate(tq(data, currenttask)):
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 bands = row[1:]
                 continue
-            events, name, source = Events.new_event('SN2008S', bibcode = '2010arXiv1007.0011P')
+            events, name, source = Events.new_event(tasks, args, events, 'SN2008S', log, bibcode = '2010arXiv1007.0011P')
             mjd = row[0]
             mags = [x.split('±')[0].strip() for x in row[1:]]
             errs = [x.split('±')[1].strip() if '±' in x else '' for x in row[1:]]
@@ -379,16 +379,16 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
+                add_photometry(events, name, time = mjd, band = bands[mi], magnitude = mag, e_magnitude = errs[mi],
                     instrument = 'LBT', source = source)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     # 2000ApJ...533..320G
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2000ApJ...533..320G.tsv')
     with open(file_path, 'r') as f:
-        data = csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True)
-        events, name, source = Events.new_event('SN1997cy', bibcode = '2000ApJ...533..320G')
-        for r, row in enumerate(tq(data, currenttask)):
+        data = list(csv.reader(f, delimiter='\t', quotechar='"', skipinitialspace = True))
+        events, name, source = Events.new_event(tasks, args, events, 'SN1997cy', log, bibcode = '2000ApJ...533..320G')
+        for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 bands = row[1:-1]
                 continue
@@ -397,7 +397,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(name, time = mjd, band = bands[mi], magnitude = mag,
+                add_photometry(events, name, time = mjd, band = bands[mi], magnitude = mag,
                     observatory = 'Mount Stromlo', telescope = 'MSSSO', source = source, kcorrected = True)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
@@ -407,7 +407,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
 def do_cccp(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     cccpbands = ['B', 'V', 'R', 'I']
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt'))
+    file_names = list(glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')))
     for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
         with open(datafile, 'r') as ff:
             tsvin = csv.reader(ff, delimiter='\t', skipinitialspace=True)
@@ -1039,7 +1039,7 @@ def do_sdss(events, stubs, args, tasks, task_obj, log):
     with open(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
     sdssbands = ['u', 'g', 'r', 'i', 'z']
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/*.sum'))
+    file_names = list(glob(os.path.join(PATH.REPO_EXTERNAL, 'SDSS/*.sum')))
     for fname in pbar_strings(file_names, desc=current_task):
         tsvin = csv.reader(open(fname, 'r'), delimiter=' ', skipinitialspace=True)
         basename = os.path.basename(fname)
@@ -1345,7 +1345,7 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
             break
 
     # 2000A&AS..143....9W
-    for brow in tq(table, currenttask = currenttask):
+    for brow in pbar(table, current_task = current_task):
         row = {x:re.sub(r'b\'(.*)\'', r'\1', str(brow[x])) for x in brow.colnames}
         # Skip items with no bibliographic info aside from SIMBAD, too error-prone
         if row['OTYPE'] == 'Candidate_SN*' and not row['SP_TYPE']:
