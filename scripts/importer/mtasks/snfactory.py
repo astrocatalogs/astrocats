@@ -12,6 +12,18 @@ from .. funcs import add_event, add_source, add_quantity, add_spectrum, \
 from ... utils import pretty_num
 
 
+def do_snf_aliases(events, stubs, args, tasks, task_obj, log):
+    with open('../sne-external/SNF/snf-aliases.csv') as f:
+        for row in [x.split(',') for x in f.read().splitlines()]:
+            events, name, source = Events.new_event(tasks, args, events, row[0], log,
+                                                    bibcode = oscbibcode, refname = oscname,
+                                                    url = oscurl, secondary = True)
+            events[name].add_quantity('alias', row[1], source)
+
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    return events
+    
+
 def do_snf_specta(events, stubs, args, tasks, task_obj, log):
     bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T',
                 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
