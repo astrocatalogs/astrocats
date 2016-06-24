@@ -163,6 +163,15 @@
         "function": "do_tns",
         "priority": 10
     },
+    "grb": {
+        "nice_name": "%pre GRB catalog",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.mtasks.general_data",
+        "function": "do_grb",
+        "priority": 10
+    },
     "rochester": {
         "nice_name": "%pre Latest Supernovae",
         "active": true,

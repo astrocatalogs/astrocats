@@ -24,6 +24,24 @@ from .. Events import load_event_from_file
 from scripts.utils import is_number, pbar, pbar_strings, pretty_num, round_sig
 
 
+def do_grb(events, stubs, args, tasks, task_obj, log):
+    csvtxt = load_cached_url('http://grb.pa.msu.edu/grbcatalog/download_data?cut_0_min=10&cut_0=BAT%20T90&cut_0_max=100000&num_cuts=1&no_date_cut=True',
+        '../sne-external/GRB-catalog/catalog.csv')
+    if not csvtxt:
+        continue
+    data = csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True)
+    for r, row in enumerate(tq(data, currenttask)):
+        if r == 0:
+            continue
+        events, name, source = Events.new_event('GRB ' + row[0], refname = 'Gamma-ray Bursts Catalog', url = 'http://grbcatalog.org')
+        events[name].add_quantity('ra', row[2], source, unit = 'floatdegrees')
+        events[name].add_quantity('dec', row[3], source, unit = 'floatdegrees')
+        events[name].add_quantity('redshift', row[8], source)
+
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    return events
+
+
 def do_psst(events, stubs, args, tasks, task_obj, log):
     currenttask = task_obj.current_task(args)
     # 2016arXiv160204156S
