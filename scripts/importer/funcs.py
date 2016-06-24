@@ -720,8 +720,9 @@ def get_best_redshift(events, name):
             bestz = z['value']
             bestkind = kind
             bestsig = sig
+            bestsrc = z['source']
 
-    return (bestz, bestkind, bestsig)
+    return (bestz, bestkind, bestsig, bestsrc)
 
 
 def get_first_light(events, name):
@@ -800,7 +801,7 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def load_cached_url(args, current_task, url, filepath, timeout=120, write=True):
+def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, failhard = False):
     import codecs
     from hashlib import md5
     filemd5 = ''
@@ -815,20 +816,27 @@ def load_cached_url(args, current_task, url, filepath, timeout=120, write=True):
         import requests
         session = requests.Session()
         response = session.get(url, timeout=timeout)
-        if any([x.status_code == 307 for x in response.history]):
-            raise
+        response.raise_for_status()
+        for x in response.history:
+            x.raise_for_status()
+            if x.status_code == 500 or x.status_code == 307 or x.status_code == 404:
+                raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
         # tprint(filemd5 + ": " + newmd5)
         if args.update and newmd5 == filemd5:
             tprint('Skipping file in "' + current_task + '," local and remote copies identical [' + newmd5 + '].')
             return False
+    except (KeyboardInterrupt, SystemExit):
+        raise
     except:
+        if failhard:
+            return ''
         return filetxt
     else:
         if write:
             with codecs.open(filepath, 'w', encoding='utf8') as f:
-                f.write(txt)
+                f.write(txt if txt else filetxt)
     return txt
 
 
@@ -1159,19 +1167,23 @@ def set_first_max_light(events, name):
         (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
         if mldt:
             source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('maxdate', make_date_string(mldt.year, mldt.month, mldt.day), uniq_cdl([source, mlsource]))
+            events[name].add_quantity('maxdate', make_date_string(mldt.year, mldt.month, mldt.day),
+                uniq_cdl([source]+mlsource.split(',')), derived = True)
         if mlmag:
             source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('maxappmag', pretty_num(mlmag), uniq_cdl([source, mlsource]))
+            events[name].add_quantity('maxappmag', pretty_num(mlmag),
+                uniq_cdl([source]+mlsource.split(',')), derived = True)
         if mlband:
             source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('maxband', mlband, uniq_cdl([source, mlsource]))
+            events[name].add_quantity('maxband', mlband,
+                uniq_cdl([source]+mlsource.split(',')), derived = True)
 
     if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
         (fldt, flsource) = get_first_light(events, name)
         if fldt:
             source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), uniq_cdl([source, flsource]))
+            events[name].add_quantity('discoverdate', make_date_string(fldt.year, fldt.month, fldt.day),
+                uniq_cdl([source]+flsource.split(',')), derived = True)
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
@@ -1191,7 +1203,8 @@ def set_first_max_light(events, name):
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('discoverdate', make_date_string(fldt.year, fldt.month, fldt.day), 'D,' + minspecsource)
+            events[name].add_quantity('discoverdate', make_date_string(fldt.year, fldt.month, fldt.day),
+                uniq_cdl([source]+minspecsource.split(',')), derived = True)
 
 
 def clean_snname(string):
