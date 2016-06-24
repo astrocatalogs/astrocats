@@ -31,8 +31,8 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
     for datafile in pbar_strings(file_names, desc=current_task):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
-        name = basesplit[1]
-        events, name = add_event(tasks, args, events, name, log)
+        oldname = basesplit[1]
+        events, name = add_event(tasks, args, events, oldname, log)
         if name.startswith('SN') and is_number(name[2:]):
             name = name + 'A'
         band = basesplit[3].split('.')[0]
@@ -54,7 +54,7 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
         sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, secondary=True)
-        events[name].add_quantity('alias', name, sec_source)
+        events[name].add_quantity('alias', oldname, sec_source)
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
