@@ -13,7 +13,7 @@ from scripts import FILENAME
 from . import Events
 from . funcs import derive_and_sanitize, get_bibauthor_dict, get_extinctions_dict, \
     has_task
-from . constants import TASK
+from . constants import TASK, TRAVIS_QUERY_LIMIT
 from .. utils import pbar, repo_file_list, get_logger
 
 
@@ -134,7 +134,7 @@ def import_main(args=None, **kwargs):
     bibauthor_dict = get_bibauthor_dict()
     extinctions_dict = get_extinctions_dict()
 
-    for fi in pbar(files, 'Sanitizing and deriving quantities for events'):
+    for ii, fi in enumerate(tq(files, 'Sanitizing and deriving quantities for events')):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         events, name = Events.add_event(tasks, args, events, name, log, load_stubs_if_empty=False)
@@ -142,6 +142,8 @@ def import_main(args=None, **kwargs):
             tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict)
         if has_task(tasks, args, 'writeevents'):
             Events.write_all_events(events, args, empty=True, gz=True, bury=True)
+        if args.travis and ii > TRAVIS_QUERY_LIMIT:
+            break
 
     def json_dump(adict, fname):
         json_str = json.dumps(adict, indent='\t', separators=(',', ':'), ensure_ascii=False)
