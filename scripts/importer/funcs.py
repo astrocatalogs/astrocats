@@ -6,9 +6,10 @@ import os
 import statistics
 import warnings
 from collections import OrderedDict
-from math import floor, log10, sqrt
+from math import floor, log10, sqrt, pi, hypot
 
-from astropy import units
+from astropy import units as un
+from astropy.coordinates import SkyCoord as coord
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 from astropy.time import Time as astrotime
@@ -20,7 +21,7 @@ from scripts import FILENAME
 from ..utils import (bandmetaf, bandrepf, get_sig_digits, is_number,
                      pretty_num, round_sig, tprint, zpad)
 from .constants import (CLIGHT, KM, MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL,
-                        PREF_KINDS)
+                        PREF_KINDS, ADS_BIB_URL)
 
 
 def add_photometry(events, name, time="", u_time="MJD", e_time="",
@@ -555,7 +556,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
                         source = events[name].add_source(
-                            bibcode=oscbibcode, srcname=oscname, url=oscurl,
+                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         events[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
@@ -636,8 +637,8 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                     extinctions_dict[name] = [ebv, ebverr]
             if name in extinctions_dict:
                 sources = uniq_cdl(
-                    [events[name].add_source(bibcode=oscbibcode,
-                                             srcname=oscname, url=oscurl,
+                    [events[name].add_source(bibcode=OSC_BIBCODE,
+                                             srcname=OSC_NAME, url=OSC_URL,
                                              secondary=True),
                      events[name].add_source(bibcode='2011ApJ...737..103S')])
                 events[name].add_quantity('ebv',
@@ -668,7 +669,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                         tprint('Added hostra/hostdec from name: ' +
                                hostra + ' ' + hostdec)
                     source = events[name].add_source(
-                        bibcode=oscbibcode, srcname=oscname, url=oscurl,
+                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                         secondary=True)
                     events[name].add_quantity(
                         'hostra', hostra, source, derived=True)
@@ -722,7 +723,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                     meddist = statistics.median(nedd_dict[host['value']])
                     redshift = pretty_num(z_at_value(cosmo.comoving_distance,
                                                      float(meddist) *
-                                                     units.Mpc),
+                                                     un.Mpc),
                                           sig=get_sig_digits(str(meddist)))
                     (events[name]
                      .add_quantity(name, 'redshift', redshift,
@@ -768,9 +769,9 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                         dl = cosmo.luminosity_distance(bestz)
                         sources = [
                             (events[name]
-                             .add_source(bibcode=oscbibcode,
-                                         srcname=oscname,
-                                         url=oscurl,
+                             .add_source(bibcode=OSC_BIBCODE,
+                                         srcname=OSC_NAME,
+                                         url=OSC_URL,
                                          secondary=True)),
                             (events[name]
                              .add_source(bibcode='2015arXiv150201589P'))]
@@ -794,8 +795,8 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                     if 'comovingdist' not in events[name]:
                         cd = cosmo.comoving_distance(bestz)
                         sources = [events[name]
-                                   .add_source(bibcode=oscbibcode,
-                                               srcname=oscname, url=oscurl,
+                                   .add_source(bibcode=OSC_BIBCODE,
+                                               srcname=OSC_NAME, url=OSC_URL,
                                                secondary=True),
                                    events[name]
                                    .add_source(bibcode='2015arXiv150201589P')]
@@ -818,9 +819,9 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
             else:
                 sources = uniq_cdl(
                     [events[name]
-                     .add_source(bibcode=oscbibcode,
-                                 srcname=oscname,
-                                 url=oscurl,
+                     .add_source(bibcode=OSC_BIBCODE,
+                                 srcname=OSC_NAME,
+                                 url=OSC_URL,
                                  secondary=True)] +
                     events[name]['ra'][0]['source'].split(',') +
                     events[name]['dec'][0]['source'].split(',') +
