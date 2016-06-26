@@ -100,7 +100,7 @@ def import_main(args=None, **kwargs):
     events = OrderedDict()
     # FIX: stubs only need to be loaded for `args.update` ??
     stubs = OrderedDict()
-    log.exception("WARNING: not loading stubs for testing!!!")
+    log.error("WARNING: not loading stubs for testing!!!")
     # stubs = Events.load_stubs(tasks, args, events, log)
     warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
 
