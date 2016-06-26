@@ -1,4 +1,4 @@
-from tqdm import tqdm, trange
+from tqdm import tqdm
 
 __all__ = ['tq', 'tprint', 'pbar', 'pbar_strings']
 
