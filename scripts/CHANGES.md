@@ -21,6 +21,9 @@
 -   Combine `EVENT.check` with `Events.clean_event`
 -   `load_cached_url` add warnings for failures
 -   Have the different `add_` methods accept lists and add each
+-   `NON_SNE_TYPES` needs to be added to some sort of global namespace
+-   Consider parallelizing/multithreading --- especially for html queries, throw em in the 
+    background.
     
     
 ## Questions ##

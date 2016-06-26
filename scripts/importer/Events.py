@@ -617,6 +617,9 @@ def get_event_text(eventfile):
 
 def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=False):
     """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
+
+    Iterates over all elements of `events`, saving (possibly 'burying') and deleting.
+    -   If ``clear == True``, then each element of `events` is deleted, and a `stubs` entry is added
     """
     # FIX: store this somewhere instead of re-loading each time
     with open(FILENAME.NON_SNE_TYPES, 'r') as f:
@@ -774,7 +777,8 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
         at_name = ['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []
         allnames1 = set(events[name1].get_aliases(name1) + at_name)
 
-        # Search all future keys
+        # Search all later names
+        # FIX: also include all stubs?
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
@@ -815,7 +819,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     return events
 
 
-def set_preferred_names(tasks, args, events):
+def set_preferred_names(events, stubs, args, tasks, task_obj, log):
     """Choose between each events given name and its possible aliases for the best one.
 
     Highest preference goes to names of the form 'SN####AA'.
@@ -885,7 +889,6 @@ def set_preferred_names(tasks, args, events):
                     break
         if newname and name != newname:
             # Make sure new name doesn't already exist
-            #    If it does exist, these events will be merged during cleanup/merging operations
             if load_event_from_file(events, args, tasks, newname):
                 continue
             if load_event_from_file(events, args, tasks, name, delete=True):
