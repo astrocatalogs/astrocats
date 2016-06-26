@@ -126,7 +126,7 @@ def import_main(args=None, **kwargs):
         # Load function from module, execute with standard parameters
         # getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
         events, stubs = getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
-        log.warning("'{}' finished.  Events: {},  Stubs: {}".format(
+        log.warning("'{}' finished.  Events: {}, Stubs: {}".format(
             task_name, len(events), len(stubs)))
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         log.warning("Journal finished.  Events: {}, Stubs: {}".format(len(events), len(stubs)))
