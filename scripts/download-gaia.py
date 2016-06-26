@@ -1,6 +1,9 @@
 #!/usr/local/bin/python3.5
 import os
-import urllib.request, urllib.error, urllib.parse
+import urllib.error
+import urllib.parse
+import urllib.request
+
 from bs4 import BeautifulSoup
 
 #response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')

@@ -1,39 +1,43 @@
 #!/usr/local/bin/python3.5
 
-import json
-import re
-import os
-import math
 import codecs
 import gzip
+import json
+import math
+import os
+import re
 import warnings
-from repos import *
-from glob import glob
-from tqdm import tqdm
 from collections import OrderedDict
-from astropy.coordinates import SkyCoord as coord
+from copy import deepcopy
+from glob import glob
+
 from astropy import units as un
+from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
 from astroquery.simbad import Simbad
-from copy import deepcopy
+from tqdm import tqdm
+
+from repos import *
 
 events = OrderedDict()
 
 warnings.filterwarnings('ignore')
 
+
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-files = repo_file_list(bones = False)
+files = repo_file_list(bones=False)
 
 newcatalog = []
 
-#Simbad.list_votable_fields()
-#sys.exit()
+# Simbad.list_votable_fields()
+# sys.exit()
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     if fcnt > 2000:
         break
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[
+        0].replace('.json', '')
 
     if eventfile.split('.')[-1] == 'gz':
         with gzip.open(eventfile, 'rt') as f:
@@ -47,7 +51,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     newitem = OrderedDict()
 
     if 'redshift' in item and 'host' not in item and 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
-    #if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
+        # if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
         newitem['name'] = item['name']
         newitem['alias'] = [x['value'] for x in item['alias']]
         newitem['ra'] = item['ra'][0]['value']
@@ -59,7 +63,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             newitem['dec'] = newitem['dec'][:newitem['dec'].rfind('.')]
         newcatalog.append(newitem)
 
-coo = coord([x['ra'] for x in newcatalog], [x['dec'] for x in newcatalog], unit = (un.hourangle, un.deg))
+coo = coord([x['ra'] for x in newcatalog], [x['dec']
+                                            for x in newcatalog], unit=(un.hourangle, un.deg))
 
 for ci, co in enumerate(tqdm(coo)):
     customSimbad = Simbad()
@@ -77,5 +82,5 @@ for ci, co in enumerate(tqdm(coo)):
 # Convert to array since that's what datatables expects
 #dupes = list(dupes.values())
 #jsonstring = json.dumps(dupes, indent='\t', separators=(',', ':'), ensure_ascii=False)
-#with open('../dupes.json', 'w') as f:
+# with open('../dupes.json', 'w') as f:
 #    f.write(jsonstring)

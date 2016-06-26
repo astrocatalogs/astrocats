@@ -1,8 +1,8 @@
 #!/usr/local/bin/python3.5
 
 import glob
-from glob import glob
 from collections import OrderedDict
+from glob import glob
 
 outdir = "../"
 
@@ -20,7 +20,8 @@ for fcnt, eventfile in enumerate(sorted(files, key=lambda s: s.lower())):
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
 
-    if 'sources' in thisevent and 'claimedtype' in thisevent and 'spectra' not in thisevent:
+    if ('sources' in thisevent and 'claimedtype' in thisevent and
+            'spectra' not in thisevent):
         wiserepalias = ''
         for source in thisevent['sources']:
             if source['name'] == 'WISeREP':

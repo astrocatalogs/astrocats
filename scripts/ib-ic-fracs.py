@@ -1,18 +1,21 @@
 #!/usr/local/bin/python3.5
 
+import gzip
 import json
 import os
-import gzip
+from collections import OrderedDict
+from glob import glob
+
+from tqdm import tqdm
+
 from repos import *
 from tq import tprint
-from glob import glob
-from tqdm import tqdm
-from collections import OrderedDict
+
 
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-files = repo_file_list(bones = False)
+files = repo_file_list(bones=False)
 
 spectracount = 0
 photocount = 0
@@ -24,9 +27,10 @@ ibs = [0 for x in years]
 ics = [0 for x in years]
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
-    #if fcnt > 1000:
+    # if fcnt > 1000:
     #    break
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[
+        0].replace('.json', '')
 
     if eventfile.split('.')[-1] == 'gz':
         with gzip.open(eventfile, 'rt') as f:
@@ -54,4 +58,4 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
 print(list(years))
 print(ics)
 print(ibs)
-print([float(x)/max(y,1) for x, y in zip(ics, ibs)])
+print([float(x) / max(y, 1) for x, y in zip(ics, ibs)])

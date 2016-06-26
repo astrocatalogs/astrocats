@@ -25,18 +25,22 @@ def main():
         log_stream_level = logger.INFO
 
     # Destination of log-file ('None' means no file)
-    log = logger.get_logger(stream_level=log_stream_level, tofile=args.log_filename)
+    log = logger.get_logger(
+        stream_level=log_stream_level, tofile=args.log_filename)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
-    log.warning("\n\n{}\n{}\n{}\n".format(title_str, '='*len(title_str), beg_time.ctime()))
+    log.warning("\n\n{}\n{}\n{}\n".format(
+        title_str, '=' * len(title_str), beg_time.ctime()))
 
-    # Choose which submodule to run (note: can also use `set_default` with function)
+    # Choose which submodule to run (note: can also use `set_default` with
+    # function)
     if args._name == 'importer':
         log.info("Running `importer`.")
         importer.importer.import_main(args)
 
     end_time = datetime.now()
-    log.warning("All complete at {}, After {}".format(end_time, end_time-beg_time))
+    log.warning("All complete at {}, After {}".format(
+        end_time, end_time - beg_time))
     return
 
 
@@ -60,7 +64,8 @@ def load_args(args=None):
     pars_parent.add_argument('--log',  dest='log_filename',  default=None,
                              help='Filename to which to store logging information.')
 
-    # Construct the subparser for `importer` submodule --- importing supernova data
+    # Construct the subparser for `importer` submodule --- importing supernova
+    # data
     pars_imp = subparsers.add_parser("importer", parents=[pars_parent],
                                      help="Generate a catalog JSON file")
     pars_imp.add_argument('--update', '-u', dest='update',
@@ -86,7 +91,8 @@ def load_args(args=None):
                           help='space delimited list of tasks to omit from default list.')
 
     args = parser.parse_args(args=args)
-    # Print the help information if no subcommand is given (required for operation)
+    # Print the help information if no subcommand is given (required for
+    # operation)
     if args._name is None:
         parser.print_help()
         return None

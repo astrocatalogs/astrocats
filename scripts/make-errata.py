@@ -1,33 +1,36 @@
 #!/usr/local/bin/python3.5
 
-import json
-import re
-import os
-import math
 import codecs
-import urllib
-import requests
-import ads
 import gzip
-from html import unescape
-from glob import glob
-from tqdm import tqdm
+import json
+import math
+import os
+import re
+import urllib
 from collections import OrderedDict
-from astropy.coordinates import SkyCoord as coord
-from astropy import units as un
-from astropy.time import Time as astrotime
 from copy import deepcopy
+from glob import glob
+from html import unescape
+
+import requests
+from astropy import units as un
+from astropy.coordinates import SkyCoord as coord
+from astropy.time import Time as astrotime
+from tqdm import tqdm
+
+import ads
 from events import *
 from repos import *
 
 errata = []
 
-files = repo_file_list(bones = False)
+files = repo_file_list(bones=False)
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
-    #if fcnt > 100:
+    # if fcnt > 100:
     #    break
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[
+        0].replace('.json', '')
 
     filetext = get_event_text(eventfile)
 
@@ -41,8 +44,9 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             if quantity in list(item.keys()) and 'value' in item[quantity][0]:
                 likelyvalue = item[quantity][0]['value']
             errata.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('ident', error['value']), ('kind', error['kind']),
-                ('quantity', error['extra']), ('likelyvalue', likelyvalue)]))
+                                       ('quantity', error['extra']), ('likelyvalue', likelyvalue)]))
 
-jsonstring = json.dumps(errata, indent='\t', separators=(',', ':'), ensure_ascii=False)
+jsonstring = json.dumps(errata, indent='\t',
+                        separators=(',', ':'), ensure_ascii=False)
 with open('../errata.json', 'w') as f:
     f.write(jsonstring)
