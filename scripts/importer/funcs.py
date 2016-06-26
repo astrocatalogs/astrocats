@@ -839,18 +839,33 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                     offsetsig = get_sig_digits(
                         events[name]['hostoffsetang'][0]['value'])
                     sources = uniq_cdl(sources.split(',') +
-                                       events[name]['comovingdist'][0]['source'].split(',') + events[name]['redshift'][0]['source'].split(','))
-                    events[name].add_quantity('hostoffsetdist',
-                                              pretty_num(float(events[name]['hostoffsetang'][0]['value']) / 3600. * (pi / 180.) *
-                                                         float(events[name]['comovingdist'][0][
-                                                               'value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),
-                                                         sig=offsetsig), sources)
+                                       (events[name]['comovingdist']
+                                       [0]['source']).split(',') +
+                                       (events[name]['redshift']
+                                       [0]['source']).split(','))
+                    (events[name]
+                     .add_quantity('hostoffsetdist',
+                                   pretty_num(
+                                       float(events[name]['hostoffsetang']
+                                             [0]['value']) /
+                                       3600. * (pi / 180.) *
+                                       float(events[name]['comovingdist']
+                                             [0]['value']) *
+                                       1000. / (1.0 +
+                                                float(events[name]['redshift']
+                                                      [0]['value'])),
+                                       sig=offsetsig), sources))
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(
-                key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
-                                min([float(y) for y in x['time']])) if 'time' in x else 0.0,
-                               x['band'] if 'band' in x else '', float(x['magnitude']) if 'magnitude' in x else ''))
-        if 'spectra' in events[name] and list(filter(None, ['time' in x for x in events[name]['spectra']])):
+                key=lambda x: ((float(x['time']) if isinstance(x['time'], str)
+                                else min([float(y) for y in x['time']])) if
+                               'time' in x else 0.0,
+                               x['band'] if 'band' in x else '',
+                               float(x['magnitude']) if
+                               'magnitude' in x else ''))
+        if ('spectra' in events[name] and
+                list(filter(None, ['time' in x
+                                   for x in events[name]['spectra']]))):
             events[name]['spectra'].sort(key=lambda x: (
                 float(x['time']) if 'time' in x else 0.0))
         if 'sources' in events[name]:
@@ -867,8 +882,9 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
 
                     if source['bibcode'] not in bibauthor_dict:
                         bibcode = source['bibcode']
-                        adsquery = ('http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?db_key=ALL&version=1&bibcode=' +
-                                    urllib.parse.quote(bibcode) + '&data_type=Custom&format=%253m%20%25(y)')
+                        adsquery = (ADS_BIB_URL +
+                                    urllib.parse.quote(bibcode) +
+                                    '&data_type=Custom&format=%253m%20%25(y)')
                         response = urllib.request.urlopen(adsquery)
                         html = response.read().decode('utf-8')
                         hsplit = html.split("\n")
@@ -879,28 +895,35 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
 
                         if not bibcodeauthor:
                             warnings.warn(
-                                "Bibcode didn't return authors, not converting this bibcode.")
+                                "Bibcode didn't return authors, not converting"
+                                "this bibcode.")
 
                         bibauthor_dict[bibcode] = unescape(
                             bibcodeauthor).strip()
 
             for source in events[name]['sources']:
-                if 'bibcode' in source and source['bibcode'] in bibauthor_dict and bibauthor_dict[source['bibcode']]:
+                if ('bibcode' in source and
+                        source['bibcode'] in bibauthor_dict and
+                        bibauthor_dict[source['bibcode']]):
                     source['reference'] = bibauthor_dict[source['bibcode']]
                     if 'name' not in source and source['bibcode']:
                         source['name'] = source['bibcode']
         if 'redshift' in events[name]:
             events[name]['redshift'] = list(
-                sorted(events[name]['redshift'], key=lambda key: frame_priority(key)))
+                sorted(events[name]['redshift'], key=lambda key:
+                       frame_priority(key)))
         if 'velocity' in events[name]:
             events[name]['velocity'] = list(
-                sorted(events[name]['velocity'], key=lambda key: frame_priority(key)))
+                sorted(events[name]['velocity'], key=lambda key:
+                       frame_priority(key)))
         if 'claimedtype' in events[name]:
             events[name]['claimedtype'] = list(sorted(
-                events[name]['claimedtype'], key=lambda key: ct_priority(events, name, key)))
+                events[name]['claimedtype'], key=lambda key:
+                ct_priority(events, name, key)))
 
         events[name] = OrderedDict(
-            sorted(events[name].items(), key=lambda key: event_attr_priority(key[0])))
+            sorted(events[name].items(), key=lambda key:
+                   event_attr_priority(key[0])))
 
     return events, extinctions_dict, bibauthor_dict
 
@@ -911,7 +934,9 @@ def do_task(tasks, args, checktask, task, quiet=False):
     global currenttask
     dotask = has_task(tasks, args, task) and checktask == task
     if dotask and not quiet:
-        currenttask = (tasks[task]['nicename'] if tasks[task]['nicename'] else task).replace('%pre', 'Updating' if args.update else 'Loading')
+        currenttask = (tasks[task]['nicename'] if
+        tasks[task]['nicename'] else task).replace('%pre', 'Updating' if
+        args.update else 'Loading')
     return dotask
 '''
 
@@ -1021,8 +1046,10 @@ def get_first_light(events, name):
     if 'photometry' not in events[name]:
         return (None, None)
 
-    eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else Decimal(min(float(y) for y in x['time'])),
-                   x['source']) for x in events[name]['photometry'] if 'upperlimit' not in x and
+    eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else
+                   Decimal(min(float(y) for y in x['time'])),
+                   x['source']) for x in events[name]['photometry'] if
+                  'upperlimit' not in x and
                   'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
     if not eventphoto:
         return (None, None)
@@ -1037,8 +1064,11 @@ def get_max_light(events, name):
     if 'photometry' not in events[name]:
         return (None, None, None, None)
 
-    eventphoto = [(x['u_time'], x['time'], Decimal(x['magnitude']), x['band'] if 'band' in x else '', x['source']) for x in events[name]['photometry'] if
-                  ('magnitude' in x and 'time' in x and 'u_time' in x and 'upperlimit' not in x)]
+    eventphoto = [(x['u_time'], x['time'],
+                   Decimal(x['magnitude']), x['band'] if 'band' in x else '',
+                   x['source']) for x in events[name]['photometry'] if
+                  ('magnitude' in x and 'time' in x and 'u_time' in x and
+                   'upperlimit' not in x)]
     if not eventphoto:
         return (None, None, None, None)
 
@@ -1059,7 +1089,8 @@ def get_max_light(events, name):
 
     if eventphoto[mlindex][0] == 'MJD':
         mlmjd = float(eventphoto[mlindex][1])
-        return (astrotime(mlmjd, format='mjd').datetime, mlmag, mlband, mlsource)
+        return (astrotime(mlmjd, format='mjd').datetime, mlmag, mlband,
+                mlsource)
     else:
         return (None, mlmag, mlband, mlsource)
 
@@ -1093,7 +1124,8 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, failhard=False):
+def load_cached_url(args, current_task, url, filepath, timeout=120, write=True,
+                    failhard=False):
     import codecs
     from hashlib import md5
     filemd5 = ''
@@ -1111,7 +1143,8 @@ def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, 
         response.raise_for_status()
         for x in response.history:
             x.raise_for_status()
-            if x.status_code == 500 or x.status_code == 307 or x.status_code == 404:
+            if (x.status_code == 500 or x.status_code == 307 or
+                    x.status_code == 404):
                 raise
         txt = response.text
         newmd5 = md5(txt.encode('utf-8')).hexdigest()
@@ -1136,7 +1169,8 @@ def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, 
 def make_date_string(year, month='', day=''):
     if not year:
         raise ValueError(
-            'At least the year must be specified when constructing date string')
+            "At least the year must be specified when constructing date "
+            "string")
     datestring = str(year)
     if month:
         datestring = datestring + '/' + str(month).zfill(2)
@@ -1164,7 +1198,8 @@ def name_clean(name):
         newname = newname.replace('OGLE ', 'OGLE-', 1)
     if newname.startswith('OGLE-') and len(newname) != 16:
         namesp = newname.split('-')
-        if len(namesp[1]) == 4 and is_number(namesp[1]) and is_number(namesp[3]):
+        if (len(namesp[1]) == 4 and is_number(namesp[1]) and
+                is_number(namesp[3])):
             newname = 'OGLE-' + namesp[1] + '-SN-' + namesp[3].zfill(3)
     if newname.startswith('SN SDSS'):
         newname = newname.replace('SN SDSS ', 'SDSS', 1)
@@ -1172,7 +1207,8 @@ def name_clean(name):
         newname = newname.replace('SDSS ', 'SDSS', 1)
     if newname.startswith('SDSS'):
         namesp = newname.split('-')
-        if len(namesp) == 3 and is_number(namesp[0][4:]) and is_number(namesp[1]) and is_number(namesp[2]):
+        if (len(namesp) == 3 and is_number(namesp[0][4:]) and
+                is_number(namesp[1]) and is_number(namesp[2])):
             newname = namesp[0] + '-' + namesp[1] + '-' + namesp[2].zfill(3)
     if newname.startswith('SDSS-II SN'):
         namesp = newname.split()
@@ -1288,31 +1324,43 @@ def name_clean(name):
         newname = newname.replace('snf', 'SNF', 1)
     if newname.startswith('SNF '):
         newname = newname.replace('SNF ', 'SNF', 1)
-    if newname.startswith('SNF') and is_number(newname[3:]) and len(newname) >= 12:
+    if (newname.startswith('SNF') and
+            is_number(newname[3:]) and len(newname) >= 12):
         newname = 'SNF' + newname[3:11] + '-' + newname[11:]
     if newname.startswith(('MASTER OT J', 'ROTSE3 J')):
         prefix = newname.split('J')[0]
         coords = newname.split('J')[-1].strip()
         decsign = '+' if '+' in coords else '-'
         coordsplit = coords.replace('+', '-').split('-')
-        if '.' not in coordsplit[0] and len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and len(coordsplit[1]) > 6:
-            newname = (prefix + 'J' + coordsplit[0][:6] + '.' + coordsplit[0][
-                       6:] + decsign + coordsplit[1][:6] + '.' + coordsplit[1][6:])
-    if newname.startswith('Gaia ') and is_number(newname[3:4]) and len(newname) > 5:
+        if ('.' not in coordsplit[0] and
+                len(coordsplit[0]) > 6 and '.' not in coordsplit[1] and
+                len(coordsplit[1]) > 6):
+            newname = (prefix + 'J' + coordsplit[0][:6] + '.' +
+                       coordsplit[0][6:] + decsign + coordsplit[1][:6] +
+                       '.' + coordsplit[1][6:])
+    if (newname.startswith('Gaia ') and
+            is_number(newname[3:4]) and len(newname) > 5):
         newname = newname.replace('Gaia ', 'Gaia', 1)
     if len(newname) <= 4 and is_number(newname):
         newname = 'SN' + newname + 'A'
-    if len(newname) > 4 and is_number(newname[:4]) and not is_number(newname[4:]):
+    if (len(newname) > 4 and is_number(newname[:4]) and not
+            is_number(newname[4:])):
         newname = 'SN' + newname
-    if newname.startswith('Sn ') and is_number(newname[3:7]) and len(newname) > 7:
+    if (newname.startswith('Sn ') and
+            is_number(newname[3:7]) and len(newname) > 7):
         newname = newname.replace('Sn ', 'SN', 1)
-    if newname.startswith('sn') and is_number(newname[2:6]) and len(newname) > 6:
+    if (newname.startswith('sn') and
+            is_number(newname[2:6]) and len(newname) > 6):
         newname = newname.replace('sn', 'SN', 1)
-    if newname.startswith('SN ') and is_number(newname[3:7]) and len(newname) > 7:
+    if (newname.startswith('SN ') and
+            is_number(newname[3:7]) and len(newname) > 7):
         newname = newname.replace('SN ', 'SN', 1)
-    if newname.startswith('SN') and is_number(newname[2:6]) and len(newname) == 7 and newname[6].islower():
+    if (newname.startswith('SN') and
+            is_number(newname[2:6]) and len(newname) == 7 and
+            newname[6].islower()):
         newname = 'SN' + newname[2:6] + newname[6].upper()
-    elif (newname.startswith('SN') and is_number(newname[2:6]) and (len(newname) == 8 or len(newname) == 9) and newname[6:].isupper()):
+    elif (newname.startswith('SN') and is_number(newname[2:6]) and
+          (len(newname) == 8 or len(newname) == 9) and newname[6:].isupper()):
         newname = 'SN' + newname[2:6] + newname[6:].lower()
 
     newname = (' '.join(newname.split())).strip()
@@ -1344,8 +1392,10 @@ def radec_clean(svalue, quantity, unit=''):
             seconds = (fldeg * 60.0 - (degree * 60.0 + minutes)) * 60.0
             if seconds > 60.0:
                 raise(ValueError('Invalid seconds value for ' + quantity))
-            svalue = (('+' if deg >= 0.0 else '-') + str(degree).strip('+-').zfill(2) + ':' +
-                      str(minutes).zfill(2) + ':' + zpad(pretty_num(seconds, sig=sig - 1)))
+            svalue = (('+' if deg >= 0.0 else '-') +
+                      str(degree).strip('+-').zfill(2) + ':' +
+                      str(minutes).zfill(2) + ':' +
+                      zpad(pretty_num(seconds, sig=sig - 1)))
     elif unit == 'nospace' and 'ra' in quantity:
         svalue = svalue[:2] + ':' + svalue[2:4] + \
             ((':' + zpad(svalue[4:])) if len(svalue) > 4 else '')
@@ -1360,9 +1410,12 @@ def radec_clean(svalue, quantity, unit=''):
         svalue = svalue.replace(' ', ':')
         if 'dec' in quantity:
             valuesplit = svalue.split(':')
-            svalue = (('-' if valuesplit[0].startswith('-') else '+') + valuesplit[0].strip('+-').zfill(2) +
-                      (':' + valuesplit[1].zfill(2) if len(valuesplit) > 1 else '') +
-                      (':' + zpad(valuesplit[2]) if len(valuesplit) > 2 else ''))
+            svalue = (('-' if valuesplit[0].startswith('-') else '+') +
+                      valuesplit[0].strip('+-').zfill(2) +
+                      (':' + valuesplit[1].zfill(2) if
+                       len(valuesplit) > 1 else '') +
+                      (':' + zpad(valuesplit[2]) if
+                       len(valuesplit) > 2 else ''))
 
     if 'ra' in quantity:
         sunit = 'hours'
@@ -1372,8 +1425,8 @@ def radec_clean(svalue, quantity, unit=''):
     # Correct case of arcseconds = 60.0.
     valuesplit = svalue.split(':')
     if len(valuesplit) == 3 and valuesplit[-1] in ["60.0", "60.", "60"]:
-        svalue = valuesplit[
-            0] + ':' + str(Decimal(valuesplit[1]) + Decimal(1.0)) + ':' + "00.0"
+        svalue = valuesplit[0] + ':' + str(Decimal(valuesplit[1]) +
+                                           Decimal(1.0)) + ':' + "00.0"
 
     # Strip trailing dots.
     svalue = svalue.rstrip('.')
@@ -1423,11 +1476,14 @@ def host_clean(name):
         newname = newname[:4] + newname[4:].lstrip(" 0")
     if len(newname) > 5 and newname.startswith(("MCG +", "MCG -")):
         newname = newname[:5] + '-'.join([x.zfill(2)
-                                          for x in newname[5:].strip().split("-")])
+                                          for x in
+                                          newname[5:].strip().split("-")])
     if len(newname) > 5 and newname.startswith("CGCG "):
         newname = newname[:5] + '-'.join([x.zfill(3)
-                                          for x in newname[5:].strip().split("-")])
-    if (len(newname) > 1 and newname.startswith("E")) or (len(newname) > 3 and newname.startswith('ESO')):
+                                          for x in
+                                          newname[5:].strip().split("-")])
+    if ((len(newname) > 1 and newname.startswith("E")) or
+            (len(newname) > 3 and newname.startswith('ESO'))):
         if newname[0] == "E":
             esplit = newname[1:].split("-")
         else:
@@ -1455,8 +1511,10 @@ def same_tag_num(photo, val, tag, canbelist=False):
         (tag in photo and
          ((not canbelist and Decimal(photo[tag]) == Decimal(val)) or
           (canbelist and
-           ((isinstance(photo[tag], str) and isinstance(val, str) and Decimal(photo[tag]) == Decimal(val)) or
-            (isinstance(photo[tag], list) and isinstance(val, list) and photo[tag] == val))))))
+           ((isinstance(photo[tag], str) and isinstance(val, str) and
+             Decimal(photo[tag]) == Decimal(val)) or
+            (isinstance(photo[tag], list) and isinstance(val, list) and
+             photo[tag] == val))))))
     return issame
 
 
@@ -1471,27 +1529,47 @@ def set_first_max_light(events, name):
         (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
         if mldt:
             source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('maxdate', make_date_string(mldt.year, mldt.month, mldt.day),
-                                      uniq_cdl([source] + mlsource.split(',')), derived=True)
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            events[name].add_quantity('maxdate',
+                                      make_date_string(mldt.year,
+                                                       mldt.month,
+                                                       mldt.day),
+                                      uniq_cdl([source] +
+                                               mlsource.split(',')),
+                                      derived=True)
         if mlmag:
             source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('maxappmag', pretty_num(mlmag),
-                                      uniq_cdl([source] + mlsource.split(',')), derived=True)
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            (events[name]
+             .add_quantity('maxappmag',
+                           pretty_num(mlmag),
+                           uniq_cdl([source] + mlsource.split(',')),
+                           derived=True))
         if mlband:
             source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('maxband', mlband,
-                                      uniq_cdl([source] + mlsource.split(',')), derived=True)
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            (events[name]
+             .add_quantity('maxband',
+                           mlband,
+                           uniq_cdl([source] + mlsource.split(',')),
+                           derived=True))
 
-    if 'discoverdate' not in events[name] or max([len(x['value'].split('/')) for x in events[name]['discoverdate']]) < 3:
+    if ('discoverdate' not in events[name] or
+            max([len(x['value'].split('/')) for x in
+                 events[name]['discoverdate']]) < 3):
         (fldt, flsource) = get_first_light(events, name)
         if fldt:
             source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('discoverdate', make_date_string(fldt.year, fldt.month, fldt.day),
-                                      uniq_cdl([source] + flsource.split(',')), derived=True)
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            (events[name]
+             .add_quantity('discoverdate',
+                           make_date_string(fldt.year, fldt.month, fldt.day),
+                           uniq_cdl([source] + flsource.split(',')),
+                           derived=True))
 
     if 'discoverdate' not in events[name] and 'spectra' in events[name]:
         minspecmjd = float("+inf")
@@ -1511,9 +1589,13 @@ def set_first_max_light(events, name):
         if minspecmjd < float("+inf"):
             fldt = astrotime(minspecmjd, format='mjd').datetime
             source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            events[name].add_quantity('discoverdate', make_date_string(fldt.year, fldt.month, fldt.day),
-                                      uniq_cdl([source] + minspecsource.split(',')), derived=True)
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            (events[name]
+             .add_quantity('discoverdate',
+                           make_date_string(fldt.year, fldt.month, fldt.day),
+                           uniq_cdl([source] + minspecsource.split(',')),
+                           derived=True))
 
 
 def clean_snname(string):
@@ -1530,7 +1612,8 @@ def clean_snname(string):
 
 def trim_str_arr(arr, length=10):
     return [str(round_sig(float(x), length)) if
-            (len(x) > length and len(str(round_sig(float(x), length))) < len(x))
+            (len(x) > length and
+             len(str(round_sig(float(x), length))) < len(x))
             else x for x in arr]
 
 

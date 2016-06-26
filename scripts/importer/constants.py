@@ -11,6 +11,9 @@ ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
             "which is funded in part by the National Science Foundation "
             "through grant AST 0907903.")
 
+ADS_BIB_URL = ("http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?"
+               "db_key=ALL&version=1&bibcode=")
+
 CLIGHT = const.c.cgs.value
 KM = (1.0 * un.km).cgs.value
 TRAVIS_QUERY_LIMIT = 10
