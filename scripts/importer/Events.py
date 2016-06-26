@@ -4,7 +4,6 @@ from cdecimal import Decimal
 import codecs
 from collections import OrderedDict
 import json
-from math import floor
 import os
 import warnings
 
@@ -14,7 +13,7 @@ from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
 from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
     jd_to_mjd, name_clean, host_clean, radec_clean
 from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
-    pbar, pretty_num, tprint, zpad, repo_file_list
+    pbar, tprint, repo_file_list
 
 
 class KEYS:
@@ -65,9 +64,10 @@ class EVENT(OrderedDict):
             self._source_syns = json.loads(f.read(), object_pairs_hook=OrderedDict)
         return
 
-    def load_data_from_json(self, fhand):
+    def load_data_from_json(self, fhand, log):
         """FIX: check for overwrite??
         """
+        log.debug("Events.EVENT.load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -146,7 +146,7 @@ class EVENT(OrderedDict):
             new_src[KEYS.BIBCODE] = bibcode
         new_src[KEYS.ALIAS] = source_alias
         # Add in any additional arguments passed (e.g. url, acknowledgment, etc)
-        new_src.update({k:v for (k,v) in src_kwargs.items() if k})
+        new_src.update({k: v for (k, v) in src_kwargs.items() if k})
         self.setdefault(KEYS.SOURCES, []).append(new_src)
 
         return source_alias
@@ -159,7 +159,7 @@ class EVENT(OrderedDict):
             raise(ValueError(self.name + "'s quantity must be specified for add_quantity."))
         if not sources:
             raise(ValueError(self.name + "'s source must be specified for quantity " +
-                quantity + ' before it is added.'))
+                  quantity + ' before it is added.'))
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
             raise(ValueError(self.name + "'s Quantity " + quantity + " must be a string or an array of strings."))
@@ -205,14 +205,10 @@ class EVENT(OrderedDict):
                 return
             if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
                 return
-
             svalue = host_clean(svalue)
-
-            if (not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
-                'cluster' in svalue.lower())):
+            if ((not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
+                 'cluster' in svalue.lower()))):
                 skind = 'cluster'
-                if not skind and (is_abell or 'cluster' in svalue.lower()):
-                    skind = 'cluster'
         elif quantity == KEYS.CLAIMED_TYPE:
             isq = False
             svalue = svalue.replace('young', '')
@@ -229,7 +225,7 @@ class EVENT(OrderedDict):
                 svalue = svalue + '?'
 
         elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-            (svalue, sunit) = radec_clean(svalue, quantity, unit = unit)
+            (svalue, sunit) = radec_clean(svalue, quantity, unit=unit)
         elif quantity == 'maxdate' or quantity == 'discoverdate':
             # Make sure month and day have leading zeroes
             sparts = svalue.split('/')
@@ -440,17 +436,14 @@ class EVENT(OrderedDict):
         return outdir, filename
 
     def save(self, empty=False, bury=False, gz=False):
-        warnings.warn("Supressing 'stub' behavior in `EVENT.save`!")
-        # if 'stub' in event_obj.keys():
-        #     if not empty:
-        #         continue
-        #     else:
-        #         del event_obj['stub']
         outdir, filename = self._get_save_path(bury=bury)
 
         # FIX: use 'dump' not 'dumps'
         jsonstring = json.dumps({self.name: self},
                                 indent='\t', separators=(',', ':'), ensure_ascii=False)
+        if not os.path.isdir(outdir):
+            raise RuntimeError("Output directory '{}' for event '{}' does not exist.".format(
+                outdir, self.name))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
@@ -475,6 +468,7 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     newname : str
         Name of matching event found in `events`, or new event added to `events`
     """
+    log.debug("Events.add_event()")
     newname = name_clean(name)
     # If event already exists, return
     if newname in events:
@@ -499,22 +493,21 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     # Create new event
     new_event = EVENT(newname)
     new_event['schema'] = SCHEMA.URL
-    log.log(log._LOADED, "Created new, empty event for '{}'".format(newname))
+    log.log(log._LOADED, "Created new event for '{}'".format(newname))
     # Add event to dictionary
     events[newname] = new_event
 
     return events, newname
 
 
-def new_event(tasks, args, events, name, log, load = True, delete = True, loadifempty = True,
-              srcname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
+def new_event(tasks, args, events, name, log, load=True, delete=True, loadifempty=True,
+              srcname='', reference='', url='', bibcode='', secondary='', acknowledgment=''):
     oldname = name
-    events, name = add_event(tasks, args, events, name, log, load = load, delete = delete)
+    events, name = add_event(tasks, args, events, name, log, load=load, delete=delete)
     source = events[name].add_source(bibcode=bibcode, srcname=srcname, reference=reference,
-                                     url=url, secondary = secondary, acknowledgment = acknowledgment)
+                                     url=url, secondary=secondary, acknowledgment=acknowledgment)
     events[name].add_quantity('alias', oldname, source)
     return events, name, source
-
 
 
 def find_event_name_of_alias(events, alias):
@@ -626,6 +619,9 @@ def get_event_text(eventfile):
 
 def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=False):
     """Write all events in `events` to files, and clear.  Depending on arguments and `tasks`.
+
+    Iterates over all elements of `events`, saving (possibly 'burying') and deleting.
+    -   If ``clear == True``, then each element of `events` is deleted, and a `stubs` entry is added
     """
     # FIX: store this somewhere instead of re-loading each time
     with open(FILENAME.NON_SNE_TYPES, 'r') as f:
@@ -689,6 +685,7 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
 
     FIX: currently will error if cant find a path from `name`
     """
+    log.debug("Events.load_event_from_file()")
     if not name and not path:
         raise ValueError('Either event `name` or `path` must be specified to load event.')
 
@@ -716,7 +713,7 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
         return None
 
     new_event = EVENT(name)
-    new_event.load_data_from_json(load_path)
+    new_event.load_data_from_json(load_path, log)
 
     # Delete old version
     if name in events:
@@ -764,7 +761,7 @@ def load_stubs(tasks, args, events, log):
     return stubs
 
 
-def merge_duplicates(tasks, args, events):
+def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     """Merge and remove duplicate events
     """
     if len(events) == 0:
@@ -780,19 +777,20 @@ def merge_duplicates(tasks, args, events):
     for n1, name1 in enumerate(pbar(keys[:], currenttask)):
         if name1 not in events:
             continue
-        # allnames1 = events[name1].get_aliases() + (['AT' + name1[2:]] if
-        #     (name1.startswith('SN') and is_number(name1[2:6])) else [])
-        allnames1 = set(events[name1].get_aliases(name1) + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []))
+        at_name = ['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []
+        allnames1 = set(events[name1].get_aliases(name1) + at_name)
 
+        # Search all later names
+        # FIX: also include all stubs?
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
-            # allnames2 = events[name2].get_aliases() + (['AT' + name2[2:]]
-            #    if (name2.startswith('SN') and is_number(name2[2:6])) else [])
-            allnames2 = set(events[name2].get_aliases(name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else []))
-            if bool(allnames1 & allnames2):
-                tprint("Found single event with multiple entries ('{}' and '{}'), merging.".format(
-                    name1, name2))
+            at_name = ['AT' + name2[2:]] if name2.startswith('SN') and is_number(name2[2:6]) else []
+            allnames2 = set(events[name2].get_aliases(name2) + at_name)
+            # If there are any common names or aliases, merge
+            if len(allnames1 & allnames2):
+                log.warning("Found single event with multiple entries ('{}' and '{}'), merging."
+                            "".format(name1, name2))
 
                 load1 = load_event_from_file(events, args, tasks, name1, delete=True)
                 load2 = load_event_from_file(events, args, tasks, name2, delete=True)
@@ -815,15 +813,23 @@ def merge_duplicates(tasks, args, events):
                         keys.append(name2)
                         del events[name1]
                 else:
-                    print('Duplicate already deleted')
-                journal_events(tasks, args, events)
+                    log.warning('Duplicate already deleted')
+                journal_events(tasks, args, events, stubs, log)
+
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
 
     return events
 
 
-def set_preferred_names(tasks, args, events):
+def set_preferred_names(events, stubs, args, tasks, task_obj, log):
+    """Choose between each events given name and its possible aliases for the best one.
+
+    Highest preference goes to names of the form 'SN####AA'.
+    Otherwise base the name on whichever survey is the 'discoverer'.
+
+    FIX: create function to match SN####AA type names.
+    """
     currenttask = 'Setting preferred names'
     if not len(events):
         load_stubs(tasks, args, events)
@@ -835,14 +841,17 @@ def set_preferred_names(tasks, args, events):
         aliases = events[name].get_aliases()
         if len(aliases) <= 1:
             continue
+        # If the name is already in the form 'SN####AA' then keep using that
         if (name.startswith('SN') and ((is_number(name[2:6]) and not is_number(name[6:])) or
                                        (is_number(name[2:5]) and not is_number(name[5:])))):
             continue
+        # If one of the aliases is in the form 'SN####AA' then use that
         for alias in aliases:
             if (alias[:2] == 'SN' and ((is_number(alias[2:6]) and not is_number(alias[6:])) or
                                        (is_number(alias[2:5]) and not is_number(alias[5:])))):
                 newname = alias
                 break
+        # Otherwise, name based on the 'discoverer' survey
         if not newname and 'discoverer' in events[name]:
             discoverer = ','.join([x['value'].upper() for x in events[name]['discoverer']])
             if 'ASAS' in discoverer:

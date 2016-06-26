@@ -912,7 +912,7 @@ def do_internal(events, stubs, args, tasks, task_obj, log):
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     log.debug("found {} files matching '{}'".format(len(files), path_pattern))
-    log.exception("`do_internal` 'update' section is disabled")
+    log.error("`do_internal` 'update' section is disabled")
     for datafile in pbar_strings(files, desc=current_task):
         # FIX: do we still need this difference?
         '''
@@ -1232,8 +1232,8 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
             else:
                 mlmjd = ''
             add_spectrum(
-                name, u_time='MJD' if mlmjd else '', time=mlmjd, waveunit='Angstrom',
-                fluxunit='Uncalibrated', wavelengths=wavelengths, fluxes=fluxes, source=source)
+                events, name, 'Angstrom', 'Uncalibrated', u_time='MJD' if mlmjd else '', time=mlmjd,
+                wavelengths=wavelengths, fluxes=fluxes, source=source)
 
             lastname = name
 

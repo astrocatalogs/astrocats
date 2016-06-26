@@ -168,16 +168,18 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 month = fileparts[2][4:6]
                 day = fileparts[2][6:]
                 instrument = fileparts[3].split('.')[0]
-            time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+            time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd +
+                       float(day) - floor(float(day)))
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
-            sources = uniq_cdl([source, events[name].add_source(bibcode='2012AJ....143..126B'), events[name].add_source(bibcode='2008AJ....135.1598M')])
+            sources = uniq_cdl([source, events[name].add_source(bibcode='2012AJ....143..126B'),
+                                events[name].add_source(bibcode='2008AJ....135.1598M')])
             add_spectrum(
-                name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', filename=filename,
+                events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', filename=filename,
                 wavelengths=wavelengths, fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument,
                 errorunit='ergs/s/cm^2/Angstrom', errors=errors, source=sources, dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
@@ -209,7 +211,8 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             day = fileparts[1][6:].split('.')[0]
             if len(fileparts) > 2:
                 instrument = fileparts[-1].split('.')[0]
-            time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+            time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd +
+                       float(day) - floor(float(day)))
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
@@ -217,7 +220,7 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             fluxes = data[1]
             sources = uniq_cdl([source, events[name].add_source(bibcode='2014AJ....147...99M')])
             add_spectrum(
-                name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
+                events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=sources,
                 dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
@@ -264,7 +267,7 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             wavelengths = data[0]
             fluxes = [str(Decimal(x)*Decimal(1.0e-15)) for x in data[1]]
             add_spectrum(
-                name=name, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
+                events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=source,
                 dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:

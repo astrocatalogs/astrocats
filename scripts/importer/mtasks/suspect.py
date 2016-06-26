@@ -125,7 +125,7 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 name = 'SN' + name
             name = get_preferred_name(events, name)
             if oldname and name != oldname:
-                events, stubs = journal_events(tasks, args, events, stubs, log)
+                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
             oldname = name
             events, name = Events.add_event(tasks, args, events, name, log)
             sec_ref = 'SUSPECT'
@@ -185,13 +185,12 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                     errors = specdata[2]
 
                 add_spectrum(
-                    name=name, u_time='MJD', time=time, waveunit='Angstrom',
-                    fluxunit='Uncalibrated', wavelengths=wavelengths,
-                    fluxes=fluxes, errors=errors, errorunit='Uncalibrated',
+                    events, name, 'Angstrom', 'Uncalibrated', u_time='MJD', time=time,
+                    wavelengths=wavelengths, fluxes=fluxes, errors=errors, errorunit='Uncalibrated',
                     source=sources, filename=spectrum)
                 suspectcnt = suspectcnt + 1
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
-    events, stubs = journal_events(tasks, args, events, stubs, log)
+    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

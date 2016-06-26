@@ -195,9 +195,11 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                 else:
                                     fluxunit = 'Uncalibrated'
 
-                                add_spectrum(events, name=name, waveunit='Angstrom', fluxunit=fluxunit, errors=errors, errorunit=fluxunit, wavelengths=wavelengths,
-                                             fluxes=fluxes, u_time='MJD', time=time, instrument=instrument, source=sources, observer=observer, reducer=reducer,
-                                             filename=specfile)
+                                add_spectrum(
+                                    events, name, 'Angstrom', fluxunit, errors=errors,
+                                    errorunit=fluxunit, wavelengths=wavelengths, fluxes=fluxes,
+                                    u_time='MJD', time=time, instrument=instrument, source=sources,
+                                    observer=observer, reducer=reducer, filename=specfile)
                                 wiserepcnt = wiserepcnt + 1
 
                                 if args.travis and wiserepcnt % TRAVIS_QUERY_LIMIT == 0:
@@ -205,5 +207,6 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
 
                 tprint('Unadded files: ' + str(len(lfiles) - 1) + "/" + str(len(files)-1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
+
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

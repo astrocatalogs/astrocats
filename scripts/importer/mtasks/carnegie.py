@@ -93,7 +93,7 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         fluxes = specdata[1]
 
         add_spectrum(
-            name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit='erg/s/cm^2/Angstrom',
+            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD', time=time,
             wavelengths=wavelengths, fluxes=fluxes, telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
