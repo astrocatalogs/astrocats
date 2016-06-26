@@ -814,7 +814,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
                         del events[name1]
                 else:
                     log.warning('Duplicate already deleted')
-                journal_events(tasks, args, events, stubs, log)
+                events = journal_events(tasks, args, events, stubs, log)
 
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
@@ -899,7 +899,7 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
                 events[newname] = events[name]
                 events[newname][KEYS.NAME] = newname
                 del events[name]
-                journal_events(tasks, args, events)
+                events = journal_events(tasks, args, events, stubs, log)
         if args.travis and ni > TRAVIS_QUERY_LIMIT:
             break
 
