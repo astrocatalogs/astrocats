@@ -771,21 +771,26 @@ def load_stubs(tasks, args, events, log):
 def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     """Merge and remove duplicate events
     """
-    if len(events) == 0:
-        if args.update:
-            import sys
-            tprint('No sources changed, event files unchanged in update.')
-            sys.exit(1)
+    log.debug("Events.merge_duplicates()")
+    # Warn if there are still events; which suggests they havent been saved (journaled) yet??
+    if len(events) != 0:
+        log.error("WARNING: `events` is not empty ({})".format(len(events)))
 
-        load_stubs(tasks, args, events)
+    # Warn if there are no stubs (suggests no saved files); FIX: should this lead to a `return`??
+    if len(stubs) == 0:
+        log.error("WARNING: `stubs` is empty!")
+
+        if args.update:
+            log.warning('No sources changed, event files unchanged in update.  Skipping merge.')
+            return events, stubs
+
+        stubs = load_stubs(tasks, args, events, log)
 
     currenttask = 'Merging duplicate events'
-    keys = list(sorted(list(events.keys())))
-    for n1, name1 in enumerate(pbar(keys[:], currenttask)):
-        if name1 not in events:
-            continue
+    keys = list(sorted(stubs.keys()))
+    for n1, name1 in enumerate(pbar(keys, currenttask)):
         at_name = ['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []
-        allnames1 = set(events[name1].get_aliases(name1) + at_name)
+        allnames1 = set(events[name1].get_aliases() + at_name)
 
         # Search all later names
         # FIX: also include all stubs?
@@ -793,7 +798,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
             if name2 not in events or name1 == name2:
                 continue
             at_name = ['AT' + name2[2:]] if name2.startswith('SN') and is_number(name2[2:6]) else []
-            allnames2 = set(events[name2].get_aliases(name2) + at_name)
+            allnames2 = set(events[name2].get_aliases() + at_name)
             # If there are any common names or aliases, merge
             if len(allnames1 & allnames2):
                 log.warning("Found single event with multiple entries ('{}' and '{}'), merging."
