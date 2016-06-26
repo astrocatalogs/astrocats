@@ -491,7 +491,7 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     # Create new event
     new_event = EVENT(newname)
     new_event['schema'] = SCHEMA.URL
-    log.log(log._LOADED, "Created new, empty event for '{}'".format(newname))
+    log.log(log._LOADED, "Created new event for '{}'".format(newname))
     # Add event to dictionary
     events[newname] = new_event
 
