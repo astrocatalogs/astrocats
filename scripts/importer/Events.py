@@ -672,11 +672,16 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
                               ' git add -f ' + filename + '.json.gz; cd ' + '../scripts')
 
         if clear:
+            # See if this stub already exists or is new, to log appropriately
+            if name in stubs:
+                stub_action = 'exists'
+            else:
+                stub_action = 'added'
             # Store stub of this object
             stubs.update({name: events[name].get_stub()})
             # Delete object
             del events[name]
-            log.debug("Added stub for {}, deleted event.".format(name))
+            log.debug("Stub '{}' for '{}', deleted event.".format(stub_action, name))
 
     return events, stubs
 
