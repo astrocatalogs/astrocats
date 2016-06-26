@@ -1,26 +1,20 @@
 #!/usr/local/bin/python3.5
 
-import codecs
 import json
 import os
-import re
-import sys
 from collections import OrderedDict
-from glob import glob
-from math import floor, log10
-from random import randint, uniform
+from random import randint
 
 from astropy.time import Time as astrotime
 from bokeh.embed import file_html
 from bokeh.models import ColumnDataSource, HoverTool
-from bokeh.plotting import Figure, reset_output, save, show
+from bokeh.plotting import Figure, reset_output
 from bokeh.resources import CDN
 
-from digits import *
 from events import *
-from photometry import *
-from repos import *
-from tq import *
+from utils.photometry import bandaliasf, bandcolorf
+from utils.repos import repo_file_list
+from utils.tq_funcs import tq, tprint
 
 tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 

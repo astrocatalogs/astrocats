@@ -1,24 +1,22 @@
 #!/usr/local/bin/python3.5
 
 import json
-import sys
 import warnings
 from collections import OrderedDict
-from glob import glob
-from math import *
+from math import cos, pi, sin, sqrt
 from random import seed, shuffle
 
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from bokeh.embed import file_html
 from bokeh.models import ColumnDataSource, HoverTool
-from bokeh.plotting import Figure, reset_output
+from bokeh.plotting import Figure
 from bokeh.resources import CDN
 from palettable import cubehelix
 
 from events import *
-from repos import *
-from tq import *
+from utils.repos import repo_file_list
+from utils.tq_funcs import tq, tprint
 
 tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 

@@ -2,15 +2,12 @@
 
 import codecs
 import json
-import os
 import urllib
-from collections import OrderedDict, Sequence
+from collections import OrderedDict
 
-import requests
 from tqdm import tqdm
 
-from digits import is_integer
-from importer/constants import ADS_BIB_URL
+from importer.constants import ADS_BIB_URL
 
 atels = OrderedDict()
 yearseps = range(1990, 2020, 2)

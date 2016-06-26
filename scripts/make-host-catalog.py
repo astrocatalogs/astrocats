@@ -1,28 +1,17 @@
 #!/usr/local/bin/python3.5
 
-import codecs
 import gzip
 import json
-import math
 import os
-import re
-import statistics
 import time
-import urllib
 from collections import OrderedDict
-from copy import deepcopy
 from glob import glob
-from html import unescape
 from math import sqrt
 
-import requests
-from astropy import units as un
-from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
 from tqdm import tqdm
 
-import ads
-from digits import *
+from utils.digits import pretty_num
 
 hosts = OrderedDict()
 

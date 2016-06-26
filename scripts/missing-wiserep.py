@@ -1,8 +1,8 @@
 #!/usr/local/bin/python3.5
 
 import glob
+import json
 from collections import OrderedDict
-from glob import glob
 
 outdir = "../"
 

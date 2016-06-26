@@ -1,26 +1,13 @@
 #!/usr/local/bin/python3.5
 
-import codecs
-import gzip
 import json
-import math
 import os
-import re
-import urllib
 from collections import OrderedDict
-from copy import deepcopy
-from glob import glob
-from html import unescape
 
-import requests
-from astropy import units as un
-from astropy.coordinates import SkyCoord as coord
-from astropy.time import Time as astrotime
 from tqdm import tqdm
 
-import ads
 from events import *
-from repos import *
+from utils.repos import repo_file_list
 
 errata = []
 

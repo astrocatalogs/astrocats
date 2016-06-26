@@ -4,11 +4,10 @@ import gzip
 import json
 import os
 from collections import OrderedDict
-from glob import glob
 
 from tqdm import tqdm
 
-from repos import *
+from utils.repos import repo_file_list
 
 
 def get_event_filename(name):

@@ -1,9 +1,6 @@
 #!/usr/local/bin/python3.5
 
 import json
-import os
-import re
-import sys
 from collections import OrderedDict
 
 import seaborn as sns
@@ -11,10 +8,9 @@ from bokeh.embed import file_html
 from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.plotting import Figure, reset_output
 from bokeh.resources import CDN
-from palettable import colorbrewer
 
-from digits import *
-from tq import *
+from utils.digits import is_number
+from utils.tq_funcs import tq
 
 outdir = "../"
 

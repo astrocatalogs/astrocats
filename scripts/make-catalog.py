@@ -16,34 +16,34 @@ import urllib.request
 import warnings
 from collections import OrderedDict
 from copy import deepcopy
-from datetime import datetime
 from glob import glob
-from math import ceil, floor, hypot, isnan, pi
+from math import ceil, isnan, pi
 from statistics import mean
 
 import numpy
 import requests
 from astropy import units as un
-from astropy import constants
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
-from bokeh.embed import components, file_html
+from bokeh.embed import file_html
 from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HBox,
                           HoverTool, LinearAxis, Paragraph, Range1d, Slider,
                           VBox)
 from bokeh.models.widgets import Select
-from bokeh.plotting import Figure, reset_output, save, show
-from bokeh.resources import CDN, INLINE
-from bs4 import BeautifulSoup, NavigableString, Tag
+from bokeh.plotting import Figure, reset_output
+from bokeh.resources import CDN
+from bs4 import BeautifulSoup
 from palettable import cubehelix
 
 import inflect
 from cdecimal import Decimal
-from digits import *
+from digits import round_sig, get_sig_digits, is_number, pretty_num
 from events import *
-from photometry import *
-from repos import *
-from tq import *
+from utils.photometry import (xraycolorf, radiocolorf, bandcolorf, bandaliasf,
+                              bandshortaliasf, bandwavef, bandcodes,
+                              bandwavelengths)
+from utils.repos import repo_file_list, get_repo_folder_for_year
+from utils.tq_funcs import tq, tprint
 
 parser = argparse.ArgumentParser(
     description='Generate a catalog JSON file and plot HTML files from SNE data.')
@@ -410,12 +410,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     # Must be two sigma above host magnitude, if host magnitude known, to add
     # to phot count.
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'magnitude' in x and
-                    (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
+                    (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
     numradio = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'fluxdensity' in x and
                     (not x['e_fluxdensity'] or float(x['fluxdensity']) > radiosigma * float(x['e_fluxdensity'])) and
-                    (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
+                    (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
     numxray = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'counts' in x and
-                   (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
+                   (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
     numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
 
     redshiftfactor = (1.0 / (1.0 + float(catalog[entry]['redshift'][0]['value']))) if (
@@ -1611,7 +1611,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             </script>'''
                       , html)
 
-        repfolder = get_rep_folder_for_year(catalog[entry])
+        repfolder = get_repo_folder_for_year(catalog[entry])
         html = re.sub(r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
                       linkdir + fileeventname + r'.json" download>' + r'Download all data for ' + eventname +
                       r'</a></div>\n\1', html)

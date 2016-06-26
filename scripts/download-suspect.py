@@ -1,6 +1,5 @@
 #!/usr/local/bin/python3.5
 import json
-import re
 import urllib.error
 import urllib.parse
 import urllib.request
