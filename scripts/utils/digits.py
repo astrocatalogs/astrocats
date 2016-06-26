@@ -3,7 +3,8 @@
 
 from math import log10, floor
 
-__all__ = ['get_sig_digits', 'is_integer', 'is_number', 'pretty_num', 'round_sig', 'zpad']
+__all__ = ['get_sig_digits', 'is_integer', 'is_number', 'pretty_num',
+           'round_sig', 'zpad']
 
 
 def get_sig_digits(x):
