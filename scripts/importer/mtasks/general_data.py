@@ -764,7 +764,10 @@ def do_des(events, stubs, args, tasks, task_obj, log):
 def do_external_radio(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
-    for datafile in pbar_strings(glob(path_pattern), desc=current_task):
+    radio_files = glob(path_pattern)
+    if not len(radio_files):
+        log.error("WARNING: no radio files found for '{}'".format(path_pattern))
+    for datafile in pbar_strings(radio_files, desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
         events, name = Events.add_event(tasks, args, events, oldname, log)
         radiosourcedict = OrderedDict()
