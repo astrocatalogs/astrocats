@@ -90,7 +90,7 @@ class EVENT(OrderedDict):
         # Warn if there is a name mismatch
         elif self.name.lower().strip() != name.lower().strip():
             warnings.warn(("Object name '{}' does not match name in json:"
-                           "'{}'".)format(
+                           "'{}'").format(
                 self.name, name))
 
         self.check()
@@ -567,8 +567,8 @@ def find_event_name_of_alias(events, alias):
     for name, event in events.items():
         aliases = event.get_aliases()
         if alias in aliases:
-            if (KEYS.DISTINCS not in event.keys()) or
-            (alias not in event[KEYS.DISTINCS]):
+            if ((KEYS.DISTINCS not in event.keys()) or
+                    (alias not in event[KEYS.DISTINCS])):
                 return name
 
     return None
