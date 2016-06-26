@@ -755,7 +755,7 @@ def load_stubs(tasks, args, events, log):
     return stubs
 
 
-def merge_duplicates(tasks, args, events):
+def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     """Merge and remove duplicate events
     """
     if len(events) == 0:
@@ -771,19 +771,19 @@ def merge_duplicates(tasks, args, events):
     for n1, name1 in enumerate(pbar(keys[:], currenttask)):
         if name1 not in events:
             continue
-        # allnames1 = events[name1].get_aliases() + (['AT' + name1[2:]] if
-        #     (name1.startswith('SN') and is_number(name1[2:6])) else [])
-        allnames1 = set(events[name1].get_aliases(name1) + (['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []))
+        at_name = ['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []
+        allnames1 = set(events[name1].get_aliases(name1) + at_name)
 
+        # Search all future keys
         for name2 in keys[n1+1:]:
             if name2 not in events or name1 == name2:
                 continue
-            # allnames2 = events[name2].get_aliases() + (['AT' + name2[2:]]
-            #    if (name2.startswith('SN') and is_number(name2[2:6])) else [])
-            allnames2 = set(events[name2].get_aliases(name2) + (['AT' + name2[2:]] if (name2.startswith('SN') and is_number(name2[2:6])) else []))
-            if bool(allnames1 & allnames2):
-                tprint("Found single event with multiple entries ('{}' and '{}'), merging.".format(
-                    name1, name2))
+            at_name = ['AT' + name2[2:]] if name2.startswith('SN') and is_number(name2[2:6]) else []
+            allnames2 = set(events[name2].get_aliases(name2) + at_name)
+            # If there are any common names or aliases, merge
+            if len(allnames1 & allnames2):
+                log.warning("Found single event with multiple entries ('{}' and '{}'), merging."
+                            "".format(name1, name2))
 
                 load1 = load_event_from_file(events, args, tasks, name1, delete=True)
                 load2 = load_event_from_file(events, args, tasks, name2, delete=True)
@@ -806,8 +806,9 @@ def merge_duplicates(tasks, args, events):
                         keys.append(name2)
                         del events[name1]
                 else:
-                    print('Duplicate already deleted')
-                journal_events(tasks, args, events)
+                    log.warning('Duplicate already deleted')
+                journal_events(tasks, args, events, stubs, log)
+
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
 
