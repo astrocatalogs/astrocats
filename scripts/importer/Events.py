@@ -623,6 +623,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
     Iterates over all elements of `events`, saving (possibly 'burying') and deleting.
     -   If ``clear == True``, then each element of `events` is deleted, and a `stubs` entry is added
     """
+    log.debug("Events.journal_events()")
     # FIX: store this somewhere instead of re-loading each time
     with open(FILENAME.NON_SNE_TYPES, 'r') as f:
         non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
@@ -630,6 +631,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False, bury=F
 
     # Write it all out!
     # NOTE: this needs to use a `list` wrapper to allow modification of dictionary
+    log.info("Journaling {} events, {} existing stubs.".format(len(events), len(stubs)))
     for name in list(events.keys()):
         if 'writeevents' in tasks:
             # See if this event should be buried
