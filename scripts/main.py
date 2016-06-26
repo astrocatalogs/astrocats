@@ -9,7 +9,11 @@ def main():
     from .utils import logger
 
     beg_time = datetime.now()
+    # Process command-line arguments to determine action
+    #    If no subcommand (e.g. 'impoter') is given, returns 'None' --> exit
     args = load_args()
+    if args is None:
+        return
 
     # Load a logger object
     # --------------------
@@ -75,15 +79,17 @@ def load_args(args=None):
                           help='Space-delimited list of caches to clear.')
 
     pars_imp.add_argument('--tasks', dest='args_task_list', nargs='+', default=None,
-                          help='space delimited list of tasks to perform.')
+                          help='space delimited list of tasks to perform (exclusively).')
     pars_imp.add_argument('--yes', dest='yes_task_list', nargs='+', default=None,
-                          help='space delimited list of tasks to perform.')
+                          help='space delimited list of tasks to add to default list.')
     pars_imp.add_argument('--no', dest='no_task_list', nargs='+', default=None,
-                          help='space delimited list of tasks to perform.')
+                          help='space delimited list of tasks to omit from default list.')
 
     args = parser.parse_args(args=args)
+    # Print the help information if no subcommand is given (required for operation)
     if args._name is None:
         parser.print_help()
+        return None
 
     return args
 
