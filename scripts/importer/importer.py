@@ -115,6 +115,8 @@ def import_main(args=None, **kwargs):
         mod_name = task_obj.module
         func_name = task_obj.function
         priority = task_obj.priority
+
+        # Make sure things are running in the correct order
         if priority < prev_priority:
             raise RuntimeError("Priority for '{}': '{}', less than prev, '{}': '{}'.\n{}".format(
                 task_name, priority, prev_task_name, prev_priority, task_obj))
@@ -123,7 +125,7 @@ def import_main(args=None, **kwargs):
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # Load function from module, execute with standard parameters
         # getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
-        events = getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
+        events, stubs = getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
         log.warning("'{}' finished.  Events: {},  Stubs: {}".format(
             task_name, len(events), len(stubs)))
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
@@ -234,12 +236,16 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
     return events, stubs
 
 
-def delete_old_event_files(*args):
+def delete_old_event_files(events, stubs, args, tasks, task_obj, log):
+    if len(events) or len(stubs):
+        err_str = "`delete_old_event_files` with `events` and `stubs` not empty!"
+        log.error(err_str)
+        raise RuntimeError(err_str)
     # Delete all old event JSON files
     repo_files = repo_file_list()
     for rfil in pbar(repo_files, desc='Deleting old events'):
         os.remove(rfil)
-    return
+    return events, stubs
 
 
 def load_task_list(args, log):
