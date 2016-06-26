@@ -1,12 +1,14 @@
 """Import data from the Palomar Transient Factory (PTF).
 """
-from bs4 import BeautifulSoup
 import os
+
 import requests
+from bs4 import BeautifulSoup
 
 from scripts import PATH
+
 from .. import Events
-from ... utils import is_number
+from ...utils import is_number
 
 
 def do_ptf(events, stubs, args, tasks, task_obj, log):
@@ -46,11 +48,13 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('alias', alias, source)
             else:
                 # events, name = Events.add_event(tasks, args, events, name, log)
-                events, name, source = Events.new_event(tasks, args, events, name, log, bibcode='2012PASP..124..668Y')
+                events, name, source = Events.new_event(
+                    tasks, args, events, name, log, bibcode='2012PASP..124..668Y')
 
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():
-            events, name = Events.add_event(tasks, args, events, 'PTF' + suffix, log)
+            events, name = Events.add_event(
+                tasks, args, events, 'PTF' + suffix, log)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/perly-2016.csv')) as f:
         for row in f.read().splitlines():
             cols = [x.strip() for x in row.split(',')]
@@ -68,12 +72,16 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('ra', cols[1], source)
             events[name].add_quantity('dec', cols[2], source)
             events[name].add_quantity('claimedtype', 'SLSN-' + cols[3], source)
-            events[name].add_quantity('redshift', cols[4], source, kind='spectroscopic')
+            events[name].add_quantity(
+                'redshift', cols[4], source, kind='spectroscopic')
             maxdate = cols[6].replace('-', '/')
             upl = maxdate.startswith('<')
-            events[name].add_quantity('maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
-            events[name].add_quantity('ebv', cols[7], source, kind='spectroscopic')
-            events, name = Events.add_event(tasks, args, events, 'PTF' + suffix, log)
+            events[name].add_quantity(
+                'maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
+            events[name].add_quantity(
+                'ebv', cols[7], source, kind='spectroscopic')
+            events, name = Events.add_event(
+                tasks, args, events, 'PTF' + suffix, log)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

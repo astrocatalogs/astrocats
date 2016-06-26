@@ -1,15 +1,17 @@
 """Import data from OGLE.
 """
-from bs4 import BeautifulSoup, Tag, NavigableString
-from cdecimal import Decimal
 import os
 import re
 import urllib
 
+from bs4 import BeautifulSoup, NavigableString, Tag
+
+from cdecimal import Decimal
 from scripts import PATH
+
 from .. import Events
-from .. funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
-from ... utils import is_number, pbar
+from ...utils import is_number, pbar
+from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 
 
 def do_ogle(events, stubs, args, tasks, task_obj, log):
@@ -37,8 +39,10 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
         for a in links:
             if a.has_attr('href'):
                 if '.dat' in a['href']:
-                    datalinks.append('http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
-                    datafnames.append(bn.replace('/', '-') + '-' + a['href'].replace('/', '-'))
+                    datalinks.append(
+                        'http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
+                    datafnames.append(bn.replace('/', '-') +
+                                      '-' + a['href'].replace('/', '-'))
 
         ec = -1
         reference = 'OGLE-IV Transient Detection System'
@@ -65,7 +69,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                 while 'Ra,Dec=' not in mySibling:
                     if isinstance(mySibling, NavigableString):
                         if 'Phot.class=' in str(mySibling):
-                            claimedtype = re.sub(r'\([^)]*\)', '', str(mySibling).split('=')[-1])
+                            claimedtype = re.sub(
+                                r'\([^)]*\)', '', str(mySibling).split('=')[-1])
                             claimedtype = claimedtype.replace('SN', '').strip()
                     if isinstance(mySibling, Tag):
                         atela = mySibling
@@ -85,7 +90,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                 # ra = radec[0]
                 # dec = radec[1]
 
-                fname = os.path.join(PATH.REPO_EXTERNAL, 'OGLE/') + datafnames[ec]
+                fname = os.path.join(PATH.REPO_EXTERNAL,
+                                     'OGLE/') + datafnames[ec]
                 if task_obj.load_archive(args) and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
@@ -96,27 +102,33 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         f.write(csvtxt)
 
                 lcdat = csvtxt.splitlines()
-                sources = [events[name].add_source(srcname=reference, url=refurl)]
+                sources = [events[name].add_source(
+                    srcname=reference, url=refurl)]
                 events[name].add_quantity('alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
-                    sources.append(events[name].add_source(srcname=atelref, url=atelurl))
+                    sources.append(events[name].add_source(
+                        srcname=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
 
                 if name.startswith('OGLE'):
                     if name[4] == '-':
                         if is_number(name[5:9]):
-                            events[name].add_quantity('discoverdate', name[5:9], sources)
+                            events[name].add_quantity(
+                                'discoverdate', name[5:9], sources)
                     else:
                         if is_number(name[4:6]):
-                            events[name].add_quantity('discoverdate', '20' + name[4:6], sources)
+                            events[name].add_quantity(
+                                'discoverdate', '20' + name[4:6], sources)
 
                 # RA and Dec from OGLE pages currently not reliable
                 # events[name].add_quantity('ra', ra, sources)
                 # events[name].add_quantity('dec', dec, sources)
                 if claimedtype and claimedtype != '-':
-                    events[name].add_quantity('claimedtype', claimedtype, sources)
+                    events[name].add_quantity(
+                        'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
-                    events[name].add_quantity('claimedtype', 'Candidate', sources)
+                    events[name].add_quantity(
+                        'claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()
                     mjd = str(jd_to_mjd(Decimal(row[0])))
@@ -132,7 +144,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         events, name, time=mjd, band='I', magnitude=magnitude, e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if args.update:
-                    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+                    events, stubs = Events.journal_events(
+                        tasks, args, events, stubs, log)
 
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events

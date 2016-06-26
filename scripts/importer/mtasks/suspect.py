@@ -1,23 +1,25 @@
 """General data import tasks.
 """
-from astropy.time import Time as astrotime
-from bs4 import BeautifulSoup
-from cdecimal import Decimal
 import csv
-from glob import glob
-from html import unescape
 import json
-from math import floor
 import os
 import re
 import urllib
+from glob import glob
+from html import unescape
+from math import floor
 
+from astropy.time import Time as astrotime
+from bs4 import BeautifulSoup
+
+from cdecimal import Decimal
 from scripts import PATH
-from .. constants import TRAVIS_QUERY_LIMIT
-from .. funcs import add_photometry, add_spectrum, \
-    get_preferred_name, jd_to_mjd, uniq_cdl
+
 from .. import Events
-from ... utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
+from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
+from ..constants import TRAVIS_QUERY_LIMIT
+from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
+                     jd_to_mjd, uniq_cdl)
 
 
 def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
@@ -54,13 +56,15 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
 
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
-        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, secondary=True)
+        sec_source = events[name].add_source(
+            srcname=sec_ref, url=sec_refurl, secondary=True)
         events[name].add_quantity('alias', oldname, sec_source)
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
             events[name].add_quantity('discoverdate', year, sec_source)
-            events[name].add_quantity('host', names[1].split(':')[1].strip(), sec_source)
+            events[name].add_quantity('host', names[1].split(':')[
+                                      1].strip(), sec_source)
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
@@ -115,9 +119,11 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
             changedict[items[1]] = items[0]
 
     suspectcnt = 0
-    folders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect')))[1]
+    folders = next(os.walk(os.path.join(
+        PATH.REPO_EXTERNAL_SPECTRA, 'Suspect')))[1]
     for folder in pbar(folders, current_task):
-        eventfolders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/')+folder))[1]
+        eventfolders = next(os.walk(os.path.join(
+            PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/') + folder))[1]
         oldname = ''
         for eventfolder in pbar(eventfolders, current_task):
             name = eventfolder
@@ -125,7 +131,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 name = 'SN' + name
             name = get_preferred_name(events, name)
             if oldname and name != oldname:
-                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+                events, stubs = Events.journal_events(
+                    tasks, args, events, stubs, log)
             oldname = name
             events, name = Events.add_event(tasks, args, events, name, log)
             sec_ref = 'SUSPECT'
@@ -134,7 +141,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
             sec_source = events[name].add_source(
                 srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc, secondary=True)
             events[name].add_quantity('alias', name, sec_source)
-            fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder, eventfolder)
+            fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+                                 'Suspect', folder, eventfolder)
             eventspectra = next(os.walk(fpath))[2]
             for spectrum in eventspectra:
                 sources = [sec_source]
@@ -165,7 +173,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder,
                                      eventfolder, spectrum)
                 with open() as f:
-                    specdata = list(csv.reader(f, delimiter=' ', skipinitialspace=True))
+                    specdata = list(csv.reader(
+                        f, delimiter=' ', skipinitialspace=True))
                     specdata = list(filter(None, specdata))
                     newspec = []
                     oldval = ''
@@ -175,7 +184,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                         newspec.append(row)
                         oldval = row[1]
                     specdata = newspec
-                haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+                haserrors = len(specdata[0]) == 3 and specdata[
+                    0][2] and specdata[0][2] != 'NaN'
                 specdata = [list(i) for i in zip(*specdata)]
 
                 wavelengths = specdata[0]

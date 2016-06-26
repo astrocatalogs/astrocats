@@ -1,16 +1,18 @@
 """General data import tasks.
 """
-from astropy.time import Time as astrotime
-from cdecimal import Decimal
 import csv
-from glob import glob
 import os
+from glob import glob
 
+from astropy.time import Time as astrotime
+
+from cdecimal import Decimal
 from scripts import PATH
-from .. constants import TRAVIS_QUERY_LIMIT, OSC_BIBCODE, OSC_NAME, OSC_URL
+
 from .. import Events
-from .. funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
-from ... utils import pretty_num
+from ...utils import pretty_num
+from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
+from ..funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
 
 
 def do_snf_aliases(events, stubs, args, tasks, task_obj, log):
@@ -18,8 +20,8 @@ def do_snf_aliases(events, stubs, args, tasks, task_obj, log):
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
-                                                    bibcode = OSC_BIBCODE, srcname = OSC_NAME,
-                                                    url = OSC_URL, secondary = True)
+                                                    bibcode=OSC_BIBCODE, srcname=OSC_NAME,
+                                                    url=OSC_URL, secondary=True)
             events[name].add_quantity('alias', row[1], source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
@@ -31,12 +33,14 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
                 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
     oldname = ''
     snfcnt = 0
-    eventfolders = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
+    eventfolders = next(os.walk(os.path.join(
+        PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
     for eventfolder in eventfolders:
         name = eventfolder
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(
+                tasks, args, events, stubs, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         sec_reference = 'Nearby Supernova Factory'
@@ -48,12 +52,14 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
         bibcode = bibcodes[name]
         source = events[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])
-        use_path = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')
+        use_path = os.path.join(
+            PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')
         eventspectra = glob(use_path)
         for spectrum in eventspectra:
             filename = os.path.basename(spectrum)
             with open(spectrum) as spec_file:
-                specdata = list(csv.reader(spec_file, delimiter=' ', skipinitialspace=True))
+                specdata = list(csv.reader(
+                    spec_file, delimiter=' ', skipinitialspace=True))
             specdata = list(filter(None, specdata))
             newspec = []
             time = ''
@@ -96,7 +102,8 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
             if not time:
                 raise ValueError('Time missing from spectrum.')
             specdata = newspec
-            haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+            haserrors = len(specdata[0]) == 3 and specdata[
+                0][2] and specdata[0][2] != 'NaN'
             specdata = [list(i) for i in zip(*specdata)]
 
             wavelengths = specdata[0]

@@ -1,19 +1,20 @@
 """Imports from the 'CfA' sources.
 """
 import csv
+import os
 from glob import glob
 from math import floor
-from cdecimal import Decimal
-import os
 
 from astropy.time import Time as astrotime
 
+from cdecimal import Decimal
 from scripts import PATH
+
 from .. import Events
-from .. funcs import add_photometry, add_spectrum, \
-    clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl
-from .. constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-from ... utils import pbar, pbar_strings, is_number
+from ...utils import is_number, pbar, pbar_strings
+from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
+from ..funcs import (add_photometry, add_spectrum, clean_snname,
+                     get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
 def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
@@ -45,7 +46,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = events[name].add_source(srcname=secondaryname, url=secondaryurl,
-                                     secondary=True, acknowledgment=ACKN_CFA)
+                                                  secondary=True, acknowledgment=ACKN_CFA)
         events[name].add_quantity('alias', name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
@@ -67,7 +68,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
                 elif len(row) > 1 and row[1].lower() == 'photometry':
                     for ci, col in enumerate(row[2:]):
                         if col[0] == "(":
-                            refstr = ' '.join(row[2+ci:])
+                            refstr = ' '.join(row[2 + ci:])
                             refstr = refstr.replace('(', '').replace(')', '')
                             bibcode = unescape(refstr)
                             source = events[name].add_source(bibcode=bibcode)
@@ -92,8 +93,9 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
                         if float(row[v]) < 90.0:
                             src = secondarysource + ',' + source
                             add_photometry(
-                                events, name, u_time=tuout, time=mjd, band=eventbands[(v-1)//2],
-                                magnitude=row[v], e_magnitude=row[v+1], source=src)
+                                events, name, u_time=tuout, time=mjd, band=eventbands[
+                                    (v - 1) // 2],
+                                magnitude=row[v], e_magnitude=row[v + 1], source=src)
         f.close()
 
     # Hicken 2012
@@ -118,7 +120,8 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
                 magnitude=row[6].strip(), e_magnitude=row[7].strip(), source=source)
 
         # Bianco 2014
-        tsvin = open(os.path.join(PATH.REPO_EXTERNAL, 'bianco-2014-standard.dat'), 'r')
+        tsvin = open(os.path.join(PATH.REPO_EXTERNAL,
+                                  'bianco-2014-standard.dat'), 'r')
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
@@ -138,7 +141,8 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # Ia spectra
     oldname = ''
-    file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1]
+    file_names = next(os.walk(os.path.join(
+        PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1]
     for name in pbar_strings(file_names, current_task):
         fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa/') + name
         origname = name
@@ -148,12 +152,14 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SNF' + name[3:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(
+                tasks, args, events, stubs, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = events[name].add_source(
+            srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -188,19 +194,23 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
 
     # Ibc spectra
     oldname = ''
-    file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc')))[1]
+    file_names = next(os.walk(os.path.join(
+        PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc')))[1]
     for name in pbar(file_names, current_task):
-        fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
+        fullpath = os.path.join(
+            PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(
+                tasks, args, events, stubs, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = events[name].add_source(
+            srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -218,7 +228,8 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
-            sources = uniq_cdl([source, events[name].add_source(bibcode='2014AJ....147...99M')])
+            sources = uniq_cdl(
+                [source, events[name].add_source(bibcode='2014AJ....147...99M')])
             add_spectrum(
                 events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=sources,
@@ -229,19 +240,23 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
 
     # Other spectra
     oldname = ''
-    file_names = next(os.walk(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra')))[1]
+    file_names = next(os.walk(os.path.join(
+        PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra')))[1]
     for name in pbar_strings(file_names, current_task):
-        fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
+        fullpath = os.path.join(
+            PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(
+                tasks, args, events, stubs, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = events[name].add_source(srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
+        source = events[name].add_source(
+            srcname=reference, url=refurl, secondary=True, acknowledgment=ACKN_CFA)
         events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s: s.lower())):
             if not os.path.isfile(fname):
@@ -260,12 +275,13 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 if is_number(year) and is_number(month) and is_number(day):
                     if len(fileparts) > 2:
                         instrument = fileparts[-1]
-                    time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd + float(day) - floor(float(day)))
+                    time = str(astrotime(year + '-' + month + '-' + str(floor(float(day))
+                                                                        ).zfill(2)).mjd + float(day) - floor(float(day)))
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
-            fluxes = [str(Decimal(x)*Decimal(1.0e-15)) for x in data[1]]
+            fluxes = [str(Decimal(x) * Decimal(1.0e-15)) for x in data[1]]
             add_spectrum(
                 events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time, instrument=instrument, source=source,
