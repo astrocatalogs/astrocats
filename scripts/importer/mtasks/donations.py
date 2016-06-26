@@ -225,4 +225,4 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                         system = 'Vega' if telescope == 'Swift' else 'AB')
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

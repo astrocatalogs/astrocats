@@ -14,7 +14,7 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
     html = load_cached_url(args, current_task, asn_url, os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
     if not html:
-        return events
+        return events, stubs
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('table').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
@@ -80,4 +80,4 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
         if host != 'Uncatalogued':
             events[name].add_quantity('host', host, sources)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

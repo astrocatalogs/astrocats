@@ -819,7 +819,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
 
-    return events
+    return events, stubs
 
 
 def set_preferred_names(events, stubs, args, tasks, task_obj, log):
@@ -903,7 +903,7 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
         if args.travis and ni > TRAVIS_QUERY_LIMIT:
             break
 
-    return events
+    return events, stubs
 
 
 def _compress_gz(fname):

@@ -131,7 +131,7 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
                 e_magnitude=row[4], telescope=row[5], system='Standard', source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
@@ -274,4 +274,4 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

@@ -25,7 +25,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
         args, current_task, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events
+        return events, stubs
 
     photom = json.loads(jsontxt)
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
@@ -85,7 +85,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
                 e_magnitude=e_mag, source=sources)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
@@ -99,7 +99,7 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events
+        return events, stubs
 
     spectra = json.loads(jsontxt)
     spectra = sorted(spectra, key=lambda kk: kk['ObjName'])
@@ -191,4 +191,4 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
             break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

@@ -106,7 +106,7 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('discoverer', discoverer, source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
@@ -114,7 +114,7 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
     html = load_cached_url(args, current_task, 'http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990',
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Asiago/spectra.html'))
     if not html:
-        return events
+        return events, stubs
 
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.findAll('tr')
@@ -209,4 +209,4 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
             #    sys.exit()
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

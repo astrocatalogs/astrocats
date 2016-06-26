@@ -97,7 +97,7 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
                 source=sec_source + ',' + source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
@@ -193,4 +193,4 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                     break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

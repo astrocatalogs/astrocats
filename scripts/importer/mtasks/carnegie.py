@@ -52,7 +52,7 @@ def do_csp_photo(events, stubs, args, tasks, task_obj, log):
                             system='CSP', magnitude=row[v], e_magnitude=row[v+1], source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
@@ -100,4 +100,4 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
             break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

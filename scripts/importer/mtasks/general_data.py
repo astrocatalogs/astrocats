@@ -31,7 +31,7 @@ def do_grb(events, stubs, args, tasks, task_obj, log):
     csvtxt = load_cached_url(args, current_task, 'http://grb.pa.msu.edu/grbcatalog/download_data?cut_0_min=10&cut_0=BAT%20T90&cut_0_max=100000&num_cuts=1&no_date_cut=True',
         file_path)
     if not csvtxt:
-        return events
+        return events, stubs
     data = list(csv.reader(csvtxt.splitlines(), delimiter=',', quotechar='"', skipinitialspace = True))
     for r, row in enumerate(pbar(data, current_task)):
         if r == 0:
@@ -42,7 +42,7 @@ def do_grb(events, stubs, args, tasks, task_obj, log):
         events[name].add_quantity('redshift', row[8], source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_psst(events, stubs, args, tasks, task_obj, log):
@@ -95,7 +95,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
-    return events
+    return events, stubs
 
 
 def do_ascii(events, stubs, args, tasks, task_obj, log):
@@ -405,7 +405,7 @@ def do_ascii(events, stubs, args, tasks, task_obj, log):
                     observatory = 'Mount Stromlo', telescope = 'MSSSO', source = source, kcorrected = True)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_cccp(events, stubs, args, tasks, task_obj, log):
@@ -493,7 +493,7 @@ def do_cccp(events, stubs, args, tasks, task_obj, log):
                             magnitude=row[1], e_magnitude=row[2], source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_cpcs(events, stubs, args, tasks, task_obj, log):
@@ -502,7 +502,7 @@ def do_cpcs(events, stubs, args, tasks, task_obj, log):
                 'published=1&observed_only=1&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
     jsontxt = load_cached_url(args, current_task, cpcs_url, os.path.join(PATH.REPO_EXTERNAL, 'CPCS/index.json'))
     if not jsontxt:
-        return events
+        return events, stubs
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
     ids = [xx['id'] for xx in alertindex]
     for ii, ai in enumerate(pbar(ids, current_task)):
@@ -570,7 +570,7 @@ def do_cpcs(events, stubs, args, tasks, task_obj, log):
             events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_crts(events, stubs, args, tasks, task_obj, log):
@@ -696,7 +696,7 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
             break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_des(events, stubs, args, tasks, task_obj, log):
@@ -707,7 +707,7 @@ def do_des(events, stubs, args, tasks, task_obj, log):
     des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')   # Make sure there is aa trailing slash
     html = load_cached_url(args, current_task, des_trans_url, des_path + 'transients.html')
     if not html:
-        return events
+        return events, stubs
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('tbody').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
@@ -758,7 +758,7 @@ def do_des(events, stubs, args, tasks, task_obj, log):
                         upperlimit=upl, source=sources)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_external_radio(events, stubs, args, tasks, task_obj, log):
@@ -786,7 +786,7 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
                     events[name].add_quantity('alias', oldname, source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_external_xray(events, stubs, args, tasks, task_obj, log):
@@ -812,7 +812,7 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
                     events[name].add_quantity('alias', oldname, source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_fermi(events, stubs, args, tasks, task_obj, log):
@@ -834,7 +834,7 @@ def do_fermi(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
             events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_gaia(events, stubs, args, tasks, task_obj, log):
@@ -842,7 +842,7 @@ def do_gaia(events, stubs, args, tasks, task_obj, log):
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, current_task, 'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
     if not csvtxt:
-        return events
+        return events, stubs
     tsvin = list(csv.reader(csvtxt.splitlines(), delimiter=',', skipinitialspace=True))
     reference = 'Gaia Photometric Science Alerts'
     refurl = 'http://gsaweb.ast.cam.ac.uk/alerts/alertsindex'
@@ -902,7 +902,7 @@ def do_gaia(events, stubs, args, tasks, task_obj, log):
         if args.update:
             events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_internal(events, stubs, args, tasks, task_obj, log):
@@ -929,7 +929,7 @@ def do_internal(events, stubs, args, tasks, task_obj, log):
                                          clean=True, delete=False)
         events.update({new_event.name: new_event})
 
-    return events
+    return events, stubs
 
 
 def do_itep(events, stubs, args, tasks, task_obj, log):
@@ -980,7 +980,7 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
     with open('../itep-needsbib.txt', 'w') as bib_file:
         bib_file.writelines(['%ss\n' % ii for ii in needsbib])
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_pessto(events, stubs, args, tasks, task_obj, log):
@@ -1004,7 +1004,7 @@ def do_pessto(events, stubs, args, tasks, task_obj, log):
                 band=bands[hi], system=systems[hi], telescope=teles, source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_scp(events, stubs, args, tasks, task_obj, log):
@@ -1035,7 +1035,7 @@ def do_scp(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('claimedtype', claimedtype, source, kind=kind)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_sdss(events, stubs, args, tasks, task_obj, log):
@@ -1088,7 +1088,7 @@ def do_sdss(events, stubs, args, tasks, task_obj, log):
                     e_magnitude=e_mag, source=source, system='SDSS')
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_snhunt(events, stubs, args, tasks, task_obj, log):
@@ -1096,7 +1096,7 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url(args, current_task, snh_url, os.path.join(PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
     if not html:
-        return events
+        return events, stubs
     text = html.splitlines()
     findtable = False
     for ri, row in enumerate(text):
@@ -1138,7 +1138,7 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
             events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_snls(events, stubs, args, tasks, task_obj, log):
@@ -1169,7 +1169,7 @@ def do_snls(events, stubs, args, tasks, task_obj, log):
             e_counts=err, source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
@@ -1238,7 +1238,7 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
             lastname = name
 
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_tns(events, stubs, args, tasks, task_obj, log):
@@ -1249,7 +1249,7 @@ def do_tns(events, stubs, args, tasks, task_obj, log):
     search_url = tns_url + 'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
     csvtxt = load_cached_url(args, current_task, search_url, os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
-        return events
+        return events, stubs
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
     maxpages = ceil(int(maxid)/1000.)
 
@@ -1326,7 +1326,7 @@ def do_tns(events, stubs, args, tasks, task_obj, log):
                 events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_simbad(events, stubs, args, tasks, task_obj, log):
@@ -1387,4 +1387,4 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
                 ([events[name].add_source(bibcode = row['SP_BIBCODE_2'])] if row['SP_BIBCODE_2'] else []))
             events[name].add_quantity('claimedtype', row['SP_TYPE'].replace('SN.', '').replace('SN', '').replace('(~)', '').strip(': '), ssources)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

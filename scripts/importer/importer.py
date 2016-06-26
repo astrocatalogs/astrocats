@@ -179,8 +179,8 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
                 continue
             distname = row[3]
             name = name_clean(distname)
-            distmod = row[4]
-            moderr = row[5]
+            # distmod = row[4]
+            # moderr = row[5]
             dist = row[6]
             bibcode = unescape(row[8])
             snname = name_clean(row[9])
@@ -194,14 +194,14 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
                 if not is_number(dist):
                     print(dist)
                 if dist:
-                    nedddict.setdefault(cleanhost,[]).append(Decimal(dist))
+                    nedddict.setdefault(cleanhost, []).append(Decimal(dist))
 
             if snname and 'HOST' not in snname:
                 events, snname, secondarysource = Events.new_event(
                     tasks, args, events, snname, log,
-                    srcname = reference, url = refurl, secondary = True)
+                    srcname=reference, url=refurl, secondary=True)
                 if bibcode:
-                    source = events[snname].add_source(bibcode = bibcode)
+                    source = events[snname].add_source(bibcode=bibcode)
                     sources = uniq_cdl([source, secondarysource])
                 else:
                     sources = secondarysource
@@ -231,7 +231,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
 
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
-    return events
+    return events, stubs
 
 
 def delete_old_event_files(*args):

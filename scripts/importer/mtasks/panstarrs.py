@@ -32,7 +32,7 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('redshift', cols[5], source, kind='spectroscopic')
             events[name].add_quantity('claimedtype', 'II P', source)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
@@ -42,7 +42,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
     ps_url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date'
     html = load_cached_url(args, current_task, ps_url, fname, write=False)
     if not html:
-        return events
+        return events, stubs
 
     bs = BeautifulSoup(html, 'html5lib')
     div = bs.find('div', {'class': 'pagination'})
@@ -56,7 +56,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
 
     if offline:
         if args.update:
-            return events
+            return events, stubs
         warnings.warn('Pan-STARRS 3pi offline, using local files only.')
         with open(fname, 'r') as f:
             html = f.read()
@@ -235,4 +235,4 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
         if args.travis:
             break
 
-    return events
+    return events, stubs

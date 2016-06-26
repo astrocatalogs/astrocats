@@ -1329,7 +1329,7 @@ def do_vizier(events, stubs, args, tasks, task_obj, log):
         events[name].add_quantity('redshift', row['z'], source, kind = 'spectroscopic')
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
-    return events
+    return events, stubs
 
 
 def do_lennarz(events, stubs, args, tasks, task_obj, log):
@@ -1407,7 +1407,7 @@ def do_lennarz(events, stubs, args, tasks, task_obj, log):
                     add_photometry(events, name, time=mjd, band=row['Mband'], magnitude=row['Mmag'], source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
@@ -1468,4 +1468,4 @@ def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

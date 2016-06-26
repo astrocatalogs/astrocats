@@ -23,7 +23,7 @@ def do_snf_aliases(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('alias', row[1], source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
 
 
 def do_snf_specta(events, stubs, args, tasks, task_obj, log):
@@ -117,4 +117,4 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
                 break
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

@@ -184,4 +184,4 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                         e_magnitude=e_magnitude, source=sources)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

@@ -209,4 +209,4 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

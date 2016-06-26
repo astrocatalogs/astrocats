@@ -135,4 +135,4 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs

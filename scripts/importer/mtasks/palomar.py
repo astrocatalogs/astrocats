@@ -76,4 +76,4 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
             events, name = Events.add_event(tasks, args, events, 'PTF' + suffix, log)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
+    return events, stubs
