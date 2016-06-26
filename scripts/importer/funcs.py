@@ -9,7 +9,9 @@ from cdecimal import Decimal
 from collections import OrderedDict
 from math import log10, sqrt, floor
 from astropy.time import Time as astrotime
+from astropy.coordinates import SkyCoord as coord
 from astropy import units
+from math import hypot, pi
 
 from scripts import FILENAME
 from . constants import OSC_BIBCODE, OSC_NAME, OSC_URL, CLIGHT, PREF_KINDS, \
@@ -18,13 +20,13 @@ from .. utils import bandrepf, bandmetaf, is_number, \
     get_sig_digits, pretty_num, round_sig, tprint, zpad
 
 
-def add_photometry(events, name, time = "", u_time = "MJD", e_time = "", telescope = "", instrument = "", band = "",
-                   magnitude = "", e_magnitude = "", source = "", upperlimit = False, system = "", scorrected = "",
-                   observatory = "", observer = "", host = False, includeshost = False, survey = "", kcorrected = "",
-                   flux = "", fluxdensity = "", e_flux = "", e_fluxdensity = "", u_flux = "", u_fluxdensity = "", frequency = "",
-                   u_frequency = "", counts = "", e_counts = "", nhmw = "", photonindex = "", unabsorbedflux = "",
-                   e_unabsorbedflux = "", energy = "", u_energy = "", e_lower_magnitude = "", e_upper_magnitude = "",
-                   e_lower_time = "", e_upper_time = "", mcorrected = ""):
+def add_photometry(events, name, time="", u_time="MJD", e_time="", telescope="", instrument="", band="",
+                   magnitude="", e_magnitude="", source="", upperlimit=False, system="", scorrected="",
+                   observatory="", observer="", host=False, includeshost=False, survey="", kcorrected="",
+                   flux="", fluxdensity="", e_flux="", e_fluxdensity="", u_flux="", u_fluxdensity="", frequency="",
+                   u_frequency="", counts="", e_counts="", nhmw="", photonindex="", unabsorbedflux="",
+                   e_unabsorbedflux="", energy="", u_energy="", e_lower_magnitude="", e_upper_magnitude="",
+                   e_lower_time="", e_upper_time="", mcorrected=""):
     if (not time and not host) or (not magnitude and not flux and not fluxdensity and not counts and not unabsorbedflux):
         warnings.warn('Time or brightness not specified when adding photometry, not adding.')
         tprint('Name : "' + name + '", Time: "' + time + '", Band: "' + band + '", AB magnitude: "' + magnitude + '"')
@@ -85,7 +87,7 @@ def add_photometry(events, name, time = "", u_time = "MJD", e_time = "", telesco
                  same_tag_num(photo, unabsorbedflux, 'unabsorbedflux') and
                  same_tag_num(photo, fluxdensity, 'fluxdensity') and
                  same_tag_num(photo, counts, 'counts') and
-                 same_tag_num(photo, energy, 'energy', canbelist = True) and
+                 same_tag_num(photo, energy, 'energy', canbelist=True) and
                  same_tag_num(photo, frequency, 'frequency') and
                  same_tag_num(photo, photonindex, 'photonindex') and
                  same_tag_num(photo, e_magnitude, 'e_magnitude') and
@@ -352,23 +354,24 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                                                 alias.replace(prefix, '')[2:4],
                                                 alias.replace(prefix, '')[4:6]])
                         if args.verbose:
-                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
+                            tprint('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-                        events[name].add_quantity('discoverdate', discoverdate, source, derived = True)
+                        events[name].add_quantity('discoverdate', discoverdate, source, derived=True)
                         break
                 if 'discoverdate' in events[name]:
                     break
         if 'discoverdate' not in events[name]:
-            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-', 'SNLS-', 'SPIRITS', 'LSQ', 'DES', 'SNHiTS',
-                'GND', 'GNW', 'GSD', 'GSW', 'EGS', 'COS']
+            prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-', 'SNLS-', 'SPIRITS',
+                        'LSQ', 'DES', 'SNHiTS',
+                        'GND', 'GNW', 'GSD', 'GSW', 'EGS', 'COS']
             for alias in aliases:
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if args.verbose:
-                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
+                            tprint('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-                        events[name].add_quantity('discoverdate', discoverdate, source, derived = True)
+                        events[name].add_quantity('discoverdate', discoverdate, source, derived=True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -381,9 +384,9 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                                                  alias.replace(prefix, '')[4:6],
                                                  alias.replace(prefix, '')[6:8]])
                         if args.verbose:
-                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
+                            tprint('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-                        events[name].add_quantity('discoverdate', discoverdate, source, derived = True)
+                        events[name].add_quantity('discoverdate', discoverdate, source, derived=True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -393,11 +396,11 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                 for prefix in prefixes:
                     if alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2]):
                         discoverdate = '/'.join(['20' + alias.replace(prefix, '')[:2],
-                            alias.replace(prefix, '')[2:4]])
+                                                 alias.replace(prefix, '')[2:4]])
                         if args.verbose:
-                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
-                        source = events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True)
-                        events[name].add_quantity('discoverdate', discoverdate, source, derived = True)
+                            tprint('Added discoverdate from name [' + alias + ']: ' + discoverdate)
+                        source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+                        events[name].add_quantity('discoverdate', discoverdate, source, derived=True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -405,13 +408,13 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             prefixes = ['AT', 'SN', 'OGLE-', 'SM ', 'KSN-']
             for alias in aliases:
                 for prefix in prefixes:
-                    if (alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4])
-			and '.' not in alias.replace(prefix, '')[:4]):
+                    if (alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:4]) and
+                        '.' not in alias.replace(prefix, '')[:4]):
                         discoverdate = alias.replace(prefix, '')[:4]
                         if args.verbose:
-                            tprint ('Added discoverdate from name [' + alias + ']: ' + discoverdate)
+                            tprint('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-                        events[name].add_quantity('discoverdate', discoverdate, source, derived = True)
+                        events[name].add_quantity('discoverdate', discoverdate, source, derived=True)
                         break
                 if 'discoverdate' in events[name]:
                     break
@@ -433,8 +436,8 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                         if args.verbose:
                             tprint('Added ra/dec from name: ' + ra + ' ' + dec)
                         source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-                        events[name].add_quantity('ra', ra, source, derived = True)
-                        events[name].add_quantity('dec', dec, source, derived = True)
+                        events[name].add_quantity('ra', ra, source, derived=True)
+                        events[name].add_quantity('dec', dec, source, derived=True)
                         break
                 if 'ra' in events[name]:
                     break
@@ -454,16 +457,16 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     ebverr = result['ext SandF std'][0]
                     extinctions_dict[name] = [ebv, ebverr]
             if name in extinctions_dict:
-                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True),
-                    events[name].add_source(bibcode = '2011ApJ...737..103S')])
-                events[name].add_quantity('ebv', str(extinctionsdict[name][0]), sources, error = str(extinctionsdict[name][1]), derived = True)
+                sources = uniq_cdl([events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True),
+                    events[name].add_source(bibcode='2011ApJ...737..103S')])
+                events[name].add_quantity('ebv', str(extinctionsdict[name][0]), sources, error=str(extinctionsdict[name][1]), derived=True)
         if 'host' in events[name] and ('hostra' not in events[name] or 'hostdec' not in events[name]):
             for host in events[name]['host']:
                 alias = host['value']
                 if ' J' in alias and is_number(alias.split(' J')[-1][:6]):
                     noprefix = alias.split(' J')[-1].split(':')[-1].replace('.', '')
                     decsign = '+' if '+' in noprefix else '-'
-                    noprefix = noprefix.replace('+','|').replace('-','|')
+                    noprefix = noprefix.replace('+', '|').replace('-', '|')
                     nops = noprefix.split('|')
                     if len(nops) < 2:
                         continue
@@ -472,10 +475,10 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     hostra = ':'.join([rastr[:2], rastr[2:4], rastr[4:6]]) + ('.' + rastr[6:] if len(rastr) > 6 else '')
                     hostdec = decsign + ':'.join([decstr[:2], decstr[2:4], decstr[4:6]]) + ('.' + decstr[6:] if len(decstr) > 6 else '')
                     if args.verbose:
-                        tprint ('Added hostra/hostdec from name: ' + hostra + ' ' + hostdec)
-                    source = events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True)
-                    events[name].add_quantity('hostra', hostra, source, derived = True)
-                    events[name].add_quantity('hostdec', hostdec, source, derived = True)
+                        tprint('Added hostra/hostdec from name: ' + hostra + ' ' + hostdec)
+                    source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+                    events[name].add_quantity('hostra', hostra, source, derived=True)
+                    events[name].add_quantity('hostdec', hostdec, source, derived=True)
                     break
                 if 'hostra' in events[name]:
                     break
@@ -499,8 +502,8 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                 voc = float(besthv)*1.e5/CLIGHT
                 source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                 sources = uniq_cdl([source] + bestsrc.split(','))
-                events[name].add_quantity('redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig = bestsig), sources,
-                    kind = 'heliocentric', derived = True)
+                events[name].add_quantity('redshift', pretty_num(sqrt((1. + voc)/(1. - voc)) - 1., sig=bestsig), sources,
+                                          kind='heliocentric', derived=True)
         if 'redshift' not in events[name] and has_task(tasks, args, 'nedd') and 'host' in events[name]:
             from astropy.cosmology import Planck15 as cosmo, z_at_value
             import statistics
@@ -508,11 +511,11 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
                 if host['value'] in nedd_dict:
-                    source = events[name].add_source(bibcode = '2015arXiv150201589P')
+                    source = events[name].add_source(bibcode='2015arXiv150201589P')
                     secondarysource = events[name].add_source(srcname=reference, url=refurl, secondary=True)
                     meddist = statistics.median(nedd_dict[host['value']])
                     redshift = pretty_num(z_at_value(cosmo.comoving_distance, float(meddist) * units.Mpc), sig=get_sig_digits(str(meddist)))
-                    events[name].add_quantity(name, 'redshift', redshift, uniq_cdl([source,secondarysource]), kind = 'host', derived = True)
+                    events[name].add_quantity(name, 'redshift', redshift, uniq_cdl([source, secondarysource]), kind='host', derived=True)
         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name] and 'lumdist' in events[name]:
             # Find the "best" distance to use for this
             bestsig = 0
@@ -527,7 +530,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                 sources = uniq_cdl([source] + bestsrc.split(','))
                 pnum = float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(float(bestld)*1.0e6) - 1.0)
                 pnum = pretty_num(pnum, sig=bestsig)
-                events[name].add_quantity('maxabsmag', pnum, sources, derived = True)
+                events[name].add_quantity('maxabsmag', pnum, sources, derived=True)
         if 'redshift' in events[name]:
             # Find the "best" redshift to use for this
             (bestz, bestkind, bestsig) = get_best_redshift(events, name)
@@ -542,45 +545,51 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict, n
                     from astropy.cosmology import Planck15 as cosmo
                     if 'lumdist' not in events[name]:
                         dl = cosmo.luminosity_distance(bestz)
-                        sources = [events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True),
-                            events[name].add_source(bibcode = '2015arXiv150201589P')]
+                        sources = [events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True),
+                                   events[name].add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
-                        events[name].add_quantity('lumdist', pretty_num(dl.value, sig = bestsig), sources,
-                            kind = PREF_KINDS[bestkind], derived = True)
+                        events[name].add_quantity('lumdist', pretty_num(dl.value, sig=bestsig), sources,
+                                                  kind=PREF_KINDS[bestkind], derived=True)
                         if 'maxabsmag' not in events[name] and 'maxappmag' in events[name]:
                             source = events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
                             pnum = pretty_num(float(events[name]['maxappmag'][0]['value']) - 5.0*(log10(dl.to('pc').value) - 1.0), sig=bestsig)
-                            events[name].add_quantity('maxabsmag', pnum, sources, derived = True)
+                            events[name].add_quantity('maxabsmag', pnum, sources, derived=True)
                     if 'comovingdist' not in events[name]:
                         cd = cosmo.comoving_distance(bestz)
-                        sources = [events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True),
-                            events[name].add_source(bibcode = '2015arXiv150201589P')]
+                        sources = [events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True),
+                                   events[name].add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
-                        events[name].add_quantity('comovingdist', pretty_num(cd.value, sig = bestsig), sources, derived = True)
+                        events[name].add_quantity('comovingdist', pretty_num(cd.value, sig=bestsig), sources, derived=True)
         if all([x in events[name] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
             # For now just using first coordinates that appear in entry
             try:
-                c1 = coord(ra=events[name]['ra'][0]['value'], dec=events[name]['dec'][0]['value'], unit=(un.hourangle, un.deg))
-                c2 = coord(ra=events[name]['hostra'][0]['value'], dec=events[name]['hostdec'][0]['value'], unit=(un.hourangle, un.deg))
+                c1 = coord(ra=events[name]['ra'][0]['value'], dec=events[name]['dec'][0]['value'], unit=(units.hourangle, units.deg))
+                c2 = coord(ra=events[name]['hostra'][0]['value'], dec=events[name]['hostdec'][0]['value'], unit=(units.hourangle, units.deg))
             except (KeyboardInterrupt, SystemExit):
                 raise
             except:
                 pass
             else:
-                sources = uniq_cdl([events[name].add_source(bibcode = oscbibcode, srcname = oscname, url = oscurl, secondary = True)] +
-                    events[name]['ra'][0]['source'].split(',') + events[name]['dec'][0]['source'].split(',') +
-                    events[name]['hostra'][0]['source'].split(',') + events[name]['hostdec'][0]['source'].split(','))
+                sources = uniq_cdl([events[name].add_source(bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)] +
+                                   events[name]['ra'][0]['source'].split(',') + events[name]['dec'][0]['source'].split(',') +
+                                   events[name]['hostra'][0]['source'].split(',') + events[name]['hostdec'][0]['source'].split(','))
                 if 'hostoffsetang' not in events[name]:
-                    events[name].add_quantity('hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
-                        c1.dec.degree - c2.dec.degree))*Decimal(3600.)), sources, derived = True, unit = 'arcseconds')
+                    events[name].add_quantity(
+                        'hostoffsetang', pretty_num(Decimal(hypot(c1.ra.degree - c2.ra.degree,
+                                                                  c1.dec.degree - c2.dec.degree))*Decimal(3600.)),
+                        sources, derived=True, unit='arcseconds')
                 if 'comovingdist' in events[name] and 'redshift' in events[name] and 'hostoffsetdist' not in events[name]:
                     offsetsig = get_sig_digits(events[name]['hostoffsetang'][0]['value'])
                     sources = uniq_cdl(sources.split(',') +
-                        events[name]['comovingdist'][0]['source'].split(',') + events[name]['redshift'][0]['source'].split(','))
-                    events[name].add_quantity('hostoffsetdist',
+                                       events[name]['comovingdist'][0]['source'].split(',') +
+                                       events[name]['redshift'][0]['source'].split(','))
+                    events[name].add_quantity(
+                        'hostoffsetdist',
                         pretty_num(float(events[name]['hostoffsetang'][0]['value']) / 3600. * (pi / 180.) *
-                        float(events[name]['comovingdist'][0]['value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),
-                        sig = offsetsig), sources)
+                                   float(events[name]['comovingdist'][0]['value']) * 1000. / (1.0 + float(events[name]['redshift'][0]['value'])),
+                                   sig=offsetsig),
+                        sources)
+
         if 'photometry' in events[name]:
             events[name]['photometry'].sort(
                 key=lambda x: ((float(x['time']) if isinstance(x['time'], str) else
@@ -819,7 +828,7 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, failhard = False):
+def load_cached_url(args, current_task, url, filepath, timeout=120, write=True, failhard=False):
     import codecs
     from hashlib import md5
     filemd5 = ''
@@ -1042,7 +1051,7 @@ def name_clean(name):
     return newname
 
 
-def radec_clean(svalue, quantity, unit = ''):
+def radec_clean(svalue, quantity, unit=''):
     if unit == 'floatdegrees':
         if not is_number(svalue):
             return (svalue, unit)

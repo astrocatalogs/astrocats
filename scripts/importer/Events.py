@@ -10,8 +10,9 @@ import warnings
 from scripts import FILENAME, PATH, SCHEMA
 from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
     OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY, TRAVIS_QUERY_LIMIT
-from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
-    jd_to_mjd, name_clean, host_clean, radec_clean
+from .funcs import add_photometry, add_spectrum, event_attr_priority, get_atels_dict, \
+    get_cbets_dict, get_iaucs_dict, \
+    jd_to_mjd, name_clean, null_field, host_clean, radec_clean
 from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
     pbar, tprint, repo_file_list
 
@@ -515,7 +516,7 @@ def copy_to_event(events, fromname, destname):
 
     if 'errors' in events[fromname]:
         for err in events[fromname]['errors']:
-            events[destname].setdefault('errors',[]).append(err)
+            events[destname].setdefault('errors', []).append(err)
 
     for key in keys:
         if key not in ['schema', 'name', 'sources', 'errors']:
