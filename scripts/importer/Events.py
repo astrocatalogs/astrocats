@@ -4,7 +4,6 @@ from cdecimal import Decimal
 import codecs
 from collections import OrderedDict
 import json
-from math import floor
 import os
 import warnings
 
@@ -14,7 +13,7 @@ from .constants import COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, \
 from .funcs import copy_to_event, get_atels_dict, get_cbets_dict, get_iaucs_dict, \
     jd_to_mjd, name_clean, host_clean, radec_clean
 from ..utils import get_repo_folders, get_repo_years, get_repo_paths, get_sig_digits, is_number, \
-    pbar, pretty_num, tprint, zpad, repo_file_list
+    pbar, tprint, repo_file_list
 
 
 class KEYS:
@@ -146,7 +145,7 @@ class EVENT(OrderedDict):
             new_src[KEYS.BIBCODE] = bibcode
         new_src[KEYS.ALIAS] = source_alias
         # Add in any additional arguments passed (e.g. url, acknowledgment, etc)
-        new_src.update({k:v for (k,v) in src_kwargs.items() if k})
+        new_src.update({k: v for (k, v) in src_kwargs.items() if k})
         self.setdefault(KEYS.SOURCES, []).append(new_src)
 
         return source_alias
@@ -159,7 +158,7 @@ class EVENT(OrderedDict):
             raise(ValueError(self.name + "'s quantity must be specified for add_quantity."))
         if not sources:
             raise(ValueError(self.name + "'s source must be specified for quantity " +
-                quantity + ' before it is added.'))
+                  quantity + ' before it is added.'))
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
             raise(ValueError(self.name + "'s Quantity " + quantity + " must be a string or an array of strings."))
@@ -205,14 +204,10 @@ class EVENT(OrderedDict):
                 return
             if svalue.lower() in ['anonymous', 'anon.', 'anon', 'intergalactic']:
                 return
-
             svalue = host_clean(svalue)
-
-            if (not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
-                'cluster' in svalue.lower())):
+            if ((not skind and ((svalue.lower().startswith('abell') and is_number(svalue[5:].strip())) or
+                 'cluster' in svalue.lower()))):
                 skind = 'cluster'
-                if not skind and (is_abell or 'cluster' in svalue.lower()):
-                    skind = 'cluster'
         elif quantity == KEYS.CLAIMED_TYPE:
             isq = False
             svalue = svalue.replace('young', '')
@@ -229,7 +224,7 @@ class EVENT(OrderedDict):
                 svalue = svalue + '?'
 
         elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-            (svalue, sunit) = radec_clean(svalue, quantity, unit = unit)
+            (svalue, sunit) = radec_clean(svalue, quantity, unit=unit)
         elif quantity == 'maxdate' or quantity == 'discoverdate':
             # Make sure month and day have leading zeroes
             sparts = svalue.split('/')
@@ -506,15 +501,14 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     return events, newname
 
 
-def new_event(tasks, args, events, name, log, load = True, delete = True, loadifempty = True,
-              srcname = '', reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
+def new_event(tasks, args, events, name, log, load=True, delete=True, loadifempty=True,
+              srcname='', reference='', url='', bibcode='', secondary='', acknowledgment=''):
     oldname = name
-    events, name = add_event(tasks, args, events, name, log, load = load, delete = delete)
+    events, name = add_event(tasks, args, events, name, log, load=load, delete=delete)
     source = events[name].add_source(bibcode=bibcode, srcname=srcname, reference=reference,
-                                     url=url, secondary = secondary, acknowledgment = acknowledgment)
+                                     url=url, secondary=secondary, acknowledgment=acknowledgment)
     events[name].add_quantity('alias', oldname, source)
     return events, name, source
-
 
 
 def find_event_name_of_alias(events, alias):
