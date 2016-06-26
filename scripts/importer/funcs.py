@@ -290,68 +290,6 @@ def convert_aq_output(row):
     return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
 
-def copy_to_event(events, fromname, destname):
-    tprint('Copying ' + fromname + ' to event ' + destname)
-    newsourcealiases = {}
-    keys = list(sorted(events[fromname].keys(), key=lambda xx: event_attr_priority(xx)))
-
-    if 'sources' in events[fromname]:
-        for source in events[fromname]['sources']:
-            newsourcealiases[source['alias']] = events[destname].add_source(
-                bibcode=source['bibcode'] if 'bibcode' in source else '',
-                srcname=source['name'] if 'name' in source else '',
-                reference=source['reference'] if 'reference' in source else '',
-                url=source['url'] if 'url' in source else '')
-
-    if 'errors' in events[fromname]:
-        for err in events[fromname]['errors']:
-            events[destname].setdefault('errors',[]).append(err)
-
-    for key in keys:
-        if key not in ['schema', 'name', 'sources', 'errors']:
-            for item in events[fromname][key]:
-                # isd = False
-                sources = []
-                if 'source' not in item:
-                    ValueError("Item has no source!")
-                for sid in item['source'].split(','):
-                    if sid == 'D':
-                        sources.append('D')
-                    elif sid in newsourcealiases:
-                        sources.append(newsourcealiases[sid])
-                    else:
-                        ValueError("Couldn't find source alias!")
-                sources = uniq_cdl(sources)
-
-                if key == 'photometry':
-                    add_photometry(
-                        events, destname, u_time=null_field(item, "u_time"), time=null_field(item, "time"),
-                        e_time=null_field(item, "e_time"), telescope=null_field(item, "telescope"),
-                        instrument=null_field(item, "instrument"), band=null_field(item, "band"),
-                        magnitude=null_field(item, "magnitude"), e_magnitude=null_field(item, "e_magnitude"),
-                        source=sources, upperlimit=null_field(item, "upperlimit"), system=null_field(item, "system"),
-                        observatory=null_field(item, "observatory"), observer=null_field(item, "observer"),
-                        host=null_field(item, "host"), survey=null_field(item, "survey"))
-                elif key == 'spectra':
-                    add_spectrum(
-                        events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), data=null_field(item, "data"),
-                        u_time=null_field(item, "u_time"), time=null_field(item, "time"),
-                        instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
-                        dereddened=null_field(item, "dereddened"), errorunit=null_field(item, "errorunit"),
-                        source=sources, snr=null_field(item, "snr"),
-                        telescope=null_field(item, "telescope"), observer=null_field(item, "observer"),
-                        reducer=null_field(item, "reducer"), filename=null_field(item, "filename"),
-                        observatory=null_field(item, "observatory"))
-                elif key == 'errors':
-                    events[destname].add_quantity(
-                        key, item['value'], sources,
-                        kind=null_field(item, "kind"), extra=null_field(item, "extra"))
-                else:
-                    events[destname].add_quantity(
-                        key, item['value'], sources, error=null_field(item, "error"),
-                        unit = null_field(item, "unit"), probability=null_field(item, "probability"), kind=null_field(item, "kind"))
-
-
 def ct_priority(events, name, attr):
     aliases = attr['source'].split(',')
     max_source_year = -10000

@@ -500,6 +500,68 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     return events, newname
 
 
+def copy_to_event(events, fromname, destname):
+    tprint('Copying ' + fromname + ' to event ' + destname)
+    newsourcealiases = {}
+    keys = list(sorted(events[fromname].keys(), key=lambda xx: event_attr_priority(xx)))
+
+    if 'sources' in events[fromname]:
+        for source in events[fromname]['sources']:
+            newsourcealiases[source['alias']] = events[destname].add_source(
+                bibcode=source['bibcode'] if 'bibcode' in source else '',
+                srcname=source['name'] if 'name' in source else '',
+                reference=source['reference'] if 'reference' in source else '',
+                url=source['url'] if 'url' in source else '')
+
+    if 'errors' in events[fromname]:
+        for err in events[fromname]['errors']:
+            events[destname].setdefault('errors',[]).append(err)
+
+    for key in keys:
+        if key not in ['schema', 'name', 'sources', 'errors']:
+            for item in events[fromname][key]:
+                # isd = False
+                sources = []
+                if 'source' not in item:
+                    ValueError("Item has no source!")
+                for sid in item['source'].split(','):
+                    if sid == 'D':
+                        sources.append('D')
+                    elif sid in newsourcealiases:
+                        sources.append(newsourcealiases[sid])
+                    else:
+                        ValueError("Couldn't find source alias!")
+                sources = uniq_cdl(sources)
+
+                if key == 'photometry':
+                    add_photometry(
+                        events, destname, u_time=null_field(item, "u_time"), time=null_field(item, "time"),
+                        e_time=null_field(item, "e_time"), telescope=null_field(item, "telescope"),
+                        instrument=null_field(item, "instrument"), band=null_field(item, "band"),
+                        magnitude=null_field(item, "magnitude"), e_magnitude=null_field(item, "e_magnitude"),
+                        source=sources, upperlimit=null_field(item, "upperlimit"), system=null_field(item, "system"),
+                        observatory=null_field(item, "observatory"), observer=null_field(item, "observer"),
+                        host=null_field(item, "host"), survey=null_field(item, "survey"))
+                elif key == 'spectra':
+                    add_spectrum(
+                        events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), data=null_field(item, "data"),
+                        u_time=null_field(item, "u_time"), time=null_field(item, "time"),
+                        instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
+                        dereddened=null_field(item, "dereddened"), errorunit=null_field(item, "errorunit"),
+                        source=sources, snr=null_field(item, "snr"),
+                        telescope=null_field(item, "telescope"), observer=null_field(item, "observer"),
+                        reducer=null_field(item, "reducer"), filename=null_field(item, "filename"),
+                        observatory=null_field(item, "observatory"))
+                elif key == 'errors':
+                    events[destname].add_quantity(
+                        key, item['value'], sources,
+                        kind=null_field(item, "kind"), extra=null_field(item, "extra"))
+                else:
+                    events[destname].add_quantity(
+                        key, item['value'], sources, error=null_field(item, "error"),
+                        unit = null_field(item, "unit"), probability=null_field(item, "probability"), kind=null_field(item, "kind"))
+
+
 def new_event(tasks, args, events, name, log, load=True, delete=True, loadifempty=True,
               srcname='', reference='', url='', bibcode='', secondary='', acknowledgment=''):
     oldname = name
@@ -774,7 +836,9 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     log.debug("Events.merge_duplicates()")
     # Warn if there are still events; which suggests they havent been saved (journaled) yet??
     if len(events) != 0:
-        log.error("WARNING: `events` is not empty ({})".format(len(events)))
+        err_str = "WARNING: `events` is not empty ({})".format(len(events))
+        log.error(err_str)
+        raise RuntimeError(err_str)
 
     # Warn if there are no stubs (suggests no saved files); FIX: should this lead to a `return`??
     if len(stubs) == 0:
@@ -793,10 +857,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
         allnames1 = set(events[name1].get_aliases() + at_name)
 
         # Search all later names
-        # FIX: also include all stubs?
         for name2 in keys[n1+1:]:
-            if name2 not in events or name1 == name2:
-                continue
             at_name = ['AT' + name2[2:]] if name2.startswith('SN') and is_number(name2[2:6]) else []
             allnames2 = set(events[name2].get_aliases() + at_name)
             # If there are any common names or aliases, merge
@@ -804,17 +865,17 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
                 log.warning("Found single event with multiple entries ('{}' and '{}'), merging."
                             "".format(name1, name2))
 
-                load1 = load_event_from_file(events, args, tasks, name1, delete=True)
-                load2 = load_event_from_file(events, args, tasks, name2, delete=True)
-                if load1 and load2:
+                load1 = load_event_from_file(events, args, tasks, log, name1, delete=True)
+                load2 = load_event_from_file(events, args, tasks, log, name2, delete=True)
+                if load1 is not None and load2 is not None:
                     priority1 = 0
                     priority2 = 0
-                    for an in list(allnames1):
-                        if len(an) >= 2 and an.startswith(('SN', 'AT')):
-                            priority1 = priority1 + 1
-                    for an in list(allnames2):
-                        if len(an) >= 2 and an.startswith(('SN', 'AT')):
-                            priority2 = priority2 + 1
+                    for an in allnames1:
+                        if an.startswith(('SN', 'AT')):
+                            priority1 += 1
+                    for an in allnames2:
+                        if an.startswith(('SN', 'AT')):
+                            priority2 += 1
 
                     if priority1 > priority2:
                         copy_to_event(events, name2, name1)
