@@ -1,5 +1,5 @@
 import os
-import sys
+import warnings
 from glob import glob
 
 from scripts import FILENAME, PATH
@@ -38,7 +38,7 @@ def get_repo_folder_for_year(entry):
         return repo_folders[0]
     if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
         warnings.warn('Discovery year is not a number')
-        return repofolders[0]
+        return repo_folders[0]
 
     repo_years = get_repo_years(repo_folders)
     for r, repoyear in enumerate(repo_years):

@@ -1,18 +1,13 @@
 """General utility functions used by multiple OSC scripts.
 """
 
-from . import digits
-from . digits import *
-from . import strings
-from . strings import *
-from . import logger
-from . logger import *
-from . import photometry
-from . photometry import *
-from . import repos
-from . repos import *
-from . import tq_funcs
-from . tq_funcs import *
+from . import digits, logger, photometry, repos, strings, tq_funcs
+from .digits import *
+from .logger import *
+from .photometry import *
+from .repos import *
+from .strings import *
+from .tq_funcs import *
 
 __all__ = []
 __all__.extend(digits.__all__)
