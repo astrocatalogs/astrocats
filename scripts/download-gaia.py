@@ -6,7 +6,7 @@ import urllib.request
 
 from bs4 import BeautifulSoup
 
-#response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
+# response = urllib2.urlopen('https://gaia.ac.uk/selected-gaia-science-alerts')
 path = os.path.abspath('../sne-external/selected-gaia-science-alerts')
 response = urllib.request.urlopen('file://' + path)
 html = response.read()
@@ -29,7 +29,8 @@ for r, row in enumerate(table.findAll('tr')):
     if name == 'Gaia15aaaa':
         continue
 
-    photlink = 'http://gsaweb.ast.cam.ac.uk/alerts/alert/' + name + '/lightcurve.csv/'
+    photlink = ('http://gsaweb.ast.cam.ac.uk/alerts/alert/' +
+                name + '/lightcurve.csv/')
     photresp = urllib.request.urlopen(photlink)
     phottxt = photresp.read().decode('utf-8')
 

@@ -50,7 +50,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     item = item[list(item.keys())[0]]
     newitem = OrderedDict()
 
-    if 'redshift' in item and 'host' not in item and 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
+    if ('redshift' in item and 'host' not in item and 'ra' in item and
+            'dec' in item and item['ra'] and item['dec']):
         # if 'ra' in item and 'dec' in item and item['ra'] and item['dec']:
         newitem['name'] = item['name']
         newitem['alias'] = [x['value'] for x in item['alias']]
@@ -63,8 +64,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             newitem['dec'] = newitem['dec'][:newitem['dec'].rfind('.')]
         newcatalog.append(newitem)
 
-coo = coord([x['ra'] for x in newcatalog], [x['dec']
-                                            for x in newcatalog], unit=(un.hourangle, un.deg))
+coo = coord([x['ra'] for x in newcatalog],
+            [x['dec'] for x in newcatalog], unit=(un.hourangle, un.deg))
 
 for ci, co in enumerate(tqdm(coo)):
     customSimbad = Simbad()
@@ -80,7 +81,8 @@ for ci, co in enumerate(tqdm(coo)):
         print(result_table)
 
 # Convert to array since that's what datatables expects
-#dupes = list(dupes.values())
-#jsonstring = json.dumps(dupes, indent='\t', separators=(',', ':'), ensure_ascii=False)
+# dupes = list(dupes.values())
+# jsonstring = json.dumps(dupes, indent='\t', separators=(',', ':'),
+#                         ensure_ascii=False)
 # with open('../dupes.json', 'w') as f:
 #    f.write(jsonstring)

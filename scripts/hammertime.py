@@ -49,7 +49,8 @@ with open('non-sne-types.json', 'r') as f:
     nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
     nonsnetypes = [x.upper() for x in nonsnetypes]
 
-for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()), "Collecting positions")):
+for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
+                                    "Collecting positions")):
     # if fcnt > 20:
     #    break
 
@@ -64,7 +65,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()), "Col
                 thistype = ct.replace('?', '').replace('*', '')
                 if thistype.upper() in nonsnetypes:
                     continue
-                elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio', 'CC', 'CCSN', 'Candidate', 'nIa'):
+                elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio',
+                                  'CC', 'CCSN', 'Candidate', 'nIa'):
                     sntypes.append('Unknown')
                     break
                 else:
@@ -113,9 +115,12 @@ hover = HoverTool(tooltips=tt)
 
 p1 = Figure(title='Supernova Positions', x_axis_label='Right Ascension (deg)',
             # responsive = True,
-            y_axis_label='Declination (deg)', tools=tools, plot_width=980, plot_height=720,
-            x_range=(-1.05 * (2.0**1.5), 1.3 * 2.0**1.5), y_range=(-2.0 * sqrt(2.0), 1.2 * sqrt(2.0)),
-            title_text_font_size='20pt', min_border_bottom=0, min_border_left=0, min_border=0)
+            y_axis_label='Declination (deg)', tools=tools, plot_width=980,
+            plot_height=720,
+            x_range=(-1.05 * (2.0**1.5), 1.3 * 2.0**1.5),
+            y_range=(-2.0 * sqrt(2.0), 1.2 * sqrt(2.0)),
+            title_text_font_size='20pt', min_border_bottom=0,
+            min_border_left=0, min_border=0)
 p1.axis.visible = None
 p1.outline_line_color = None
 p1.xgrid.grid_line_color = None

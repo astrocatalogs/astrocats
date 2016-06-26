@@ -41,8 +41,10 @@ for event in meta:
                     break
             if not ctv:
                 continue
-            if ctv not in sntypes and ctv.upper() not in nonsnetypes and ctv not in ['nIa', 'Candidate'] \
-                    and not is_number(ctv) and '\\' not in ctv:  # temporarily ignoring bad types from import
+            if (ctv not in sntypes and ctv.upper() not in nonsnetypes and
+                    ctv not in ['nIa', 'Candidate'] and
+                    not is_number(ctv) and '\\' not in ctv):
+                # temporarily ignoring bad types from import
                 sntypes.append(ctv)
 
 sntypes = sorted(sntypes)
@@ -52,20 +54,25 @@ tt = [
     ("Type", "@ct")
 ]
 hover = HoverTool(tooltips=tt, line_policy='interp')
-p = Figure(x_range=[0., 100.], y_range=[0., 1.], title='Supernova Host Offsets',
-           x_axis_label='Offset (kpc)', y_axis_label='CDF', plot_width=980, plot_height=500,
+p = Figure(x_range=[0., 100.], y_range=[0., 1.],
+           title='Supernova Host Offsets',
+           x_axis_label='Offset (kpc)', y_axis_label='CDF',
+           plot_width=980, plot_height=500,
            title_text_font='futura', title_text_font_size='14pt')
 p.add_tools(hover)
 
 for si, sntype in enumerate(tq(sntypes)):
     for event in meta:
-        if 'hostoffsetdist' in event and event['hostoffsetdist'] and is_number(event['hostoffsetdist'][0]['value']) \
-                and 'claimedtype' in event and event['claimedtype'] and sntype in [x['value'] for x in event['claimedtype']]:
+        if ('hostoffsetdist' in event and event['hostoffsetdist'] and
+                is_number(event['hostoffsetdist'][0]['value']) and
+                'claimedtype' in event and event['claimedtype'] and
+                sntype in [x['value'] for x in event['claimedtype']]):
             snoffs[si].append(float(event['hostoffsetdist'][0]['value']))
     snoffs[si] = sorted(snoffs[si])
 
 colors = sns.color_palette("hls", n_colors=sum(
-    [1 if len(snoffs[i]) >= mincnt else 0 for i, x in enumerate(snoffs)])).as_hex()
+    [1 if len(snoffs[i]) >= mincnt else 0 for i, x in
+     enumerate(snoffs)])).as_hex()
 
 cnt = 0
 for si, sntype in enumerate(sntypes):

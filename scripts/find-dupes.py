@@ -89,8 +89,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                                        for x in item['distinctfrom']]
         newcatalog.append(newitem)
 
-coo = coord([x['ra'] for x in newcatalog], [x['dec']
-                                            for x in newcatalog], unit=(un.hourangle, un.deg))
+coo = coord([x['ra'] for x in newcatalog],
+            [x['dec'] for x in newcatalog], unit=(un.hourangle, un.deg))
 radegs = coo.ra.deg
 decdegs = coo.dec.deg
 
@@ -152,7 +152,8 @@ for item1 in tqdm(newcatalog):
         maxdiffyear = ''
         discdiffyear = ''
 
-        exactstr = 'exact' if radeg1 == radeg2 and decdeg1 == decdeg2 else 'a close'
+        exactstr = ('exact' if radeg1 == radeg2 and
+                    decdeg1 == decdeg2 else 'a close')
 
         distdeg = math.hypot((radeg1 - radeg2), (decdeg1 - decdeg2))
         if distdeg < 10. / 3600.:
@@ -163,20 +164,35 @@ for item1 in tqdm(newcatalog):
                     discdiffyear = abs(discyear1 - discyear2)
 
                 if maxdiffyear and maxdiffyear <= 2.0:
-                    tqdm.write(name1 + ' has ' + exactstr + ' coordinate and maximum date match to ' + name2 + " [" + str(distdeg) + ', ' +
+                    tqdm.write(name1 + ' has ' + exactstr +
+                               ' coordinate and maximum date match to ' +
+                               name2 + " [" + str(distdeg) + ', ' +
                                str(maxdiffyear) + ']')
                 elif discdiffyear and discdiffyear <= 2.0:
-                    tqdm.write(name1 + ' has ' + exactstr + ' coordinate and discovery date match to ' + name2 + " [" + str(distdeg) + ', ' +
+                    tqdm.write(name1 + ' has ' + exactstr +
+                               ' coordinate and discovery date match to ' +
+                               name2 + " [" + str(distdeg) + ', ' +
                                str(discdiffyear) + ']')
                 else:
-                    tqdm.write(name1 + ' has ' + exactstr + ' coordinate, but significantly different date, to ' + name2 + " [Deg. diff: " + str(distdeg) +
-                               ((', Max. diff: ' + str(maxdiffyear)) if maxdiffyear else '') + ((', Disc. diff: ' + str(discdiffyear)) if discdiffyear else '') + ']')
+                    tqdm.write(name1 + ' has ' + exactstr +
+                               ' coordinate, but significantly different ' +
+                               'date, to ' + name2 + " [Deg. diff: " +
+                               str(distdeg) +
+                               ((', Max. diff: ' + str(maxdiffyear)) if
+                                maxdiffyear else '') +
+                               ((', Disc. diff: ' +
+                                str(discdiffyear)) if
+                                discdiffyear else '') + ']')
             else:
                 tqdm.write(name1 + ' has ' + exactstr +
-                           ' coordinate match to ' + name2 + " [" + str(distdeg) + "]")
-            if (not name1.startswith(('SN', 'AT')) and name2.startswith(('SN', 'AT')) or
-                (discyear1 and discyear2 and discyear2 < discyear1 and not name1.startswith(('SN', 'AT'))) or
-                    (maxyear1 and maxyear2 and maxyear2 < maxyear1 and not name1.startswith(('SN', 'AT')))):
+                           ' coordinate match to ' + name2 + " [" +
+                           str(distdeg) + "]")
+            if (not name1.startswith(('SN', 'AT')) and
+                name2.startswith(('SN', 'AT')) or
+                (discyear1 and discyear2 and discyear2 < discyear1 and
+                 not name1.startswith(('SN', 'AT'))) or
+                    (maxyear1 and maxyear2 and maxyear2 < maxyear1 and
+                     not name1.startswith(('SN', 'AT')))):
                 name1, name2 = name2, name1
                 aliases1, aliases2 = aliases2, aliases1
                 ra1, ra2 = ra2, ra1
@@ -185,10 +201,18 @@ for item1 in tqdm(newcatalog):
             continue
 
         edit = True if os.path.isfile(
-            '../sne-internal/' + get_event_filename(name1) + '.json') else False
+            '../sne-internal/' + get_event_filename(name1) +
+            '.json') else False
 
-        dupes[name1] = OrderedDict([('name1', name1), ('aliases1', aliases1), ('name2', name2), ('aliases2', aliases2), ('ra1', ra1), ('dec1', dec1),
-                                    ('ra2', ra2), ('dec2', dec2), ('distdeg', str(distdeg)), ('maxdiffyear', str(maxdiffyear)), ('discdiffyear', str(discdiffyear)), ('edit', edit)])
+        dupes[name1] = OrderedDict([('name1', name1),
+                                    ('aliases1', aliases1), ('name2', name2),
+                                    ('aliases2', aliases2), ('ra1', ra1),
+                                    ('dec1', dec1),
+                                    ('ra2', ra2), ('dec2', dec2),
+                                    ('distdeg', str(distdeg)),
+                                    ('maxdiffyear', str(maxdiffyear)),
+                                    ('discdiffyear', str(discdiffyear)),
+                                    ('edit', edit)])
 
 # Convert to array since that's what datatables expects
 dupes = list(dupes.values())

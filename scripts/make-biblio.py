@@ -46,7 +46,9 @@ if os.path.isfile(path):
         ads.config.token = f.read().splitlines()[0]
 else:
     raise IOError(
-        'Cannot find ads.key, please generate one at https://ui.adsabs.harvard.edu/#user/settings/token and place it in this file.')
+        "Cannot find ads.key, please generate one at "
+        "https://ui.adsabs.harvard.edu/#user/settings/token and place it in "
+        "this file.")
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     # if fcnt > 100:
@@ -80,8 +82,13 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                         allauthors = allauthors[0].author
                     else:
                         allauthors = []
-                    biblio[bc] = OrderedDict([('authors', authors), ('allauthors', allauthors), ('bibcode', bc), ('events', []), ('eventdates', []),
-                                              ('types', []), ('photocount', 0), ('spectracount', 0), ('metacount', 0)])
+                    biblio[bc] = OrderedDict([('authors', authors),
+                                              ('allauthors', allauthors),
+                                              ('bibcode', bc), ('events', []),
+                                              ('eventdates', []),
+                                              ('types', []), ('photocount', 0),
+                                              ('spectracount', 0),
+                                              ('metacount', 0)])
 
                 biblio[bc]['events'].append(item['name'])
 
@@ -130,7 +137,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 for key in list(item.keys()):
                     bcalias = source['alias']
                     lc = 0
-                    if key in ['name', 'sources', 'schema', 'photometry', 'spectra', 'errors']:
+                    if key in ['name', 'sources', 'schema', 'photometry',
+                               'spectra', 'errors']:
                         continue
                     for quantum in item[key]:
                         if bcalias in quantum['source'].split(','):

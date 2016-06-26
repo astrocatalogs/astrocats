@@ -43,8 +43,12 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
             likelyvalue = ''
             if quantity in list(item.keys()) and 'value' in item[quantity][0]:
                 likelyvalue = item[quantity][0]['value']
-            errata.append(OrderedDict([('name', item['name']), ('alias', item['alias']), ('ident', error['value']), ('kind', error['kind']),
-                                       ('quantity', error['extra']), ('likelyvalue', likelyvalue)]))
+            errata.append(OrderedDict([('name', item['name']),
+                                       ('alias', item['alias']),
+                                       ('ident', error['value']),
+                                       ('kind', error['kind']),
+                                       ('quantity', error['extra']),
+                                       ('likelyvalue', likelyvalue)]))
 
 jsonstring = json.dumps(errata, indent='\t',
                         separators=(',', ':'), ensure_ascii=False)

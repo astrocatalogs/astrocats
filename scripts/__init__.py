@@ -1,4 +1,5 @@
-"""Open Supernova Catalog (OCS) Scripts for Downloading and Processing Supernova data.
+"""Open Supernova Catalog (OCS) Scripts for Downloading and Processing
+Supernova data.
 """
 
 import os
