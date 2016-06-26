@@ -10,6 +10,10 @@ import warnings
 from collections import OrderedDict
 from html import unescape
 
+from astropy import units as un
+from astropy.cosmology import Planck15 as cosmo
+from astropy.cosmology import z_at_value
+
 from cdecimal import Decimal
 from scripts import FILENAME, PATH
 
@@ -18,7 +22,7 @@ from ..utils import get_logger, is_number, pbar, repo_file_list
 from .constants import TASK, TRAVIS_QUERY_LIMIT
 from .funcs import (derive_and_sanitize, get_bibauthor_dict,
                     get_extinctions_dict, has_task, host_clean, name_clean,
-                    uniq_cdl)
+                    uniq_cdl, get_sig_digits, pretty_num)
 
 
 def get_old_tasks():
@@ -190,8 +194,8 @@ def import_main(args=None, **kwargs):
     bibauthor_dict = get_bibauthor_dict()
     extinctions_dict = get_extinctions_dict()
 
-    for ii, fi in enumerate(pbar(files,
-                            'Sanitizing and deriving quantities for events')):
+    for ii, fi in enumerate(
+            pbar(files, 'Sanitizing and deriving quantities for events')):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         events, name = Events.add_event(
@@ -238,8 +242,8 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             continue
         distname = row[3]
         name = name_clean(distname)
-        distmod = row[4]
-        moderr = row[5]
+        # distmod = row[4]
+        # moderr = row[5]
         dist = row[6]
         bibcode = unescape(row[8])
         snname = name_clean(row[9])

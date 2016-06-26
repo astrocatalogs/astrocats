@@ -26,7 +26,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
         filepath += bn.replace('/', '-') + '-transients.html'
-        htmltxt = load_cached_url(args, current_task, 'http://ogle.astrouw.edu.pl/ogle4/' + bn +
+        htmltxt = load_cached_url(args, current_task,
+                                  'http://ogle.astrouw.edu.pl/ogle4/' + bn +
                                   '/transients.html', filepath)
         if not htmltxt:
             continue
@@ -40,7 +41,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
             if a.has_attr('href'):
                 if '.dat' in a['href']:
                     datalinks.append(
-                        'http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' + a['href'])
+                        'http://ogle.astrouw.edu.pl/ogle4/' + bn + '/' +
+                        a['href'])
                     datafnames.append(bn.replace('/', '-') +
                                       '-' + a['href'].replace('/', '-'))
 
@@ -70,11 +72,13 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                     if isinstance(mySibling, NavigableString):
                         if 'Phot.class=' in str(mySibling):
                             claimedtype = re.sub(
-                                r'\([^)]*\)', '', str(mySibling).split('=')[-1])
+                                r'\([^)]*\)', '',
+                                str(mySibling).split('=')[-1])
                             claimedtype = claimedtype.replace('SN', '').strip()
                     if isinstance(mySibling, Tag):
                         atela = mySibling
-                        if atela and atela.has_attr('href') and 'astronomerstelegram' in atela['href']:
+                        if (atela and atela.has_attr('href') and
+                                'astronomerstelegram' in atela['href']):
                             atelref = atela.contents[0].strip()
                             atelurl = atela['href']
                     mySibling = mySibling.nextSibling
@@ -82,7 +86,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         break
 
                 # nextSibling = sibling.nextSibling
-                # if ((isinstance(nextSibling, Tag) and nextSibling.has_attr('alt') and
+                # if ((isinstance(nextSibling, Tag) and
+                #      nextSibling.has_attr('alt') and
                 #      nextSibling.contents[0].strip() != 'NED')):
                 #     radec = nextSibling.contents[0].strip().split()
                 # else:
@@ -141,7 +146,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         e_mag = ''
                         upperlimit = True
                     add_photometry(
-                        events, name, time=mjd, band='I', magnitude=magnitude, e_magnitude=e_mag,
+                        events, name, time=mjd, band='I', magnitude=magnitude,
+                        e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if args.update:
                     events, stubs = Events.journal_events(

@@ -54,8 +54,10 @@ def do_csp_photo(events, stubs, args, tasks, task_obj, log):
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
                         add_photometry(
-                            events, name, time=mjd, observatory='LCO', band=cspbands[(v - 1) // 2],
-                            system='CSP', magnitude=row[v], e_magnitude=row[v + 1], source=source)
+                            events, name, time=mjd, observatory='LCO',
+                            band=cspbands[(v - 1) // 2],
+                            system='CSP', magnitude=row[v],
+                            e_magnitude=row[v + 1], source=source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
@@ -65,7 +67,8 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
     oldname = ''
     current_task = task_obj.current_task(args)
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
-    for fi, fname in enumerate(pbar_strings(file_names, current_task=current_task)):
+    for fi, fname in enumerate(pbar_strings(file_names,
+                                            current_task=current_task)):
         filename = os.path.basename(fname)
         sfile = filename.split('.')
         if sfile[1] == 'txt':
@@ -101,8 +104,9 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         fluxes = specdata[1]
 
         add_spectrum(
-            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD', time=time,
-            wavelengths=wavelengths, fluxes=fluxes, telescope=telescope, instrument=instrument,
+            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
+            time=time, wavelengths=wavelengths, fluxes=fluxes,
+            telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break

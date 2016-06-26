@@ -12,7 +12,8 @@ from ...utils import is_number
 
 
 def do_ptf(events, stubs, args, tasks, task_obj, log):
-    # response = urllib.request.urlopen('http://wiserep.weizmann.ac.il/objects/list')
+    # response =
+    # urllib.request.urlopen('http://wiserep.weizmann.ac.il/objects/list')
     # bs = BeautifulSoup(response, 'html5lib')
     # select = bs.find('select', {'name': 'objid'})
     # options = select.findAll('option')
@@ -24,13 +25,15 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
     # events, name = Events.add_event(tasks, args, events, name, log)
 
     if task_obj.load_archive(args):
-        with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html'), 'r') as f:
+        with open(os.path.join(PATH.REPO_EXTERNAL,
+                               'PTF/update.html'), 'r') as f:
             html = f.read()
     else:
         session = requests.Session()
         response = session.get('http://wiserep.weizmann.ac.il/spectra/update')
         html = response.text
-        with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/update.html'), 'w') as f:
+        with open(os.path.join(PATH.REPO_EXTERNAL,
+                               'PTF/update.html'), 'w') as f:
             f.write(html)
 
     bs = BeautifulSoup(html, 'html5lib')
@@ -47,9 +50,11 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
                 source = events[name].add_source(bibcode='2012PASP..124..668Y')
                 events[name].add_quantity('alias', alias, source)
             else:
-                # events, name = Events.add_event(tasks, args, events, name, log)
+                # events, name = Events.add_event(tasks, args,
+                #                                 events, name, log)
                 events, name, source = Events.new_event(
-                    tasks, args, events, name, log, bibcode='2012PASP..124..668Y')
+                    tasks, args, events, name, log,
+                    bibcode='2012PASP..124..668Y')
 
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():

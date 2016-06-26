@@ -18,7 +18,8 @@ from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 def do_ps_mds(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
+    with open(os.path.join(PATH.REPO_EXTERNAL,
+                           'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
             if ri < 35:
                 continue
@@ -42,7 +43,8 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
-    ps_url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date'
+    ps_url = ("http://psweb.mp.qub.ac.uk/"
+              "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
     html = load_cached_url(args, current_task, ps_url, fname, write=False)
     if not html:
         return events
@@ -81,12 +83,14 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if not args.full_refresh and task_obj.load_archive(args) and page < oldnumpages and os.path.isfile(fname):
+            if (not args.full_refresh and task_obj.load_archive(args) and
+                    page < oldnumpages and os.path.isfile(fname)):
                 with open(fname, 'r') as f:
                     html = f.read()
             else:
                 response = urllib.request.urlopen(
-                    "http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" + str(page) + "&sort=followup_flag_date")
+                    "http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" +
+                    str(page) + "&sort=followup_flag_date")
                 with open(fname, 'w') as f:
                     html = response.read().decode('utf-8')
                     f.write(html)
@@ -141,8 +145,9 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             if not name:
                 name = psname
             events, name = Events.add_event(tasks, args, events, name, log)
-            sources = [events[name].add_source(srcname='Pan-STARRS 3Pi',
-                                               url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
+            sources = [events[name]
+                       .add_source(srcname='Pan-STARRS 3Pi',
+                                   url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
             events[name].add_quantity('alias', name, sources[0])
             for ref in refs:
                 sources.append(events[name].add_source(

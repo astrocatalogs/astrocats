@@ -24,7 +24,8 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
     sec_refbib = '2012MNRAS.425.1789S'
 
     jsontxt = load_cached_url(
-        args, current_task, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
+        args, current_task,
+        'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
         return events
@@ -35,7 +36,8 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
         oldname = phot['ObjName']
         events, name = Events.add_event(tasks, args, events, oldname, log)
 
-        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
+        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl,
+                                             bibcode=sec_refbib,
                                              secondary=True)
         events[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
@@ -66,8 +68,9 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
                 phottxt = ff.read()
         else:
             session = requests.Session()
-            response = session.get('http://heracles.astro.berkeley.edu/sndb/download?id=dp:' +
-                                   str(phot['PhotID']))
+            response = session.get(
+                'http://heracles.astro.berkeley.edu/sndb/download?id=dp:' +
+                str(phot['PhotID']))
             phottxt = response.text
             with open(filepath, 'w') as ff:
                 ff.write(phottxt)
@@ -86,8 +89,8 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
             band = row[4]
             telescope = row[5]
             add_photometry(
-                events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
-                e_magnitude=e_mag, source=sources)
+                events, name, time=mjd, telescope=telescope, band=band,
+                magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
@@ -118,7 +121,8 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         events, name = Events.add_event(tasks, args, events, name, log)
 
         sec_source = events[name].add_source(
-            srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)
+            srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib,
+            secondary=True)
         events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
@@ -161,8 +165,9 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
                 spectxt = ff.read()
         else:
             session = requests.Session()
-            response = session.get('http://heracles.astro.berkeley.edu/sndb/download?id=ds:' +
-                                   str(spectrum['SpecID']))
+            response = session.get(
+                'http://heracles.astro.berkeley.edu/sndb/download?id=ds:' +
+                str(spectrum['SpecID']))
             spectxt = response.text
             with open(filepath, 'w') as ff:
                 ff.write(spectxt)
@@ -193,8 +198,10 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         units = 'Uncalibrated'
         add_spectrum(
             events, name, 'Angstrom', units, u_time='MJD', time=mjd,
-            wavelengths=wavelengths, filename=filename, fluxes=fluxes, errors=errors,
-            errorunit=units, instrument=instrument, source=sources, snr=snr, observer=observer,
+            wavelengths=wavelengths, filename=filename, fluxes=fluxes,
+            errors=errors,
+            errorunit=units, instrument=instrument, source=sources, snr=snr,
+            observer=observer,
             reducer=reducer, deredshifted=('-noz' in filename))
         ucbspectracnt = ucbspectracnt + 1
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:

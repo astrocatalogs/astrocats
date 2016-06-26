@@ -3,11 +3,14 @@
 
 import json
 import os
+import statistics
 import warnings
 from collections import OrderedDict
 from math import floor, log10, sqrt
 
 from astropy import units
+from astropy.cosmology import Planck15 as cosmo
+from astropy.cosmology import z_at_value
 from astropy.time import Time as astrotime
 
 # import sys
@@ -708,8 +711,6 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
         if ('redshift' not in events[name] and
                 has_task(tasks, args, 'nedd') and
                 'host' in events[name]):
-            from astropy.cosmology import Planck15 as cosmo, z_at_value
-            import statistics
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
@@ -831,7 +832,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                                    pretty_num(Decimal(
                                        hypot(c1.ra.degree - c2.ra.degree,
                                              c1.dec.degree - c2.dec.degree)) *
-                                             Decimal(3600.)), sources,
+                                       Decimal(3600.)), sources,
                                    derived=True, unit='arcseconds'))
                 if ('comovingdist' in events[name] and
                         'redshift' in events[name] and
@@ -840,9 +841,9 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                         events[name]['hostoffsetang'][0]['value'])
                     sources = uniq_cdl(sources.split(',') +
                                        (events[name]['comovingdist']
-                                       [0]['source']).split(',') +
+                                        [0]['source']).split(',') +
                                        (events[name]['redshift']
-                                       [0]['source']).split(','))
+                                        [0]['source']).split(','))
                     (events[name]
                      .add_quantity('hostoffsetdist',
                                    pretty_num(
