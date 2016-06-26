@@ -818,6 +818,13 @@ def merge_duplicates(tasks, args, events):
 
 
 def set_preferred_names(tasks, args, events):
+    """Choose between each events given name and its possible aliases for the best one.
+
+    Highest preference goes to names of the form 'SN####AA'.
+    Otherwise base the name on whichever survey is the 'discoverer'.
+
+    FIX: create function to match SN####AA type names.
+    """
     currenttask = 'Setting preferred names'
     if not len(events):
         load_stubs(tasks, args, events)
@@ -829,14 +836,17 @@ def set_preferred_names(tasks, args, events):
         aliases = events[name].get_aliases()
         if len(aliases) <= 1:
             continue
+        # If the name is already in the form 'SN####AA' then keep using that
         if (name.startswith('SN') and ((is_number(name[2:6]) and not is_number(name[6:])) or
                                        (is_number(name[2:5]) and not is_number(name[5:])))):
             continue
+        # If one of the aliases is in the form 'SN####AA' then use that
         for alias in aliases:
             if (alias[:2] == 'SN' and ((is_number(alias[2:6]) and not is_number(alias[6:])) or
                                        (is_number(alias[2:5]) and not is_number(alias[5:])))):
                 newname = alias
                 break
+        # Otherwise, name based on the 'discoverer' survey
         if not newname and 'discoverer' in events[name]:
             discoverer = ','.join([x['value'].upper() for x in events[name]['discoverer']])
             if 'ASAS' in discoverer:
@@ -877,6 +887,7 @@ def set_preferred_names(tasks, args, events):
                     break
         if newname and name != newname:
             # Make sure new name doesn't already exist
+            #    If it does exist, these events will be merged during cleanup/merging operations
             if load_event_from_file(events, args, tasks, newname):
                 continue
             if load_event_from_file(events, args, tasks, name, delete=True):
