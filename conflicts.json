@@ -4847,6 +4847,40 @@
 		]
 	},
 	{
+		"name":"SN2005cv",
+		"alias":[
+			{
+				"value":"SN2005cv",
+				"source":"1,4,5,6,7,8,9,10"
+			},
+			{
+				"value":"PSN J01534240+295610",
+				"source":"10,9"
+			},
+			{
+				"value":"PSN J01534240+2956107",
+				"source":"10,9,11,7"
+			}
+		],
+		"edit":false,
+		"quantity":"claimedtype",
+		"difference":"",
+		"values":[
+			"II",
+			"Ia"
+		],
+		"sources":[
+			{
+				"idtype":"bibcode,bibcode,bibcode,name,bibcode,name,bibcode",
+				"id":"2000A&AS..143....9W,2008yCat....1.2024B,1989A&AS...81..421B,Transient Name Server,2005IAUC.8563....4C,Latest Supernovae,2012A&A...538A.120L"
+			},
+			{
+				"idtype":"name,name",
+				"id":"CBAT TOCP,Latest Supernovae"
+			}
+		]
+	},
+	{
 		"name":"SN2005em",
 		"alias":[
 			{
@@ -12307,12 +12341,12 @@
 		"name":"ASASSN-14dc",
 		"alias":[
 			{
-				"value":"ASASSN-14dc",
-				"source":"1,2,4,5"
-			},
-			{
 				"value":"PSN J02183806+3336583",
 				"source":"1,2,4"
+			},
+			{
+				"value":"ASASSN-14dc",
+				"source":"1,2,4,5"
 			}
 		],
 		"edit":false,
@@ -12807,12 +12841,12 @@
 		"name":"LSQ13cuw",
 		"alias":[
 			{
-				"value":"LSQ13cuw",
-				"source":"1,3,4,6"
-			},
-			{
 				"value":"CSS131110:023957-083124",
 				"source":"1,3,4,5"
+			},
+			{
+				"value":"LSQ13cuw",
+				"source":"1,3,4,6"
 			}
 		],
 		"edit":false,
@@ -13341,36 +13375,6 @@
 			{
 				"idtype":"name",
 				"id":"Pan-STARRS 3Pi"
-			}
-		]
-	},
-	{
-		"name":"PSN J01584182-6420485",
-		"alias":[
-			{
-				"value":"PSN J01584182-6420485",
-				"source":"1,2,4,5"
-			},
-			{
-				"value":"PSN J08384182-6420485",
-				"source":"4,5,6"
-			}
-		],
-		"edit":false,
-		"quantity":"ra",
-		"difference":"0.7712",
-		"values":[
-			"01:58:41.82",
-			"08:38:41.82"
-		],
-		"sources":[
-			{
-				"idtype":"bibcode,bibcode",
-				"id":"2000A&AS..143....9W,2013ATel.4895....1N"
-			},
-			{
-				"idtype":"name,name",
-				"id":"CBAT TOCP,Latest Supernovae"
 			}
 		]
 	},
@@ -14069,24 +14073,24 @@
 				"source":"2,5,6,7,8,9"
 			},
 			{
-				"value":"PS1-1000295",
-				"source":"2,7,8"
-			},
-			{
 				"value":"PS1-10ki",
 				"source":"2,3,1"
+			},
+			{
+				"value":"PS1-1000295",
+				"source":"2,7,8"
 			},
 			{
 				"value":"SN2010fl",
 				"source":"1,2,5,6,7,8,9"
 			},
 			{
-				"value":"PS1-1000283",
-				"source":"2,7,8"
-			},
-			{
 				"value":"PS1-10jw",
 				"source":"2,3"
+			},
+			{
+				"value":"PS1-1000283",
+				"source":"2,7,8"
 			}
 		],
 		"edit":true,
@@ -14120,24 +14124,24 @@
 				"source":"2,5,6,7,8,9"
 			},
 			{
-				"value":"PS1-1000295",
-				"source":"2,7,8"
-			},
-			{
 				"value":"PS1-10ki",
 				"source":"2,3,1"
+			},
+			{
+				"value":"PS1-1000295",
+				"source":"2,7,8"
 			},
 			{
 				"value":"SN2010fl",
 				"source":"1,2,5,6,7,8,9"
 			},
 			{
-				"value":"PS1-1000283",
-				"source":"2,7,8"
-			},
-			{
 				"value":"PS1-10jw",
 				"source":"2,3"
+			},
+			{
+				"value":"PS1-1000283",
+				"source":"2,7,8"
 			}
 		],
 		"edit":true,
@@ -15879,6 +15883,45 @@
 		]
 	},
 	{
+		"name":"SNhunt174",
+		"alias":[
+			{
+				"value":"SNhunt174",
+				"source":"1,2,3"
+			},
+			{
+				"value":"PSN J01584182-6420485",
+				"source":"1,4,6,7"
+			},
+			{
+				"value":"PSN J08384182-6420485",
+				"source":"3,6,7"
+			}
+		],
+		"edit":true,
+		"quantity":"ra",
+		"difference":"0.7712",
+		"values":[
+			"01:58:41.808",
+			"01:58:41.82",
+			"08:38:41.82"
+		],
+		"sources":[
+			{
+				"idtype":"name",
+				"id":"Supernova Hunt"
+			},
+			{
+				"idtype":"bibcode,bibcode",
+				"id":"2000A&AS..143....9W,2013ATel.4895....1N"
+			},
+			{
+				"idtype":"name,name",
+				"id":"CBAT TOCP,Latest Supernovae"
+			}
+		]
+	},
+	{
 		"name":"SNhunt28",
 		"alias":[
 			{
@@ -16038,11 +16081,15 @@
 			},
 			{
 				"value":"AT2016cdl",
-				"source":"1,3,4"
+				"source":"1,2,3,4"
 			},
 			{
 				"value":"CSS160429:142624-133325",
-				"source":"3,4,5"
+				"source":"2,3,4,5"
+			},
+			{
+				"value":"MLS160426:142624-133325",
+				"source":"2"
 			}
 		],
 		"edit":false,
@@ -16051,7 +16098,9 @@
 		"values":[
 			"14:22:23.83",
 			"14:22:23.820",
+			"14:22:23.82",
 			"14:26:23.75",
+			"14:26:23.74",
 			"14:26:23.78",
 			"14:26:23.76"
 		],
@@ -16066,7 +16115,15 @@
 			},
 			{
 				"idtype":"name",
+				"id":"Pan-STARRS 3Pi"
+			},
+			{
+				"idtype":"name",
 				"id":"Transient Name Server"
+			},
+			{
+				"idtype":"name",
+				"id":"Pan-STARRS 3Pi"
 			},
 			{
 				"idtype":"name,name",
@@ -16095,11 +16152,15 @@
 			},
 			{
 				"value":"AT2016cdl",
-				"source":"1,3,4"
+				"source":"1,2,3,4"
 			},
 			{
 				"value":"CSS160429:142624-133325",
-				"source":"3,4,5"
+				"source":"2,3,4,5"
+			},
+			{
+				"value":"MLS160426:142624-133325",
+				"source":"2"
 			}
 		],
 		"edit":false,
@@ -16108,9 +16169,10 @@
 		"values":[
 			"-15:19:38.74",
 			"-15:19:38.70",
+			"-15:19:38.7",
 			"-13:33:25.30",
-			"-13:33:25.3",
-			"-13:33:25.2"
+			"-13:33:25.2",
+			"-13:33:25.3"
 		],
 		"sources":[
 			{
@@ -16123,15 +16185,19 @@
 			},
 			{
 				"idtype":"name",
+				"id":"Pan-STARRS 3Pi"
+			},
+			{
+				"idtype":"name",
 				"id":"Transient Name Server"
+			},
+			{
+				"idtype":"name,bibcode",
+				"id":"Pan-STARRS 3Pi,2009ApJ...696..870D"
 			},
 			{
 				"idtype":"name,name",
 				"id":"Latest Supernovae,CRTS SN page"
-			},
-			{
-				"idtype":"bibcode",
-				"id":"2009ApJ...696..870D"
 			}
 		]
 	},
@@ -16218,6 +16284,58 @@
 			{
 				"idtype":"bibcode,name,bibcode",
 				"id":"2015ATel.7049....1M,Latest Supernovae,2012PASP..124..668Y"
+			}
+		]
+	},
+	{
+		"name":"MASTER OT J211223.35+144645.1",
+		"alias":[
+			{
+				"value":"MASTER OT J211223.35+144645.1",
+				"source":"1,2,3"
+			}
+		],
+		"edit":false,
+		"quantity":"ra",
+		"difference":"0.9347",
+		"values":[
+			"01:23:03.340",
+			"21:12:23.35"
+		],
+		"sources":[
+			{
+				"idtype":"name,name",
+				"id":"ATel 9174,Latest Supernovae"
+			},
+			{
+				"idtype":"name,name",
+				"id":"Asiago Supernova Catalogue,ATel 9185"
+			}
+		]
+	},
+	{
+		"name":"MASTER OT J211223.35+144645.1",
+		"alias":[
+			{
+				"value":"MASTER OT J211223.35+144645.1",
+				"source":"1,2,3"
+			}
+		],
+		"edit":false,
+		"quantity":"dec",
+		"difference":"4.338",
+		"values":[
+			"-49:20:07.70",
+			"+14:46:45.1"
+		],
+		"sources":[
+			{
+				"idtype":"name,name",
+				"id":"ATel 9174,Latest Supernovae"
+			},
+			{
+				"idtype":"name,name",
+				"id":"Asiago Supernova Catalogue,ATel 9185"
 			}
 		]
 	},
@@ -16335,11 +16453,11 @@
 		"alias":[
 			{
 				"value":"PS15cvn",
-				"source":"1,2,4"
+				"source":"1,2,5"
 			},
 			{
 				"value":"MLS151203:000922-000407",
-				"source":"1,2,3"
+				"source":"1,2,4"
 			}
 		],
 		"edit":false,
@@ -16351,8 +16469,8 @@
 		],
 		"sources":[
 			{
-				"idtype":"name,name",
-				"id":"Pan-STARRS 3Pi,Latest Supernovae"
+				"idtype":"name,name,bibcode",
+				"id":"Pan-STARRS 3Pi,Latest Supernovae,2015ATel.8296....1K"
 			},
 			{
 				"idtype":"bibcode",
@@ -16365,7 +16483,7 @@
 		"alias":[
 			{
 				"value":"PS15cwo",
-				"source":"1,2,3,5"
+				"source":"1,2,5,7"
 			}
 		],
 		"edit":false,
@@ -16377,8 +16495,8 @@
 		],
 		"sources":[
 			{
-				"idtype":"name,name",
-				"id":"Pan-STARRS 3Pi,Latest Supernovae"
+				"idtype":"name,name,bibcode,bibcode",
+				"id":"Pan-STARRS 3Pi,Latest Supernovae,2015ATel.8294....1W,2015ATel.8296....1K"
 			},
 			{
 				"idtype":"name,bibcode",
@@ -16391,7 +16509,7 @@
 		"alias":[
 			{
 				"value":"PS15cwx",
-				"source":"1,2,3"
+				"source":"1,2,4"
 			}
 		],
 		"edit":false,
@@ -16417,7 +16535,7 @@
 		"alias":[
 			{
 				"value":"PS15dlq",
-				"source":"1,2,3"
+				"source":"1,2,4"
 			}
 		],
 		"edit":false,
@@ -16737,6 +16855,10 @@
 				"source":"1,3,4,5"
 			},
 			{
+				"value":"iPTF13efv",
+				"source":"1"
+			},
+			{
 				"value":"SNhunt275",
 				"source":"1"
 			},
@@ -16905,7 +17027,7 @@
 		"alias":[
 			{
 				"value":"SN2016brw",
-				"source":"1,2"
+				"source":"1,2,4,5"
 			},
 			{
 				"value":"Gaia16alk",
@@ -16913,7 +17035,7 @@
 			},
 			{
 				"value":"AT2016brw",
-				"source":"3"
+				"source":"3,4,5"
 			}
 		],
 		"edit":false,
@@ -16938,12 +17060,12 @@
 		"name":"SNHiTS15az",
 		"alias":[
 			{
-				"value":"SNHiTS15az",
-				"source":"1,2,4"
-			},
-			{
 				"value":"SNHiTS15bn",
 				"source":"1,3,4,2"
+			},
+			{
+				"value":"SNHiTS15az",
+				"source":"1,2,4"
 			}
 		],
 		"edit":false,
@@ -16973,12 +17095,12 @@
 		"name":"SNHiTS15az",
 		"alias":[
 			{
-				"value":"SNHiTS15az",
-				"source":"1,2,4"
-			},
-			{
 				"value":"SNHiTS15bn",
 				"source":"1,3,4,2"
+			},
+			{
+				"value":"SNHiTS15az",
+				"source":"1,2,4"
 			}
 		],
 		"edit":false,
@@ -27923,14 +28045,14 @@
 		"alias":[
 			{
 				"value":"SN1572A",
-				"source":"2,3,5,6,8,9,10,12"
+				"source":"2,5,6,8,9,10,12"
 			},
 			{
 				"value":"Tycho's supernova",
 				"source":"2"
 			},
 			{
-				"value":"b\"SN 1572",
+				"value":"b\"SN 1572A",
 				"source":"3"
 			},
 			{
@@ -27962,11 +28084,11 @@
 				"source":"3"
 			},
 			{
-				"value":"3C 10.0",
+				"value":"3C 10",
 				"source":"3"
 			},
 			{
-				"value":"3C 10",
+				"value":"3C 10.0",
 				"source":"3"
 			},
 			{
@@ -28002,11 +28124,11 @@
 				"source":"3"
 			},
 			{
-				"value":"2E 83",
+				"value":"2E 0022.1+6353",
 				"source":"3"
 			},
 			{
-				"value":"2E 0022.1+6353",
+				"value":"2E 83",
 				"source":"3"
 			},
 			{
@@ -28062,11 +28184,7 @@
 				"source":"3"
 			},
 			{
-				"value":"TYCHO",
-				"source":"3"
-			},
-			{
-				"value":"TYCHO SNR",
+				"value":"CAS B",
 				"source":"3"
 			},
 			{
@@ -28074,7 +28192,11 @@
 				"source":"3"
 			},
 			{
-				"value":"CAS B",
+				"value":"TYCHO SNR",
+				"source":"3"
+			},
+			{
+				"value":"TYCHO",
 				"source":"3"
 			},
 			{
@@ -28098,19 +28220,23 @@
 				"source":"3"
 			},
 			{
-				"value":"SNR G120.1+01.4",
-				"source":"3"
-			},
-			{
 				"value":"SNR G120.2+01.4",
 				"source":"3"
 			},
 			{
-				"value":"SWIFT J0024.9+6407",
+				"value":"SNR G120.1+01.4",
+				"source":"3"
+			},
+			{
+				"value":"SN 1572",
 				"source":"3"
 			},
 			{
 				"value":"SWIFT J0025.2+6410",
+				"source":"3"
+			},
+			{
+				"value":"SWIFT J0024.9+6407",
 				"source":"3"
 			},
 			{
