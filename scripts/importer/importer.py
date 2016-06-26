@@ -119,10 +119,13 @@ def import_main(args=None, **kwargs):
             raise RuntimeError("Priority for '{}': '{}', less than prev, '{}': '{}'.\n{}".format(
                 task_name, priority, prev_task_name, prev_priority, task_obj))
         log.debug("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
+        # Determine module to import
         mod = importlib.import_module('.' + mod_name, package='scripts')
-        # events = getattr(mod, func_name)(events, args, tasks, task_obj)
-        getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
-        log.warning("Task finished.  Events: {},  Stubs: {}".format(len(events), len(stubs)))
+        # Load function from module, execute with standard parameters
+        # getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
+        events = getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
+        log.warning("'{}' finished.  Events: {},  Stubs: {}".format(
+            task_name, len(events), len(stubs)))
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         log.warning("Journal finished.  Events: {}, Stubs: {}".format(len(events), len(stubs)))
 
@@ -229,6 +232,7 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
 
     return events
+
 
 def delete_old_event_files(*args):
     # Delete all old event JSON files
