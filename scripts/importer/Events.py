@@ -435,17 +435,14 @@ class EVENT(OrderedDict):
         return outdir, filename
 
     def save(self, empty=False, bury=False, gz=False):
-        warnings.warn("Supressing 'stub' behavior in `EVENT.save`!")
-        # if 'stub' in event_obj.keys():
-        #     if not empty:
-        #         continue
-        #     else:
-        #         del event_obj['stub']
         outdir, filename = self._get_save_path(bury=bury)
 
         # FIX: use 'dump' not 'dumps'
         jsonstring = json.dumps({self.name: self},
                                 indent='\t', separators=(',', ':'), ensure_ascii=False)
+        if not os.path.isdir(outdir):
+            raise RuntimeError("Output directory '{}' for event '{}' does not exist.".format(
+                outdir, self.name))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
