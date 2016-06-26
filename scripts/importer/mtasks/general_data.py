@@ -795,7 +795,10 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
 def do_external_xray(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
-    for datafile in pbar_strings(glob(path_pattern), desc=current_task):
+    xray_files = glob(path_pattern)
+    if not len(xray_files):
+        log.error("WARNING: no xray files found for '{}'".format(path_pattern))
+    for datafile in pbar_strings(xray_files, desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
         events, name = Events.add_event(tasks, args, events, oldname, log)
         with open(datafile, 'r') as ff:
