@@ -64,9 +64,10 @@ class EVENT(OrderedDict):
             self._source_syns = json.loads(f.read(), object_pairs_hook=OrderedDict)
         return
 
-    def load_data_from_json(self, fhand):
+    def load_data_from_json(self, fhand, log):
         """FIX: check for overwrite??
         """
+        log.debug("Events.EVENT.load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -467,6 +468,7 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     newname : str
         Name of matching event found in `events`, or new event added to `events`
     """
+    log.debug("Events.add_event()")
     newname = name_clean(name)
     # If event already exists, return
     if newname in events:
@@ -683,6 +685,7 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
 
     FIX: currently will error if cant find a path from `name`
     """
+    log.debug("Events.load_event_from_file()")
     if not name and not path:
         raise ValueError('Either event `name` or `path` must be specified to load event.')
 
@@ -710,7 +713,7 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
         return None
 
     new_event = EVENT(name)
-    new_event.load_data_from_json(load_path)
+    new_event.load_data_from_json(load_path, log)
 
     # Delete old version
     if name in events:

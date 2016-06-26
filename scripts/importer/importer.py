@@ -109,7 +109,7 @@ def import_main(args=None, **kwargs):
     # for task, task_obj in tasks_list.items():
     for task_name, task_obj in tasks_list.items():
         if not task_obj.active: continue
-        log.info("Task: '{}'".format(task_name))
+        log.warning("Task: '{}'".format(task_name))
 
         nice_name = task_obj.nice_name
         mod_name = task_obj.module
@@ -122,9 +122,9 @@ def import_main(args=None, **kwargs):
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
         getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
-        log.debug("Task finished.  Events: {},  Stubs: {}".format(len(events), len(stubs)))
+        log.warning("Task finished.  Events: {},  Stubs: {}".format(len(events), len(stubs)))
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-        log.debug("Journal finished.  Events: {}, Stubs: {}".format(len(events), len(stubs)))
+        log.warning("Journal finished.  Events: {}, Stubs: {}".format(len(events), len(stubs)))
 
         prev_priority = priority
         prev_task_name = task_name
