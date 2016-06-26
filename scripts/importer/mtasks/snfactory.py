@@ -108,7 +108,7 @@ def do_snf_specta(events, stubs, args, tasks, task_obj, log):
             unit_err = 'Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'
             unit_flx = 'erg/s/cm^2/Angstrom'
             add_spectrum(
-                name=name, u_time='MJD', time=time, waveunit='Angstrom', fluxunit=unit_flx,
+                events, name, 'Angstrom', unit_flx, u_time='MJD', time=time,
                 wavelengths=wavelengths, fluxes=fluxes, errors=errors, observer=observer,
                 observatory=observatory, telescope=telescope, instrument=instrument,
                 errorunit=unit_err, source=sources, filename=filename)

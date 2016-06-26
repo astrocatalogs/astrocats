@@ -182,7 +182,7 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
 
         units = 'Uncalibrated'
         add_spectrum(
-            name=name, u_time='MJD', time=mjd, waveunit='Angstrom', fluxunit=units,
+            events, name, 'Angstrom', units, u_time='MJD', time=mjd,
             wavelengths=wavelengths, filename=filename, fluxes=fluxes, errors=errors,
             errorunit=units, instrument=instrument, source=sources, snr=snr, observer=observer,
             reducer=reducer, deredshifted=('-noz' in filename))

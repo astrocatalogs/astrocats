@@ -1232,8 +1232,8 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
             else:
                 mlmjd = ''
             add_spectrum(
-                name, u_time='MJD' if mlmjd else '', time=mlmjd, waveunit='Angstrom',
-                fluxunit='Uncalibrated', wavelengths=wavelengths, fluxes=fluxes, source=source)
+                events, name, 'Angstrom', 'Uncalibrated', u_time='MJD' if mlmjd else '', time=mlmjd,
+                wavelengths=wavelengths, fluxes=fluxes, source=source)
 
             lastname = name
 
