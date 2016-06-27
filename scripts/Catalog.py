@@ -105,11 +105,14 @@ class Catalog():
 
         # Load Event from file
         if load:
-            loaded_event = EVENT.init_from_file(name=newname, delete=delete)
+            loaded_event = EVENT.init_from_file(name=newname)
             if loaded_event is not None:
                 self.events[newname] = loaded_event
                 self.log.debug("Added '{}', from '{}', to `self.event`".format(
                     newname, loaded_event.filename))
+                # Delete source file, if desired
+                if delete:
+                    self._delete_event_file(event=loaded_event)
                 return
 
         # Create new event
@@ -231,9 +234,9 @@ class Catalog():
         written to file.
         """
         self.log.debug("Events.merge_duplicates()")
-        if len(events) == 0:
+        if len(self.events) == 0:
             self.log.error("WARNING: `events` is empty, loading stubs")
-            if args.update:
+            if self.args.update:
                 self.log.warning("No sources changed, event files unchanged in update."
                                  "  Skipping merge.")
                 return
@@ -261,6 +264,9 @@ class Catalog():
                     load1 = EVENT.init_from_file(name=name1, delete=True)
                     load2 = EVENT.init_from_file(name=name2, delete=True)
                     if load1 is not None and load2 is not None:
+                        # Delete old files
+                        self._delete_event_file(event=load1)
+                        self._delete_event_file(event=load2)
                         priority1 = 0
                         priority2 = 0
                         for an in allnames1:
@@ -304,12 +310,12 @@ class Catalog():
 
         if len(self.events) == 0:
             self.log.error("WARNING: `events` is empty, loading stubs")
-            events = load_stubs(tasks, args, events, log)
+            self.load_stubs()
 
         currenttask = 'Setting preferred names'
-        for ni, name in pbar(list(sorted(events.keys())), currenttask):
+        for ni, name in pbar(list(sorted(self.events.keys())), currenttask):
             newname = ''
-            aliases = events[name].get_aliases()
+            aliases = self.events[name].get_aliases()
             # if there are no other options to choose from, skip
             if len(aliases) <= 1:
                 continue
@@ -326,9 +332,9 @@ class Catalog():
                     newname = alias
                     break
             # Otherwise, name based on the 'discoverer' survey
-            if not newname and 'discoverer' in events[name]:
+            if not newname and 'discoverer' in self.events[name]:
                 discoverer = ','.join([x['value'].upper()
-                                       for x in events[name]['discoverer']])
+                                       for x in self.events[name]['discoverer']])
                 if 'ASAS' in discoverer:
                     for alias in aliases:
                         if 'ASASSN' in alias.upper():
@@ -370,25 +376,26 @@ class Catalog():
                                    "should do something about that...")
                     continue
 
-                new_event = EVENT.init_from_file(name=name, delete=True)
+                new_event = EVENT.init_from_file(name=name)
                 if new_event is None:
                     self.log.error("Could not load `new_event` with name '{}'".format(
                         name))
                 else:
                     self.log.info("Changing event from name '{}' to preferred"
                                   " name '{}'".format(name, newname))
-                    events[newname] = new_event
-                    events[newname][KEYS.NAME] = newname
-                    if name in events:
+                    self._delete_event_file(event=new_event)
+                    self.events[newname] = new_event
+                    self.events[newname][KEYS.NAME] = newname
+                    if name in self.events:
                         self.log.error("WARNING: `name` = '{}' is in `events` "
                                        "shouldnt happen?".format(name))
-                        del events[name]
-                    events = journal_events(tasks, args, events, log)
+                        del self.events[name]
+                    self.journal_events()
 
-            if args.travis and ni > TRAVIS_QUERY_LIMIT:
+            if self.args.travis and ni > TRAVIS_QUERY_LIMIT:
                 break
 
-        return events
+        return
 
     def load_stubs(self):
         """
@@ -404,7 +411,7 @@ class Catalog():
                 os.path.splitext(fname)[0]).replace('.json', '')
             new_event = EVENT.init_from_file(path=fname, delete=False)
             # Make sure a non-stub event doesnt already exist with this name
-            if name in events and not events[name]._stub:
+            if name in self.events and not self.events[name]._stub:
                 err_str = ("ERROR: non-stub event already exists with name '{}'"
                            "".format(name))
                 self.log.error(err_str)
@@ -412,6 +419,30 @@ class Catalog():
 
             self.events[name] = new_event.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
+
+        return
+
+    def _delete_event_file(self, event_name=None, event=None):
+        """Delete the file associated with the given event.
+        """
+        if event_name is None and event is None:
+            raise RuntimeError("Either `event_name` or `event` must be given.")
+        elif event_name is not None and event is not None:
+            raise RuntimeError("Cannot use both `event_name` and `event`.")
+
+        if event_name is not None:
+            event_filename = self.events[event_name]
+        else:
+            event_name = event[KEYS.NAME]
+            event_filename = event.filename
+
+        if self.args.write_events:
+            os.remove(event_filename)
+            self.log.info("Deleted event '{}' file '{}'".format(
+                event_name, event_filename))
+        else:
+            self.log.debug("Not deleting '{}' because `write_events`"
+                           " is Failse".format(event_filename))
 
         return
 
@@ -433,7 +464,7 @@ class Catalog():
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of dict
         for name in list(self.events.keys()):
-            if 'writeevents' in tasks:
+            if self.args.write_events:
                 # If this is a stub and we aren't writing stubs, skip
                 if self.events[name]._stub and not write_stubs:
                     continue
