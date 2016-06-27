@@ -98,7 +98,7 @@ class Catalog():
             return
 
         # If event is alias of another event *in `events`*, find and return that
-        match_name = Events.find_event_name_of_alias(self.events, newname)
+        match_name = self.find_event_name_of_alias(self.events, newname)
         if match_name is not None:
             self.log.debug("`newname`: '{}' (name: '{}') already exist as alias for "
                            "'{}'.".format(newname, name, match_name))
