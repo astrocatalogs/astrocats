@@ -2,24 +2,14 @@
 """
 import os
 from collections import OrderedDict
-from datetime import datetime
 from glob import glob
-from html import unescape
-from math import ceil, log10
 
-from astropy.time import Time as astrotime
-from bs4 import BeautifulSoup
-
-from cdecimal import Decimal
 from scripts import PATH
-from scripts.utils import (is_number, pbar, pbar_strings, pretty_num,
-                           round_sig, single_spaces)
+from scripts.utils import pbar_strings
 
 from .. import Events
-from ..constants import TRAVIS_QUERY_LIMIT
 from ..Events import load_event_from_file
-from ..funcs import (add_photometry, add_spectrum, event_exists, jd_to_mjd,
-                     load_cached_url, make_date_string, uniq_cdl)
+from ..funcs import add_photometry
 
 
 def do_external_radio(events, stubs, args, tasks, task_obj, log):
@@ -30,7 +20,8 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
         events, name = Events.add_event(tasks, args, events, oldname, log)
         radiosourcedict = OrderedDict()
         with open(datafile, 'r') as ff:
-            for li, line in enumerate([xx.strip() for xx in ff.read().splitlines()]):
+            for li, line in enumerate([xx.strip() for xx in
+                                       ff.read().splitlines()]):
                 if line.startswith('(') and li <= len(radiosourcedict):
                     key = line.split()[0]
                     bibc = line.split()[-1]
@@ -69,7 +60,8 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
                     cols = list(filter(None, line.split()))
                     add_photometry(
                         events, name, time=cols[:2],
-                        energy=cols[2:4], u_energy='keV', counts=cols[4], flux=cols[6],
+                        energy=cols[2:4], u_energy='keV', counts=cols[4],
+                        flux=cols[6],
                         unabsorbedflux=cols[8], u_flux='ergs/ss/cm^2',
                         photonindex=cols[15], instrument=cols[
                             17], nhmw=cols[11],
@@ -100,7 +92,8 @@ def do_internal(events, stubs, args, tasks, task_obj, log):
                                         clean=True, delete=False):
                 raise IOError('Failed to find specified file.')
         '''
-        new_event = load_event_from_file(events, args, tasks, log, path=datafile,
+        new_event = load_event_from_file(events, args, tasks, log,
+                                         path=datafile,
                                          clean=True, delete=False)
         events.update({new_event.name: new_event})
 
