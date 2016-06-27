@@ -14,6 +14,11 @@ def main():
     if args is None:
         return
 
+
+    print("WRITE = '{}'".format(args.write_events))
+
+    return
+
     catalog = Catalog.Catalog(args)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
@@ -52,6 +57,12 @@ def load_args(args=None):
                              help='Run import script in test mode for Travis.')
     pars_parent.add_argument('--log',  dest='log_filename',  default=None,
                              help='Filename to which to store logging information.')
+
+    write_group = pars_parent.add_mutually_exclusive_group()
+    write_group.add_argument('--write', action='store_true', dest='write_events', default=True,
+                             help='Write events to files [default].')
+    write_group.add_argument('--no-write', action='store_false', dest='write_events', default=True,
+                             help='do not write events to file.')
 
     # Construct the subparser for `importer` submodule --- importing supernova
     # data

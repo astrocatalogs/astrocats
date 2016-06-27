@@ -7,7 +7,7 @@ from glob import glob
 from scripts import PATH
 from scripts.utils import pbar_strings
 
-from ..Events import load_event_from_file, KEYS
+from ..Events import KEYS
 from ..funcs import add_photometry
 
 
@@ -74,12 +74,13 @@ def do_external_xray(catalog):
 def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
+    from ..Events import EVENT
     current_task = catalog.current_task
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     catalog.log.debug("found {} files matching '{}'".format(len(files), path_pattern))
     for datafile in pbar_strings(files, desc=current_task):
-        new_event = load_event_from_file(path=datafile, clean=True, delete=False)
+        new_event = EVENT.init_from_file(path=datafile, clean=True)
         catalog.events.update({new_event[KEYS.NAME]: new_event})
 
     return
