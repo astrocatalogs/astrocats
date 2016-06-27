@@ -176,7 +176,7 @@
         "nice_name": "%pre Fermi",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.fermi",
         "function": "do_fermi",
         "priority": 19
     },
