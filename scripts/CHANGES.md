@@ -31,7 +31,7 @@
 -   Maybe unify things in 'csv' format, e.g. `do_snls` which seem to start the same way?
 -   `mtasks.general_data.do_snls` see note:
     -   "NOTE: Datafiles avail for download suggest diff zeropoints than 30, need to inquire."
-
+-   What is `copy_to_event` doing with all the `null_field`s?  Why not just change the name...??
 
 ## Current ##
 
