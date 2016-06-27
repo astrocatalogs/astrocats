@@ -68,7 +68,7 @@
         "nice_name": "%pre SCP",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.scp",
         "function": "do_scp",
         "priority": 6
     },
@@ -118,7 +118,7 @@
         "nice_name": "%pre SDSS photometry",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.sdss",
         "function": "do_sdss",
         "priority": 12
     },
