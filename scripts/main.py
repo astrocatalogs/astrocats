@@ -14,11 +14,6 @@ def main():
     if args is None:
         return
 
-
-    print("WRITE = '{}'".format(args.write_events))
-
-    return
-
     catalog = Catalog.Catalog(args)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
