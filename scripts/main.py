@@ -5,8 +5,7 @@
 def main():
     from datetime import datetime
 
-    from . import importer
-    from .utils import logger
+    from . import Catalog
 
     beg_time = datetime.now()
     # Process command-line arguments to determine action
@@ -15,31 +14,21 @@ def main():
     if args is None:
         return
 
-    # Load a logger object
-    # --------------------
-    # Determine verbosity ('None' means use default)
-    log_stream_level = None
-    if args.debug:
-        log_stream_level = logger.DEBUG
-    elif args.verbose:
-        log_stream_level = logger.INFO
-
-    # Destination of log-file ('None' means no file)
-    log = logger.get_logger(
-        stream_level=log_stream_level, tofile=args.log_filename)
+    catalog = Catalog.Catalog(args)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
-    log.warning("\n\n{}\n{}\n{}\n".format(
+    catalog.log.warning("\n\n{}\n{}\n{}\n".format(
         title_str, '=' * len(title_str), beg_time.ctime()))
 
     # Choose which submodule to run (note: can also use `set_default` with
     # function)
     if args._name == 'importer':
-        log.info("Running `importer`.")
-        importer.importer.import_main(args)
+        from . import importer
+        catalog.log.info("Running `importer`.")
+        importer.importer.import_main(catalog)
 
     end_time = datetime.now()
-    log.warning("All complete at {}, After {}".format(
+    catalog.log.warning("All complete at {}, After {}".format(
         end_time, end_time - beg_time))
     return
 
