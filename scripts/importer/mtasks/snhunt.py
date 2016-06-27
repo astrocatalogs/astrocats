@@ -43,19 +43,19 @@ def do_snhunt(catalog):
         name = re.sub('<[^<]+?>', '', cols[4]
                       ).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         name = catalog.add_event(name)
-        source = events[name].add_source(srcname='Supernova Hunt', url=snh_url)
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(srcname='Supernova Hunt', url=snh_url)
+        catalog.events[name].add_quantity('alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
-        events[name].add_quantity('host', host, source)
-        events[name].add_quantity('ra', cols[2], source, unit='floatdegrees')
-        events[name].add_quantity('dec', cols[3], source, unit='floatdegrees')
+        catalog.events[name].add_quantity('host', host, source)
+        catalog.events[name].add_quantity('ra', cols[2], source, unit='floatdegrees')
+        catalog.events[name].add_quantity('dec', cols[3], source, unit='floatdegrees')
         dd = cols[0]
         discoverdate = dd[:4] + '/' + dd[4:6] + '/' + dd[6:8]
-        events[name].add_quantity('discoverdate', discoverdate, source)
+        catalog.events[name].add_quantity('discoverdate', discoverdate, source)
         discoverers = cols[5].split('/')
         for discoverer in discoverers:
-            events[name].add_quantity('discoverer', 'CRTS', source)
-            events[name].add_quantity('discoverer', discoverer, source)
+            catalog.events[name].add_quantity('discoverer', 'CRTS', source)
+            catalog.events[name].add_quantity('discoverer', discoverer, source)
         if args.update:
             events = Events.journal_events(
                 tasks, args, events, log)

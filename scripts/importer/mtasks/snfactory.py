@@ -22,7 +22,7 @@ def do_snf_aliases(catalog):
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
                                                     bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                                     url=OSC_URL, secondary=True)
-            events[name].add_quantity('alias', row[1], source)
+            catalog.events[name].add_quantity('alias', row[1], source)
 
     events = Events.journal_events(tasks, args, events, log)
     return events
@@ -46,11 +46,11 @@ def do_snf_specta(catalog):
         sec_reference = 'Nearby Supernova Factory'
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode, secondary=True)
-        events[name].add_quantity('alias', name, sec_source)
+        catalog.events[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]
-        source = events[name].add_source(bibcode=bibcode)
+        source = catalog.events[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])
         use_path = os.path.join(
             PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')

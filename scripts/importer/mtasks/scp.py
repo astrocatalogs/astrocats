@@ -22,14 +22,14 @@ def do_scp(catalog):
                   .add_source(srcname='Supernova Cosmology Project',
                               url=('http://supernova.lbl.gov/'
                                    '2009ClusterSurvey/')))
-        events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('alias', name, source)
         if row[1]:
-            events[name].add_quantity('alias', row[1], source)
+            catalog.events[name].add_quantity('alias', row[1], source)
         if row[2]:
             kind = 'spectroscopic' if row[3] == 'sn' else 'host'
-            events[name].add_quantity('redshift', row[2], source, kind=kind)
+            catalog.events[name].add_quantity('redshift', row[2], source, kind=kind)
         if row[4]:
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'redshift', row[2], source, kind='cluster')
         if row[6]:
             claimedtype = row[6].replace('SN ', '')
@@ -39,7 +39,7 @@ def do_scp(catalog):
                     'light curve' if 'c' in row[7]
                     else '')
             if claimedtype != '?':
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'claimedtype', claimedtype, source, kind=kind)
 
     events = Events.journal_events(tasks, args, events, log)

@@ -95,14 +95,14 @@ def do_crts(catalog):
             if not name:
                 name = crtsname
             name = catalog.add_event(name)
-            source = events[name].add_source(
+            source = catalog.events[name].add_source(
                 srcname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
-            events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('alias', name, source)
             for alias in validaliases:
-                events[name].add_quantity('alias', alias, source)
-            events[name].add_quantity('ra', ra, source, unit='floatdegrees')
-            events[name].add_quantity('dec', dec, source, unit='floatdegrees')
+                catalog.events[name].add_quantity('alias', alias, source)
+            catalog.events[name].add_quantity('ra', ra, source, unit='floatdegrees')
+            catalog.events[name].add_quantity('dec', dec, source, unit='floatdegrees')
 
             if hostmag:
                 # 1.0 magnitude error based on Drake 2009 assertion that SN are

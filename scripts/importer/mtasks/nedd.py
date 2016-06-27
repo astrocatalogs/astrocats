@@ -75,7 +75,7 @@ def do_nedd(catalog):
                         except:
                             pass
                         else:
-                            cosmosource = events[name].add_source(
+                            cosmosource = catalog.events[name].add_source(
                                 bibcode='2015arXiv150201589P')
                             combsources = uniq_cdl(sources.split(',') +
                                                    [cosmosource])

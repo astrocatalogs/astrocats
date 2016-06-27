@@ -177,31 +177,31 @@ def do_wiserep_spectra(catalog):
                             # ' ' + observer + ' ' + reducer + ' ' + specfile +
                             # ' ' + bibcode + ' ' + redshift)
 
-                            secondarysource = events[name].add_source(
+                            secondarysource = catalog.events[name].add_source(
                                 srcname=secondaryreference,
                                 url=secondaryrefurl,
                                 bibcode=secondarybibcode, secondary=True)
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'alias', name, secondarysource)
                             if bibcode:
                                 newbibcode = bibcode
                                 if bibcode in wiserepbibcorrectdict:
                                     newbibcode = wiserepbibcorrectdict[bibcode]
                                 if newbibcode:
-                                    source = events[name].add_source(
+                                    source = catalog.events[name].add_source(
                                         bibcode=unescape(newbibcode))
                                 else:
-                                    source = events[name].add_source(
+                                    source = catalog.events[name].add_source(
                                         srcname=unescape(bibcode))
                                 sources = uniq_cdl([source, secondarysource])
                             else:
                                 sources = secondarysource
 
                             if claimedtype not in ['Other']:
-                                events[name].add_quantity(
+                                catalog.events[name].add_quantity(
                                     'claimedtype', claimedtype,
                                     secondarysource)
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'redshift', redshift, secondarysource)
 
                             if not specpath:

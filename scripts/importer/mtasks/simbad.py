@@ -69,12 +69,12 @@ def do_simbad(catalog):
             if is_number(ali):
                 continue
             ali = name_clean(ali)
-            events[name].add_quantity('alias', ali, source)
+            catalog.events[name].add_quantity('alias', ali, source)
         if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
             csources = ','.join(
-                [source, events[name].add_source(bibcode=row['COO_BIBCODE'])])
-            events[name].add_quantity('ra', row['RA'], csources)
-            events[name].add_quantity('dec', row['DEC'], csources)
+                [source, catalog.events[name].add_source(bibcode=row['COO_BIBCODE'])])
+            catalog.events[name].add_quantity('ra', row['RA'], csources)
+            catalog.events[name].add_quantity('dec', row['DEC'], csources)
         if row['SP_BIBCODE']:
             ssources = uniq_cdl([source,
                                  events[name]
@@ -82,7 +82,7 @@ def do_simbad(catalog):
                                 ([events[name]
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
-            events[name].add_quantity('claimedtype',
+            catalog.events[name].add_quantity('claimedtype',
                                       row['SP_TYPE']
                                       .replace('SN.', '')
                                       .replace('SN', '').replace('(~)', '')

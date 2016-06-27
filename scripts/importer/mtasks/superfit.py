@@ -56,9 +56,9 @@ def do_superfit_spectra(catalog):
             else:
                 epoff = ''
 
-            source = events[name].add_source(
+            source = catalog.events[name].add_source(
                 srcname='Superfit', url=superfit_url, secondary=True)
-            events[name].add_quantity('alias', oldname, source)
+            catalog.events[name].add_quantity('alias', oldname, source)
 
             with open(sffile) as ff:
                 rows = ff.read().splitlines()

@@ -38,7 +38,7 @@ def do_external_radio(catalog):
                         fluxdensity=cols[3], e_fluxdensity=cols[
                             4], u_fluxdensity='µJy',
                         instrument=cols[5], source=source)
-                    events[name].add_quantity('alias', oldname, source)
+                    catalog.events[name].add_quantity('alias', oldname, source)
 
     events = Events.journal_events(tasks, args, events, log)
     return events
@@ -53,7 +53,7 @@ def do_external_xray(catalog):
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
-                    source = events[name].add_source(bibcode=line.split()[-1])
+                    source = catalog.events[name].add_source(bibcode=line.split()[-1])
                 elif li in [1, 2, 3]:
                     continue
                 else:
@@ -66,7 +66,7 @@ def do_external_xray(catalog):
                         photonindex=cols[15], instrument=cols[
                             17], nhmw=cols[11],
                         upperlimit=(float(cols[5]) < 0), source=source)
-                    events[name].add_quantity('alias', oldname, source)
+                    catalog.events[name].add_quantity('alias', oldname, source)
 
     events = Events.journal_events(tasks, args, events, log)
     return events

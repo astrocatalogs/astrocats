@@ -36,25 +36,25 @@ def do_ucb_photo(catalog):
         oldname = phot['ObjName']
         name = catalog.add_event(oldname)
 
-        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl,
+        sec_source = catalog.events[name].add_source(srcname=sec_ref, url=sec_refurl,
                                              bibcode=sec_refbib,
                                              secondary=True)
-        events[name].add_quantity('alias', oldname, sec_source)
+        catalog.events[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
         if phot['Reference']:
-            sources += [events[name].add_source(bibcode=phot['Reference'])]
+            sources += [catalog.events[name].add_source(bibcode=phot['Reference'])]
         sources = uniq_cdl(sources)
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
             for ct in phot['Type'].strip().split(','):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'claimedtype', ct.replace('-norm', '').strip(), sources)
         if phot['DiscDate']:
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'discoverdate', phot['DiscDate'].replace('-', '/'), sources)
         if phot['HostName']:
             host = urllib.parse.unquote(phot['HostName']).replace('*', '')
-            events[name].add_quantity('host', host, sources)
+            catalog.events[name].add_quantity('host', host, sources)
         filename = phot['Filename'] if phot['Filename'] else ''
 
         if not filename:
@@ -120,25 +120,25 @@ def do_ucb_spectra(catalog):
         oldname = name
         name = catalog.add_event(name)
 
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib,
             secondary=True)
-        events[name].add_quantity('alias', name, sec_source)
+        catalog.events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
-            sources += [events[name].add_source(bibcode=spectrum['Reference'])]
+            sources += [catalog.events[name].add_source(bibcode=spectrum['Reference'])]
         sources = uniq_cdl(sources)
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
             for ct in spectrum['Type'].strip().split(','):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'claimedtype', ct.replace('-norm', '').strip(), sources)
         if spectrum['DiscDate']:
             ddate = spectrum['DiscDate'].replace('-', '/')
-            events[name].add_quantity('discoverdate', ddate, sources)
+            catalog.events[name].add_quantity('discoverdate', ddate, sources)
         if spectrum['HostName']:
             host = urllib.parse.unquote(spectrum['HostName']).replace('*', '')
-            events[name].add_quantity('host', host, sources)
+            catalog.events[name].add_quantity('host', host, sources)
         if spectrum['UT_Date']:
             epoch = str(spectrum['UT_Date'])
             year = epoch[:4]

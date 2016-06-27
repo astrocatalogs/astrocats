@@ -35,22 +35,22 @@ def do_sdss(catalog):
                 else:
                     name = 'SN' + row[5]
                 name = catalog.add_event(name)
-                source = events[name].add_source(bibcode=bibcode)
-                events[name].add_quantity('alias', name, source)
-                events[name].add_quantity(
+                source = catalog.events[name].add_source(bibcode=bibcode)
+                catalog.events[name].add_quantity('alias', name, source)
+                catalog.events[name].add_quantity(
                     'alias', 'SDSS-II SN ' + row[3], source)
 
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
-                    events[name].add_quantity('discoverdate', year, source)
+                    catalog.events[name].add_quantity('discoverdate', year, source)
 
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'ra', row[-4], source, unit='floatdegrees')
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'dec', row[-2], source, unit='floatdegrees')
             if rr == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
-                events[name].add_quantity('redshift', row[2], source,
+                catalog.events[name].add_quantity('redshift', row[2], source,
                                           error=error,
                                           kind='heliocentric')
             if rr >= 19:

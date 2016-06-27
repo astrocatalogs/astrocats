@@ -30,22 +30,22 @@ def do_csp_photo(catalog):
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
         refurl = 'http://csp.obs.carnegiescience.edu/data'
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             bibcode=refbib, srcname=reference, url=refurl)
-        events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('alias', name, source)
 
         year = re.findall(r'\d+', name)[0]
-        events[name].add_quantity('discoverdate', year, source)
+        catalog.events[name].add_quantity('discoverdate', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
                     redz = row[0].split(' ')[-1]
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'redshift', redz, source, kind='cmb')
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'ra', row[1].split(' ')[-1], source)
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'dec', row[2].split(' ')[-1], source)
                 continue
             for v, val in enumerate(row):
@@ -84,8 +84,8 @@ def do_csp_spectra(catalog):
         name = catalog.add_event(name)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
-        source = events[name].add_source(bibcode='2013ApJ...773...53F')
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(bibcode='2013ApJ...773...53F')
+        catalog.events[name].add_quantity('alias', name, source)
 
         data = csv.reader(open(fname, 'r'), delimiter=' ',
                           skipinitialspace=True)
@@ -95,7 +95,7 @@ def do_csp_spectra(catalog):
                 jd = row[1].strip()
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
-                events[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.events[name].add_quantity('redshift', row[1].strip(), source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))

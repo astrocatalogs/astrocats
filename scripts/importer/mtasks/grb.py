@@ -32,9 +32,9 @@ def do_grb(catalog):
                                     row[0], log,
                                     srcname='Gamma-ray Bursts Catalog',
                                     url='http://grbcatalog.org')
-        events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
-        events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
-        events[name].add_quantity('redshift', row[8], source)
+        catalog.events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
+        catalog.events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
+        catalog.events[name].add_quantity('redshift', row[8], source)
 
     events = Events.journal_events(tasks, args, events, log)
     return events

@@ -28,8 +28,8 @@ def do_snls_photo(catalog):
             continue
         name = 'SNLS-' + row[0]
         name = catalog.add_event(name)
-        source = events[name].add_source(bibcode='2010A&A...523A...7G')
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(bibcode='2010A&A...523A...7G')
+        catalog.events[name].add_quantity('alias', name, source)
         band = row[1]
         mjd = row[2]
         sig = get_sig_digits(flux.split('E')[0]) + 1
@@ -72,10 +72,10 @@ def do_snls_spectra(catalog):
                 tasks, args, events, log)
         oldname = name
         name = catalog.add_event(name)
-        source = events[name].add_source(bibcode='2009A&A...507...85B')
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(bibcode='2009A&A...507...85B')
+        catalog.events[name].add_quantity('alias', name, source)
 
-        events[name].add_quantity(
+        catalog.events[name].add_quantity(
             'discoverdate', '20' + fileparts[1][:2], source)
 
         f = open(fname, 'r')
@@ -85,7 +85,7 @@ def do_snls_spectra(catalog):
             if row[0] == '@TELESCOPE':
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                events[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.events[name].add_quantity('redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))

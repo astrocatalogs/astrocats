@@ -53,14 +53,14 @@ def do_des(catalog):
                 events[name]
                 .add_source(srcname='ATel ' + atellink.split('=')[-1],
                             url=atellink))
-        sources += [events[name].add_source(bibcode='2012ApJ...753..152B'),
-                    events[name].add_source(bibcode='2015AJ....150..150F'),
-                    events[name].add_source(bibcode='2015AJ....150...82G'),
-                    events[name].add_source(bibcode='2015AJ....150..172K')]
+        sources += [catalog.events[name].add_source(bibcode='2012ApJ...753..152B'),
+                    catalog.events[name].add_source(bibcode='2015AJ....150..150F'),
+                    catalog.events[name].add_source(bibcode='2015AJ....150...82G'),
+                    catalog.events[name].add_source(bibcode='2015AJ....150..172K')]
         sources = ','.join(sources)
-        events[name].add_quantity('alias', name, sources)
-        events[name].add_quantity('ra', ra, sources)
-        events[name].add_quantity('dec', dec, sources)
+        catalog.events[name].add_quantity('alias', name, sources)
+        catalog.events[name].add_quantity('ra', ra, sources)
+        catalog.events[name].add_quantity('dec', dec, sources)
 
         html2 = load_cached_url(args, current_task, des_trans_url + name,
                                 des_path + name + '.html')

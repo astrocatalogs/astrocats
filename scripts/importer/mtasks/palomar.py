@@ -47,8 +47,8 @@ def do_ptf(catalog):
                 alias = name.split('(')[0].strip(' ')
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
                 name = catalog.add_event(name)
-                source = events[name].add_source(bibcode='2012PASP..124..668Y')
-                events[name].add_quantity('alias', alias, source)
+                source = catalog.events[name].add_source(bibcode='2012PASP..124..668Y')
+                catalog.events[name].add_quantity('alias', alias, source)
             else:
                 # events, name = Events.add_event(tasks, args,
                 #                                 events, name, log)
@@ -70,20 +70,20 @@ def do_ptf(catalog):
             else:
                 name = 'PTF' + cols[0]
             name = catalog.add_event(name)
-            source = events[name].add_source(bibcode='2016arXiv160408207P')
-            events[name].add_quantity('alias', name, source)
+            source = catalog.events[name].add_source(bibcode='2016arXiv160408207P')
+            catalog.events[name].add_quantity('alias', name, source)
             if alias:
-                events[name].add_quantity('alias', alias, source)
-            events[name].add_quantity('ra', cols[1], source)
-            events[name].add_quantity('dec', cols[2], source)
-            events[name].add_quantity('claimedtype', 'SLSN-' + cols[3], source)
-            events[name].add_quantity(
+                catalog.events[name].add_quantity('alias', alias, source)
+            catalog.events[name].add_quantity('ra', cols[1], source)
+            catalog.events[name].add_quantity('dec', cols[2], source)
+            catalog.events[name].add_quantity('claimedtype', 'SLSN-' + cols[3], source)
+            catalog.events[name].add_quantity(
                 'redshift', cols[4], source, kind='spectroscopic')
             maxdate = cols[6].replace('-', '/')
             upl = maxdate.startswith('<')
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'ebv', cols[7], source, kind='spectroscopic')
             events, name = Events.add_event(
                 tasks, args, events, 'PTF' + suffix, log)

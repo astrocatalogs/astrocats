@@ -29,18 +29,18 @@ def do_gaia(catalog):
         if ri == 0 or not row:
             continue
         name = catalog.add_event(row[0])
-        source = events[name].add_source(srcname=reference, url=refurl)
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(srcname=reference, url=refurl)
+        catalog.events[name].add_quantity('alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
-        events[name].add_quantity('discoverdate', year, source)
-        events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
-        events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
+        catalog.events[name].add_quantity('discoverdate', year, source)
+        catalog.events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
+        catalog.events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
         if row[7] and row[7] != 'unknown':
             type = row[7].replace('SNe', '').replace('SN', '').strip()
-            events[name].add_quantity('claimedtype', type, source)
+            catalog.events[name].add_quantity('claimedtype', type, source)
         elif any([xx in row[9].upper() for xx in
                   ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
-            events[name].add_quantity('claimedtype', 'Candidate', source)
+            catalog.events[name].add_quantity('claimedtype', 'Candidate', source)
 
         if ('aka' in row[9].replace('gakaxy', 'galaxy').lower() and
                 'AKARI' not in row[9]):
@@ -58,7 +58,7 @@ def do_gaia(catalog):
                         csi + 1].strip('(),:.').replace('PSNJ', 'PSN J')
                     if alias[:6] == 'ASASSN' and alias[6] != '-':
                         alias = 'ASASSN-' + alias[6:]
-                    events[name].add_quantity('alias', alias, source)
+                    catalog.events[name].add_quantity('alias', alias, source)
                     break
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'

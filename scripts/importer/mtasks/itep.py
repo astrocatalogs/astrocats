@@ -43,18 +43,18 @@ def do_itep(catalog):
             sec_reference = ('Sternberg Astronomical Institute '
                              'Supernova Light Curve Catalogue')
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
-            sec_source = events[name].add_source(
+            sec_source = catalog.events[name].add_source(
                 srcname=sec_reference, url=sec_refurl, secondary=True)
-            events[name].add_quantity('alias', oldname, sec_source)
+            catalog.events[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
-            events[name].add_quantity('discoverdate', year, sec_source)
+            catalog.events[name].add_quantity('discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
-            source = events[name].add_source(bibcode=bibcode)
+            source = catalog.events[name].add_source(bibcode=bibcode)
         else:
             needsbib.append(reference)
-            source = events[name].add_source(
+            source = catalog.events[name].add_source(
                 srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:

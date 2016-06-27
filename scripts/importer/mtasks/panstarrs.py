@@ -26,16 +26,16 @@ def do_ps_mds(catalog):
                 continue
             cols = [x.strip() for x in row.split(',')]
             name = catalog.add_event(cols[0])
-            source = events[name].add_source(bibcode='2015ApJ...799..208S')
-            events[name].add_quantity('alias', name, source)
-            events[name].add_quantity('ra', cols[2], source)
-            events[name].add_quantity('dec', cols[3], source)
+            source = catalog.events[name].add_source(bibcode='2015ApJ...799..208S')
+            catalog.events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('ra', cols[2], source)
+            catalog.events[name].add_quantity('dec', cols[3], source)
             astrot = astrotime(float(cols[4]), format='mjd').datetime
             ddate = make_date_string(astrot.year, astrot.month, astrot.day)
-            events[name].add_quantity('discoverdate', ddate, source)
-            events[name].add_quantity(
+            catalog.events[name].add_quantity('discoverdate', ddate, source)
+            catalog.events[name].add_quantity(
                 'redshift', cols[5], source, kind='spectroscopic')
-            events[name].add_quantity('claimedtype', 'II P', source)
+            catalog.events[name].add_quantity('claimedtype', 'II P', source)
     events = Events.journal_events(tasks, args, events, log)
     return events
 
@@ -150,9 +150,9 @@ def do_ps_threepi(catalog):
                        .add_source(srcname='Pan-STARRS 3Pi',
                                    url=('http://psweb.mp.qub.ac.uk/'
                                         'ps1threepi/psdb/'))]
-            events[name].add_quantity('alias', name, sources[0])
+            catalog.events[name].add_quantity('alias', name, sources[0])
             for ref in refs:
-                sources.append(events[name].add_source(
+                sources.append(catalog.events[name].add_source(
                     srcname=ref[0], url=ref[1]))
             source = uniq_cdl(sources)
             for alias in aliases:
@@ -160,10 +160,10 @@ def do_ps_threepi(catalog):
                 if alias[:3] in ['CSS', 'SSS', 'MLS']:
                     newalias = alias.replace('-', ':', 1)
                 newalias = newalias.replace('PSNJ', 'PSN J')
-                events[name].add_quantity('alias', newalias, source)
-            events[name].add_quantity('ra', ra, source)
-            events[name].add_quantity('dec', dec, source)
-            events[name].add_quantity('claimedtype', ctype, source)
+                catalog.events[name].add_quantity('alias', newalias, source)
+            catalog.events[name].add_quantity('ra', ra, source)
+            catalog.events[name].add_quantity('dec', dec, source)
+            catalog.events[name].add_quantity('claimedtype', ctype, source)
 
             fname2 = os.path.join(PATH.REPO_EXTERNAL, '3pi/candidate-')
             fname2 += pslink.rstrip('/').split('/')[-1] + '.html'
@@ -247,9 +247,9 @@ def do_ps_threepi(catalog):
             # Skip galaxies with just SDSS id
             if is_number(hostname):
                 continue
-            events[name].add_quantity('host', hostname, source)
+            catalog.events[name].add_quantity('host', hostname, source)
             if redshift:
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
             if args.update:
                 events = Events.journal_events(

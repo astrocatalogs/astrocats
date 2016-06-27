@@ -20,8 +20,8 @@ def do_pessto(catalog):
             continue
         name = row[1]
         name = catalog.add_event(name)
-        source = events[name].add_source(bibcode='2015A&A...579A..40S')
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(bibcode='2015A&A...579A..40S')
+        catalog.events[name].add_quantity('alias', name, source)
         for hi, ci in enumerate(range(3, len(row) - 1, 2)):
             if not row[ci]:
                 continue

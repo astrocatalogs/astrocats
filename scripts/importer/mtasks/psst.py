@@ -27,9 +27,9 @@ def do_psst(catalog):
              name,
              source) = Events.new_event(tasks, args, events, row[0], log,
                                         bibcode='2016arXiv160204156S')
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'claimedtype', row[3].replace('SN', '').strip('() '), source)
-            events[name].add_quantity('redshift', row[5].strip(
+            catalog.events[name].add_quantity('redshift', row[5].strip(
                 '() '), source, kind='spectroscopic')
 
     file_path = os.path.join(
@@ -44,11 +44,11 @@ def do_psst(catalog):
              name,
              source) = Events.new_event(tasks, args, events, row[0], log,
                                         bibcode='2016arXiv160204156S')
-            events[name].add_quantity('ra', row[1], source)
-            events[name].add_quantity('dec', row[2], source)
+            catalog.events[name].add_quantity('ra', row[1], source)
+            catalog.events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[4]), format='mjd').datetime
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
-            events[name].add_quantity('discoverdate', discoverdate, source)
+            catalog.events[name].add_quantity('discoverdate', discoverdate, source)
 
     events = Events.journal_events(tasks, args, events, log)
 
@@ -65,16 +65,16 @@ def do_psst(catalog):
              source) = Events.new_event(tasks, args, events, row[0], log,
                                         srcname='Smartt et al. 2016',
                                         url='http://arxiv.org/abs/1606.04795')
-            events[name].add_quantity('ra', row[1], source)
-            events[name].add_quantity('dec', row[2], source)
+            catalog.events[name].add_quantity('ra', row[1], source)
+            catalog.events[name].add_quantity('dec', row[2], source)
             mldt = astrotime(float(row[3]), format='mjd').datetime
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
-            events[name].add_quantity('discoverdate', discoverdate, source)
-            events[name].add_quantity('claimedtype', row[6], source)
-            events[name].add_quantity(
+            catalog.events[name].add_quantity('discoverdate', discoverdate, source)
+            catalog.events[name].add_quantity('claimedtype', row[6], source)
+            catalog.events[name].add_quantity(
                 'redshift', row[7], source, kind='spectroscopic')
             for alias in [x.strip() for x in row[8].split(',')]:
-                events[name].add_quantity('alias', alias, source)
+                catalog.events[name].add_quantity('alias', alias, source)
 
     events = Events.journal_events(tasks, args, events, log)
 

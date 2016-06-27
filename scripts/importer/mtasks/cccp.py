@@ -32,9 +32,9 @@ def do_cccp(catalog):
                     name = 'SN' + row[0].split('SN ')[-1]
                     events, name = Events.add_event(
                         tasks, args, events, name, log)
-                    source = events[name].add_source(
+                    source = catalog.events[name].add_source(
                         bibcode='2012ApJ...744...10K')
-                    events[name].add_quantity('alias', name, source)
+                    catalog.events[name].add_quantity('alias', name, source)
                 elif rr >= 5:
                     mjd = str(Decimal(row[0]) + 53000)
                     for bb, band in enumerate(cccpbands):
@@ -69,7 +69,7 @@ def do_cccp(catalog):
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
                                        '/home/iair/sc_cccp.html')))
-            events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('alias', name, source)
 
             if task_obj.load_archive(args):
                 fname = os.path.join(PATH.REPO_EXTERNAL,
@@ -159,20 +159,20 @@ def do_cpcs(catalog):
         else:
             continue
 
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname='Cambridge Photometric Calibration Server',
             url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
-        events[name].add_quantity('alias', oldname, sec_source)
+        catalog.events[name].add_quantity('alias', oldname, sec_source)
         unit_deg = 'floatdegrees'
-        events[name].add_quantity(
+        catalog.events[name].add_quantity(
             'ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
-        events[name].add_quantity('dec', str(
+        catalog.events[name].add_quantity('dec', str(
             alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = ('http://gsaweb.ast.cam.ac.uk/'
                     'followup/get_alert_lc_data?alert_id=' +
                     str(ai))
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'

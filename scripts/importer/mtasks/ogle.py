@@ -107,32 +107,32 @@ def do_ogle(catalog):
                         f.write(csvtxt)
 
                 lcdat = csvtxt.splitlines()
-                sources = [events[name].add_source(
+                sources = [catalog.events[name].add_source(
                     srcname=reference, url=refurl)]
-                events[name].add_quantity('alias', name, sources[0])
+                catalog.events[name].add_quantity('alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
-                    sources.append(events[name].add_source(
+                    sources.append(catalog.events[name].add_source(
                         srcname=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
 
                 if name.startswith('OGLE'):
                     if name[4] == '-':
                         if is_number(name[5:9]):
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'discoverdate', name[5:9], sources)
                     else:
                         if is_number(name[4:6]):
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'discoverdate', '20' + name[4:6], sources)
 
                 # RA and Dec from OGLE pages currently not reliable
-                # events[name].add_quantity('ra', ra, sources)
-                # events[name].add_quantity('dec', dec, sources)
+                # catalog.events[name].add_quantity('ra', ra, sources)
+                # catalog.events[name].add_quantity('dec', dec, sources)
                 if claimedtype and claimedtype != '-':
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()

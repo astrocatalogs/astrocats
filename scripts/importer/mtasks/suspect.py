@@ -53,34 +53,34 @@ def do_suspect_photo(catalog):
                 reference = str(link).replace('"', "'")
 
         bibcode = unescape(suspectrefdict[reference])
-        source = events[name].add_source(bibcode=bibcode)
+        source = catalog.events[name].add_source(bibcode=bibcode)
 
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname=sec_ref, url=sec_refurl, secondary=True)
-        events[name].add_quantity('alias', oldname, sec_source)
+        catalog.events[name].add_quantity('alias', oldname, sec_source)
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
-            events[name].add_quantity('discoverdate', year, sec_source)
-            events[name].add_quantity('host', names[1].split(':')[
+            catalog.events[name].add_quantity('discoverdate', year, sec_source)
+            catalog.events[name].add_quantity('host', names[1].split(':')[
                                       1].strip(), sec_source)
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'redshift', redshifts[0].split(':')[1].strip(),
                     sec_source, kind='heliocentric')
             # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric
             # Velocity'))
             # if hvels:
             #     vel = hvels[0].split(':')[1].strip().split(' ')[0]
-            #     events[name].add_quantity('velocity', vel, sec_source,
+            #     catalog.events[name].add_quantity('velocity', vel, sec_source,
             # kind='heliocentric')
             types = bandsoup.body.findAll(text=re.compile('Type'))
 
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'claimedtype', types[0].split(':')[1].strip().split(' ')[0],
                 sec_source)
 
@@ -143,10 +143,10 @@ def do_suspect_spectra(catalog):
             sec_ref = 'SUSPECT'
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'
-            sec_source = events[name].add_source(
+            sec_source = catalog.events[name].add_source(
                 srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc,
                 secondary=True)
-            events[name].add_quantity('alias', name, sec_source)
+            catalog.events[name].add_quantity('alias', name, sec_source)
             fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                                  'Suspect', folder, eventfolder)
             eventspectra = next(os.walk(fpath))[2]
@@ -162,7 +162,7 @@ def do_suspect_spectra(catalog):
                 elif name in sourcedict:
                     bibcode = sourcedict[name]
                 if bibcode:
-                    source = events[name].add_source(bibcode=unescape(bibcode))
+                    source = catalog.events[name].add_source(bibcode=unescape(bibcode))
                     sources += [source]
                 sources = uniq_cdl(sources)
 
