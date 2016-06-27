@@ -476,7 +476,7 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
         log.debug("`newname`: '{}' (name: '{}') already exists.".format(newname, name))
         return events, newname
 
-    # If event is alias of another event, find and return that
+    # If event is alias of another event *in `events`*, find and return that
     match_name = find_event_name_of_alias(events, newname)
     if match_name is not None:
         log.debug("`newname`: '{}' (name: '{}') already exist as alias for '{}'.".format(
