@@ -3,12 +3,13 @@
 import csv
 import os
 
+from astropy.time import Time as astrotime
+
 from scripts import PATH
 from scripts.utils import pbar
-from astropy.time import Time as astrotime
-from ..funcs import (make_date_string)
 
 from .. import Events
+from ..funcs import make_date_string
 
 
 def do_psst(events, stubs, args, tasks, task_obj, log):

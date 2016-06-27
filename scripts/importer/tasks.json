@@ -76,7 +76,7 @@
         "nice_name": "%pre ASCII",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.ascii",
         "function": "do_ascii",
         "priority": 7
     },
