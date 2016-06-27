@@ -53,7 +53,7 @@ class Entry(OrderedDict):
         alias_quanta = self.get(KEYS.ALIAS, [])
         aliases = [aq['value'] for aq in alias_quanta]
         if includename and self[KEYS.NAME] not in aliases:
-            aliases = [self.[KEYS.NAME]] + aliases
+            aliases = [self[KEYS.NAME]] + aliases
         return aliases
 
     def get_stub(self):
@@ -68,7 +68,7 @@ class Entry(OrderedDict):
         >>> events[name] = events[name].get_stub()
 
         """
-        stub = Entry(self[KEYS.NAME], stub=True)
+        stub = EVENT(self[KEYS.NAME], stub=True)
         if KEYS.ALIAS in self.keys():
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
@@ -100,8 +100,8 @@ class EVENT(Entry):
     filename = ''
     _source_syns = {}
 
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, stub=False):
+        super().__init__(name, stub=stub)
 
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
@@ -660,8 +660,8 @@ def find_event_name_of_alias(events, alias):
     for name, event in events.items():
         aliases = event.get_aliases()
         if alias in aliases:
-            if ((KEYS.DISTINCS not in event.keys()) or
-                    (alias not in event[KEYS.DISTINCS])):
+            if ((KEYS.DISTINCTS not in event.keys()) or
+                    (alias not in event[KEYS.DISTINCTS])):
                 return name
 
     return None
