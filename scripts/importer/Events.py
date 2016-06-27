@@ -14,9 +14,9 @@ from ..utils import (get_repo_folders, get_repo_paths, get_repo_years,
 from .constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, OSC_BIBCODE,
                         OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY,
                         TRAVIS_QUERY_LIMIT)
-from .funcs import (get_atels_dict, get_cbets_dict,
+from .funcs import (event_attr_priority, get_atels_dict, get_cbets_dict,
                     get_iaucs_dict, host_clean, jd_to_mjd, name_clean,
-                    radec_clean)
+                    null_field, radec_clean, uniq_cdl)
 
 
 class KEYS:
@@ -682,7 +682,7 @@ def clean_event(dirty_event):
     """
     bibcodes = []
 
-    # Rebuild the sources
+    # Rebuild the sources if they exist
     try:
         old_sources = dirty_event[KEYS.SOURCES]
         del dirty_event[KEYS.SOURCES]
@@ -769,7 +769,7 @@ def get_event_text(eventfile):
 
 
 def journal_events(tasks, args, events, log, clear=True, gz=False,
-                   bury=False):
+                   bury=False, write_stubs=False):
     """Write all events in `events` to files, and clear.  Depending on
     arguments and `tasks`.
 
@@ -785,11 +785,12 @@ def journal_events(tasks, args, events, log, clear=True, gz=False,
         non_sne_types = [x.upper() for x in non_sne_types]
 
     # Write it all out!
-    # NOTE: this needs to use a `list` wrapper to allow modification of dictionary
-    log.info("Journaling {} events, {} existing stubs.".format(len(events), len(stubs)))
+    # NOTE: this needs to use a `list` wrapper to allow modification of dict
     for name in list(events.keys()):
         if 'writeevents' in tasks:
-            # See if this event should be buried
+            # If this is a stub and we aren't writing stubs, skip
+            if events[name]._stub and not write_stubs:
+                continue
 
             # Bury non-SN events here if only claimed type is non-SN type,
             # or if primary name starts with a non-SN prefix.
@@ -830,16 +831,8 @@ def journal_events(tasks, args, events, log, clear=True, gz=False,
                               '.json.gz; cd ' + '../scripts')
 
         if clear:
-            # See if this stub already exists or is new, to log appropriately
-            if name in stubs:
-                stub_action = 'exists'
-            else:
-                stub_action = 'added'
-            # Store stub of this object
-            stubs.update({name: events[name].get_stub()})
-            # Delete object
-            del events[name]
-            log.debug("Stub '{}' for '{}', deleted event.".format(stub_action, name))
+            events[name] = events[name].get_stub()
+            log.debug("Entry for '{}' converted to stub".format(name))
 
     return events
 
@@ -906,73 +899,70 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
 
 
 def load_stubs(tasks, args, events, log):
-    """Load a 'stub' dictionary for all repository files.
-
-    'stubs' only contain an event's name and aliases for cross-referencing.
-
-    Returns
-    -------
-    stubs : OrderedDict,
-        Dictionary of (name: stub), pairs where the stub contains the
-        `KEYS.NAME` and `KEYS.ALIAS` parameters only.
-
+    """
     """
     currenttask = 'Loading event stubs'
     files = repo_file_list()
-    stubs = OrderedDict()
     for fi in pbar(files, currenttask):
         fname = fi
+        # FIX: should this be ``fi.endswith(``.gz')`` ?
         if '.gz' in fi:
             fname = _uncompress_gz(fi)
-        name = os.path.basename(os.path.splitext(fname)[
-                                0]).replace('.json', '')
+        name = os.path.basename(
+            os.path.splitext(fname)[0]).replace('.json', '')
         new_event = load_event_from_file(
             events, args, tasks, log, path=fname, delete=False)
-        stubs[name] = new_event.get_stub()
+        # Make sure a non-stub event doesnt already exist with this name
+        if name in events and not events[name]._stub:
+            err_str = ("ERROR: non-stub event already exists with name '{}'"
+                       "".format(name))
+            log.error(err_str)
+            raise RuntimeError(err_str)
+        events[name] = new_event.get_stub()
         log.debug("Added stub for '{}'".format(name))
 
-    return stubs
+    return events
 
 
 def merge_duplicates(events, args, tasks, task_obj, log):
     """Merge and remove duplicate events.
 
-    Compares each entry ('name') in `stubs` to all later entries to check for duplicates in name
-    or alias.  If a duplicate is found, they are merged and written to file.
+    Compares each entry ('name') in `stubs` to all later entries to check for
+    duplicates in name or alias.  If a duplicate is found, they are merged and
+    written to file.
     """
     log.debug("Events.merge_duplicates()")
-    # Warn if there are still events; which suggests they havent been saved (journaled) yet??
-    if len(events) != 0:
-        err_str = "WARNING: `events` is not empty ({})".format(len(events))
-        log.error(err_str)
-        raise RuntimeError(err_str)
-
-    # Warn if there are no stubs (suggests no saved files); FIX: should this lead to a `return`??
-    if len(stubs) == 0:
-        log.error("WARNING: `stubs` is empty!")
+    if len(events) == 0:
+        log.error("WARNING: `events` is empty, loading stubs")
         if args.update:
-            log.warning('No sources changed, event files unchanged in update.  Skipping merge.')
+            log.warning("No sources changed, event files unchanged in update."
+                        "  Skipping merge.")
             return events
-        stubs = load_stubs(tasks, args, events, log)
+        events = load_stubs(tasks, args, events, log)
 
     currenttask = 'Merging duplicate events'
 
-    keys = list(sorted(stubs.keys()))
+    keys = list(sorted(events.keys()))
     for n1, name1 in enumerate(pbar(keys, currenttask)):
-        at_name = ['AT' + name1[2:]] if (name1.startswith('SN') and is_number(name1[2:6])) else []
-        allnames1 = set(events[name1].get_aliases() + at_name)
+        allnames1 = set(events[name1].get_aliases())
+        if name1.startswith('SN') and is_number(name1[2:6]):
+            allnames1 = allnames1.union(['AT' + name1[2:]])
 
         # Search all later names
         for name2 in keys[n1+1:]:
-            at_name = ['AT' + name2[2:]] if name2.startswith('SN') and is_number(name2[2:6]) else []
-            allnames2 = set(events[name2].get_aliases() + at_name)
+            allnames2 = set(events[name2].get_aliases())
+            if name2.startswith('SN') and is_number(name2[2:6]):
+                allnames2.union(['AT' + name2[2:]])
+
             # If there are any common names or aliases, merge
             if len(allnames1 & allnames2):
-                log.warning("Found single event with multiple entries ('{}' and '{}'), merging."
-                            "".format(name1, name2))
+                log.warning("Found single event with multiple entries "
+                            "('{}' and '{}'), merging.".format(name1, name2))
 
-                load1 = load_event_from_file(events, args, tasks, log, name1, delete=True)
-                load2 = load_event_from_file(events, args, tasks, log, name2, delete=True)
+                load1 = load_event_from_file(
+                    events, args, tasks, log, name1, delete=True)
+                load2 = load_event_from_file(
+                    events, args, tasks, log, name2, delete=True)
                 if load1 is not None and load2 is not None:
                     priority1 = 0
                     priority2 = 0
@@ -995,8 +985,8 @@ def merge_duplicates(events, args, tasks, task_obj, log):
                     log.warning('Duplicate already deleted')
 
                 if len(events) != 1:
-                    log.error("WARNING: len(events) = {}, expected 1.  Still journaling...".format(
-                        len(events)))
+                    log.error("WARNING: len(events) = {}, expected 1.  "
+                              "Still journaling...".format(len(events)))
                 events = journal_events(tasks, args, events, log)
 
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
@@ -1016,36 +1006,27 @@ def set_preferred_names(events, args, tasks, task_obj, log):
     """
     log.debug("Events.set_preferred_names()")
 
-    # raise error if there are still events; which suggests they havent been saved (journaled) yet??
-    if len(events) != 0:
-        err_str = "ERROR: `events` is not empty ({})".format(len(events))
-        log.error(err_str)
-        raise RuntimeError(err_str)
-
-    # Warn if there are no stubs (suggests no saved files); FIX: should this lead to a `return`??
-    if len(stubs) == 0:
-        log.error("WARNING: `stubs` is empty!")
-        stubs = load_stubs(tasks, args, events, log)
+    if len(events) == 0:
+        log.error("WARNING: `events` is empty, loading stubs")
+        events = load_stubs(tasks, args, events, log)
 
     currenttask = 'Setting preferred names'
-    for ni, name in pbar(list(sorted(stubs.keys())), currenttask):
+    for ni, name in pbar(list(sorted(events.keys())), currenttask):
         newname = ''
         aliases = events[name].get_aliases()
         # if there are no other options to choose from, skip
         if len(aliases) <= 1:
             continue
         # If the name is already in the form 'SN####AA' then keep using that
-        if (name.startswith('SN') and ((is_number(name[2:6]) and not
-                                        is_number(name[6:])) or
-                                       (is_number(name[2:5]) and not
-                                        is_number(name[5:])))):
+        if (name.startswith('SN') and
+            ((is_number(name[2:6]) and not is_number(name[6:])) or
+             (is_number(name[2:5]) and not is_number(name[5:])))):
             continue
         # If one of the aliases is in the form 'SN####AA' then use that
         for alias in aliases:
-            if (alias[:2] == 'SN' and ((is_number(alias[2:6]) and not
-                                        is_number(alias[6:])) or
-                                       (is_number(alias[2:5]) and not
-                                        is_number(alias[5:])))):
+            if (alias[:2] == 'SN' and
+                ((is_number(alias[2:6]) and not is_number(alias[6:])) or
+                 (is_number(alias[2:5]) and not is_number(alias[5:])))):
                 newname = alias
                 break
         # Otherwise, name based on the 'discoverer' survey
@@ -1089,20 +1070,23 @@ def set_preferred_names(events, args, tasks, task_obj, log):
         if newname and name != newname:
             # Make sure new name doesn't already exist
             if load_event_from_file(events, args, tasks, log, newname):
-                log.error("WARNING: `newname` already exists... should do something about that...")
+                log.error("WARNING: `newname` already exists... "
+                          "should do something about that...")
                 continue
 
-            new_event = load_event_from_file(events, args, tasks, log, name, delete=True)
+            new_event = load_event_from_file(
+                events, args, tasks, log, name, delete=True)
             if new_event is None:
-                log.error("Could not load `new_event` with name '{}'".format(name))
+                log.error("Could not load `new_event` with name '{}'".format(
+                    name))
             else:
-                log.info("Changing event from name '{}' to preferred name '{}'".format(
-                    name, newname))
+                log.info("Changing event from name '{}' to preferred name '{}'"
+                         "".format(name, newname))
                 events[newname] = new_event
                 events[newname][KEYS.NAME] = newname
                 if name in events:
-                    log.error("WARNING: `name` = '{}' is in `events`... shouldnt happen?".format(
-                        name))
+                    log.error("WARNING: `name` = '{}' is in `events`... "
+                              "shouldnt happen?".format(name))
                     del events[name]
                 events = journal_events(tasks, args, events, log)
 
