@@ -36,7 +36,7 @@
         "nice_name": "%pre SIMBAD",
         "active": false,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.simbad",
         "function": "do_simbad",
         "priority": 3
     },
