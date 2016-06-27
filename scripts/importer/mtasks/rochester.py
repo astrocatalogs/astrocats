@@ -129,8 +129,8 @@ def do_rochester(catalog):
                      not any('GRB' in xx for xx in
                              catalog.events[name].get_aliases()))):
                     mag = str(cols[8].contents[0]).strip()
-                    add_photometry(
-                        catalog.events, name, time=str(astrot.mjd), magnitude=mag,
+                    catalog.events[name].add_photometry(
+                        time=str(astrot.mjd), magnitude=mag,
                         source=sources)
             if cols[11].contents[0] != 'n/a':
                 catalog.events[name].add_quantity('redshift', str(
@@ -204,8 +204,8 @@ def do_rochester(catalog):
 
                     band = row[2].lstrip('1234567890.')
 
-                    add_photometry(
-                        catalog.events, name, time=mjd, band=band, magnitude=magnitude,
+                    catalog.events[name].add_photometry(
+                        time=mjd, band=band, magnitude=magnitude,
                         e_magnitude=e_magnitude, source=sources)
 
     catalog.journal_events()

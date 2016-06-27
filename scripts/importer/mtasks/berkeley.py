@@ -88,8 +88,8 @@ def do_ucb_photo(catalog):
             e_mag = row[2]
             band = row[4]
             telescope = row[5]
-            add_photometry(
-                catalog.events, name, time=mjd, telescope=telescope, band=band,
+            catalog.events[name].add_photometry(
+                time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     catalog.journal_events()

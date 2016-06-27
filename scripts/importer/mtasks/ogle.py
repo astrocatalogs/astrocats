@@ -144,8 +144,8 @@ def do_ogle(catalog):
                     if e_mag == '-1' or float(e_mag) > 10.0:
                         e_mag = ''
                         upperlimit = True
-                    add_photometry(
-                        catalog.events, name, time=mjd, band='I', magnitude=magnitude,
+                    catalog.events[name].add_photometry(
+                        time=mjd, band='I', magnitude=magnitude,
                         e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if catalog.args.update:

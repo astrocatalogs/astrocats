@@ -52,8 +52,8 @@ def do_csp_photo(catalog):
                     mjd = val
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
-                        add_photometry(
-                            catalog.events, name, time=mjd, observatory='LCO',
+                        catalog.events[name].add_photometry(
+                            time=mjd, observatory='LCO',
                             band=cspbands[(v - 1) // 2],
                             system='CSP', magnitude=row[v],
                             e_magnitude=row[v + 1], source=source)

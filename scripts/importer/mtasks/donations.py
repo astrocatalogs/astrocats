@@ -60,8 +60,8 @@ def do_donations(catalog):
                     if (is_number(row[2 * v + 2]) and
                             not isnan(float(row[2 * v + 2]))):
                         err = row[2 * v + 2]
-                    add_photometry(
-                        catalog.events, name, time=mjd, band=bands[v], magnitude=mag,
+                    catalog.events[name].add_photometry(
+                        time=mjd, band=bands[v], magnitude=mag,
                         e_magnitude=err, upperlimit=upperlimit, source=source)
     catalog.journal_events()
 
@@ -179,9 +179,9 @@ def do_donations(catalog):
                         cols = list(filter(None, line.split()))
                         if not cols:
                             continue
-                        add_photometry(
-                            name, time=cols[0], magnitude=cols[
-                                1], e_magnitude=cols[2],
+                        catalog.events[name].add_photometry(
+                            time=cols[0], magnitude=cols[1],
+                            e_magnitude=cols[2],
                             band=band, system=cols[3], telescope=cols[4],
                             source=source)
     catalog.journal_events()
@@ -210,7 +210,7 @@ def do_donations(catalog):
                 mag = cols[2] if not isupp else cols[4]
                 e_mag = cols[3] if not isupp else ''
                 upp = '' if not isupp else True
-                add_photometry(catalog.events, name, time=mjd, magnitude=mag,
+                catalog.events[name].add_photometry(time=mjd, magnitude=mag,
                                e_magnitude=e_mag,
                                upperlimit=upp, band=band, source=source,
                                telescope='Swift', instrument='UVOT',
@@ -248,7 +248,7 @@ def do_donations(catalog):
                         emag = ''
                         upp = True
                     instrument = 'UVOT' if telescope == 'Swift' else ''
-                    add_photometry(catalog.events, name, time=mjd, magnitude=col,
+                    catalog.events[name].add_photometry(time=mjd, magnitude=col,
                                    e_magnitude=emag, upperlimit=upp,
                                    band=bands[ci], source=source,
                                    telescope=telescope, instrument=instrument,

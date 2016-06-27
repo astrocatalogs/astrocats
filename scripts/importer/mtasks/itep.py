@@ -57,7 +57,7 @@ def do_itep(catalog):
                 srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:
-            add_photometry(catalog.events, name, time=mjd, band=band,
+            catalog.events[name].add_photometry(time=mjd, band=band,
                            magnitude=magnitude,
                            e_magnitude=e_magnitude, source=sec_source + ',' +
                            source)

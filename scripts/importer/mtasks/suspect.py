@@ -98,7 +98,7 @@ def do_suspect_photo(catalog):
                 e_magnitude = ''
             else:
                 e_magnitude = str(e_magnitude)
-            add_photometry(catalog.events, name, time=mjd, band=band, magnitude=mag,
+            catalog.events[name].add_photometry(time=mjd, band=band, magnitude=mag,
                            e_magnitude=e_magnitude,
                            source=sec_source + ',' + source)
 

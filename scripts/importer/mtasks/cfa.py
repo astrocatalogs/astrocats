@@ -94,8 +94,8 @@ def do_cfa_photo(catalog):
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
                             src = secondarysource + ',' + source
-                            add_photometry(
-                                name, u_time=tuout, time=mjd,
+                            catalog.events[name].add_photometry(
+                                u_time=tuout, time=mjd,
                                 band=eventbands[(v - 1) // 2],
                                 magnitude=row[v], e_magnitude=row[v + 1],
                                 source=src)
@@ -119,8 +119,8 @@ def do_cfa_photo(catalog):
             source = catalog.events[name].add_source(bibcode='2012ApJS..200...12H')
             catalog.events[name].add_quantity('alias', name, source)
             catalog.events[name].add_quantity('claimedtype', 'Ia', source)
-            add_photometry(
-                name, u_time='MJD', time=row[2].strip(),
+            catalog.events[name].add_photometry(
+                u_time='MJD', time=row[2].strip(),
                 band=row[1].strip(),
                 magnitude=row[6].strip(), e_magnitude=row[7].strip(),
                 source=source)
@@ -135,8 +135,8 @@ def do_cfa_photo(catalog):
 
             source = catalog.events[name].add_source(bibcode='2014ApJS..213...19B')
             catalog.events[name].add_quantity('alias', name, source)
-            add_photometry(
-                name, u_time='MJD', time=row[2], band=row[1],
+            catalog.events[name].add_photometry(
+                u_time='MJD', time=row[2], band=row[1],
                 magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)

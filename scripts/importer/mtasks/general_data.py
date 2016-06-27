@@ -31,11 +31,10 @@ def do_external_radio(catalog):
                 else:
                     cols = list(filter(None, line.split()))
                     source = radiosourcedict[cols[6]]
-                    add_photometry(
-                        catalog.events, name, time=cols[0], frequency=cols[
-                            2], u_frequency='GHz',
-                        fluxdensity=cols[3], e_fluxdensity=cols[
-                            4], u_fluxdensity='µJy',
+                    catalog.events[name].add_photometry(
+                        time=cols[0], frequency=cols[2], u_frequency='GHz',
+                        fluxdensity=cols[3], e_fluxdensity=cols[4],
+                        u_fluxdensity='µJy',
                         instrument=cols[5], source=source)
                     catalog.events[name].add_quantity('alias', oldname, source)
 
@@ -57,8 +56,8 @@ def do_external_xray(catalog):
                     continue
                 else:
                     cols = list(filter(None, line.split()))
-                    add_photometry(
-                        catalog.events, name, time=cols[:2],
+                    catalog.events[name].add_photometry(
+                        time=cols[:2],
                         energy=cols[2:4], u_energy='keV', counts=cols[4],
                         flux=cols[6],
                         unabsorbedflux=cols[8], u_flux='ergs/ss/cm^2',
