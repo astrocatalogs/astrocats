@@ -24,7 +24,7 @@ def do_tns(catalog):
     csvtxt = load_cached_url(args, current_task, search_url, os.path.join(
         PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
-        return events
+        return
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
     maxpages = ceil(int(maxid) / 1000.)
 
@@ -116,4 +116,4 @@ def do_tns(catalog):
                     tasks, args, events, log)
 
     catalog.journal_events()
-    return events
+    return

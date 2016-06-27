@@ -142,7 +142,7 @@ def do_cfa_photo(catalog):
                 source=source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_cfa_spectra(catalog):
@@ -320,4 +320,4 @@ def do_cfa_spectra(catalog):
                 break
 
     catalog.journal_events()
-    return events
+    return

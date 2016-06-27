@@ -20,7 +20,7 @@ def do_grb(catalog):
                               '&cut_0_max=100000&num_cuts=1&no_date_cut=True'),
                              file_path)
     if not csvtxt:
-        return events
+        return
     data = list(csv.reader(csvtxt.splitlines(), delimiter=',',
                            quotechar='"', skipinitialspace=True))
     for r, row in enumerate(pbar(data, current_task)):
@@ -37,4 +37,4 @@ def do_grb(catalog):
         catalog.events[name].add_quantity('redshift', row[8], source)
 
     catalog.journal_events()
-    return events
+    return

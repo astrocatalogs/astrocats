@@ -89,4 +89,4 @@ def do_ptf(catalog):
                 tasks, args, events, 'PTF' + suffix, log)
 
     catalog.journal_events()
-    return events
+    return

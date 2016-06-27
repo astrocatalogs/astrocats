@@ -45,7 +45,7 @@ def do_snls_photo(catalog):
             e_counts=err, source=source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_snls_spectra(catalog):
@@ -105,4 +105,4 @@ def do_snls_spectra(catalog):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
     catalog.journal_events()
-    return events
+    return

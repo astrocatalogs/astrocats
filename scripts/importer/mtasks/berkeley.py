@@ -28,7 +28,7 @@ def do_ucb_photo(catalog):
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events
+        return
 
     photom = json.loads(jsontxt)
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
@@ -93,7 +93,7 @@ def do_ucb_photo(catalog):
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_ucb_spectra(catalog):
@@ -107,7 +107,7 @@ def do_ucb_spectra(catalog):
         args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events
+        return
 
     spectra = json.loads(jsontxt)
     spectra = sorted(spectra, key=lambda kk: kk['ObjName'])
@@ -208,4 +208,4 @@ def do_ucb_spectra(catalog):
             break
 
     catalog.journal_events()
-    return events
+    return

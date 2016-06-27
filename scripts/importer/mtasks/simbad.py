@@ -88,4 +88,4 @@ def do_simbad(catalog):
                                       .replace('SN', '').replace('(~)', '')
                                       .strip(': '), ssources)
     catalog.journal_events()
-    return events
+    return

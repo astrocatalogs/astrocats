@@ -25,7 +25,7 @@ def do_snf_aliases(catalog):
             catalog.events[name].add_quantity('alias', row[1], source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_snf_specta(catalog):
@@ -124,4 +124,4 @@ def do_snf_specta(catalog):
                 break
 
     catalog.journal_events()
-    return events
+    return

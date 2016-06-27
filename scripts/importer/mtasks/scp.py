@@ -43,4 +43,4 @@ def do_scp(catalog):
                     'claimedtype', claimedtype, source, kind=kind)
 
     catalog.journal_events()
-    return events
+    return

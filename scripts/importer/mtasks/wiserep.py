@@ -262,4 +262,4 @@ def do_wiserep_spectra(catalog):
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
 
     catalog.journal_events()
-    return events
+    return

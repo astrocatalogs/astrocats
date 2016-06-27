@@ -24,7 +24,7 @@ def do_des(catalog):
     html = load_cached_url(
         args, current_task, des_trans_url, des_path + 'transients.html')
     if not html:
-        return events
+        return
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('tbody').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
@@ -80,4 +80,4 @@ def do_des(catalog):
                                    upperlimit=upl, source=sources)
 
     catalog.journal_events()
-    return events
+    return

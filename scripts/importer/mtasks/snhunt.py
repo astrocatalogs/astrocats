@@ -17,7 +17,7 @@ def do_snhunt(catalog):
     html = load_cached_url(args, current_task, snh_url, os.path.join(
         PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
     if not html:
-        return events
+        return
     text = html.splitlines()
     findtable = False
     for ri, row in enumerate(text):
@@ -61,4 +61,4 @@ def do_snhunt(catalog):
                 tasks, args, events, log)
 
     catalog.journal_events()
-    return events
+    return

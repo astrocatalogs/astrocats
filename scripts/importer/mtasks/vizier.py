@@ -1574,7 +1574,7 @@ def do_vizier(catalog):
             'redshift', row['z'], source, kind='spectroscopic')
     catalog.journal_events()
 
-    return events
+    return
 
 
 def do_lennarz(catalog):
@@ -1662,4 +1662,4 @@ def do_lennarz(catalog):
                                    source=source)
 
     catalog.journal_events()
-    return events
+    return

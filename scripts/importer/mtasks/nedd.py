@@ -91,4 +91,4 @@ def do_nedd(catalog):
 
     f.close()
 
-    return events
+    return

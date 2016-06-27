@@ -60,7 +60,7 @@ def do_csp_photo(catalog):
                             e_magnitude=row[v + 1], source=source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_csp_spectra(catalog):
@@ -112,4 +112,4 @@ def do_csp_spectra(catalog):
             break
 
     catalog.journal_events()
-    return events
+    return

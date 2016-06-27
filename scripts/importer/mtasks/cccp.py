@@ -119,7 +119,7 @@ def do_cccp(catalog):
                                        e_magnitude=row[2], source=source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_cpcs(catalog):
@@ -131,7 +131,7 @@ def do_cpcs(catalog):
     jsontxt = load_cached_url(args, current_task, cpcs_url, os.path.join(
         PATH.REPO_EXTERNAL, 'CPCS/index.json'))
     if not jsontxt:
-        return events
+        return
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
     ids = [xx['id'] for xx in alertindex]
     for ii, ai in enumerate(pbar(ids, current_task)):
@@ -208,4 +208,4 @@ def do_cpcs(catalog):
                 tasks, args, events, log)
 
     catalog.journal_events()
-    return events
+    return

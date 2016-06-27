@@ -257,4 +257,4 @@ def do_donations(catalog):
                                    telescope == 'Swift' else 'AB')
 
     catalog.journal_events()
-    return events
+    return

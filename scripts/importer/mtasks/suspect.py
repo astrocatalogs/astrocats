@@ -104,7 +104,7 @@ def do_suspect_photo(catalog):
                            source=sec_source + ',' + source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_suspect_spectra(catalog):
@@ -212,4 +212,4 @@ def do_suspect_spectra(catalog):
                     break
 
     catalog.journal_events()
-    return events
+    return

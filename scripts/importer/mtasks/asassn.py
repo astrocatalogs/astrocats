@@ -17,7 +17,7 @@ def do_asassn(catalog):
     html = load_cached_url(args, current_task, asn_url, os.path.join(
         PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
     if not html:
-        return events
+        return
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('table').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
@@ -87,4 +87,4 @@ def do_asassn(catalog):
         if host != 'Uncatalogued':
             catalog.events[name].add_quantity('host', host, sources)
     catalog.journal_events()
-    return events
+    return

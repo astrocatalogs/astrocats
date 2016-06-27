@@ -68,4 +68,4 @@ def do_sdss(catalog):
                                e_magnitude=e_mag, source=source, system='SDSS')
 
     catalog.journal_events()
-    return events
+    return

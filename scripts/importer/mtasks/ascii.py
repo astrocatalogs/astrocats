@@ -378,4 +378,4 @@ def do_ascii(catalog):
                                source=source, kcorrected=True)
 
     catalog.journal_events()
-    return events
+    return

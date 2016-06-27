@@ -154,4 +154,4 @@ def do_crts(catalog):
             break
 
     catalog.journal_events()
-    return events
+    return

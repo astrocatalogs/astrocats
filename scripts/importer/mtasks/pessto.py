@@ -32,4 +32,4 @@ def do_pessto(catalog):
                            source=source)
 
     catalog.journal_events()
-    return events
+    return

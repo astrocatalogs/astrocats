@@ -41,7 +41,7 @@ def do_external_radio(catalog):
                     catalog.events[name].add_quantity('alias', oldname, source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_external_xray(catalog):
@@ -69,7 +69,7 @@ def do_external_xray(catalog):
                     catalog.events[name].add_quantity('alias', oldname, source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_internal(catalog):
@@ -84,4 +84,4 @@ def do_internal(catalog):
             events, args, tasks, log, path=datafile, clean=True, delete=False)
         events.update({new_event[KEYS.NAME]: new_event})
 
-    return events
+    return

@@ -37,7 +37,7 @@ def do_ps_mds(catalog):
                 'redshift', cols[5], source, kind='spectroscopic')
             catalog.events[name].add_quantity('claimedtype', 'II P', source)
     catalog.journal_events()
-    return events
+    return
 
 
 def do_ps_threepi(catalog):
@@ -48,7 +48,7 @@ def do_ps_threepi(catalog):
               "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
     html = load_cached_url(args, current_task, ps_url, fname, write=False)
     if not html:
-        return events
+        return
 
     bs = BeautifulSoup(html, 'html5lib')
     div = bs.find('div', {'class': 'pagination'})
@@ -62,7 +62,7 @@ def do_ps_threepi(catalog):
 
     if offline:
         if args.update:
-            return events
+            return
         warnings.warn('Pan-STARRS 3pi offline, using local files only.')
         with open(fname, 'r') as f:
             html = f.read()
@@ -260,4 +260,4 @@ def do_ps_threepi(catalog):
         if args.travis:
             break
 
-    return events
+    return

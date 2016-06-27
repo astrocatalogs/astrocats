@@ -20,7 +20,7 @@ def do_gaia(catalog):
                              'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',
                              fname)
     if not csvtxt:
-        return events
+        return
     tsvin = list(csv.reader(csvtxt.splitlines(),
                             delimiter=',', skipinitialspace=True))
     reference = 'Gaia Photometric Science Alerts'
@@ -91,4 +91,4 @@ def do_gaia(catalog):
             events = Events.journal_events(
                 tasks, args, events, log)
     catalog.journal_events()
-    return events
+    return

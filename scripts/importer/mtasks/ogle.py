@@ -154,4 +154,4 @@ def do_ogle(catalog):
                         tasks, args, events, log)
 
         catalog.journal_events()
-    return events
+    return

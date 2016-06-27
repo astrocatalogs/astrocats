@@ -78,4 +78,4 @@ def do_psst(catalog):
 
     catalog.journal_events()
 
-    return events
+    return

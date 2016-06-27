@@ -213,4 +213,4 @@ def do_rochester(catalog):
                         e_magnitude=e_magnitude, source=sources)
 
     catalog.journal_events()
-    return events
+    return

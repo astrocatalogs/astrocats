@@ -32,4 +32,4 @@ def do_fermi(catalog):
             catalog.events[name].add_quantity(
                 'dec', row[3], source, unit='floatdegrees')
     catalog.journal_events()
-    return events
+    return

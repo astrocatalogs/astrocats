@@ -116,7 +116,7 @@ def do_asiago_photo(catalog):
                 catalog.events[name].add_quantity('discoverer', discoverer, source)
 
     catalog.journal_events()
-    return events
+    return
 
 
 def do_asiago_spectra(catalog):
@@ -127,7 +127,7 @@ def do_asiago_spectra(catalog):
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                                         'Asiago/spectra.html'))
     if not html:
-        return events
+        return
 
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.findAll('tr')
@@ -228,4 +228,4 @@ def do_asiago_spectra(catalog):
             #    sys.exit()
 
     catalog.journal_events()
-    return events
+    return
