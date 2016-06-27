@@ -180,8 +180,6 @@ def import_main(args=None, **kwargs):
         prev_priority = priority
         prev_task_name = task_name
 
-    return
-
     files = repo_file_list()
 
     for ii, fi in enumerate(
@@ -189,12 +187,11 @@ def import_main(args=None, **kwargs):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         events, name = Events.add_event(
-            tasks, args, events, name, log, load_stubs_if_empty=False)
+            tasks, args, events, name, log)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             catalog, tasks, args, events)
         if has_task(tasks, args, 'writeevents'):
-            Events.write_all_events(
-                events, args, empty=True, gz=True, bury=True)
+            Events.journal_events(tasks, args, events, stubs, log)
         if args.travis and ii > TRAVIS_QUERY_LIMIT:
             break
 

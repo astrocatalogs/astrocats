@@ -786,8 +786,9 @@ def derive_and_sanitize(catalog, tasks, args, events):
                     if len(source['bibcode']) != 19:
                         source['bibcode'] = urllib.parse.unquote(
                             unescape(source['bibcode'])).replace('A.A.', 'A&A')
-                    if source['bibcode'] in catalog.biberrordict:
-                        source['bibcode'] = catalog.biberrordict[source['bibcode']]
+                    if source['bibcode'] in catalog.biberror_dict:
+                        source['bibcode'] = \
+                            catalog.biberror_dict[source['bibcode']]
 
                     if source['bibcode'] not in catalog.bibauthor_dict:
                         bibcode = source['bibcode']
@@ -885,6 +886,17 @@ def get_bibauthor_dict():
     # path = '../bibauthors.json'
     if os.path.isfile(FILENAME.BIBAUTHORS):
         with open(FILENAME.BIBAUTHORS, 'r') as f:
+            bibauthor_dict = json.loads(
+                f.read(), object_pairs_hook=OrderedDict)
+    else:
+        bibauthor_dict = OrderedDict()
+    return bibauthor_dict
+
+
+def get_biberror_dict():
+    # path = '../biberrors.json'
+    if os.path.isfile(FILENAME.BIBERRORS):
+        with open(FILENAME.BIBERRORS, 'r') as f:
             bibauthor_dict = json.loads(
                 f.read(), object_pairs_hook=OrderedDict)
     else:
