@@ -66,7 +66,7 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
             for row in rows:
                 if row.strip():
                     specdata.append(
-                        list(filter(None, re.split('\tt+|\ss+', row,
+                        list(filter(None, re.split('\t+|\s+', row,
                                                    maxsplit=0))))
             specdata = [[xx.replace('D', 'E') for xx in list(ii)]
                         for ii in zip(*specdata)]
