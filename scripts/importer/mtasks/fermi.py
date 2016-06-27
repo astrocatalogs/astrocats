@@ -31,5 +31,5 @@ def do_fermi(catalog):
                 'ra', row[2], source, unit='floatdegrees')
             catalog.events[name].add_quantity(
                 'dec', row[3], source, unit='floatdegrees')
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

@@ -59,7 +59,7 @@ def do_csp_photo(catalog):
                             system='CSP', magnitude=row[v],
                             e_magnitude=row[v + 1], source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -111,5 +111,5 @@ def do_csp_spectra(catalog):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

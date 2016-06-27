@@ -31,5 +31,5 @@ def do_pessto(catalog):
                            band=bands[hi], system=systems[hi], telescope=teles,
                            source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

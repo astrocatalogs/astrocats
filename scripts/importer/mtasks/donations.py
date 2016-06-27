@@ -63,7 +63,7 @@ def do_donations(catalog):
                     add_photometry(
                         events, name, time=mjd, band=bands[v], magnitude=mag,
                         e_magnitude=err, upperlimit=upperlimit, source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Maggi 04-11-16 donation (MC SNRs)
     with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -108,7 +108,7 @@ def do_donations(catalog):
             catalog.events[name].add_quantity('ra', row[3], source)
             catalog.events[name].add_quantity('dec', row[4], source)
             catalog.events[name].add_quantity('host', 'SMC', source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Galbany 04-18-16 donation
     folders = next(os.walk(os.path.join(
@@ -185,7 +185,7 @@ def do_donations(catalog):
                                 1], e_magnitude=cols[2],
                             band=band, system=cols[3], telescope=cols[4],
                             source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Brown 05-14-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
@@ -216,7 +216,7 @@ def do_donations(catalog):
                                upperlimit=upp, band=band, source=source,
                                telescope='Swift', instrument='UVOT',
                                system='Vega')
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Nicholl 05-03-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
@@ -256,5 +256,5 @@ def do_donations(catalog):
                                    system='Vega' if
                                    telescope == 'Swift' else 'AB')
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

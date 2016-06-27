@@ -115,7 +115,7 @@ def do_asiago_photo(catalog):
             if (discoverer != ''):
                 catalog.events[name].add_quantity('discoverer', discoverer, source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -227,5 +227,5 @@ def do_asiago_spectra(catalog):
             #    print(scidata[3])
             #    sys.exit()
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

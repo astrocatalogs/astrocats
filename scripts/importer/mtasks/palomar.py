@@ -88,5 +88,5 @@ def do_ptf(catalog):
             events, name = Events.add_event(
                 tasks, args, events, 'PTF' + suffix, log)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

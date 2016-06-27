@@ -67,5 +67,5 @@ def do_sdss(catalog):
                                band=band, magnitude=magnitude,
                                e_magnitude=e_mag, source=source, system='SDSS')
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

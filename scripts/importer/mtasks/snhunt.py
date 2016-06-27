@@ -60,5 +60,5 @@ def do_snhunt(catalog):
             events = Events.journal_events(
                 tasks, args, events, log)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

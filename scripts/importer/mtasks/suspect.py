@@ -103,7 +103,7 @@ def do_suspect_photo(catalog):
                            e_magnitude=e_magnitude,
                            source=sec_source + ',' + source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -211,5 +211,5 @@ def do_suspect_spectra(catalog):
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

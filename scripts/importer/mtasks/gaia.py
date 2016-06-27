@@ -90,5 +90,5 @@ def do_gaia(catalog):
         if args.update:
             events = Events.journal_events(
                 tasks, args, events, log)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

@@ -212,5 +212,5 @@ def do_rochester(catalog):
                         events, name, time=mjd, band=band, magnitude=magnitude,
                         e_magnitude=e_magnitude, source=sources)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

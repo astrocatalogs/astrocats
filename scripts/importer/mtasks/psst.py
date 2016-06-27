@@ -50,7 +50,7 @@ def do_psst(catalog):
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
             catalog.events[name].add_quantity('discoverdate', discoverdate, source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 1606.04795
     file_path = os.path.join(PATH.REPO_EXTERNAL, '1606.04795.tsv')
@@ -76,6 +76,6 @@ def do_psst(catalog):
             for alias in [x.strip() for x in row[8].split(',')]:
                 catalog.events[name].add_quantity('alias', alias, source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     return events

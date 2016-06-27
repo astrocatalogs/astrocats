@@ -92,7 +92,7 @@ def do_ucb_photo(catalog):
                 events, name, time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -207,5 +207,5 @@ def do_ucb_spectra(catalog):
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

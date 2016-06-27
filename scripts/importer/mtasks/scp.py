@@ -42,5 +42,5 @@ def do_scp(catalog):
                 catalog.events[name].add_quantity(
                     'claimedtype', claimedtype, source, kind=kind)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

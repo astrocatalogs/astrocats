@@ -141,7 +141,7 @@ def do_cfa_photo(catalog):
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -207,7 +207,7 @@ def do_cfa_spectra(catalog):
                 source=sources, dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Ibc spectra
     oldname = ''
@@ -259,7 +259,7 @@ def do_cfa_spectra(catalog):
                 dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Other spectra
     oldname = ''
@@ -319,5 +319,5 @@ def do_cfa_spectra(catalog):
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

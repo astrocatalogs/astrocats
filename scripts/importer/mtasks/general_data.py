@@ -40,7 +40,7 @@ def do_external_radio(catalog):
                         instrument=cols[5], source=source)
                     catalog.events[name].add_quantity('alias', oldname, source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -68,7 +68,7 @@ def do_external_xray(catalog):
                         upperlimit=(float(cols[5]) < 0), source=source)
                     catalog.events[name].add_quantity('alias', oldname, source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 

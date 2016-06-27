@@ -87,7 +87,7 @@ def do_nedd(catalog):
                 events = Events.journal_events(
                     tasks, args, events, log)
         olddistname = distname
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     f.close()
 

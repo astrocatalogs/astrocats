@@ -67,5 +67,5 @@ def do_itep(catalog):
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as bib_file:
         bib_file.writelines(['%ss\n' % ii for ii in needsbib])
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

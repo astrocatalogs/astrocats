@@ -79,5 +79,5 @@ def do_des(catalog):
                                    telescope='Blanco 4m', instrument='DECam',
                                    upperlimit=upl, source=sources)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

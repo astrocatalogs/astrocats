@@ -86,5 +86,5 @@ def do_superfit_spectra(catalog):
 
             lastname = name
 
-        events = Events.journal_events(tasks, args, events, log)
+        catalog.journal_events()
     return events

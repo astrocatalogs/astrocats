@@ -153,5 +153,5 @@ def do_crts(catalog):
         if args.travis and tri > TRAVIS_QUERY_LIMIT:
             break
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

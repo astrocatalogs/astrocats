@@ -44,7 +44,7 @@ def do_snls_photo(catalog):
             events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
             e_counts=err, source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -104,5 +104,5 @@ def do_snls_spectra(catalog):
             filename=filename)
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

@@ -86,5 +86,5 @@ def do_asassn(catalog):
                 catalog.events[name].add_quantity('claimedtype', ct, typesources)
         if host != 'Uncatalogued':
             catalog.events[name].add_quantity('host', host, sources)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

@@ -261,5 +261,5 @@ def do_wiserep_spectra(catalog):
                        "/" + str(len(files) - 1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

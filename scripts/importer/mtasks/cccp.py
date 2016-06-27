@@ -118,7 +118,7 @@ def do_cccp(catalog):
                                        band=band, magnitude=row[1],
                                        e_magnitude=row[2], source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -207,5 +207,5 @@ def do_cpcs(catalog):
             events = Events.journal_events(
                 tasks, args, events, log)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

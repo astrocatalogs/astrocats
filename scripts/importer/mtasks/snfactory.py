@@ -24,7 +24,7 @@ def do_snf_aliases(catalog):
                                                     url=OSC_URL, secondary=True)
             catalog.events[name].add_quantity('alias', row[1], source)
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -123,5 +123,5 @@ def do_snf_specta(catalog):
             if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events

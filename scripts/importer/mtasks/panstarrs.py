@@ -36,7 +36,7 @@ def do_ps_mds(catalog):
             catalog.events[name].add_quantity(
                 'redshift', cols[5], source, kind='spectroscopic')
             catalog.events[name].add_quantity('claimedtype', 'II P', source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
 
 
@@ -255,7 +255,7 @@ def do_ps_threepi(catalog):
                 events = Events.journal_events(
                     tasks, args, events, log)
 
-        events = Events.journal_events(tasks, args, events, log)
+        catalog.journal_events()
         # Only run first page for Travis
         if args.travis:
             break

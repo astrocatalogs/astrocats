@@ -87,5 +87,5 @@ def do_simbad(catalog):
                                       .replace('SN.', '')
                                       .replace('SN', '').replace('(~)', '')
                                       .strip(': '), ssources)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
     return events
