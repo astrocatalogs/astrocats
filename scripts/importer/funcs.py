@@ -547,11 +547,14 @@ def derive_and_sanitize(catalog, tasks, args, events):
                                              srcname=OSC_NAME, url=OSC_URL,
                                              secondary=True),
                      events[name].add_source(bibcode='2011ApJ...737..103S')])
-                events[name].add_quantity('ebv',
-                                          str(catalog.extinctionsdict[name][0]),
-                                          sources,
-                                          error=str(catalog.extinctionsdict[name][1]),
-                                          derived=True)
+                (events[name]
+                 .add_quantity('ebv',
+                               str(catalog
+                                   .extinctions_dict[name][0]),
+                               sources,
+                               error=str(catalog
+                                         .extinctions_dict[name][1]),
+                               derived=True))
         if ('host' in events[name] and ('hostra' not in events[name] or
                                         'hostdec' not in events[name])):
             for host in events[name]['host']:
@@ -831,9 +834,9 @@ def derive_and_sanitize(catalog, tasks, args, events):
                 events[name]['claimedtype'], key=lambda key:
                 ct_priority(events, name, key)))
 
-        events[name] = OrderedDict(
-            sorted(events[name].items(), key=lambda key:
-                   event_attr_priority(key[0])))
+        # events[name] = OrderedDict(
+        #    sorted(events[name].items(), key=lambda key:
+        #           event_attr_priority(key[0])))
 
     return events, catalog.extinctions_dict, catalog.bibauthor_dict
 
