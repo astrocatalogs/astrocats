@@ -23,8 +23,7 @@ def do_external_radio(catalog):
                 if line.startswith('(') and li <= len(radiosourcedict):
                     key = line.split()[0]
                     bibc = line.split()[-1]
-                    radiosourcedict[key] = catalog.events[
-                        name].add_source(bibcode=bibc)
+                    radiosourcedict[key] = catalog.events[name].add_source(bibcode=bibc)
                 elif li in [xx + len(radiosourcedict) for xx in range(3)]:
                     continue
                 else:
