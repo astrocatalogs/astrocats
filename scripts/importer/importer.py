@@ -182,8 +182,8 @@ def import_main(args=None, **kwargs):
 
     files = repo_file_list()
 
-    for ii, fi in enumerate(
-            pbar(files, 'Sanitizing and deriving quantities for events')):
+    current_task = 'Sanitizing and deriving quantities for events'
+    for ii, fi in enumerate(pbar(files, current_task)):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         events, name = Events.add_event(
@@ -191,7 +191,7 @@ def import_main(args=None, **kwargs):
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             catalog, tasks, args, events)
         if has_task(tasks, args, 'writeevents'):
-            Events.journal_events(tasks, args, events, stubs, log)
+            events = Events.journal_events(tasks, args, events, log)
         if args.travis and ii > TRAVIS_QUERY_LIMIT:
             break
 
