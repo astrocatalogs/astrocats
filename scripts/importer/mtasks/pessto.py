@@ -26,7 +26,7 @@ def do_pessto(catalog):
             if not row[ci]:
                 continue
             teles = 'Swift' if systems[hi] == 'Swift' else ''
-            add_photometry(events, name, time=row[2], magnitude=row[ci],
+            add_photometry(catalog.events, name, time=row[2], magnitude=row[ci],
                            e_magnitude=row[ci + 1],
                            band=bands[hi], system=systems[hi], telescope=teles,
                            source=source)

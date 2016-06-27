@@ -99,7 +99,7 @@ def do_suspect_photo(catalog):
                 e_magnitude = ''
             else:
                 e_magnitude = str(e_magnitude)
-            add_photometry(events, name, time=mjd, band=band, magnitude=mag,
+            add_photometry(catalog.events, name, time=mjd, band=band, magnitude=mag,
                            e_magnitude=e_magnitude,
                            source=sec_source + ',' + source)
 
@@ -202,7 +202,7 @@ def do_suspect_spectra(catalog):
                     errors = specdata[2]
 
                 add_spectrum(
-                    events, name, 'Angstrom', 'Uncalibrated', u_time='MJD',
+                    catalog.events, name, 'Angstrom', 'Uncalibrated', u_time='MJD',
                     time=time,
                     wavelengths=wavelengths, fluxes=fluxes, errors=errors,
                     errorunit='Uncalibrated',

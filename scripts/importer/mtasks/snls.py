@@ -98,7 +98,7 @@ def do_snls_spectra(catalog):
         # errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(
-            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
+            catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
             time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
             filename=filename)

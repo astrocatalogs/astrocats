@@ -84,7 +84,7 @@ def do_gaia(catalog):
             e_mag = 0.
             telescope = 'GAIA'
             band = 'G'
-            add_photometry(events, name, time=mjd, telescope=telescope,
+            add_photometry(catalog.events, name, time=mjd, telescope=telescope,
                            band=band, magnitude=magnitude,
                            e_magnitude=e_mag, source=source)
         if args.update:

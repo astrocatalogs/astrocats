@@ -197,7 +197,7 @@ def do_ucb_spectra(catalog):
 
         units = 'Uncalibrated'
         add_spectrum(
-            events, name, 'Angstrom', units, u_time='MJD', time=mjd,
+            catalog.events, name, 'Angstrom', units, u_time='MJD', time=mjd,
             wavelengths=wavelengths, filename=filename, fluxes=fluxes,
             errors=errors,
             errorunit=units, instrument=instrument, source=sources, snr=snr,

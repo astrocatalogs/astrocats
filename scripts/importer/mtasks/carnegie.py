@@ -104,7 +104,7 @@ def do_csp_spectra(catalog):
         fluxes = specdata[1]
 
         add_spectrum(
-            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
+            catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
             time=time, wavelengths=wavelengths, fluxes=fluxes,
             telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)

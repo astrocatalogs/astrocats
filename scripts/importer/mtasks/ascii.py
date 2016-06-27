@@ -62,7 +62,7 @@ def do_ascii(catalog):
                 if not row[0]:
                     continue
                 time = str(jd_to_mjd(Decimal(row[0])))
-                add_photometry(events, name, time=time, band='V',
+                add_photometry(catalog.events, name, time=time, band='V',
                                magnitude=row[1], e_magnitude=row[2],
                                system=system, source=source)
     catalog.journal_events()
@@ -89,7 +89,7 @@ def do_ascii(catalog):
                 abs(Decimal(row[ci + 2]))) if row[ci + 2] else ''
             teles = 'MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO'
             instr = 'MaCHO' if band in ['VM', 'RM'] else ''
-            add_photometry(events, name, time=mjd, band=band,
+            add_photometry(catalog.events, name, time=mjd, band=band,
                            magnitude=row[ci],
                            e_upper_magnitude=e_upper_magnitude,
                            e_lower_magnitude=e_lower_magnitude,
@@ -114,7 +114,7 @@ def do_ascii(catalog):
         if len(namesplit) > 1:
             catalog.events[name].add_quantity('alias', namesplit[0], source)
         catalog.events[name].add_quantity('claimedtype', row[1], source)
-        add_photometry(events, name, time=row[2], band=row[
+        add_photometry(catalog.events, name, time=row[2], band=row[
                        4], magnitude=row[3], source=source)
     catalog.journal_events()
 
@@ -323,7 +323,7 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(events, name, time=mjd, band=bands[mi],
+                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
                                magnitude=mag, e_magnitude=errs[mi],
                                instrument=instrument, source=source)
     catalog.journal_events()
@@ -349,7 +349,7 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(events, name, time=mjd, band=bands[mi],
+                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
                                magnitude=mag, e_magnitude=errs[mi],
                                instrument='LBT', source=source)
     catalog.journal_events()
@@ -372,7 +372,7 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(events, name, time=mjd, band=bands[mi],
+                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
                                magnitude=mag,
                                observatory='Mount Stromlo', telescope='MSSSO',
                                source=source, kcorrected=True)

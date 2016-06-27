@@ -108,7 +108,7 @@ def do_crts(catalog):
                 # 1.0 magnitude error based on Drake 2009 assertion that SN are
                 # only considered
                 #    real if they are 2 mags brighter than host.
-                add_photometry(events, name, band='C', magnitude=hostmag,
+                add_photometry(catalog.events, name, band='C', magnitude=hostmag,
                                e_magnitude=1.0, source=source,
                                host=True, telescope='Catalina Schmidt',
                                upperlimit=hostupper)
@@ -142,7 +142,7 @@ def do_crts(catalog):
                     err = re.search("showz\('(.*?)'\)", line).group(1)
                 e_mag = err if float(err) > 0.0 else ''
                 upl = (float(err) == 0.0)
-                add_photometry(events, name, time=mjd, band='C', magnitude=mag,
+                add_photometry(catalog.events, name, time=mjd, band='C', magnitude=mag,
                                source=source,
                                includeshost=True, telescope=teles,
                                e_magnitude=e_mag, upperlimit=upl)

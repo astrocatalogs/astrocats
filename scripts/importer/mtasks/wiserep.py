@@ -242,7 +242,7 @@ def do_wiserep_spectra(catalog):
                                     fluxunit = 'Uncalibrated'
 
                                 add_spectrum(
-                                    events, name, 'Angstrom', fluxunit,
+                                    catalog.events, name, 'Angstrom', fluxunit,
                                     errors=errors,
                                     errorunit=fluxunit,
                                     wavelengths=wavelengths,

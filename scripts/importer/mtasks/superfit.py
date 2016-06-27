@@ -80,7 +80,8 @@ def do_superfit_spectra(catalog):
                 mlmjd = str(Decimal(mlmjd) + epoff)
             else:
                 mlmjd = ''
-            add_spectrum(events, name, 'Angstrom', 'Uncalibrated', u_time='MJD'
+            add_spectrum(catalog.events, name, 'Angstrom', 'Uncalibrated',
+                         u_time='MJD'
                          if mlmjd else '', time=mlmjd,
                          wavelengths=wavelengths, fluxes=fluxes, source=source)
 

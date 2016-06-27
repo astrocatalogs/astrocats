@@ -72,7 +72,7 @@ def do_des(catalog):
                 jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
                 for ii, band in enumerate(jsontxt['band']):
                     upl = True if float(jsontxt['snr'][ii]) <= 3.0 else ''
-                    add_photometry(events, name, time=jsontxt['mjd'][ii],
+                    add_photometry(catalog.events, name, time=jsontxt['mjd'][ii],
                                    magnitude=jsontxt['mag'][ii],
                                    e_magnitude=jsontxt['mag_error'][ii],
                                    band=band, observatory='CTIO',
