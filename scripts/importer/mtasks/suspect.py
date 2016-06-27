@@ -24,7 +24,8 @@ from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
 
 def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    with open(os.path.join(PATH.REPO_EXTERNAL, 'suspectreferences.csv'), 'r') as f:
+    with open(os.path.join(PATH.REPO_EXTERNAL,
+                           'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
         suspectrefdict = {}
         for row in tsvin:
@@ -71,10 +72,12 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity(
                     'redshift', redshifts[0].split(':')[1].strip(),
                     sec_source, kind='heliocentric')
-            # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric Velocity'))
+            # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric
+            # Velocity'))
             # if hvels:
             #     vel = hvels[0].split(':')[1].strip().split(' ')[0]
-            #     events[name].add_quantity('velocity', vel, sec_source, kind='heliocentric')
+            #     events[name].add_quantity('velocity', vel, sec_source,
+            # kind='heliocentric')
             types = bandsoup.body.findAll(text=re.compile('Type'))
 
             events[name].add_quantity(
@@ -96,9 +99,9 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
                 e_magnitude = ''
             else:
                 e_magnitude = str(e_magnitude)
-            add_photometry(
-                events, name, time=mjd, band=band, magnitude=mag, e_magnitude=e_magnitude,
-                source=sec_source + ',' + source)
+            add_photometry(events, name, time=mjd, band=band, magnitude=mag,
+                           e_magnitude=e_magnitude,
+                           source=sec_source + ',' + source)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events
@@ -106,10 +109,12 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
 
 def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/sources.json'), 'r') as f:
+    with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+                           'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())
 
-    with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/filename-changes.txt'), 'r') as f:
+    with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+                           'Suspect/filename-changes.txt'), 'r') as f:
         rows = f.readlines()
         changedict = {}
         for row in rows:
@@ -139,7 +144,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'
             sec_source = events[name].add_source(
-                srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc, secondary=True)
+                srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc,
+                secondary=True)
             events[name].add_quantity('alias', name, sec_source)
             fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                                  'Suspect', folder, eventfolder)
@@ -170,7 +176,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 time = time + float(day) - floor(float(day))
                 time = pretty_num(time, sig=sig)
 
-                fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect', folder,
+                fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect',
+                                     folder,
                                      eventfolder, spectrum)
                 with open() as f:
                     specdata = list(csv.reader(
@@ -195,8 +202,10 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                     errors = specdata[2]
 
                 add_spectrum(
-                    events, name, 'Angstrom', 'Uncalibrated', u_time='MJD', time=time,
-                    wavelengths=wavelengths, fluxes=fluxes, errors=errors, errorunit='Uncalibrated',
+                    events, name, 'Angstrom', 'Uncalibrated', u_time='MJD',
+                    time=time,
+                    wavelengths=wavelengths, fluxes=fluxes, errors=errors,
+                    errorunit='Uncalibrated',
                     source=sources, filename=spectrum)
                 suspectcnt = suspectcnt + 1
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:

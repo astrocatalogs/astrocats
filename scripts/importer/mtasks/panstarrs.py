@@ -6,6 +6,7 @@ import urllib
 import warnings
 from glob import glob
 
+import requests
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
@@ -147,7 +148,8 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             events, name = Events.add_event(tasks, args, events, name, log)
             sources = [events[name]
                        .add_source(srcname='Pan-STARRS 3Pi',
-                                   url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
+                                   url=('http://psweb.mp.qub.ac.uk/'
+                                        'ps1threepi/psdb/'))]
             events[name].add_quantity('alias', name, sources[0])
             for ref in refs:
                 sources.append(events[name].add_source(
@@ -175,7 +177,8 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
-                    pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
+                    pslink = ('http://psweb.mp.qub.ac.uk/'
+                              'ps1threepi/psdb/public/') + pslink
                     try:
                         session2 = requests.Session()
                         response2 = session2.get(pslink)
@@ -200,25 +203,34 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                 slines = script.text.splitlines()
                 for line in slines:
                     if 'jslcdata.push' in line:
-                        json_fname = line.strip().replace('jslcdata.push(', '').replace(');', '')
+                        json_fname = (line
+                                      .strip()
+                                      .replace('jslcdata.push(', '')
+                                      .replace(');', ''))
                         nslines.append(json.loads(json_fname))
-                    if 'jslabels.push' in line and 'blanks' not in line and 'non det' not in line:
-                        json_fname = line.strip().replace('jslabels.push(', '').replace(');', '')
+                    if ('jslabels.push' in line and
+                            'blanks' not in line and 'non det' not in line):
+                        json_fname = (line
+                                      .strip()
+                                      .replace('jslabels.push(', '')
+                                      .replace(');', ''))
                         nslabels.append(json.loads(json_fname)['label'])
             for li, line in enumerate(nslines[:len(nslabels)]):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(
-                        events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]),
-                        e_magnitude=str(obs[2]), source=source, telescope=teles)
+                    add_photometry(events, name, time=str(obs[0]),
+                                   band=nslabels[li], magnitude=str(obs[1]),
+                                   e_magnitude=str(obs[2]), source=source,
+                                   telescope=teles)
             for li, line in enumerate(nslines[2 * len(nslabels):]):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(
-                        events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]),
-                        upperlimit=True, source=source, telescope=teles)
+                    add_photometry(events, name, time=str(obs[0]),
+                                   band=nslabels[li], magnitude=str(obs[1]),
+                                   upperlimit=True, source=source,
+                                   telescope=teles)
             assoctab = bs2.find('table', {'class': 'generictable'})
             hostname = ''
             redshift = ''

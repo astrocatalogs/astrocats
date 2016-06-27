@@ -32,7 +32,8 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
         for mirror in rochestermirrors:
             html = load_cached_url(args, current_task, mirror + path,
-                                   filepath, failhard=(mirror != rochestermirrors[-1]))
+                                   filepath, failhard=(mirror !=
+                                                       rochestermirrors[-1]))
             if html:
                 break
 
@@ -42,7 +43,8 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
         soup = BeautifulSoup(html, 'html5lib')
         rows = soup.findAll('tr')
         sec_ref = 'Latest Supernovae'
-        sec_refurl = 'http://www.rochesterastronomy.org/snimages/snredshiftall.html'
+        sec_refurl = ('http://www.rochesterastronomy.org/'
+                      'snimages/snredshiftall.html')
         for rr, row in enumerate(pbar(rows, current_task)):
             if rr == 0:
                 continue
@@ -114,19 +116,24 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                     cols[2].contents[0]).strip(), sources)
             events[name].add_quantity('ra', ra, sources)
             events[name].add_quantity('dec', dec, sources)
-            if str(cols[6].contents[0]).strip() not in ['2440587', '2440587.292']:
+            if (str(cols[6].contents[0]).strip() not in
+                    ['2440587', '2440587.292']):
                 astrot = astrotime(
-                    float(str(cols[6].contents[0]).strip()), format='jd').datetime
+                    float(str(cols[6].contents[0]).strip()),
+                    format='jd').datetime
                 ddate = make_date_string(astrot.year, astrot.month, astrot.day)
                 events[name].add_quantity('discoverdate', ddate, sources)
-            if str(cols[7].contents[0]).strip() not in ['2440587', '2440587.292']:
+            if (str(cols[7].contents[0]).strip() not in
+                    ['2440587', '2440587.292']):
                 astrot = astrotime(
                     float(str(cols[7].contents[0]).strip()), format='jd')
                 if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
-                     not any('GRB' in xx for xx in events[name].get_aliases()))):
+                     not any('GRB' in xx for xx in
+                             events[name].get_aliases()))):
                     mag = str(cols[8].contents[0]).strip()
                     add_photometry(
-                        events, name, time=str(astrot.mjd), magnitude=mag, source=sources)
+                        events, name, time=str(astrot.mjd), magnitude=mag,
+                        source=sources)
             if cols[11].contents[0] != 'n/a':
                 events[name].add_quantity('redshift', str(
                     cols[11].contents[0]).strip(), sources)
@@ -144,7 +151,8 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                 tsvin = csv.reader(csv_file, delimiter=' ',
                                    skipinitialspace=True)
                 for rr, row in enumerate(tsvin):
-                    if not row or row[0][:4] in ['http', 'www.'] or len(row) < 3:
+                    if (not row or row[0][:4] in ['http', 'www.'] or
+                            len(row) < 3):
                         continue
                     name = row[0].strip()
                     if name[:4].isdigit():
