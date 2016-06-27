@@ -185,9 +185,6 @@ def import_main(args=None, **kwargs):
 
     files = repo_file_list()
 
-    bibauthor_dict = get_bibauthor_dict()
-    extinctions_dict = get_extinctions_dict()
-
     for ii, fi in enumerate(
             pbar(files, 'Sanitizing and deriving quantities for events')):
         events = OrderedDict()
@@ -195,7 +192,7 @@ def import_main(args=None, **kwargs):
         events, name = Events.add_event(
             tasks, args, events, name, log, load_stubs_if_empty=False)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
-            tasks, args, events, extinctions_dict, bibauthor_dict, nedd_dict)
+            catalog, tasks, args, events)
         if has_task(tasks, args, 'writeevents'):
             Events.write_all_events(
                 events, args, empty=True, gz=True, bury=True)

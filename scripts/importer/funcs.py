@@ -426,8 +426,7 @@ def ct_priority(events, name, attr):
     return -max_source_year
 
 
-def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
-                        nedd_dict):
+def derive_and_sanitize(catalog, tasks, args, events):
     biberrordict = {
         "2012Sci..337..942D": "2012Sci...337..942D",
         "2012MNRAS.420.1135": "2012MNRAS.420.1135S",
@@ -623,7 +622,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                             events[name]['host']]))
         if ('ra' in events[name] and 'dec' in events[name] and no_host):
             from astroquery.irsa_dust import IrsaDust
-            if name not in extinctions_dict:
+            if name not in catalog.extinctions_dict:
                 try:
                     ra_dec = events[name]['ra'][0]['value'] + \
                         " " + events[name]['dec'][0]['value']
@@ -634,17 +633,17 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                 else:
                     ebv = result['ext SandF mean'][0]
                     ebverr = result['ext SandF std'][0]
-                    extinctions_dict[name] = [ebv, ebverr]
-            if name in extinctions_dict:
+                    catalog.extinctions_dict[name] = [ebv, ebverr]
+            if name in catalog.extinctions_dict:
                 sources = uniq_cdl(
                     [events[name].add_source(bibcode=OSC_BIBCODE,
                                              srcname=OSC_NAME, url=OSC_URL,
                                              secondary=True),
                      events[name].add_source(bibcode='2011ApJ...737..103S')])
                 events[name].add_quantity('ebv',
-                                          str(extinctionsdict[name][0]),
+                                          str(catalog.extinctionsdict[name][0]),
                                           sources,
-                                          error=str(extinctionsdict[name][1]),
+                                          error=str(catalog.extinctionsdict[name][1]),
                                           derived=True)
         if ('host' in events[name] and ('hostra' not in events[name] or
                                         'hostdec' not in events[name])):
@@ -715,12 +714,12 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
             for host in events[name]['host']:
-                if host['value'] in nedd_dict:
+                if host['value'] in catalog.nedd_dict:
                     source = events[name].add_source(
                         bibcode='2015arXiv150201589P')
                     secondarysource = events[name].add_source(
                         srcname=reference, url=refurl, secondary=True)
-                    meddist = statistics.median(nedd_dict[host['value']])
+                    meddist = statistics.median(catalog.nedd_dict[host['value']])
                     redshift = pretty_num(z_at_value(cosmo.comoving_distance,
                                                      float(meddist) *
                                                      un.Mpc),
@@ -879,10 +878,10 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                     if len(source['bibcode']) != 19:
                         source['bibcode'] = urllib.parse.unquote(
                             unescape(source['bibcode'])).replace('A.A.', 'A&A')
-                    if source['bibcode'] in biberrordict:
-                        source['bibcode'] = biberrordict[source['bibcode']]
+                    if source['bibcode'] in catalog.biberrordict:
+                        source['bibcode'] = catalog.biberrordict[source['bibcode']]
 
-                    if source['bibcode'] not in bibauthor_dict:
+                    if source['bibcode'] not in catalog.bibauthor_dict:
                         bibcode = source['bibcode']
                         adsquery = (ADS_BIB_URL +
                                     urllib.parse.quote(bibcode) +
@@ -900,14 +899,14 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
                                 "Bibcode didn't return authors, not converting"
                                 "this bibcode.")
 
-                        bibauthor_dict[bibcode] = unescape(
+                        catalog.bibauthor_dict[bibcode] = unescape(
                             bibcodeauthor).strip()
 
             for source in events[name]['sources']:
                 if ('bibcode' in source and
-                        source['bibcode'] in bibauthor_dict and
-                        bibauthor_dict[source['bibcode']]):
-                    source['reference'] = bibauthor_dict[source['bibcode']]
+                        source['bibcode'] in catalog.bibauthor_dict and
+                        catalog.bibauthor_dict[source['bibcode']]):
+                    source['reference'] = catalog.bibauthor_dict[source['bibcode']]
                     if 'name' not in source and source['bibcode']:
                         source['name'] = source['bibcode']
         if 'redshift' in events[name]:
@@ -927,7 +926,7 @@ def derive_and_sanitize(tasks, args, events, extinctions_dict, bibauthor_dict,
             sorted(events[name].items(), key=lambda key:
                    event_attr_priority(key[0])))
 
-    return events, extinctions_dict, bibauthor_dict
+    return events, catalog.extinctions_dict, catalog.bibauthor_dict
 
 '''
 def do_task(tasks, args, checktask, task, quiet=False):
