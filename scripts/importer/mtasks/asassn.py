@@ -12,7 +12,7 @@ from ..funcs import load_cached_url
 
 
 def do_asassn(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
     html = load_cached_url(args, current_task, asn_url, os.path.join(
         PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))

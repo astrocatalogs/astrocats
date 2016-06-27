@@ -14,7 +14,7 @@ from ..funcs import add_photometry
 
 
 def do_donations(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     # Nicholl 04-01-16 donation
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'Nicholl-04-01-16/bibcodes.json'), 'r') as f:

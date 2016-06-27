@@ -22,7 +22,7 @@ def do_rochester(catalog):
     rochesterpaths = ['snimages/snredshiftall.html',
                       'sn2016/snredshift.html', 'snimages/snredboneyard.html']
     rochesterupdate = [False, True, True]
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
 
     for pp, path in enumerate(pbar(rochesterpaths, current_task)):
         if args.update and not rochesterupdate[pp]:

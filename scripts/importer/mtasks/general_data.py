@@ -13,7 +13,7 @@ from ..funcs import add_photometry
 
 
 def do_external_radio(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
@@ -45,7 +45,7 @@ def do_external_radio(catalog):
 
 
 def do_external_xray(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
@@ -75,7 +75,7 @@ def do_external_xray(catalog):
 def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     log.debug("found {} files matching '{}'".format(len(files), path_pattern))

@@ -21,7 +21,7 @@ from ..funcs import (add_photometry, convert_aq_output, jd_to_mjd,
 def do_vizier(catalog):
     """
     """
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
 
     Vizier.ROW_LIMIT = -1
 
@@ -1580,7 +1580,7 @@ def do_vizier(catalog):
 def do_lennarz(catalog):
     """
     """
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs('J/A+A/538/A120/usc')
     table = result[list(result.keys())[0]]

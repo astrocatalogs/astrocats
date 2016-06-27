@@ -17,7 +17,7 @@ from ..funcs import add_photometry, load_cached_url
 def do_tns(catalog):
     from datetime import timedelta
     session = requests.Session()
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     tns_url = 'https://wis-tns.weizmann.ac.il/'
     search_url = tns_url + \
         'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'

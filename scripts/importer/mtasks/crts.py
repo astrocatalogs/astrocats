@@ -17,7 +17,7 @@ from ..funcs import add_photometry, load_cached_url
 
 def do_crts(catalog):
     crtsnameerrors = ['2011ax']
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
         html = load_cached_url(args, current_task,

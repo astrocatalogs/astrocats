@@ -13,7 +13,7 @@ from ..funcs import add_photometry
 
 
 def do_sdss(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')

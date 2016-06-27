@@ -20,7 +20,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
 def do_cfa_photo(catalog):
     from html import unescape
     import re
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat'))
     for fname in pbar_strings(file_names, desc=current_task):
         f = open(fname, 'r')
@@ -146,7 +146,7 @@ def do_cfa_photo(catalog):
 
 
 def do_cfa_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     # Ia spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(

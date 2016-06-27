@@ -23,7 +23,7 @@ from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
 
 
 def do_suspect_photo(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
@@ -108,7 +108,7 @@ def do_suspect_photo(catalog):
 
 
 def do_suspect_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                            'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())

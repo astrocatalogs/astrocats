@@ -10,7 +10,7 @@ from .. import Events
 
 
 def do_scp(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     tsvin = list(csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'),
                                  'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):

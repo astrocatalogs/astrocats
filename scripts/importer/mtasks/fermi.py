@@ -10,7 +10,7 @@ from .. import Events
 
 
 def do_fermi(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            '1SC_catalog_v01.asc'), 'r') as ff:
         tsvin = list(csv.reader(ff, delimiter=','))

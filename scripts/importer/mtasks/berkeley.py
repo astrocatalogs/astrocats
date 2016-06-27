@@ -18,7 +18,7 @@ from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 
 
 def do_ucb_photo(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
@@ -97,7 +97,7 @@ def do_ucb_photo(catalog):
 
 
 def do_ucb_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'

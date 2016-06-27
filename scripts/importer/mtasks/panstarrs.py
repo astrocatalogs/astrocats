@@ -18,7 +18,7 @@ from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
 def do_ps_mds(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
@@ -41,7 +41,7 @@ def do_ps_mds(catalog):
 
 
 def do_ps_threepi(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"

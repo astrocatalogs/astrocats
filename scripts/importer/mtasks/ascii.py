@@ -17,7 +17,7 @@ from ..funcs import add_photometry, jd_to_mjd, make_date_string
 
 
 def do_ascii(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
 
     # 2006ApJ...645..841N
     file_path = os.path.join(

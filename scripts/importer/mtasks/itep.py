@@ -15,7 +15,7 @@ from ..funcs import add_photometry, jd_to_mjd
 
 
 def do_itep(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
     with open(os.path.join(PATH.REPO_EXTERNAL,
