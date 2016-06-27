@@ -82,7 +82,7 @@ class Entry(OrderedDict):
         # Create a new `EVENT` instance
         new_event = cls(name)
         # Fill it with data from json file
-        new_event.load_data_from_json(load_path, log)
+        new_event._load_data_from_json(load_path, log)
 
         if clean:
             new_event.clean()
@@ -153,10 +153,10 @@ class EVENT(Entry):
                 f.read(), object_pairs_hook=OrderedDict)
         return
 
-    def load_data_from_json(self, fhand, log):
+    def _load_data_from_json(self, fhand, log):
         """FIX: check for overwrite??
         """
-        log.debug("Events.EVENT.load_data_from_json()")
+        log.debug("Events.EVENT._load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -689,7 +689,7 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
         return None
 
     new_event = EVENT(name)
-    new_event.load_data_from_json(load_path, log)
+    new_event._load_data_from_json(load_path, log)
 
     # Delete old version
     if name in events:
