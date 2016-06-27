@@ -39,11 +39,11 @@ class Catalog():
         self.log = logger.get_logger(
             stream_level=log_stream_level, tofile=args.log_filename)
 
-        # Make sure repositories are cloned
-        self._clone_repos()
-
         # Load all dictionaries
         self._load_dicts()
+
+        # Make sure repositories are cloned
+        self._clone_repos()
         return
 
     def _clone_repos(self):
@@ -90,14 +90,14 @@ class Catalog():
         self.log.debug("Events.add_event()")
         newname = name_clean(name)
         # If event already exists, return
-        if newname in self.event:
+        if newname in self.events:
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exists.".
                 format(newname, name))
             return
 
         # If event is alias of another event *in `events`*, find and return that
-        match_name = Events.find_event_name_of_alias(self.event, newname)
+        match_name = Events.find_event_name_of_alias(self.events, newname)
         if match_name is not None:
             self.log.debug("`newname`: '{}' (name: '{}') already exist as alias for "
                            "'{}'.".format(newname, name, match_name))
@@ -108,7 +108,7 @@ class Catalog():
             loaded_event = EVENT.init_from_file(name=newname)
             if loaded_event is not None:
                 self.events[newname] = loaded_event
-                self.log.debug("Added '{}', from '{}', to `self.event`".format(
+                self.log.debug("Added '{}', from '{}', to `self.events`".format(
                     newname, loaded_event.filename))
                 # Delete source file, if desired
                 if delete:
