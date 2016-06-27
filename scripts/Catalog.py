@@ -14,7 +14,7 @@ from .importer.funcs import (get_bibauthor_dict, get_biberror_dict,
 from .utils import (is_number, repo_file_list)
 from .importer.constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES,
                                  TRAVIS_QUERY_LIMIT)
-from .importer.funcs import (add_photometry, add_spectrum, event_attr_priority,
+from .importer.funcs import (event_attr_priority,
                              name_clean, null_field, uniq_cdl)
 from .importer import Events
 from .importer.Events import KEYS, EVENT
@@ -194,8 +194,8 @@ class Catalog():
                     sources = uniq_cdl(sources)
 
                     if key == 'photometry':
-                        add_photometry(
-                            self.events, destname, u_time=null_field(item, "u_time"), time=null_field(item, "time"),
+                        self.events[destname].add_photometry(
+                            u_time=null_field(item, "u_time"), time=null_field(item, "time"),
                             e_time=null_field(item, "e_time"), telescope=null_field(item, "telescope"),
                             instrument=null_field(item, "instrument"), band=null_field(item, "band"),
                             magnitude=null_field(item, "magnitude"), e_magnitude=null_field(item, "e_magnitude"),
@@ -203,8 +203,8 @@ class Catalog():
                             observatory=null_field(item, "observatory"), observer=null_field(item, "observer"),
                             host=null_field(item, "host"), survey=null_field(item, "survey"))
                     elif key == 'spectra':
-                        add_spectrum(
-                            self.events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"),
+                        self.events[destname].add_spectrum(
+                            null_field(item, "waveunit"), null_field(item, "fluxunit"),
                             data=null_field(item, "data"),
                             u_time=null_field(item, "u_time"), time=null_field(item, "time"),
                             instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
