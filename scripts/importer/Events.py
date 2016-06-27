@@ -50,7 +50,7 @@ class Entry(OrderedDict):
 
     @classmethod
     def init_from_file(cls, name=None, path=None,
-                       clean=False, delete=True, append=False)
+                       clean=False, delete=True, append=False):
         if not name and not path:
             raise ValueError("Either event `name` or `path` must be specified "
                              "to load event.")
