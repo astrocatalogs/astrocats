@@ -144,10 +144,6 @@ def import_main(args=None, **kwargs):
     tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
     events = OrderedDict()
-    # FIX: stubs only need to be loaded for `args.update` ??
-    stubs = OrderedDict()
-    log.error("WARNING: not loading stubs for testing!!!")
-    # stubs = Events.load_stubs(tasks, args, events, log)
     warnings.filterwarnings(
         'ignore', r'Warning: converting a masked element to nan.')
 
@@ -173,12 +169,13 @@ def import_main(args=None, **kwargs):
             nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
-        events, stubs = getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
+        events = getattr(mod, func_name)(events, args, tasks, task_obj, log)
+        num_events, num_stubs = Events.count(events)
         log.warning("Task finished.  Events: {},  Stubs: {}".format(
-            len(events), len(stubs)))
-        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            num_events, num_stubs))
+        events = Events.journal_events(tasks, args, events, log)
         log.warning("Journal finished.  Events: {}, Stubs: {}".format(
-            len(events), len(stubs)))
+            num_events, num_stubs))
 
         prev_priority = priority
         prev_task_name = task_name
@@ -217,7 +214,7 @@ def import_main(args=None, **kwargs):
     return
 
 
-def delete_old_event_files(events, stubs, args, tasks, task_obj, log):
+def delete_old_event_files(events, args, tasks, task_obj, log):
     if len(events) or len(stubs):
         err_str = "`delete_old_event_files` with `events` and `stubs` not empty!"
         log.error(err_str)
@@ -226,7 +223,7 @@ def delete_old_event_files(events, stubs, args, tasks, task_obj, log):
     repo_files = repo_file_list()
     for rfil in pbar(repo_files, desc='Deleting old events'):
         os.remove(rfil)
-    return events, stubs
+    return events
 
 
 def load_task_list(args, log):
