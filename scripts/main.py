@@ -59,6 +59,12 @@ def load_args(args=None):
     write_group.add_argument('--no-write', action='store_false', dest='write_events', default=True,
                              help='do not write events to file.')
 
+    delete_group = pars_parent.add_mutually_exclusive_group()
+    delete_group.add_argument('--predelete', action='store_true', dest='delete_old', default=True,
+                              help='Delete all old event files to begin [default].')
+    delete_group.add_argument('--no-predelete', action='store_false', dest='delete_old', default=True,
+                              help='Do not delete all old event files to start.')
+
     # Construct the subparser for `importer` submodule --- importing supernova
     # data
     pars_imp = subparsers.add_parser("importer", parents=[pars_parent],

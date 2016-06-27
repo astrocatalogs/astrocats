@@ -139,6 +139,10 @@ def import_main(catalog=None):
     warnings.filterwarnings(
         'ignore', r'Warning: converting a masked element to nan.')
 
+    if args.delete_old:
+        log.warning("Deleting all old event files.")
+        catalog.delete_old_event_files()
+
     prev_priority = 0
     prev_task_name = ''
     # for task, task_obj in tasks_list.items():
@@ -184,7 +188,7 @@ def import_main(catalog=None):
         events, name = Events.add_event(
             tasks, args, events, name, log)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
-            catalog, tasks, args, events)
+            catalog)
         if has_task(tasks, args, 'writeevents'):
             events = Events.journal_events(tasks, args, events, log)
         if args.travis and ii > TRAVIS_QUERY_LIMIT:
@@ -204,18 +208,6 @@ def import_main(catalog=None):
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
         resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))
     return
-
-
-def delete_old_event_files(events, args, tasks, task_obj, log):
-    if len(events):
-        err_str = "`delete_old_event_files` with `events` not empty!"
-        log.error(err_str)
-        raise RuntimeError(err_str)
-    # Delete all old event JSON files
-    repo_files = repo_file_list()
-    for rfil in pbar(repo_files, desc='Deleting old events'):
-        os.remove(rfil)
-    return events
 
 
 def load_task_list(args, log):

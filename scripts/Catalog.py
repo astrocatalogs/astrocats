@@ -102,7 +102,7 @@ class Catalog():
         if match_name is not None:
             self.log.debug("`newname`: '{}' (name: '{}') already exist as alias for "
                            "'{}'.".format(newname, name, match_name))
-            return
+            return match_name
 
         # Load Event from file
         if load:
@@ -122,6 +122,18 @@ class Catalog():
         self.log.log(self.log._LOADED, "Created new event for '{}'".format(newname))
         # Add event to dictionary
         self.events[newname] = new_event
+        return newname
+
+    def delete_old_event_files(self):
+        if len(self.events):
+            err_str = "`delete_old_event_files` with `events` not empty!"
+            self.log.error(err_str)
+            raise RuntimeError(err_str)
+        # Delete all old event JSON files
+        repo_files = repo_file_list()
+        for rfil in pbar(repo_files, desc='Deleting old events'):
+            os.remove(rfil)
+            self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
 
     def find_event_name_of_alias(self, events, alias):
@@ -217,13 +229,12 @@ class Catalog():
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary='', acknowledgment=''):
         oldname = name
-        events, name = self.add_event(name, load=load, delete=delete)
-        source = events[name].add_source(bibcode=bibcode, srcname=srcname,
-                                         reference=reference,
-                                         url=url, secondary=secondary,
-                                         acknowledgment=acknowledgment)
-        events[name].add_quantity('alias', oldname, source)
-        return events, name, source
+        self.add_event(name, load=load, delete=delete)
+        source = self.events[name].add_source(
+            bibcode=bibcode, srcname=srcname, reference=reference, url=url,
+            secondary=secondary, acknowledgment=acknowledgment)
+        self.events[name].add_quantity('alias', oldname, source)
+        return name, source
 
     def merge_duplicates(self):
         """Merge and remove duplicate events.

@@ -1,13 +1,4 @@
 {
-    "delete_old": {
-        "nice_name": "Deleting old events",
-        "active": true,
-        "active": true,
-        "update": false,
-        "module": "importer.importer",
-        "function": "delete_old_event_files",
-        "priority": 0
-    },
     "internal": {
         "nice_name": "%pre metadata and photometry",
         "active": true,
