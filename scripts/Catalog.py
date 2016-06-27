@@ -1,6 +1,6 @@
 from collections import OrderedDict
 
-from .funcs import get_bibauthor_dict, get_extinctions_dict
+from .importer.funcs import get_bibauthor_dict, get_extinctions_dict
 
 
 class Catalog():
