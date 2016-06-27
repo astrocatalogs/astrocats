@@ -26,7 +26,7 @@ def do_ogle(catalog):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
         filepath += bn.replace('/', '-') + '-transients.html'
-        htmltxt = load_cached_url(args, current_task,
+        htmltxt = load_cached_url(catalog.args, current_task,
                                   'http://ogle.astrouw.edu.pl/ogle4/' + bn +
                                   '/transients.html', filepath)
         if not htmltxt:

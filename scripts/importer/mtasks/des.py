@@ -62,7 +62,7 @@ def do_des(catalog):
         catalog.events[name].add_quantity('ra', ra, sources)
         catalog.events[name].add_quantity('dec', dec, sources)
 
-        html2 = load_cached_url(args, current_task, des_trans_url + name,
+        html2 = load_cached_url(catalog.args, current_task, des_trans_url + name,
                                 des_path + name + '.html')
         if not html2:
             continue

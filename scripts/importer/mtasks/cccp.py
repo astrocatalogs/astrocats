@@ -128,7 +128,7 @@ def do_cpcs(catalog):
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'
                 'hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-    jsontxt = load_cached_url(args, current_task, cpcs_url, os.path.join(
+    jsontxt = load_cached_url(catalog.args, current_task, cpcs_url, os.path.join(
         PATH.REPO_EXTERNAL, 'CPCS/index.json'))
     if not jsontxt:
         return

@@ -20,7 +20,7 @@ def do_crts(catalog):
     current_task = catalog.current_task
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
-        html = load_cached_url(args, current_task,
+        html = load_cached_url(catalog.args, current_task,
                                'http://nesssi.cacr.caltech.edu/' + fold +
                                '/AllSN.html',
                                os.path.join(PATH.REPO_EXTERNAL, 'CRTS', fold +

@@ -16,7 +16,7 @@ from ..funcs import add_photometry, jd_to_mjd, load_cached_url
 def do_gaia(catalog):
     current_task = catalog.current_task
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
-    csvtxt = load_cached_url(args, current_task,
+    csvtxt = load_cached_url(catalog.args, current_task,
                              'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',
                              fname)
     if not csvtxt:

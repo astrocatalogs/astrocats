@@ -121,7 +121,7 @@ def do_asiago_photo(catalog):
 
 def do_asiago_spectra(catalog):
     current_task = catalog.current_task
-    html = load_cached_url(args, current_task,
+    html = load_cached_url(catalog.args, current_task,
                            ('http://sngroup.oapd.inaf.it./'
                             'cgi-bin/output_class.cgi?sn=1990'),
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA,

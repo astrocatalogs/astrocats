@@ -13,7 +13,7 @@ from ..funcs import load_cached_url
 def do_grb(catalog):
     current_task = 'GRB'
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'GRB-catalog/catalog.csv')
-    csvtxt = load_cached_url(args,
+    csvtxt = load_cached_url(catalog.args,
                              current_task,
                              ('http://grb.pa.msu.edu/grbcatalog/'
                               'download_data?cut_0_min=10&cut_0=BAT%20T90'

@@ -31,7 +31,7 @@ def do_rochester(catalog):
         filepath = os.path.join(
             PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
         for mirror in rochestermirrors:
-            html = load_cached_url(args, current_task, mirror + path,
+            html = load_cached_url(catalog.args, current_task, mirror + path,
                                    filepath, failhard=(mirror !=
                                                        rochestermirrors[-1]))
             if html:
