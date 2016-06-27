@@ -12,7 +12,6 @@ from scripts import FILENAME
 
 from . import Events
 from ..utils import pbar, repo_file_list
-from ..Catalog import Catalog
 from .constants import TASK, TRAVIS_QUERY_LIMIT
 from .funcs import derive_and_sanitize, has_task
 
@@ -115,35 +114,35 @@ def get_old_tasks():
     return tasks
 
 
-def import_main(args=None, **kwargs):
+def import_main(catalog=None):
     """Run all of the import tasks.
 
     This is executed by the 'scripts.main.py' when the module is run as an
     executable. This can also be run as a method, in which case default
     arguments are loaded, but can be overriden using `**kwargs`.
     """
-    catalog = Catalog()
-
-    log = catalog.log
 
     # If this is called from `scripts.main`, then `args` will contain
     # parameters. If this is being called as an API function, we need to load
     # default parameters which can then be overwritten below
-    if args is None:
-        log.debug("`args` not provided, loading new")
+    if catalog is None:
+        warnings.warn("`args` not provided, loading new")
         from .. import main
+        from .. import Catalog
         args = main.load_args(args=['importer'])
+        catalog = Catalog.Catalog(args)
 
-    # If this is called as an API function, overwrite variables in `args` with
-    # those passed to the function as keyword arguments.
-    for key, val in kwargs.items():
-        log.debug("Overriding `args` '{}' = '{}'".format(key, val))
-        setattr(args, key, val)
-    log.debug("`args` : " + str(vars(args)))
+    log = catalog.log
+
+    # # If this is called as an API function, overwrite variables in `args` with
+    # # those passed to the function as keyword arguments.
+    # for key, val in kwargs.items():
+    #     log.debug("Overriding `args` '{}' = '{}'".format(key, val))
+    #     setattr(args, key, val)
+    # log.debug("`args` : " + str(vars(args)))
 
     tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
-    events = OrderedDict()
     warnings.filterwarnings(
         'ignore', r'Warning: converting a masked element to nan.')
 

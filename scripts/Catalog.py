@@ -6,7 +6,7 @@ from git import Repo
 
 from scripts import PATH
 
-from .utils import get_logger, pbar
+from .utils import logger, pbar
 from .importer.funcs import (get_bibauthor_dict, get_biberror_dict,
                              get_extinctions_dict, get_repos_dict)
 
@@ -16,15 +16,29 @@ class Catalog():
     Object to hold the main catalog dictionary and other catalog globals.
     """
 
-    nedd_dict = OrderedDict()
-    repos_dict = get_repos_dict()
-    bibauthor_dict = get_bibauthor_dict()
-    biberror_dict = get_biberror_dict()
-    extinctions_dict = get_extinctions_dict()
+    def __init__(self, args):
+        # Store runtime arguments
+        self.args = args
+        # Load a logger object
+        # Determine verbosity ('None' means use default)
+        log_stream_level = None
+        if args.debug:
+            log_stream_level = logger.DEBUG
+        elif args.verbose:
+            log_stream_level = logger.INFO
 
-    log = get_logger()
+        # Destination of log-file ('None' means no file)
+        self.log = logger.get_logger(
+            stream_level=log_stream_level, tofile=args.log_filename)
 
-    def __init__(self):
+        # Make sure repositories are cloned
+        self._clone_repos()
+
+        # Load all dictionaries
+        self._load_dicts()
+        return
+
+    def _clone_repos(self):
         all_repos = [self.repos_dict[x] for x in self.repos_dict]
         all_repos = [i for x in all_repos for i in x]
         for repo in pbar(all_repos):
@@ -37,8 +51,20 @@ class Catalog():
                                     repo + ".git",
                                     PATH.ROOT + "/" + repo)
                 except:
+                    self.log.error("CLONING '{}' INTERRUPTED".format(repo))
                     raise
                     sys.exit()
+        return
+
+    def _load_dicts(self):
+        # Create empty `events` collection
+        self.events = OrderedDict()
+        # Create/Load auxiliary dictionaries
+        self.nedd_dict = OrderedDict()
+        self.repos_dict = get_repos_dict()
+        self.bibauthor_dict = get_bibauthor_dict()
+        self.biberror_dict = get_biberror_dict()
+        self.extinctions_dict = get_extinctions_dict()
         return
 
     def add_event(name, load=True, delete=True):
@@ -243,7 +269,6 @@ class Catalog():
 
         return events
 
-
     def set_preferred_names():
         """Choose between each events given name and its possible aliases for
         the best one.
@@ -344,7 +369,6 @@ class Catalog():
 
         return events
 
-
     def load_stubs():
         """
         """
@@ -369,7 +393,6 @@ class Catalog():
             log.debug("Added stub for '{}'".format(name))
 
         return events
-
 
     def journal_events(clear=True, gz=False,
                        bury=False, write_stubs=False):
@@ -439,7 +462,6 @@ class Catalog():
 
         return events
 
-
     def count():
         full = 0
         stub = 0
@@ -450,7 +472,6 @@ class Catalog():
                 full += 1
         return full, stub
 
-
     def _compress_gz(fname):
         import shutil
         import gzip
@@ -459,7 +480,6 @@ class Catalog():
             shutil.copyfileobj(f_in, f_out)
         os.remove(fname)
         return comp_fname
-
 
     def _uncompress_gz(fname):
         import shutil
