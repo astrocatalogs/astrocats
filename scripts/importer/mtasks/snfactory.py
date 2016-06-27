@@ -19,7 +19,7 @@ def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
-            events, name, source = Events.new_event(tasks, args, events, row[0], log,
+            events, name, source = catalog.new_event(row[0],
                                                     bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                                     url=OSC_URL, secondary=True)
             catalog.events[name].add_quantity('alias', row[1], source)
@@ -37,7 +37,7 @@ def do_snf_specta(catalog):
         PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
     for eventfolder in eventfolders:
         name = eventfolder
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
             events = Events.journal_events(
                 tasks, args, events, log)

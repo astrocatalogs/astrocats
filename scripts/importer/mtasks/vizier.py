@@ -381,7 +381,7 @@ def do_vizier(catalog):
         name = catalog.add_event(oldname)
         source = (catalog.events[name].add_source(bibcode='2014BASI...42...47G') +
                   ',' +
-                  (events[name]
+                  (catalog.events[name]
                    .add_source(srcname='Galactic SNRs',
                                url=('https://www.mrao.cam.ac.uk/'
                                     'surveys/snrs/snrs.data.html'))))

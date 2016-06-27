@@ -139,7 +139,7 @@ def do_ascii(catalog):
             if not is_number(mag):
                 continue
             add_photometry(
-                events, name, time=mjd, band=bands[
+                catalog.events, name, time=mjd, band=bands[
                     mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=row[-1], upperlimit=upps[mi], source=source)
     catalog.journal_events()
@@ -161,7 +161,7 @@ def do_ascii(catalog):
         err = row[4] if is_number(row[4]) else ''
         ins = row[5]
         add_photometry(
-            events, name, time=mjd, band=row[
+            catalog.events, name, time=mjd, band=row[
                 0], magnitude=mag, e_magnitude=err,
             instrument=ins, upperlimit=upp, source=source)
     catalog.journal_events()
@@ -199,7 +199,7 @@ def do_ascii(catalog):
         mag = row[3]
         err = row[4]
         add_photometry(
-            events, name, time=mjd, band=row[
+            catalog.events, name, time=mjd, band=row[
                 2], magnitude=mag, e_magnitude=err,
             instrument='WHIRC', telescope='WIYN 3.5 m', observatory='NOAO',
             system='WHIRC', source=source)
@@ -233,7 +233,7 @@ def do_ascii(catalog):
             if not is_number(mag):
                 continue
             add_photometry(
-                events, name, time=mjd, band=bands[
+                catalog.events, name, time=mjd, band=bands[
                     mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=ins, telescope=tel, observatory=obs,
                 system='Natural', source=source)
@@ -248,9 +248,8 @@ def do_ascii(catalog):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            (events,
-             name,
-             source) = Events.new_event(tasks, args, events, row[0], log,
+            (name,
+             source) = catalog.new_event(row[0],
                                         bibcode='2014ApJ...783...28G')
             catalog.events[name].add_quantity('alias', row[1], source)
             catalog.events[name].add_quantity(
@@ -267,7 +266,7 @@ def do_ascii(catalog):
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
         for r, row in enumerate(pbar(data, current_task)):
-            (events,
+            (catalog.events,
              name,
              source) = Events.new_event(tasks, args, events, 'SNLS-' + row[0],
                                         log, bibcode='2005ApJ...634.1190H')
@@ -308,9 +307,9 @@ def do_ascii(catalog):
             if row[0][0] == '#':
                 bands = row[2:-1]
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, 'SN2008S', log,
+             source) = catalog.new_event('SN2008S',
                                         bibcode='2009MNRAS.398.1041B')
             mjd = str(jd_to_mjd(Decimal(row[0])))
             mags = [x.split('±')[0].strip() for x in row[2:]]
@@ -337,9 +336,9 @@ def do_ascii(catalog):
             if row[0][0] == '#':
                 bands = row[1:]
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, 'SN2008S', log,
+             source) = catalog.new_event('SN2008S',
                                         bibcode='2010arXiv1007.0011P')
             mjd = row[0]
             mags = [x.split('±')[0].strip() for x in row[1:]]
@@ -359,9 +358,9 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        (events,
+        (catalog.events,
          name,
-         source) = Events.new_event(tasks, args, events, 'SN1997cy', log,
+         source) = catalog.new_event('SN1997cy',
                                     bibcode='2000ApJ...533..320G')
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':

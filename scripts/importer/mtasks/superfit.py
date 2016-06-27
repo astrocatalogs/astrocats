@@ -35,8 +35,8 @@ def do_superfit_spectra(catalog):
 
             if 'theory' in name:
                 continue
-            if event_exists(events, name):
-                prefname = get_preferred_name(events, name)
+            if event_exists(catalog.events, name):
+                prefname = get_preferred_name(catalog.events, name)
                 if 'spectra' in events[prefname] and lastname != prefname:
                     continue
             if oldname and name != oldname:
@@ -45,7 +45,7 @@ def do_superfit_spectra(catalog):
             oldname = name
             name = catalog.add_event(name)
             epoch = basename.split('.')[1]
-            (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
+            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.events, name)
             if mldt:
                 if epoch == 'max':
                     epoff = Decimal(0.0)

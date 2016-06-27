@@ -43,9 +43,9 @@ def do_asiago_photo(catalog):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, oldname, log,
+             source) = catalog.new_event(oldname,
                                         srcname=reference, url=refurl,
                                         bibcode=refbib, secondary=True)
 

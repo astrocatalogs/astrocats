@@ -26,7 +26,7 @@ def do_grb(catalog):
     for r, row in enumerate(pbar(data, current_task)):
         if r == 0:
             continue
-        (events,
+        (catalog.events,
          name,
          source) = Events.new_event(tasks, args, events, 'GRB ' +
                                     row[0], log,

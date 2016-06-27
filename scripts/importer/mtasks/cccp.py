@@ -65,7 +65,7 @@ def do_cccp(catalog):
         if 'sc_sn' in link['href']:
             events, name = Events.add_event(
                 tasks, args, events, link.text.replace(' ', ''), log)
-            source = (events[name]
+            source = (catalog.events[name]
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
                                        '/home/iair/sc_cccp.html')))
@@ -152,7 +152,7 @@ def do_cpcs(catalog):
             if name.upper().startswith('IPTF'):
                 name = 'iPTF' + name[4:]
             # Only add events that are classified as SN.
-            if event_exists(events, name):
+            if event_exists(catalog.events, name):
                 continue
             oldname = name
             name = catalog.add_event(name)

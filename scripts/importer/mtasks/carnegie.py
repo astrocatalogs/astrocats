@@ -76,7 +76,7 @@ def do_csp_spectra(catalog):
         sfile = sfile[0]
         fileparts = sfile.split('_')
         name = 'SN20' + fileparts[0][2:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
             events = Events.journal_events(
                 tasks, args, events, log)

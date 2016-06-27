@@ -66,7 +66,7 @@ def do_snls_spectra(catalog):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
             events = Events.journal_events(
                 tasks, args, events, log)

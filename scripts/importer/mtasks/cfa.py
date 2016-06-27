@@ -158,7 +158,7 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         if name.startswith('snf') and is_number(name[3:7]):
             name = 'SNF' + name[3:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
             events = Events.journal_events(
                 tasks, args, events, log)
@@ -194,9 +194,9 @@ def do_cfa_spectra(catalog):
             fluxes = data[1]
             errors = data[2]
             sources = uniq_cdl([source,
-                                (events[name]
+                                (catalog.events[name]
                                  .add_source(bibcode='2012AJ....143..126B')),
-                                (events[name]
+                                (catalog.events[name]
                                  .add_source(bibcode='2008AJ....135.1598M'))])
             add_spectrum(
                 catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
@@ -218,7 +218,7 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
             events = Events.journal_events(
                 tasks, args, events, log)
@@ -270,7 +270,7 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
             events = Events.journal_events(
                 tasks, args, events, log)
