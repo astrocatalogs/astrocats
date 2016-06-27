@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd
 
 
-def do_itep(events, args, tasks, task_obj, log):
+def do_itep(catalog):
     current_task = task_obj.current_task(args)
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []

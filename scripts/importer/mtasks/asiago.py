@@ -16,7 +16,7 @@ from ...utils import is_number, pbar
 from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 
 
-def do_asiago_photo(events, args, tasks, task_obj, log):
+def do_asiago_photo(catalog):
     current_task = task_obj.current_task(args)
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
@@ -119,7 +119,7 @@ def do_asiago_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_asiago_spectra(events, args, tasks, task_obj, log):
+def do_asiago_spectra(catalog):
     current_task = task_obj.current_task(args)
     html = load_cached_url(args, current_task,
                            ('http://sngroup.oapd.inaf.it./'

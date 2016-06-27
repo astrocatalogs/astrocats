@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_spectrum, event_exists
 
 
-def do_superfit_spectra(events, args, tasks, task_obj, log):
+def do_superfit_spectra(catalog):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = task_obj.current_task(args)

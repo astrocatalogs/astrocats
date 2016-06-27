@@ -14,7 +14,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, get_preferred_name
 
 
-def do_snls_photo(events, args, tasks, task_obj, log):
+def do_snls_photo(catalog):
     current_task = 'SNLS'
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
@@ -48,7 +48,7 @@ def do_snls_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_snls_spectra(events, args, tasks, task_obj, log):
+def do_snls_spectra(catalog):
     """
     """
 

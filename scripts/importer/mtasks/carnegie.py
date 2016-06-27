@@ -14,7 +14,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
                      get_preferred_name, jd_to_mjd)
 
 
-def do_csp_photo(events, args, tasks, task_obj, log):
+def do_csp_photo(catalog):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
@@ -63,7 +63,7 @@ def do_csp_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_csp_spectra(events, args, tasks, task_obj, log):
+def do_csp_spectra(catalog):
     oldname = ''
     current_task = task_obj.current_task(args)
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))

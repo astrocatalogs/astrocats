@@ -14,7 +14,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 
 
-def do_ogle(events, args, tasks, task_obj, log):
+def do_ogle(catalog):
     current_task = task_obj.current_task(args)
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']

@@ -9,7 +9,7 @@ from scripts.utils import pbar
 from .. import Events
 
 
-def do_fermi(events, args, tasks, task_obj, log):
+def do_fermi(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            '1SC_catalog_v01.asc'), 'r') as ff:

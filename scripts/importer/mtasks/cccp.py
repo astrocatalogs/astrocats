@@ -17,7 +17,7 @@ from .. import Events
 from ..funcs import add_photometry, event_exists, load_cached_url, uniq_cdl
 
 
-def do_cccp(events, args, tasks, task_obj, log):
+def do_cccp(catalog):
     current_task = task_obj.current_task(args)
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
@@ -122,7 +122,7 @@ def do_cccp(events, args, tasks, task_obj, log):
     return events
 
 
-def do_cpcs(events, args, tasks, task_obj, log):
+def do_cpcs(catalog):
     current_task = task_obj.current_task(args)
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'

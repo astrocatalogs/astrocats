@@ -17,7 +17,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
                      get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
-def do_cfa_photo(events, args, tasks, task_obj, log):
+def do_cfa_photo(catalog):
     from html import unescape
     import re
     current_task = task_obj.current_task(args)
@@ -145,7 +145,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_cfa_spectra(events, args, tasks, task_obj, log):
+def do_cfa_spectra(catalog):
     current_task = task_obj.current_task(args)
     # Ia spectra
     oldname = ''

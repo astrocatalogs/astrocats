@@ -17,7 +17,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 
 
-def do_ucb_photo(events, args, tasks, task_obj, log):
+def do_ucb_photo(catalog):
     current_task = task_obj.current_task(args)
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
@@ -96,7 +96,7 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_ucb_spectra(events, args, tasks, task_obj, log):
+def do_ucb_spectra(catalog):
     current_task = task_obj.current_task(args)
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'

@@ -11,7 +11,7 @@ from ...utils import pbar
 from ..funcs import load_cached_url
 
 
-def do_asassn(events, args, tasks, task_obj, log):
+def do_asassn(catalog):
     current_task = task_obj.current_task(args)
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
     html = load_cached_url(args, current_task, asn_url, os.path.join(

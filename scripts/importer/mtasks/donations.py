@@ -13,7 +13,7 @@ from ...utils import is_number, pbar, pbar_strings, rep_chars
 from ..funcs import add_photometry
 
 
-def do_donations(events, args, tasks, task_obj, log):
+def do_donations(catalog):
     current_task = task_obj.current_task(args)
     # Nicholl 04-01-16 donation
     with open(os.path.join(PATH.REPO_EXTERNAL,

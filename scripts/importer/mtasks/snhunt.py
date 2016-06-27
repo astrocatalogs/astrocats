@@ -11,7 +11,7 @@ from .. import Events
 from ..funcs import load_cached_url
 
 
-def do_snhunt(events, args, tasks, task_obj, log):
+def do_snhunt(catalog):
     current_task = task_obj.current_task(args)
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url(args, current_task, snh_url, os.path.join(

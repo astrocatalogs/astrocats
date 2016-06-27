@@ -18,7 +18,7 @@ from ..funcs import (add_photometry, convert_aq_output, jd_to_mjd,
                      make_date_string, radec_clean, uniq_cdl)
 
 
-def do_vizier(events, args, tasks, task_obj, log):
+def do_vizier(catalog):
     """
     """
     current_task = task_obj.current_task(args)
@@ -1577,7 +1577,7 @@ def do_vizier(events, args, tasks, task_obj, log):
     return events
 
 
-def do_lennarz(events, args, tasks, task_obj, log):
+def do_lennarz(catalog):
     """
     """
     current_task = task_obj.current_task(args)

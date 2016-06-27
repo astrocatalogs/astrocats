@@ -19,7 +19,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, uniq_cdl
 
 
-def do_wiserep_spectra(events, args, tasks, task_obj, log):
+def do_wiserep_spectra(catalog):
     current_task = task_obj.current_task(args)
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'

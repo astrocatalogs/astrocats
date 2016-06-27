@@ -12,7 +12,7 @@ from ..Events import load_event_from_file, KEYS
 from ..funcs import add_photometry
 
 
-def do_external_radio(events, args, tasks, task_obj, log):
+def do_external_radio(catalog):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
@@ -44,7 +44,7 @@ def do_external_radio(events, args, tasks, task_obj, log):
     return events
 
 
-def do_external_xray(events, args, tasks, task_obj, log):
+def do_external_xray(catalog):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
@@ -72,7 +72,7 @@ def do_external_xray(events, args, tasks, task_obj, log):
     return events
 
 
-def do_internal(events, args, tasks, task_obj, log):
+def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
     current_task = task_obj.current_task(args)

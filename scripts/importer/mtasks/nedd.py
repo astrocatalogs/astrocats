@@ -15,7 +15,7 @@ from ...utils import is_number, pbar
 from ..funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
 
 
-def do_nedd(events, args, tasks, task_obj, log):
+def do_nedd(catalog):
     current_task = 'NED-D'
     nedd_path = os.path.join(
         PATH.REPO_EXTERNAL, 'NED26.05.1-D-12.1.0-20160501.csv')

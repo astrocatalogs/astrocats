@@ -17,7 +17,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
-def do_ps_mds(events, args, tasks, task_obj, log):
+def do_ps_mds(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'MDS/apj506838t1_mrt.txt')) as f:
@@ -40,7 +40,7 @@ def do_ps_mds(events, args, tasks, task_obj, log):
     return events
 
 
-def do_ps_threepi(events, args, tasks, task_obj, log):
+def do_ps_threepi(catalog):
     current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')

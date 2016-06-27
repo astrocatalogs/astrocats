@@ -22,7 +22,7 @@ from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
                      jd_to_mjd, uniq_cdl)
 
 
-def do_suspect_photo(events, args, tasks, task_obj, log):
+def do_suspect_photo(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'suspectreferences.csv'), 'r') as f:
@@ -107,7 +107,7 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
     return events
 
 
-def do_suspect_spectra(events, args, tasks, task_obj, log):
+def do_suspect_spectra(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                            'Suspect/sources.json'), 'r') as f:

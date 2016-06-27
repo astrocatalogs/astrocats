@@ -9,7 +9,7 @@ from scripts.utils import pbar
 from .. import Events
 
 
-def do_scp(events, args, tasks, task_obj, log):
+def do_scp(catalog):
     current_task = task_obj.current_task(args)
     tsvin = list(csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'),
                                  'r'), delimiter=','))

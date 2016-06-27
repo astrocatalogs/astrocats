@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_tns(events, args, tasks, task_obj, log):
+def do_tns(catalog):
     from datetime import timedelta
     session = requests.Session()
     current_task = task_obj.current_task(args)

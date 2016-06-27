@@ -16,7 +16,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
-def do_rochester(events, args, tasks, task_obj, log):
+def do_rochester(catalog):
     rochestermirrors = ['http://www.rochesterastronomy.org/',
                         'http://www.supernova.thistlethwaites.com/']
     rochesterpaths = ['snimages/snredshiftall.html',

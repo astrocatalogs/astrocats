@@ -9,7 +9,7 @@ from .. import Events
 from ..funcs import add_photometry
 
 
-def do_pessto(events, args, tasks, task_obj, log):
+def do_pessto(catalog):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
     tsvin = list(csv.reader(open(pessto_path, 'r'), delimiter=','))
     for ri, row in enumerate(tsvin):

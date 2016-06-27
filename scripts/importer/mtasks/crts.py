@@ -15,7 +15,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_crts(events, args, tasks, task_obj, log):
+def do_crts(catalog):
     crtsnameerrors = ['2011ax']
     current_task = task_obj.current_task(args)
     folders = ['catalina', 'MLS', 'SSS']

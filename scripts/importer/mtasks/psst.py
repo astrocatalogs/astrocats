@@ -12,7 +12,7 @@ from .. import Events
 from ..funcs import make_date_string
 
 
-def do_psst(events, args, tasks, task_obj, log):
+def do_psst(catalog):
     current_task = task_obj.current_task(args)
     # 2016arXiv160204156S
     file_path = os.path.join(

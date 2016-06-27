@@ -13,7 +13,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url
 
 
-def do_gaia(events, args, tasks, task_obj, log):
+def do_gaia(catalog):
     current_task = task_obj.current_task(args)
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, current_task,

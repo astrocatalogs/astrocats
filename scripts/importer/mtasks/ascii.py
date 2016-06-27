@@ -16,7 +16,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, make_date_string
 
 
-def do_ascii(events, args, tasks, task_obj, log):
+def do_ascii(catalog):
     current_task = task_obj.current_task(args)
 
     # 2006ApJ...645..841N

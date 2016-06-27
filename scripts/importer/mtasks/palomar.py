@@ -11,7 +11,7 @@ from .. import Events
 from ...utils import is_number
 
 
-def do_ptf(events, args, tasks, task_obj, log):
+def do_ptf(catalog):
     # response =
     # urllib.request.urlopen('http://wiserep.weizmann.ac.il/objects/list')
     # bs = BeautifulSoup(response, 'html5lib')

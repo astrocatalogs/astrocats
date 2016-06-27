@@ -15,7 +15,7 @@ from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
 
 
-def do_snf_aliases(events, args, tasks, task_obj, log):
+def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
@@ -28,7 +28,7 @@ def do_snf_aliases(events, args, tasks, task_obj, log):
     return events
 
 
-def do_snf_specta(events, args, tasks, task_obj, log):
+def do_snf_specta(catalog):
     bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T',
                 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
     oldname = ''
