@@ -17,8 +17,7 @@ from scripts import PATH
 
 from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
-                     jd_to_mjd, uniq_cdl)
+from ..funcs import (get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
 def do_suspect_photo(catalog):
@@ -63,8 +62,8 @@ def do_suspect_photo(catalog):
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
             catalog.events[name].add_quantity('discoverdate', year, sec_source)
-            catalog.events[name].add_quantity('host', names[1].split(':')[
-                                      1].strip(), sec_source)
+            catalog.events[name].add_quantity(
+                'host', names[1].split(':')[1].strip(), sec_source)
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
@@ -98,9 +97,9 @@ def do_suspect_photo(catalog):
                 e_magnitude = ''
             else:
                 e_magnitude = str(e_magnitude)
-            catalog.events[name].add_photometry(time=mjd, band=band, magnitude=mag,
-                           e_magnitude=e_magnitude,
-                           source=sec_source + ',' + source)
+            catalog.events[name].add_photometry(
+                time=mjd, band=band, magnitude=mag, e_magnitude=e_magnitude,
+                source=sec_source + ',' + source)
 
     catalog.journal_events()
     return
@@ -199,8 +198,8 @@ def do_suspect_spectra(catalog):
                 if haserrors:
                     errors = specdata[2]
 
-                add_spectrum(
-                    catalog.events, name, 'Angstrom', 'Uncalibrated', u_time='MJD',
+                catalog.events[name].add_spectrum(
+                    'Angstrom', 'Uncalibrated', u_time='MJD',
                     time=time,
                     wavelengths=wavelengths, fluxes=fluxes, errors=errors,
                     errorunit='Uncalibrated',

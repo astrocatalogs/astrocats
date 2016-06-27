@@ -10,7 +10,7 @@ from scripts import PATH
 
 from ...utils import get_sig_digits, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import add_spectrum, get_preferred_name
+from ..funcs import get_preferred_name
 
 
 def do_snls_photo(catalog):
@@ -95,8 +95,8 @@ def do_snls_spectra(catalog):
         # FIX: this isnt being used
         # errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
 
-        add_spectrum(
-            catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
+        catalog.events[name].add_spectrum(
+            'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
             time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
             filename=filename)

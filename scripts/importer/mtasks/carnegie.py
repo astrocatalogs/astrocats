@@ -9,8 +9,7 @@ from scripts import PATH
 
 from ...utils import pbar_strings
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import (add_photometry, add_spectrum, clean_snname,
-                     get_preferred_name, jd_to_mjd)
+from ..funcs import (clean_snname, get_preferred_name, jd_to_mjd)
 
 
 def do_csp_photo(catalog):
@@ -101,8 +100,8 @@ def do_csp_spectra(catalog):
         wavelengths = specdata[0]
         fluxes = specdata[1]
 
-        add_spectrum(
-            catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
+        catalog.events[name].add_spectrum(
+            'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
             time=time, wavelengths=wavelengths, fluxes=fluxes,
             telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)

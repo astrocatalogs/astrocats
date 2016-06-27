@@ -13,8 +13,7 @@ from scripts import PATH
 from .. import Events
 from ...utils import is_number, pbar, pbar_strings
 from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-from ..funcs import (add_photometry, add_spectrum, clean_snname,
-                     get_preferred_name, jd_to_mjd, uniq_cdl)
+from ..funcs import (clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
 def do_cfa_photo(catalog):
@@ -45,10 +44,9 @@ def do_cfa_photo(catalog):
         name = catalog.add_event(name)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        secondarysource = catalog.events[name].add_source(srcname=secondaryname,
-                                                  url=secondaryurl,
-                                                  secondary=True,
-                                                  acknowledgment=ACKN_CFA)
+        secondarysource = catalog.events[name].add_source(
+            srcname=secondaryname, url=secondaryurl, secondary=True,
+            acknowledgment=ACKN_CFA)
         catalog.events[name].add_quantity('alias', name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
@@ -197,8 +195,8 @@ def do_cfa_spectra(catalog):
                                  .add_source(bibcode='2012AJ....143..126B')),
                                 (catalog.events[name]
                                  .add_source(bibcode='2008AJ....135.1598M'))])
-            add_spectrum(
-                catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
+            catalog.events[name].add_spectrum(
+                'Angstrom', 'erg/s/cm^2/Angstrom',
                 filename=filename,
                 wavelengths=wavelengths, fluxes=fluxes, u_time='MJD' if time
                 else '', time=time, instrument=instrument,
@@ -249,8 +247,8 @@ def do_cfa_spectra(catalog):
             sources = uniq_cdl(
                 [source,
                  catalog.events[name].add_source(bibcode='2014AJ....147...99M')])
-            add_spectrum(
-                catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
+            catalog.events[name].add_spectrum(
+                'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
                 instrument=instrument, source=sources,
@@ -307,8 +305,8 @@ def do_cfa_spectra(catalog):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = [str(Decimal(x) * Decimal(1.0e-15)) for x in data[1]]
-            add_spectrum(
-                catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
+            catalog.events[name].add_spectrum(
+                'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
                 instrument=instrument, source=source,
