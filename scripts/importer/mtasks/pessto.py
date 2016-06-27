@@ -19,7 +19,7 @@ def do_pessto(catalog):
                 'Ab', 'AB') for xx in row[3::2]]
             continue
         name = row[1]
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = events[name].add_source(bibcode='2015A&A...579A..40S')
         events[name].add_quantity('alias', name, source)
         for hi, ci in enumerate(range(3, len(row) - 1, 2)):

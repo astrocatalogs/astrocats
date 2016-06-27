@@ -42,7 +42,7 @@ def do_cfa_photo(catalog):
         eventparts = eventname.split('_')
 
         name = clean_snname(eventparts[0])
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = events[name].add_source(srcname=secondaryname,
@@ -114,7 +114,7 @@ def do_cfa_photo(catalog):
             else:
                 name = row[0].strip()
 
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
 
             source = events[name].add_source(bibcode='2012ApJS..200...12H')
             events[name].add_quantity('alias', name, source)
@@ -131,7 +131,7 @@ def do_cfa_photo(catalog):
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
 
             source = events[name].add_source(bibcode='2014ApJS..213...19B')
             events[name].add_quantity('alias', name, source)
@@ -163,7 +163,7 @@ def do_cfa_spectra(catalog):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(
@@ -223,7 +223,7 @@ def do_cfa_spectra(catalog):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(
@@ -275,7 +275,7 @@ def do_cfa_spectra(catalog):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = events[name].add_source(

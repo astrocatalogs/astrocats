@@ -22,7 +22,7 @@ def do_fermi(catalog):
             if 'Classified' not in row[1]:
                 continue
             name = row[0].replace('SNR', 'G')
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
             source = events[name].add_source(bibcode='2016ApJS..224....8A')
             events[name].add_quantity('alias', name, source)
             events[name].add_quantity(

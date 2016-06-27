@@ -22,7 +22,7 @@ def do_ptf(catalog):
     #    name = option.text
     #    if ((name.startswith('PTF') and is_number(name[3:5])) or
     #        name.startswith('PTFS') or name.startswith('iPTF')):
-    # events, name = Events.add_event(tasks, args, events, name, log)
+    # name = catalog.add_event(name)
 
     if task_obj.load_archive(args):
         with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -46,7 +46,7 @@ def do_ptf(catalog):
             if '(' in name:
                 alias = name.split('(')[0].strip(' ')
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
-                events, name = Events.add_event(tasks, args, events, name, log)
+                name = catalog.add_event(name)
                 source = events[name].add_source(bibcode='2012PASP..124..668Y')
                 events[name].add_quantity('alias', alias, source)
             else:
@@ -69,7 +69,7 @@ def do_ptf(catalog):
                 alias = 'PTF' + cols[0]
             else:
                 name = 'PTF' + cols[0]
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
             source = events[name].add_source(bibcode='2016arXiv160408207P')
             events[name].add_quantity('alias', name, source)
             if alias:

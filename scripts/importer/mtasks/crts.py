@@ -94,7 +94,7 @@ def do_crts(catalog):
 
             if not name:
                 name = crtsname
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
             source = events[name].add_source(
                 srcname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')

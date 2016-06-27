@@ -17,7 +17,7 @@ def do_external_radio(catalog):
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
-        events, name = Events.add_event(tasks, args, events, oldname, log)
+        name = catalog.add_event(oldname)
         radiosourcedict = OrderedDict()
         with open(datafile, 'r') as ff:
             for li, line in enumerate([xx.strip() for xx in
@@ -49,7 +49,7 @@ def do_external_xray(catalog):
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
-        events, name = Events.add_event(tasks, args, events, oldname, log)
+        name = catalog.add_event(oldname)
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:

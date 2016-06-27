@@ -63,7 +63,7 @@ def do_ogle(catalog):
                     continue
                 oglenames.append(name)
 
-                events, name = Events.add_event(tasks, args, events, name, log)
+                name = catalog.add_event(name)
 
                 mySibling = sibling.nextSibling
                 atelref = ''

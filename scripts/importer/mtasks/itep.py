@@ -38,7 +38,7 @@ def do_itep(catalog):
 
         if curname != oldname:
             curname = oldname
-            events, name = Events.add_event(tasks, args, events, oldname, log)
+            name = catalog.add_event(oldname)
 
             sec_reference = ('Sternberg Astronomical Institute '
                              'Supernova Light Curve Catalogue')

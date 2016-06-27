@@ -42,7 +42,7 @@ def do_snhunt(catalog):
             continue
         name = re.sub('<[^<]+?>', '', cols[4]
                       ).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = events[name].add_source(srcname='Supernova Hunt', url=snh_url)
         events[name].add_quantity('alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')

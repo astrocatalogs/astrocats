@@ -84,7 +84,7 @@ def do_rochester(catalog):
                     sn = 'PSN J' + ra.replace(':', '').replace('.', '')
                     sn += dec.replace(':', '').replace('.', '')
                 oldname = sn
-                events, name = Events.add_event(tasks, args, events, sn, log)
+                name = catalog.add_event(sn)
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()

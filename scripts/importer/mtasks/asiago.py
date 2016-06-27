@@ -156,7 +156,7 @@ def do_asiago_spectra(catalog):
                 if is_number(name[:4]):
                     name = 'SN' + name
                 oldname = name
-                events, name = Events.add_event(tasks, args, events, name, log)
+                name = catalog.add_event(name)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = events[name].add_source(

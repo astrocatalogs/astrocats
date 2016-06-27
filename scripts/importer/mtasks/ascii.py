@@ -25,7 +25,7 @@ def do_ascii(catalog):
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
         name = 'SNLS-' + row[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = events[name].add_source(bibcode='2006ApJ...645..841N')
         events[name].add_quantity('alias', name, source)
         events[name].add_quantity(
@@ -47,7 +47,7 @@ def do_ascii(catalog):
         else:
             name = ('SN20' if int(basename[:2]) <
                     50 else 'SN19') + basename.split('_')[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = events[name].add_source(bibcode='2014ApJ...786...67A')
         events[name].add_quantity('alias', name, source)
 
@@ -74,7 +74,7 @@ def do_ascii(catalog):
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for row in pbar(tsvin, current_task):
         name = row[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = events[name].add_source(bibcode='2004A&A...415..863G')
         events[name].add_quantity('alias', name, source)
         mjd = str(jd_to_mjd(Decimal(row[1])))
@@ -108,7 +108,7 @@ def do_ascii(catalog):
         name = namesplit[-1]
         if name.startswith('SN'):
             name = name.replace(' ', '')
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = events[name].add_source(bibcode='2015MNRAS.449..451W')
         events[name].add_quantity('alias', name, source)
         if len(namesplit) > 1:
@@ -122,7 +122,7 @@ def do_ascii(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016MNRAS.459.1039T.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    events, name = Events.add_event(tasks, args, events, 'LSQ13zm', log)
+    name = catalog.add_event('LSQ13zm')
     source = events[name].add_source(bibcode='2016MNRAS.459.1039T')
     events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
@@ -148,7 +148,7 @@ def do_ascii(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015ApJ...804...28G.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    events, name = Events.add_event(tasks, args, events, 'PS1-13arp', log)
+    name = catalog.add_event('PS1-13arp')
     source = events[name].add_source(bibcode='2015ApJ...804...28G')
     events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
@@ -173,7 +173,7 @@ def do_ascii(catalog):
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
-        events, name = Events.add_event(tasks, args, events, row[0], log)
+        name = catalog.add_event(row[0])
         source = events[name].add_source(bibcode='2016ApJ...819...35A')
         events[name].add_quantity('alias', name, source)
         events[name].add_quantity('ra', row[1], source)
@@ -191,7 +191,7 @@ def do_ascii(catalog):
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
-        events, name = Events.add_event(tasks, args, events, row[0], log)
+        name = catalog.add_event(row[0])
         source = events[name].add_source(bibcode='2014ApJ...784..105W')
         events[name].add_quantity('alias', name, source)
         mjd = row[1]
@@ -213,7 +213,7 @@ def do_ascii(catalog):
         if row[0][0] == '#':
             bands = row[2:]
             continue
-        events, name = Events.add_event(tasks, args, events, row[0], log)
+        name = catalog.add_event(row[0])
         source = events[name].add_source(bibcode='2012MNRAS.425.1007B')
         events[name].add_quantity('alias', name, source)
         mjd = row[1]

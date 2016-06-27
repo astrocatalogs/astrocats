@@ -34,7 +34,7 @@ def do_sdss(catalog):
                     name = 'SDSS-II SN ' + row[3]
                 else:
                     name = 'SN' + row[5]
-                events, name = Events.add_event(tasks, args, events, name, log)
+                name = catalog.add_event(name)
                 source = events[name].add_source(bibcode=bibcode)
                 events[name].add_quantity('alias', name, source)
                 events[name].add_quantity(

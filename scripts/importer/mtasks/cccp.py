@@ -155,7 +155,7 @@ def do_cpcs(catalog):
             if event_exists(events, name):
                 continue
             oldname = name
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
         else:
             continue
 

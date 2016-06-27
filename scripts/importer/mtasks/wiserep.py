@@ -171,8 +171,7 @@ def do_wiserep_spectra(catalog):
                                 events = Events.journal_events(
                                     tasks, args, events, log)
                             oldname = name
-                            events, name = Events.add_event(
-                                tasks, args, events, name, log)
+                            name = Events.add_event(name)
 
                             # print(name + ' ' + claimedtype + ' ' + epoch +
                             # ' ' + observer + ' ' + reducer + ' ' + specfile +

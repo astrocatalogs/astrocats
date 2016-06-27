@@ -25,7 +25,7 @@ def do_ps_mds(catalog):
             if ri < 35:
                 continue
             cols = [x.strip() for x in row.split(',')]
-            events, name = Events.add_event(tasks, args, events, cols[0], log)
+            name = catalog.add_event(cols[0])
             source = events[name].add_source(bibcode='2015ApJ...799..208S')
             events[name].add_quantity('alias', name, source)
             events[name].add_quantity('ra', cols[2], source)
@@ -145,7 +145,7 @@ def do_ps_threepi(catalog):
                     name = alias
             if not name:
                 name = psname
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
             sources = [events[name]
                        .add_source(srcname='Pan-STARRS 3Pi',
                                    url=('http://psweb.mp.qub.ac.uk/'
