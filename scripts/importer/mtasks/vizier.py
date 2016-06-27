@@ -13,8 +13,7 @@ from scripts import PATH
 from ...utils import (get_sig_digits, is_number, pbar, pretty_num, rep_chars,
                       round_sig)
 from ..constants import CLIGHT, KM
-from ..funcs import convert_aq_output, jd_to_mjd,
-                     make_date_string, radec_clean, uniq_cdl)
+from ..funcs import (convert_aq_output, jd_to_mjd, make_date_string, radec_clean, uniq_cdl)
 
 
 def do_vizier(catalog):
@@ -776,11 +775,11 @@ def do_vizier(catalog):
             bandtag = band + 'mag'
             if (bandtag in row and is_number(row[bandtag]) and not
                     isnan(float(row[bandtag]))):
-                add_photometry(catalog.events, name,
-                               time=str(jd_to_mjd(Decimal(row["JD"]))),
-                               telescope=row["Tel"], band=band,
-                               magnitude=row[bandtag],
-                               e_magnitude=row["e_" + bandtag], source=source)
+                catalog.events[name].add_photometry(
+                    time=str(jd_to_mjd(Decimal(row["JD"]))),
+                    telescope=row["Tel"], band=band,
+                    magnitude=row[bandtag],
+                    e_magnitude=row["e_" + bandtag], source=source)
 
     result = Vizier.get_catalogs('J/ApJ/728/14/table2')
     table = result[list(result.keys())[0]]
@@ -791,11 +790,11 @@ def do_vizier(catalog):
             bandtag = band + 'mag'
             if (bandtag in row and is_number(row[bandtag]) and not
                     isnan(float(row[bandtag]))):
-                add_photometry(catalog.events, name,
-                               time=str(jd_to_mjd(Decimal(row["JD"]))),
-                               telescope=row["Tel"], band=band + "'",
-                               magnitude=row[bandtag],
-                               e_magnitude=row["e_" + bandtag], source=source)
+                catalog.events[name].add_photometry(
+                    time=str(jd_to_mjd(Decimal(row["JD"]))),
+                    telescope=row["Tel"], band=band + "'",
+                    magnitude=row[bandtag],
+                    e_magnitude=row["e_" + bandtag], source=source)
 
     result = Vizier.get_catalogs('J/ApJ/728/14/table3')
     table = result[list(result.keys())[0]]
@@ -806,11 +805,11 @@ def do_vizier(catalog):
             bandtag = band + 'mag'
             if (bandtag in row and is_number(row[bandtag]) and not
                     isnan(float(row[bandtag]))):
-                add_photometry(catalog.events, name,
-                               time=str(jd_to_mjd(Decimal(row["JD"]))),
-                               instrument=row['Inst'], band=band,
-                               magnitude=row[bandtag],
-                               e_magnitude=row["e_" + bandtag], source=source)
+                catalog.events[name].add_photometry(
+                    time=str(jd_to_mjd(Decimal(row["JD"]))),
+                    instrument=row['Inst'], band=band,
+                    magnitude=row[bandtag],
+                    e_magnitude=row["e_" + bandtag], source=source)
     catalog.journal_events()
 
     # 2011PAZh...37..837T
