@@ -10,9 +10,9 @@ from astropy.cosmology import z_at_value
 from cdecimal import Decimal
 from scripts import PATH
 
-from . import Catalog, Events
-from ..utils import is_number, pbar
-from .funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
+from .. import Events
+from ...utils import is_number, pbar
+from ..funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
 
 
 def do_nedd(events, args, tasks, task_obj, log):
