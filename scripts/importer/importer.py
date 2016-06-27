@@ -11,7 +11,7 @@ from collections import OrderedDict
 from scripts import FILENAME
 
 from . import Events
-from ..utils import get_logger, pbar, repo_file_list
+from ..utils import pbar, repo_file_list
 from ..Catalog import Catalog
 from .constants import TASK, TRAVIS_QUERY_LIMIT
 from .funcs import derive_and_sanitize, has_task
@@ -122,9 +122,9 @@ def import_main(args=None, **kwargs):
     executable. This can also be run as a method, in which case default
     arguments are loaded, but can be overriden using `**kwargs`.
     """
-    log = get_logger()
+    catalog = Catalog()
 
-    catalog = Catalog(log)
+    log = catalog.log
 
     # If this is called from `scripts.main`, then `args` will contain
     # parameters. If this is being called as an API function, we need to load
