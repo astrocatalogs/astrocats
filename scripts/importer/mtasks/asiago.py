@@ -1,22 +1,25 @@
 """Import data from OGLE.
 """
-# from astropy.time import Time as astrotime
-from bs4 import BeautifulSoup
 import calendar
 # from math import floor
 import os
 import re
 import urllib
 
+# from astropy.time import Time as astrotime
+from bs4 import BeautifulSoup
+
 from scripts import PATH
+
 from .. import Events
-from .. funcs import clean_snname, load_cached_url, uniq_cdl, utf8
-from ... utils import pbar, is_number
+from ...utils import is_number, pbar
+from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 
 
 def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    # response = urllib.request.urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php')
+    # response = (urllib.request
+    # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
     path = os.path.abspath(os.path.join(PATH.REPO_EXTERNAL, 'asiago-cat.php'))
     response = urllib.request.urlopen('file://' + path)
     html = response.read().decode('utf-8')
@@ -40,8 +43,11 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            events, name, source = Events.new_event(tasks, args, events,
-                oldname, log, srcname = reference, url = refurl, bibcode = refbib, secondary = True)
+            (events,
+             name,
+             source) = Events.new_event(tasks, args, events, oldname, log,
+                                        srcname=reference, url=refurl,
+                                        bibcode=refbib, secondary=True)
 
             year = re.findall(r'\d+', oldname)[0]
             events[name].add_quantity('discoverdate', year, source)
@@ -91,13 +97,17 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             if (claimedtype != ''):
                 events[name].add_quantity('claimedtype', claimedtype, source)
             if (redshift != ''):
-                events[name].add_quantity('redshift', redshift, source, kind='host')
+                events[name].add_quantity(
+                    'redshift', redshift, source, kind='host')
             if (velocity != ''):
-                events[name].add_quantity('velocity', velocity, source, kind='host')
+                events[name].add_quantity(
+                    'velocity', velocity, source, kind='host')
             if (hostra != ''):
-                events[name].add_quantity('hostra', hostra, source, unit='nospace')
+                events[name].add_quantity(
+                    'hostra', hostra, source, unit='nospace')
             if (hostdec != ''):
-                events[name].add_quantity('hostdec', hostdec, source, unit='nospace')
+                events[name].add_quantity(
+                    'hostdec', hostdec, source, unit='nospace')
             if (ra != ''):
                 events[name].add_quantity('ra', ra, source, unit='nospace')
             if (dec != ''):
@@ -111,8 +121,11 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
 
 def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    html = load_cached_url(args, current_task, 'http://sngroup.oapd.inaf.it./cgi-bin/output_class.cgi?sn=1990',
-                           os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Asiago/spectra.html'))
+    html = load_cached_url(args, current_task,
+                           ('http://sngroup.oapd.inaf.it./'
+                            'cgi-bin/output_class.cgi?sn=1990'),
+                           os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+                                        'Asiago/spectra.html'))
     if not html:
         return events, stubs
 
@@ -133,7 +146,9 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
                 alias = butt.text.strip()
                 alias = alias.replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
             elif tdi == 1:
-                name = td.text.strip().replace('PSNJ', 'PSN J').replace('GAIA', 'Gaia')
+                name = (td.text.strip()
+                        .replace('PSNJ', 'PSN J')
+                        .replace('GAIA', 'Gaia'))
                 if name.startswith('SN '):
                     name = 'SN' + name[3:]
                 if not name:
@@ -166,7 +181,8 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
             # elif tdi == 9:
             #     epochstr = td.text.strip()
             #     if epochstr:
-            #         mjd = (astrotime(epochstr[:4] + '-' + epochstr[4:6] + '-' +
+            #         mjd = (astrotime(epochstr[:4] + '-' + epochstr[4:6] +
+            #                '-' +
             #                str(floor(float(epochstr[6:]))).zfill(2)).mjd +
             #                float(epochstr[6:]) - floor(float(epochstr[6:])))
             #     else:
@@ -181,9 +197,11 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
                         reference = ref.text
                         refurl = ref['href']
                 if reference:
-                    source = events[name].add_source(srcname=reference, url=refurl)
+                    source = events[name].add_source(
+                        srcname=reference, url=refurl)
                 events[name].add_quantity('alias', name, secondarysource)
-                sources = uniq_cdl(list(filter(None, [source, secondarysource])))
+                sources = uniq_cdl(
+                    list(filter(None, [source, secondarysource])))
             elif tdi == 12:
                 pass
                 # fitslink = td.find('a')
@@ -198,7 +216,8 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('host', host, sources)
 
             # if fitsurl:
-            #    response = urllib.request.urlopen('http://sngroup.oapd.inaf.it./' + fitsurl)
+            #    response = urllib.request.urlopen(
+            #        'http://sngroup.oapd.inaf.it./' + fitsurl)
             #    compressed = io.BytesIO(response.read())
             #    decompressed = gzip.GzipFile(fileobj=compressed)
             #    hdulist = fits.open(decompressed)

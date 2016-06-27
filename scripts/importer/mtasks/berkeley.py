@@ -1,18 +1,20 @@
 """Import data from UC Berkeley group.
 """
-from astropy.time import Time as astrotime
 import csv
 import json
-from math import floor
 import os
-import requests
 import urllib
+from math import floor
+
+import requests
+from astropy.time import Time as astrotime
 
 from scripts import PATH
-from .. constants import TRAVIS_QUERY_LIMIT
+
 from .. import Events
-from .. funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
-from ... utils import get_sig_digits, pbar, pretty_num
+from ...utils import get_sig_digits, pbar, pretty_num
+from ..constants import TRAVIS_QUERY_LIMIT
+from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 
 
 def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
@@ -22,7 +24,8 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
     sec_refbib = '2012MNRAS.425.1789S'
 
     jsontxt = load_cached_url(
-        args, current_task, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
+        args, current_task,
+        'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
         return events, stubs
@@ -33,8 +36,9 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
         oldname = phot['ObjName']
         events, name = Events.add_event(tasks, args, events, oldname, log)
 
-        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl, bibcode=sec_refbib,
-                                secondary=True)
+        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl,
+                                             bibcode=sec_refbib,
+                                             secondary=True)
         events[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
         if phot['Reference']:
@@ -43,9 +47,11 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
             for ct in phot['Type'].strip().split(','):
-                events[name].add_quantity('claimedtype', ct.replace('-norm', '').strip(), sources)
+                events[name].add_quantity(
+                    'claimedtype', ct.replace('-norm', '').strip(), sources)
         if phot['DiscDate']:
-            events[name].add_quantity('discoverdate', phot['DiscDate'].replace('-', '/'), sources)
+            events[name].add_quantity(
+                'discoverdate', phot['DiscDate'].replace('-', '/'), sources)
         if phot['HostName']:
             host = urllib.parse.unquote(phot['HostName']).replace('*', '')
             events[name].add_quantity('host', host, sources)
@@ -62,13 +68,15 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
                 phottxt = ff.read()
         else:
             session = requests.Session()
-            response = session.get('http://heracles.astro.berkeley.edu/sndb/download?id=dp:' +
-                                   str(phot['PhotID']))
+            response = session.get(
+                'http://heracles.astro.berkeley.edu/sndb/download?id=dp:' +
+                str(phot['PhotID']))
             phottxt = response.text
             with open(filepath, 'w') as ff:
                 ff.write(phottxt)
 
-        tsvin = csv.reader(phottxt.splitlines(), delimiter=' ', skipinitialspace=True)
+        tsvin = csv.reader(phottxt.splitlines(),
+                           delimiter=' ', skipinitialspace=True)
 
         for rr, row in enumerate(tsvin):
             if len(row) > 0 and row[0] == "#":
@@ -81,8 +89,8 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
             band = row[4]
             telescope = row[5]
             add_photometry(
-                events, name, time=mjd, telescope=telescope, band=band, magnitude=magnitude,
-                e_magnitude=e_mag, source=sources)
+                events, name, time=mjd, telescope=telescope, band=band,
+                magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events, stubs
@@ -107,12 +115,14 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            events, stubs = Events.journal_events(
+                tasks, args, events, stubs, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
 
         sec_source = events[name].add_source(
-            srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib, secondary=True)
+            srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib,
+            secondary=True)
         events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
@@ -121,7 +131,8 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
             for ct in spectrum['Type'].strip().split(','):
-                events[name].add_quantity('claimedtype', ct.replace('-norm', '').strip(), sources)
+                events[name].add_quantity(
+                    'claimedtype', ct.replace('-norm', '').strip(), sources)
         if spectrum['DiscDate']:
             ddate = spectrum['DiscDate'].replace('-', '/')
             events[name].add_quantity('discoverdate', ddate, sources)
@@ -134,7 +145,8 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
             month = epoch[4:6]
             day = epoch[6:]
             sig = get_sig_digits(day) + 5
-            mjd = astrotime(year + '-' + month + '-' + str(floor(float(day))).zfill(2)).mjd
+            mjd = astrotime(year + '-' + month + '-' +
+                            str(floor(float(day))).zfill(2)).mjd
             mjd = pretty_num(mjd + float(day) - floor(float(day)), sig=sig)
         filename = spectrum['Filename'] if spectrum['Filename'] else ''
         instrument = spectrum['Instrument'] if spectrum['Instrument'] else ''
@@ -153,13 +165,15 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
                 spectxt = ff.read()
         else:
             session = requests.Session()
-            response = session.get('http://heracles.astro.berkeley.edu/sndb/download?id=ds:' +
-                                   str(spectrum['SpecID']))
+            response = session.get(
+                'http://heracles.astro.berkeley.edu/sndb/download?id=ds:' +
+                str(spectrum['SpecID']))
             spectxt = response.text
             with open(filepath, 'w') as ff:
                 ff.write(spectxt)
 
-        specdata = list(csv.reader(spectxt.splitlines(), delimiter=' ', skipinitialspace=True))
+        specdata = list(csv.reader(spectxt.splitlines(),
+                                   delimiter=' ', skipinitialspace=True))
         startrow = 0
         for row in specdata:
             if row[0][0] == '#':
@@ -168,7 +182,8 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
                 break
         specdata = specdata[startrow:]
 
-        haserrors = len(specdata[0]) == 3 and specdata[0][2] and specdata[0][2] != 'NaN'
+        haserrors = len(specdata[0]) == 3 and specdata[
+            0][2] and specdata[0][2] != 'NaN'
         specdata = [list(ii) for ii in zip(*specdata)]
 
         wavelengths = specdata[0]
@@ -183,8 +198,10 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         units = 'Uncalibrated'
         add_spectrum(
             events, name, 'Angstrom', units, u_time='MJD', time=mjd,
-            wavelengths=wavelengths, filename=filename, fluxes=fluxes, errors=errors,
-            errorunit=units, instrument=instrument, source=sources, snr=snr, observer=observer,
+            wavelengths=wavelengths, filename=filename, fluxes=fluxes,
+            errors=errors,
+            errorunit=units, instrument=instrument, source=sources, snr=snr,
+            observer=observer,
             reducer=reducer, deredshifted=('-noz' in filename))
         ucbspectracnt = ucbspectracnt + 1
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:

@@ -1,9 +1,10 @@
-from palettable import cubehelix, colorbrewer, wesanderson
 from collections import OrderedDict
-from random import shuffle, seed
+from random import seed, shuffle
 
-__all__ = ['bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf', 'bandshortaliasf',
-           'bandwavef', 'bandmetaf']
+from palettable import colorbrewer, cubehelix, wesanderson
+
+__all__ = ['bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf',
+           'bandshortaliasf', 'bandwavef', 'bandmetaf']
 
 BAND_REPS = {
     'Ks': ['K_s'],
@@ -12,7 +13,8 @@ BAND_REPS = {
     'W2': ['uvw2', 'UVW2', 'UVw2', 'Uw2', 'w2', 'uw2']
 }
 
-# Some bands are uniquely tied to an instrument/telescope/system, add this info here.
+# Some bands are uniquely tied to an instrument/telescope/system, add this
+# info here.
 BAND_META = {
     'M2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
     'W1':     {'telescope': 'Swift', 'instrument': 'UVOT'},
@@ -81,37 +83,37 @@ BAND_ALIASES_SHORT = OrderedDict([
     ("r_SDSS", "r"),
     ("i_SDSS", "i"),
     ("z_SDSS", "z"),
-    ("G"     , "" )
+    ("G", "")
 ])
 
 BAND_WAVELENGTHS = {
-    "u"      : 354.,
-    "g"      : 475.,
-    "r"      : 622.,
-    "i"      : 763.,
-    "z"      : 905.,
-    "u'"     : 354.,
-    "g'"     : 475.,
-    "r'"     : 622.,
-    "i'"     : 763.,
-    "z'"     : 905.,
-    "u_SDSS" : 354.3,
-    "g_SDSS" : 477.0,
-    "r_SDSS" : 623.1,
-    "i_SDSS" : 762.5,
-    "z_SDSS" : 913.4,
-    "U"      : 365.,
-    "B"      : 445.,
-    "V"      : 551.,
-    "R"      : 658.,
-    "I"      : 806.,
-    "Y"      : 1020.,
-    "J"      : 1220.,
-    "H"      : 1630.,
-    "K"      : 2190.,
-    "M2"     : 260.,
-    "W1"     : 224.6,
-    "W2"     : 192.8
+    "u": 354.,
+    "g": 475.,
+    "r": 622.,
+    "i": 763.,
+    "z": 905.,
+    "u'": 354.,
+    "g'": 475.,
+    "r'": 622.,
+    "i'": 763.,
+    "z'": 905.,
+    "u_SDSS": 354.3,
+    "g_SDSS": 477.0,
+    "r_SDSS": 623.1,
+    "i_SDSS": 762.5,
+    "z_SDSS": 913.4,
+    "U": 365.,
+    "B": 445.,
+    "V": 551.,
+    "R": 658.,
+    "I": 806.,
+    "Y": 1020.,
+    "J": 1220.,
+    "H": 1630.,
+    "K": 2190.,
+    "M2": 260.,
+    "W1": 224.6,
+    "W2": 192.8
 }
 
 RADIO_CODES = [
@@ -123,21 +125,25 @@ XRAY_CODES = [
 ]
 
 seed(101)
-#bandcolors = ["#%06x" % round(float(x)/float(len(BAND_CODES))*0xFFFEFF) for x in range(len(BAND_CODES))]
-bandcolors = cubehelix.cubehelix1_16.hex_colors[2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
+# bandcolors = ["#%06x" % round(float(x)/float(len(BAND_CODES))*0xFFFEFF)
+# for x in range(len(BAND_CODES))]
+bandcolors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
+              cubehelix.cubehelix2_16.hex_colors[2:13] +
+              cubehelix.cubehelix3_16.hex_colors[2:13])
 shuffle(bandcolors)
 bandcolors2 = cubehelix.perceptual_rainbow_16.hex_colors
 shuffle(bandcolors2)
 bandcolors = bandcolors + bandcolors2
-bandcolordict = dict(list(zip(BAND_CODES,bandcolors)))
+bandcolordict = dict(list(zip(BAND_CODES, bandcolors)))
 
 radiocolors = wesanderson.Zissou_5.hex_colors
 shuffle(radiocolors)
-radiocolordict = dict(list(zip(RADIO_CODES,radiocolors)))
+radiocolordict = dict(list(zip(RADIO_CODES, radiocolors)))
 
 xraycolors = colorbrewer.sequential.Oranges_9.hex_colors[2:]
 shuffle(xraycolors)
-xraycolordict = dict(list(zip(XRAY_CODES,xraycolors)))
+xraycolordict = dict(list(zip(XRAY_CODES, xraycolors)))
+
 
 def bandrepf(code):
     for rep in BAND_REPS:

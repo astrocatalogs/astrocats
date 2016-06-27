@@ -1,4 +1,5 @@
-"""Open Supernova Catalog (OCS) Scripts for Downloading and Processing Supernova data.
+"""Open Supernova Catalog (OSC) Scripts for Downloading and Processing
+Supernova data.
 """
 
 import os
@@ -34,6 +35,9 @@ class FILENAME:
 
 
 class SCHEMA:
-    HASH = check_output(['git', 'log', '-n', '1', '--format="%H"',
-        '--', 'OSC-JSON-format.md']).decode('ascii').strip().strip('"').strip()
-    URL = 'https://github.com/astrocatalogs/sne/blob/' + HASH + '/OSC-JSON-format.md'
+    HASH = (check_output(['git', 'log', '-n', '1', '--format="%H"',
+                          '--',
+                          'OSC-JSON-format.md'])
+            .decode('ascii').strip().strip('"').strip())
+    URL = ('https://github.com/astrocatalogs/sne/blob/' + HASH +
+           '/OSC-JSON-format.md')

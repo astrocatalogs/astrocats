@@ -1,31 +1,24 @@
 #!/usr/local/bin/python3.5
 
-import json
-import re
-import os
-import math
-import codecs
-import urllib
-import requests
-import ads
 import gzip
-import statistics
+import json
+import os
 import time
-from html import unescape
-from glob import glob
-from tqdm import tqdm
 from collections import OrderedDict
-from astropy.coordinates import SkyCoord as coord
-from astropy import units as un
-from astropy.time import Time as astrotime
-from copy import deepcopy
+from glob import glob
 from math import sqrt
-from digits import *
+
+from astropy.time import Time as astrotime
+from tqdm import tqdm
+
+from utils.digits import pretty_num
 
 hosts = OrderedDict()
 
+
 def get_event_filename(name):
     return(name.replace('/', '_'))
+
 
 def touch(fname, times=None):
     with open(fname, 'a'):
@@ -39,9 +32,10 @@ for rep in repfolders:
     files += glob('../' + rep + "/*.json") + glob('../' + rep + "/*.json.gz")
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
-    #if fcnt > 1000:
+    # if fcnt > 1000:
     #    break
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace('.json','')
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[
+        0].replace('.json', '')
 
     if not os.path.isfile(eventfile):
         continue
@@ -57,12 +51,15 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     item = item[list(item.keys())[0]]
 
     if 'host' in item:
-        hngs = [x['value'] for x in item['host'] if ((x['kind'] != 'cluster') if 'kind' in x else True)]
-        hncs = [x['value'] for x in item['host'] if ((x['kind'] == 'cluster') if 'kind' in x else False)]
+        hngs = [x['value'] for x in item['host'] if (
+            (x['kind'] != 'cluster') if 'kind' in x else True)]
+        hncs = [x['value'] for x in item['host'] if (
+            (x['kind'] == 'cluster') if 'kind' in x else False)]
         hng = ''
         hnc = ''
         for ho in hosts:
-            hog = [x for x in hosts[ho]['host'] if hosts[ho]['kind'] != 'cluster']
+            hog = [x for x in hosts[ho]['host']
+                   if hosts[ho]['kind'] != 'cluster']
             hoc = [x for x in hosts[ho]['host']]
             if len(list(set(hngs).intersection(hog))):
                 hng = ho
@@ -76,22 +73,26 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
         if not hng and hngs:
             hng = hngs[0]
             hosts[hng] = OrderedDict([('host', hngs), ('kind', 'galaxy'), ('events', []), ('eventdates', []),
-                ('types', []), ('photocount', 0), ('spectracount', 0), ('lumdist', ''),
-                ('redshift', ''), ('hostra', ''), ('hostdec', '')])
+                                      ('types', []), ('photocount',
+                                                      0), ('spectracount', 0), ('lumdist', ''),
+                                      ('redshift', ''), ('hostra', ''), ('hostdec', '')])
 
         if not hnc and hncs:
             hnc = hncs[0]
             hosts[hnc] = OrderedDict([('host', hncs + hngs), ('kind', 'cluster'), ('events', []), ('eventdates', []),
-                ('types', []), ('photocount', 0), ('spectracount', 0), ('lumdist', ''),
-                ('redshift', ''), ('hostra', ''), ('hostdec', '')])
+                                      ('types', []), ('photocount',
+                                                      0), ('spectracount', 0), ('lumdist', ''),
+                                      ('redshift', ''), ('hostra', ''), ('hostdec', '')])
 
         for hi, hn in enumerate([hng, hnc]):
             if not hn:
                 continue
-            hosts[hn]['events'].append({'name':item['name'],'img':('ra' in item and 'dec' in item)})
+            hosts[hn]['events'].append(
+                {'name': item['name'], 'img': ('ra' in item and 'dec' in item)})
 
             if (not hosts[hn]['lumdist'] or '*' in hosts[hn]['lumdist']) and 'lumdist' in item:
-                ldkinds = [x['kind'] if 'kind' in x else '' for x in item['lumdist']]
+                ldkinds = [
+                    x['kind'] if 'kind' in x else '' for x in item['lumdist']]
                 try:
                     ind = ldkinds.index('host')
                 except ValueError:
@@ -100,7 +101,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                     hosts[hn]['lumdist'] = item['lumdist'][ind]['value']
 
             if (not hosts[hn]['redshift'] or '*' in hosts[hn]['redshift']) and 'redshift' in item:
-                zkinds = [x['kind'] if 'kind' in x else '' for x in item['redshift']]
+                zkinds = [
+                    x['kind'] if 'kind' in x else '' for x in item['redshift']]
                 try:
                     ind = zkinds.index('host')
                 except ValueError:
@@ -120,7 +122,8 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 elif datestr.count('-') == 0:
                     datestr += '-01-01'
                 try:
-                    hosts[hn]['eventdates'].append(astrotime(datestr, format = 'isot').unix)
+                    hosts[hn]['eventdates'].append(
+                        astrotime(datestr, format='isot').unix)
                 except:
                     hosts[hn]['eventdates'].append(float("inf"))
             else:
@@ -141,24 +144,27 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
                 hosts[hn]['spectracount'] += len(item['spectra'])
 
 curtime = time.time()
-centrate = 100.0*365.25*24.0*60.0*60.0
+centrate = 100.0 * 365.25 * 24.0 * 60.0 * 60.0
 
 for hn in hosts:
-    finitedates = sorted([x for x in hosts[hn]['eventdates'] if x != float("inf")])
+    finitedates = sorted(
+        [x for x in hosts[hn]['eventdates'] if x != float("inf")])
     if len(finitedates) >= 2:
         datediff = curtime - finitedates[0]
-        lamb = float(len(finitedates))/(curtime - finitedates[0])*centrate
-        hosts[hn]['rate'] = (pretty_num(lamb, sig = 3) + ',' +
-            pretty_num(lamb/sqrt(float(len(finitedates))), sig = 3))
+        lamb = float(len(finitedates)) / (curtime - finitedates[0]) * centrate
+        hosts[hn]['rate'] = (pretty_num(lamb, sig=3) + ',' +
+                             pretty_num(lamb / sqrt(float(len(finitedates))), sig=3))
     else:
         hosts[hn]['rate'] = ''
-    hosts[hn]['events'] = [x for (y,x) in sorted(zip(hosts[hn]['eventdates'], hosts[hn]['events']), key = lambda ev: ev[0])]
+    hosts[hn]['events'] = [x for (y, x) in sorted(
+        zip(hosts[hn]['eventdates'], hosts[hn]['events']), key=lambda ev: ev[0])]
     del hosts[hn]['eventdates']
 
 # Convert to array since that's what datatables expects
 hosts = list(hosts.values())
 
-jsonstring = json.dumps(hosts, indent='\t', separators=(',', ':'), ensure_ascii=False)
+jsonstring = json.dumps(
+    hosts, indent='\t', separators=(',', ':'), ensure_ascii=False)
 with open('../hosts.json', 'w') as f:
     f.write(jsonstring)
 

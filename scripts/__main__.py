@@ -1,4 +1,4 @@
-"""Entry point for OCS scripts.
+"""Entry point for OSC scripts.
 """
 
 if __name__ == "__main__":

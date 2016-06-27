@@ -1,18 +1,21 @@
 """General data import tasks.
 """
-from bs4 import BeautifulSoup
 import os
 
+from bs4 import BeautifulSoup
+
 from scripts import PATH
+
 from .. import Events
-from .. funcs import load_cached_url
-from ... utils import pbar
+from ...utils import pbar
+from ..funcs import load_cached_url
 
 
 def do_asassn(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
-    html = load_cached_url(args, current_task, asn_url, os.path.join(PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
+    html = load_cached_url(args, current_task, asn_url, os.path.join(
+        PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
     if not html:
         return events, stubs
     bs = BeautifulSoup(html, 'html5lib')
@@ -32,7 +35,8 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
         tds = tr.findAll('td')
         for tdi, td in enumerate(tds):
             if tdi == 1:
-                events, name = Events.add_event(tasks, args, events, td.text.strip(), log)
+                events, name = Events.add_event(
+                    tasks, args, events, td.text.strip(), log)
                 atellink = td.find('a')
                 if atellink:
                     atellink = atellink['href']
@@ -58,14 +62,17 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
             if tdi == 12:
                 host = td.text
 
-        sources = [events[name].add_source(url=asn_url, srcname='ASAS-SN Supernovae')]
+        sources = [events[name].add_source(
+            url=asn_url, srcname='ASAS-SN Supernovae')]
         typesources = sources[:]
         if atellink:
             sources.append(
-                events[name].add_source(srcname='ATel ' + atellink.split('=')[-1], url=atellink))
+                events[name].add_source(srcname='ATel ' +
+                                        atellink.split('=')[-1], url=atellink))
         if typelink:
             typesources.append(
-                events[name].add_source(srcname='ATel ' + typelink.split('=')[-1], url=typelink))
+                events[name].add_source(srcname='ATel ' +
+                                        typelink.split('=')[-1], url=typelink))
         sources = ','.join(sources)
         typesources = ','.join(typesources)
         events[name].add_quantity('alias', name, sources)
@@ -73,7 +80,8 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
         events[name].add_quantity('ra', ra, sources, unit='floatdegrees')
         events[name].add_quantity('dec', dec, sources, unit='floatdegrees')
         events[name].add_quantity('redshift', redshift, sources)
-        events[name].add_quantity('hostoffsetang', hostoff, sources, unit='arcseconds')
+        events[name].add_quantity(
+            'hostoffsetang', hostoff, sources, unit='arcseconds')
         for ct in claimedtype.split('/'):
             if ct != 'Unk':
                 events[name].add_quantity('claimedtype', ct, typesources)

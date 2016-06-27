@@ -1,22 +1,26 @@
 """Import data from Pan-STARRS.
 """
-from astropy.time import Time as astrotime
-from bs4 import BeautifulSoup
-from glob import glob
 import json
 import os
 import urllib
 import warnings
+from glob import glob
+
+import requests
+from astropy.time import Time as astrotime
+from bs4 import BeautifulSoup
 
 from scripts import PATH
+
 from .. import Events
-from .. funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
-from ... utils import is_number, pbar
+from ...utils import is_number, pbar
+from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
 def do_ps_mds(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
-    with open(os.path.join(PATH.REPO_EXTERNAL, 'MDS/apj506838t1_mrt.txt')) as f:
+    with open(os.path.join(PATH.REPO_EXTERNAL,
+                           'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
             if ri < 35:
                 continue
@@ -29,7 +33,8 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             astrot = astrotime(float(cols[4]), format='mjd').datetime
             ddate = make_date_string(astrot.year, astrot.month, astrot.day)
             events[name].add_quantity('discoverdate', ddate, source)
-            events[name].add_quantity('redshift', cols[5], source, kind='spectroscopic')
+            events[name].add_quantity(
+                'redshift', cols[5], source, kind='spectroscopic')
             events[name].add_quantity('claimedtype', 'II P', source)
     events, stubs = Events.journal_events(tasks, args, events, stubs, log)
     return events, stubs
@@ -39,7 +44,8 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
-    ps_url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=1&sort=followup_flag_date'
+    ps_url = ("http://psweb.mp.qub.ac.uk/"
+              "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
     html = load_cached_url(args, current_task, ps_url, fname, write=False)
     if not html:
         return events, stubs
@@ -70,18 +76,22 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
     numpages = int(links[-2].contents[0])
     oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
     for page in pbar(range(1, numpages), current_task):
-        fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + str(page).zfill(2) + '.html'
+        fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + \
+            str(page).zfill(2) + '.html'
         if offline:
             if not os.path.isfile(fname):
                 continue
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if not args.full_refresh and task_obj.load_archive(args) and page < oldnumpages and os.path.isfile(fname) :
+            if (not args.full_refresh and task_obj.load_archive(args) and
+                    page < oldnumpages and os.path.isfile(fname)):
                 with open(fname, 'r') as f:
                     html = f.read()
             else:
-                response = urllib.request.urlopen("http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" + str(page) + "&sort=followup_flag_date")
+                response = urllib.request.urlopen(
+                    "http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/?page=" +
+                    str(page) + "&sort=followup_flag_date")
                 with open(fname, 'w') as f:
                     html = response.read().decode('utf-8')
                     f.write(html)
@@ -136,11 +146,14 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
             if not name:
                 name = psname
             events, name = Events.add_event(tasks, args, events, name, log)
-            sources = [events[name].add_source(srcname='Pan-STARRS 3Pi',
-                                  url='http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
+            sources = [events[name]
+                       .add_source(srcname='Pan-STARRS 3Pi',
+                                   url=('http://psweb.mp.qub.ac.uk/'
+                                        'ps1threepi/psdb/'))]
             events[name].add_quantity('alias', name, sources[0])
             for ref in refs:
-                sources.append(events[name].add_source(srcname=ref[0], url=ref[1]))
+                sources.append(events[name].add_source(
+                    srcname=ref[0], url=ref[1]))
             source = uniq_cdl(sources)
             for alias in aliases:
                 newalias = alias
@@ -164,7 +177,8 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
-                    pslink = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/public/' + pslink
+                    pslink = ('http://psweb.mp.qub.ac.uk/'
+                              'ps1threepi/psdb/public/') + pslink
                     try:
                         session2 = requests.Session()
                         response2 = session2.get(pslink)
@@ -189,25 +203,34 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                 slines = script.text.splitlines()
                 for line in slines:
                     if 'jslcdata.push' in line:
-                        json_fname = line.strip().replace('jslcdata.push(', '').replace(');', '')
+                        json_fname = (line
+                                      .strip()
+                                      .replace('jslcdata.push(', '')
+                                      .replace(');', ''))
                         nslines.append(json.loads(json_fname))
-                    if 'jslabels.push' in line and 'blanks' not in line and 'non det' not in line:
-                        json_fname = line.strip().replace('jslabels.push(', '').replace(');', '')
+                    if ('jslabels.push' in line and
+                            'blanks' not in line and 'non det' not in line):
+                        json_fname = (line
+                                      .strip()
+                                      .replace('jslabels.push(', '')
+                                      .replace(');', ''))
                         nslabels.append(json.loads(json_fname)['label'])
             for li, line in enumerate(nslines[:len(nslabels)]):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(
-                        events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]),
-                        e_magnitude=str(obs[2]), source=source, telescope=teles)
-            for li, line in enumerate(nslines[2*len(nslabels):]):
+                    add_photometry(events, name, time=str(obs[0]),
+                                   band=nslabels[li], magnitude=str(obs[1]),
+                                   e_magnitude=str(obs[2]), source=source,
+                                   telescope=teles)
+            for li, line in enumerate(nslines[2 * len(nslabels):]):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(
-                        events, name, time=str(obs[0]), band=nslabels[li], magnitude=str(obs[1]),
-                        upperlimit=True, source=source, telescope=teles)
+                    add_photometry(events, name, time=str(obs[0]),
+                                   band=nslabels[li], magnitude=str(obs[1]),
+                                   upperlimit=True, source=source,
+                                   telescope=teles)
             assoctab = bs2.find('table', {'class': 'generictable'})
             hostname = ''
             redshift = ''
@@ -226,9 +249,11 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                 continue
             events[name].add_quantity('host', hostname, source)
             if redshift:
-                events[name].add_quantity('redshift', redshift, source, kind='host')
+                events[name].add_quantity(
+                    'redshift', redshift, source, kind='host')
             if args.update:
-                events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+                events, stubs = Events.journal_events(
+                    tasks, args, events, stubs, log)
 
         events, stubs = Events.journal_events(tasks, args, events, stubs, log)
         # Only run first page for Travis

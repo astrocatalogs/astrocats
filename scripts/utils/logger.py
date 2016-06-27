@@ -1,9 +1,10 @@
 """Logging submodule and related functions.
 """
 
-import logging
-from logging import DEBUG, WARNING, INFO
 import inspect
+import logging
+from logging import DEBUG, INFO, WARNING
+
 import numpy as np
 
 _FILE_LEVEL_DEF = DEBUG
@@ -15,7 +16,8 @@ __all__ = ["get_logger", "DEBUG", "WARNING", "INFO"]
 
 
 class IndentFormatter(logging.Formatter):
-    """Logging formatter where the depth of the stack sets the message indentation level.
+    """Logging formatter where the depth of the stack sets the message
+    indentation level.
     """
 
     def __init__(self, fmt=None, datefmt=None):
@@ -24,10 +26,11 @@ class IndentFormatter(logging.Formatter):
 
     def format(self, rec):
         stack = inspect.stack()
-        if self.baseline is None: self.baseline = len(stack)
-        indent = (len(stack)-self.baseline)
+        if self.baseline is None:
+            self.baseline = len(stack)
+        indent = (len(stack) - self.baseline)
         addSpace = ((indent > 0) & (not rec.msg.startswith(" -")))
-        rec.indent = ' -'*indent + ' '*addSpace
+        rec.indent = ' -' * indent + ' ' * addSpace
         out = logging.Formatter.format(self, rec)
         del rec.indent
         return out
@@ -38,18 +41,21 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
                tofile=None, tostr=True):
     """Create a standard logger object which logs to file and or stdout stream.
 
-    If a logger has already been created in this session, it is returned (unless `name` is given).
+    If a logger has already been created in this session, it is returned
+    (unless `name` is given).
 
     Arguments
     ---------
     name : str,
         Handle for this logger, must be distinct for a distinct logger.
     stream_fmt : str or `None`,
-        Format of log messages to stream (stdout).  If `None`, default settings are used.
+        Format of log messages to stream (stdout).  If `None`, default settings
+        are used.
     file_fmt : str or `None`,
         Format of log messages to file.  If `None`, default settings are used.
     date_fmt : str or `None`
-        Format of time stamps to stream and/or file.  If `None`, default settings are used.
+        Format of time stamps to stream and/or file.  If `None`, default
+        settings are used.
     stream_level : int,
         Logging level for stream.
     file_level : int,
@@ -66,10 +72,12 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
 
     """
     if tofile is None and not tostr:
-        raise ValueError("Must log to something: `tofile` or `tostr` must be 'True'.")
+        raise ValueError(
+            "Must log to something: `tofile` or `tostr` must be 'True'.")
 
     logger = logging.getLogger(name)
-    # Add a custom attribute to this `logger` so that we know when an existing one is being returned
+    # Add a custom attribute to this `logger` so that we know when an existing
+    # one is being returned
     if hasattr(logger, '_OSC_LOGGER'):
         return logger
     else:
@@ -92,7 +100,8 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
     # Logger object must be at minimum level
     logger.setLevel(int(np.min([file_level, stream_level])))
 
-    if date_fmt is None: date_fmt = '%Y/%m/%d %H:%M:%S'
+    if date_fmt is None:
+        date_fmt = '%Y/%m/%d %H:%M:%S'
 
     # Log to file
     # -----------

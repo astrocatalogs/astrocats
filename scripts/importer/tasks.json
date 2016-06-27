@@ -36,7 +36,7 @@
         "nice_name": "%pre SIMBAD",
         "active": false,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.simbad",
         "function": "do_simbad",
         "priority": 3
     },
@@ -60,7 +60,7 @@
         "nice_name": "%pre PESSTO DR1",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.pessto",
         "function": "do_pessto",
         "priority": 5
     },
@@ -68,7 +68,7 @@
         "nice_name": "%pre SCP",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.scp",
         "function": "do_scp",
         "priority": 6
     },
@@ -76,7 +76,7 @@
         "nice_name": "%pre ASCII",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.ascii",
         "function": "do_ascii",
         "priority": 7
     },
@@ -85,7 +85,7 @@
         "active": true,
         "update": false,
         "archived": true,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.cccp",
         "function": "do_cccp",
         "priority": 8
     },
@@ -118,7 +118,7 @@
         "nice_name": "%pre SDSS photometry",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.sdss",
         "function": "do_sdss",
         "priority": 12
     },
@@ -134,7 +134,7 @@
         "nice_name": "%pre ITEP",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.itep",
         "function": "do_itep",
         "priority": 14
     },
@@ -151,7 +151,7 @@
         "active": true,
         "update": true,
         "archived": true,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.tns",
         "function": "do_tns",
         "priority": 16
     },
@@ -176,7 +176,7 @@
         "nice_name": "%pre Fermi",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.fermi",
         "function": "do_fermi",
         "priority": 19
     },
@@ -185,7 +185,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.gaia",
         "function": "do_gaia",
         "priority": 20
     },
@@ -198,12 +198,12 @@
         "function": "do_ogle",
         "priority": 21
     },
-    "snls": {
+    "snls_photo": {
         "nice_name": "%pre SNLS",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
-        "function": "do_snls",
+        "module": "importer.mtasks.snls",
+        "function": "do_snls_photo",
         "priority": 22
     },
     "psthreepi": {
@@ -227,7 +227,7 @@
         "nice_name": "%pre PSST",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.psst",
         "function": "do_psst",
         "priority": 25
     },
@@ -236,7 +236,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.grb",
         "function": "do_grb",
         "priority": 26
     },
@@ -245,7 +245,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.crts",
         "function": "do_crts",
         "priority": 27
     },
@@ -254,7 +254,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.snhunt",
         "function": "do_snhunt",
         "priority": 28
     },
@@ -262,7 +262,7 @@
         "nice_name": "%pre NED-D",
         "active": true,
         "update": false,
-        "module": "importer.importer",
+        "module": "importer.mtasks.nedd",
         "function": "do_nedd",
         "priority": 29
     },
@@ -289,7 +289,7 @@
         "active": true,
         "update": false,
         "archived": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.des",
         "function": "do_des",
         "priority": 32
     },
@@ -338,7 +338,7 @@
         "nice_name": "%pre SNLS spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.vizier",
+        "module": "importer.mtasks.snls",
         "function": "do_snls_spectra",
         "priority": 203
     },
@@ -375,12 +375,12 @@
         "function": "do_snf_specta",
         "priority": 207
     },
-    "superfitspectra": {
+    "superfit_spectra": {
         "nice_name": "%pre Superfit spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
-        "function": "do1_superfit_spectra",
+        "module": "importer.mtasks.superfit",
+        "function": "do_superfit_spectra",
         "priority": 208
     },
     "mergeduplicates": {
