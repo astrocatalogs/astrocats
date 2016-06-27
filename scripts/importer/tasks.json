@@ -338,7 +338,7 @@
         "nice_name": "%pre SNLS spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.vizier",
+        "module": "importer.mtasks.snls",
         "function": "do_snls_spectra",
         "priority": 203
     },

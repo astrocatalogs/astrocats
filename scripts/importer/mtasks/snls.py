@@ -27,8 +27,7 @@ def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
 
     oldname = ''
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNLS/*'))
-    for fi, fname in enumerate(pbar_strings(file_names,
-                                            current_task=current_task)):
+    for fi, fname in enumerate(pbar_strings(file_names, current_task)):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
