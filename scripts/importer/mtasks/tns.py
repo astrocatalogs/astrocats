@@ -31,7 +31,7 @@ def do_tns(catalog):
     for page in pbar(range(maxpages), current_task):
         fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + \
             str(page).zfill(2) + '.csv'
-        if task_obj.load_archive(args) and os.path.isfile(fname) and page < 7:
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname) and page < 7:
             with open(fname, 'r') as tns_file:
                 csvtxt = tns_file.read()
         else:

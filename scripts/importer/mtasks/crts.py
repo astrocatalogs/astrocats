@@ -116,7 +116,7 @@ def do_crts(catalog):
             fname2 = (PATH.REPO_EXTERNAL + '/' + fold + '/' +
                       lclink.split('.')[-2].rstrip('p').split('/')[-1] +
                       '.html')
-            if task_obj.load_archive(args) and os.path.isfile(fname2):
+            if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname2):
                 with open(fname2, 'r') as ff:
                     html2 = ff.read()
             else:

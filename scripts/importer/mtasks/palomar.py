@@ -24,7 +24,7 @@ def do_ptf(catalog):
     #        name.startswith('PTFS') or name.startswith('iPTF')):
     # name = catalog.add_event(name)
 
-    if task_obj.load_archive(args):
+    if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(PATH.REPO_EXTERNAL,
                                'PTF/update.html'), 'r') as f:
             html = f.read()

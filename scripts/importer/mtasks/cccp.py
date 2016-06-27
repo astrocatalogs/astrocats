@@ -30,8 +30,7 @@ def do_cccp(catalog):
                     continue
                 elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
-                    events, name = Events.add_event(
-                        tasks, args, events, name, log)
+                    name = Events.add_event(name)
                     source = catalog.events[name].add_source(
                         bibcode='2012ApJ...744...10K')
                     catalog.events[name].add_quantity('alias', name, source)
@@ -46,7 +45,7 @@ def do_cccp(catalog):
                                            e_magnitude=row[2 * bb + 2],
                                            upperlimit=upl, source=source)
 
-    if task_obj.load_archive(args):
+    if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(PATH.REPO_EXTERNAL,
                                'CCCP/sc_cccp.html'), 'r') as ff:
             html = ff.read()
@@ -63,15 +62,14 @@ def do_cccp(catalog):
     links = soup.body.findAll("a")
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
-            events, name = Events.add_event(
-                tasks, args, events, link.text.replace(' ', ''), log)
+            name = Events.add_event(link.text.replace(' ', ''))
             source = (catalog.events[name]
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
                                        '/home/iair/sc_cccp.html')))
             catalog.events[name].add_quantity('alias', name, source)
 
-            if task_obj.load_archive(args):
+            if catalog.current_task.load_archive(catalog.args):
                 fname = os.path.join(PATH.REPO_EXTERNAL,
                                      'CCCP/') + link['href'].split('/')[-1]
                 with open(fname, 'r') as ff:
@@ -90,7 +88,7 @@ def do_cccp(catalog):
             for link2 in links2:
                 if '.txt' in link2['href'] and '_' in link2['href']:
                     band = link2['href'].split('_')[1].split('.')[0].upper()
-                    if task_obj.load_archive(args):
+                    if catalog.current_task.load_archive(catalog.args):
                         fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
@@ -176,7 +174,7 @@ def do_cpcs(catalog):
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
-        if task_obj.load_archive(args) and os.path.isfile(fname):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
                 jsonstr = ff.read()
         else:

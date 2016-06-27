@@ -84,7 +84,7 @@ def do_ps_threepi(catalog):
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if (not args.full_refresh and task_obj.load_archive(args) and
+            if (not args.full_refresh and catalog.current_task.load_archive(catalog.args) and
                     page < oldnumpages and os.path.isfile(fname)):
                 with open(fname, 'r') as f:
                     html = f.read()
@@ -173,7 +173,7 @@ def do_ps_threepi(catalog):
                 with open(fname2, 'r') as f:
                     html2 = f.read()
             else:
-                if task_obj.load_archive(args) and os.path.isfile(fname2):
+                if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname2):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:

@@ -266,10 +266,9 @@ def do_ascii(catalog):
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
         for r, row in enumerate(pbar(data, current_task)):
-            (catalog.events,
-             name,
-             source) = Events.new_event(tasks, args, events, 'SNLS-' + row[0],
-                                        log, bibcode='2005ApJ...634.1190H')
+            (name,
+             source) = catalog.new_event('SNLS-' + row[0],
+                                         bibcode='2005ApJ...634.1190H')
             catalog.events[name].add_quantity(
                 'discoverdate', '20' + row[0][:2], source)
             catalog.events[name].add_quantity('ra', row[1], source)

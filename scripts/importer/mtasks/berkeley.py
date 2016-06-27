@@ -24,7 +24,7 @@ def do_ucb_photo(catalog):
     sec_refbib = '2012MNRAS.425.1789S'
 
     jsontxt = load_cached_url(
-        args, current_task,
+        catalog.args, current_task,
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
@@ -63,7 +63,7 @@ def do_ucb_photo(catalog):
             raise ValueError('ID not found for SNDB phot!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
-        if task_obj.load_archive(args) and os.path.isfile(filepath):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(filepath):
             with open(filepath, 'r') as ff:
                 phottxt = ff.read()
         else:
@@ -89,7 +89,7 @@ def do_ucb_photo(catalog):
             band = row[4]
             telescope = row[5]
             add_photometry(
-                events, name, time=mjd, telescope=telescope, band=band,
+                catalog.events, name, time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     catalog.journal_events()
@@ -104,7 +104,7 @@ def do_ucb_spectra(catalog):
     ucbspectracnt = 0
 
     jsontxt = load_cached_url(
-        args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
+        catalog.args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
         return
@@ -115,8 +115,7 @@ def do_ucb_spectra(catalog):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
 
@@ -160,7 +159,7 @@ def do_ucb_spectra(catalog):
             raise ValueError('ID not found for SNDB spectrum!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
-        if task_obj.load_archive(args) and os.path.isfile(filepath):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(filepath):
             with open(filepath, 'r') as ff:
                 spectxt = ff.read()
         else:

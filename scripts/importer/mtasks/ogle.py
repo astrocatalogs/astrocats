@@ -97,7 +97,7 @@ def do_ogle(catalog):
 
                 fname = os.path.join(PATH.REPO_EXTERNAL,
                                      'OGLE/') + datafnames[ec]
-                if task_obj.load_archive(args) and os.path.isfile(fname):
+                if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:

@@ -26,9 +26,8 @@ def do_grb(catalog):
     for r, row in enumerate(pbar(data, current_task)):
         if r == 0:
             continue
-        (catalog.events,
-         name,
-         source) = Events.new_event(tasks, args, events, 'GRB ' +
+        (name,
+         source) = catalog.new_event('GRB ' +
                                     row[0], log,
                                     srcname='Gamma-ray Bursts Catalog',
                                     url='http://grbcatalog.org')
