@@ -16,7 +16,7 @@ from .importer.constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES,
 from .importer.funcs import (event_attr_priority, name_clean,
                              null_field, uniq_cdl)
 from .importer import Events
-from .importer.Events import KEYS
+from .importer.Events import KEYS, EVENT
 
 
 class Catalog():
@@ -105,8 +105,7 @@ class Catalog():
 
         # Load Event from file
         if load:
-            loaded_event = Events.load_event_from_file(
-                events, args, tasks, log, name=newname, delete=delete)
+            loaded_event = EVENT.init_from_file(name=newname, delete=delete)
             if loaded_event is not None:
                 self.events[newname] = loaded_event
                 self.log.debug("Added '{}', from '{}', to `self.event`".format(
@@ -259,10 +258,8 @@ class Catalog():
                     self.log.warning("Found single event with multiple entries "
                                      "('{}' and '{}'), merging.".format(name1, name2))
 
-                    load1 = load_event_from_file(
-                        events, args, tasks, log, name1, delete=True)
-                    load2 = load_event_from_file(
-                        events, args, tasks, log, name2, delete=True)
+                    load1 = EVENT.init_from_file(name=name1, delete=True)
+                    load2 = EVENT.init_from_file(name=name2, delete=True)
                     if load1 is not None and load2 is not None:
                         priority1 = 0
                         priority2 = 0
@@ -368,24 +365,23 @@ class Catalog():
                 newname = aliases[0]
             if newname and name != newname:
                 # Make sure new name doesn't already exist
-                if load_event_from_file(events, args, tasks, log, newname):
+                if EVENT.init_from_file(name=newname):
                     self.log.error("WARNING: `newname` already exists... "
-                              "should do something about that...")
+                                   "should do something about that...")
                     continue
 
-                new_event = load_event_from_file(
-                    events, args, tasks, log, name, delete=True)
+                new_event = EVENT.init_from_file(name=name, delete=True)
                 if new_event is None:
                     self.log.error("Could not load `new_event` with name '{}'".format(
                         name))
                 else:
-                    self.log.info("Changing event from name '{}' to preferred name '{}'"
-                             "".format(name, newname))
+                    self.log.info("Changing event from name '{}' to preferred"
+                                  " name '{}'".format(name, newname))
                     events[newname] = new_event
                     events[newname][KEYS.NAME] = newname
                     if name in events:
-                        self.log.error("WARNING: `name` = '{}' is in `events`... "
-                                  "shouldnt happen?".format(name))
+                        self.log.error("WARNING: `name` = '{}' is in `events` "
+                                       "shouldnt happen?".format(name))
                         del events[name]
                     events = journal_events(tasks, args, events, log)
 
@@ -406,8 +402,7 @@ class Catalog():
                 fname = _uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
-            new_event = load_event_from_file(
-                events, args, tasks, log, path=fname, delete=False)
+            new_event = EVENT.init_from_file(path=fname, delete=False)
             # Make sure a non-stub event doesnt already exist with this name
             if name in events and not events[name]._stub:
                 err_str = ("ERROR: non-stub event already exists with name '{}'"

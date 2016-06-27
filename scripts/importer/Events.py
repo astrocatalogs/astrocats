@@ -36,6 +36,7 @@ class Entry(OrderedDict):
 
     # Whether or not this entry is a 'stub'.  Assume False
     _stub = False
+    filename = None
 
     def __init__(self, name, stub=False):
         """Create a new `Entry` object with the given `name`.
@@ -44,7 +45,49 @@ class Entry(OrderedDict):
         #     raise ValueError("New `Entry` objects must have a valid name!")
         self[KEYS.NAME] = name
         self._stub = stub
+        self.filename = None
         return
+
+    @classmethod
+    def init_from_file(cls, name=None, path=None,
+                       clean=False, delete=True, append=False)
+        if not name and not path:
+            raise ValueError("Either event `name` or `path` must be specified "
+                             "to load event.")
+        if name and path:
+            raise ValueError("Either event `name` or `path` should be "
+                             "specified, not both.")
+
+        # If the path is given, use that to load from
+        path_from_name = ''
+        if path:
+            load_path = path
+        # If the name is given, try to find a path for it
+        else:
+            repo_paths = get_repo_paths()
+            for rep in repo_paths:
+                filename = get_event_filename(name)
+                newpath = os.path.join(rep, filename + '.json')
+                if os.path.isfile(path):
+                    path_from_name = newpath
+                    break
+
+            load_path = path_from_name
+
+        if not load_path or not os.path.isfile(load_path):
+            warnings.warn("No path found for name: '{}', path: '{}'".format(
+                name, path))
+            return None
+
+        # Create a new `EVENT` instance
+        new_event = cls(name)
+        # Fill it with data from json file
+        new_event._load_data_from_json(load_path, log)
+
+        if clean:
+            new_event.clean()
+
+        return new_event
 
     def get_aliases(self, includename=True):
         """Retrieve the aliases of this object as a list of strings.
@@ -110,10 +153,10 @@ class EVENT(Entry):
                 f.read(), object_pairs_hook=OrderedDict)
         return
 
-    def load_data_from_json(self, fhand, log):
+    def _load_data_from_json(self, fhand, log):
         """FIX: check for overwrite??
         """
-        log.debug("Events.EVENT.load_data_from_json()")
+        log.debug("Events.EVENT._load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -514,104 +557,84 @@ class EVENT(Entry):
 
         return srcname, bibcode
 
+    def clean(self):
+        """
 
-def find_event_name_of_alias(events, alias):
-    """Return the first event name with the given 'alias' included in its
-    list of aliases.
+        FIX: instead of making changes in place to `dirty_event`, should a new
+             event be created, values filled, then returned??
+        FIX: currently will fail if no bibcode and no url
+        """
+        bibcodes = []
 
-    Returns
-    -------
-    name of matching event (str) or 'None' if no matches
-
-    """
-    for name, event in events.items():
-        aliases = event.get_aliases()
-        if alias in aliases:
-            if ((KEYS.DISTINCTS not in event.keys()) or
-                    (alias not in event[KEYS.DISTINCTS])):
-                return name
-
-    return None
-
-
-def clean_event(dirty_event):
-    """
-
-    FIX: instead of making changes in place to `dirty_event`, should a new
-         event be created, values filled, then returned??
-    FIX: currently will fail if no bibcode and no url
-    """
-    bibcodes = []
-
-    # Rebuild the sources if they exist
-    try:
-        old_sources = dirty_event[KEYS.SOURCES]
-        del dirty_event[KEYS.SOURCES]
-        for ss, source in enumerate(old_sources):
-            if KEYS.BIBCODE in source:
-                bibcodes.append(source[KEYS.BIBCODE])
-                dirty_event.add_source(bibcode=source[KEYS.BIBCODE])
-            else:
-                dirty_event.add_source(
-                    srcname=source[KEYS.NAME], url=source[KEYS.URL])
-    except KeyError:
-        pass
-
-    # Clean some legacy fields
-    if 'aliases' in dirty_event and isinstance(dirty_event['aliases'], list):
-        source = dirty_event.add_source(
-            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-        for alias in dirty_event['aliases']:
-            dirty_event.add_quantity('alias', alias, source)
-        del dirty_event['aliases']
-
-    # FIX: should this be an error if false??
-    if ((KEYS.DISTINCTS in dirty_event and
-         isinstance(dirty_event[KEYS.DISTINCTS], list) and
-         isinstance(dirty_event[KEYS.DISTINCTS][0], str))):
-        distinctfroms = [x for x in dirty_event[KEYS.DISTINCTS]]
-        del dirty_event[KEYS.DISTINCTS]
-        source = dirty_event.add_source(
-            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-        for df in distinctfroms:
-            dirty_event.add_quantity(KEYS.DISTINCTS, df, source)
-
-    if 'errors' in dirty_event and \
-            isinstance(dirty_event['errors'], list) and \
-            'sourcekind' in dirty_event['errors'][0]:
-        source = dirty_event.add_source(
-            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
-        for err in dirty_event['errors']:
-            dirty_event.add_quantity('error', err['quantity'], source,
-                                     kind=err['sourcekind'], extra=err['id'])
-        del dirty_event['errors']
-
-    if not bibcodes:
-        dirty_event.add_source(bibcode=OSC_BIBCODE,
-                               srcname=OSC_NAME, url=OSC_URL, secondary=True)
-        bibcodes = [OSC_BIBCODE]
-
-    # Go through all keys in 'dirty' event
-    for key in dirty_event.keys():
-        if key in [KEYS.NAME, KEYS.SCHEMA, KEYS.SOURCES, KEYS.ERRORS]:
+        # Rebuild the sources if they exist
+        try:
+            old_sources = self[KEYS.SOURCES]
+            del self[KEYS.SOURCES]
+            for ss, source in enumerate(old_sources):
+                if KEYS.BIBCODE in source:
+                    bibcodes.append(source[KEYS.BIBCODE])
+                    self.add_source(bibcode=source[KEYS.BIBCODE])
+                else:
+                    self.add_source(
+                        srcname=source[KEYS.NAME], url=source[KEYS.URL])
+        except KeyError:
             pass
-        elif key == 'photometry':
-            for p, photo in enumerate(dirty_event['photometry']):
-                if photo['u_time'] == 'JD':
-                    dirty_event['photometry'][p]['u_time'] = 'MJD'
-                    dirty_event['photometry'][p]['time'] = str(
-                        jd_to_mjd(Decimal(photo['time'])))
-                if bibcodes and 'source' not in photo:
-                    source = dirty_event.add_source(bibcode=bibcodes[0])
-                    dirty_event['photometry'][p]['source'] = source
-        else:
-            for qi, quantity in enumerate(dirty_event[key]):
-                if bibcodes and 'source' not in quantity:
-                    source = dirty_event.add_source(bibcode=bibcodes[0])
-                    dirty_event[key][qi]['source'] = source
 
-    dirty_event.check()
-    return dirty_event
+        # Clean some legacy fields
+        if 'aliases' in self and isinstance(self['aliases'], list):
+            source = self.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            for alias in self['aliases']:
+                self.add_quantity('alias', alias, source)
+            del self['aliases']
+
+        # FIX: should this be an error if false??
+        if ((KEYS.DISTINCTS in self and
+             isinstance(self[KEYS.DISTINCTS], list) and
+             isinstance(self[KEYS.DISTINCTS][0], str))):
+            distinctfroms = [x for x in self[KEYS.DISTINCTS]]
+            del self[KEYS.DISTINCTS]
+            source = self.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            for df in distinctfroms:
+                self.add_quantity(KEYS.DISTINCTS, df, source)
+
+        if 'errors' in self and \
+                isinstance(self['errors'], list) and \
+                'sourcekind' in self['errors'][0]:
+            source = self.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            for err in self['errors']:
+                self.add_quantity('error', err['quantity'], source,
+                                         kind=err['sourcekind'], extra=err['id'])
+            del self['errors']
+
+        if not bibcodes:
+            self.add_source(bibcode=OSC_BIBCODE,
+                                   srcname=OSC_NAME, url=OSC_URL, secondary=True)
+            bibcodes = [OSC_BIBCODE]
+
+        # Go through all keys in 'dirty' event
+        for key in self.keys():
+            if key in [KEYS.NAME, KEYS.SCHEMA, KEYS.SOURCES, KEYS.ERRORS]:
+                pass
+            elif key == 'photometry':
+                for p, photo in enumerate(self['photometry']):
+                    if photo['u_time'] == 'JD':
+                        self['photometry'][p]['u_time'] = 'MJD'
+                        self['photometry'][p]['time'] = str(
+                            jd_to_mjd(Decimal(photo['time'])))
+                    if bibcodes and 'source' not in photo:
+                        source = self.add_source(bibcode=bibcodes[0])
+                        self['photometry'][p]['source'] = source
+            else:
+                for qi, quantity in enumerate(self[key]):
+                    if bibcodes and 'source' not in quantity:
+                        source = self.add_source(bibcode=bibcodes[0])
+                        self[key][qi]['source'] = source
+
+        self.check()
+        return
 
 
 def get_event_filename(name):
@@ -666,7 +689,7 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
         return None
 
     new_event = EVENT(name)
-    new_event.load_data_from_json(load_path, log)
+    new_event._load_data_from_json(load_path, log)
 
     # Delete old version
     if name in events:
