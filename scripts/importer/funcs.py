@@ -6,16 +6,13 @@ import os
 import statistics
 import warnings
 from collections import OrderedDict
-from math import floor, log10, sqrt, pi, hypot
+from math import floor, hypot, log10, pi, sqrt
 
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 from astropy.time import Time as astrotime
-from astropy.coordinates import SkyCoord as coord
-from astropy import units
-from math import hypot, pi
 
 # import sys
 from cdecimal import Decimal
@@ -23,8 +20,8 @@ from scripts import FILENAME
 
 from ..utils import (bandmetaf, bandrepf, get_sig_digits, is_number,
                      pretty_num, round_sig, tprint, zpad)
-from .constants import (CLIGHT, KM, MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL,
-                        PREF_KINDS, ADS_BIB_URL)
+from .constants import (ADS_BIB_URL, CLIGHT, KM, MAX_BANDS, OSC_BIBCODE,
+                        OSC_NAME, OSC_URL, PREF_KINDS)
 
 
 def add_photometry(events, name, time="", u_time="MJD", e_time="",
@@ -629,7 +626,8 @@ def derive_and_sanitize(catalog, tasks, args, events):
                         bibcode='2015arXiv150201589P')
                     secondarysource = events[name].add_source(
                         srcname=reference, url=refurl, secondary=True)
-                    meddist = statistics.median(catalog.nedd_dict[host['value']])
+                    meddist = statistics.median(
+                        catalog.nedd_dict[host['value']])
                     redshift = pretty_num(z_at_value(cosmo.comoving_distance,
                                                      float(meddist) *
                                                      un.Mpc),
@@ -818,7 +816,8 @@ def derive_and_sanitize(catalog, tasks, args, events):
                 if ('bibcode' in source and
                         source['bibcode'] in catalog.bibauthor_dict and
                         catalog.bibauthor_dict[source['bibcode']]):
-                    source['reference'] = catalog.bibauthor_dict[source['bibcode']]
+                    source['reference'] = catalog.bibauthor_dict[
+                        source['bibcode']]
                     if 'name' not in source and source['bibcode']:
                         source['name'] = source['bibcode']
         if 'redshift' in events[name]:

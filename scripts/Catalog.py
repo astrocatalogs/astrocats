@@ -39,11 +39,11 @@ class Catalog():
         self.log = logger.get_logger(
             stream_level=log_stream_level, tofile=args.log_filename)
 
-        # Make sure repositories are cloned
-        self._clone_repos()
-
         # Load all dictionaries
         self._load_dicts()
+
+        # Make sure repositories are cloned
+        self._clone_repos()
         return
 
     def _clone_repos(self):
