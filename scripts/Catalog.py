@@ -201,17 +201,16 @@ class Catalog():
                             reducer=null_field(item, "reducer"), filename=null_field(item, "filename"),
                             observatory=null_field(item, "observatory"))
                     elif key == 'errors':
-                        events[destname].add_quantity(
+                        self.events[destname].add_quantity(
                             key, item['value'], sources,
                             kind=null_field(item, "kind"), extra=null_field(item, "extra"))
                     else:
-                        events[destname].add_quantity(
+                        self.events[destname].add_quantity(
                             key, item['value'], sources, error=null_field(item, "error"),
-                            unit = null_field(item, "unit"), probability=null_field(item, "probability"),
+                            unit=null_field(item, "unit"), probability=null_field(item, "probability"),
                             kind=null_field(item, "kind"))
 
         return
-
 
     def new_event(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
