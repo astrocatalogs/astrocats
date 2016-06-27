@@ -36,7 +36,7 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
             break
 
     # 2000A&AS..143....9W
-    for brow in pbar(table, current_task=current_task):
+    for brow in pbar(table, current_task):
         row = {x: re.sub(r'b\'(.*)\'', r'\1',
                          str(brow[x])) for x in brow.colnames}
         # Skip items with no bibliographic info aside from SIMBAD, too
