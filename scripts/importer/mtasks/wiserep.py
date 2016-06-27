@@ -168,8 +168,7 @@ def do_wiserep_spectra(catalog):
                                 name = name.replace('PSNJ', 'PSN J')
                             name = get_preferred_name(catalog.events, name)
                             if oldname and name != oldname:
-                                events = Events.journal_events(
-                                    tasks, args, events, log)
+                                catalog.journal_events()
                             oldname = name
                             name = Events.add_event(name)
 

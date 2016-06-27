@@ -8,7 +8,6 @@ from glob import glob
 from scripts import PATH
 from scripts.utils import pbar_strings
 
-from .. import Events
 from ..funcs import add_photometry
 
 

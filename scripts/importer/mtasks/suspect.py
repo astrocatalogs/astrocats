@@ -15,7 +15,6 @@ from bs4 import BeautifulSoup
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
@@ -136,8 +135,7 @@ def do_suspect_spectra(catalog):
                 name = 'SN' + name
             name = get_preferred_name(catalog.events, name)
             if oldname and name != oldname:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
             oldname = name
             name = catalog.add_event(name)
             sec_ref = 'SUSPECT'

@@ -5,7 +5,6 @@ import os
 
 from scripts import PATH
 
-from .. import Events
 from ..funcs import add_photometry
 
 

@@ -58,13 +58,11 @@ def do_rochester(catalog):
                 if is_number(aka.strip('?')):
                     aka = 'SN' + aka.strip('?') + 'A'
                     oldname = aka
-                    events, name = Events.add_event(
-                        tasks, args, events, aka, log)
+                    name = Events.add_event(aka)
                 elif len(aka) == 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
                     oldname = aka
-                    events, name = Events.add_event(
-                        tasks, args, events, aka, log)
+                    name = Events.add_event(aka)
 
             ra = str(cols[3].contents[0]).strip()
             dec = str(cols[4].contents[0]).strip()
@@ -129,10 +127,10 @@ def do_rochester(catalog):
                     float(str(cols[7].contents[0]).strip()), format='jd')
                 if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
                      not any('GRB' in xx for xx in
-                             events[name].get_aliases()))):
+                             catalog.events[name].get_aliases()))):
                     mag = str(cols[8].contents[0]).strip()
                     add_photometry(
-                        events, name, time=str(astrot.mjd), magnitude=mag,
+                        catalog.events, name, time=str(astrot.mjd), magnitude=mag,
                         source=sources)
             if cols[11].contents[0] != 'n/a':
                 catalog.events[name].add_quantity('redshift', str(
@@ -140,8 +138,7 @@ def do_rochester(catalog):
             catalog.events[name].add_quantity('discoverer', str(
                 cols[13].contents[0]).strip(), sources)
             if catalog.args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
 
     if not catalog.args.update:
         vsnetfiles = ['latestsne.dat']
@@ -161,8 +158,7 @@ def do_rochester(catalog):
                         name = 'PSN J' + name[4:]
                     if name.startswith('MASTEROTJ'):
                         name = name.replace('MASTEROTJ', 'MASTER OT J')
-                    events, name = Events.add_event(
-                        tasks, args, events, name, log)
+                    name = Events.add_event(name)
                     sec_source = catalog.events[name].add_source(
                         srcname=sec_ref, url=sec_refurl, secondary=True)
                     catalog.events[name].add_quantity('alias', name, sec_source)
@@ -209,7 +205,7 @@ def do_rochester(catalog):
                     band = row[2].lstrip('1234567890.')
 
                     add_photometry(
-                        events, name, time=mjd, band=band, magnitude=magnitude,
+                        catalog.events, name, time=mjd, band=band, magnitude=magnitude,
                         e_magnitude=e_magnitude, source=sources)
 
     catalog.journal_events()

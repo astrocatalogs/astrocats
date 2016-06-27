@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 
@@ -131,7 +130,7 @@ def do_ogle(catalog):
                 if claimedtype and claimedtype != '-':
                     catalog.events[name].add_quantity(
                         'claimedtype', claimedtype, sources)
-                elif 'SN' not in name and 'claimedtype' not in events[name]:
+                elif 'SN' not in name and 'claimedtype' not in catalog.events[name]:
                     catalog.events[name].add_quantity(
                         'claimedtype', 'Candidate', sources)
                 for row in lcdat:
@@ -146,12 +145,11 @@ def do_ogle(catalog):
                         e_mag = ''
                         upperlimit = True
                     add_photometry(
-                        events, name, time=mjd, band='I', magnitude=magnitude,
+                        catalog.events, name, time=mjd, band='I', magnitude=magnitude,
                         e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if catalog.args.update:
-                    events = Events.journal_events(
-                        tasks, args, events, log)
+                    catalog.journal_events()
 
         catalog.journal_events()
     return

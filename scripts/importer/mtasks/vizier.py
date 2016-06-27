@@ -1627,7 +1627,7 @@ def do_lennarz(catalog):
 
             catalog.events[name].add_quantity('discoverdate', datestring, source)
 
-            if 'photometry' not in events[name]:
+            if 'photometry' not in catalog.journal_events()events[name]:
                 if ('Dmag' in row and is_number(row['Dmag']) and not
                         isnan(float(row['Dmag']))):
                     datesplit = row['Ddate'].strip().split('-')

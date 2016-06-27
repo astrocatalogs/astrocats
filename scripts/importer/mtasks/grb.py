@@ -6,7 +6,6 @@ import os
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import load_cached_url
 
 
@@ -28,7 +27,7 @@ def do_grb(catalog):
             continue
         (name,
          source) = catalog.new_event('GRB ' +
-                                    row[0], log,
+                                    row[0],
                                     srcname='Gamma-ray Bursts Catalog',
                                     url='http://grbcatalog.org')
         catalog.events[name].add_quantity('ra', row[2], source, unit='floatdegrees')

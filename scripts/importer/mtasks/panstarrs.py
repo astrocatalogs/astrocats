@@ -12,7 +12,6 @@ from bs4 import BeautifulSoup
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
@@ -84,7 +83,7 @@ def do_ps_threepi(catalog):
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if (not args.full_refresh and catalog.current_task.load_archive(catalog.args) and
+            if (not catalog.args.full_refresh and catalog.current_task.load_archive(catalog.args) and
                     page < oldnumpages and os.path.isfile(fname)):
                 with open(fname, 'r') as f:
                     html = f.read()
@@ -146,7 +145,7 @@ def do_ps_threepi(catalog):
             if not name:
                 name = psname
             name = catalog.add_event(name)
-            sources = [events[name]
+            sources = [catalog.events[name]
                        .add_source(srcname='Pan-STARRS 3Pi',
                                    url=('http://psweb.mp.qub.ac.uk/'
                                         'ps1threepi/psdb/'))]
@@ -252,8 +251,7 @@ def do_ps_threepi(catalog):
                 catalog.events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
             if catalog.args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
 
         catalog.journal_events()
         # Only run first page for Travis

@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import load_cached_url
 
 
@@ -57,8 +56,7 @@ def do_snhunt(catalog):
             catalog.events[name].add_quantity('discoverer', 'CRTS', source)
             catalog.events[name].add_quantity('discoverer', discoverer, source)
         if catalog.args.update:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
 
     catalog.journal_events()
     return

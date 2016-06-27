@@ -10,7 +10,6 @@ from astropy.time import Time as astrotime
 from scripts import PATH
 from scripts.utils import pbar, pretty_num
 
-from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
@@ -112,8 +111,7 @@ def do_tns(catalog):
                                            (24 * 60 * 60), sig=6).lstrip('0')
                     catalog.events[name].add_quantity('discoverdate', date, source)
             if catalog.args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
 
     catalog.journal_events()
     return

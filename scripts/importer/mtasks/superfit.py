@@ -10,7 +10,6 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import add_spectrum, event_exists
 
 
@@ -37,11 +36,10 @@ def do_superfit_spectra(catalog):
                 continue
             if event_exists(catalog.events, name):
                 prefname = get_preferred_name(catalog.events, name)
-                if 'spectra' in events[prefname] and lastname != prefname:
+                if 'spectra' in catalog.events[prefname] and lastname != prefname:
                     continue
             if oldname and name != oldname:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
             oldname = name
             name = catalog.add_event(name)
             epoch = basename.split('.')[1]

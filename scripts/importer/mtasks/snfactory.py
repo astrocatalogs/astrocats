@@ -9,7 +9,6 @@ from astropy.time import Time as astrotime
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import pretty_num
 from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
@@ -39,8 +38,7 @@ def do_snf_specta(catalog):
         name = eventfolder
         name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         sec_reference = 'Nearby Supernova Factory'
