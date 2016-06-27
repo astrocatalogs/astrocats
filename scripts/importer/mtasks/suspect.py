@@ -15,7 +15,6 @@ from bs4 import BeautifulSoup
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
@@ -23,7 +22,7 @@ from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
 
 
 def do_suspect_photo(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
@@ -99,7 +98,7 @@ def do_suspect_photo(catalog):
                 e_magnitude = ''
             else:
                 e_magnitude = str(e_magnitude)
-            add_photometry(events, name, time=mjd, band=band, magnitude=mag,
+            add_photometry(catalog.events, name, time=mjd, band=band, magnitude=mag,
                            e_magnitude=e_magnitude,
                            source=sec_source + ',' + source)
 
@@ -108,7 +107,7 @@ def do_suspect_photo(catalog):
 
 
 def do_suspect_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                            'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())
@@ -134,10 +133,9 @@ def do_suspect_spectra(catalog):
             name = eventfolder
             if is_number(name[:4]):
                 name = 'SN' + name
-            name = get_preferred_name(events, name)
+            name = get_preferred_name(catalog.events, name)
             if oldname and name != oldname:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
             oldname = name
             name = catalog.add_event(name)
             sec_ref = 'SUSPECT'
@@ -202,13 +200,13 @@ def do_suspect_spectra(catalog):
                     errors = specdata[2]
 
                 add_spectrum(
-                    events, name, 'Angstrom', 'Uncalibrated', u_time='MJD',
+                    catalog.events, name, 'Angstrom', 'Uncalibrated', u_time='MJD',
                     time=time,
                     wavelengths=wavelengths, fluxes=fluxes, errors=errors,
                     errorunit='Uncalibrated',
                     source=sources, filename=spectrum)
                 suspectcnt = suspectcnt + 1
-                if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
+                if catalog.args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
     catalog.journal_events()

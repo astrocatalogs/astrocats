@@ -18,13 +18,13 @@ from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 
 
 def do_ucb_photo(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
 
     jsontxt = load_cached_url(
-        args, current_task,
+        catalog.args, current_task,
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
@@ -63,7 +63,7 @@ def do_ucb_photo(catalog):
             raise ValueError('ID not found for SNDB phot!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
-        if task_obj.load_archive(args) and os.path.isfile(filepath):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(filepath):
             with open(filepath, 'r') as ff:
                 phottxt = ff.read()
         else:
@@ -89,7 +89,7 @@ def do_ucb_photo(catalog):
             band = row[4]
             telescope = row[5]
             add_photometry(
-                events, name, time=mjd, telescope=telescope, band=band,
+                catalog.events, name, time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     catalog.journal_events()
@@ -97,14 +97,14 @@ def do_ucb_photo(catalog):
 
 
 def do_ucb_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
     ucbspectracnt = 0
 
     jsontxt = load_cached_url(
-        args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
+        catalog.args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
         return
@@ -115,8 +115,7 @@ def do_ucb_spectra(catalog):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
 
@@ -160,7 +159,7 @@ def do_ucb_spectra(catalog):
             raise ValueError('ID not found for SNDB spectrum!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
-        if task_obj.load_archive(args) and os.path.isfile(filepath):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(filepath):
             with open(filepath, 'r') as ff:
                 spectxt = ff.read()
         else:
@@ -197,14 +196,14 @@ def do_ucb_spectra(catalog):
 
         units = 'Uncalibrated'
         add_spectrum(
-            events, name, 'Angstrom', units, u_time='MJD', time=mjd,
+            catalog.events, name, 'Angstrom', units, u_time='MJD', time=mjd,
             wavelengths=wavelengths, filename=filename, fluxes=fluxes,
             errors=errors,
             errorunit=units, instrument=instrument, source=sources, snr=snr,
             observer=observer,
             reducer=reducer, deredshifted=('-noz' in filename))
         ucbspectracnt = ucbspectracnt + 1
-        if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_events()

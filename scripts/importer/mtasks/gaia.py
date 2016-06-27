@@ -9,14 +9,13 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url
 
 
 def do_gaia(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
-    csvtxt = load_cached_url(args, current_task,
+    csvtxt = load_cached_url(catalog.args, current_task,
                              'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',
                              fname)
     if not csvtxt:
@@ -62,7 +61,7 @@ def do_gaia(catalog):
                     break
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
-        if task_obj.load_archive(args) and os.path.isfile(fname):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
                 csvtxt = ff.read()
         else:
@@ -84,11 +83,10 @@ def do_gaia(catalog):
             e_mag = 0.
             telescope = 'GAIA'
             band = 'G'
-            add_photometry(events, name, time=mjd, telescope=telescope,
+            add_photometry(catalog.events, name, time=mjd, telescope=telescope,
                            band=band, magnitude=magnitude,
                            e_magnitude=e_mag, source=source)
-        if args.update:
-            events = Events.journal_events(
-                tasks, args, events, log)
+        if catalog.args.update:
+            catalog.journal_events()
     catalog.journal_events()
     return

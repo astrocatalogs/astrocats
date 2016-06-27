@@ -6,7 +6,6 @@ from astroquery.simbad import Simbad
 
 from scripts.utils import is_number, pbar, single_spaces
 
-from .. import Events
 from ..funcs import name_clean, uniq_cdl
 
 
@@ -56,7 +55,7 @@ def do_simbad(catalog):
         if is_number(name):
             continue
         name = catalog.add_event(name)
-        source = (events[name]
+        source = (catalog.events[name]
                   .add_source(srcname='SIMBAD astronomical database',
                               bibcode="2000A&AS..143....9W",
                               url="http://simbad.u-strasbg.fr/",
@@ -77,9 +76,9 @@ def do_simbad(catalog):
             catalog.events[name].add_quantity('dec', row['DEC'], csources)
         if row['SP_BIBCODE']:
             ssources = uniq_cdl([source,
-                                 events[name]
+                                 catalog.events[name]
                                  .add_source(bibcode=row['SP_BIBCODE'])] +
-                                ([events[name]
+                                ([catalog.events[name]
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
             catalog.events[name].add_quantity('claimedtype',

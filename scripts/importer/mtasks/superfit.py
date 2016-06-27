@@ -10,14 +10,13 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import add_spectrum, event_exists
 
 
 def do_superfit_spectra(catalog):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     sfdirs = list(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*')))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))
@@ -35,17 +34,16 @@ def do_superfit_spectra(catalog):
 
             if 'theory' in name:
                 continue
-            if event_exists(events, name):
-                prefname = get_preferred_name(events, name)
-                if 'spectra' in events[prefname] and lastname != prefname:
+            if event_exists(catalog.events, name):
+                prefname = get_preferred_name(catalog.events, name)
+                if 'spectra' in catalog.events[prefname] and lastname != prefname:
                     continue
             if oldname and name != oldname:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
             oldname = name
             name = catalog.add_event(name)
             epoch = basename.split('.')[1]
-            (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
+            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.events, name)
             if mldt:
                 if epoch == 'max':
                     epoff = Decimal(0.0)
@@ -80,7 +78,8 @@ def do_superfit_spectra(catalog):
                 mlmjd = str(Decimal(mlmjd) + epoff)
             else:
                 mlmjd = ''
-            add_spectrum(events, name, 'Angstrom', 'Uncalibrated', u_time='MJD'
+            add_spectrum(catalog.events, name, 'Angstrom', 'Uncalibrated',
+                         u_time='MJD'
                          if mlmjd else '', time=mlmjd,
                          wavelengths=wavelengths, fluxes=fluxes, source=source)
 

@@ -9,24 +9,23 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 
 
 def do_ogle(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']
     oglenames = []
     ogleupdate = [True, False, False, False, False]
     for b, bn in enumerate(pbar(basenames, current_task)):
-        if args.update and not ogleupdate[b]:
+        if catalog.args.update and not ogleupdate[b]:
             continue
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
         filepath += bn.replace('/', '-') + '-transients.html'
-        htmltxt = load_cached_url(args, current_task,
+        htmltxt = load_cached_url(catalog.args, current_task,
                                   'http://ogle.astrouw.edu.pl/ogle4/' + bn +
                                   '/transients.html', filepath)
         if not htmltxt:
@@ -97,7 +96,7 @@ def do_ogle(catalog):
 
                 fname = os.path.join(PATH.REPO_EXTERNAL,
                                      'OGLE/') + datafnames[ec]
-                if task_obj.load_archive(args) and os.path.isfile(fname):
+                if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:
@@ -131,7 +130,7 @@ def do_ogle(catalog):
                 if claimedtype and claimedtype != '-':
                     catalog.events[name].add_quantity(
                         'claimedtype', claimedtype, sources)
-                elif 'SN' not in name and 'claimedtype' not in events[name]:
+                elif 'SN' not in name and 'claimedtype' not in catalog.events[name]:
                     catalog.events[name].add_quantity(
                         'claimedtype', 'Candidate', sources)
                 for row in lcdat:
@@ -146,12 +145,11 @@ def do_ogle(catalog):
                         e_mag = ''
                         upperlimit = True
                     add_photometry(
-                        events, name, time=mjd, band='I', magnitude=magnitude,
+                        catalog.events, name, time=mjd, band='I', magnitude=magnitude,
                         e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
-                if args.update:
-                    events = Events.journal_events(
-                        tasks, args, events, log)
+                if catalog.args.update:
+                    catalog.journal_events()
 
         catalog.journal_events()
     return

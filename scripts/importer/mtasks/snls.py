@@ -8,7 +8,6 @@ from astroquery.vizier import Vizier
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import get_sig_digits, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, get_preferred_name
@@ -41,7 +40,7 @@ def do_snls_photo(catalog):
             2.5 * log10(1.0 + float(err) / float(flux)), sig=sig)
         # e_mag = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
         add_photometry(
-            events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
+            catalog.events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
             e_counts=err, source=source)
 
     catalog.journal_events()
@@ -52,7 +51,7 @@ def do_snls_spectra(catalog):
     """
     """
 
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     result = Vizier.get_catalogs('J/A+A/507/85/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -66,10 +65,9 @@ def do_snls_spectra(catalog):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2009A&A...507...85B')
@@ -98,11 +96,11 @@ def do_snls_spectra(catalog):
         # errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
 
         add_spectrum(
-            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
+            catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
             time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
             filename=filename)
-        if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
     catalog.journal_events()
     return

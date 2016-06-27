@@ -6,14 +6,13 @@ import os
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import load_cached_url
 
 
 def do_grb(catalog):
     current_task = 'GRB'
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'GRB-catalog/catalog.csv')
-    csvtxt = load_cached_url(args,
+    csvtxt = load_cached_url(catalog.args,
                              current_task,
                              ('http://grb.pa.msu.edu/grbcatalog/'
                               'download_data?cut_0_min=10&cut_0=BAT%20T90'
@@ -26,10 +25,9 @@ def do_grb(catalog):
     for r, row in enumerate(pbar(data, current_task)):
         if r == 0:
             continue
-        (events,
-         name,
-         source) = Events.new_event(tasks, args, events, 'GRB ' +
-                                    row[0], log,
+        (name,
+         source) = catalog.new_event('GRB ' +
+                                    row[0],
                                     srcname='Gamma-ray Bursts Catalog',
                                     url='http://grbcatalog.org')
         catalog.events[name].add_quantity('ra', row[2], source, unit='floatdegrees')

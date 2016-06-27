@@ -11,13 +11,12 @@ from bs4 import BeautifulSoup
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 
 
 def do_asiago_photo(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
     path = os.path.abspath(os.path.join(PATH.REPO_EXTERNAL, 'asiago-cat.php'))
@@ -43,9 +42,9 @@ def do_asiago_photo(catalog):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, oldname, log,
+             source) = catalog.new_event(oldname,
                                         srcname=reference, url=refurl,
                                         bibcode=refbib, secondary=True)
 
@@ -120,8 +119,8 @@ def do_asiago_photo(catalog):
 
 
 def do_asiago_spectra(catalog):
-    current_task = task_obj.current_task(args)
-    html = load_cached_url(args, current_task,
+    current_task = catalog.current_task
+    html = load_cached_url(catalog.args, current_task,
                            ('http://sngroup.oapd.inaf.it./'
                             'cgi-bin/output_class.cgi?sn=1990'),
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA,

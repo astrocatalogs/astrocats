@@ -8,12 +8,11 @@ from glob import glob
 from scripts import PATH
 from scripts.utils import pbar_strings
 
-from .. import Events
 from ..funcs import add_photometry
 
 
 def do_sdss(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
@@ -63,7 +62,7 @@ def do_sdss(catalog):
                 magnitude = row[3]
                 e_mag = row[4]
                 telescope = 'SDSS'
-                add_photometry(events, name, time=mjd, telescope=telescope,
+                add_photometry(catalog.events, name, time=mjd, telescope=telescope,
                                band=band, magnitude=magnitude,
                                e_magnitude=e_mag, source=source, system='SDSS')
 

@@ -13,7 +13,7 @@ from ..funcs import add_photometry, load_cached_url
 
 
 def do_des(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
     ackn_url = ('http://www.noao.edu/'
@@ -22,7 +22,7 @@ def do_des(catalog):
     # Make sure there is aa trailing slash
     des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')
     html = load_cached_url(
-        args, current_task, des_trans_url, des_path + 'transients.html')
+        catalog.args, current_task, des_trans_url, des_path + 'transients.html')
     if not html:
         return
     bs = BeautifulSoup(html, 'html5lib')
@@ -45,12 +45,12 @@ def do_des(catalog):
                 else:
                     atellink = ''
 
-        sources = [events[name]
+        sources = [catalog.events[name]
                    .add_source(url=des_url, srcname='DES Bright Transients',
                                acknowledgment=ackn_url)]
         if atellink:
             sources.append(
-                events[name]
+                catalog.events[name]
                 .add_source(srcname='ATel ' + atellink.split('=')[-1],
                             url=atellink))
         sources += [catalog.events[name].add_source(bibcode='2012ApJ...753..152B'),
@@ -62,7 +62,7 @@ def do_des(catalog):
         catalog.events[name].add_quantity('ra', ra, sources)
         catalog.events[name].add_quantity('dec', dec, sources)
 
-        html2 = load_cached_url(args, current_task, des_trans_url + name,
+        html2 = load_cached_url(catalog.args, current_task, des_trans_url + name,
                                 des_path + name + '.html')
         if not html2:
             continue
@@ -72,7 +72,7 @@ def do_des(catalog):
                 jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
                 for ii, band in enumerate(jsontxt['band']):
                     upl = True if float(jsontxt['snr'][ii]) <= 3.0 else ''
-                    add_photometry(events, name, time=jsontxt['mjd'][ii],
+                    add_photometry(catalog.events, name, time=jsontxt['mjd'][ii],
                                    magnitude=jsontxt['mag'][ii],
                                    e_magnitude=jsontxt['mag_error'][ii],
                                    band=band, observatory='CTIO',

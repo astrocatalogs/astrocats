@@ -12,13 +12,12 @@ from bs4 import BeautifulSoup
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
 def do_ps_mds(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
@@ -41,12 +40,12 @@ def do_ps_mds(catalog):
 
 
 def do_ps_threepi(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"
               "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
-    html = load_cached_url(args, current_task, ps_url, fname, write=False)
+    html = load_cached_url(catalog.args, current_task, ps_url, fname, write=False)
     if not html:
         return
 
@@ -61,7 +60,7 @@ def do_ps_threepi(catalog):
             offline = True
 
     if offline:
-        if args.update:
+        if catalog.args.update:
             return
         warnings.warn('Pan-STARRS 3pi offline, using local files only.')
         with open(fname, 'r') as f:
@@ -84,7 +83,7 @@ def do_ps_threepi(catalog):
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if (not args.full_refresh and task_obj.load_archive(args) and
+            if (not catalog.args.full_refresh and catalog.current_task.load_archive(catalog.args) and
                     page < oldnumpages and os.path.isfile(fname)):
                 with open(fname, 'r') as f:
                     html = f.read()
@@ -146,7 +145,7 @@ def do_ps_threepi(catalog):
             if not name:
                 name = psname
             name = catalog.add_event(name)
-            sources = [events[name]
+            sources = [catalog.events[name]
                        .add_source(srcname='Pan-STARRS 3Pi',
                                    url=('http://psweb.mp.qub.ac.uk/'
                                         'ps1threepi/psdb/'))]
@@ -173,7 +172,7 @@ def do_ps_threepi(catalog):
                 with open(fname2, 'r') as f:
                     html2 = f.read()
             else:
-                if task_obj.load_archive(args) and os.path.isfile(fname2):
+                if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname2):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
@@ -219,7 +218,7 @@ def do_ps_threepi(catalog):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(events, name, time=str(obs[0]),
+                    add_photometry(catalog.events, name, time=str(obs[0]),
                                    band=nslabels[li], magnitude=str(obs[1]),
                                    e_magnitude=str(obs[2]), source=source,
                                    telescope=teles)
@@ -227,7 +226,7 @@ def do_ps_threepi(catalog):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(events, name, time=str(obs[0]),
+                    add_photometry(catalog.events, name, time=str(obs[0]),
                                    band=nslabels[li], magnitude=str(obs[1]),
                                    upperlimit=True, source=source,
                                    telescope=teles)
@@ -251,13 +250,12 @@ def do_ps_threepi(catalog):
             if redshift:
                 catalog.events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
-            if args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+            if catalog.args.update:
+                catalog.journal_events()
 
         catalog.journal_events()
         # Only run first page for Travis
-        if args.travis:
+        if catalog.args.travis:
             break
 
     return

@@ -14,7 +14,7 @@ from ..funcs import add_photometry
 
 
 def do_donations(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     # Nicholl 04-01-16 donation
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'Nicholl-04-01-16/bibcodes.json'), 'r') as f:
@@ -61,7 +61,7 @@ def do_donations(catalog):
                             not isnan(float(row[2 * v + 2]))):
                         err = row[2 * v + 2]
                     add_photometry(
-                        events, name, time=mjd, band=bands[v], magnitude=mag,
+                        catalog.events, name, time=mjd, band=bands[v], magnitude=mag,
                         e_magnitude=err, upperlimit=upperlimit, source=source)
     catalog.journal_events()
 
@@ -136,8 +136,7 @@ def do_donations(catalog):
                         name = value[:6].upper()
                         name += (value[6].upper() if len(value)
                                  == 7 else value[6:])
-                        events, name = Events.add_event(
-                            tasks, args, events, name, log)
+                        name = Events.add_event(name)
                         source = catalog.events[name].add_source(bibcode=bibcode)
                         catalog.events[name].add_quantity('alias', name, source)
                     elif field == 'type':
@@ -181,7 +180,7 @@ def do_donations(catalog):
                         if not cols:
                             continue
                         add_photometry(
-                            events, name, time=cols[0], magnitude=cols[
+                            name, time=cols[0], magnitude=cols[
                                 1], e_magnitude=cols[2],
                             band=band, system=cols[3], telescope=cols[4],
                             source=source)
@@ -211,7 +210,7 @@ def do_donations(catalog):
                 mag = cols[2] if not isupp else cols[4]
                 e_mag = cols[3] if not isupp else ''
                 upp = '' if not isupp else True
-                add_photometry(events, name, time=mjd, magnitude=mag,
+                add_photometry(catalog.events, name, time=mjd, magnitude=mag,
                                e_magnitude=e_mag,
                                upperlimit=upp, band=band, source=source,
                                telescope='Swift', instrument='UVOT',
@@ -249,7 +248,7 @@ def do_donations(catalog):
                         emag = ''
                         upp = True
                     instrument = 'UVOT' if telescope == 'Swift' else ''
-                    add_photometry(events, name, time=mjd, magnitude=col,
+                    add_photometry(catalog.events, name, time=mjd, magnitude=col,
                                    e_magnitude=emag, upperlimit=upp,
                                    band=bands[ci], source=source,
                                    telescope=telescope, instrument=instrument,

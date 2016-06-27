@@ -10,12 +10,11 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import add_photometry, jd_to_mjd
 
 
 def do_itep(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
     with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -58,7 +57,7 @@ def do_itep(catalog):
                 srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:
-            add_photometry(events, name, time=mjd, band=band,
+            add_photometry(catalog.events, name, time=mjd, band=band,
                            magnitude=magnitude,
                            e_magnitude=e_magnitude, source=sec_source + ',' +
                            source)

@@ -18,7 +18,7 @@ from ..funcs import add_photometry, event_exists, load_cached_url, uniq_cdl
 
 
 def do_cccp(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
         glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')))
@@ -30,8 +30,7 @@ def do_cccp(catalog):
                     continue
                 elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
-                    events, name = Events.add_event(
-                        tasks, args, events, name, log)
+                    name = Events.add_event(name)
                     source = catalog.events[name].add_source(
                         bibcode='2012ApJ...744...10K')
                     catalog.events[name].add_quantity('alias', name, source)
@@ -41,12 +40,12 @@ def do_cccp(catalog):
                         if row[2 * bb + 1]:
                             mag = row[2 * bb + 1].strip('>')
                             upl = (not row[2 * bb + 2])
-                            add_photometry(events, name, time=mjd, band=band,
+                            add_photometry(catalog.events, name, time=mjd, band=band,
                                            magnitude=mag,
                                            e_magnitude=row[2 * bb + 2],
                                            upperlimit=upl, source=source)
 
-    if task_obj.load_archive(args):
+    if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(PATH.REPO_EXTERNAL,
                                'CCCP/sc_cccp.html'), 'r') as ff:
             html = ff.read()
@@ -63,15 +62,14 @@ def do_cccp(catalog):
     links = soup.body.findAll("a")
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
-            events, name = Events.add_event(
-                tasks, args, events, link.text.replace(' ', ''), log)
-            source = (events[name]
+            name = Events.add_event(link.text.replace(' ', ''))
+            source = (catalog.events[name]
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
                                        '/home/iair/sc_cccp.html')))
             catalog.events[name].add_quantity('alias', name, source)
 
-            if task_obj.load_archive(args):
+            if catalog.current_task.load_archive(catalog.args):
                 fname = os.path.join(PATH.REPO_EXTERNAL,
                                      'CCCP/') + link['href'].split('/')[-1]
                 with open(fname, 'r') as ff:
@@ -90,7 +88,7 @@ def do_cccp(catalog):
             for link2 in links2:
                 if '.txt' in link2['href'] and '_' in link2['href']:
                     band = link2['href'].split('_')[1].split('.')[0].upper()
-                    if task_obj.load_archive(args):
+                    if catalog.current_task.load_archive(catalog.args):
                         fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
@@ -113,7 +111,7 @@ def do_cccp(catalog):
                               xx.split(',')]
                              for xx in list(filter(None, html3.split('\n')))]
                     for row in table:
-                        add_photometry(events, name,
+                        add_photometry(catalog.events, name,
                                        time=str(Decimal(row[0]) + 53000),
                                        band=band, magnitude=row[1],
                                        e_magnitude=row[2], source=source)
@@ -123,12 +121,12 @@ def do_cccp(catalog):
 
 
 def do_cpcs(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'
                 'hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-    jsontxt = load_cached_url(args, current_task, cpcs_url, os.path.join(
+    jsontxt = load_cached_url(catalog.args, current_task, cpcs_url, os.path.join(
         PATH.REPO_EXTERNAL, 'CPCS/index.json'))
     if not jsontxt:
         return
@@ -152,7 +150,7 @@ def do_cpcs(catalog):
             if name.upper().startswith('IPTF'):
                 name = 'iPTF' + name[4:]
             # Only add events that are classified as SN.
-            if event_exists(events, name):
+            if event_exists(catalog.events, name):
                 continue
             oldname = name
             name = catalog.add_event(name)
@@ -176,7 +174,7 @@ def do_cpcs(catalog):
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
-        if task_obj.load_archive(args) and os.path.isfile(fname):
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
             with open(fname, 'r') as ff:
                 jsonstr = ff.read()
         else:
@@ -199,13 +197,12 @@ def do_cpcs(catalog):
         bnds = cpcsalert['filter']
         obs = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
-            add_photometry(events, name, time=mjd, magnitude=mags[mi],
+            add_photometry(catalog.events, name, time=mjd, magnitude=mags[mi],
                            e_magnitude=errs[mi],
                            band=bnds[mi], observatory=obs[mi],
                            source=uniq_cdl([source, sec_source]))
-        if args.update:
-            events = Events.journal_events(
-                tasks, args, events, log)
+        if catalog.args.update:
+            Events.journal_events()
 
     catalog.journal_events()
     return

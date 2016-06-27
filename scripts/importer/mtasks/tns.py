@@ -10,18 +10,17 @@ from astropy.time import Time as astrotime
 from scripts import PATH
 from scripts.utils import pbar, pretty_num
 
-from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
 def do_tns(catalog):
     from datetime import timedelta
     session = requests.Session()
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     tns_url = 'https://wis-tns.weizmann.ac.il/'
     search_url = tns_url + \
         'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
-    csvtxt = load_cached_url(args, current_task, search_url, os.path.join(
+    csvtxt = load_cached_url(catalog.args, current_task, search_url, os.path.join(
         PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
         return
@@ -31,7 +30,7 @@ def do_tns(catalog):
     for page in pbar(range(maxpages), current_task):
         fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + \
             str(page).zfill(2) + '.csv'
-        if task_obj.load_archive(args) and os.path.isfile(fname) and page < 7:
+        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname) and page < 7:
             with open(fname, 'r') as tns_file:
                 csvtxt = tns_file.read()
         else:
@@ -96,7 +95,7 @@ def do_tns(catalog):
                 magnitude = row[14]
                 band = row[15].split('-')[0]
                 mjd = astrotime(row[16]).mjd
-                add_photometry(events, name, time=mjd, magnitude=magnitude,
+                add_photometry(catalog.events, name, time=mjd, magnitude=magnitude,
                                band=band,
                                survey=survey, source=source)
             if row[16]:
@@ -111,9 +110,8 @@ def do_tns(catalog):
                         date += pretty_num(dt.total_seconds() /
                                            (24 * 60 * 60), sig=6).lstrip('0')
                     catalog.events[name].add_quantity('discoverdate', date, source)
-            if args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+            if catalog.args.update:
+                catalog.journal_events()
 
     catalog.journal_events()
     return

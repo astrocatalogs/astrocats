@@ -17,7 +17,7 @@ from ..funcs import add_photometry, jd_to_mjd, make_date_string
 
 
 def do_ascii(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
 
     # 2006ApJ...645..841N
     file_path = os.path.join(
@@ -62,7 +62,7 @@ def do_ascii(catalog):
                 if not row[0]:
                     continue
                 time = str(jd_to_mjd(Decimal(row[0])))
-                add_photometry(events, name, time=time, band='V',
+                add_photometry(catalog.events, name, time=time, band='V',
                                magnitude=row[1], e_magnitude=row[2],
                                system=system, source=source)
     catalog.journal_events()
@@ -89,7 +89,7 @@ def do_ascii(catalog):
                 abs(Decimal(row[ci + 2]))) if row[ci + 2] else ''
             teles = 'MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO'
             instr = 'MaCHO' if band in ['VM', 'RM'] else ''
-            add_photometry(events, name, time=mjd, band=band,
+            add_photometry(catalog.events, name, time=mjd, band=band,
                            magnitude=row[ci],
                            e_upper_magnitude=e_upper_magnitude,
                            e_lower_magnitude=e_lower_magnitude,
@@ -114,7 +114,7 @@ def do_ascii(catalog):
         if len(namesplit) > 1:
             catalog.events[name].add_quantity('alias', namesplit[0], source)
         catalog.events[name].add_quantity('claimedtype', row[1], source)
-        add_photometry(events, name, time=row[2], band=row[
+        add_photometry(catalog.events, name, time=row[2], band=row[
                        4], magnitude=row[3], source=source)
     catalog.journal_events()
 
@@ -139,7 +139,7 @@ def do_ascii(catalog):
             if not is_number(mag):
                 continue
             add_photometry(
-                events, name, time=mjd, band=bands[
+                catalog.events, name, time=mjd, band=bands[
                     mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=row[-1], upperlimit=upps[mi], source=source)
     catalog.journal_events()
@@ -161,7 +161,7 @@ def do_ascii(catalog):
         err = row[4] if is_number(row[4]) else ''
         ins = row[5]
         add_photometry(
-            events, name, time=mjd, band=row[
+            catalog.events, name, time=mjd, band=row[
                 0], magnitude=mag, e_magnitude=err,
             instrument=ins, upperlimit=upp, source=source)
     catalog.journal_events()
@@ -199,7 +199,7 @@ def do_ascii(catalog):
         mag = row[3]
         err = row[4]
         add_photometry(
-            events, name, time=mjd, band=row[
+            catalog.events, name, time=mjd, band=row[
                 2], magnitude=mag, e_magnitude=err,
             instrument='WHIRC', telescope='WIYN 3.5 m', observatory='NOAO',
             system='WHIRC', source=source)
@@ -233,7 +233,7 @@ def do_ascii(catalog):
             if not is_number(mag):
                 continue
             add_photometry(
-                events, name, time=mjd, band=bands[
+                catalog.events, name, time=mjd, band=bands[
                     mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=ins, telescope=tel, observatory=obs,
                 system='Natural', source=source)
@@ -248,9 +248,8 @@ def do_ascii(catalog):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            (events,
-             name,
-             source) = Events.new_event(tasks, args, events, row[0], log,
+            (name,
+             source) = catalog.new_event(row[0],
                                         bibcode='2014ApJ...783...28G')
             catalog.events[name].add_quantity('alias', row[1], source)
             catalog.events[name].add_quantity(
@@ -267,10 +266,9 @@ def do_ascii(catalog):
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
         for r, row in enumerate(pbar(data, current_task)):
-            (events,
-             name,
-             source) = Events.new_event(tasks, args, events, 'SNLS-' + row[0],
-                                        log, bibcode='2005ApJ...634.1190H')
+            (name,
+             source) = catalog.new_event('SNLS-' + row[0],
+                                         bibcode='2005ApJ...634.1190H')
             catalog.events[name].add_quantity(
                 'discoverdate', '20' + row[0][:2], source)
             catalog.events[name].add_quantity('ra', row[1], source)
@@ -308,9 +306,9 @@ def do_ascii(catalog):
             if row[0][0] == '#':
                 bands = row[2:-1]
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, 'SN2008S', log,
+             source) = catalog.new_event('SN2008S',
                                         bibcode='2009MNRAS.398.1041B')
             mjd = str(jd_to_mjd(Decimal(row[0])))
             mags = [x.split('±')[0].strip() for x in row[2:]]
@@ -323,7 +321,7 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(events, name, time=mjd, band=bands[mi],
+                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
                                magnitude=mag, e_magnitude=errs[mi],
                                instrument=instrument, source=source)
     catalog.journal_events()
@@ -337,9 +335,9 @@ def do_ascii(catalog):
             if row[0][0] == '#':
                 bands = row[1:]
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, 'SN2008S', log,
+             source) = catalog.new_event('SN2008S',
                                         bibcode='2010arXiv1007.0011P')
             mjd = row[0]
             mags = [x.split('±')[0].strip() for x in row[1:]]
@@ -349,7 +347,7 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(events, name, time=mjd, band=bands[mi],
+                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
                                magnitude=mag, e_magnitude=errs[mi],
                                instrument='LBT', source=source)
     catalog.journal_events()
@@ -359,9 +357,9 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        (events,
+        (catalog.events,
          name,
-         source) = Events.new_event(tasks, args, events, 'SN1997cy', log,
+         source) = catalog.new_event('SN1997cy',
                                     bibcode='2000ApJ...533..320G')
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
@@ -372,7 +370,7 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(events, name, time=mjd, band=bands[mi],
+                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
                                magnitude=mag,
                                observatory='Mount Stromlo', telescope='MSSSO',
                                source=source, kcorrected=True)

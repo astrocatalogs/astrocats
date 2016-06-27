@@ -20,7 +20,7 @@ from ..funcs import add_spectrum, get_preferred_name, uniq_cdl
 
 
 def do_wiserep_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
     secondarybibcode = '2012PASP..124..668Y'
@@ -166,10 +166,9 @@ def do_wiserep_spectra(catalog):
                                 name = name.replace('MASTERJ', 'MASTER OT J')
                             if name.startswith('PSNJ'):
                                 name = name.replace('PSNJ', 'PSN J')
-                            name = get_preferred_name(events, name)
+                            name = get_preferred_name(catalog.events, name)
                             if oldname and name != oldname:
-                                events = Events.journal_events(
-                                    tasks, args, events, log)
+                                catalog.journal_events()
                             oldname = name
                             name = Events.add_event(name)
 
@@ -242,7 +241,7 @@ def do_wiserep_spectra(catalog):
                                     fluxunit = 'Uncalibrated'
 
                                 add_spectrum(
-                                    events, name, 'Angstrom', fluxunit,
+                                    catalog.events, name, 'Angstrom', fluxunit,
                                     errors=errors,
                                     errorunit=fluxunit,
                                     wavelengths=wavelengths,
@@ -253,7 +252,7 @@ def do_wiserep_spectra(catalog):
                                     filename=specfile)
                                 wiserepcnt = wiserepcnt + 1
 
-                                if (args.travis and
+                                if (catalog.args.travis and
                                         wiserepcnt % TRAVIS_QUERY_LIMIT == 0):
                                     break
 

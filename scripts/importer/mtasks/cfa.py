@@ -20,7 +20,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
 def do_cfa_photo(catalog):
     from html import unescape
     import re
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat'))
     for fname in pbar_strings(file_names, desc=current_task):
         f = open(fname, 'r')
@@ -95,7 +95,7 @@ def do_cfa_photo(catalog):
                         if float(row[v]) < 90.0:
                             src = secondarysource + ',' + source
                             add_photometry(
-                                events, name, u_time=tuout, time=mjd,
+                                name, u_time=tuout, time=mjd,
                                 band=eventbands[(v - 1) // 2],
                                 magnitude=row[v], e_magnitude=row[v + 1],
                                 source=src)
@@ -120,7 +120,7 @@ def do_cfa_photo(catalog):
             catalog.events[name].add_quantity('alias', name, source)
             catalog.events[name].add_quantity('claimedtype', 'Ia', source)
             add_photometry(
-                events, name, u_time='MJD', time=row[2].strip(),
+                name, u_time='MJD', time=row[2].strip(),
                 band=row[1].strip(),
                 magnitude=row[6].strip(), e_magnitude=row[7].strip(),
                 source=source)
@@ -136,7 +136,7 @@ def do_cfa_photo(catalog):
             source = catalog.events[name].add_source(bibcode='2014ApJS..213...19B')
             catalog.events[name].add_quantity('alias', name, source)
             add_photometry(
-                events, name, u_time='MJD', time=row[2], band=row[1],
+                name, u_time='MJD', time=row[2], band=row[1],
                 magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)
@@ -146,7 +146,7 @@ def do_cfa_photo(catalog):
 
 
 def do_cfa_spectra(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     # Ia spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(
@@ -158,10 +158,9 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         if name.startswith('snf') and is_number(name[3:7]):
             name = 'SNF' + name[3:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
@@ -194,18 +193,18 @@ def do_cfa_spectra(catalog):
             fluxes = data[1]
             errors = data[2]
             sources = uniq_cdl([source,
-                                (events[name]
+                                (catalog.events[name]
                                  .add_source(bibcode='2012AJ....143..126B')),
-                                (events[name]
+                                (catalog.events[name]
                                  .add_source(bibcode='2008AJ....135.1598M'))])
             add_spectrum(
-                events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
+                catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
                 filename=filename,
                 wavelengths=wavelengths, fluxes=fluxes, u_time='MJD' if time
                 else '', time=time, instrument=instrument,
                 errorunit='ergs/s/cm^2/Angstrom', errors=errors,
                 source=sources, dereddened=False, deredshifted=False)
-            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
     catalog.journal_events()
 
@@ -218,10 +217,9 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
@@ -252,12 +250,12 @@ def do_cfa_spectra(catalog):
                 [source,
                  catalog.events[name].add_source(bibcode='2014AJ....147...99M')])
             add_spectrum(
-                events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
+                catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
                 instrument=instrument, source=sources,
                 dereddened=False, deredshifted=False)
-            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
     catalog.journal_events()
 
@@ -270,10 +268,9 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            Events.journal_events()
         oldname = name
         name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
@@ -311,12 +308,12 @@ def do_cfa_spectra(catalog):
             wavelengths = data[0]
             fluxes = [str(Decimal(x) * Decimal(1.0e-15)) for x in data[1]]
             add_spectrum(
-                events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
+                catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
                 instrument=instrument, source=source,
                 dereddened=False, deredshifted=False)
-            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
     catalog.journal_events()

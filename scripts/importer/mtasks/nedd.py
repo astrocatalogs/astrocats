@@ -49,20 +49,19 @@ def do_nedd(catalog):
             if dist:
                 nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
         if snname and 'HOST' not in snname:
-            events, snname, secondarysource = Events.new_event(
-                tasks, args, events, snname, log,
+            snname, secondarysource = Events.new_event(snname,
                 srcname=reference, url=refurl, secondary=True)
             if bibcode:
-                source = events[snname].add_source(bibcode=bibcode)
+                source = catalog.events[snname].add_source(bibcode=bibcode)
                 sources = uniq_cdl([source, secondarysource])
             else:
                 sources = secondarysource
             if name == snname:
                 if redshift:
-                    events[snname].add_quantity(
+                    catalog.events[snname].add_quantity(
                         'redshift', redshift, sources)
                 if dist:
-                    events[snname].add_quantity(
+                    catalog.events[snname].add_quantity(
                         'comovingdist', dist, sources)
                     if not redshift:
                         try:
@@ -79,13 +78,12 @@ def do_nedd(catalog):
                                 bibcode='2015arXiv150201589P')
                             combsources = uniq_cdl(sources.split(',') +
                                                    [cosmosource])
-                            events[snname].add_quantity('redshift', redshift,
+                            catalog.events[snname].add_quantity('redshift', redshift,
                                                         combsources)
             if cleanhost:
-                events[snname].add_quantity('host', cleanhost, sources)
-            if args.update and olddistname != distname:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.events[snname].add_quantity('host', cleanhost, sources)
+            if catalog.args.update and olddistname != distname:
+                catalog.journal_events()
         olddistname = distname
     catalog.journal_events()
 

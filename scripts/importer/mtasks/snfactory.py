@@ -9,7 +9,6 @@ from astropy.time import Time as astrotime
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import pretty_num
 from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
@@ -19,7 +18,7 @@ def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
-            events, name, source = Events.new_event(tasks, args, events, row[0], log,
+            events, name, source = catalog.new_event(row[0],
                                                     bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                                     url=OSC_URL, secondary=True)
             catalog.events[name].add_quantity('alias', row[1], source)
@@ -37,10 +36,9 @@ def do_snf_specta(catalog):
         PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
     for eventfolder in eventfolders:
         name = eventfolder
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         sec_reference = 'Nearby Supernova Factory'
@@ -115,12 +113,12 @@ def do_snf_specta(catalog):
             unit_err = 'Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'
             unit_flx = 'erg/s/cm^2/Angstrom'
             add_spectrum(
-                events, name, 'Angstrom', unit_flx, u_time='MJD', time=time,
+                catalog.events, name, 'Angstrom', unit_flx, u_time='MJD', time=time,
                 wavelengths=wavelengths, fluxes=fluxes, errors=errors, observer=observer,
                 observatory=observatory, telescope=telescope, instrument=instrument,
                 errorunit=unit_err, source=sources, filename=filename)
             snfcnt = snfcnt + 1
-            if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
+            if catalog.args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
     catalog.journal_events()

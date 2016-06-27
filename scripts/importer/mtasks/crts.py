@@ -17,10 +17,10 @@ from ..funcs import add_photometry, load_cached_url
 
 def do_crts(catalog):
     crtsnameerrors = ['2011ax']
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
-        html = load_cached_url(args, current_task,
+        html = load_cached_url(catalog.args, current_task,
                                'http://nesssi.cacr.caltech.edu/' + fold +
                                '/AllSN.html',
                                os.path.join(PATH.REPO_EXTERNAL, 'CRTS', fold +
@@ -108,7 +108,7 @@ def do_crts(catalog):
                 # 1.0 magnitude error based on Drake 2009 assertion that SN are
                 # only considered
                 #    real if they are 2 mags brighter than host.
-                add_photometry(events, name, band='C', magnitude=hostmag,
+                add_photometry(catalog.events, name, band='C', magnitude=hostmag,
                                e_magnitude=1.0, source=source,
                                host=True, telescope='Catalina Schmidt',
                                upperlimit=hostupper)
@@ -116,7 +116,7 @@ def do_crts(catalog):
             fname2 = (PATH.REPO_EXTERNAL + '/' + fold + '/' +
                       lclink.split('.')[-2].rstrip('p').split('/')[-1] +
                       '.html')
-            if task_obj.load_archive(args) and os.path.isfile(fname2):
+            if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname2):
                 with open(fname2, 'r') as ff:
                     html2 = ff.read()
             else:
@@ -142,15 +142,14 @@ def do_crts(catalog):
                     err = re.search("showz\('(.*?)'\)", line).group(1)
                 e_mag = err if float(err) > 0.0 else ''
                 upl = (float(err) == 0.0)
-                add_photometry(events, name, time=mjd, band='C', magnitude=mag,
+                add_photometry(catalog.events, name, time=mjd, band='C', magnitude=mag,
                                source=source,
                                includeshost=True, telescope=teles,
                                e_magnitude=e_mag, upperlimit=upl)
-            if args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+            if catalog.args.update:
+                catalog.journal_events()
 
-        if args.travis and tri > TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and tri > TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_events()

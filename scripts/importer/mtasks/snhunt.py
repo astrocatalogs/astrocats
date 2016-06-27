@@ -7,14 +7,13 @@ from bs4 import BeautifulSoup
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import load_cached_url
 
 
 def do_snhunt(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
-    html = load_cached_url(args, current_task, snh_url, os.path.join(
+    html = load_cached_url(catalog.args, current_task, snh_url, os.path.join(
         PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
     if not html:
         return
@@ -56,9 +55,8 @@ def do_snhunt(catalog):
         for discoverer in discoverers:
             catalog.events[name].add_quantity('discoverer', 'CRTS', source)
             catalog.events[name].add_quantity('discoverer', discoverer, source)
-        if args.update:
-            events = Events.journal_events(
-                tasks, args, events, log)
+        if catalog.args.update:
+            catalog.journal_events()
 
     catalog.journal_events()
     return

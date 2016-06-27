@@ -6,11 +6,9 @@ import os
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
-
 
 def do_scp(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     tsvin = list(csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'),
                                  'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
@@ -18,7 +16,7 @@ def do_scp(catalog):
             continue
         name = row[0].replace('SCP', 'SCP-')
         name = catalog.add_event(name)
-        source = (events[name]
+        source = (catalog.events[name]
                   .add_source(srcname='Supernova Cosmology Project',
                               url=('http://supernova.lbl.gov/'
                                    '2009ClusterSurvey/')))

@@ -7,7 +7,6 @@ from glob import glob
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import pbar_strings
 from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import (add_photometry, add_spectrum, clean_snname,
@@ -18,7 +17,7 @@ def do_csp_photo(catalog):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     for fname in pbar_strings(file_names, desc=current_task):
         tsvin = csv.reader(open(fname, 'r'), delimiter='\t',
                            skipinitialspace=True)
@@ -54,7 +53,7 @@ def do_csp_photo(catalog):
                 elif v % 2 != 0:
                     if float(row[v]) < 90.0:
                         add_photometry(
-                            events, name, time=mjd, observatory='LCO',
+                            catalog.events, name, time=mjd, observatory='LCO',
                             band=cspbands[(v - 1) // 2],
                             system='CSP', magnitude=row[v],
                             e_magnitude=row[v + 1], source=source)
@@ -65,7 +64,7 @@ def do_csp_photo(catalog):
 
 def do_csp_spectra(catalog):
     oldname = ''
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
     for fi, fname in enumerate(pbar_strings(file_names,
                                             current_task=current_task)):
@@ -76,10 +75,9 @@ def do_csp_spectra(catalog):
         sfile = sfile[0]
         fileparts = sfile.split('_')
         name = 'SN20' + fileparts[0][2:]
-        name = get_preferred_name(events, name)
+        name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         telescope = fileparts[-2]
@@ -104,11 +102,11 @@ def do_csp_spectra(catalog):
         fluxes = specdata[1]
 
         add_spectrum(
-            events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
+            catalog.events, name, 'Angstrom', 'erg/s/cm^2/Angstrom', u_time='MJD',
             time=time, wavelengths=wavelengths, fluxes=fluxes,
             telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)
-        if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_events()

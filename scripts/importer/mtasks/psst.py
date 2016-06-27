@@ -8,12 +8,11 @@ from astropy.time import Time as astrotime
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import make_date_string
 
 
 def do_psst(catalog):
-    current_task = task_obj.current_task(args)
+    current_task = catalog.current_task
     # 2016arXiv160204156S
     file_path = os.path.join(
         PATH.REPO_EXTERNAL, '2016arXiv160204156S-tab1.tsv')
@@ -23,9 +22,9 @@ def do_psst(catalog):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, row[0], log,
+             source) = catalog.new_event(row[0],
                                         bibcode='2016arXiv160204156S')
             catalog.events[name].add_quantity(
                 'claimedtype', row[3].replace('SN', '').strip('() '), source)
@@ -40,9 +39,9 @@ def do_psst(catalog):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, row[0], log,
+             source) = catalog.new_event(row[0],
                                         bibcode='2016arXiv160204156S')
             catalog.events[name].add_quantity('ra', row[1], source)
             catalog.events[name].add_quantity('dec', row[2], source)
@@ -60,9 +59,9 @@ def do_psst(catalog):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            (events,
+            (catalog.events,
              name,
-             source) = Events.new_event(tasks, args, events, row[0], log,
+             source) = catalog.new_event(row[0],
                                         srcname='Smartt et al. 2016',
                                         url='http://arxiv.org/abs/1606.04795')
             catalog.events[name].add_quantity('ra', row[1], source)
