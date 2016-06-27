@@ -134,13 +134,6 @@ def import_main(catalog=None):
 
     log = catalog.log
 
-    # # If this is called as an API function, overwrite variables in `args` with
-    # # those passed to the function as keyword arguments.
-    # for key, val in kwargs.items():
-    #     log.debug("Overriding `args` '{}' = '{}'".format(key, val))
-    #     setattr(args, key, val)
-    # log.debug("`args` : " + str(vars(args)))
-
     tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
     warnings.filterwarnings(
@@ -164,15 +157,18 @@ def import_main(catalog=None):
             raise RuntimeError(("Priority for '{}': '{}', less than prev,"
                                 "'{}': '{}'.\n{}").format(
                 task_name, priority, prev_task_name, prev_priority, task_obj))
+
         log.debug("\t{}, {}, {}, {}".format(
             nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
-        # events = getattr(mod, func_name)(events, args, tasks, task_obj)
-        events = getattr(mod, func_name)(events, args, tasks, task_obj, log)
-        num_events, num_stubs = Events.count(events)
+        catalog.current_task = task_obj.current_task(args)
+        getattr(mod, func_name)(catalog)
+
+        num_events, num_stubs = catalog.count()
         log.warning("Task finished.  Events: {},  Stubs: {}".format(
             num_events, num_stubs))
-        events = Events.journal_events(tasks, args, events, log)
+        catalog.journal_events()
+        num_events, num_stubs = catalog.count()
         log.warning("Journal finished.  Events: {}, Stubs: {}".format(
             num_events, num_stubs))
 
