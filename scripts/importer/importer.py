@@ -215,8 +215,8 @@ def import_main(args=None, **kwargs):
 
 
 def delete_old_event_files(events, args, tasks, task_obj, log):
-    if len(events) or len(stubs):
-        err_str = "`delete_old_event_files` with `events` and `stubs` not empty!"
+    if len(events):
+        err_str = "`delete_old_event_files` with `events` not empty!"
         log.error(err_str)
         raise RuntimeError(err_str)
     # Delete all old event JSON files
