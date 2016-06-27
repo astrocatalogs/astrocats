@@ -30,7 +30,7 @@ def do_cccp(catalog):
                     continue
                 elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
-                    name = Events.add_event(name)
+                    name = catalog.add_event(name)
                     source = catalog.events[name].add_source(
                         bibcode='2012ApJ...744...10K')
                     catalog.events[name].add_quantity('alias', name, source)
