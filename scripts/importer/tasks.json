@@ -399,12 +399,4 @@
         "function": "set_preferred_names",
         "priority": -10
     },
-    "writeevents": {
-        "nice_name": "Writing events",
-        "active": true,
-        "update": true,
-        "module": "importer.Events",
-        "function": "write_all_events",
-        "priority": -1
-    }
 }
