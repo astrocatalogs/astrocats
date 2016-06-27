@@ -124,7 +124,7 @@ def import_main(args=None, **kwargs):
     """
     log = get_logger()
 
-    catalog = Catalog()
+    catalog = Catalog(log)
 
     # If this is called from `scripts.main`, then `args` will contain
     # parameters. If this is being called as an API function, we need to load
