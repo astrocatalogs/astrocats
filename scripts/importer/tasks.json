@@ -134,7 +134,7 @@
         "nice_name": "%pre ITEP",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.itep",
         "function": "do_itep",
         "priority": 14
     },
