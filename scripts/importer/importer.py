@@ -10,108 +10,9 @@ from collections import OrderedDict
 
 from scripts import FILENAME
 
-from . import Events
 from ..utils import pbar, repo_file_list
 from .constants import TASK, TRAVIS_QUERY_LIMIT
-from .funcs import derive_and_sanitize, has_task
-
-
-def get_old_tasks():
-    tasks = OrderedDict([
-        ('deleteoldevents',  {'nicename': 'Deleting old events',
-                              'update': False}),
-        ('internal',         {'nicename': '%pre metadata and photometry',
-                              'update': False}),
-        ('radio',            {'nicename': '%pre radio data',
-                              'update': False}),
-        ('xray',             {'nicename': '%pre X-ray data',
-                              'update': False}),
-        ('simbad',           {'nicename': '%pre SIMBAD',
-                              'update': False}),
-        ('vizier',           {'nicename': '%pre VizieR',
-                              'update': False}),
-        ('donations',        {'nicename': '%pre donations',
-                              'update': False}),
-        ('pessto-dr1',       {'nicename': '%pre PESSTO DR1',
-                              'update': False}),
-        ('scp',              {'nicename': '%pre SCP',
-                              'update': False}),
-        ('ascii',            {'nicename': '%pre ASCII',
-                              'update': False}),
-        ('cccp',             {'nicename': '%pre CCCP',
-                              'update': False, 'archived': True}),
-        ('suspect_photo',    {'nicename': '%pre SUSPECT',
-                              'update': False}),
-        ('cfa_photo',        {'nicename': '%pre CfA archive photometry',
-                              'update': False}),
-        ('ucb_photo',        {'nicename': '%pre UCB photometry',
-                              'update': False, 'archived': True}),
-        ('sdss',             {'nicename': '%pre SDSS photometry',
-                              'update': False}),
-        ('csp_photo',        {'nicename': '%pre CSP photometry',
-                              'update': False}),
-        ('itep',             {'nicename': '%pre ITEP',
-                              'update': False}),
-        ('asiago_photo',     {'nicename': '%pre Asiago metadata',
-                              'update': False}),
-        ('tns',              {'nicename': '%pre TNS metadata',
-                              'update': True,  'archived': True}),
-        # ('rochester',       {'nicename': '%pre Latest Supernovae',
-        #                      'update': True,  'archived': False}),
-        ('lennarz',          {'nicename': '%pre Lennarz',
-                              'update': False}),
-        ('fermi',            {'nicename': '%pre Fermi',
-                              'update': False}),
-        ('gaia',             {'nicename': '%pre GAIA',
-                              'update': True,  'archived': False}),
-        ('ogle',             {'nicename': '%pre OGLE',
-                              'update': True,  'archived': False}),
-        ('snls',             {'nicename': '%pre SNLS',
-                              'update': False}),
-        ('psthreepi',        {'nicename': '%pre Pan-STARRS 3π',
-                              'update': True, 'archived': False}),
-        ('psmds',            {'nicename': '%pre Pan-STARRS MDS',
-                              'update': False}),
-        ('crts',             {'nicename': '%pre CRTS',
-                              'update': True,  'archived': False}),
-        ('snhunt',           {'nicename': '%pre SNhunt',
-                              'update': True,  'archived': False}),
-        ('nedd',             {'nicename': '%pre NED-D',
-                              'update': False}),
-        ('cpcs',             {'nicename': '%pre CPCS',
-                              'update': True,  'archived': False}),
-        ('ptf',              {'nicename': '%pre PTF',
-                              'update': False, 'archived': False}),
-        ('des',              {'nicename': '%pre DES',
-                              'update': False, 'archived': False}),
-        ('asassn',           {'nicename': '%pre ASASSN',
-                              'update': True}),
-        ('asiago_spectra',   {'nicename': '%pre Asiago spectra',
-                              'update': True}),
-        ('wiserep_spectra',  {'nicename': '%pre WISeREP spectra',
-                              'update': False}),
-        ('cfa_spectra',      {'nicename': '%pre CfA archive spectra',
-                              'update': False}),
-        ('snls_spectra',     {'nicename': '%pre SNLS spectra',
-                              'update': False}),
-        ('csp_spectra',      {'nicename': '%pre CSP spectra',
-                              'update': False}),
-        ('ucb_spectra',      {'nicename': '%pre UCB spectra',
-                              'update': True,  'archived': True}),
-        ('suspect_spectra',  {'nicename': '%pre SUSPECT spectra',
-                              'update': False}),
-        ('snf_spectra',      {'nicename': '%pre SNH spectra',
-                              'update': False}),
-        ('superfit_spectra', {'nicename': '%pre Superfit spectra',
-                              'update': False}),
-        ('mergeduplicates',  {'nicename': 'Merging duplicates',
-                              'update': False}),
-        ('setprefnames',     {'nicename': 'Setting preferred names',
-                              'update': False}),
-        ('writeevents',      {'nicename': 'Writing events',
-                              'update': True})
-    ])
-    return tasks
+from .funcs import derive_and_sanitize
 
 
 def import_main(catalog=None):
@@ -135,11 +36,10 @@ def import_main(catalog=None):
     log = catalog.log
 
     tasks_list = load_task_list(catalog.args, catalog.log)
-    tasks = get_old_tasks()
     warnings.filterwarnings(
         'ignore', r'Warning: converting a masked element to nan.')
 
-    if args.delete_old:
+    if catalog.args.delete_old:
         log.warning("Deleting all old event files.")
         catalog.delete_old_event_files()
 
@@ -185,12 +85,12 @@ def import_main(catalog=None):
     for ii, fi in enumerate(pbar(files, current_task)):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        events, name = Events.add_event(
-            tasks, args, events, name, log)
+        name = catalog.add_event(name)
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             catalog)
-        if has_task(tasks, args, 'writeevents'):
-            events = Events.journal_events(tasks, args, events, log)
+        # FIX: is this check needed here (also in 'journal_events')?
+        if catalog.args.write_events:
+            catalog.journal_events()
         if args.travis and ii > TRAVIS_QUERY_LIMIT:
             break
 
