@@ -227,7 +227,7 @@
         "nice_name": "%pre PSST",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.psst",
         "function": "do_psst",
         "priority": 25
     },
