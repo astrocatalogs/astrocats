@@ -11,7 +11,7 @@ from .. import Events
 from ..funcs import load_cached_url
 
 
-def do_snhunt(events, stubs, args, tasks, task_obj, log):
+def do_snhunt(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url(args, current_task, snh_url, os.path.join(
@@ -57,8 +57,8 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('discoverer', 'CRTS', source)
             events[name].add_quantity('discoverer', discoverer, source)
         if args.update:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

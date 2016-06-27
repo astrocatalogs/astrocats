@@ -17,7 +17,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
-def do_ps_mds(events, stubs, args, tasks, task_obj, log):
+def do_ps_mds(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'MDS/apj506838t1_mrt.txt')) as f:
@@ -36,11 +36,11 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity(
                 'redshift', cols[5], source, kind='spectroscopic')
             events[name].add_quantity('claimedtype', 'II P', source)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
+def do_ps_threepi(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
@@ -252,10 +252,10 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
             if args.update:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
 
-        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+        events = Events.journal_events(tasks, args, events, log)
         # Only run first page for Travis
         if args.travis:
             break

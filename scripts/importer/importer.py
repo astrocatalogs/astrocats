@@ -144,10 +144,6 @@ def import_main(args=None, **kwargs):
     tasks_list = load_task_list(args, log)
     tasks = get_old_tasks()
     events = OrderedDict()
-    # FIX: stubs only need to be loaded for `args.update` ??
-    stubs = OrderedDict()
-    log.error("WARNING: not loading stubs for testing!!!")
-    # stubs = Events.load_stubs(tasks, args, events, log)
     warnings.filterwarnings(
         'ignore', r'Warning: converting a masked element to nan.')
 
@@ -163,6 +159,8 @@ def import_main(args=None, **kwargs):
         mod_name = task_obj.module
         func_name = task_obj.function
         priority = task_obj.priority
+
+        # Make sure things are running in the correct order
         if priority < prev_priority:
             raise RuntimeError(("Priority for '{}': '{}', less than prev,"
                                 "'{}': '{}'.\n{}").format(
@@ -171,20 +169,21 @@ def import_main(args=None, **kwargs):
             nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
         # events = getattr(mod, func_name)(events, args, tasks, task_obj)
-        getattr(mod, func_name)(events, stubs, args, tasks, task_obj, log)
+        events = getattr(mod, func_name)(events, args, tasks, task_obj, log)
+        num_events, num_stubs = Events.count(events)
         log.warning("Task finished.  Events: {},  Stubs: {}".format(
-            len(events), len(stubs)))
-        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            num_events, num_stubs))
+        events = Events.journal_events(tasks, args, events, log)
         log.warning("Journal finished.  Events: {}, Stubs: {}".format(
-            len(events), len(stubs)))
+            num_events, num_stubs))
 
         prev_priority = priority
         prev_task_name = task_name
 
     files = repo_file_list()
 
-    for ii, fi in enumerate(
-            pbar(files, 'Sanitizing and deriving quantities for events')):
+    current_task = 'Sanitizing and deriving quantities for events'
+    for ii, fi in enumerate(pbar(files, current_task)):
         events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         events, name = Events.add_event(
@@ -192,7 +191,7 @@ def import_main(args=None, **kwargs):
         events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
             catalog, tasks, args, events)
         if has_task(tasks, args, 'writeevents'):
-            Events.journal_events(tasks, args, events, stubs, log)
+            events = Events.journal_events(tasks, args, events, log)
         if args.travis and ii > TRAVIS_QUERY_LIMIT:
             break
 
@@ -212,12 +211,16 @@ def import_main(args=None, **kwargs):
     return
 
 
-def delete_old_event_files(*args):
+def delete_old_event_files(events, args, tasks, task_obj, log):
+    if len(events):
+        err_str = "`delete_old_event_files` with `events` not empty!"
+        log.error(err_str)
+        raise RuntimeError(err_str)
     # Delete all old event JSON files
     repo_files = repo_file_list()
     for rfil in pbar(repo_files, desc='Deleting old events'):
         os.remove(rfil)
-    return
+    return events
 
 
 def load_task_list(args, log):

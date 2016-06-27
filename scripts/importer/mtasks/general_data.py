@@ -8,11 +8,11 @@ from scripts import PATH
 from scripts.utils import pbar_strings
 
 from .. import Events
-from ..Events import load_event_from_file
+from ..Events import load_event_from_file, KEYS
 from ..funcs import add_photometry
 
 
-def do_external_radio(events, stubs, args, tasks, task_obj, log):
+def do_external_radio(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
@@ -40,11 +40,11 @@ def do_external_radio(events, stubs, args, tasks, task_obj, log):
                         instrument=cols[5], source=source)
                     events[name].add_quantity('alias', oldname, source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_external_xray(events, stubs, args, tasks, task_obj, log):
+def do_external_xray(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
@@ -68,33 +68,20 @@ def do_external_xray(events, stubs, args, tasks, task_obj, log):
                         upperlimit=(float(cols[5]) < 0), source=source)
                     events[name].add_quantity('alias', oldname, source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_internal(events, stubs, args, tasks, task_obj, log):
+def do_internal(events, args, tasks, task_obj, log):
     """Load events from files in the 'internal' repository, and save them.
     """
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     log.debug("found {} files matching '{}'".format(len(files), path_pattern))
-    log.error("`do_internal` 'update' section is disabled")
     for datafile in pbar_strings(files, desc=current_task):
-        # FIX: do we still need this difference?
-        '''
-        if args.update:
-            if not load_event_from_file(events, args, tasks, path=datafile,
-                                        clean=True, delete=False, append=True):
-                raise IOError('Failed to find specified file.')
-        else:
-            if not load_event_from_file(events, args, tasks, path=datafile,
-                                        clean=True, delete=False):
-                raise IOError('Failed to find specified file.')
-        '''
-        new_event = load_event_from_file(events, args, tasks, log,
-                                         path=datafile,
-                                         clean=True, delete=False)
-        events.update({new_event.name: new_event})
+        new_event = load_event_from_file(
+            events, args, tasks, log, path=datafile, clean=True, delete=False)
+        events.update({new_event[KEYS.NAME]: new_event})
 
     return events

@@ -14,7 +14,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 
 
-def do_ogle(events, stubs, args, tasks, task_obj, log):
+def do_ogle(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']
@@ -150,8 +150,8 @@ def do_ogle(events, stubs, args, tasks, task_obj, log):
                         e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if args.update:
-                    events, stubs = Events.journal_events(
-                        tasks, args, events, stubs, log)
+                    events = Events.journal_events(
+                        tasks, args, events, log)
 
-        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+        events = Events.journal_events(tasks, args, events, log)
     return events

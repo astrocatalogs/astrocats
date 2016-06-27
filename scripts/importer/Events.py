@@ -10,13 +10,13 @@ from cdecimal import Decimal
 from scripts import FILENAME, PATH, SCHEMA
 
 from ..utils import (get_repo_folders, get_repo_paths, get_repo_years,
-                     get_sig_digits, is_number, pbar, repo_file_list, tprint)
+                     get_sig_digits, is_number, pbar, repo_file_list)
 from .constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, OSC_BIBCODE,
                         OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY,
                         TRAVIS_QUERY_LIMIT)
-from .funcs import (copy_to_event, get_atels_dict, get_cbets_dict,
+from .funcs import (event_attr_priority, get_atels_dict, get_cbets_dict,
                     get_iaucs_dict, host_clean, jd_to_mjd, name_clean,
-                    radec_clean)
+                    null_field, radec_clean, uniq_cdl)
 
 
 class KEYS:
@@ -32,7 +32,49 @@ class KEYS:
     URL = 'url'
 
 
-class EVENT(OrderedDict):
+class Entry(OrderedDict):
+
+    # Whether or not this entry is a 'stub'.  Assume False
+    _stub = False
+
+    def __init__(self, name, stub=False):
+        """Create a new `Entry` object with the given `name`.
+        """
+        # if not name:
+        #     raise ValueError("New `Entry` objects must have a valid name!")
+        self[KEYS.NAME] = name
+        self._stub = stub
+        return
+
+    def get_aliases(self, includename=True):
+        """Retrieve the aliases of this object as a list of strings.
+        """
+        # empty list if doesnt exist
+        alias_quanta = self.get(KEYS.ALIAS, [])
+        aliases = [aq['value'] for aq in alias_quanta]
+        if includename and self[KEYS.NAME] not in aliases:
+            aliases = [self[KEYS.NAME]] + aliases
+        return aliases
+
+    def get_stub(self):
+        """Get a new `Entry` which contains the 'stub' of this one.
+
+        The 'stub' is *only* the name and aliases.
+
+        Usage:
+        -----
+        To convert a normal event into a stub (for example), overwrite the event
+        in place, i.e.
+        >>> events[name] = events[name].get_stub()
+
+        """
+        stub = EVENT(self[KEYS.NAME], stub=True)
+        if KEYS.ALIAS in self.keys():
+            stub[KEYS.ALIAS] = self[KEYS.ALIAS]
+        return stub
+
+
+class EVENT(Entry):
     """
     NOTE: OrderedDict data is just the `name` values from the JSON file.
           I.e. it does not include the highest nesting level
@@ -41,7 +83,6 @@ class EVENT(OrderedDict):
     FIX: does this need to be `ordered`???
     FIX: check that no stored values are empty/invalid (delete key in that
          case?)
-    FIX: be careful / remove duplicity between EVENT.name and EVENT['name'].
     FIX: distinguish between '.filename' and 'get_filename'
 
     sources
@@ -56,13 +97,12 @@ class EVENT(OrderedDict):
 
     """
 
-    name = ''
     filename = ''
     _source_syns = {}
 
-    def __init__(self, name):
-        self.name = name
-        self[KEYS.NAME] = name
+    def __init__(self, name, stub=False):
+        super().__init__(name, stub=stub)
+
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
         with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
@@ -85,13 +125,14 @@ class EVENT(OrderedDict):
             self.update(data)
         self.filename = fhand
         # If object doesnt have a name yet, but json does, store it
-        if len(self.name) == 0:
-            self.name = name
+        self_name = self[KEYS.NAME]
+        if len(self_name) == 0:
+            self[KEYS.NAME] = name
         # Warn if there is a name mismatch
-        elif self.name.lower().strip() != name.lower().strip():
+        elif self_name.lower().strip() != name.lower().strip():
             warnings.warn(("Object name '{}' does not match name in json:"
                            "'{}'").format(
-                self.name, name))
+                self_name, name))
 
         self.check()
         return
@@ -170,17 +211,17 @@ class EVENT(OrderedDict):
         """
         """
         if not quantity:
-            raise(ValueError(self.name +
+            raise ValueError(self[KEYS.NAME] +
                              "'s quantity must be specified for "
-                             "add_quantity."))
+                             "add_quantity.")
         if not sources:
-            raise(ValueError(self.name + "'s source must be specified for "
+            raise ValueError(self[KEYS.NAME] + "'s source must be specified for "
                              "quantity " +
-                             quantity + ' before it is added.'))
+                             quantity + ' before it is added.')
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise(ValueError(self.name + "'s Quantity " + quantity +
-                             " must be a string or an array of strings."))
+            raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
+                             " must be a string or an array of strings.")
 
         if self.is_erroneous(quantity, sources):
             return None
@@ -196,8 +237,8 @@ class EVENT(OrderedDict):
         if not svalue or svalue == '--' or svalue == '-':
             return
         if serror and (not is_number(serror) or float(serror) < 0):
-            raise(ValueError(self.name + "'s quanta " + quantity +
-                             ' error value must be a number and positive.'))
+            raise ValueError(self[KEYS.NAME] + "'s quanta " + quantity +
+                             ' error value must be a number and positive.')
 
         # Set default units
         if not unit and quantity == 'velocity':
@@ -349,6 +390,81 @@ class EVENT(OrderedDict):
             self.setdefault(quantity, []).append(quanta_entry)
         return
 
+    def is_erroneous(self, field, sources):
+        if hasattr(self, KEYS.ERRORS):
+            my_errors = self['errors']
+            for alias in sources.split(','):
+                source = self.get_source_by_alias(alias)
+                bib_err_values = [err['value'] for err in my_errors
+                                  if err['kind'] == 'bibcode' and
+                                  err['extra'] == field]
+                if 'bibcode' in source and source['bibcode'] in bib_err_values:
+                    return True
+
+                name_err_values = [err['value'] for err in my_errors
+                                   if err['kind'] == 'name' and
+                                   err['extra'] == field]
+                if 'name' in source and source['name'] in name_err_values:
+                    return True
+
+        return False
+
+    def check(self):
+        # Make sure there is a schema key in dict
+        if KEYS.SCHEMA not in self.keys():
+            self[KEYS.SCHEMA] = SCHEMA.URL
+        # Make sure there is a name key in dict
+        if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
+            raise ValueError("Event name is empty:\n\t{}".format(
+                json.dumps(self, indent=2)))
+        return
+
+    def _get_save_path(self, bury=False):
+        filename = get_event_filename(self[KEYS.NAME])
+
+        # Put non-SNe in the boneyard
+        if bury:
+            outdir = str(PATH.REPO_BONEYARD)
+
+        # Get normal repository save directory
+        else:
+            repo_folders = get_repo_folders()
+            outdir = str(PATH.ROOT)
+            if KEYS.DISCOVERY_DATE in self.keys():
+                repo_years = get_repo_years(repo_folders)
+                for r, year in enumerate(repo_years):
+                    if int(self[KEYS.DISCOVERY_DATE][0]['value'].
+                           split('/')[0]) <= year:
+                        outdir = os.path.join(outdir, repo_folders[r])
+                        break
+            else:
+                outdir = os.path.join(outdir, repo_folders[0])
+
+        return outdir, filename
+
+    def save(self, empty=False, bury=False, gz=False):
+        outdir, filename = self._get_save_path(bury=bury)
+
+        # FIX: use 'dump' not 'dumps'
+        jsonstring = json.dumps({self[KEYS.NAME]: self},
+                                indent='\t', separators=(',', ':'),
+                                ensure_ascii=False)
+        if not os.path.isdir(outdir):
+            raise RuntimeError("Output directory '{}' for event '{}' does "
+                               "not exist.".format(outdir, self[KEYS.NAME]))
+        save_name = os.path.join(outdir, filename + '.json')
+        with codecs.open(save_name, 'w', encoding='utf8') as sf:
+            sf.write(jsonstring)
+
+        return save_name
+
+    def get_source_by_alias(self, alias):
+        for source in self.get(KEYS.SOURCES, []):
+            if source['alias'] == alias:
+                return source
+        raise ValueError(
+            "Source '{}': alias '{}' not found!".format(self[KEYS.NAME], alias))
+
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
         if not srcname:
@@ -398,100 +514,6 @@ class EVENT(OrderedDict):
 
         return srcname, bibcode
 
-    def is_erroneous(self, field, sources):
-        if hasattr(self, KEYS.ERRORS):
-            my_errors = self['errors']
-            for alias in sources.split(','):
-                source = self.get_source_by_alias(alias)
-                bib_err_values = [err['value'] for err in my_errors
-                                  if err['kind'] == 'bibcode' and
-                                  err['extra'] == field]
-                if 'bibcode' in source and source['bibcode'] in bib_err_values:
-                    return True
-
-                name_err_values = [err['value'] for err in my_errors
-                                   if err['kind'] == 'name' and
-                                   err['extra'] == field]
-                if 'name' in source and source['name'] in name_err_values:
-                    return True
-
-        return False
-
-    def get_aliases(self, includename=True):
-        # empty list if doesnt exist
-        aliases = [x['value'] for x in self.get(KEYS.ALIAS, [])]
-        if includename and self.name not in aliases:
-            aliases = [self.name] + aliases
-        return aliases
-
-    def get_source_by_alias(self, alias):
-        for source in self.get(KEYS.SOURCES, []):
-            if source['alias'] == alias:
-                return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(self.name, alias))
-
-    def check(self):
-        # Make sure there is a schema key in dict
-        if KEYS.SCHEMA not in self.keys():
-            self[KEYS.SCHEMA] = SCHEMA.URL
-        # Make sure there is a name key in dict
-        if KEYS.NAME not in self.keys():
-            self[KEYS.NAME] = self.name
-            if len(self[KEYS.NAME]) == 0:
-                raise ValueError("Event name is empty:\n\t{}".format(
-                    json.dumps(self, indent=2)))
-        # Make sure there is a name attribute in object
-        if len(self.name) == '' and len(self[KEYS.NAME]) > 0:
-            self.name = str(self[KEYS.NAME])
-
-        return
-
-    def _get_save_path(self, bury=False):
-        filename = get_event_filename(self.name)
-
-        # Put non-SNe in the boneyard
-        if bury:
-            outdir = str(PATH.REPO_BONEYARD)
-
-        # Get normal repository save directory
-        else:
-            repo_folders = get_repo_folders()
-            outdir = str(PATH.ROOT)
-            if KEYS.DISCOVERY_DATE in self.keys():
-                repo_years = get_repo_years(repo_folders)
-                for r, year in enumerate(repo_years):
-                    if int(self[KEYS.DISCOVERY_DATE][0]['value'].
-                           split('/')[0]) <= year:
-                        outdir = os.path.join(outdir, repo_folders[r])
-                        break
-            else:
-                outdir = os.path.join(outdir, repo_folders[0])
-
-        return outdir, filename
-
-    def save(self, empty=False, bury=False, gz=False):
-        outdir, filename = self._get_save_path(bury=bury)
-
-        # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self.name: self},
-                                indent='\t', separators=(',', ':'),
-                                ensure_ascii=False)
-        if not os.path.isdir(outdir):
-            raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir, self.name))
-        save_name = os.path.join(outdir, filename + '.json')
-        with codecs.open(save_name, 'w', encoding='utf8') as sf:
-            sf.write(jsonstring)
-
-        return save_name
-
-    def get_stub(self):
-        stub = OrderedDict({KEYS.NAME: self[KEYS.NAME]})
-        if KEYS.ALIAS in self.keys():
-            stub[KEYS.ALIAS] = self[KEYS.ALIAS]
-        return stub
-
 
 def add_event(tasks, args, events, name, log, load=True, delete=True):
     """Find an existing event in, or add a new one to, the `events` dict.
@@ -514,7 +536,7 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
             format(newname, name))
         return events, newname
 
-    # If event is alias of another event, find and return that
+    # If event is alias of another event *in `events`*, find and return that
     match_name = find_event_name_of_alias(events, newname)
     if match_name is not None:
         log.debug("`newname`: '{}' (name: '{}') already exist as alias for "
@@ -539,6 +561,77 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     events[newname] = new_event
 
     return events, newname
+
+
+def copy_to_event(events, fromname, destname, log):
+    """
+
+    Used by `merge_duplicates`
+    """
+    log.debug("Events.copy_to_event()")
+    log.info("Copy '{}' to '{}'".format(fromname, destname))
+    newsourcealiases = {}
+    keys = list(sorted(events[fromname].keys(), key=lambda xx: event_attr_priority(xx)))
+
+    if 'sources' in events[fromname]:
+        for source in events[fromname]['sources']:
+            newsourcealiases[source['alias']] = events[destname].add_source(
+                bibcode=source['bibcode'] if 'bibcode' in source else '',
+                srcname=source['name'] if 'name' in source else '',
+                reference=source['reference'] if 'reference' in source else '',
+                url=source['url'] if 'url' in source else '')
+
+    if 'errors' in events[fromname]:
+        for err in events[fromname]['errors']:
+            events[destname].setdefault('errors', []).append(err)
+
+    for key in keys:
+        if key not in ['schema', 'name', 'sources', 'errors']:
+            for item in events[fromname][key]:
+                # isd = False
+                sources = []
+                if 'source' not in item:
+                    ValueError("Item has no source!")
+                for sid in item['source'].split(','):
+                    if sid == 'D':
+                        sources.append('D')
+                    elif sid in newsourcealiases:
+                        sources.append(newsourcealiases[sid])
+                    else:
+                        ValueError("Couldn't find source alias!")
+                sources = uniq_cdl(sources)
+
+                if key == 'photometry':
+                    add_photometry(
+                        events, destname, u_time=null_field(item, "u_time"), time=null_field(item, "time"),
+                        e_time=null_field(item, "e_time"), telescope=null_field(item, "telescope"),
+                        instrument=null_field(item, "instrument"), band=null_field(item, "band"),
+                        magnitude=null_field(item, "magnitude"), e_magnitude=null_field(item, "e_magnitude"),
+                        source=sources, upperlimit=null_field(item, "upperlimit"), system=null_field(item, "system"),
+                        observatory=null_field(item, "observatory"), observer=null_field(item, "observer"),
+                        host=null_field(item, "host"), survey=null_field(item, "survey"))
+                elif key == 'spectra':
+                    add_spectrum(
+                        events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"),
+                        data=null_field(item, "data"),
+                        u_time=null_field(item, "u_time"), time=null_field(item, "time"),
+                        instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
+                        dereddened=null_field(item, "dereddened"), errorunit=null_field(item, "errorunit"),
+                        source=sources, snr=null_field(item, "snr"),
+                        telescope=null_field(item, "telescope"), observer=null_field(item, "observer"),
+                        reducer=null_field(item, "reducer"), filename=null_field(item, "filename"),
+                        observatory=null_field(item, "observatory"))
+                elif key == 'errors':
+                    events[destname].add_quantity(
+                        key, item['value'], sources,
+                        kind=null_field(item, "kind"), extra=null_field(item, "extra"))
+                else:
+                    events[destname].add_quantity(
+                        key, item['value'], sources, error=null_field(item, "error"),
+                        unit = null_field(item, "unit"), probability=null_field(item, "probability"),
+                        kind=null_field(item, "kind"))
+
+    return events
 
 
 def new_event(tasks, args, events, name, log, load=True, delete=True,
@@ -567,8 +660,8 @@ def find_event_name_of_alias(events, alias):
     for name, event in events.items():
         aliases = event.get_aliases()
         if alias in aliases:
-            if ((KEYS.DISTINCS not in event.keys()) or
-                    (alias not in event[KEYS.DISTINCS])):
+            if ((KEYS.DISTINCTS not in event.keys()) or
+                    (alias not in event[KEYS.DISTINCTS])):
                 return name
 
     return None
@@ -583,7 +676,7 @@ def clean_event(dirty_event):
     """
     bibcodes = []
 
-    # Rebuild the sources
+    # Rebuild the sources if they exist
     try:
         old_sources = dirty_event[KEYS.SOURCES]
         del dirty_event[KEYS.SOURCES]
@@ -669,8 +762,8 @@ def get_event_text(eventfile):
     return filetext
 
 
-def journal_events(tasks, args, events, stubs, log, clear=True, gz=False,
-                   bury=False):
+def journal_events(tasks, args, events, log, clear=True, gz=False,
+                   bury=False, write_stubs=False):
     """Write all events in `events` to files, and clear.  Depending on
     arguments and `tasks`.
 
@@ -679,17 +772,19 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False,
     -   If ``clear == True``, then each element of `events` is deleted, and
         a `stubs` entry is added
     """
+    log.debug("Events.journal_events()")
     # FIX: store this somewhere instead of re-loading each time
     with open(FILENAME.NON_SNE_TYPES, 'r') as f:
         non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
         non_sne_types = [x.upper() for x in non_sne_types]
 
     # Write it all out!
-    # NOTE: this needs to use a `list` wrapper to allow modification of
-    # dictionary
+    # NOTE: this needs to use a `list` wrapper to allow modification of dict
     for name in list(events.keys()):
         if 'writeevents' in tasks:
-            # See if this event should be buried
+            # If this is a stub and we aren't writing stubs, skip
+            if events[name]._stub and not write_stubs:
+                continue
 
             # Bury non-SN events here if only claimed type is non-SN type,
             # or if primary name starts with a non-SN prefix.
@@ -730,13 +825,10 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False,
                               '.json.gz; cd ' + '../scripts')
 
         if clear:
-            # Store stub of this object
-            stubs.update({name: events[name].get_stub()})
-            # Delete object
-            del events[name]
-            log.debug("Added stub for {}, deleted event.".format(name))
+            events[name] = events[name].get_stub()
+            log.debug("Entry for '{}' converted to stub".format(name))
 
-    return events, stubs
+    return events
 
 
 def load_event_from_file(events, args, tasks, log, name='', path='',
@@ -801,95 +893,95 @@ def load_event_from_file(events, args, tasks, log, name='', path='',
 
 
 def load_stubs(tasks, args, events, log):
-    """Load a 'stub' dictionary for all repository files.
-
-    'stubs' only contain an event's name and aliases for cross-referencing.
-
-    Returns
-    -------
-    stubs : OrderedDict,
-        Dictionary of (name: stub), pairs where the stub contains the
-        `KEYS.NAME` and `KEYS.ALIAS` parameters only.
-
+    """
     """
     currenttask = 'Loading event stubs'
     files = repo_file_list()
-    stubs = OrderedDict()
     for fi in pbar(files, currenttask):
         fname = fi
+        # FIX: should this be ``fi.endswith(``.gz')`` ?
         if '.gz' in fi:
             fname = _uncompress_gz(fi)
-        name = os.path.basename(os.path.splitext(fname)[
-                                0]).replace('.json', '')
+        name = os.path.basename(
+            os.path.splitext(fname)[0]).replace('.json', '')
         new_event = load_event_from_file(
             events, args, tasks, log, path=fname, delete=False)
-        stubs[name] = new_event.get_stub()
+        # Make sure a non-stub event doesnt already exist with this name
+        if name in events and not events[name]._stub:
+            err_str = ("ERROR: non-stub event already exists with name '{}'"
+                       "".format(name))
+            log.error(err_str)
+            raise RuntimeError(err_str)
+        events[name] = new_event.get_stub()
         log.debug("Added stub for '{}'".format(name))
 
-    return stubs
+    return events
 
 
-def merge_duplicates(events, stubs, args, tasks, task_obj, log):
-    """Merge and remove duplicate events
+def merge_duplicates(events, args, tasks, task_obj, log):
+    """Merge and remove duplicate events.
+
+    Compares each entry ('name') in `stubs` to all later entries to check for
+    duplicates in name or alias.  If a duplicate is found, they are merged and
+    written to file.
     """
+    log.debug("Events.merge_duplicates()")
     if len(events) == 0:
+        log.error("WARNING: `events` is empty, loading stubs")
         if args.update:
-            import sys
-            tprint('No sources changed, event files unchanged in update.')
-            sys.exit(1)
-
-        load_stubs(tasks, args, events)
+            log.warning("No sources changed, event files unchanged in update."
+                        "  Skipping merge.")
+            return events
+        events = load_stubs(tasks, args, events, log)
 
     currenttask = 'Merging duplicate events'
-    keys = list(sorted(list(events.keys())))
-    for n1, name1 in enumerate(pbar(keys[:], currenttask)):
-        if name1 not in events:
-            continue
-        at_name = [
-            'AT' + name1[2:]] if (name1.startswith('SN') and
-                                  is_number(name1[2:6])) else []
-        allnames1 = set(events[name1].get_aliases(name1) + at_name)
+
+    keys = list(sorted(events.keys()))
+    for n1, name1 in enumerate(pbar(keys, currenttask)):
+        allnames1 = set(events[name1].get_aliases())
+        if name1.startswith('SN') and is_number(name1[2:6]):
+            allnames1 = allnames1.union(['AT' + name1[2:]])
 
         # Search all later names
-        # FIX: also include all stubs?
-        for name2 in keys[n1 + 1:]:
-            if name2 not in events or name1 == name2:
-                continue
-            at_name = [
-                'AT' + name2[2:]] if (name2.startswith('SN') and
-                                      is_number(name2[2:6])) else []
-            allnames2 = set(events[name2].get_aliases(name2) + at_name)
+        for name2 in keys[n1+1:]:
+            allnames2 = set(events[name2].get_aliases())
+            if name2.startswith('SN') and is_number(name2[2:6]):
+                allnames2.union(['AT' + name2[2:]])
+
             # If there are any common names or aliases, merge
             if len(allnames1 & allnames2):
-                log.warning(("Found single event with multiple entries"
-                             " ('{}' and '{}'), merging."
-                             "").format(name1, name2))
+                log.warning("Found single event with multiple entries "
+                            "('{}' and '{}'), merging.".format(name1, name2))
 
                 load1 = load_event_from_file(
-                    events, args, tasks, name1, delete=True)
+                    events, args, tasks, log, name1, delete=True)
                 load2 = load_event_from_file(
-                    events, args, tasks, name2, delete=True)
-                if load1 and load2:
+                    events, args, tasks, log, name2, delete=True)
+                if load1 is not None and load2 is not None:
                     priority1 = 0
                     priority2 = 0
-                    for an in list(allnames1):
-                        if len(an) >= 2 and an.startswith(('SN', 'AT')):
-                            priority1 = priority1 + 1
-                    for an in list(allnames2):
-                        if len(an) >= 2 and an.startswith(('SN', 'AT')):
-                            priority2 = priority2 + 1
+                    for an in allnames1:
+                        if an.startswith(('SN', 'AT')):
+                            priority1 += 1
+                    for an in allnames2:
+                        if an.startswith(('SN', 'AT')):
+                            priority2 += 1
 
                     if priority1 > priority2:
-                        copy_to_event(events, name2, name1)
+                        copy_to_event(events, name2, name1, log)
                         keys.append(name1)
                         del events[name2]
                     else:
-                        copy_to_event(events, name1, name2)
+                        copy_to_event(events, name1, name2, log)
                         keys.append(name2)
                         del events[name1]
                 else:
                     log.warning('Duplicate already deleted')
-                journal_events(tasks, args, events, stubs, log)
+
+                if len(events) != 1:
+                    log.error("WARNING: len(events) = {}, expected 1.  "
+                              "Still journaling...".format(len(events)))
+                events = journal_events(tasks, args, events, log)
 
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
@@ -897,7 +989,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     return events
 
 
-def set_preferred_names(events, stubs, args, tasks, task_obj, log):
+def set_preferred_names(events, args, tasks, task_obj, log):
     """Choose between each events given name and its possible aliases for
     the best one.
 
@@ -906,29 +998,29 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
 
     FIX: create function to match SN####AA type names.
     """
-    currenttask = 'Setting preferred names'
-    if not len(events):
-        load_stubs(tasks, args, events)
+    log.debug("Events.set_preferred_names()")
 
-    for ni, name in pbar(list(sorted(list(events.keys()))), currenttask):
-        if name not in events:
-            continue
+    if len(events) == 0:
+        log.error("WARNING: `events` is empty, loading stubs")
+        events = load_stubs(tasks, args, events, log)
+
+    currenttask = 'Setting preferred names'
+    for ni, name in pbar(list(sorted(events.keys())), currenttask):
         newname = ''
         aliases = events[name].get_aliases()
+        # if there are no other options to choose from, skip
         if len(aliases) <= 1:
             continue
         # If the name is already in the form 'SN####AA' then keep using that
-        if (name.startswith('SN') and ((is_number(name[2:6]) and not
-                                        is_number(name[6:])) or
-                                       (is_number(name[2:5]) and not
-                                        is_number(name[5:])))):
+        if (name.startswith('SN') and
+            ((is_number(name[2:6]) and not is_number(name[6:])) or
+             (is_number(name[2:5]) and not is_number(name[5:])))):
             continue
         # If one of the aliases is in the form 'SN####AA' then use that
         for alias in aliases:
-            if (alias[:2] == 'SN' and ((is_number(alias[2:6]) and not
-                                        is_number(alias[6:])) or
-                                       (is_number(alias[2:5]) and not
-                                        is_number(alias[5:])))):
+            if (alias[:2] == 'SN' and
+                ((is_number(alias[2:6]) and not is_number(alias[6:])) or
+                 (is_number(alias[2:5]) and not is_number(alias[5:])))):
                 newname = alias
                 break
         # Otherwise, name based on the 'discoverer' survey
@@ -966,27 +1058,47 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
                     if 'GAIA' in alias.upper():
                         newname = alias
                         break
-        if not newname:
-            for alias in aliases:
-                # Always prefer another alias over PSN
-                if name.startswith('PSN'):
-                    newname = alias
-                    break
+        # Always prefer another alias over PSN
+        if not newname and name.startswith('PSN'):
+            newname = aliases[0]
         if newname and name != newname:
             # Make sure new name doesn't already exist
-            if load_event_from_file(events, args, tasks, newname):
+            if load_event_from_file(events, args, tasks, log, newname):
+                log.error("WARNING: `newname` already exists... "
+                          "should do something about that...")
                 continue
-            if load_event_from_file(events, args, tasks, name, delete=True):
-                tprint('Changing event name (' + name +
-                       ') to preferred name (' + newname + ').')
-                events[newname] = events[name]
+
+            new_event = load_event_from_file(
+                events, args, tasks, log, name, delete=True)
+            if new_event is None:
+                log.error("Could not load `new_event` with name '{}'".format(
+                    name))
+            else:
+                log.info("Changing event from name '{}' to preferred name '{}'"
+                         "".format(name, newname))
+                events[newname] = new_event
                 events[newname][KEYS.NAME] = newname
-                del events[name]
-                journal_events(tasks, args, events)
+                if name in events:
+                    log.error("WARNING: `name` = '{}' is in `events`... "
+                              "shouldnt happen?".format(name))
+                    del events[name]
+                events = journal_events(tasks, args, events, log)
+
         if args.travis and ni > TRAVIS_QUERY_LIMIT:
             break
 
     return events
+
+
+def count(events):
+    full = 0
+    stub = 0
+    for ev in events:
+        if events[ev]._stub:
+            stub += 1
+        else:
+            full += 1
+    return full, stub
 
 
 def _compress_gz(fname):

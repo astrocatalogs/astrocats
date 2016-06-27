@@ -13,7 +13,7 @@ from ...utils import is_number, pbar, pbar_strings, rep_chars
 from ..funcs import add_photometry
 
 
-def do_donations(events, stubs, args, tasks, task_obj, log):
+def do_donations(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # Nicholl 04-01-16 donation
     with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -63,7 +63,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                     add_photometry(
                         events, name, time=mjd, band=bands[v], magnitude=mag,
                         e_magnitude=err, upperlimit=upperlimit, source=source)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # Maggi 04-11-16 donation (MC SNRs)
     with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -108,7 +108,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('ra', row[3], source)
             events[name].add_quantity('dec', row[4], source)
             events[name].add_quantity('host', 'SMC', source)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # Galbany 04-18-16 donation
     folders = next(os.walk(os.path.join(
@@ -185,7 +185,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                                 1], e_magnitude=cols[2],
                             band=band, system=cols[3], telescope=cols[4],
                             source=source)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # Brown 05-14-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
@@ -216,7 +216,7 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                                upperlimit=upp, band=band, source=source,
                                telescope='Swift', instrument='UVOT',
                                system='Vega')
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # Nicholl 05-03-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
@@ -256,5 +256,5 @@ def do_donations(events, stubs, args, tasks, task_obj, log):
                                    system='Vega' if
                                    telescope == 'Swift' else 'AB')
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

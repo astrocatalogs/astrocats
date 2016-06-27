@@ -15,7 +15,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_crts(events, stubs, args, tasks, task_obj, log):
+def do_crts(events, args, tasks, task_obj, log):
     crtsnameerrors = ['2011ax']
     current_task = task_obj.current_task(args)
     folders = ['catalina', 'MLS', 'SSS']
@@ -147,11 +147,11 @@ def do_crts(events, stubs, args, tasks, task_obj, log):
                                includeshost=True, telescope=teles,
                                e_magnitude=e_mag, upperlimit=upl)
             if args.update:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
 
         if args.travis and tri > TRAVIS_QUERY_LIMIT:
             break
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

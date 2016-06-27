@@ -14,7 +14,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
                      get_preferred_name, jd_to_mjd)
 
 
-def do_csp_photo(events, stubs, args, tasks, task_obj, log):
+def do_csp_photo(events, args, tasks, task_obj, log):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
@@ -59,11 +59,11 @@ def do_csp_photo(events, stubs, args, tasks, task_obj, log):
                             system='CSP', magnitude=row[v],
                             e_magnitude=row[v + 1], source=source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
+def do_csp_spectra(events, args, tasks, task_obj, log):
     oldname = ''
     current_task = task_obj.current_task(args)
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
@@ -78,8 +78,8 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         name = 'SN20' + fileparts[0][2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         telescope = fileparts[-2]
@@ -111,5 +111,5 @@ def do_csp_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

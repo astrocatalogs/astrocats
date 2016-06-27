@@ -10,7 +10,7 @@ from .. import Events
 from ..funcs import name_clean, uniq_cdl
 
 
-def do_simbad(events, stubs, args, tasks, task_obj, log):
+def do_simbad(events, args, tasks, task_obj, log):
     # Simbad.list_votable_fields()
     # Some coordinates that SIMBAD claims belong to the SNe actually belong to
     # the host.
@@ -87,5 +87,5 @@ def do_simbad(events, stubs, args, tasks, task_obj, log):
                                       .replace('SN.', '')
                                       .replace('SN', '').replace('(~)', '')
                                       .strip(': '), ssources)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_spectrum, event_exists
 
 
-def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
+def do_superfit_spectra(events, args, tasks, task_obj, log):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = task_obj.current_task(args)
@@ -40,8 +40,8 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
                 if 'spectra' in events[prefname] and lastname != prefname:
                     continue
             if oldname and name != oldname:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
             oldname = name
             events, name = Events.add_event(tasks, args, events, name, log)
             epoch = basename.split('.')[1]
@@ -86,5 +86,5 @@ def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
 
             lastname = name
 
-        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+        events = Events.journal_events(tasks, args, events, log)
     return events

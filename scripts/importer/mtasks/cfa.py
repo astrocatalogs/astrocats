@@ -17,7 +17,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
                      get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
-def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
+def do_cfa_photo(events, args, tasks, task_obj, log):
     from html import unescape
     import re
     current_task = task_obj.current_task(args)
@@ -141,11 +141,11 @@ def do_cfa_photo(events, stubs, args, tasks, task_obj, log):
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
+def do_cfa_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # Ia spectra
     oldname = ''
@@ -160,8 +160,8 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SNF' + name[3:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
@@ -207,7 +207,7 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 source=sources, dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # Ibc spectra
     oldname = ''
@@ -220,8 +220,8 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SN' + name[2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
@@ -259,7 +259,7 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
                 dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # Other spectra
     oldname = ''
@@ -272,8 +272,8 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             name = 'SN' + name[2:]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         reference = 'CfA Supernova Archive'
@@ -319,5 +319,5 @@ def do_cfa_spectra(events, stubs, args, tasks, task_obj, log):
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

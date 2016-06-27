@@ -10,12 +10,12 @@ from astropy.cosmology import z_at_value
 from cdecimal import Decimal
 from scripts import PATH
 
-from . import Catalog, Events
-from ..utils import is_number, pbar
-from .funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
+from .. import Events
+from ...utils import is_number, pbar
+from ..funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
 
 
-def do_nedd(events, stubs, args, tasks, task_obj, log):
+def do_nedd(events, args, tasks, task_obj, log):
     current_task = 'NED-D'
     nedd_path = os.path.join(
         PATH.REPO_EXTERNAL, 'NED26.05.1-D-12.1.0-20160501.csv')
@@ -84,10 +84,10 @@ def do_nedd(events, stubs, args, tasks, task_obj, log):
             if cleanhost:
                 events[snname].add_quantity('host', cleanhost, sources)
             if args.update and olddistname != distname:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
         olddistname = distname
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     f.close()
 
