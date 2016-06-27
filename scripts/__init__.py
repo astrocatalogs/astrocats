@@ -31,6 +31,7 @@ class FILENAME:
     IAUCS = os.path.join(PATH.DATA, 'iaucs.json')
     EXTINCT = os.path.join(PATH.DATA, 'extinctions.json')
     BIBAUTHORS = os.path.join(PATH.DATA, 'bibauthors.json')
+    BIBERRORS = os.path.join(PATH.DATA, 'biberrors.json')
     TASK_LIST = os.path.join(PATH.IMPORT, 'tasks.json')
 
 
