@@ -17,6 +17,7 @@ from astropy.cosmology import z_at_value
 from cdecimal import Decimal
 from scripts import FILENAME, PATH
 
+from . import Catalog
 from . import Events
 from ..utils import get_logger, is_number, pbar, repo_file_list
 from .constants import TASK, TRAVIS_QUERY_LIMIT
@@ -132,6 +133,8 @@ def import_main(args=None, **kwargs):
     """
     log = get_logger()
 
+    catalog = Catalog()
+
     # If this is called from `scripts.main`, then `args` will contain
     # parameters. If this is being called as an API function, we need to load
     # default parameters which can then be overwritten below
@@ -222,85 +225,6 @@ def import_main(args=None, **kwargs):
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
         resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))
     return
-
-
-def do_nedd(events, stubs, args, tasks, task_obj, log):
-    current_task = 'NED-D'
-    nedd_path = os.path.join(
-        PATH.REPO_EXTERNAL, 'NED26.05.1-D-12.1.0-20160501.csv')
-
-    f = open(nedd_path, 'r')
-
-    data = sorted(list(csv.reader(f, delimiter=',', quotechar='"'))[
-                  13:], key=lambda x: (x[9], x[3]))
-    reference = "NED-D"
-    refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-    nedddict = OrderedDict()
-    olddistname = ''
-    for r, row in enumerate(pbar(data, current_task)):
-        if r <= 12:
-            continue
-        distname = row[3]
-        name = name_clean(distname)
-        # distmod = row[4]
-        # moderr = row[5]
-        dist = row[6]
-        bibcode = unescape(row[8])
-        snname = name_clean(row[9])
-        redshift = row[10]
-        cleanhost = ''
-        if name != snname and (name + ' HOST' != snname):
-            cleanhost = host_clean(distname)
-            if cleanhost.endswith(' HOST'):
-                cleanhost = ''
-            if not is_number(dist):
-                print(dist)
-            if dist:
-                nedddict.setdefault(cleanhost, []).append(Decimal(dist))
-        if snname and 'HOST' not in snname:
-            events, snname, secondarysource = Events.new_event(
-                tasks, args, events, snname, log,
-                srcname=reference, url=refurl, secondary=True)
-            if bibcode:
-                source = events[snname].add_source(bibcode=bibcode)
-                sources = uniq_cdl([source, secondarysource])
-            else:
-                sources = secondarysource
-            if name == snname:
-                if redshift:
-                    events[snname].add_quantity(
-                        'redshift', redshift, sources)
-                if dist:
-                    events[snname].add_quantity(
-                        'comovingdist', dist, sources)
-                    if not redshift:
-                        try:
-                            zatval = z_at_value(cosmo.comoving_distance,
-                                                float(dist) * un.Mpc, zmax=5.0)
-                            sigd = get_sig_digits(str(dist))
-                            redshift = pretty_num(zatval, sig=sigd)
-                        except (KeyboardInterrupt, SystemExit):
-                            raise
-                        except:
-                            pass
-                        else:
-                            cosmosource = events[name].add_source(
-                                bibcode='2015arXiv150201589P')
-                            combsources = uniq_cdl(sources.split(',') +
-                                                   [cosmosource])
-                            events[snname].add_quantity('redshift', redshift,
-                                                        combsources)
-            if cleanhost:
-                events[snname].add_quantity('host', cleanhost, sources)
-            if args.update and olddistname != distname:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
-        olddistname = distname
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-
-    f.close()
-
-    return events
 
 
 def delete_old_event_files(*args):
