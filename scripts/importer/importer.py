@@ -1,29 +1,20 @@
 #!/usr/local/bin/python3.5
 
 import codecs
-import csv
 import importlib
 import json
 import os
 import resource
 import warnings
 from collections import OrderedDict
-from html import unescape
 
-from astropy import units as un
-from astropy.cosmology import Planck15 as cosmo
-from astropy.cosmology import z_at_value
+from scripts import FILENAME
 
-from cdecimal import Decimal
-from scripts import FILENAME, PATH
-
-from . import Catalog
-from . import Events
-from ..utils import get_logger, is_number, pbar, repo_file_list
+from . import Catalog, Events
+from ..utils import get_logger, pbar, repo_file_list
 from .constants import TASK, TRAVIS_QUERY_LIMIT
 from .funcs import (derive_and_sanitize, get_bibauthor_dict,
-                    get_extinctions_dict, has_task, host_clean, name_clean,
-                    uniq_cdl, get_sig_digits, pretty_num)
+                    get_extinctions_dict, has_task)
 
 
 def get_old_tasks():
