@@ -375,11 +375,11 @@
         "function": "do_snf_specta",
         "priority": 207
     },
-    "superfitspectra": {
+    "superfit_spectra": {
         "nice_name": "%pre Superfit spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.superfit",
         "function": "do1_superfit_spectra",
         "priority": 208
     },
