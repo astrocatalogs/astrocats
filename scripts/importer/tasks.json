@@ -60,7 +60,7 @@
         "nice_name": "%pre PESSTO DR1",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.mtasks.pessto",
         "function": "do_pessto",
         "priority": 5
     },
