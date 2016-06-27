@@ -95,7 +95,7 @@ class Catalog():
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exists.".
                 format(newname, name))
-            return
+            return newname
 
         # If event is alias of another event *in `events`*, find and return that
         match_name = self.find_event_name_of_alias(self.events, newname)
@@ -114,7 +114,7 @@ class Catalog():
                 # Delete source file, if desired
                 if delete:
                     self._delete_event_file(event=loaded_event)
-                return
+                return newname
 
         # Create new event
         new_event = Events.EVENT(newname)
