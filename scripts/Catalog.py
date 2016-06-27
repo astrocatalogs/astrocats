@@ -1,10 +1,11 @@
 import os
 import sys
 from collections import OrderedDict
+import json
 
 from git import Repo
 
-from scripts import PATH, SCHEMA
+from scripts import PATH, SCHEMA, FILENAME
 
 from .utils import logger, pbar
 from .importer.funcs import (get_bibauthor_dict, get_biberror_dict,
@@ -13,8 +14,8 @@ from .importer.funcs import (get_bibauthor_dict, get_biberror_dict,
 from .utils import (is_number, repo_file_list)
 from .importer.constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES,
                                  TRAVIS_QUERY_LIMIT)
-from .importer.funcs import (event_attr_priority, name_clean,
-                             null_field, uniq_cdl)
+from .importer.funcs import (add_photometry, add_spectrum, event_attr_priority,
+                             name_clean, null_field, uniq_cdl)
 from .importer import Events
 from .importer.Events import KEYS, EVENT
 
@@ -182,7 +183,7 @@ class Catalog():
 
                     if key == 'photometry':
                         add_photometry(
-                            events, destname, u_time=null_field(item, "u_time"), time=null_field(item, "time"),
+                            self.events, destname, u_time=null_field(item, "u_time"), time=null_field(item, "time"),
                             e_time=null_field(item, "e_time"), telescope=null_field(item, "telescope"),
                             instrument=null_field(item, "instrument"), band=null_field(item, "band"),
                             magnitude=null_field(item, "magnitude"), e_magnitude=null_field(item, "e_magnitude"),
@@ -191,7 +192,7 @@ class Catalog():
                             host=null_field(item, "host"), survey=null_field(item, "survey"))
                     elif key == 'spectra':
                         add_spectrum(
-                            events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"),
+                            self.events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"),
                             data=null_field(item, "data"),
                             u_time=null_field(item, "u_time"), time=null_field(item, "time"),
                             instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
@@ -216,8 +217,7 @@ class Catalog():
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary='', acknowledgment=''):
         oldname = name
-        events, name = self.add_event(tasks, args, events, name,
-                                      log, load=load, delete=delete)
+        events, name = self.add_event(name, load=load, delete=delete)
         source = events[name].add_source(bibcode=bibcode, srcname=srcname,
                                          reference=reference,
                                          url=url, secondary=secondary,
@@ -276,11 +276,11 @@ class Catalog():
                                 priority2 += 1
 
                         if priority1 > priority2:
-                            copy_to_event(events, name2, name1, log)
+                            self.copy_to_event(name2, name1)
                             keys.append(name1)
                             del events[name2]
                         else:
-                            copy_to_event(events, name1, name2, log)
+                            self.copy_to_event(name1, name2)
                             keys.append(name2)
                             del events[name1]
                     else:
