@@ -34,12 +34,16 @@ class KEYS:
 
 class Entry(OrderedDict):
 
-    def __init__(self, name):
+    # Whether or not this entry is a 'stub'.  Assume False
+    _stub = False
+
+    def __init__(self, name, stub=False):
         """Create a new `Entry` object with the given `name`.
         """
         if not name:
             raise ValueError("New `Entry` objects must have a valid name!")
         self[KEYS.NAME] = name
+        self._stub = stub
         return
 
     def get_aliases(self, includename=True):
@@ -64,7 +68,7 @@ class Entry(OrderedDict):
         >>> events[name] = events[name].get_stub()
 
         """
-        stub = Entry(self[KEYS.NAME])
+        stub = Entry(self[KEYS.NAME], stub=True)
         if KEYS.ALIAS in self.keys():
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
@@ -764,7 +768,7 @@ def get_event_text(eventfile):
     return filetext
 
 
-def journal_events(tasks, args, events, stubs, log, clear=True, gz=False,
+def journal_events(tasks, args, events, log, clear=True, gz=False,
                    bury=False):
     """Write all events in `events` to files, and clear.  Depending on
     arguments and `tasks`.
@@ -837,7 +841,7 @@ def journal_events(tasks, args, events, stubs, log, clear=True, gz=False,
             del events[name]
             log.debug("Stub '{}' for '{}', deleted event.".format(stub_action, name))
 
-    return events, stubs
+    return events
 
 
 def load_event_from_file(events, args, tasks, log, name='', path='',
@@ -930,7 +934,7 @@ def load_stubs(tasks, args, events, log):
     return stubs
 
 
-def merge_duplicates(events, stubs, args, tasks, task_obj, log):
+def merge_duplicates(events, args, tasks, task_obj, log):
     """Merge and remove duplicate events.
 
     Compares each entry ('name') in `stubs` to all later entries to check for duplicates in name
@@ -948,7 +952,7 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
         log.error("WARNING: `stubs` is empty!")
         if args.update:
             log.warning('No sources changed, event files unchanged in update.  Skipping merge.')
-            return events, stubs
+            return events
         stubs = load_stubs(tasks, args, events, log)
 
     currenttask = 'Merging duplicate events'
@@ -993,15 +997,15 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
                 if len(events) != 1:
                     log.error("WARNING: len(events) = {}, expected 1.  Still journaling...".format(
                         len(events)))
-                events, stubs = journal_events(tasks, args, events, stubs, log)
+                events = journal_events(tasks, args, events, log)
 
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
 
-    return events, stubs
+    return events
 
 
-def set_preferred_names(events, stubs, args, tasks, task_obj, log):
+def set_preferred_names(events, args, tasks, task_obj, log):
     """Choose between each events given name and its possible aliases for
     the best one.
 
@@ -1100,12 +1104,23 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
                     log.error("WARNING: `name` = '{}' is in `events`... shouldnt happen?".format(
                         name))
                     del events[name]
-                events, stubs = journal_events(tasks, args, events, stubs, log)
+                events = journal_events(tasks, args, events, log)
 
         if args.travis and ni > TRAVIS_QUERY_LIMIT:
             break
 
-    return events, stubs
+    return events
+
+
+def count(events):
+    full = 0
+    stub = 0
+    for ev in events:
+        if events[ev]._stub:
+            stub += 1
+        else:
+            full += 1
+    return full, stub
 
 
 def _compress_gz(fname):
