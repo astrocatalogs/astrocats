@@ -17,7 +17,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 
 
-def do_ucb_photo(events, args, tasks, task_obj, log):
+def do_ucb_photo(catalog):
     current_task = task_obj.current_task(args)
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
@@ -28,33 +28,33 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events
+        return
 
     photom = json.loads(jsontxt)
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
     for phot in pbar(photom, desc=current_task):
         oldname = phot['ObjName']
-        events, name = Events.add_event(tasks, args, events, oldname, log)
+        name = catalog.add_event(oldname)
 
-        sec_source = events[name].add_source(srcname=sec_ref, url=sec_refurl,
+        sec_source = catalog.events[name].add_source(srcname=sec_ref, url=sec_refurl,
                                              bibcode=sec_refbib,
                                              secondary=True)
-        events[name].add_quantity('alias', oldname, sec_source)
+        catalog.events[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
         if phot['Reference']:
-            sources += [events[name].add_source(bibcode=phot['Reference'])]
+            sources += [catalog.events[name].add_source(bibcode=phot['Reference'])]
         sources = uniq_cdl(sources)
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
             for ct in phot['Type'].strip().split(','):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'claimedtype', ct.replace('-norm', '').strip(), sources)
         if phot['DiscDate']:
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'discoverdate', phot['DiscDate'].replace('-', '/'), sources)
         if phot['HostName']:
             host = urllib.parse.unquote(phot['HostName']).replace('*', '')
-            events[name].add_quantity('host', host, sources)
+            catalog.events[name].add_quantity('host', host, sources)
         filename = phot['Filename'] if phot['Filename'] else ''
 
         if not filename:
@@ -92,11 +92,11 @@ def do_ucb_photo(events, args, tasks, task_obj, log):
                 events, name, time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_ucb_spectra(events, args, tasks, task_obj, log):
+def do_ucb_spectra(catalog):
     current_task = task_obj.current_task(args)
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
@@ -107,7 +107,7 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
         args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events
+        return
 
     spectra = json.loads(jsontxt)
     spectra = sorted(spectra, key=lambda kk: kk['ObjName'])
@@ -118,27 +118,27 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
 
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib,
             secondary=True)
-        events[name].add_quantity('alias', name, sec_source)
+        catalog.events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
-            sources += [events[name].add_source(bibcode=spectrum['Reference'])]
+            sources += [catalog.events[name].add_source(bibcode=spectrum['Reference'])]
         sources = uniq_cdl(sources)
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
             for ct in spectrum['Type'].strip().split(','):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'claimedtype', ct.replace('-norm', '').strip(), sources)
         if spectrum['DiscDate']:
             ddate = spectrum['DiscDate'].replace('-', '/')
-            events[name].add_quantity('discoverdate', ddate, sources)
+            catalog.events[name].add_quantity('discoverdate', ddate, sources)
         if spectrum['HostName']:
             host = urllib.parse.unquote(spectrum['HostName']).replace('*', '')
-            events[name].add_quantity('host', host, sources)
+            catalog.events[name].add_quantity('host', host, sources)
         if spectrum['UT_Date']:
             epoch = str(spectrum['UT_Date'])
             year = epoch[:4]
@@ -207,5 +207,5 @@ def do_ucb_spectra(events, args, tasks, task_obj, log):
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

@@ -22,7 +22,7 @@ from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
                      jd_to_mjd, uniq_cdl)
 
 
-def do_suspect_photo(events, args, tasks, task_obj, log):
+def do_suspect_photo(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'suspectreferences.csv'), 'r') as f:
@@ -36,7 +36,7 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
         oldname = basesplit[1]
-        events, name = Events.add_event(tasks, args, events, oldname, log)
+        name = catalog.add_event(oldname)
         if name.startswith('SN') and is_number(name[2:]):
             name = name + 'A'
         band = basesplit[3].split('.')[0]
@@ -53,34 +53,34 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
                 reference = str(link).replace('"', "'")
 
         bibcode = unescape(suspectrefdict[reference])
-        source = events[name].add_source(bibcode=bibcode)
+        source = catalog.events[name].add_source(bibcode=bibcode)
 
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname=sec_ref, url=sec_refurl, secondary=True)
-        events[name].add_quantity('alias', oldname, sec_source)
+        catalog.events[name].add_quantity('alias', oldname, sec_source)
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
-            events[name].add_quantity('discoverdate', year, sec_source)
-            events[name].add_quantity('host', names[1].split(':')[
+            catalog.events[name].add_quantity('discoverdate', year, sec_source)
+            catalog.events[name].add_quantity('host', names[1].split(':')[
                                       1].strip(), sec_source)
 
             redshifts = bandsoup.body.findAll(text=re.compile('Redshift'))
             if redshifts:
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'redshift', redshifts[0].split(':')[1].strip(),
                     sec_source, kind='heliocentric')
             # hvels = bandsoup.body.findAll(text=re.compile('Heliocentric
             # Velocity'))
             # if hvels:
             #     vel = hvels[0].split(':')[1].strip().split(' ')[0]
-            #     events[name].add_quantity('velocity', vel, sec_source,
+            #     catalog.events[name].add_quantity('velocity', vel, sec_source,
             # kind='heliocentric')
             types = bandsoup.body.findAll(text=re.compile('Type'))
 
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'claimedtype', types[0].split(':')[1].strip().split(' ')[0],
                 sec_source)
 
@@ -103,11 +103,11 @@ def do_suspect_photo(events, args, tasks, task_obj, log):
                            e_magnitude=e_magnitude,
                            source=sec_source + ',' + source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_suspect_spectra(events, args, tasks, task_obj, log):
+def do_suspect_spectra(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                            'Suspect/sources.json'), 'r') as f:
@@ -139,14 +139,14 @@ def do_suspect_spectra(events, args, tasks, task_obj, log):
                 events = Events.journal_events(
                     tasks, args, events, log)
             oldname = name
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
             sec_ref = 'SUSPECT'
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'
-            sec_source = events[name].add_source(
+            sec_source = catalog.events[name].add_source(
                 srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc,
                 secondary=True)
-            events[name].add_quantity('alias', name, sec_source)
+            catalog.events[name].add_quantity('alias', name, sec_source)
             fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                                  'Suspect', folder, eventfolder)
             eventspectra = next(os.walk(fpath))[2]
@@ -162,7 +162,7 @@ def do_suspect_spectra(events, args, tasks, task_obj, log):
                 elif name in sourcedict:
                     bibcode = sourcedict[name]
                 if bibcode:
-                    source = events[name].add_source(bibcode=unescape(bibcode))
+                    source = catalog.events[name].add_source(bibcode=unescape(bibcode))
                     sources += [source]
                 sources = uniq_cdl(sources)
 
@@ -211,5 +211,5 @@ def do_suspect_spectra(events, args, tasks, task_obj, log):
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

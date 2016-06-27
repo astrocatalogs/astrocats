@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_tns(events, args, tasks, task_obj, log):
+def do_tns(catalog):
     from datetime import timedelta
     session = requests.Session()
     current_task = task_obj.current_task(args)
@@ -24,7 +24,7 @@ def do_tns(events, args, tasks, task_obj, log):
     csvtxt = load_cached_url(args, current_task, search_url, os.path.join(
         PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
-        return events
+        return
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
     maxpages = ceil(int(maxid) / 1000.)
 
@@ -62,35 +62,35 @@ def do_tns(events, args, tasks, task_obj, log):
             if row[4] and 'SN' not in row[4]:
                 continue
             name = row[1].replace(' ', '')
-            events, name = Events.add_event(tasks, args, events, name, log)
-            source = events[name].add_source(
+            name = catalog.add_event(name)
+            source = catalog.events[name].add_source(
                 srcname='Transient Name Server', url=tns_url)
-            events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('alias', name, source)
             if row[2] and row[2] != '00:00:00.00':
-                events[name].add_quantity('ra', row[2], source)
+                catalog.events[name].add_quantity('ra', row[2], source)
             if row[3] and row[3] != '+00:00:00.00':
-                events[name].add_quantity('dec', row[3], source)
+                catalog.events[name].add_quantity('dec', row[3], source)
             if row[4]:
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'claimedtype', row[4].replace('SN', '').strip(), source)
             if row[5]:
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'redshift', row[5], source, kind='spectroscopic')
             if row[6]:
-                events[name].add_quantity('host', row[6], source)
+                catalog.events[name].add_quantity('host', row[6], source)
             if row[7]:
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'redshift', row[7], source, kind='host')
             if row[8]:
-                events[name].add_quantity('discoverer', row[8], source)
+                catalog.events[name].add_quantity('discoverer', row[8], source)
             # Currently, all events listing all possible observers. TNS bug?
             # if row[9]:
             #    observers = row[9].split(',')
             #    for observer in observers:
-            #        events[name].add_quantity('observer', observer.strip(),
+            #        catalog.events[name].add_quantity('observer', observer.strip(),
             #                                  source)
             if row[10]:
-                events[name].add_quantity('alias', row[10], source)
+                catalog.events[name].add_quantity('alias', row[10], source)
             if row[8] and row[14] and row[15] and row[16]:
                 survey = row[8]
                 magnitude = row[14]
@@ -110,10 +110,10 @@ def do_tns(events, args, tasks, task_obj, log):
                             ts[1]), seconds=int(ts[2]))
                         date += pretty_num(dt.total_seconds() /
                                            (24 * 60 * 60), sig=6).lstrip('0')
-                    events[name].add_quantity('discoverdate', date, source)
+                    catalog.events[name].add_quantity('discoverdate', date, source)
             if args.update:
                 events = Events.journal_events(
                     tasks, args, events, log)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

@@ -12,12 +12,12 @@ from ..Events import load_event_from_file, KEYS
 from ..funcs import add_photometry
 
 
-def do_external_radio(events, args, tasks, task_obj, log):
+def do_external_radio(catalog):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
-        events, name = Events.add_event(tasks, args, events, oldname, log)
+        name = catalog.add_event(oldname)
         radiosourcedict = OrderedDict()
         with open(datafile, 'r') as ff:
             for li, line in enumerate([xx.strip() for xx in
@@ -38,22 +38,22 @@ def do_external_radio(events, args, tasks, task_obj, log):
                         fluxdensity=cols[3], e_fluxdensity=cols[
                             4], u_fluxdensity='µJy',
                         instrument=cols[5], source=source)
-                    events[name].add_quantity('alias', oldname, source)
+                    catalog.events[name].add_quantity('alias', oldname, source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_external_xray(events, args, tasks, task_obj, log):
+def do_external_xray(catalog):
     current_task = task_obj.current_task(args)
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
-        events, name = Events.add_event(tasks, args, events, oldname, log)
+        name = catalog.add_event(oldname)
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
-                    source = events[name].add_source(bibcode=line.split()[-1])
+                    source = catalog.events[name].add_source(bibcode=line.split()[-1])
                 elif li in [1, 2, 3]:
                     continue
                 else:
@@ -66,13 +66,13 @@ def do_external_xray(events, args, tasks, task_obj, log):
                         photonindex=cols[15], instrument=cols[
                             17], nhmw=cols[11],
                         upperlimit=(float(cols[5]) < 0), source=source)
-                    events[name].add_quantity('alias', oldname, source)
+                    catalog.events[name].add_quantity('alias', oldname, source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_internal(events, args, tasks, task_obj, log):
+def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
     current_task = task_obj.current_task(args)
@@ -84,4 +84,4 @@ def do_internal(events, args, tasks, task_obj, log):
             events, args, tasks, log, path=datafile, clean=True, delete=False)
         events.update({new_event[KEYS.NAME]: new_event})
 
-    return events
+    return

@@ -17,7 +17,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
                      get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
-def do_cfa_photo(events, args, tasks, task_obj, log):
+def do_cfa_photo(catalog):
     from html import unescape
     import re
     current_task = task_obj.current_task(args)
@@ -42,17 +42,17 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
         eventparts = eventname.split('_')
 
         name = clean_snname(eventparts[0])
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        secondarysource = events[name].add_source(srcname=secondaryname,
+        secondarysource = catalog.events[name].add_source(srcname=secondaryname,
                                                   url=secondaryurl,
                                                   secondary=True,
                                                   acknowledgment=ACKN_CFA)
-        events[name].add_quantity('alias', name, secondarysource)
+        catalog.events[name].add_quantity('alias', name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
-        events[name].add_quantity('discoverdate', year, secondarysource)
+        catalog.events[name].add_quantity('discoverdate', year, secondarysource)
 
         eventbands = list(eventparts[1])
 
@@ -73,7 +73,7 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
                             refstr = ' '.join(row[2 + ci:])
                             refstr = refstr.replace('(', '').replace(')', '')
                             bibcode = unescape(refstr)
-                            source = events[name].add_source(bibcode=bibcode)
+                            source = catalog.events[name].add_source(bibcode=bibcode)
                 elif len(row) > 1 and row[1] == 'HJD':
                     tu = 'HJD'
                 continue
@@ -114,11 +114,11 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
             else:
                 name = row[0].strip()
 
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
 
-            source = events[name].add_source(bibcode='2012ApJS..200...12H')
-            events[name].add_quantity('alias', name, source)
-            events[name].add_quantity('claimedtype', 'Ia', source)
+            source = catalog.events[name].add_source(bibcode='2012ApJS..200...12H')
+            catalog.events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('claimedtype', 'Ia', source)
             add_photometry(
                 events, name, u_time='MJD', time=row[2].strip(),
                 band=row[1].strip(),
@@ -131,21 +131,21 @@ def do_cfa_photo(events, args, tasks, task_obj, log):
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
 
-            source = events[name].add_source(bibcode='2014ApJS..213...19B')
-            events[name].add_quantity('alias', name, source)
+            source = catalog.events[name].add_source(bibcode='2014ApJS..213...19B')
+            catalog.events[name].add_quantity('alias', name, source)
             add_photometry(
                 events, name, u_time='MJD', time=row[2], band=row[1],
                 magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_cfa_spectra(events, args, tasks, task_obj, log):
+def do_cfa_spectra(catalog):
     current_task = task_obj.current_task(args)
     # Ia spectra
     oldname = ''
@@ -163,13 +163,13 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             srcname=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'),
                                           key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -207,7 +207,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
                 source=sources, dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Ibc spectra
     oldname = ''
@@ -223,13 +223,13 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             srcname=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'),
                                           key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -250,7 +250,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             fluxes = data[1]
             sources = uniq_cdl(
                 [source,
-                 events[name].add_source(bibcode='2014AJ....147...99M')])
+                 catalog.events[name].add_source(bibcode='2014AJ....147...99M')])
             add_spectrum(
                 events, name, 'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
@@ -259,7 +259,7 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
                 dereddened=False, deredshifted=False)
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # Other spectra
     oldname = ''
@@ -275,13 +275,13 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             srcname=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s:
                                           s.lower())):
             if not os.path.isfile(fname):
@@ -319,5 +319,5 @@ def do_cfa_spectra(events, args, tasks, task_obj, log):
             if args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd
 
 
-def do_itep(events, args, tasks, task_obj, log):
+def do_itep(catalog):
     current_task = task_obj.current_task(args)
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
@@ -38,23 +38,23 @@ def do_itep(events, args, tasks, task_obj, log):
 
         if curname != oldname:
             curname = oldname
-            events, name = Events.add_event(tasks, args, events, oldname, log)
+            name = catalog.add_event(oldname)
 
             sec_reference = ('Sternberg Astronomical Institute '
                              'Supernova Light Curve Catalogue')
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
-            sec_source = events[name].add_source(
+            sec_source = catalog.events[name].add_source(
                 srcname=sec_reference, url=sec_refurl, secondary=True)
-            events[name].add_quantity('alias', oldname, sec_source)
+            catalog.events[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
-            events[name].add_quantity('discoverdate', year, sec_source)
+            catalog.events[name].add_quantity('discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
-            source = events[name].add_source(bibcode=bibcode)
+            source = catalog.events[name].add_source(bibcode=bibcode)
         else:
             needsbib.append(reference)
-            source = events[name].add_source(
+            source = catalog.events[name].add_source(
                 srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:
@@ -67,5 +67,5 @@ def do_itep(events, args, tasks, task_obj, log):
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as bib_file:
         bib_file.writelines(['%ss\n' % ii for ii in needsbib])
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

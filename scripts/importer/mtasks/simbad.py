@@ -10,7 +10,7 @@ from .. import Events
 from ..funcs import name_clean, uniq_cdl
 
 
-def do_simbad(events, args, tasks, task_obj, log):
+def do_simbad(catalog):
     # Simbad.list_votable_fields()
     # Some coordinates that SIMBAD claims belong to the SNe actually belong to
     # the host.
@@ -55,7 +55,7 @@ def do_simbad(events, args, tasks, task_obj, log):
             continue
         if is_number(name):
             continue
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         source = (events[name]
                   .add_source(srcname='SIMBAD astronomical database',
                               bibcode="2000A&AS..143....9W",
@@ -69,12 +69,12 @@ def do_simbad(events, args, tasks, task_obj, log):
             if is_number(ali):
                 continue
             ali = name_clean(ali)
-            events[name].add_quantity('alias', ali, source)
+            catalog.events[name].add_quantity('alias', ali, source)
         if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
             csources = ','.join(
-                [source, events[name].add_source(bibcode=row['COO_BIBCODE'])])
-            events[name].add_quantity('ra', row['RA'], csources)
-            events[name].add_quantity('dec', row['DEC'], csources)
+                [source, catalog.events[name].add_source(bibcode=row['COO_BIBCODE'])])
+            catalog.events[name].add_quantity('ra', row['RA'], csources)
+            catalog.events[name].add_quantity('dec', row['DEC'], csources)
         if row['SP_BIBCODE']:
             ssources = uniq_cdl([source,
                                  events[name]
@@ -82,10 +82,10 @@ def do_simbad(events, args, tasks, task_obj, log):
                                 ([events[name]
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
-            events[name].add_quantity('claimedtype',
+            catalog.events[name].add_quantity('claimedtype',
                                       row['SP_TYPE']
                                       .replace('SN.', '')
                                       .replace('SN', '').replace('(~)', '')
                                       .strip(': '), ssources)
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

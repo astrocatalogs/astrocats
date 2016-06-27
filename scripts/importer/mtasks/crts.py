@@ -15,7 +15,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_crts(events, args, tasks, task_obj, log):
+def do_crts(catalog):
     crtsnameerrors = ['2011ax']
     current_task = task_obj.current_task(args)
     folders = ['catalina', 'MLS', 'SSS']
@@ -94,15 +94,15 @@ def do_crts(events, args, tasks, task_obj, log):
 
             if not name:
                 name = crtsname
-            events, name = Events.add_event(tasks, args, events, name, log)
-            source = events[name].add_source(
+            name = catalog.add_event(name)
+            source = catalog.events[name].add_source(
                 srcname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
-            events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('alias', name, source)
             for alias in validaliases:
-                events[name].add_quantity('alias', alias, source)
-            events[name].add_quantity('ra', ra, source, unit='floatdegrees')
-            events[name].add_quantity('dec', dec, source, unit='floatdegrees')
+                catalog.events[name].add_quantity('alias', alias, source)
+            catalog.events[name].add_quantity('ra', ra, source, unit='floatdegrees')
+            catalog.events[name].add_quantity('dec', dec, source, unit='floatdegrees')
 
             if hostmag:
                 # 1.0 magnitude error based on Drake 2009 assertion that SN are
@@ -153,5 +153,5 @@ def do_crts(events, args, tasks, task_obj, log):
         if args.travis and tri > TRAVIS_QUERY_LIMIT:
             break
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

@@ -16,7 +16,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, make_date_string
 
 
-def do_ascii(events, args, tasks, task_obj, log):
+def do_ascii(catalog):
     current_task = task_obj.current_task(args)
 
     # 2006ApJ...645..841N
@@ -25,15 +25,15 @@ def do_ascii(events, args, tasks, task_obj, log):
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
         name = 'SNLS-' + row[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2006ApJ...645..841N')
-        events[name].add_quantity('alias', name, source)
-        events[name].add_quantity(
+        name = catalog.add_event(name)
+        source = catalog.events[name].add_source(bibcode='2006ApJ...645..841N')
+        catalog.events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity(
             'redshift', row[1], source, kind='spectroscopic')
         astrot = astrotime(float(row[4]) + 2450000., format='jd').datetime
         date_str = make_date_string(astrot.year, astrot.month, astrot.day)
-        events[name].add_quantity('discoverdate', date_str, source)
-    events = Events.journal_events(tasks, args, events, log)
+        catalog.events[name].add_quantity('discoverdate', date_str, source)
+    catalog.journal_events()
 
     # Anderson 2014
     file_names = list(
@@ -47,9 +47,9 @@ def do_ascii(events, args, tasks, task_obj, log):
         else:
             name = ('SN20' if int(basename[:2]) <
                     50 else 'SN19') + basename.split('_')[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2014ApJ...786...67A')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(name)
+        source = catalog.events[name].add_source(bibcode='2014ApJ...786...67A')
+        catalog.events[name].add_quantity('alias', name, source)
 
         if name in ['SN1999ca', 'SN2003dq', 'SN2008aw']:
             system = 'Swope'
@@ -65,7 +65,7 @@ def do_ascii(events, args, tasks, task_obj, log):
                 add_photometry(events, name, time=time, band='V',
                                magnitude=row[1], e_magnitude=row[2],
                                system=system, source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # stromlo
     stromlobands = ['B', 'V', 'R', 'I', 'VM', 'RM']
@@ -74,9 +74,9 @@ def do_ascii(events, args, tasks, task_obj, log):
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for row in pbar(tsvin, current_task):
         name = row[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2004A&A...415..863G')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(name)
+        source = catalog.events[name].add_source(bibcode='2004A&A...415..863G')
+        catalog.events[name].add_quantity('alias', name, source)
         mjd = str(jd_to_mjd(Decimal(row[1])))
         for ri, ci in enumerate(range(2, len(row), 3)):
             if not row[ci]:
@@ -95,7 +95,7 @@ def do_ascii(events, args, tasks, task_obj, log):
                            e_lower_magnitude=e_lower_magnitude,
                            upperlimit=upperlimit, telescope=teles,
                            instrument=instr, source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2015MNRAS.449..451W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015MNRAS.449..451W.dat')
@@ -108,23 +108,23 @@ def do_ascii(events, args, tasks, task_obj, log):
         name = namesplit[-1]
         if name.startswith('SN'):
             name = name.replace(' ', '')
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2015MNRAS.449..451W')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(name)
+        source = catalog.events[name].add_source(bibcode='2015MNRAS.449..451W')
+        catalog.events[name].add_quantity('alias', name, source)
         if len(namesplit) > 1:
-            events[name].add_quantity('alias', namesplit[0], source)
-        events[name].add_quantity('claimedtype', row[1], source)
+            catalog.events[name].add_quantity('alias', namesplit[0], source)
+        catalog.events[name].add_quantity('claimedtype', row[1], source)
         add_photometry(events, name, time=row[2], band=row[
                        4], magnitude=row[3], source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2016MNRAS.459.1039T
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016MNRAS.459.1039T.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    events, name = Events.add_event(tasks, args, events, 'LSQ13zm', log)
-    source = events[name].add_source(bibcode='2016MNRAS.459.1039T')
-    events[name].add_quantity('alias', name, source)
+    name = catalog.add_event('LSQ13zm')
+    source = catalog.events[name].add_source(bibcode='2016MNRAS.459.1039T')
+    catalog.events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             bands = [xx.replace('(err)', '') for xx in row[3:-1]]
@@ -142,15 +142,15 @@ def do_ascii(events, args, tasks, task_obj, log):
                 events, name, time=mjd, band=bands[
                     mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=row[-1], upperlimit=upps[mi], source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2015ApJ...804...28G
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015ApJ...804...28G.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    events, name = Events.add_event(tasks, args, events, 'PS1-13arp', log)
-    source = events[name].add_source(bibcode='2015ApJ...804...28G')
-    events[name].add_quantity('alias', name, source)
+    name = catalog.add_event('PS1-13arp')
+    source = catalog.events[name].add_source(bibcode='2015ApJ...804...28G')
+    catalog.events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
         if rr == 0:
             continue
@@ -164,7 +164,7 @@ def do_ascii(events, args, tasks, task_obj, log):
             events, name, time=mjd, band=row[
                 0], magnitude=mag, e_magnitude=err,
             instrument=ins, upperlimit=upp, source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2016ApJ...819...35A
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016ApJ...819...35A.tsv')
@@ -173,16 +173,16 @@ def do_ascii(events, args, tasks, task_obj, log):
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
-        events, name = Events.add_event(tasks, args, events, row[0], log)
-        source = events[name].add_source(bibcode='2016ApJ...819...35A')
-        events[name].add_quantity('alias', name, source)
-        events[name].add_quantity('ra', row[1], source)
-        events[name].add_quantity('dec', row[2], source)
-        events[name].add_quantity('redshift', row[3], source)
+        name = catalog.add_event(row[0])
+        source = catalog.events[name].add_source(bibcode='2016ApJ...819...35A')
+        catalog.events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('ra', row[1], source)
+        catalog.events[name].add_quantity('dec', row[2], source)
+        catalog.events[name].add_quantity('redshift', row[3], source)
         disc_date = datetime.strptime(row[4], '%Y %b %d').isoformat()
         disc_date = disc_date.split('T')[0].replace('-', '/')
-        events[name].add_quantity('discoverdate', disc_date, source)
-    events = Events.journal_events(tasks, args, events, log)
+        catalog.events[name].add_quantity('discoverdate', disc_date, source)
+    catalog.journal_events()
 
     # 2014ApJ...784..105W
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2014ApJ...784..105W.tsv')
@@ -191,9 +191,9 @@ def do_ascii(events, args, tasks, task_obj, log):
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
-        events, name = Events.add_event(tasks, args, events, row[0], log)
-        source = events[name].add_source(bibcode='2014ApJ...784..105W')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(row[0])
+        source = catalog.events[name].add_source(bibcode='2014ApJ...784..105W')
+        catalog.events[name].add_quantity('alias', name, source)
         mjd = row[1]
         band = row[2]
         mag = row[3]
@@ -203,7 +203,7 @@ def do_ascii(events, args, tasks, task_obj, log):
                 2], magnitude=mag, e_magnitude=err,
             instrument='WHIRC', telescope='WIYN 3.5 m', observatory='NOAO',
             system='WHIRC', source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2012MNRAS.425.1007B
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2012MNRAS.425.1007B.tsv')
@@ -213,9 +213,9 @@ def do_ascii(events, args, tasks, task_obj, log):
         if row[0][0] == '#':
             bands = row[2:]
             continue
-        events, name = Events.add_event(tasks, args, events, row[0], log)
-        source = events[name].add_source(bibcode='2012MNRAS.425.1007B')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(row[0])
+        source = catalog.events[name].add_source(bibcode='2012MNRAS.425.1007B')
+        catalog.events[name].add_quantity('alias', name, source)
         mjd = row[1]
         mags = [xx.split('±')[0].strip() for xx in row[2:]]
         errs = [xx.split('±')[1].strip()
@@ -238,7 +238,7 @@ def do_ascii(events, args, tasks, task_obj, log):
                 instrument=ins, telescope=tel, observatory=obs,
                 system='Natural', source=source)
 
-        events = Events.journal_events(tasks, args, events, log)
+        catalog.journal_events()
 
     # 2014ApJ...783...28G
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'apj490105t2_ascii.txt')
@@ -252,14 +252,14 @@ def do_ascii(events, args, tasks, task_obj, log):
              name,
              source) = Events.new_event(tasks, args, events, row[0], log,
                                         bibcode='2014ApJ...783...28G')
-            events[name].add_quantity('alias', row[1], source)
-            events[name].add_quantity(
+            catalog.events[name].add_quantity('alias', row[1], source)
+            catalog.events[name].add_quantity(
                 'discoverdate', '20' + row[0][3:5], source)
-            events[name].add_quantity('ra', row[2], source)
-            events[name].add_quantity('dec', row[3], source)
-            events[name].add_quantity(
+            catalog.events[name].add_quantity('ra', row[2], source)
+            catalog.events[name].add_quantity('dec', row[3], source)
+            catalog.events[name].add_quantity(
                 'redshift', row[13] if is_number(row[13]) else row[10], source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2005ApJ...634.1190H
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2005ApJ...634.1190H.tsv')
@@ -271,15 +271,15 @@ def do_ascii(events, args, tasks, task_obj, log):
              name,
              source) = Events.new_event(tasks, args, events, 'SNLS-' + row[0],
                                         log, bibcode='2005ApJ...634.1190H')
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'discoverdate', '20' + row[0][:2], source)
-            events[name].add_quantity('ra', row[1], source)
-            events[name].add_quantity('dec', row[2], source)
-            events[name].add_quantity('redshift', row[5].replace(
+            catalog.events[name].add_quantity('ra', row[1], source)
+            catalog.events[name].add_quantity('dec', row[2], source)
+            catalog.events[name].add_quantity('redshift', row[5].replace(
                 '?', ''), source, error=row[6], kind='host')
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'claimedtype', row[7].replace('SN', '').strip(':* '), source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2014MNRAS.444.2133S
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2014MNRAS.444.2133S.tsv')
@@ -294,10 +294,10 @@ def do_ascii(events, args, tasks, task_obj, log):
                 name = 'SN' + name
             events, name, source = Events.new_event(
                 tasks, args, events, name, log, bibcode='2014MNRAS.444.2133S')
-            events[name].add_quantity('ra', row[1], source)
-            events[name].add_quantity('dec', row[2], source)
-            events[name].add_quantity('redshift', row[3], source, kind='host')
-    events = Events.journal_events(tasks, args, events, log)
+            catalog.events[name].add_quantity('ra', row[1], source)
+            catalog.events[name].add_quantity('dec', row[2], source)
+            catalog.events[name].add_quantity('redshift', row[3], source, kind='host')
+    catalog.journal_events()
 
     # 2009MNRAS.398.1041B
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2009MNRAS.398.1041B.tsv')
@@ -326,7 +326,7 @@ def do_ascii(events, args, tasks, task_obj, log):
                 add_photometry(events, name, time=mjd, band=bands[mi],
                                magnitude=mag, e_magnitude=errs[mi],
                                instrument=instrument, source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2010arXiv1007.0011P
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2010arXiv1007.0011P.tsv')
@@ -352,7 +352,7 @@ def do_ascii(events, args, tasks, task_obj, log):
                 add_photometry(events, name, time=mjd, band=bands[mi],
                                magnitude=mag, e_magnitude=errs[mi],
                                instrument='LBT', source=source)
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     # 2000ApJ...533..320G
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2000ApJ...533..320G.tsv')
@@ -377,5 +377,5 @@ def do_ascii(events, args, tasks, task_obj, log):
                                observatory='Mount Stromlo', telescope='MSSSO',
                                source=source, kcorrected=True)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

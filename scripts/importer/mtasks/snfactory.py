@@ -15,20 +15,20 @@ from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
 
 
-def do_snf_aliases(events, args, tasks, task_obj, log):
+def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
             events, name, source = Events.new_event(tasks, args, events, row[0], log,
                                                     bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                                     url=OSC_URL, secondary=True)
-            events[name].add_quantity('alias', row[1], source)
+            catalog.events[name].add_quantity('alias', row[1], source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_snf_specta(events, args, tasks, task_obj, log):
+def do_snf_specta(catalog):
     bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T',
                 'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
     oldname = ''
@@ -42,15 +42,15 @@ def do_snf_specta(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         sec_reference = 'Nearby Supernova Factory'
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode, secondary=True)
-        events[name].add_quantity('alias', name, sec_source)
+        catalog.events[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]
-        source = events[name].add_source(bibcode=bibcode)
+        source = catalog.events[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])
         use_path = os.path.join(
             PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')
@@ -123,5 +123,5 @@ def do_snf_specta(events, args, tasks, task_obj, log):
             if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

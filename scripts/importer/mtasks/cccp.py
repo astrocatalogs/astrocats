@@ -17,7 +17,7 @@ from .. import Events
 from ..funcs import add_photometry, event_exists, load_cached_url, uniq_cdl
 
 
-def do_cccp(events, args, tasks, task_obj, log):
+def do_cccp(catalog):
     current_task = task_obj.current_task(args)
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
@@ -32,9 +32,9 @@ def do_cccp(events, args, tasks, task_obj, log):
                     name = 'SN' + row[0].split('SN ')[-1]
                     events, name = Events.add_event(
                         tasks, args, events, name, log)
-                    source = events[name].add_source(
+                    source = catalog.events[name].add_source(
                         bibcode='2012ApJ...744...10K')
-                    events[name].add_quantity('alias', name, source)
+                    catalog.events[name].add_quantity('alias', name, source)
                 elif rr >= 5:
                     mjd = str(Decimal(row[0]) + 53000)
                     for bb, band in enumerate(cccpbands):
@@ -69,7 +69,7 @@ def do_cccp(events, args, tasks, task_obj, log):
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
                                        '/home/iair/sc_cccp.html')))
-            events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity('alias', name, source)
 
             if task_obj.load_archive(args):
                 fname = os.path.join(PATH.REPO_EXTERNAL,
@@ -118,11 +118,11 @@ def do_cccp(events, args, tasks, task_obj, log):
                                        band=band, magnitude=row[1],
                                        e_magnitude=row[2], source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_cpcs(events, args, tasks, task_obj, log):
+def do_cpcs(catalog):
     current_task = task_obj.current_task(args)
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
@@ -131,7 +131,7 @@ def do_cpcs(events, args, tasks, task_obj, log):
     jsontxt = load_cached_url(args, current_task, cpcs_url, os.path.join(
         PATH.REPO_EXTERNAL, 'CPCS/index.json'))
     if not jsontxt:
-        return events
+        return
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
     ids = [xx['id'] for xx in alertindex]
     for ii, ai in enumerate(pbar(ids, current_task)):
@@ -155,24 +155,24 @@ def do_cpcs(events, args, tasks, task_obj, log):
             if event_exists(events, name):
                 continue
             oldname = name
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
         else:
             continue
 
-        sec_source = events[name].add_source(
+        sec_source = catalog.events[name].add_source(
             srcname='Cambridge Photometric Calibration Server',
             url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
-        events[name].add_quantity('alias', oldname, sec_source)
+        catalog.events[name].add_quantity('alias', oldname, sec_source)
         unit_deg = 'floatdegrees'
-        events[name].add_quantity(
+        catalog.events[name].add_quantity(
             'ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
-        events[name].add_quantity('dec', str(
+        catalog.events[name].add_quantity('dec', str(
             alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = ('http://gsaweb.ast.cam.ac.uk/'
                     'followup/get_alert_lc_data?alert_id=' +
                     str(ai))
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
@@ -207,5 +207,5 @@ def do_cpcs(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

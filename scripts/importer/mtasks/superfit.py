@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_spectrum, event_exists
 
 
-def do_superfit_spectra(events, args, tasks, task_obj, log):
+def do_superfit_spectra(catalog):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = task_obj.current_task(args)
@@ -43,7 +43,7 @@ def do_superfit_spectra(events, args, tasks, task_obj, log):
                 events = Events.journal_events(
                     tasks, args, events, log)
             oldname = name
-            events, name = Events.add_event(tasks, args, events, name, log)
+            name = catalog.add_event(name)
             epoch = basename.split('.')[1]
             (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
             if mldt:
@@ -56,9 +56,9 @@ def do_superfit_spectra(events, args, tasks, task_obj, log):
             else:
                 epoff = ''
 
-            source = events[name].add_source(
+            source = catalog.events[name].add_source(
                 srcname='Superfit', url=superfit_url, secondary=True)
-            events[name].add_quantity('alias', oldname, source)
+            catalog.events[name].add_quantity('alias', oldname, source)
 
             with open(sffile) as ff:
                 rows = ff.read().splitlines()
@@ -86,5 +86,5 @@ def do_superfit_spectra(events, args, tasks, task_obj, log):
 
             lastname = name
 
-        events = Events.journal_events(tasks, args, events, log)
-    return events
+        catalog.journal_events()
+    return

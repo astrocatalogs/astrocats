@@ -9,7 +9,7 @@ from scripts.utils import pbar
 from .. import Events
 
 
-def do_fermi(events, args, tasks, task_obj, log):
+def do_fermi(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            '1SC_catalog_v01.asc'), 'r') as ff:
@@ -22,14 +22,14 @@ def do_fermi(events, args, tasks, task_obj, log):
             if 'Classified' not in row[1]:
                 continue
             name = row[0].replace('SNR', 'G')
-            events, name = Events.add_event(tasks, args, events, name, log)
-            source = events[name].add_source(bibcode='2016ApJS..224....8A')
-            events[name].add_quantity('alias', name, source)
-            events[name].add_quantity(
+            name = catalog.add_event(name)
+            source = catalog.events[name].add_source(bibcode='2016ApJS..224....8A')
+            catalog.events[name].add_quantity('alias', name, source)
+            catalog.events[name].add_quantity(
                 'alias', row[0].replace('SNR', 'MWSNR'), source)
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'ra', row[2], source, unit='floatdegrees')
-            events[name].add_quantity(
+            catalog.events[name].add_quantity(
                 'dec', row[3], source, unit='floatdegrees')
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

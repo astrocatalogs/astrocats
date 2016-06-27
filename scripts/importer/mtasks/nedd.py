@@ -15,7 +15,7 @@ from ...utils import is_number, pbar
 from ..funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
 
 
-def do_nedd(events, args, tasks, task_obj, log):
+def do_nedd(catalog):
     current_task = 'NED-D'
     nedd_path = os.path.join(
         PATH.REPO_EXTERNAL, 'NED26.05.1-D-12.1.0-20160501.csv')
@@ -75,7 +75,7 @@ def do_nedd(events, args, tasks, task_obj, log):
                         except:
                             pass
                         else:
-                            cosmosource = events[name].add_source(
+                            cosmosource = catalog.events[name].add_source(
                                 bibcode='2015arXiv150201589P')
                             combsources = uniq_cdl(sources.split(',') +
                                                    [cosmosource])
@@ -87,8 +87,8 @@ def do_nedd(events, args, tasks, task_obj, log):
                 events = Events.journal_events(
                     tasks, args, events, log)
         olddistname = distname
-    events = Events.journal_events(tasks, args, events, log)
+    catalog.journal_events()
 
     f.close()
 
-    return events
+    return

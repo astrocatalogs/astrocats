@@ -16,7 +16,7 @@ from ...utils import is_number, pbar
 from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 
 
-def do_asiago_photo(events, args, tasks, task_obj, log):
+def do_asiago_photo(catalog):
     current_task = task_obj.current_task(args)
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
@@ -50,7 +50,7 @@ def do_asiago_photo(events, args, tasks, task_obj, log):
                                         bibcode=refbib, secondary=True)
 
             year = re.findall(r'\d+', oldname)[0]
-            events[name].add_quantity('discoverdate', year, source)
+            catalog.events[name].add_quantity('discoverdate', year, source)
 
             hostname = record[2]
             hostra = record[3]
@@ -78,7 +78,7 @@ def do_asiago_photo(events, args, tasks, task_obj, log):
                     daystr = dayarr[0]
                     datestring = datestring + '/' + daystr
 
-            events[name].add_quantity(datekey + 'date', datestring, source)
+            catalog.events[name].add_quantity(datekey + 'date', datestring, source)
 
             velocity = ''
             redshift = ''
@@ -93,33 +93,33 @@ def do_asiago_photo(events, args, tasks, task_obj, log):
             claimedtype = record[17].replace(':', '').replace('*', '').strip()
 
             if (hostname != ''):
-                events[name].add_quantity('host', hostname, source)
+                catalog.events[name].add_quantity('host', hostname, source)
             if (claimedtype != ''):
-                events[name].add_quantity('claimedtype', claimedtype, source)
+                catalog.events[name].add_quantity('claimedtype', claimedtype, source)
             if (redshift != ''):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
             if (velocity != ''):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'velocity', velocity, source, kind='host')
             if (hostra != ''):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'hostra', hostra, source, unit='nospace')
             if (hostdec != ''):
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'hostdec', hostdec, source, unit='nospace')
             if (ra != ''):
-                events[name].add_quantity('ra', ra, source, unit='nospace')
+                catalog.events[name].add_quantity('ra', ra, source, unit='nospace')
             if (dec != ''):
-                events[name].add_quantity('dec', dec, source, unit='nospace')
+                catalog.events[name].add_quantity('dec', dec, source, unit='nospace')
             if (discoverer != ''):
-                events[name].add_quantity('discoverer', discoverer, source)
+                catalog.events[name].add_quantity('discoverer', discoverer, source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_asiago_spectra(events, args, tasks, task_obj, log):
+def do_asiago_spectra(catalog):
     current_task = task_obj.current_task(args)
     html = load_cached_url(args, current_task,
                            ('http://sngroup.oapd.inaf.it./'
@@ -127,7 +127,7 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                                         'Asiago/spectra.html'))
     if not html:
-        return events
+        return
 
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.findAll('tr')
@@ -156,14 +156,14 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
                 if is_number(name[:4]):
                     name = 'SN' + name
                 oldname = name
-                events, name = Events.add_event(tasks, args, events, name, log)
+                name = catalog.add_event(name)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
-                secondarysource = events[name].add_source(
+                secondarysource = catalog.events[name].add_source(
                     srcname=reference, url=refurl, secondary=True)
-                events[name].add_quantity('alias', oldname, secondarysource)
+                catalog.events[name].add_quantity('alias', oldname, secondarysource)
                 if alias != name:
-                    events[name].add_quantity('alias', alias, secondarysource)
+                    catalog.events[name].add_quantity('alias', alias, secondarysource)
             elif tdi == 2:
                 host = td.text.strip()
                 if host == 'anonymous':
@@ -197,9 +197,9 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
                         reference = ref.text
                         refurl = ref['href']
                 if reference:
-                    source = events[name].add_source(
+                    source = catalog.events[name].add_source(
                         srcname=reference, url=refurl)
-                events[name].add_quantity('alias', name, secondarysource)
+                catalog.events[name].add_quantity('alias', name, secondarysource)
                 sources = uniq_cdl(
                     list(filter(None, [source, secondarysource])))
             elif tdi == 12:
@@ -208,12 +208,12 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
                 # if fitslink:
                 #     fitsurl = fitslink['href']
         if name:
-            events[name].add_quantity('claimedtype', claimedtype, sources)
-            events[name].add_quantity('ra', ra, sources)
-            events[name].add_quantity('dec', dec, sources)
-            events[name].add_quantity('redshift', redshift, sources)
-            events[name].add_quantity('discoverer', discoverer, sources)
-            events[name].add_quantity('host', host, sources)
+            catalog.events[name].add_quantity('claimedtype', claimedtype, sources)
+            catalog.events[name].add_quantity('ra', ra, sources)
+            catalog.events[name].add_quantity('dec', dec, sources)
+            catalog.events[name].add_quantity('redshift', redshift, sources)
+            catalog.events[name].add_quantity('discoverer', discoverer, sources)
+            catalog.events[name].add_quantity('host', host, sources)
 
             # if fitsurl:
             #    response = urllib.request.urlopen(
@@ -227,5 +227,5 @@ def do_asiago_spectra(events, args, tasks, task_obj, log):
             #    print(scidata[3])
             #    sys.exit()
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

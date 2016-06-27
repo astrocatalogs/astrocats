@@ -12,7 +12,7 @@ from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_des(events, args, tasks, task_obj, log):
+def do_des(catalog):
     current_task = task_obj.current_task(args)
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
@@ -24,7 +24,7 @@ def do_des(events, args, tasks, task_obj, log):
     html = load_cached_url(
         args, current_task, des_trans_url, des_path + 'transients.html')
     if not html:
-        return events
+        return
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('tbody').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
@@ -35,8 +35,7 @@ def do_des(events, args, tasks, task_obj, log):
         tds = tr.findAll('td')
         for tdi, td in enumerate(tds):
             if tdi == 0:
-                events, name = Events.add_event(
-                    tasks, args, events, td.text.strip(), log)
+                name = Events.add_event(td.text.strip())
             if tdi == 1:
                 (ra, dec) = [xx.strip() for xx in td.text.split('\xa0')]
             if tdi == 6:
@@ -54,14 +53,14 @@ def do_des(events, args, tasks, task_obj, log):
                 events[name]
                 .add_source(srcname='ATel ' + atellink.split('=')[-1],
                             url=atellink))
-        sources += [events[name].add_source(bibcode='2012ApJ...753..152B'),
-                    events[name].add_source(bibcode='2015AJ....150..150F'),
-                    events[name].add_source(bibcode='2015AJ....150...82G'),
-                    events[name].add_source(bibcode='2015AJ....150..172K')]
+        sources += [catalog.events[name].add_source(bibcode='2012ApJ...753..152B'),
+                    catalog.events[name].add_source(bibcode='2015AJ....150..150F'),
+                    catalog.events[name].add_source(bibcode='2015AJ....150...82G'),
+                    catalog.events[name].add_source(bibcode='2015AJ....150..172K')]
         sources = ','.join(sources)
-        events[name].add_quantity('alias', name, sources)
-        events[name].add_quantity('ra', ra, sources)
-        events[name].add_quantity('dec', dec, sources)
+        catalog.events[name].add_quantity('alias', name, sources)
+        catalog.events[name].add_quantity('ra', ra, sources)
+        catalog.events[name].add_quantity('dec', dec, sources)
 
         html2 = load_cached_url(args, current_task, des_trans_url + name,
                                 des_path + name + '.html')
@@ -80,5 +79,5 @@ def do_des(events, args, tasks, task_obj, log):
                                    telescope='Blanco 4m', instrument='DECam',
                                    upperlimit=upl, source=sources)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

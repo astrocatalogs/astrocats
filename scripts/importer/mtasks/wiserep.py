@@ -19,7 +19,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, uniq_cdl
 
 
-def do_wiserep_spectra(events, args, tasks, task_obj, log):
+def do_wiserep_spectra(catalog):
     current_task = task_obj.current_task(args)
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
@@ -171,38 +171,37 @@ def do_wiserep_spectra(events, args, tasks, task_obj, log):
                                 events = Events.journal_events(
                                     tasks, args, events, log)
                             oldname = name
-                            events, name = Events.add_event(
-                                tasks, args, events, name, log)
+                            name = Events.add_event(name)
 
                             # print(name + ' ' + claimedtype + ' ' + epoch +
                             # ' ' + observer + ' ' + reducer + ' ' + specfile +
                             # ' ' + bibcode + ' ' + redshift)
 
-                            secondarysource = events[name].add_source(
+                            secondarysource = catalog.events[name].add_source(
                                 srcname=secondaryreference,
                                 url=secondaryrefurl,
                                 bibcode=secondarybibcode, secondary=True)
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'alias', name, secondarysource)
                             if bibcode:
                                 newbibcode = bibcode
                                 if bibcode in wiserepbibcorrectdict:
                                     newbibcode = wiserepbibcorrectdict[bibcode]
                                 if newbibcode:
-                                    source = events[name].add_source(
+                                    source = catalog.events[name].add_source(
                                         bibcode=unescape(newbibcode))
                                 else:
-                                    source = events[name].add_source(
+                                    source = catalog.events[name].add_source(
                                         srcname=unescape(bibcode))
                                 sources = uniq_cdl([source, secondarysource])
                             else:
                                 sources = secondarysource
 
                             if claimedtype not in ['Other']:
-                                events[name].add_quantity(
+                                catalog.events[name].add_quantity(
                                     'claimedtype', claimedtype,
                                     secondarysource)
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'redshift', redshift, secondarysource)
 
                             if not specpath:
@@ -262,5 +261,5 @@ def do_wiserep_spectra(events, args, tasks, task_obj, log):
                        "/" + str(len(files) - 1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

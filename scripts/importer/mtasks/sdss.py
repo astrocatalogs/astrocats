@@ -12,7 +12,7 @@ from .. import Events
 from ..funcs import add_photometry
 
 
-def do_sdss(events, args, tasks, task_obj, log):
+def do_sdss(catalog):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
@@ -34,23 +34,23 @@ def do_sdss(events, args, tasks, task_obj, log):
                     name = 'SDSS-II SN ' + row[3]
                 else:
                     name = 'SN' + row[5]
-                events, name = Events.add_event(tasks, args, events, name, log)
-                source = events[name].add_source(bibcode=bibcode)
-                events[name].add_quantity('alias', name, source)
-                events[name].add_quantity(
+                name = catalog.add_event(name)
+                source = catalog.events[name].add_source(bibcode=bibcode)
+                catalog.events[name].add_quantity('alias', name, source)
+                catalog.events[name].add_quantity(
                     'alias', 'SDSS-II SN ' + row[3], source)
 
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
-                    events[name].add_quantity('discoverdate', year, source)
+                    catalog.events[name].add_quantity('discoverdate', year, source)
 
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'ra', row[-4], source, unit='floatdegrees')
-                events[name].add_quantity(
+                catalog.events[name].add_quantity(
                     'dec', row[-2], source, unit='floatdegrees')
             if rr == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
-                events[name].add_quantity('redshift', row[2], source,
+                catalog.events[name].add_quantity('redshift', row[2], source,
                                           error=error,
                                           kind='heliocentric')
             if rr >= 19:
@@ -67,5 +67,5 @@ def do_sdss(events, args, tasks, task_obj, log):
                                band=band, magnitude=magnitude,
                                e_magnitude=e_mag, source=source, system='SDSS')
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

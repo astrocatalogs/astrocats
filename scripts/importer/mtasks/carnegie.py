@@ -14,7 +14,7 @@ from ..funcs import (add_photometry, add_spectrum, clean_snname,
                      get_preferred_name, jd_to_mjd)
 
 
-def do_csp_photo(events, args, tasks, task_obj, log):
+def do_csp_photo(catalog):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
@@ -25,27 +25,27 @@ def do_csp_photo(events, args, tasks, task_obj, log):
         eventname = os.path.basename(os.path.splitext(fname)[0])
         eventparts = eventname.split('opt+')
         name = clean_snname(eventparts[0])
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
 
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
         refurl = 'http://csp.obs.carnegiescience.edu/data'
-        source = events[name].add_source(
+        source = catalog.events[name].add_source(
             bibcode=refbib, srcname=reference, url=refurl)
-        events[name].add_quantity('alias', name, source)
+        catalog.events[name].add_quantity('alias', name, source)
 
         year = re.findall(r'\d+', name)[0]
-        events[name].add_quantity('discoverdate', year, source)
+        catalog.events[name].add_quantity('discoverdate', year, source)
 
         for r, row in enumerate(tsvin):
             if len(row) > 0 and row[0][0] == "#":
                 if r == 2:
                     redz = row[0].split(' ')[-1]
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'redshift', redz, source, kind='cmb')
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'ra', row[1].split(' ')[-1], source)
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'dec', row[2].split(' ')[-1], source)
                 continue
             for v, val in enumerate(row):
@@ -59,11 +59,11 @@ def do_csp_photo(events, args, tasks, task_obj, log):
                             system='CSP', magnitude=row[v],
                             e_magnitude=row[v + 1], source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_csp_spectra(events, args, tasks, task_obj, log):
+def do_csp_spectra(catalog):
     oldname = ''
     current_task = task_obj.current_task(args)
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
@@ -81,11 +81,11 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
+        name = catalog.add_event(name)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
-        source = events[name].add_source(bibcode='2013ApJ...773...53F')
-        events[name].add_quantity('alias', name, source)
+        source = catalog.events[name].add_source(bibcode='2013ApJ...773...53F')
+        catalog.events[name].add_quantity('alias', name, source)
 
         data = csv.reader(open(fname, 'r'), delimiter=' ',
                           skipinitialspace=True)
@@ -95,7 +95,7 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
                 jd = row[1].strip()
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
-                events[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.events[name].add_quantity('redshift', row[1].strip(), source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))
@@ -111,5 +111,5 @@ def do_csp_spectra(events, args, tasks, task_obj, log):
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

@@ -14,7 +14,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, get_preferred_name
 
 
-def do_snls_photo(events, args, tasks, task_obj, log):
+def do_snls_photo(catalog):
     current_task = 'SNLS'
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
@@ -27,9 +27,9 @@ def do_snls_photo(events, args, tasks, task_obj, log):
         if float(flux) < 3.0 * float(err):
             continue
         name = 'SNLS-' + row[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2010A&A...523A...7G')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(name)
+        source = catalog.events[name].add_source(bibcode='2010A&A...523A...7G')
+        catalog.events[name].add_quantity('alias', name, source)
         band = row[1]
         mjd = row[2]
         sig = get_sig_digits(flux.split('E')[0]) + 1
@@ -44,11 +44,11 @@ def do_snls_photo(events, args, tasks, task_obj, log):
             events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
             e_counts=err, source=source)
 
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return
 
 
-def do_snls_spectra(events, args, tasks, task_obj, log):
+def do_snls_spectra(catalog):
     """
     """
 
@@ -71,11 +71,11 @@ def do_snls_spectra(events, args, tasks, task_obj, log):
             events = Events.journal_events(
                 tasks, args, events, log)
         oldname = name
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2009A&A...507...85B')
-        events[name].add_quantity('alias', name, source)
+        name = catalog.add_event(name)
+        source = catalog.events[name].add_source(bibcode='2009A&A...507...85B')
+        catalog.events[name].add_quantity('alias', name, source)
 
-        events[name].add_quantity(
+        catalog.events[name].add_quantity(
             'discoverdate', '20' + fileparts[1][:2], source)
 
         f = open(fname, 'r')
@@ -85,7 +85,7 @@ def do_snls_spectra(events, args, tasks, task_obj, log):
             if row[0] == '@TELESCOPE':
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                events[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.events[name].add_quantity('redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
@@ -104,5 +104,5 @@ def do_snls_spectra(events, args, tasks, task_obj, log):
             filename=filename)
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
-    events = Events.journal_events(tasks, args, events, log)
-    return events
+    catalog.journal_events()
+    return

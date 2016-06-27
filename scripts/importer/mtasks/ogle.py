@@ -14,7 +14,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
 
 
-def do_ogle(events, args, tasks, task_obj, log):
+def do_ogle(catalog):
     current_task = task_obj.current_task(args)
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']
@@ -63,7 +63,7 @@ def do_ogle(events, args, tasks, task_obj, log):
                     continue
                 oglenames.append(name)
 
-                events, name = Events.add_event(tasks, args, events, name, log)
+                name = catalog.add_event(name)
 
                 mySibling = sibling.nextSibling
                 atelref = ''
@@ -107,32 +107,32 @@ def do_ogle(events, args, tasks, task_obj, log):
                         f.write(csvtxt)
 
                 lcdat = csvtxt.splitlines()
-                sources = [events[name].add_source(
+                sources = [catalog.events[name].add_source(
                     srcname=reference, url=refurl)]
-                events[name].add_quantity('alias', name, sources[0])
+                catalog.events[name].add_quantity('alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
-                    sources.append(events[name].add_source(
+                    sources.append(catalog.events[name].add_source(
                         srcname=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
 
                 if name.startswith('OGLE'):
                     if name[4] == '-':
                         if is_number(name[5:9]):
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'discoverdate', name[5:9], sources)
                     else:
                         if is_number(name[4:6]):
-                            events[name].add_quantity(
+                            catalog.events[name].add_quantity(
                                 'discoverdate', '20' + name[4:6], sources)
 
                 # RA and Dec from OGLE pages currently not reliable
-                # events[name].add_quantity('ra', ra, sources)
-                # events[name].add_quantity('dec', dec, sources)
+                # catalog.events[name].add_quantity('ra', ra, sources)
+                # catalog.events[name].add_quantity('dec', dec, sources)
                 if claimedtype and claimedtype != '-':
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'claimedtype', claimedtype, sources)
                 elif 'SN' not in name and 'claimedtype' not in events[name]:
-                    events[name].add_quantity(
+                    catalog.events[name].add_quantity(
                         'claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()
@@ -153,5 +153,5 @@ def do_ogle(events, args, tasks, task_obj, log):
                     events = Events.journal_events(
                         tasks, args, events, log)
 
-        events = Events.journal_events(tasks, args, events, log)
-    return events
+        catalog.journal_events()
+    return
