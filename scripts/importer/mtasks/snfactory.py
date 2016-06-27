@@ -11,16 +11,16 @@ from scripts import PATH
 
 from ...utils import pretty_num
 from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
-from ..funcs import add_spectrum, get_preferred_name, jd_to_mjd, uniq_cdl
+from ..funcs import get_preferred_name, jd_to_mjd, uniq_cdl
 
 
 def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
-            events, name, source = catalog.new_event(row[0],
-                                                    bibcode=OSC_BIBCODE, srcname=OSC_NAME,
-                                                    url=OSC_URL, secondary=True)
+            events, name, source = catalog.new_event(
+                row[0], bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
             catalog.events[name].add_quantity('alias', row[1], source)
 
     catalog.journal_events()
@@ -112,8 +112,8 @@ def do_snf_specta(catalog):
 
             unit_err = 'Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'
             unit_flx = 'erg/s/cm^2/Angstrom'
-            add_spectrum(
-                catalog.events, name, 'Angstrom', unit_flx, u_time='MJD', time=time,
+            catalog.events[name].add_spectrum(
+                'Angstrom', unit_flx, u_time='MJD', time=time,
                 wavelengths=wavelengths, fluxes=fluxes, errors=errors, observer=observer,
                 observatory=observatory, telescope=telescope, instrument=instrument,
                 errorunit=unit_err, source=sources, filename=filename)

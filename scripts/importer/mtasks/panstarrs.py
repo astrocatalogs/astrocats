@@ -218,7 +218,7 @@ def do_ps_threepi(catalog):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(catalog.events, name, time=str(obs[0]),
+                    catalog.events[name].add_photometry(time=str(obs[0]),
                                    band=nslabels[li], magnitude=str(obs[1]),
                                    e_magnitude=str(obs[2]), source=source,
                                    telescope=teles)
@@ -226,7 +226,7 @@ def do_ps_threepi(catalog):
                 if not line:
                     continue
                 for obs in line:
-                    add_photometry(catalog.events, name, time=str(obs[0]),
+                    catalog.events[name].add_photometry(time=str(obs[0]),
                                    band=nslabels[li], magnitude=str(obs[1]),
                                    upperlimit=True, source=source,
                                    telescope=teles)

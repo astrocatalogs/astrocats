@@ -9,12 +9,13 @@ from collections import OrderedDict
 from cdecimal import Decimal
 from scripts import FILENAME, PATH, SCHEMA
 
-from ..utils import (get_repo_folders, get_repo_paths, get_repo_years,
-                     get_sig_digits, is_number)
+from ..utils import (bandmetaf, bandrepf,
+                     get_repo_folders, get_repo_paths, get_repo_years,
+                     get_sig_digits, is_number, tprint)
 from .constants import (OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY)
 from .funcs import (get_atels_dict, get_cbets_dict,
                     get_iaucs_dict, host_clean, jd_to_mjd, name_clean,
-                    radec_clean)
+                    radec_clean, same_tag_num, trim_str_arr)
 
 
 class KEYS:
@@ -630,6 +631,286 @@ class EVENT(Entry):
                         self[key][qi]['source'] = source
 
         self.check()
+        return
+
+    def add_photometry(self, time="", u_time="MJD", e_time="",
+                       telescope="", instrument="", band="", magnitude="",
+                       e_magnitude="", source="", upperlimit=False, system="",
+                       scorrected="", observatory="", observer="", host=False,
+                       includeshost=False, survey="", kcorrected="", flux="",
+                       fluxdensity="", e_flux="", e_fluxdensity="", u_flux="",
+                       u_fluxdensity="", frequency="", u_frequency="", counts="",
+                       e_counts="", nhmw="", photonindex="", unabsorbedflux="",
+                       e_unabsorbedflux="", energy="", u_energy="",
+                       e_lower_magnitude="", e_upper_magnitude="",
+                       e_lower_time="", e_upper_time="", mcorrected=""):
+        name = self[KEYS.NAME]
+        if (not time and not host) or (not magnitude and not flux and not
+                                       fluxdensity and not counts and not
+                                       unabsorbedflux):
+            warnings.warn(
+                "Time or brightness not specified when adding photometry, not "
+                "adding.")
+            tprint('Name : "' + name + '", Time: "' + time + '", Band: "' +
+                   band + '", AB magnitude: "' + magnitude + '"')
+            return
+
+        if (not host and not is_number(time)) or (not is_number(magnitude) and not
+                                                  is_number(flux) and not
+                                                  is_number(fluxdensity) and not
+                                                  is_number(counts)):
+            warnings.warn('Time or brightness not numerical, not adding.')
+            tprint('Name : "' + name + '", Time: "' + time + '", Band: "' +
+                   band + '", AB magnitude: "' + magnitude + '"')
+            return
+
+        if (((e_magnitude and not is_number(e_magnitude)) or
+             (e_flux and not is_number(e_flux)) or
+             (e_fluxdensity and not is_number(e_fluxdensity)) or
+             (e_counts and not is_number(e_counts)))):
+            warnings.warn('Brightness error not numerical, not adding.')
+            tprint('Name : "' + name + '", Time: "' + time +
+                   '", Band: "' + band + '", AB error: "' + e_magnitude + '"')
+            return
+
+        if e_time and not is_number(e_time):
+            warnings.warn('Time error not numerical, not adding.')
+            tprint('Name : "' + name + '", Time: "' +
+                   time + '", Time error: "' + e_time + '"')
+            return
+
+        if ((flux or fluxdensity) and ((not u_flux and not u_fluxdensity) or
+                                       (not frequency and not band and not
+                                        energy))):
+            warnings.warn(
+                "Unit and band/frequency must be set when adding photometry by "
+                "flux or flux density, not adding.")
+            tprint('Name : "' + name + '", Time: "' + time)
+            return
+
+        if not source:
+            ValueError('Photometry must have source before being added!')
+
+        if self.is_erroneous('photometry', source):
+            return
+
+        # Do some basic homogenization
+        sband = bandrepf(band)
+
+        sinstrument = instrument
+        ssystem = system
+        stelescope = telescope
+
+        if not sinstrument:
+            sinstrument = bandmetaf(sband, 'instrument')
+        if not stelescope:
+            stelescope = bandmetaf(sband, 'telescope')
+        if not ssystem:
+            ssystem = bandmetaf(sband, 'system')
+
+        # Look for duplicate data and don't add if duplicate
+        if 'photometry' in self:
+            for photo in self['photometry']:
+                if ((same_tag_str(photo, sband, 'band') and
+                     same_tag_str(photo, u_time, 'u_time') and
+                     same_tag_num(photo, time, 'time', canbelist=True) and
+                     same_tag_num(photo, magnitude, 'magnitude') and
+                     (('host' not in photo and not host) or
+                      ('host' in photo and host)) and
+                     same_tag_num(photo, flux, 'flux') and
+                     same_tag_num(photo, unabsorbedflux, 'unabsorbedflux') and
+                     same_tag_num(photo, fluxdensity, 'fluxdensity') and
+                     same_tag_num(photo, counts, 'counts') and
+                     same_tag_num(photo, energy, 'energy', canbelist=True) and
+                     same_tag_num(photo, frequency, 'frequency') and
+                     same_tag_num(photo, photonindex, 'photonindex') and
+                     same_tag_num(photo, e_magnitude, 'e_magnitude') and
+                     same_tag_num(photo, e_lower_time, 'e_lower_time') and
+                     same_tag_num(photo, e_upper_time, 'e_upper_time') and
+                     same_tag_num(photo, e_lower_magnitude,
+                                  'e_lower_magnitude') and
+                     same_tag_num(photo, e_upper_magnitude,
+                                  'e_upper_magnitude') and
+                     same_tag_num(photo, e_flux, 'e_flux') and
+                     same_tag_num(photo, e_unabsorbedflux, 'e_unabsorbedflux') and
+                     same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
+                     same_tag_num(photo, e_counts, 'e_counts') and
+                     same_tag_str(photo, u_flux, 'u_flux') and
+                     same_tag_str(photo, u_fluxdensity, 'u_fluxdensity') and
+                     same_tag_str(photo, u_frequency, 'u_frequency') and
+                     same_tag_str(photo, u_energy, 'u_energy') and
+                     same_tag_num(photo, u_flux, 'u_flux') and
+                     same_tag_num(photo, u_fluxdensity, 'u_fluxdensity') and
+                     same_tag_num(photo, u_frequency, 'u_frequency') and
+                     same_tag_num(photo, u_energy, 'u_energy') and
+                     same_tag_str(photo, ssystem, 'system'))):
+                    return
+
+        photoentry = OrderedDict()
+        if time:
+            photoentry['time'] = time if isinstance(
+                time, list) or isinstance(time, str) else str(time)
+        if e_time:
+            photoentry['e_time'] = str(e_time)
+        if e_lower_time:
+            photoentry['e_lower_time'] = str(e_lower_time)
+        if e_upper_time:
+            photoentry['e_upper_time'] = str(e_upper_time)
+        if u_time:
+            photoentry['u_time'] = u_time
+        if sband:
+            photoentry['band'] = sband
+        if ssystem:
+            photoentry['system'] = ssystem
+        if magnitude:
+            photoentry['magnitude'] = str(magnitude)
+        if e_magnitude:
+            photoentry['e_magnitude'] = str(e_magnitude)
+        if e_lower_magnitude:
+            photoentry['e_lower_magnitude'] = str(e_lower_magnitude)
+        if e_upper_magnitude:
+            photoentry['e_upper_magnitude'] = str(e_upper_magnitude)
+        if frequency:
+            photoentry['frequency'] = frequency if isinstance(
+                frequency, list) or isinstance(frequency, str) else str(frequency)
+        if u_frequency:
+            photoentry['u_frequency'] = u_frequency
+        if energy:
+            photoentry['energy'] = energy if isinstance(
+                energy, list) or isinstance(energy, str) else str(energy)
+        if u_energy:
+            photoentry['u_energy'] = u_energy
+        if flux:
+            photoentry['flux'] = str(flux)
+        if e_flux:
+            photoentry['e_flux'] = str(e_flux)
+        if unabsorbedflux:
+            photoentry['unabsorbedflux'] = str(unabsorbedflux)
+        if e_unabsorbedflux:
+            photoentry['e_unabsorbedflux'] = str(e_unabsorbedflux)
+        if u_flux:
+            photoentry['u_flux'] = str(u_flux)
+        if photonindex:
+            photoentry['photonindex'] = str(photonindex)
+        if fluxdensity:
+            photoentry['fluxdensity'] = str(fluxdensity)
+        if e_fluxdensity:
+            photoentry['e_fluxdensity'] = str(e_fluxdensity)
+        if u_fluxdensity:
+            photoentry['u_fluxdensity'] = str(u_fluxdensity)
+        if counts:
+            photoentry['counts'] = str(counts)
+        if e_counts:
+            photoentry['e_counts'] = str(e_counts)
+        if upperlimit:
+            photoentry['upperlimit'] = upperlimit
+        if host:
+            photoentry['host'] = host
+        if includeshost:
+            photoentry['includeshost'] = includeshost
+        if kcorrected:
+            photoentry['kcorrected'] = kcorrected
+        if scorrected:
+            photoentry['scorrected'] = scorrected
+        if mcorrected:
+            photoentry['mcorrected'] = mcorrected
+        if observer:
+            photoentry['observer'] = observer
+        if survey:
+            photoentry['survey'] = survey
+        if observatory:
+            photoentry['observatory'] = observatory
+        if stelescope:
+            photoentry['telescope'] = stelescope
+        if sinstrument:
+            photoentry['instrument'] = sinstrument
+        if nhmw:
+            photoentry['nhmw'] = nhmw
+        if source:
+            photoentry['source'] = source
+        self.setdefault('photometry', []).append(photoentry)
+        return
+
+    def add_spectrum(self, waveunit, fluxunit, wavelengths="", fluxes="",
+                     u_time="", time="", instrument="", deredshifted="",
+                     dereddened="", errorunit="", errors="", source="",
+                     snr="", telescope="", observer="", survey="", reducer="",
+                     filename="", observatory="", data=""):
+
+        if self.is_erroneous('spectra', source):
+            return
+
+        spectrumentry = OrderedDict()
+
+        if 'spectra' in self:
+            for si, spectrum in enumerate(self['spectra']):
+                if 'filename' in spectrum and spectrum['filename'] == filename:
+                    # Copy exclude info
+                    if 'exclude' in spectrum:
+                        spectrumentry['exclude'] = spectrum['exclude']
+                    # Don't add duplicate spectra
+                    if 'data' in spectrum:
+                        return
+                    del self['spectra'][si]
+                    break
+
+        if not waveunit:
+            warnings.warn('No error unit specified, not adding spectrum.')
+            return
+        if not fluxunit:
+            warnings.warn('No flux unit specified, not adding spectrum.')
+            return
+
+        if not data or (not wavelengths or not fluxes):
+            ValueError("Spectrum must have wavelengths and fluxes set, or data "
+                       "set.")
+
+        if not source:
+            ValueError('Spectrum must have source before being added!')
+
+        if deredshifted != '':
+            spectrumentry['deredshifted'] = deredshifted
+        if dereddened != '':
+            spectrumentry['dereddened'] = dereddened
+        if instrument:
+            spectrumentry['instrument'] = instrument
+        if telescope:
+            spectrumentry['telescope'] = telescope
+        if observatory:
+            spectrumentry['observatory'] = observatory
+        if u_time:
+            spectrumentry['u_time'] = u_time
+        if time:
+            spectrumentry['time'] = time
+        if snr:
+            spectrumentry['snr'] = snr
+        if observer:
+            spectrumentry['observer'] = observer
+        if reducer:
+            spectrumentry['reducer'] = reducer
+        if survey:
+            spectrumentry['survey'] = survey
+        if filename:
+            spectrumentry['filename'] = filename
+
+        spectrumentry['waveunit'] = waveunit
+        spectrumentry['fluxunit'] = fluxunit
+        if data:
+            spectrumentry['data'] = data
+        else:
+            if errors and max([float(x) for x in errors]) > 0.:
+                if not errorunit:
+                    warnings.warn('No error unit specified, not adding spectrum.')
+                    return
+                spectrumentry['errorunit'] = errorunit
+                data = [trim_str_arr(wavelengths), trim_str_arr(
+                    fluxes), trim_str_arr(errors)]
+            else:
+                data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
+            spectrumentry['data'] = [list(i) for i in zip(*data)]
+        if source:
+            spectrumentry['source'] = source
+        self.setdefault('spectra', []).append(spectrumentry)
         return
 
 

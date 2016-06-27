@@ -16,7 +16,7 @@ from scripts import PATH
 from .. import Events
 from ...utils import is_number, pbar, pbar_strings, tprint
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import add_spectrum, get_preferred_name, uniq_cdl
+from ..funcs import get_preferred_name, uniq_cdl
 
 
 def do_wiserep_spectra(catalog):
@@ -147,9 +147,7 @@ def do_wiserep_spectra(catalog):
                             result = re.search('publish=(.*?)&amp;', trstr)
                             bibcode = ''
                             if result:
-                                bibcode = unescape(urllib.parse.unquote(
-                                    urllib.parse.unquote(result.group(1)))
-                                                   .split('/')[-1])
+                                bibcode = unescape(urllib.parse.unquote(urllib.parse.unquote(result.group(1))).split('/')[-1])
 
                             if not bibcode:
                                 biblink = tr.find(
@@ -240,8 +238,8 @@ def do_wiserep_spectra(catalog):
                                 else:
                                     fluxunit = 'Uncalibrated'
 
-                                add_spectrum(
-                                    catalog.events, name, 'Angstrom', fluxunit,
+                                catalog.events[name].add_spectrum(
+                                    'Angstrom', fluxunit,
                                     errors=errors,
                                     errorunit=fluxunit,
                                     wavelengths=wavelengths,

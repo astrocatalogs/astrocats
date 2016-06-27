@@ -10,7 +10,7 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from ..funcs import add_spectrum, event_exists
+from ..funcs import event_exists
 
 
 def do_superfit_spectra(catalog):
@@ -78,10 +78,10 @@ def do_superfit_spectra(catalog):
                 mlmjd = str(Decimal(mlmjd) + epoff)
             else:
                 mlmjd = ''
-            add_spectrum(catalog.events, name, 'Angstrom', 'Uncalibrated',
-                         u_time='MJD'
-                         if mlmjd else '', time=mlmjd,
-                         wavelengths=wavelengths, fluxes=fluxes, source=source)
+            catalog.events[name].add_spectrum(
+                'Angstrom', 'Uncalibrated', u_time='MJD' if mlmjd else '',
+                time=mlmjd, wavelengths=wavelengths, fluxes=fluxes,
+                source=source)
 
             lastname = name
 

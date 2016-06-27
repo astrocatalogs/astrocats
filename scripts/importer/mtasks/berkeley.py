@@ -11,10 +11,9 @@ from astropy.time import Time as astrotime
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import get_sig_digits, pbar, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
+from ..funcs import load_cached_url, uniq_cdl
 
 
 def do_ucb_photo(catalog):
@@ -36,9 +35,10 @@ def do_ucb_photo(catalog):
         oldname = phot['ObjName']
         name = catalog.add_event(oldname)
 
-        sec_source = catalog.events[name].add_source(srcname=sec_ref, url=sec_refurl,
-                                             bibcode=sec_refbib,
-                                             secondary=True)
+        sec_source = catalog.events[name].add_source(
+            srcname=sec_ref, url=sec_refurl,
+            bibcode=sec_refbib,
+            secondary=True)
         catalog.events[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
         if phot['Reference']:
@@ -88,8 +88,8 @@ def do_ucb_photo(catalog):
             e_mag = row[2]
             band = row[4]
             telescope = row[5]
-            add_photometry(
-                catalog.events, name, time=mjd, telescope=telescope, band=band,
+            catalog.events[name].add_photometry(
+                time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
     catalog.journal_events()
@@ -195,8 +195,8 @@ def do_ucb_spectra(catalog):
             errors = ''
 
         units = 'Uncalibrated'
-        add_spectrum(
-            catalog.events, name, 'Angstrom', units, u_time='MJD', time=mjd,
+        catalog.events[name].add_spectrum(
+            'Angstrom', units, u_time='MJD', time=mjd,
             wavelengths=wavelengths, filename=filename, fluxes=fluxes,
             errors=errors,
             errorunit=units, instrument=instrument, source=sources, snr=snr,

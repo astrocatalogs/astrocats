@@ -95,7 +95,7 @@ def do_tns(catalog):
                 magnitude = row[14]
                 band = row[15].split('-')[0]
                 mjd = astrotime(row[16]).mjd
-                add_photometry(catalog.events, name, time=mjd, magnitude=magnitude,
+                catalog.events[name].add_photometry(time=mjd, magnitude=magnitude,
                                band=band,
                                survey=survey, source=source)
             if row[16]:

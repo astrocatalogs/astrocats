@@ -62,7 +62,7 @@ def do_sdss(catalog):
                 magnitude = row[3]
                 e_mag = row[4]
                 telescope = 'SDSS'
-                add_photometry(catalog.events, name, time=mjd, telescope=telescope,
+                catalog.events[name].add_photometry(time=mjd, telescope=telescope,
                                band=band, magnitude=magnitude,
                                e_magnitude=e_mag, source=source, system='SDSS')
 

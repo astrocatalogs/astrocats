@@ -40,7 +40,7 @@ def do_cccp(catalog):
                         if row[2 * bb + 1]:
                             mag = row[2 * bb + 1].strip('>')
                             upl = (not row[2 * bb + 2])
-                            add_photometry(catalog.events, name, time=mjd, band=band,
+                            catalog.events[name].add_photometry(time=mjd, band=band,
                                            magnitude=mag,
                                            e_magnitude=row[2 * bb + 2],
                                            upperlimit=upl, source=source)
@@ -111,10 +111,10 @@ def do_cccp(catalog):
                               xx.split(',')]
                              for xx in list(filter(None, html3.split('\n')))]
                     for row in table:
-                        add_photometry(catalog.events, name,
-                                       time=str(Decimal(row[0]) + 53000),
-                                       band=band, magnitude=row[1],
-                                       e_magnitude=row[2], source=source)
+                        catalog.events[name].add_photometry(
+                            time=str(Decimal(row[0]) + 53000),
+                            band=band, magnitude=row[1],
+                            e_magnitude=row[2], source=source)
 
     catalog.journal_events()
     return
@@ -197,7 +197,7 @@ def do_cpcs(catalog):
         bnds = cpcsalert['filter']
         obs = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
-            add_photometry(catalog.events, name, time=mjd, magnitude=mags[mi],
+            catalog.events[name].add_photometry(time=mjd, magnitude=mags[mi],
                            e_magnitude=errs[mi],
                            band=bnds[mi], observatory=obs[mi],
                            source=uniq_cdl([source, sec_source]))

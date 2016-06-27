@@ -12,7 +12,7 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import is_number, pbar, pbar_strings
 
-from ..funcs import add_photometry, jd_to_mjd, make_date_string
+from ..funcs import jd_to_mjd, make_date_string
 
 
 def do_ascii(catalog):
@@ -61,9 +61,10 @@ def do_ascii(catalog):
                 if not row[0]:
                     continue
                 time = str(jd_to_mjd(Decimal(row[0])))
-                add_photometry(catalog.events, name, time=time, band='V',
-                               magnitude=row[1], e_magnitude=row[2],
-                               system=system, source=source)
+                catalog.events[name].add_photometry(
+                    time=time, band='V',
+                    magnitude=row[1], e_magnitude=row[2],
+                    system=system, source=source)
     catalog.journal_events()
 
     # stromlo
@@ -88,12 +89,12 @@ def do_ascii(catalog):
                 abs(Decimal(row[ci + 2]))) if row[ci + 2] else ''
             teles = 'MSSSO 1.3m' if band in ['VM', 'RM'] else 'CTIO'
             instr = 'MaCHO' if band in ['VM', 'RM'] else ''
-            add_photometry(catalog.events, name, time=mjd, band=band,
-                           magnitude=row[ci],
-                           e_upper_magnitude=e_upper_magnitude,
-                           e_lower_magnitude=e_lower_magnitude,
-                           upperlimit=upperlimit, telescope=teles,
-                           instrument=instr, source=source)
+            catalog.events[name].add_photometry(
+                time=mjd, band=band, magnitude=row[ci],
+                e_upper_magnitude=e_upper_magnitude,
+                e_lower_magnitude=e_lower_magnitude,
+                upperlimit=upperlimit, telescope=teles,
+                instrument=instr, source=source)
     catalog.journal_events()
 
     # 2015MNRAS.449..451W
@@ -113,8 +114,8 @@ def do_ascii(catalog):
         if len(namesplit) > 1:
             catalog.events[name].add_quantity('alias', namesplit[0], source)
         catalog.events[name].add_quantity('claimedtype', row[1], source)
-        add_photometry(catalog.events, name, time=row[2], band=row[
-                       4], magnitude=row[3], source=source)
+        catalog.events[name].add_photometry(
+            time=row[2], band=row[4], magnitude=row[3], source=source)
     catalog.journal_events()
 
     # 2016MNRAS.459.1039T
@@ -137,9 +138,8 @@ def do_ascii(catalog):
         for mi, mag in enumerate(mags):
             if not is_number(mag):
                 continue
-            add_photometry(
-                catalog.events, name, time=mjd, band=bands[
-                    mi], magnitude=mag, e_magnitude=errs[mi],
+            catalog.events[name].add_photometry(
+                time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=row[-1], upperlimit=upps[mi], source=source)
     catalog.journal_events()
 
@@ -159,9 +159,8 @@ def do_ascii(catalog):
         mag = mag.replace('<', '')
         err = row[4] if is_number(row[4]) else ''
         ins = row[5]
-        add_photometry(
-            catalog.events, name, time=mjd, band=row[
-                0], magnitude=mag, e_magnitude=err,
+        catalog.events[name].add_photometry(
+            time=mjd, band=row[0], magnitude=mag, e_magnitude=err,
             instrument=ins, upperlimit=upp, source=source)
     catalog.journal_events()
 
@@ -197,9 +196,8 @@ def do_ascii(catalog):
         band = row[2]
         mag = row[3]
         err = row[4]
-        add_photometry(
-            catalog.events, name, time=mjd, band=row[
-                2], magnitude=mag, e_magnitude=err,
+        catalog.events[name].add_photometry(
+            time=mjd, band=row[2], magnitude=mag, e_magnitude=err,
             instrument='WHIRC', telescope='WIYN 3.5 m', observatory='NOAO',
             system='WHIRC', source=source)
     catalog.journal_events()
@@ -231,9 +229,8 @@ def do_ascii(catalog):
         for mi, mag in enumerate(mags):
             if not is_number(mag):
                 continue
-            add_photometry(
-                catalog.events, name, time=mjd, band=bands[
-                    mi], magnitude=mag, e_magnitude=errs[mi],
+            catalog.events[name].add_photometry(
+                time=mjd, band=bands[mi], magnitude=mag, e_magnitude=errs[mi],
                 instrument=ins, telescope=tel, observatory=obs,
                 system='Natural', source=source)
 
@@ -316,9 +313,10 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
-                               magnitude=mag, e_magnitude=errs[mi],
-                               instrument=instrument, source=source)
+                catalog.events[name].add_photometry(
+                    time=mjd, band=bands[mi],
+                    magnitude=mag, e_magnitude=errs[mi],
+                    instrument=instrument, source=source)
     catalog.journal_events()
 
     # 2010arXiv1007.0011P
@@ -340,9 +338,10 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
-                               magnitude=mag, e_magnitude=errs[mi],
-                               instrument='LBT', source=source)
+                catalog.events[name].add_photometry(
+                    time=mjd, band=bands[mi],
+                    magnitude=mag, e_magnitude=errs[mi],
+                    instrument='LBT', source=source)
     catalog.journal_events()
 
     # 2000ApJ...533..320G
@@ -361,10 +360,11 @@ def do_ascii(catalog):
             for mi, mag in enumerate(mags):
                 if not is_number(mag):
                     continue
-                add_photometry(catalog.events, name, time=mjd, band=bands[mi],
-                               magnitude=mag,
-                               observatory='Mount Stromlo', telescope='MSSSO',
-                               source=source, kcorrected=True)
+                catalog.events[name].add_photometry(
+                    time=mjd, band=bands[mi],
+                    magnitude=mag,
+                    observatory='Mount Stromlo', telescope='MSSSO',
+                    source=source, kcorrected=True)
 
     catalog.journal_events()
     return
