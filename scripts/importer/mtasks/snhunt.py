@@ -56,7 +56,7 @@ def do_snhunt(catalog):
         for discoverer in discoverers:
             catalog.events[name].add_quantity('discoverer', 'CRTS', source)
             catalog.events[name].add_quantity('discoverer', discoverer, source)
-        if args.update:
+        if catalog.args.update:
             events = Events.journal_events(
                 tasks, args, events, log)
 

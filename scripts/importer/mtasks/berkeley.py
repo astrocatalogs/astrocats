@@ -204,7 +204,7 @@ def do_ucb_spectra(catalog):
             observer=observer,
             reducer=reducer, deredshifted=('-noz' in filename))
         ucbspectracnt = ucbspectracnt + 1
-        if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_events()

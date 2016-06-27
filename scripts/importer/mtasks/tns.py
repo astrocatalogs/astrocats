@@ -111,7 +111,7 @@ def do_tns(catalog):
                         date += pretty_num(dt.total_seconds() /
                                            (24 * 60 * 60), sig=6).lstrip('0')
                     catalog.events[name].add_quantity('discoverdate', date, source)
-            if args.update:
+            if catalog.args.update:
                 events = Events.journal_events(
                     tasks, args, events, log)
 

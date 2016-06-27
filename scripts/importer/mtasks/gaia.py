@@ -87,7 +87,7 @@ def do_gaia(catalog):
             add_photometry(catalog.events, name, time=mjd, telescope=telescope,
                            band=band, magnitude=magnitude,
                            e_magnitude=e_mag, source=source)
-        if args.update:
+        if catalog.args.update:
             events = Events.journal_events(
                 tasks, args, events, log)
     catalog.journal_events()

@@ -61,7 +61,7 @@ def do_ps_threepi(catalog):
             offline = True
 
     if offline:
-        if args.update:
+        if catalog.args.update:
             return
         warnings.warn('Pan-STARRS 3pi offline, using local files only.')
         with open(fname, 'r') as f:
@@ -251,13 +251,13 @@ def do_ps_threepi(catalog):
             if redshift:
                 catalog.events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
-            if args.update:
+            if catalog.args.update:
                 events = Events.journal_events(
                     tasks, args, events, log)
 
         catalog.journal_events()
         # Only run first page for Travis
-        if args.travis:
+        if catalog.args.travis:
             break
 
     return

@@ -205,7 +205,7 @@ def do_cfa_spectra(catalog):
                 else '', time=time, instrument=instrument,
                 errorunit='ergs/s/cm^2/Angstrom', errors=errors,
                 source=sources, dereddened=False, deredshifted=False)
-            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
     catalog.journal_events()
 
@@ -257,7 +257,7 @@ def do_cfa_spectra(catalog):
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
                 instrument=instrument, source=sources,
                 dereddened=False, deredshifted=False)
-            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
     catalog.journal_events()
 
@@ -316,7 +316,7 @@ def do_cfa_spectra(catalog):
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
                 instrument=instrument, source=source,
                 dereddened=False, deredshifted=False)
-            if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
     catalog.journal_events()

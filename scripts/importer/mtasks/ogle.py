@@ -21,7 +21,7 @@ def do_ogle(catalog):
     oglenames = []
     ogleupdate = [True, False, False, False, False]
     for b, bn in enumerate(pbar(basenames, current_task)):
-        if args.update and not ogleupdate[b]:
+        if catalog.args.update and not ogleupdate[b]:
             continue
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
@@ -149,7 +149,7 @@ def do_ogle(catalog):
                         events, name, time=mjd, band='I', magnitude=magnitude,
                         e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
-                if args.update:
+                if catalog.args.update:
                     events = Events.journal_events(
                         tasks, args, events, log)
 

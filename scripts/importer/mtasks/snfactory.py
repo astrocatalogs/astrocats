@@ -120,7 +120,7 @@ def do_snf_specta(catalog):
                 observatory=observatory, telescope=telescope, instrument=instrument,
                 errorunit=unit_err, source=sources, filename=filename)
             snfcnt = snfcnt + 1
-            if args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
+            if catalog.args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
     catalog.journal_events()

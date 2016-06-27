@@ -208,7 +208,7 @@ def do_suspect_spectra(catalog):
                     errorunit='Uncalibrated',
                     source=sources, filename=spectrum)
                 suspectcnt = suspectcnt + 1
-                if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
+                if catalog.args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
     catalog.journal_events()

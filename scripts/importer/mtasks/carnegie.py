@@ -108,7 +108,7 @@ def do_csp_spectra(catalog):
             time=time, wavelengths=wavelengths, fluxes=fluxes,
             telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)
-        if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_events()

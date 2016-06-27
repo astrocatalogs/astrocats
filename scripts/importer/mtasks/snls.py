@@ -102,7 +102,7 @@ def do_snls_spectra(catalog):
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
             time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
             filename=filename)
-        if args.travis and fi >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
     catalog.journal_events()
     return

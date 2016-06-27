@@ -83,7 +83,7 @@ def do_nedd(catalog):
                                                         combsources)
             if cleanhost:
                 events[snname].add_quantity('host', cleanhost, sources)
-            if args.update and olddistname != distname:
+            if catalog.args.update and olddistname != distname:
                 events = Events.journal_events(
                     tasks, args, events, log)
         olddistname = distname

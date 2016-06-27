@@ -25,7 +25,7 @@ def do_rochester(catalog):
     current_task = catalog.current_task
 
     for pp, path in enumerate(pbar(rochesterpaths, current_task)):
-        if args.update and not rochesterupdate[pp]:
+        if catalog.args.update and not rochesterupdate[pp]:
             continue
 
         filepath = os.path.join(
@@ -139,11 +139,11 @@ def do_rochester(catalog):
                     cols[11].contents[0]).strip(), sources)
             catalog.events[name].add_quantity('discoverer', str(
                 cols[13].contents[0]).strip(), sources)
-            if args.update:
+            if catalog.args.update:
                 events = Events.journal_events(
                     tasks, args, events, log)
 
-    if not args.update:
+    if not catalog.args.update:
         vsnetfiles = ['latestsne.dat']
         for vsnetfile in vsnetfiles:
             file_name = os.path.join(PATH.REPO_EXTERNAL, "" + vsnetfile)

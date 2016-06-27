@@ -253,7 +253,7 @@ def do_wiserep_spectra(catalog):
                                     filename=specfile)
                                 wiserepcnt = wiserepcnt + 1
 
-                                if (args.travis and
+                                if (catalog.args.travis and
                                         wiserepcnt % TRAVIS_QUERY_LIMIT == 0):
                                     break
 

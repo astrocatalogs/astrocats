@@ -146,11 +146,11 @@ def do_crts(catalog):
                                source=source,
                                includeshost=True, telescope=teles,
                                e_magnitude=e_mag, upperlimit=upl)
-            if args.update:
+            if catalog.args.update:
                 events = Events.journal_events(
                     tasks, args, events, log)
 
-        if args.travis and tri > TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and tri > TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_events()
