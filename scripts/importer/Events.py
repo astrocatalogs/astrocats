@@ -501,8 +501,13 @@ def add_event(tasks, args, events, name, log, load=True, delete=True):
     return events, newname
 
 
-def copy_to_event(events, fromname, destname):
-    tprint('Copying ' + fromname + ' to event ' + destname)
+def copy_to_event(events, fromname, destname, log):
+    """
+
+    Used by `merge_duplicates`
+    """
+    log.debug("Events.copy_to_event()")
+    log.info("Copy '{}' to '{}'".format(fromname, destname))
     newsourcealiases = {}
     keys = list(sorted(events[fromname].keys(), key=lambda xx: event_attr_priority(xx)))
 
@@ -545,7 +550,8 @@ def copy_to_event(events, fromname, destname):
                         host=null_field(item, "host"), survey=null_field(item, "survey"))
                 elif key == 'spectra':
                     add_spectrum(
-                        events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"), data=null_field(item, "data"),
+                        events, destname, null_field(item, "waveunit"), null_field(item, "fluxunit"),
+                        data=null_field(item, "data"),
                         u_time=null_field(item, "u_time"), time=null_field(item, "time"),
                         instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
                         dereddened=null_field(item, "dereddened"), errorunit=null_field(item, "errorunit"),
@@ -560,7 +566,10 @@ def copy_to_event(events, fromname, destname):
                 else:
                     events[destname].add_quantity(
                         key, item['value'], sources, error=null_field(item, "error"),
-                        unit = null_field(item, "unit"), probability=null_field(item, "probability"), kind=null_field(item, "kind"))
+                        unit = null_field(item, "unit"), probability=null_field(item, "probability"),
+                        kind=null_field(item, "kind"))
+
+    return events
 
 
 def new_event(tasks, args, events, name, log, load=True, delete=True, loadifempty=True,
@@ -832,7 +841,10 @@ def load_stubs(tasks, args, events, log):
 
 
 def merge_duplicates(events, stubs, args, tasks, task_obj, log):
-    """Merge and remove duplicate events
+    """Merge and remove duplicate events.
+
+    Compares each entry ('name') in `stubs` to all later entries to check for duplicates in name
+    or alias.  If a duplicate is found, they are merged and written to file.
     """
     log.debug("Events.merge_duplicates()")
     # Warn if there are still events; which suggests they havent been saved (journaled) yet??
@@ -879,16 +891,20 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
                             priority2 += 1
 
                     if priority1 > priority2:
-                        copy_to_event(events, name2, name1)
+                        copy_to_event(events, name2, name1, log)
                         keys.append(name1)
                         del events[name2]
                     else:
-                        copy_to_event(events, name1, name2)
+                        copy_to_event(events, name1, name2, log)
                         keys.append(name2)
                         del events[name1]
                 else:
                     log.warning('Duplicate already deleted')
-                events = journal_events(tasks, args, events, stubs, log)
+
+                if len(events) != 1:
+                    log.error("WARNING: len(events) = {}, expected 1.  Still journaling...".format(
+                        len(events)))
+                events, stubs = journal_events(tasks, args, events, stubs, log)
 
         if args.travis and n1 > TRAVIS_QUERY_LIMIT:
             break
