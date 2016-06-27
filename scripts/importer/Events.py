@@ -419,7 +419,7 @@ class EVENT(OrderedDict):
 
     def get_aliases(self, includename=True):
         # empty list if doesnt exist
-        aliases = self.get(KEYS.ALIAS, [])
+        aliases = [x['value'] for x in self.get(KEYS.ALIAS, [])]
         if includename and self.name not in aliases:
             aliases = [self.name] + aliases
         return aliases
