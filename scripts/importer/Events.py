@@ -15,7 +15,7 @@ from ..utils import (bandmetaf, bandrepf,
 from .constants import (OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY)
 from .funcs import (get_atels_dict, get_cbets_dict,
                     get_iaucs_dict, host_clean, jd_to_mjd, name_clean,
-                    radec_clean, same_tag_num, trim_str_arr)
+                    radec_clean, same_tag_num, same_tag_str, trim_str_arr)
 
 
 class KEYS:
@@ -49,30 +49,29 @@ class Entry(OrderedDict):
 
     @classmethod
     def init_from_file(cls, name=None, path=None, clean=False):
-        if not name and not path:
+        if name is None and path is None:
             raise ValueError("Either event `name` or `path` must be specified "
                              "to load event.")
-        if name and path:
+        if name is not None and path is not None:
             raise ValueError("Either event `name` or `path` should be "
                              "specified, not both.")
 
         # If the path is given, use that to load from
-        path_from_name = ''
-        if path:
+        load_path = ''
+        if path is not None:
             load_path = path
+            name = ''
         # If the name is given, try to find a path for it
         else:
             repo_paths = get_repo_paths()
             for rep in repo_paths:
                 filename = get_event_filename(name)
                 newpath = os.path.join(rep, filename + '.json')
-                if os.path.isfile(path):
-                    path_from_name = newpath
+                if os.path.isfile(newpath):
+                    load_path = newpath
                     break
 
-            load_path = path_from_name
-
-        if not load_path or not os.path.isfile(load_path):
+        if load_path is None or not os.path.isfile(load_path):
             warnings.warn("No path found for name: '{}', path: '{}'".format(
                 name, path))
             return None
@@ -86,6 +85,32 @@ class Entry(OrderedDict):
             new_event.clean()
 
         return new_event
+
+    def _load_data_from_json(self, fhand):
+        """FIX: check for overwrite??
+        """
+        with open(fhand, 'r') as jfil:
+            data = json.load(jfil, object_pairs_hook=OrderedDict)
+            name = list(data.keys())
+            if len(name) != 1:
+                raise ValueError("json file '{}' has multiple keys: {}".format(
+                    fhand, list(name)))
+            name = name[0]
+            data = data[name]
+            self.update(data)
+        self.filename = fhand
+        # If object doesnt have a name yet, but json does, store it
+        self_name = self[KEYS.NAME]
+        if len(self_name) == 0:
+            self[KEYS.NAME] = name
+        # Warn if there is a name mismatch
+        elif self_name.lower().strip() != name.lower().strip():
+            warnings.warn(("Object name '{}' does not match name in json:"
+                           "'{}'").format(
+                self_name, name))
+
+        self.check()
+        return
 
     def get_aliases(self, includename=True):
         """Retrieve the aliases of this object as a list of strings.
@@ -149,32 +174,6 @@ class EVENT(Entry):
         with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
             self._source_syns = json.loads(
                 f.read(), object_pairs_hook=OrderedDict)
-        return
-
-    def _load_data_from_json(self, fhand):
-        """FIX: check for overwrite??
-        """
-        with open(fhand, 'r') as jfil:
-            data = json.load(jfil, object_pairs_hook=OrderedDict)
-            name = list(data.keys())
-            if len(name) != 1:
-                raise ValueError("json file '{}' has multiple keys: {}".format(
-                    fhand, list(name)))
-            name = name[0]
-            data = data[name]
-            self.update(data)
-        self.filename = fhand
-        # If object doesnt have a name yet, but json does, store it
-        self_name = self[KEYS.NAME]
-        if len(self_name) == 0:
-            self[KEYS.NAME] = name
-        # Warn if there is a name mismatch
-        elif self_name.lower().strip() != name.lower().strip():
-            warnings.warn(("Object name '{}' does not match name in json:"
-                           "'{}'").format(
-                self_name, name))
-
-        self.check()
         return
 
     def add_source(self, srcname='', bibcode='', **src_kwargs):
