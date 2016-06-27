@@ -198,12 +198,12 @@
         "function": "do_ogle",
         "priority": 21
     },
-    "snls": {
+    "snls_photo": {
         "nice_name": "%pre SNLS",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
-        "function": "do_snls",
+        "module": "importer.mtasks.snls",
+        "function": "do_snls_photo",
         "priority": 22
     },
     "psthreepi": {

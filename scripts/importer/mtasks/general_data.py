@@ -1245,40 +1245,6 @@ def do_snhunt(events, stubs, args, tasks, task_obj, log):
     return events
 
 
-def do_snls(events, stubs, args, tasks, task_obj, log):
-    current_task = 'SNLS'
-    from scripts.utils import get_sig_digits
-    snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
-    data = list(csv.reader(open(snls_path, 'r'), delimiter=' ',
-                           quotechar='"', skipinitialspace=True))
-    for row in pbar(data, current_task):
-        flux = row[3]
-        err = row[4]
-        # Being extra strict here with the flux constraint, see note below.
-        if float(flux) < 3.0 * float(err):
-            continue
-        name = 'SNLS-' + row[0]
-        events, name = Events.add_event(tasks, args, events, name, log)
-        source = events[name].add_source(bibcode='2010A&A...523A...7G')
-        events[name].add_quantity('alias', name, source)
-        band = row[1]
-        mjd = row[2]
-        sig = get_sig_digits(flux.split('E')[0]) + 1
-        # Conversion comes from SNLS-Readme
-        # NOTE: Datafiles avail for download suggest diff zeropoints than 30,
-        # need to inquire.
-        magnitude = pretty_num(30.0 - 2.5 * log10(float(flux)), sig=sig)
-        e_mag = pretty_num(
-            2.5 * log10(1.0 + float(err) / float(flux)), sig=sig)
-        # e_mag = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
-        add_photometry(
-            events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
-            e_counts=err, source=source)
-
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events
-
-
 def do_superfit_spectra(events, stubs, args, tasks, task_obj, log):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
