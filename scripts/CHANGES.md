@@ -25,6 +25,8 @@
 -   Consider parallelizing/multithreading --- especially for html queries, throw em in the 
     background.
 -   Why are there so many calls to `add_event` for the same events??  e.g. 'SN2001kd' in Vizier task
+-   In `set_preferred_names`, when checking that the `newname` doesn't already exist: if it does, 
+    then they should be merged (or something?).
     
     
 ## Questions ##

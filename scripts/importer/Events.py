@@ -856,11 +856,9 @@ def merge_duplicates(events, stubs, args, tasks, task_obj, log):
     # Warn if there are no stubs (suggests no saved files); FIX: should this lead to a `return`??
     if len(stubs) == 0:
         log.error("WARNING: `stubs` is empty!")
-
         if args.update:
             log.warning('No sources changed, event files unchanged in update.  Skipping merge.')
             return events, stubs
-
         stubs = load_stubs(tasks, args, events, log)
 
     currenttask = 'Merging duplicate events'
@@ -920,15 +918,24 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
 
     FIX: create function to match SN####AA type names.
     """
-    currenttask = 'Setting preferred names'
-    if not len(events):
-        load_stubs(tasks, args, events)
+    log.debug("Events.set_preferred_names()")
 
-    for ni, name in pbar(list(sorted(list(events.keys()))), currenttask):
-        if name not in events:
-            continue
+    # raise error if there are still events; which suggests they havent been saved (journaled) yet??
+    if len(events) != 0:
+        err_str = "ERROR: `events` is not empty ({})".format(len(events))
+        log.error(err_str)
+        raise RuntimeError(err_str)
+
+    # Warn if there are no stubs (suggests no saved files); FIX: should this lead to a `return`??
+    if len(stubs) == 0:
+        log.error("WARNING: `stubs` is empty!")
+        stubs = load_stubs(tasks, args, events, log)
+
+    currenttask = 'Setting preferred names'
+    for ni, name in pbar(list(sorted(stubs.keys())), currenttask):
         newname = ''
         aliases = events[name].get_aliases()
+        # if there are no other options to choose from, skip
         if len(aliases) <= 1:
             continue
         # If the name is already in the form 'SN####AA' then keep using that
@@ -974,22 +981,28 @@ def set_preferred_names(events, stubs, args, tasks, task_obj, log):
                     if 'GAIA' in alias.upper():
                         newname = alias
                         break
-        if not newname:
-            for alias in aliases:
-                # Always prefer another alias over PSN
-                if name.startswith('PSN'):
-                    newname = alias
-                    break
+        # Always prefer another alias over PSN
+        if not newname and name.startswith('PSN'):
+            newname = aliases[0]
         if newname and name != newname:
             # Make sure new name doesn't already exist
-            if load_event_from_file(events, args, tasks, newname):
+            if load_event_from_file(events, args, tasks, log, newname):
+                log.error("WARNING: `newname` already exists... should do something about that...")
                 continue
-            if load_event_from_file(events, args, tasks, name, delete=True):
-                tprint('Changing event name (' + name + ') to preferred name (' + newname + ').')
-                events[newname] = events[name]
+            new_event = load_event_from_file(events, args, tasks, log, name, delete=True)
+            if new_event is None:
+                log.error("Could not load `new_event` with name '{}'".format(name))
+            else:
+                log.info("Changing event from name '{}' to preferred name '{}'".format(
+                    name, newname))
+                events[newname] = new_event
                 events[newname][KEYS.NAME] = newname
-                del events[name]
-                events = journal_events(tasks, args, events, stubs, log)
+                if name in events:
+                    log.error("WARNING: `name` = '{}' is in `events`... shouldnt happen?".format(
+                        name))
+                    del events[name]
+                events, stubs = journal_events(tasks, args, events, stubs, log)
+
         if args.travis and ni > TRAVIS_QUERY_LIMIT:
             break
 
