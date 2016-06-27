@@ -40,8 +40,8 @@ class Entry(OrderedDict):
     def __init__(self, name, stub=False):
         """Create a new `Entry` object with the given `name`.
         """
-        if not name:
-            raise ValueError("New `Entry` objects must have a valid name!")
+        # if not name:
+        #     raise ValueError("New `Entry` objects must have a valid name!")
         self[KEYS.NAME] = name
         self._stub = stub
         return
@@ -52,8 +52,8 @@ class Entry(OrderedDict):
         # empty list if doesnt exist
         alias_quanta = self.get(KEYS.ALIAS, [])
         aliases = [aq['value'] for aq in alias_quanta]
-        if includename and self.name not in aliases:
-            aliases = [self.name] + aliases
+        if includename and self[KEYS.NAME] not in aliases:
+            aliases = [self.[KEYS.NAME]] + aliases
         return aliases
 
     def get_stub(self):
@@ -83,7 +83,6 @@ class EVENT(Entry):
     FIX: does this need to be `ordered`???
     FIX: check that no stored values are empty/invalid (delete key in that
          case?)
-    FIX: be careful / remove duplicity between EVENT.name and EVENT['name'].
     FIX: distinguish between '.filename' and 'get_filename'
 
     sources
@@ -126,13 +125,14 @@ class EVENT(Entry):
             self.update(data)
         self.filename = fhand
         # If object doesnt have a name yet, but json does, store it
-        if len(self.name) == 0:
-            self.name = name
+        self_name = self[KEYS.NAME]
+        if len(self_name) == 0:
+            self[KEYS.NAME] = name
         # Warn if there is a name mismatch
-        elif self.name.lower().strip() != name.lower().strip():
+        elif self_name.lower().strip() != name.lower().strip():
             warnings.warn(("Object name '{}' does not match name in json:"
                            "'{}'").format(
-                self.name, name))
+                self_name, name))
 
         self.check()
         return
@@ -211,17 +211,17 @@ class EVENT(Entry):
         """
         """
         if not quantity:
-            raise(ValueError(self.name +
+            raise ValueError(self[KEYS.NAME] +
                              "'s quantity must be specified for "
-                             "add_quantity."))
+                             "add_quantity.")
         if not sources:
-            raise(ValueError(self.name + "'s source must be specified for "
+            raise ValueError(self[KEYS.NAME] + "'s source must be specified for "
                              "quantity " +
-                             quantity + ' before it is added.'))
+                             quantity + ' before it is added.')
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise(ValueError(self.name + "'s Quantity " + quantity +
-                             " must be a string or an array of strings."))
+            raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
+                             " must be a string or an array of strings.")
 
         if self.is_erroneous(quantity, sources):
             return None
@@ -237,8 +237,8 @@ class EVENT(Entry):
         if not svalue or svalue == '--' or svalue == '-':
             return
         if serror and (not is_number(serror) or float(serror) < 0):
-            raise(ValueError(self.name + "'s quanta " + quantity +
-                             ' error value must be a number and positive.'))
+            raise ValueError(self[KEYS.NAME] + "'s quanta " + quantity +
+                             ' error value must be a number and positive.')
 
         # Set default units
         if not unit and quantity == 'velocity':
@@ -414,19 +414,13 @@ class EVENT(Entry):
         if KEYS.SCHEMA not in self.keys():
             self[KEYS.SCHEMA] = SCHEMA.URL
         # Make sure there is a name key in dict
-        if KEYS.NAME not in self.keys():
-            self[KEYS.NAME] = self.name
-            if len(self[KEYS.NAME]) == 0:
-                raise ValueError("Event name is empty:\n\t{}".format(
-                    json.dumps(self, indent=2)))
-        # Make sure there is a name attribute in object
-        if len(self.name) == '' and len(self[KEYS.NAME]) > 0:
-            self.name = str(self[KEYS.NAME])
-
+        if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
+            raise ValueError("Event name is empty:\n\t{}".format(
+                json.dumps(self, indent=2)))
         return
 
     def _get_save_path(self, bury=False):
-        filename = get_event_filename(self.name)
+        filename = get_event_filename(self[KEYS.NAME])
 
         # Put non-SNe in the boneyard
         if bury:
@@ -452,12 +446,12 @@ class EVENT(Entry):
         outdir, filename = self._get_save_path(bury=bury)
 
         # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self.name: self},
+        jsonstring = json.dumps({self[KEYS.NAME]: self},
                                 indent='\t', separators=(',', ':'),
                                 ensure_ascii=False)
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir, self.name))
+                               "not exist.".format(outdir, self[KEYS.NAME]))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
@@ -469,7 +463,7 @@ class EVENT(Entry):
             if source['alias'] == alias:
                 return source
         raise ValueError(
-            "Source '{}': alias '{}' not found!".format(self.name, alias))
+            "Source '{}': alias '{}' not found!".format(self[KEYS.NAME], alias))
 
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
