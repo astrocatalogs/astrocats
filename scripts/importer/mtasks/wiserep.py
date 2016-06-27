@@ -66,61 +66,73 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                             specpath = ''
                             tds = tr.findAll('td')
                             for tdi, td in enumerate(tds):
-                                if td.contents:
-                                    if tdi == 3:
-                                        name = re.sub(
-                                            '<[^<]+?>', '', str(td.contents[0])).strip()
-                                    elif tdi == 5:
-                                        claimedtype = re.sub(
-                                            '<[^<]+?>', '', str(td.contents[0])).strip()
-                                        if claimedtype == 'SN':
-                                            claimedtype = ''
-                                            continue
-                                        if claimedtype[:3] == 'SN ':
-                                            claimedtype = claimedtype[
-                                                3:].strip()
-                                        claimedtype = claimedtype.replace(
-                                            '-like', '').strip()
-                                    elif tdi == 9:
-                                        instrument = re.sub(
-                                            '<[^<]+?>', '', str(td.contents[0])).strip()
-                                    elif tdi == 11:
-                                        epoch = re.sub(
-                                            '<[^<]+?>', '', str(td.contents[0])).strip()
-                                    elif tdi == 13:
-                                        observer = re.sub(
-                                            '<[^<]+?>', '', str(td.contents[0])).strip()
-                                        if observer == 'Unknown' or observer == 'Other':
-                                            observer = ''
-                                    elif tdi == 17:
-                                        reducer = re.sub(
-                                            '<[^<]+?>', '', str(td.contents[0])).strip()
-                                        if reducer == 'Unknown' or reducer == 'Other':
-                                            reducer = ''
-                                    elif tdi == 25:
-                                        speclinks = td.findAll('a')
-                                        try:
-                                            for link in speclinks:
-                                                if 'Ascii' in link['href']:
-                                                    specfile = link.contents[
-                                                        0].strip()
-                                                    tfiles = deepcopy(lfiles)
-                                                    for fi, fname in enumerate(lfiles):
-                                                        if specfile in fname:
-                                                            specpath = fname
-                                                            del tfiles[fi]
-                                                            lfiles = deepcopy(
-                                                                tfiles)
-                                                            raise StopIteration
-                                        except (KeyboardInterrupt, SystemExit):
-                                            raise
-                                        except StopIteration:
-                                            pass
-                                        # if not specpath:
-                                            #    warnings.warn('Spectrum file not found, "' + specfile + '"')
-                                    else:
+                                if not td.contents:
+                                    continue
+                                if tdi == 3:
+                                    name = re.sub(
+                                        '<[^<]+?>', '',
+                                        str(td.contents[0])).strip()
+                                elif tdi == 5:
+                                    claimedtype = re.sub(
+                                        '<[^<]+?>', '',
+                                        str(td.contents[0])).strip()
+                                    if claimedtype == 'SN':
+                                        claimedtype = ''
                                         continue
-                        if 'Spec Type:</span>' in str(tr.contents) and produceoutput:
+                                    if claimedtype[:3] == 'SN ':
+                                        claimedtype = claimedtype[
+                                            3:].strip()
+                                    claimedtype = claimedtype.replace(
+                                        '-like', '').strip()
+                                elif tdi == 9:
+                                    instrument = re.sub(
+                                        '<[^<]+?>', '',
+                                        str(td.contents[0])).strip()
+                                elif tdi == 11:
+                                    epoch = re.sub(
+                                        '<[^<]+?>', '',
+                                        str(td.contents[0])).strip()
+                                elif tdi == 13:
+                                    observer = re.sub(
+                                        '<[^<]+?>', '',
+                                        str(td.contents[0])).strip()
+                                    if (observer == 'Unknown' or
+                                            observer == 'Other'):
+                                        observer = ''
+                                elif tdi == 17:
+                                    reducer = re.sub(
+                                        '<[^<]+?>', '',
+                                        str(td.contents[0])).strip()
+                                    if (reducer == 'Unknown' or
+                                            reducer == 'Other'):
+                                        reducer = ''
+                                elif tdi == 25:
+                                    speclinks = td.findAll('a')
+                                    try:
+                                        for link in speclinks:
+                                            if 'Ascii' in link['href']:
+                                                specfile = link.contents[
+                                                    0].strip()
+                                                tfiles = deepcopy(lfiles)
+                                                for fi, fname in \
+                                                        enumerate(lfiles):
+                                                    if specfile in fname:
+                                                        specpath = fname
+                                                        del tfiles[fi]
+                                                        lfiles = deepcopy(
+                                                            tfiles)
+                                                        raise StopIteration
+                                    except (KeyboardInterrupt, SystemExit):
+                                        raise
+                                    except StopIteration:
+                                        pass
+                                    # if not specpath:
+                                        #    warnings.warn('Spectrum file
+                                        #  not found, "' + specfile + '"')
+                                else:
+                                    continue
+                        if ('Spec Type:</span>' in str(tr.contents) and
+                                produceoutput):
                             produceoutput = False
 
                             trstr = str(tr)
@@ -128,14 +140,16 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                             redshift = ''
                             if result:
                                 redshift = result.group(1)
-                                if not is_number(redshift) or float(redshift) > 100.:
+                                if (not is_number(redshift) or
+                                        float(redshift) > 100.):
                                     redshift = ''
 
                             result = re.search('publish=(.*?)&amp;', trstr)
                             bibcode = ''
                             if result:
                                 bibcode = unescape(urllib.parse.unquote(
-                                    urllib.parse.unquote(result.group(1))).split('/')[-1])
+                                    urllib.parse.unquote(result.group(1)))
+                                                   .split('/')[-1])
 
                             if not bibcode:
                                 biblink = tr.find(
@@ -145,7 +159,8 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
 
                             if name.startswith('sn'):
                                 name = 'SN' + name[2:]
-                            if name.startswith(('CSS', 'SSS', 'MLS')) and ':' not in name:
+                            if (name.startswith(('CSS', 'SSS', 'MLS')) and
+                                    ':' not in name):
                                 name = name.replace('-', ':', 1)
                             if name.startswith('MASTERJ'):
                                 name = name.replace('MASTERJ', 'MASTER OT J')
@@ -159,10 +174,14 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                             events, name = Events.add_event(
                                 tasks, args, events, name, log)
 
-                            # print(name + ' ' + claimedtype + ' ' + epoch + ' ' + observer + ' ' + reducer + ' ' + specfile + ' ' + bibcode + ' ' + redshift)
+                            # print(name + ' ' + claimedtype + ' ' + epoch +
+                            # ' ' + observer + ' ' + reducer + ' ' + specfile +
+                            # ' ' + bibcode + ' ' + redshift)
 
                             secondarysource = events[name].add_source(
-                                srcname=secondaryreference, url=secondaryrefurl, bibcode=secondarybibcode, secondary=True)
+                                srcname=secondaryreference,
+                                url=secondaryrefurl,
+                                bibcode=secondarybibcode, secondary=True)
                             events[name].add_quantity(
                                 'alias', name, secondarysource)
                             if bibcode:
@@ -181,7 +200,8 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
 
                             if claimedtype not in ['Other']:
                                 events[name].add_quantity(
-                                    'claimedtype', claimedtype, secondarysource)
+                                    'claimedtype', claimedtype,
+                                    secondarysource)
                             events[name].add_quantity(
                                 'redshift', redshift, secondarysource)
 
@@ -196,13 +216,17 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                 oldval = ''
                                 for row in data:
                                     if row and '#' not in row[0]:
-                                        if len(row) >= 2 and is_number(row[0]) and is_number(row[1]) and row[1] != oldval:
+                                        if (len(row) >= 2 and
+                                                is_number(row[0]) and
+                                                is_number(row[1]) and
+                                                row[1] != oldval):
                                             newdata.append(row)
                                             oldval = row[1]
 
                                 if skipspec or not newdata:
                                     warnings.warn(
-                                        'Skipped adding spectrum file ' + specfile)
+                                        'Skipped adding spectrum file ' +
+                                        specfile)
                                     continue
 
                                 data = [list(i) for i in zip(*newdata)]
@@ -219,13 +243,19 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                     fluxunit = 'Uncalibrated'
 
                                 add_spectrum(
-                                    events, name, 'Angstrom', fluxunit, errors=errors,
-                                    errorunit=fluxunit, wavelengths=wavelengths, fluxes=fluxes,
-                                    u_time='MJD', time=time, instrument=instrument, source=sources,
-                                    observer=observer, reducer=reducer, filename=specfile)
+                                    events, name, 'Angstrom', fluxunit,
+                                    errors=errors,
+                                    errorunit=fluxunit,
+                                    wavelengths=wavelengths,
+                                    fluxes=fluxes,
+                                    u_time='MJD', time=time,
+                                    instrument=instrument, source=sources,
+                                    observer=observer, reducer=reducer,
+                                    filename=specfile)
                                 wiserepcnt = wiserepcnt + 1
 
-                                if args.travis and wiserepcnt % TRAVIS_QUERY_LIMIT == 0:
+                                if (args.travis and
+                                        wiserepcnt % TRAVIS_QUERY_LIMIT == 0):
                                     break
 
                 tprint('Unadded files: ' + str(len(lfiles) - 1) +
