@@ -12,7 +12,6 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import is_number, pbar, pbar_strings
 
-from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, make_date_string
 
 
@@ -248,9 +247,8 @@ def do_ascii(catalog):
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 continue
-            (name,
-             source) = catalog.new_event(row[0],
-                                        bibcode='2014ApJ...783...28G')
+            name, source = catalog.new_event(
+                row[0], bibcode='2014ApJ...783...28G')
             catalog.events[name].add_quantity('alias', row[1], source)
             catalog.events[name].add_quantity(
                 'discoverdate', '20' + row[0][3:5], source)
@@ -266,9 +264,8 @@ def do_ascii(catalog):
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
         for r, row in enumerate(pbar(data, current_task)):
-            (name,
-             source) = catalog.new_event('SNLS-' + row[0],
-                                         bibcode='2005ApJ...634.1190H')
+            name, source = catalog.new_event(
+                'SNLS-' + row[0], bibcode='2005ApJ...634.1190H')
             catalog.events[name].add_quantity(
                 'discoverdate', '20' + row[0][:2], source)
             catalog.events[name].add_quantity('ra', row[1], source)
@@ -290,8 +287,8 @@ def do_ascii(catalog):
             name = row[0]
             if is_number(name[:4]):
                 name = 'SN' + name
-            events, name, source = Events.new_event(
-                tasks, args, events, name, log, bibcode='2014MNRAS.444.2133S')
+            name, source = catalog.new_event(
+                name, bibcode='2014MNRAS.444.2133S')
             catalog.events[name].add_quantity('ra', row[1], source)
             catalog.events[name].add_quantity('dec', row[2], source)
             catalog.events[name].add_quantity('redshift', row[3], source, kind='host')
@@ -306,10 +303,8 @@ def do_ascii(catalog):
             if row[0][0] == '#':
                 bands = row[2:-1]
                 continue
-            (catalog.events,
-             name,
-             source) = catalog.new_event('SN2008S',
-                                        bibcode='2009MNRAS.398.1041B')
+            name, source = catalog.new_event(
+                'SN2008S', bibcode='2009MNRAS.398.1041B')
             mjd = str(jd_to_mjd(Decimal(row[0])))
             mags = [x.split('±')[0].strip() for x in row[2:]]
             upps = [('<' in x.split('±')[0]) for x in row[2:]]
@@ -335,10 +330,8 @@ def do_ascii(catalog):
             if row[0][0] == '#':
                 bands = row[1:]
                 continue
-            (catalog.events,
-             name,
-             source) = catalog.new_event('SN2008S',
-                                        bibcode='2010arXiv1007.0011P')
+            name, source = catalog.new_event(
+                'SN2008S', bibcode='2010arXiv1007.0011P')
             mjd = row[0]
             mags = [x.split('±')[0].strip() for x in row[1:]]
             errs = [x.split('±')[1].strip()
@@ -357,10 +350,8 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        (catalog.events,
-         name,
-         source) = catalog.new_event('SN1997cy',
-                                    bibcode='2000ApJ...533..320G')
+        name, source = catalog.new_event(
+            'SN1997cy', bibcode='2000ApJ...533..320G')
         for r, row in enumerate(pbar(data, current_task)):
             if row[0][0] == '#':
                 bands = row[1:-1]

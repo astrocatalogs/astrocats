@@ -10,13 +10,11 @@ from cdecimal import Decimal
 from scripts import FILENAME, PATH, SCHEMA
 
 from ..utils import (get_repo_folders, get_repo_paths, get_repo_years,
-                     get_sig_digits, is_number, pbar, repo_file_list)
-from .constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES, OSC_BIBCODE,
-                        OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY,
-                        TRAVIS_QUERY_LIMIT)
-from .funcs import (event_attr_priority, get_atels_dict, get_cbets_dict,
+                     get_sig_digits, is_number)
+from .constants import (OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY)
+from .funcs import (get_atels_dict, get_cbets_dict,
                     get_iaucs_dict, host_clean, jd_to_mjd, name_clean,
-                    null_field, radec_clean, uniq_cdl)
+                    radec_clean)
 
 
 class KEYS:
@@ -81,7 +79,7 @@ class Entry(OrderedDict):
         # Create a new `EVENT` instance
         new_event = cls(name)
         # Fill it with data from json file
-        new_event._load_data_from_json(load_path, log)
+        new_event._load_data_from_json(load_path)
 
         if clean:
             new_event.clean()
@@ -152,10 +150,9 @@ class EVENT(Entry):
                 f.read(), object_pairs_hook=OrderedDict)
         return
 
-    def _load_data_from_json(self, fhand, log):
+    def _load_data_from_json(self, fhand):
         """FIX: check for overwrite??
         """
-        log.debug("Events.EVENT._load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -605,12 +602,12 @@ class EVENT(Entry):
                 bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
             for err in self['errors']:
                 self.add_quantity('error', err['quantity'], source,
-                                         kind=err['sourcekind'], extra=err['id'])
+                                  kind=err['sourcekind'], extra=err['id'])
             del self['errors']
 
         if not bibcodes:
             self.add_source(bibcode=OSC_BIBCODE,
-                                   srcname=OSC_NAME, url=OSC_URL, secondary=True)
+                            srcname=OSC_NAME, url=OSC_URL, secondary=True)
             bibcodes = [OSC_BIBCODE]
 
         # Go through all keys in 'dirty' event
@@ -649,64 +646,3 @@ def get_event_text(eventfile):
         with open(eventfile, 'r') as f:
             filetext = f.read()
     return filetext
-
-
-def load_event_from_file(events, args, tasks, log, name='', path='',
-                         clean=False, delete=True, append=False):
-    """
-
-    FIX: currently will error if cant find a path from `name`
-    """
-    log.debug("Events.load_event_from_file()")
-    if not name and not path:
-        raise ValueError(
-            'Either event `name` or `path` must be specified to load event.')
-
-    if name and path:
-        raise ValueError(
-            'Either event `name` or `path` should be specified, not both.')
-
-    # If the path is given, use that to load from
-    path_from_name = ''
-    if path:
-        load_path = path
-    # If the name is given, try to find a path for it
-    else:
-        repo_paths = get_repo_paths()
-        for rep in repo_paths:
-            filename = get_event_filename(name)
-            newpath = os.path.join(rep, filename + '.json')
-            if os.path.isfile(path):
-                path_from_name = newpath
-                break
-
-        load_path = path_from_name
-
-    if not load_path or not os.path.isfile(load_path):
-        log.debug("No path found for name: '{}', path: '{}'".
-                  format(name, path))
-        return None
-
-    new_event = EVENT(name)
-    new_event._load_data_from_json(load_path, log)
-
-    # Delete old version
-    if name in events:
-        del events[name]
-
-    if clean:
-        new_event = clean_event(new_event)
-
-    name = new_event[KEYS.NAME]
-    log.log(log._LOADED, "Loaded {} from '{}'".format(
-        name.ljust(20), load_path))
-
-    # If this event loaded from an existing repo path and we will resave
-    # later, delete that version
-    # FIX: have this check done to determine if `delete` is passed as True,
-    # when calling this func
-    if 'writeevents' in tasks and delete and path_from_name:
-        os.remove(path_from_name)
-        log.debug("Deleted '{}'".format(path_from_name))
-
-    return new_event
