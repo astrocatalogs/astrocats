@@ -19,7 +19,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_spectrum, get_preferred_name, uniq_cdl
 
 
-def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
+def do_wiserep_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
@@ -168,8 +168,8 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                                 name = name.replace('PSNJ', 'PSN J')
                             name = get_preferred_name(events, name)
                             if oldname and name != oldname:
-                                events, stubs = Events.journal_events(
-                                    tasks, args, events, stubs, log)
+                                events = Events.journal_events(
+                                    tasks, args, events, log)
                             oldname = name
                             events, name = Events.add_event(
                                 tasks, args, events, name, log)
@@ -262,5 +262,5 @@ def do_wiserep_spectra(events, stubs, args, tasks, task_obj, log):
                        "/" + str(len(files) - 1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events

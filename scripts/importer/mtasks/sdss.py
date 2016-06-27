@@ -12,7 +12,7 @@ from .. import Events
 from ..funcs import add_photometry
 
 
-def do_sdss(events, stubs, args, tasks, task_obj, log):
+def do_sdss(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
@@ -67,5 +67,5 @@ def do_sdss(events, stubs, args, tasks, task_obj, log):
                                band=band, magnitude=magnitude,
                                e_magnitude=e_mag, source=source, system='SDSS')
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

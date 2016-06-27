@@ -22,7 +22,7 @@ from ..funcs import (add_photometry, add_spectrum, get_preferred_name,
                      jd_to_mjd, uniq_cdl)
 
 
-def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
+def do_suspect_photo(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'suspectreferences.csv'), 'r') as f:
@@ -103,11 +103,11 @@ def do_suspect_photo(events, stubs, args, tasks, task_obj, log):
                            e_magnitude=e_magnitude,
                            source=sec_source + ',' + source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events
 
 
-def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
+def do_suspect_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                            'Suspect/sources.json'), 'r') as f:
@@ -136,8 +136,8 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 name = 'SN' + name
             name = get_preferred_name(events, name)
             if oldname and name != oldname:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
             oldname = name
             events, name = Events.add_event(tasks, args, events, name, log)
             sec_ref = 'SUSPECT'
@@ -211,5 +211,5 @@ def do_suspect_spectra(events, stubs, args, tasks, task_obj, log):
                 if args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
                     break
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events

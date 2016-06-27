@@ -12,7 +12,7 @@ from .. import Events
 from ..funcs import make_date_string
 
 
-def do_psst(events, stubs, args, tasks, task_obj, log):
+def do_psst(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # 2016arXiv160204156S
     file_path = os.path.join(
@@ -50,7 +50,7 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
             events[name].add_quantity('discoverdate', discoverdate, source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     # 1606.04795
     file_path = os.path.join(PATH.REPO_EXTERNAL, '1606.04795.tsv')
@@ -76,6 +76,6 @@ def do_psst(events, stubs, args, tasks, task_obj, log):
             for alias in [x.strip() for x in row[8].split(',')]:
                 events[name].add_quantity('alias', alias, source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
 
     return events

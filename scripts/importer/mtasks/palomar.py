@@ -11,7 +11,7 @@ from .. import Events
 from ...utils import is_number
 
 
-def do_ptf(events, stubs, args, tasks, task_obj, log):
+def do_ptf(events, args, tasks, task_obj, log):
     # response =
     # urllib.request.urlopen('http://wiserep.weizmann.ac.il/objects/list')
     # bs = BeautifulSoup(response, 'html5lib')
@@ -88,5 +88,5 @@ def do_ptf(events, stubs, args, tasks, task_obj, log):
             events, name = Events.add_event(
                 tasks, args, events, 'PTF' + suffix, log)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events

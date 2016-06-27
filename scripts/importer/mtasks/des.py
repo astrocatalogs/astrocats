@@ -12,7 +12,7 @@ from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_des(events, stubs, args, tasks, task_obj, log):
+def do_des(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
@@ -80,5 +80,5 @@ def do_des(events, stubs, args, tasks, task_obj, log):
                                    telescope='Blanco 4m', instrument='DECam',
                                    upperlimit=upl, source=sources)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

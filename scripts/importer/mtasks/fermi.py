@@ -9,7 +9,7 @@ from scripts.utils import pbar
 from .. import Events
 
 
-def do_fermi(events, stubs, args, tasks, task_obj, log):
+def do_fermi(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            '1SC_catalog_v01.asc'), 'r') as ff:
@@ -31,5 +31,5 @@ def do_fermi(events, stubs, args, tasks, task_obj, log):
                 'ra', row[2], source, unit='floatdegrees')
             events[name].add_quantity(
                 'dec', row[3], source, unit='floatdegrees')
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

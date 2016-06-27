@@ -13,7 +13,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url
 
 
-def do_gaia(events, stubs, args, tasks, task_obj, log):
+def do_gaia(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(args, current_task,
@@ -88,7 +88,7 @@ def do_gaia(events, stubs, args, tasks, task_obj, log):
                            band=band, magnitude=magnitude,
                            e_magnitude=e_mag, source=source)
         if args.update:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

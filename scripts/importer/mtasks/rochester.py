@@ -16,7 +16,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
-def do_rochester(events, stubs, args, tasks, task_obj, log):
+def do_rochester(events, args, tasks, task_obj, log):
     rochestermirrors = ['http://www.rochesterastronomy.org/',
                         'http://www.supernova.thistlethwaites.com/']
     rochesterpaths = ['snimages/snredshiftall.html',
@@ -140,8 +140,8 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity('discoverer', str(
                 cols[13].contents[0]).strip(), sources)
             if args.update:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
 
     if not args.update:
         vsnetfiles = ['latestsne.dat']
@@ -212,5 +212,5 @@ def do_rochester(events, stubs, args, tasks, task_obj, log):
                         events, name, time=mjd, band=band, magnitude=magnitude,
                         e_magnitude=e_magnitude, source=sources)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events

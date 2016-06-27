@@ -16,7 +16,7 @@ from ...utils import is_number, pbar
 from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 
 
-def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
+def do_asiago_photo(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
@@ -115,11 +115,11 @@ def do_asiago_photo(events, stubs, args, tasks, task_obj, log):
             if (discoverer != ''):
                 events[name].add_quantity('discoverer', discoverer, source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events
 
 
-def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
+def do_asiago_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     html = load_cached_url(args, current_task,
                            ('http://sngroup.oapd.inaf.it./'
@@ -127,7 +127,7 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                                         'Asiago/spectra.html'))
     if not html:
-        return events, stubs
+        return events
 
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.findAll('tr')
@@ -227,5 +227,5 @@ def do_asiago_spectra(events, stubs, args, tasks, task_obj, log):
             #    print(scidata[3])
             #    sys.exit()
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events

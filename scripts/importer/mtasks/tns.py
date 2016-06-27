@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_photometry, load_cached_url
 
 
-def do_tns(events, stubs, args, tasks, task_obj, log):
+def do_tns(events, args, tasks, task_obj, log):
     from datetime import timedelta
     session = requests.Session()
     current_task = task_obj.current_task(args)
@@ -112,8 +112,8 @@ def do_tns(events, stubs, args, tasks, task_obj, log):
                                            (24 * 60 * 60), sig=6).lstrip('0')
                     events[name].add_quantity('discoverdate', date, source)
             if args.update:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

@@ -17,7 +17,7 @@ from .. import Events
 from ..funcs import add_photometry, event_exists, load_cached_url, uniq_cdl
 
 
-def do_cccp(events, stubs, args, tasks, task_obj, log):
+def do_cccp(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
@@ -118,11 +118,11 @@ def do_cccp(events, stubs, args, tasks, task_obj, log):
                                        band=band, magnitude=row[1],
                                        e_magnitude=row[2], source=source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_cpcs(events, stubs, args, tasks, task_obj, log):
+def do_cpcs(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
@@ -204,8 +204,8 @@ def do_cpcs(events, stubs, args, tasks, task_obj, log):
                            band=bnds[mi], observatory=obs[mi],
                            source=uniq_cdl([source, sec_source]))
         if args.update:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

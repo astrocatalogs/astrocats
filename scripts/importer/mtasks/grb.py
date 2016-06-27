@@ -10,7 +10,7 @@ from .. import Events
 from ..funcs import load_cached_url
 
 
-def do_grb(events, stubs, args, tasks, task_obj, log):
+def do_grb(events, args, tasks, task_obj, log):
     current_task = 'GRB'
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'GRB-catalog/catalog.csv')
     csvtxt = load_cached_url(args,
@@ -36,5 +36,5 @@ def do_grb(events, stubs, args, tasks, task_obj, log):
         events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
         events[name].add_quantity('redshift', row[8], source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

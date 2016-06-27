@@ -14,7 +14,7 @@ from .. import Events
 from ..funcs import add_photometry, jd_to_mjd
 
 
-def do_itep(events, stubs, args, tasks, task_obj, log):
+def do_itep(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
@@ -67,5 +67,5 @@ def do_itep(events, stubs, args, tasks, task_obj, log):
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as bib_file:
         bib_file.writelines(['%ss\n' % ii for ii in needsbib])
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

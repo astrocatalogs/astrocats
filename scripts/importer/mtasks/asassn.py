@@ -11,13 +11,13 @@ from ...utils import pbar
 from ..funcs import load_cached_url
 
 
-def do_asassn(events, stubs, args, tasks, task_obj, log):
+def do_asassn(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
     html = load_cached_url(args, current_task, asn_url, os.path.join(
         PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
     if not html:
-        return events, stubs
+        return events
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('table').findAll('tr')
     for tri, tr in enumerate(pbar(trs, current_task)):
@@ -87,5 +87,5 @@ def do_asassn(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity('claimedtype', ct, typesources)
         if host != 'Uncatalogued':
             events[name].add_quantity('host', host, sources)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events

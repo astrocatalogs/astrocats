@@ -17,7 +17,7 @@ from ...utils import is_number, pbar
 from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
 
 
-def do_ps_mds(events, stubs, args, tasks, task_obj, log):
+def do_ps_mds(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'MDS/apj506838t1_mrt.txt')) as f:
@@ -36,11 +36,11 @@ def do_ps_mds(events, stubs, args, tasks, task_obj, log):
             events[name].add_quantity(
                 'redshift', cols[5], source, kind='spectroscopic')
             events[name].add_quantity('claimedtype', 'II P', source)
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events
 
 
-def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
+def do_ps_threepi(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
@@ -48,7 +48,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
               "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
     html = load_cached_url(args, current_task, ps_url, fname, write=False)
     if not html:
-        return events, stubs
+        return events
 
     bs = BeautifulSoup(html, 'html5lib')
     div = bs.find('div', {'class': 'pagination'})
@@ -62,7 +62,7 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
 
     if offline:
         if args.update:
-            return events, stubs
+            return events
         warnings.warn('Pan-STARRS 3pi offline, using local files only.')
         with open(fname, 'r') as f:
             html = f.read()
@@ -252,12 +252,12 @@ def do_ps_threepi(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
             if args.update:
-                events, stubs = Events.journal_events(
-                    tasks, args, events, stubs, log)
+                events = Events.journal_events(
+                    tasks, args, events, log)
 
-        events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+        events = Events.journal_events(tasks, args, events, log)
         # Only run first page for Travis
         if args.travis:
             break
 
-    return events, stubs
+    return events

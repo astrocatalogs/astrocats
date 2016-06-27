@@ -9,7 +9,7 @@ from .. import Events
 from ..funcs import add_photometry
 
 
-def do_pessto(events, stubs, args, tasks, task_obj, log):
+def do_pessto(events, args, tasks, task_obj, log):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
     tsvin = list(csv.reader(open(pessto_path, 'r'), delimiter=','))
     for ri, row in enumerate(tsvin):
@@ -31,5 +31,5 @@ def do_pessto(events, stubs, args, tasks, task_obj, log):
                            band=bands[hi], system=systems[hi], telescope=teles,
                            source=source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

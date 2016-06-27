@@ -9,7 +9,7 @@ from scripts.utils import pbar
 from .. import Events
 
 
-def do_scp(events, stubs, args, tasks, task_obj, log):
+def do_scp(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     tsvin = list(csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'),
                                  'r'), delimiter=','))
@@ -42,5 +42,5 @@ def do_scp(events, stubs, args, tasks, task_obj, log):
                 events[name].add_quantity(
                     'claimedtype', claimedtype, source, kind=kind)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

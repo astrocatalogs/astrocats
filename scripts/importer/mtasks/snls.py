@@ -14,7 +14,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, get_preferred_name
 
 
-def do_snls_photo(events, stubs, args, tasks, task_obj, log):
+def do_snls_photo(events, args, tasks, task_obj, log):
     current_task = 'SNLS'
     from scripts.utils import get_sig_digits
     snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
@@ -44,11 +44,11 @@ def do_snls_photo(events, stubs, args, tasks, task_obj, log):
             events, name, time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag, counts=flux,
             e_counts=err, source=source)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events
 
 
-def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
+def do_snls_spectra(events, args, tasks, task_obj, log):
     """
     """
 
@@ -68,8 +68,8 @@ def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
         name = 'SNLS-' + fileparts[1]
         name = get_preferred_name(events, name)
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
         source = events[name].add_source(bibcode='2009A&A...507...85B')
@@ -104,5 +104,5 @@ def do_snls_spectra(events, stubs, args, tasks, task_obj, log):
             filename=filename)
         if args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
+    events = Events.journal_events(tasks, args, events, log)
     return events

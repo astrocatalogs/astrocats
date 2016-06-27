@@ -17,7 +17,7 @@ from ..constants import TRAVIS_QUERY_LIMIT
 from ..funcs import add_photometry, add_spectrum, load_cached_url, uniq_cdl
 
 
-def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
+def do_ucb_photo(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
@@ -28,7 +28,7 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events, stubs
+        return events
 
     photom = json.loads(jsontxt)
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
@@ -92,11 +92,11 @@ def do_ucb_photo(events, stubs, args, tasks, task_obj, log):
                 events, name, time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events
 
 
-def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
+def do_ucb_spectra(events, args, tasks, task_obj, log):
     current_task = task_obj.current_task(args)
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
@@ -107,7 +107,7 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
-        return events, stubs
+        return events
 
     spectra = json.loads(jsontxt)
     spectra = sorted(spectra, key=lambda kk: kk['ObjName'])
@@ -115,8 +115,8 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            events, stubs = Events.journal_events(
-                tasks, args, events, stubs, log)
+            events = Events.journal_events(
+                tasks, args, events, log)
         oldname = name
         events, name = Events.add_event(tasks, args, events, name, log)
 
@@ -207,5 +207,5 @@ def do_ucb_spectra(events, stubs, args, tasks, task_obj, log):
         if args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
-    events, stubs = Events.journal_events(tasks, args, events, stubs, log)
-    return events, stubs
+    events = Events.journal_events(tasks, args, events, log)
+    return events
