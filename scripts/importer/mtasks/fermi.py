@@ -6,8 +6,6 @@ import os
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
-
 
 def do_fermi(catalog):
     current_task = catalog.current_task

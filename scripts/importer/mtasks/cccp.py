@@ -202,8 +202,7 @@ def do_cpcs(catalog):
                            band=bnds[mi], observatory=obs[mi],
                            source=uniq_cdl([source, sec_source]))
         if catalog.args.update:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            Events.journal_events()
 
     catalog.journal_events()
     return

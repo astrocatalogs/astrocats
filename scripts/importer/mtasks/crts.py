@@ -147,8 +147,7 @@ def do_crts(catalog):
                                includeshost=True, telescope=teles,
                                e_magnitude=e_mag, upperlimit=upl)
             if catalog.args.update:
-                events = Events.journal_events(
-                    tasks, args, events, log)
+                catalog.journal_events()
 
         if catalog.args.travis and tri > TRAVIS_QUERY_LIMIT:
             break

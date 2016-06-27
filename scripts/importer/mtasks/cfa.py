@@ -95,7 +95,7 @@ def do_cfa_photo(catalog):
                         if float(row[v]) < 90.0:
                             src = secondarysource + ',' + source
                             add_photometry(
-                                events, name, u_time=tuout, time=mjd,
+                                name, u_time=tuout, time=mjd,
                                 band=eventbands[(v - 1) // 2],
                                 magnitude=row[v], e_magnitude=row[v + 1],
                                 source=src)
@@ -120,7 +120,7 @@ def do_cfa_photo(catalog):
             catalog.events[name].add_quantity('alias', name, source)
             catalog.events[name].add_quantity('claimedtype', 'Ia', source)
             add_photometry(
-                events, name, u_time='MJD', time=row[2].strip(),
+                name, u_time='MJD', time=row[2].strip(),
                 band=row[1].strip(),
                 magnitude=row[6].strip(), e_magnitude=row[7].strip(),
                 source=source)
@@ -136,7 +136,7 @@ def do_cfa_photo(catalog):
             source = catalog.events[name].add_source(bibcode='2014ApJS..213...19B')
             catalog.events[name].add_quantity('alias', name, source)
             add_photometry(
-                events, name, u_time='MJD', time=row[2], band=row[1],
+                name, u_time='MJD', time=row[2], band=row[1],
                 magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)
@@ -160,8 +160,7 @@ def do_cfa_spectra(catalog):
             name = 'SNF' + name[3:]
         name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
@@ -220,8 +219,7 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
         oldname = name
         name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'
@@ -272,8 +270,7 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         name = get_preferred_name(catalog.events, name)
         if oldname and name != oldname:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            Events.journal_events()
         oldname = name
         name = catalog.add_event(name)
         reference = 'CfA Supernova Archive'

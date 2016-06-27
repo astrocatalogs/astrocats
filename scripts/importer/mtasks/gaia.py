@@ -9,7 +9,6 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import add_photometry, jd_to_mjd, load_cached_url
 
 
@@ -88,7 +87,6 @@ def do_gaia(catalog):
                            band=band, magnitude=magnitude,
                            e_magnitude=e_mag, source=source)
         if catalog.args.update:
-            events = Events.journal_events(
-                tasks, args, events, log)
+            catalog.journal_events()
     catalog.journal_events()
     return
