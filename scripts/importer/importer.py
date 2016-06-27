@@ -13,8 +13,7 @@ from scripts import FILENAME
 from . import Catalog, Events
 from ..utils import get_logger, pbar, repo_file_list
 from .constants import TASK, TRAVIS_QUERY_LIMIT
-from .funcs import (derive_and_sanitize, get_bibauthor_dict,
-                    get_extinctions_dict, has_task)
+from .funcs import derive_and_sanitize, has_task
 
 
 def get_old_tasks():
