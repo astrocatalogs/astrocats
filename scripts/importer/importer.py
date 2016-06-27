@@ -10,7 +10,8 @@ from collections import OrderedDict
 
 from scripts import FILENAME
 
-from . import Catalog, Events
+from . import Events
+from .Catalog import Catalog
 from ..utils import get_logger, pbar, repo_file_list
 from .constants import TASK, TRAVIS_QUERY_LIMIT
 from .funcs import derive_and_sanitize, has_task

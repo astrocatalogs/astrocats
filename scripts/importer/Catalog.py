@@ -1,9 +1,9 @@
 from collections import OrderedDict
 
-from funcs import get_bibauthor_dict, get_extinctions_dict
+from .funcs import get_bibauthor_dict, get_extinctions_dict
 
 
-class CATALOG():
+class Catalog():
     """
     Object to hold the main catalog dictionary and other catalog globals.
     """
@@ -21,7 +21,6 @@ class CATALOG():
     }
 
     nedd_dict = OrderedDict()
-
     bibauthor_dict = get_bibauthor_dict()
     extinctions_dict = get_extinctions_dict()
 
