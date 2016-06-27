@@ -25,7 +25,7 @@ class FILENAME:
     TYPE_SYNONYMS = os.path.join(PATH.DATA, 'type-synonyms.json')
     SOURCE_SYNONYMS = os.path.join(PATH.DATA, 'source-synonyms.json')
     NON_SNE_TYPES = os.path.join(PATH.DATA, 'non-sne-types.json')
-    REPOS_LIST = os.path.join(PATH.DATA, 'rep-folders.txt')
+    REPOS = os.path.join(PATH.IMPORT, 'repos.json')
     ATELS = os.path.join(PATH.DATA, 'atels.json')
     CBETS = os.path.join(PATH.DATA, 'cbets.json')
     IAUCS = os.path.join(PATH.DATA, 'iaucs.json')

@@ -893,6 +893,17 @@ def get_bibauthor_dict():
     return bibauthor_dict
 
 
+def get_repos_dict():
+    # path = '../bibauthors.json'
+    if os.path.isfile(FILENAME.REPOS):
+        with open(FILENAME.REPOS, 'r') as f:
+            repos_dict = json.loads(
+                f.read(), object_pairs_hook=OrderedDict)
+    else:
+        repos_dict = OrderedDict()
+    return repos_dict
+
+
 def get_biberror_dict():
     # path = '../biberrors.json'
     if os.path.isfile(FILENAME.BIBERRORS):
