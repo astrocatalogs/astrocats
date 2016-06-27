@@ -11,7 +11,7 @@ from scripts import PATH
 from .. import Events
 from ...utils import get_sig_digits, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import add_spectrum, get_preferred_name, add_photometry
+from ..funcs import add_photometry, add_spectrum, get_preferred_name
 
 
 def do_snls_photo(events, stubs, args, tasks, task_obj, log):
