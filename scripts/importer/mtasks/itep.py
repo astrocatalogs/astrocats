@@ -10,7 +10,7 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from ..funcs import add_photometry, jd_to_mjd
+from ..funcs import jd_to_mjd
 
 
 def do_itep(catalog):

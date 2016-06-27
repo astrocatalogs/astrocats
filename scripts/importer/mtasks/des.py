@@ -9,7 +9,7 @@ from scripts import PATH
 from scripts.utils import pbar
 
 from .. import Events
-from ..funcs import add_photometry, load_cached_url
+from ..funcs import load_cached_url
 
 
 def do_des(catalog):

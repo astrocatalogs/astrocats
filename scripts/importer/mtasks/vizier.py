@@ -13,7 +13,7 @@ from scripts import PATH
 from ...utils import (get_sig_digits, is_number, pbar, pretty_num, rep_chars,
                       round_sig)
 from ..constants import CLIGHT, KM
-from ..funcs import (add_photometry, convert_aq_output, jd_to_mjd,
+from ..funcs import convert_aq_output, jd_to_mjd,
                      make_date_string, radec_clean, uniq_cdl)
 
 

@@ -12,7 +12,7 @@ from scripts.utils import is_number, pbar
 
 from .. import Events
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import add_photometry, load_cached_url
+from ..funcs import load_cached_url
 
 
 def do_crts(catalog):

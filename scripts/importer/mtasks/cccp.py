@@ -14,7 +14,7 @@ from scripts import PATH
 from scripts.utils import is_number, pbar, pbar_strings, round_sig
 
 from .. import Events
-from ..funcs import add_photometry, event_exists, load_cached_url, uniq_cdl
+from ..funcs import event_exists, load_cached_url, uniq_cdl
 
 
 def do_cccp(catalog):

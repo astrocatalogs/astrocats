@@ -8,7 +8,6 @@ from scripts import PATH
 from scripts.utils import pbar_strings
 
 from ..Events import KEYS
-from ..funcs import add_photometry
 
 
 def do_external_radio(catalog):

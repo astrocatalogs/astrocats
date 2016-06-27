@@ -10,7 +10,7 @@ from cdecimal import Decimal
 from scripts import PATH
 
 from ...utils import is_number, pbar
-from ..funcs import add_photometry, jd_to_mjd, load_cached_url, uniq_cdl
+from ..funcs import jd_to_mjd, load_cached_url, uniq_cdl
 
 
 def do_ogle(catalog):

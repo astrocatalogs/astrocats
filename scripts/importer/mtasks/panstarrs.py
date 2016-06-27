@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 from scripts import PATH
 
 from ...utils import is_number, pbar
-from ..funcs import add_photometry, load_cached_url, make_date_string, uniq_cdl
+from ..funcs import load_cached_url, make_date_string, uniq_cdl
 
 
 def do_ps_mds(catalog):

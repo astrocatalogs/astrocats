@@ -9,7 +9,7 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from ..funcs import add_photometry, jd_to_mjd, load_cached_url
+from ..funcs import jd_to_mjd, load_cached_url
 
 
 def do_gaia(catalog):
