@@ -32,7 +32,45 @@ class KEYS:
     URL = 'url'
 
 
-class EVENT(OrderedDict):
+class Entry(OrderedDict):
+
+    def __init__(self, name):
+        """Create a new `Entry` object with the given `name`.
+        """
+        if not name:
+            raise ValueError("New `Entry` objects must have a valid name!")
+        self[KEYS.NAME] = name
+        return
+
+    def get_aliases(self, includename=True):
+        """Retrieve the aliases of this object as a list of strings.
+        """
+        # empty list if doesnt exist
+        alias_quanta = self.get(KEYS.ALIAS, [])
+        aliases = [aq['value'] for aq in alias_quanta]
+        if includename and self.name not in aliases:
+            aliases = [self.name] + aliases
+        return aliases
+
+    def get_stub(self):
+        """Get a new `Entry` which contains the 'stub' of this one.
+
+        The 'stub' is *only* the name and aliases.
+
+        Usage:
+        -----
+        To convert a normal event into a stub (for example), overwrite the event
+        in place, i.e.
+        >>> events[name] = events[name].get_stub()
+
+        """
+        stub = Entry(self[KEYS.NAME])
+        if KEYS.ALIAS in self.keys():
+            stub[KEYS.ALIAS] = self[KEYS.ALIAS]
+        return stub
+
+
+class EVENT(Entry):
     """
     NOTE: OrderedDict data is just the `name` values from the JSON file.
           I.e. it does not include the highest nesting level
@@ -56,13 +94,12 @@ class EVENT(OrderedDict):
 
     """
 
-    name = ''
     filename = ''
     _source_syns = {}
 
     def __init__(self, name):
-        self.name = name
-        self[KEYS.NAME] = name
+        super().__init__(name)
+
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
         with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
@@ -349,55 +386,6 @@ class EVENT(OrderedDict):
             self.setdefault(quantity, []).append(quanta_entry)
         return
 
-    def _parse_srcname_bibcode(self, srcname, bibcode):
-        # If no `srcname` is given, use `bibcode` after checking its validity
-        if not srcname:
-            if not bibcode:
-                raise ValueError(
-                    "`bibcode` must be specified if `srcname` is not.")
-            if len(bibcode) != 19:
-                raise ValueError(
-                    "Bibcode '{}' must be exactly 19 characters "
-                    "long".format(bibcode))
-            srcname = bibcode
-
-        # If a `srcname` is given, try to set a `bibcode`
-        elif not bibcode:
-            if srcname.upper().startswith('ATEL'):
-                atels_dict = get_atels_dict()
-                srcname = srcname.replace(
-                    'ATEL', 'ATel').replace('Atel', 'ATel')
-                srcname = srcname.replace(
-                    'ATel #', 'ATel ').replace('ATel#', 'ATel')
-                srcname = srcname.replace('ATel', 'ATel ')
-                srcname = ' '.join(srcname.split())
-                atelnum = srcname.split()[-1]
-                if is_number(atelnum) and atelnum in atels_dict:
-                    bibcode = atels_dict[atelnum]
-
-            if srcname.upper().startswith('CBET'):
-                cbets_dict = get_cbets_dict()
-                srcname = srcname.replace('CBET', 'CBET ')
-                srcname = ' '.join(srcname.split())
-                cbetnum = srcname.split()[-1]
-                if is_number(cbetnum) and cbetnum in cbets_dict:
-                    bibcode = cbets_dict[cbetnum]
-
-            if srcname.upper().startswith('IAUC'):
-                iaucs_dict = get_iaucs_dict()
-                srcname = srcname.replace('IAUC', 'IAUC ')
-                srcname = ' '.join(srcname.split())
-                iaucnum = srcname.split()[-1]
-                if is_number(iaucnum) and iaucnum in iaucs_dict:
-                    bibcode = iaucs_dict[iaucnum]
-
-        for rep in self._source_syns:
-            if srcname in self._source_syns[rep]:
-                srcname = rep
-                break
-
-        return srcname, bibcode
-
     def is_erroneous(self, field, sources):
         if hasattr(self, KEYS.ERRORS):
             my_errors = self['errors']
@@ -416,20 +404,6 @@ class EVENT(OrderedDict):
                     return True
 
         return False
-
-    def get_aliases(self, includename=True):
-        # empty list if doesnt exist
-        aliases = self.get(KEYS.ALIAS, [])
-        if includename and self.name not in aliases:
-            aliases = [self.name] + aliases
-        return aliases
-
-    def get_source_by_alias(self, alias):
-        for source in self.get(KEYS.SOURCES, []):
-            if source['alias'] == alias:
-                return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(self.name, alias))
 
     def check(self):
         # Make sure there is a schema key in dict
@@ -486,11 +460,61 @@ class EVENT(OrderedDict):
 
         return save_name
 
-    def get_stub(self):
-        stub = OrderedDict({KEYS.NAME: self[KEYS.NAME]})
-        if KEYS.ALIAS in self.keys():
-            stub[KEYS.ALIAS] = self[KEYS.ALIAS]
-        return stub
+    def get_source_by_alias(self, alias):
+        for source in self.get(KEYS.SOURCES, []):
+            if source['alias'] == alias:
+                return source
+        raise ValueError(
+            "Source '{}': alias '{}' not found!".format(self.name, alias))
+
+    def _parse_srcname_bibcode(self, srcname, bibcode):
+        # If no `srcname` is given, use `bibcode` after checking its validity
+        if not srcname:
+            if not bibcode:
+                raise ValueError(
+                    "`bibcode` must be specified if `srcname` is not.")
+            if len(bibcode) != 19:
+                raise ValueError(
+                    "Bibcode '{}' must be exactly 19 characters "
+                    "long".format(bibcode))
+            srcname = bibcode
+
+        # If a `srcname` is given, try to set a `bibcode`
+        elif not bibcode:
+            if srcname.upper().startswith('ATEL'):
+                atels_dict = get_atels_dict()
+                srcname = srcname.replace(
+                    'ATEL', 'ATel').replace('Atel', 'ATel')
+                srcname = srcname.replace(
+                    'ATel #', 'ATel ').replace('ATel#', 'ATel')
+                srcname = srcname.replace('ATel', 'ATel ')
+                srcname = ' '.join(srcname.split())
+                atelnum = srcname.split()[-1]
+                if is_number(atelnum) and atelnum in atels_dict:
+                    bibcode = atels_dict[atelnum]
+
+            if srcname.upper().startswith('CBET'):
+                cbets_dict = get_cbets_dict()
+                srcname = srcname.replace('CBET', 'CBET ')
+                srcname = ' '.join(srcname.split())
+                cbetnum = srcname.split()[-1]
+                if is_number(cbetnum) and cbetnum in cbets_dict:
+                    bibcode = cbets_dict[cbetnum]
+
+            if srcname.upper().startswith('IAUC'):
+                iaucs_dict = get_iaucs_dict()
+                srcname = srcname.replace('IAUC', 'IAUC ')
+                srcname = ' '.join(srcname.split())
+                iaucnum = srcname.split()[-1]
+                if is_number(iaucnum) and iaucnum in iaucs_dict:
+                    bibcode = iaucs_dict[iaucnum]
+
+        for rep in self._source_syns:
+            if srcname in self._source_syns[rep]:
+                srcname = rep
+                break
+
+        return srcname, bibcode
 
 
 def add_event(tasks, args, events, name, log, load=True, delete=True):
