@@ -53,9 +53,9 @@ class Catalog():
         for repo in pbar(all_repos):
             if not os.path.isdir(PATH.ROOT + "/" + repo):
                 try:
-                    self.log.warning('Cloning "' + repo +
-                                     '" (only needs to be done ' +
-                                     'once, may take few minutes per repo).')
+                    self.log.warning(
+                        'Cloning "' + repo + '" (only needs to be done ' +
+                        'once, may take few minutes per repo).')
                     Repo.clone_from("git@github.com:astrocatalogs/" +
                                     repo + ".git",
                                     PATH.ROOT + "/" + repo)
@@ -97,11 +97,13 @@ class Catalog():
                 format(newname, name))
             return newname
 
-        # If event is alias of another event *in `events`*, find and return that
+        # If event is alias of another event *in `events`*, find and return
+        # that
         match_name = self.find_event_name_of_alias(self.events, newname)
         if match_name is not None:
-            self.log.debug("`newname`: '{}' (name: '{}') already exist as alias for "
-                           "'{}'.".format(newname, name, match_name))
+            self.log.debug(
+                "`newname`: '{}' (name: '{}') already exist as alias for "
+                "'{}'.".format(newname, name, match_name))
             return match_name
 
         # Load Event from file
@@ -109,8 +111,9 @@ class Catalog():
             loaded_event = EVENT.init_from_file(name=newname)
             if loaded_event is not None:
                 self.events[newname] = loaded_event
-                self.log.debug("Added '{}', from '{}', to `self.events`".format(
-                    newname, loaded_event.filename))
+                self.log.debug(
+                    "Added '{}', from '{}', to `self.events`"
+                    .format(newname, loaded_event.filename))
                 # Delete source file, if desired
                 if delete:
                     self._delete_event_file(event=loaded_event)
@@ -119,7 +122,8 @@ class Catalog():
         # Create new event
         new_event = Events.EVENT(newname)
         new_event['schema'] = SCHEMA.URL
-        self.log.log(self.log._LOADED, "Created new event for '{}'".format(newname))
+        self.log.log(self.log._LOADED,
+                     "Created new event for '{}'".format(newname))
         # Add event to dictionary
         self.events[newname] = new_event
         return newname
@@ -167,11 +171,13 @@ class Catalog():
 
         if 'sources' in self.events[fromname]:
             for source in self.events[fromname]['sources']:
-                newsourcealiases[source['alias']] = self.events[destname].add_source(
+                newsourcealiases[source['alias']] = (self.events[destname]
+                                                     .add_source(
                     bibcode=source['bibcode'] if 'bibcode' in source else '',
                     srcname=source['name'] if 'name' in source else '',
-                    reference=source['reference'] if 'reference' in source else '',
-                    url=source['url'] if 'url' in source else '')
+                    reference=source['reference'] if
+                    'reference' in source else '',
+                    url=source['url'] if 'url' in source else ''))
 
         if 'errors' in self.events[fromname]:
             for err in self.events[fromname]['errors']:
@@ -195,32 +201,49 @@ class Catalog():
 
                     if key == 'photometry':
                         self.events[destname].add_photometry(
-                            u_time=null_field(item, "u_time"), time=null_field(item, "time"),
-                            e_time=null_field(item, "e_time"), telescope=null_field(item, "telescope"),
-                            instrument=null_field(item, "instrument"), band=null_field(item, "band"),
-                            magnitude=null_field(item, "magnitude"), e_magnitude=null_field(item, "e_magnitude"),
-                            source=sources, upperlimit=null_field(item, "upperlimit"), system=null_field(item, "system"),
-                            observatory=null_field(item, "observatory"), observer=null_field(item, "observer"),
-                            host=null_field(item, "host"), survey=null_field(item, "survey"))
+                            u_time=null_field(item, "u_time"),
+                            time=null_field(item, "time"),
+                            e_time=null_field(item, "e_time"),
+                            telescope=null_field(item, "telescope"),
+                            instrument=null_field(item, "instrument"),
+                            band=null_field(item, "band"),
+                            magnitude=null_field(item, "magnitude"),
+                            e_magnitude=null_field(item, "e_magnitude"),
+                            source=sources,
+                            upperlimit=null_field(item, "upperlimit"),
+                            system=null_field(item, "system"),
+                            observatory=null_field(item, "observatory"),
+                            observer=null_field(item, "observer"),
+                            host=null_field(item, "host"),
+                            survey=null_field(item, "survey"))
                     elif key == 'spectra':
                         self.events[destname].add_spectrum(
-                            null_field(item, "waveunit"), null_field(item, "fluxunit"),
+                            null_field(item, "waveunit"),
+                            null_field(item, "fluxunit"),
                             data=null_field(item, "data"),
-                            u_time=null_field(item, "u_time"), time=null_field(item, "time"),
-                            instrument=null_field(item, "instrument"), deredshifted=null_field(item, "deredshifted"),
-                            dereddened=null_field(item, "dereddened"), errorunit=null_field(item, "errorunit"),
+                            u_time=null_field(item, "u_time"),
+                            time=null_field(item, "time"),
+                            instrument=null_field(item, "instrument"),
+                            deredshifted=null_field(item, "deredshifted"),
+                            dereddened=null_field(item, "dereddened"),
+                            errorunit=null_field(item, "errorunit"),
                             source=sources, snr=null_field(item, "snr"),
-                            telescope=null_field(item, "telescope"), observer=null_field(item, "observer"),
-                            reducer=null_field(item, "reducer"), filename=null_field(item, "filename"),
+                            telescope=null_field(item, "telescope"),
+                            observer=null_field(item, "observer"),
+                            reducer=null_field(item, "reducer"),
+                            filename=null_field(item, "filename"),
                             observatory=null_field(item, "observatory"))
                     elif key == 'errors':
                         self.events[destname].add_quantity(
                             key, item['value'], sources,
-                            kind=null_field(item, "kind"), extra=null_field(item, "extra"))
+                            kind=null_field(item, "kind"),
+                            extra=null_field(item, "extra"))
                     else:
                         self.events[destname].add_quantity(
-                            key, item['value'], sources, error=null_field(item, "error"),
-                            unit=null_field(item, "unit"), probability=null_field(item, "probability"),
+                            key, item['value'], sources,
+                            error=null_field(item, "error"),
+                            unit=null_field(item, "unit"),
+                            probability=null_field(item, "probability"),
                             kind=null_field(item, "kind"))
 
         return
@@ -238,16 +261,17 @@ class Catalog():
     def merge_duplicates(self):
         """Merge and remove duplicate events.
 
-        Compares each entry ('name') in `stubs` to all later entries to check for
-        duplicates in name or alias.  If a duplicate is found, they are merged and
-        written to file.
+        Compares each entry ('name') in `stubs` to all later entries to check
+        for duplicates in name or alias.  If a duplicate is found, they are
+        merged and written to file.
         """
         self.log.debug("Events.merge_duplicates()")
         if len(self.events) == 0:
             self.log.error("WARNING: `events` is empty, loading stubs")
             if self.args.update:
-                self.log.warning("No sources changed, event files unchanged in update."
-                                 "  Skipping merge.")
+                self.log.warning(
+                    "No sources changed, event files unchanged in update."
+                    "  Skipping merge.")
                 return
             events = self.load_stubs()
 
@@ -267,8 +291,9 @@ class Catalog():
 
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
-                    self.log.warning("Found single event with multiple entries "
-                                     "('{}' and '{}'), merging.".format(name1, name2))
+                    self.log.warning(
+                        "Found single event with multiple entries "
+                        "('{}' and '{}'), merging.".format(name1, name2))
 
                     load1 = EVENT.init_from_file(name=name1, delete=True)
                     load2 = EVENT.init_from_file(name=name2, delete=True)
@@ -297,8 +322,9 @@ class Catalog():
                         self.log.warning('Duplicate already deleted')
 
                     if len(events) != 1:
-                        self.log.error("WARNING: len(events) = {}, expected 1.  "
-                                       "Still journaling...".format(len(events)))
+                        self.log.error(
+                            "WARNING: len(events) = {}, expected 1.  "
+                            "Still journaling...".format(len(events)))
                     events = self.journal_events()
 
             if self.args.travis and n1 > TRAVIS_QUERY_LIMIT:
@@ -328,7 +354,8 @@ class Catalog():
             # if there are no other options to choose from, skip
             if len(aliases) <= 1:
                 continue
-            # If the name is already in the form 'SN####AA' then keep using that
+            # If the name is already in the form 'SN####AA' then keep using
+            # that
             if (name.startswith('SN') and
                 ((is_number(name[2:6]) and not is_number(name[6:])) or
                  (is_number(name[2:5]) and not is_number(name[5:])))):
@@ -342,8 +369,9 @@ class Catalog():
                     break
             # Otherwise, name based on the 'discoverer' survey
             if not newname and 'discoverer' in self.events[name]:
-                discoverer = ','.join([x['value'].upper()
-                                       for x in self.events[name]['discoverer']])
+                discoverer = ','.join(
+                    [x['value'].upper() for x in
+                     self.events[name]['discoverer']])
                 if 'ASAS' in discoverer:
                     for alias in aliases:
                         if 'ASASSN' in alias.upper():
@@ -387,8 +415,9 @@ class Catalog():
 
                 new_event = EVENT.init_from_file(name=name)
                 if new_event is None:
-                    self.log.error("Could not load `new_event` with name '{}'".format(
-                        name))
+                    self.log.error(
+                        "Could not load `new_event` with name '{}'"
+                        .format(name))
                 else:
                     self.log.info("Changing event from name '{}' to preferred"
                                   " name '{}'".format(name, newname))
@@ -421,8 +450,9 @@ class Catalog():
             new_event = EVENT.init_from_file(path=fname, delete=False)
             # Make sure a non-stub event doesnt already exist with this name
             if name in self.events and not self.events[name]._stub:
-                err_str = ("ERROR: non-stub event already exists with name '{}'"
-                           "".format(name))
+                err_str = (
+                    "ERROR: non-stub event already exists with name '{}'"
+                    .format(name))
                 self.log.error(err_str)
                 raise RuntimeError(err_str)
 
@@ -455,7 +485,8 @@ class Catalog():
 
         return
 
-    def journal_events(self, clear=True, gz=False, bury=False, write_stubs=False):
+    def journal_events(self, clear=True, gz=False, bury=False,
+                       write_stubs=False):
         """Write all events in `events` to files, and clear.  Depending on
         arguments and `tasks`.
 
@@ -471,7 +502,8 @@ class Catalog():
             non_sne_types = [x.upper() for x in non_sne_types]
 
         # Write it all out!
-        # NOTE: this needs to use a `list` wrapper to allow modification of dict
+        # NOTE: this needs to use a `list` wrapper to allow modification of
+        # dict
         for name in list(self.events.keys()):
             if self.args.write_events:
                 # If this is a stub and we aren't writing stubs, skip
@@ -485,7 +517,8 @@ class Catalog():
                 ct_val = None
                 if bury:
                     if name.startswith(NON_SNE_PREFIXES):
-                        self.log.debug("Killing '{}', non-SNe prefix.".format(name))
+                        self.log.debug(
+                            "Killing '{}', non-SNe prefix.".format(name))
                         save_event = False
                     else:
                         if KEYS.CLAIMED_TYPE in self.events[name]:
@@ -500,12 +533,15 @@ class Catalog():
                                     ct_val = ct['value']
 
                         if buryevent:
-                            self.log.debug("Burying '{}', {}.".format(name, ct_val))
+                            self.log.debug(
+                                "Burying '{}', {}.".format(name, ct_val))
 
                 if save_event:
                     save_name = self.events[name].save(bury=buryevent)
-                    self.log.info("Saved {} to '{}'.".format(name.ljust(20), save_name))
-                    if gz and os.path.getsize(save_name) > COMPRESS_ABOVE_FILESIZE:
+                    self.log.info(
+                        "Saved {} to '{}'.".format(name.ljust(20), save_name))
+                    if (gz and os.path.getsize(save_name) >
+                            COMPRESS_ABOVE_FILESIZE):
                         save_name = _compress_gz(save_name)
                         self.log.debug("Compressed '{}' to '{}'".format(
                             name, save_name))
