@@ -10,7 +10,6 @@ from scripts import PATH
 
 from .. import Events
 from ...utils import is_number, pbar, pbar_strings, rep_chars
-from ..funcs import add_photometry
 
 
 def do_donations(catalog):

@@ -8,8 +8,6 @@ from glob import glob
 from scripts import PATH
 from scripts.utils import pbar_strings
 
-from ..funcs import add_photometry
-
 
 def do_sdss(catalog):
     current_task = catalog.current_task
@@ -41,7 +39,8 @@ def do_sdss(catalog):
 
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
-                    catalog.events[name].add_quantity('discoverdate', year, source)
+                    catalog.events[name].add_quantity('discoverdate', year,
+                                                      source)
 
                 catalog.events[name].add_quantity(
                     'ra', row[-4], source, unit='floatdegrees')
@@ -49,9 +48,10 @@ def do_sdss(catalog):
                     'dec', row[-2], source, unit='floatdegrees')
             if rr == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
-                catalog.events[name].add_quantity('redshift', row[2], source,
-                                          error=error,
-                                          kind='heliocentric')
+                (catalog.events[name]
+                 .add_quantity('redshift', row[2], source,
+                               error=error,
+                               kind='heliocentric'))
             if rr >= 19:
                 # Skip bad measurements
                 if int(row[0]) > 1024:
@@ -62,9 +62,11 @@ def do_sdss(catalog):
                 magnitude = row[3]
                 e_mag = row[4]
                 telescope = 'SDSS'
-                catalog.events[name].add_photometry(time=mjd, telescope=telescope,
-                               band=band, magnitude=magnitude,
-                               e_magnitude=e_mag, source=source, system='SDSS')
+                (catalog.events[name]
+                 .add_photometry(time=mjd, telescope=telescope,
+                                 band=band, magnitude=magnitude,
+                                 e_magnitude=e_mag, source=source,
+                                 system='SDSS'))
 
     catalog.journal_events()
     return
