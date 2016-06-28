@@ -228,13 +228,12 @@ class Catalog():
     def new_event(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary='', acknowledgment=''):
-        oldname = name
-        self.add_event(name, load=load, delete=delete)
-        source = self.events[name].add_source(
+        newname = self.add_event(name, load=load, delete=delete)
+        source = self.events[newname].add_source(
             bibcode=bibcode, srcname=srcname, reference=reference, url=url,
             secondary=secondary, acknowledgment=acknowledgment)
-        self.events[name].add_quantity('alias', oldname, source)
-        return name, source
+        self.events[newname].add_quantity('alias', name, source)
+        return newname, source
 
     def merge_duplicates(self):
         """Merge and remove duplicate events.
