@@ -97,10 +97,8 @@ def import_main(catalog=None):
         with codecs.open(fname, 'w', encoding='utf8') as jsf:
             jsf.write(json_str)
 
-    BIBAUTHORS_FILENAME = '../bibauthors.json'
-    EXTINCTIONS_FILENAME = '../extinctions.json'
-    json_dump(bibauthor_dict, BIBAUTHORS_FILENAME)
-    json_dump(extinctions_dict, EXTINCTIONS_FILENAME)
+    json_dump(bibauthor_dict, FILENAME.BIBAUTHORS)
+    json_dump(extinctions_dict, FILENAME.EXTINCT)
 
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
         resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))
