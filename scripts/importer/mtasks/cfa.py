@@ -19,7 +19,7 @@ from ..funcs import clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl
 def do_cfa_photo(catalog):
     from html import unescape
     import re
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat'))
     for fname in pbar_strings(file_names, desc=current_task):
         f = open(fname, 'r')
@@ -148,7 +148,7 @@ def do_cfa_photo(catalog):
 
 
 def do_cfa_spectra(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     # Ia spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(

@@ -16,7 +16,7 @@ from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
 
 
 def do_asiago_photo(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
     path = os.path.abspath(os.path.join(PATH.REPO_EXTERNAL, 'asiago-cat.php'))
@@ -123,7 +123,7 @@ def do_asiago_photo(catalog):
 
 
 def do_asiago_spectra(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     html = load_cached_url(catalog.args, current_task,
                            ('http://sngroup.oapd.inaf.it./'
                             'cgi-bin/output_class.cgi?sn=1990'),

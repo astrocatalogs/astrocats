@@ -12,7 +12,7 @@ from ..funcs import make_date_string
 
 
 def do_psst(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     # 2016arXiv160204156S
     file_path = os.path.join(
         PATH.REPO_EXTERNAL, '2016arXiv160204156S-tab1.tsv')

@@ -20,7 +20,7 @@ from ..funcs import (convert_aq_output, jd_to_mjd, make_date_string,
 def do_vizier(catalog):
     """
     """
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
 
     Vizier.ROW_LIMIT = -1
 
@@ -1590,7 +1590,7 @@ def do_vizier(catalog):
 def do_lennarz(catalog):
     """
     """
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs('J/A+A/538/A120/usc')
     table = result[list(result.keys())[0]]

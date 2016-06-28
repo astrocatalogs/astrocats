@@ -21,7 +21,7 @@ from ..funcs import (get_preferred_name, jd_to_mjd, uniq_cdl)
 
 
 def do_suspect_photo(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
@@ -106,7 +106,7 @@ def do_suspect_photo(catalog):
 
 
 def do_suspect_spectra(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
                            'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())

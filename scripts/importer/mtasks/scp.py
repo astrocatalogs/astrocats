@@ -8,7 +8,7 @@ from scripts.utils import pbar
 
 
 def do_scp(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     tsvin = list(csv.reader(open(os.path.join(PATH.REPO_EXTERNAL, 'SCP09.csv'),
                                  'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):

@@ -532,6 +532,9 @@ class Catalog():
                 full += 1
         return full, stub
 
+    def get_current_task_str(self):
+        return self.current_task.current_task(self.args)
+
 
 def _compress_gz(fname):
     import shutil

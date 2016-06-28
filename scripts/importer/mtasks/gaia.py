@@ -13,7 +13,7 @@ from ..funcs import jd_to_mjd, load_cached_url
 
 
 def do_gaia(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
     csvtxt = load_cached_url(catalog.args, current_task,
                              'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',

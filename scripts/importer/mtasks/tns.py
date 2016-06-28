@@ -16,7 +16,7 @@ from ..funcs import load_cached_url
 def do_tns(catalog):
     from datetime import timedelta
     session = requests.Session()
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     tns_url = 'https://wis-tns.weizmann.ac.il/'
     search_url = tns_url + \
         'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'

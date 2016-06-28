@@ -12,7 +12,7 @@ from ...utils import is_number, pbar, pbar_strings, rep_chars
 
 
 def do_donations(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     # Nicholl 04-01-16 donation
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'Nicholl-04-01-16/bibcodes.json'), 'r') as f:

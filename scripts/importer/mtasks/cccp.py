@@ -13,12 +13,11 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import is_number, pbar, pbar_strings, round_sig
 
-from .. import Events
 from ..funcs import event_exists, load_cached_url, uniq_cdl
 
 
 def do_cccp(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
         glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')))
@@ -63,7 +62,7 @@ def do_cccp(catalog):
     links = soup.body.findAll("a")
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
-            name = Events.add_event(link.text.replace(' ', ''))
+            name = catalog.add_event(link.text.replace(' ', ''))
             source = (catalog.events[name]
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
@@ -122,7 +121,7 @@ def do_cccp(catalog):
 
 
 def do_cpcs(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'
@@ -206,7 +205,7 @@ def do_cpcs(catalog):
                              band=bnds[mi], observatory=obs[mi],
                              source=uniq_cdl([source, sec_source])))
         if catalog.args.update:
-            Events.journal_events()
+            catalog.journal_events()
 
     catalog.journal_events()
     return

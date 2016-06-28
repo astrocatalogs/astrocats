@@ -16,7 +16,7 @@ from ..funcs import jd_to_mjd, make_date_string
 
 
 def do_ascii(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
 
     # 2006ApJ...645..841N
     file_path = os.path.join(
