@@ -40,10 +40,11 @@ def do_cccp(catalog):
                         if row[2 * bb + 1]:
                             mag = row[2 * bb + 1].strip('>')
                             upl = (not row[2 * bb + 2])
-                            catalog.events[name].add_photometry(time=mjd, band=band,
-                                           magnitude=mag,
-                                           e_magnitude=row[2 * bb + 2],
-                                           upperlimit=upl, source=source)
+                            (catalog.events[name]
+                             .add_photometry(time=mjd, band=band,
+                                             magnitude=mag,
+                                             e_magnitude=row[2 * bb + 2],
+                                             upperlimit=upl, source=source))
 
     if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -126,8 +127,9 @@ def do_cpcs(catalog):
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'
                 'hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-    jsontxt = load_cached_url(catalog.args, current_task, cpcs_url, os.path.join(
-        PATH.REPO_EXTERNAL, 'CPCS/index.json'))
+    jsontxt = load_cached_url(catalog.args, current_task, cpcs_url,
+                              os.path.join(PATH.REPO_EXTERNAL,
+                                           'CPCS/index.json'))
     if not jsontxt:
         return
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
@@ -174,7 +176,8 @@ def do_cpcs(catalog):
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
-        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
+        if (catalog.current_task.load_archive(catalog.args) and
+                os.path.isfile(fname)):
             with open(fname, 'r') as ff:
                 jsonstr = ff.read()
         else:
@@ -197,10 +200,11 @@ def do_cpcs(catalog):
         bnds = cpcsalert['filter']
         obs = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
-            catalog.events[name].add_photometry(time=mjd, magnitude=mags[mi],
-                           e_magnitude=errs[mi],
-                           band=bnds[mi], observatory=obs[mi],
-                           source=uniq_cdl([source, sec_source]))
+            (catalog.events[name]
+             .add_photometry(time=mjd, magnitude=mags[mi],
+                             e_magnitude=errs[mi],
+                             band=bnds[mi], observatory=obs[mi],
+                             source=uniq_cdl([source, sec_source])))
         if catalog.args.update:
             Events.journal_events()
 

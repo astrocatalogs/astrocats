@@ -288,7 +288,8 @@ def do_ascii(catalog):
                 name, bibcode='2014MNRAS.444.2133S')
             catalog.events[name].add_quantity('ra', row[1], source)
             catalog.events[name].add_quantity('dec', row[2], source)
-            catalog.events[name].add_quantity('redshift', row[3], source, kind='host')
+            catalog.events[name].add_quantity('redshift', row[3], source,
+                                              kind='host')
     catalog.journal_events()
 
     # 2009MNRAS.398.1041B

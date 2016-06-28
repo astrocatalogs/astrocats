@@ -5,8 +5,6 @@ import os
 
 from scripts import PATH
 
-from ..funcs import add_photometry
-
 
 def do_pessto(catalog):
     pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
@@ -25,10 +23,12 @@ def do_pessto(catalog):
             if not row[ci]:
                 continue
             teles = 'Swift' if systems[hi] == 'Swift' else ''
-            catalog.events[name].add_photometry(time=row[2], magnitude=row[ci],
-                           e_magnitude=row[ci + 1],
-                           band=bands[hi], system=systems[hi], telescope=teles,
-                           source=source)
+            (catalog.events[name]
+             .add_photometry(time=row[2], magnitude=row[ci],
+                             e_magnitude=row[ci + 1],
+                             band=bands[hi], system=systems[hi],
+                             telescope=teles,
+                             source=source))
 
     catalog.journal_events()
     return

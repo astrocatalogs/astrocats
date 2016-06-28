@@ -12,7 +12,8 @@ from scripts import PATH
 
 from .. import Events
 from ...utils import is_number, pbar
-from ..funcs import get_sig_digits, host_clean, name_clean, pretty_num, uniq_cdl
+from ..funcs import (get_sig_digits, host_clean, name_clean, pretty_num,
+                     uniq_cdl)
 
 
 def do_nedd(catalog):
@@ -50,7 +51,9 @@ def do_nedd(catalog):
                 nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
         if snname and 'HOST' not in snname:
             snname, secondarysource = Events.new_event(snname,
-                srcname=reference, url=refurl, secondary=True)
+                                                       srcname=reference,
+                                                       url=refurl,
+                                                       secondary=True)
             if bibcode:
                 source = catalog.events[snname].add_source(bibcode=bibcode)
                 sources = uniq_cdl([source, secondarysource])
@@ -78,8 +81,9 @@ def do_nedd(catalog):
                                 bibcode='2015arXiv150201589P')
                             combsources = uniq_cdl(sources.split(',') +
                                                    [cosmosource])
-                            catalog.events[snname].add_quantity('redshift', redshift,
-                                                        combsources)
+                            catalog.events[snname].add_quantity('redshift',
+                                                                redshift,
+                                                                combsources)
             if cleanhost:
                 catalog.events[snname].add_quantity('host', cleanhost, sources)
             if catalog.args.update and olddistname != distname:

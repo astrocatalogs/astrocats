@@ -96,7 +96,8 @@ def do_ogle(catalog):
 
                 fname = os.path.join(PATH.REPO_EXTERNAL,
                                      'OGLE/') + datafnames[ec]
-                if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
+                if (catalog.current_task.load_archive(catalog.args) and
+                        os.path.isfile(fname)):
                     with open(fname, 'r') as f:
                         csvtxt = f.read()
                 else:
@@ -130,7 +131,8 @@ def do_ogle(catalog):
                 if claimedtype and claimedtype != '-':
                     catalog.events[name].add_quantity(
                         'claimedtype', claimedtype, sources)
-                elif 'SN' not in name and 'claimedtype' not in catalog.events[name]:
+                elif ('SN' not in name and 'claimedtype' not in
+                      catalog.events[name]):
                     catalog.events[name].add_quantity(
                         'claimedtype', 'Candidate', sources)
                 for row in lcdat:

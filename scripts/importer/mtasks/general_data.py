@@ -23,7 +23,8 @@ def do_external_radio(catalog):
                 if line.startswith('(') and li <= len(radiosourcedict):
                     key = line.split()[0]
                     bibc = line.split()[-1]
-                    radiosourcedict[key] = catalog.events[name].add_source(bibcode=bibc)
+                    radiosourcedict[key] = catalog.events[
+                        name].add_source(bibcode=bibc)
                 elif li in [xx + len(radiosourcedict) for xx in range(3)]:
                     continue
                 else:
@@ -49,7 +50,8 @@ def do_external_xray(catalog):
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
-                    source = catalog.events[name].add_source(bibcode=line.split()[-1])
+                    source = catalog.events[name].add_source(
+                        bibcode=line.split()[-1])
                 elif li in [1, 2, 3]:
                     continue
                 else:
@@ -75,7 +77,8 @@ def do_internal(catalog):
     current_task = catalog.current_task
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
-    catalog.log.debug("found {} files matching '{}'".format(len(files), path_pattern))
+    catalog.log.debug("found {} files matching '{}'".format(
+        len(files), path_pattern))
     for datafile in pbar_strings(files, desc=current_task):
         new_event = EVENT.init_from_file(path=datafile, clean=True)
         catalog.events.update({new_event[KEYS.NAME]: new_event})

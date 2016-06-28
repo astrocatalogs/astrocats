@@ -22,7 +22,8 @@ def do_des(catalog):
     # Make sure there is aa trailing slash
     des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')
     html = load_cached_url(
-        catalog.args, current_task, des_trans_url, des_path + 'transients.html')
+        catalog.args, current_task, des_trans_url,
+        des_path + 'transients.html')
     if not html:
         return
     bs = BeautifulSoup(html, 'html5lib')
@@ -53,16 +54,21 @@ def do_des(catalog):
                 catalog.events[name]
                 .add_source(srcname='ATel ' + atellink.split('=')[-1],
                             url=atellink))
-        sources += [catalog.events[name].add_source(bibcode='2012ApJ...753..152B'),
-                    catalog.events[name].add_source(bibcode='2015AJ....150..150F'),
-                    catalog.events[name].add_source(bibcode='2015AJ....150...82G'),
-                    catalog.events[name].add_source(bibcode='2015AJ....150..172K')]
+        sources += [catalog.events[name]
+                    .add_source(bibcode='2012ApJ...753..152B'),
+                    catalog.events[name].add_source(
+                        bibcode='2015AJ....150..150F'),
+                    catalog.events[name].add_source(
+                        bibcode='2015AJ....150...82G'),
+                    catalog.events[name]
+                    .add_source(bibcode='2015AJ....150..172K')]
         sources = ','.join(sources)
         catalog.events[name].add_quantity('alias', name, sources)
         catalog.events[name].add_quantity('ra', ra, sources)
         catalog.events[name].add_quantity('dec', dec, sources)
 
-        html2 = load_cached_url(catalog.args, current_task, des_trans_url + name,
+        html2 = load_cached_url(catalog.args, current_task,
+                                des_trans_url + name,
                                 des_path + name + '.html')
         if not html2:
             continue
@@ -72,12 +78,13 @@ def do_des(catalog):
                 jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
                 for ii, band in enumerate(jsontxt['band']):
                     upl = True if float(jsontxt['snr'][ii]) <= 3.0 else ''
-                    catalog.events[name].add_photometry(time=jsontxt['mjd'][ii],
-                                   magnitude=jsontxt['mag'][ii],
-                                   e_magnitude=jsontxt['mag_error'][ii],
-                                   band=band, observatory='CTIO',
-                                   telescope='Blanco 4m', instrument='DECam',
-                                   upperlimit=upl, source=sources)
+                    (catalog.events[name]
+                     .add_photometry(time=jsontxt['mjd'][ii],
+                                     magnitude=jsontxt['mag'][ii],
+                                     e_magnitude=jsontxt['mag_error'][ii],
+                                     band=band, observatory='CTIO',
+                                     telescope='Blanco 4m', instrument='DECam',
+                                     upperlimit=upl, source=sources))
 
     catalog.journal_events()
     return

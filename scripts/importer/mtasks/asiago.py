@@ -42,11 +42,10 @@ def do_asiago_photo(catalog):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            (catalog.events,
-             name,
+            (name,
              source) = catalog.new_event(oldname,
-                                        srcname=reference, url=refurl,
-                                        bibcode=refbib, secondary=True)
+                                         srcname=reference, url=refurl,
+                                         bibcode=refbib, secondary=True)
 
             year = re.findall(r'\d+', oldname)[0]
             catalog.events[name].add_quantity('discoverdate', year, source)
@@ -77,7 +76,8 @@ def do_asiago_photo(catalog):
                     daystr = dayarr[0]
                     datestring = datestring + '/' + daystr
 
-            catalog.events[name].add_quantity(datekey + 'date', datestring, source)
+            catalog.events[name].add_quantity(datekey + 'date', datestring,
+                                              source)
 
             velocity = ''
             redshift = ''
@@ -94,7 +94,8 @@ def do_asiago_photo(catalog):
             if (hostname != ''):
                 catalog.events[name].add_quantity('host', hostname, source)
             if (claimedtype != ''):
-                catalog.events[name].add_quantity('claimedtype', claimedtype, source)
+                catalog.events[name].add_quantity('claimedtype', claimedtype,
+                                                  source)
             if (redshift != ''):
                 catalog.events[name].add_quantity(
                     'redshift', redshift, source, kind='host')
@@ -108,11 +109,14 @@ def do_asiago_photo(catalog):
                 catalog.events[name].add_quantity(
                     'hostdec', hostdec, source, unit='nospace')
             if (ra != ''):
-                catalog.events[name].add_quantity('ra', ra, source, unit='nospace')
+                catalog.events[name].add_quantity('ra', ra, source,
+                                                  unit='nospace')
             if (dec != ''):
-                catalog.events[name].add_quantity('dec', dec, source, unit='nospace')
+                catalog.events[name].add_quantity('dec', dec, source,
+                                                  unit='nospace')
             if (discoverer != ''):
-                catalog.events[name].add_quantity('discoverer', discoverer, source)
+                catalog.events[name].add_quantity('discoverer', discoverer,
+                                                  source)
 
     catalog.journal_events()
     return
@@ -160,9 +164,11 @@ def do_asiago_spectra(catalog):
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = catalog.events[name].add_source(
                     srcname=reference, url=refurl, secondary=True)
-                catalog.events[name].add_quantity('alias', oldname, secondarysource)
+                catalog.events[name].add_quantity('alias', oldname,
+                                                  secondarysource)
                 if alias != name:
-                    catalog.events[name].add_quantity('alias', alias, secondarysource)
+                    catalog.events[name].add_quantity('alias', alias,
+                                                      secondarysource)
             elif tdi == 2:
                 host = td.text.strip()
                 if host == 'anonymous':
@@ -198,7 +204,8 @@ def do_asiago_spectra(catalog):
                 if reference:
                     source = catalog.events[name].add_source(
                         srcname=reference, url=refurl)
-                catalog.events[name].add_quantity('alias', name, secondarysource)
+                catalog.events[name].add_quantity('alias', name,
+                                                  secondarysource)
                 sources = uniq_cdl(
                     list(filter(None, [source, secondarysource])))
             elif tdi == 12:
@@ -207,11 +214,13 @@ def do_asiago_spectra(catalog):
                 # if fitslink:
                 #     fitsurl = fitslink['href']
         if name:
-            catalog.events[name].add_quantity('claimedtype', claimedtype, sources)
+            catalog.events[name].add_quantity('claimedtype', claimedtype,
+                                              sources)
             catalog.events[name].add_quantity('ra', ra, sources)
             catalog.events[name].add_quantity('dec', dec, sources)
             catalog.events[name].add_quantity('redshift', redshift, sources)
-            catalog.events[name].add_quantity('discoverer', discoverer, sources)
+            catalog.events[name].add_quantity('discoverer', discoverer,
+                                              sources)
             catalog.events[name].add_quantity('host', host, sources)
 
             # if fitsurl:

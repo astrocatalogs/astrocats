@@ -32,14 +32,17 @@ def do_gaia(catalog):
         catalog.events[name].add_quantity('alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
         catalog.events[name].add_quantity('discoverdate', year, source)
-        catalog.events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
-        catalog.events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
+        catalog.events[name].add_quantity(
+            'ra', row[2], source, unit='floatdegrees')
+        catalog.events[name].add_quantity(
+            'dec', row[3], source, unit='floatdegrees')
         if row[7] and row[7] != 'unknown':
             type = row[7].replace('SNe', '').replace('SN', '').strip()
             catalog.events[name].add_quantity('claimedtype', type, source)
         elif any([xx in row[9].upper() for xx in
                   ['SN CANDIATE', 'CANDIDATE SN', 'HOSTLESS SN']]):
-            catalog.events[name].add_quantity('claimedtype', 'Candidate', source)
+            catalog.events[name].add_quantity(
+                'claimedtype', 'Candidate', source)
 
         if ('aka' in row[9].replace('gakaxy', 'galaxy').lower() and
                 'AKARI' not in row[9]):
@@ -61,7 +64,8 @@ def do_gaia(catalog):
                     break
 
         fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
-        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname):
+        if (catalog.current_task.load_archive(catalog.args) and
+                os.path.isfile(fname)):
             with open(fname, 'r') as ff:
                 csvtxt = ff.read()
         else:
@@ -84,8 +88,9 @@ def do_gaia(catalog):
             telescope = 'GAIA'
             band = 'G'
             catalog.events[name].add_photometry(time=mjd, telescope=telescope,
-                           band=band, magnitude=magnitude,
-                           e_magnitude=e_mag, source=source)
+                                                band=band, magnitude=magnitude,
+                                                e_magnitude=e_mag,
+                                                source=source)
         if catalog.args.update:
             catalog.journal_events()
     catalog.journal_events()
