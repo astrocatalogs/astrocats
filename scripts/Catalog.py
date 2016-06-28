@@ -8,8 +8,7 @@ from git import Repo
 from scripts import PATH, SCHEMA, FILENAME
 
 from .utils import logger, pbar
-from .importer.funcs import (get_bibauthor_dict, get_biberror_dict,
-                             get_extinctions_dict, get_repos_dict)
+from .importer.funcs import read_dict
 
 from .utils import (is_number, repo_file_list)
 from .importer.constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES,
@@ -70,10 +69,10 @@ class Catalog():
         self.events = OrderedDict()
         # Create/Load auxiliary dictionaries
         self.nedd_dict = OrderedDict()
-        self.repos_dict = get_repos_dict()
-        self.bibauthor_dict = get_bibauthor_dict()
-        self.biberror_dict = get_biberror_dict()
-        self.extinctions_dict = get_extinctions_dict()
+        self.repos_dict = read_dict(FILENAME.REPOS)
+        self.bibauthor_dict = read_dict(FILENAME.BIBAUTHORS)
+        self.biberror_dict = read_dict(FILENAME.BIBERRORS)
+        self.extinctions_dict = read_dict(FILENAME.EXTINCT)
         return
 
     def add_event(self, name, load=True, delete=True):

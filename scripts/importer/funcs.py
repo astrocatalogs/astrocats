@@ -14,12 +14,11 @@ from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 
 from cdecimal import Decimal
-from scripts import FILENAME
 
-from ..utils import (get_sig_digits, is_number,
-                     pretty_num, round_sig, tprint, zpad)
-from .constants import (ADS_BIB_URL, CLIGHT, KM, OSC_BIBCODE,
-                        OSC_NAME, OSC_URL, PREF_KINDS)
+from ..utils import (get_sig_digits, is_number, pretty_num, round_sig, tprint,
+                     zpad)
+from .constants import (ADS_BIB_URL, CLIGHT, KM, OSC_BIBCODE, OSC_NAME,
+                        OSC_URL, PREF_KINDS)
 
 
 def alias_priority(name, attr):
@@ -393,7 +392,8 @@ def derive_and_sanitize(catalog):
                         cd = cosmo.comoving_distance(bestz)
                         sources = [
                             event.add_source(
-                                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                                bibcode=OSC_BIBCODE, srcname=OSC_NAME,
+                                url=OSC_URL,
                                 secondary=True),
                             event.add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
@@ -551,78 +551,14 @@ def frame_priority(attr):
     return len(PREF_KINDS)
 
 
-def get_atels_dict():
+def read_dict(filename):
     # path = '../atels.json'
-    if os.path.isfile(FILENAME.ATELS):
-        with open(FILENAME.ATELS, 'r') as f:
-            atels_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            mydict = json.loads(f.read(), object_pairs_hook=OrderedDict)
     else:
-        atels_dict = OrderedDict()
-    return atels_dict
-
-
-def get_bibauthor_dict():
-    # path = '../bibauthors.json'
-    if os.path.isfile(FILENAME.BIBAUTHORS):
-        with open(FILENAME.BIBAUTHORS, 'r') as f:
-            bibauthor_dict = json.loads(
-                f.read(), object_pairs_hook=OrderedDict)
-    else:
-        bibauthor_dict = OrderedDict()
-    return bibauthor_dict
-
-
-def get_repos_dict():
-    # path = '../bibauthors.json'
-    if os.path.isfile(FILENAME.REPOS):
-        with open(FILENAME.REPOS, 'r') as f:
-            repos_dict = json.loads(
-                f.read(), object_pairs_hook=OrderedDict)
-    else:
-        repos_dict = OrderedDict()
-    return repos_dict
-
-
-def get_biberror_dict():
-    # path = '../biberrors.json'
-    if os.path.isfile(FILENAME.BIBERRORS):
-        with open(FILENAME.BIBERRORS, 'r') as f:
-            bibauthor_dict = json.loads(
-                f.read(), object_pairs_hook=OrderedDict)
-    else:
-        bibauthor_dict = OrderedDict()
-    return bibauthor_dict
-
-
-def get_cbets_dict():
-    # path = '../cbets.json'
-    if os.path.isfile(FILENAME.CBETS):
-        with open(FILENAME.CBETS, 'r') as f:
-            cbets_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        cbets_dict = OrderedDict()
-    return cbets_dict
-
-
-def get_extinctions_dict():
-    # path = '../extinctions.json'
-    if os.path.isfile(FILENAME.EXTINCT):
-        with open(FILENAME.EXTINCT, 'r') as f:
-            extinctions_dict = json.loads(
-                f.read(), object_pairs_hook=OrderedDict)
-    else:
-        extinctions_dict = OrderedDict()
-    return extinctions_dict
-
-
-def get_iaucs_dict():
-    # path = '../iaucs.json'
-    if os.path.isfile(FILENAME.IAUCS):
-        with open(FILENAME.IAUCS, 'r') as f:
-            iaucs_dict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        iaucs_dict = OrderedDict()
-    return iaucs_dict
+        mydict = OrderedDict()
+    return mydict
 
 
 def get_preferred_name(events, name):

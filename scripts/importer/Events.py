@@ -5,21 +5,20 @@ import json
 import os
 import warnings
 from collections import OrderedDict
+
 from astropy.time import Time as astrotime
 
 from cdecimal import Decimal
 from scripts import FILENAME, PATH, SCHEMA
 
-from ..utils import (bandmetaf, bandrepf, get_event_filename,
-                     get_repo_folders, get_repo_paths, get_repo_years,
-                     get_sig_digits, is_number, pretty_num, tprint)
-from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL,
-                        PREF_KINDS, REPR_BETTER_QUANTITY)
-from .funcs import (get_atels_dict, get_cbets_dict,
-                    get_iaucs_dict, get_source_year, host_clean, jd_to_mjd,
-                    make_date_string, name_clean,
-                    radec_clean, same_tag_num, same_tag_str, trim_str_arr,
-                    uniq_cdl)
+from ..utils import (bandmetaf, bandrepf, get_event_filename, get_repo_folders,
+                     get_repo_paths, get_repo_years, get_sig_digits, is_number,
+                     pretty_num, tprint)
+from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL, PREF_KINDS,
+                        REPR_BETTER_QUANTITY)
+from .funcs import (get_source_year, host_clean, jd_to_mjd, make_date_string,
+                    name_clean, radec_clean, read_dict, same_tag_num,
+                    same_tag_str, trim_str_arr, uniq_cdl)
 
 
 class KEYS:
@@ -522,7 +521,7 @@ class EVENT(Entry):
         # If a `srcname` is given, try to set a `bibcode`
         elif not bibcode:
             if srcname.upper().startswith('ATEL'):
-                atels_dict = get_atels_dict()
+                atels_dict = read_dict(FILENAME.ATELS)
                 srcname = srcname.replace(
                     'ATEL', 'ATel').replace('Atel', 'ATel')
                 srcname = srcname.replace(
@@ -534,7 +533,7 @@ class EVENT(Entry):
                     bibcode = atels_dict[atelnum]
 
             if srcname.upper().startswith('CBET'):
-                cbets_dict = get_cbets_dict()
+                cbets_dict = read_dict(FILENAME.CBETS)
                 srcname = srcname.replace('CBET', 'CBET ')
                 srcname = ' '.join(srcname.split())
                 cbetnum = srcname.split()[-1]
@@ -542,7 +541,7 @@ class EVENT(Entry):
                     bibcode = cbets_dict[cbetnum]
 
             if srcname.upper().startswith('IAUC'):
-                iaucs_dict = get_iaucs_dict()
+                iaucs_dict = read_dict(FILENAME.IAUCS)
                 srcname = srcname.replace('IAUC', 'IAUC ')
                 srcname = ' '.join(srcname.split())
                 iaucnum = srcname.split()[-1]
@@ -902,7 +901,8 @@ class EVENT(Entry):
         else:
             if errors and max([float(x) for x in errors]) > 0.:
                 if not errorunit:
-                    warnings.warn('No error unit specified, not adding spectrum.')
+                    warnings.warn(
+                        'No error unit specified, not adding spectrum.')
                     return
                 spectrumentry['errorunit'] = errorunit
                 data = [trim_str_arr(wavelengths), trim_str_arr(
@@ -921,10 +921,11 @@ class EVENT(Entry):
 
         # FIX: THIS
         eventphoto = [(x['u_time'], x['time'],
-                       Decimal(x['magnitude']), x['band'] if 'band' in x else '',
+                       Decimal(x['magnitude']), x[
+            'band'] if 'band' in x else '',
                        x['source']) for x in self['photometry'] if
-                      ('magnitude' in x and 'time' in x and 'u_time' in x and
-                       'upperlimit' not in x)]
+            ('magnitude' in x and 'time' in x and 'u_time' in x and
+             'upperlimit' not in x)]
         if not eventphoto:
             return None, None, None, None
 
