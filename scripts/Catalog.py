@@ -40,6 +40,9 @@ class Catalog():
         # Create empty `events` collection
         self.events = OrderedDict()
 
+        # Load repositories dictionary
+        self.repos_dict = read_json_dict(FILENAME.REPOS)
+
         # Load auxiliary data
         self._load_aux()
 
@@ -68,7 +71,6 @@ class Catalog():
     def _load_aux(self):
         # Create/Load auxiliary dictionaries
         self.nedd_dict = OrderedDict()
-        self.repos_dict = read_json_dict(FILENAME.REPOS)
         self.bibauthor_dict = read_json_dict(FILENAME.BIBAUTHORS)
         self.biberror_dict = read_json_dict(FILENAME.BIBERRORS)
         self.extinctions_dict = read_json_dict(FILENAME.EXTINCT)
