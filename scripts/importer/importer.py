@@ -10,8 +10,9 @@ from collections import OrderedDict
 
 from scripts import FILENAME
 
+from .. import Catalog, Task, main
 from ..utils import pbar, repo_file_list
-from .constants import TASK, TRAVIS_QUERY_LIMIT
+from .constants import TRAVIS_QUERY_LIMIT
 from .funcs import derive_and_sanitize
 
 
@@ -28,8 +29,6 @@ def import_main(catalog=None):
     # default parameters which can then be overwritten below
     if catalog is None:
         warnings.warn("`args` not provided, loading new")
-        from .. import main
-        from .. import Catalog
         args = main.load_args(args=['importer'])
         catalog = Catalog.Catalog(args)
 
@@ -108,7 +107,7 @@ def import_main(catalog=None):
 def load_task_list(args, log):
     """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
 
-    A `TASK` object is created for each entry, with the parameters filled in.
+    A `Task` object is created for each entry, with the parameters filled in.
     These are placed in an OrderedDict, sorted by the `priority` parameter,
     with positive values and then negative values, e.g. [0, 2, 10, -10, -1].
     """
@@ -139,7 +138,7 @@ def load_task_list(args, log):
     # `defaults` is a dictionary where each `key` is a task name, and values
     # are its properties
     for key, val in data.items():
-        tasks[key] = TASK(name=key, **val)
+        tasks[key] = Task(name=key, **val)
         # Modify `active` tasks
         # ---------------------
         # If specific list of tasks is given, make only those active
