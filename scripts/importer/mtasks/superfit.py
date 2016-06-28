@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the spectra collected by the Superfit software package.
 """
 import os
 import re

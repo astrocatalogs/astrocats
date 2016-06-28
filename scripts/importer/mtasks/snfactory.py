@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Nearby Supernova Factory.
 """
 import csv
 import os

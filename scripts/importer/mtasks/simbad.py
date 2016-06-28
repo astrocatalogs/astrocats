@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the SIMBAD astrophysical database.
 """
 import re
 

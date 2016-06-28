@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Gamma-ray Bursts Catalog.
 """
 import csv
 import os

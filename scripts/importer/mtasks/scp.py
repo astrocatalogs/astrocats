@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Supernova Cosmology Project.
 """
 import csv
 import os

@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for GAIA.
 """
 import csv
 import os

@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Cambridge Photometric Calibration Server.
 """
 import json
 import os

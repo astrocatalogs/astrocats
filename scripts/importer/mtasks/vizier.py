@@ -1,4 +1,4 @@
-"""Imports from the 'Vizier' catalog.
+"""Import tasks from the catalog available on VizieR.
 """
 import csv
 import os

@@ -1,4 +1,4 @@
-"""Import data from OGLE.
+"""Import tasks for OGLE.
 """
 import os
 import re

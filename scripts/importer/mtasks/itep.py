@@ -1,4 +1,5 @@
-"""General data import tasks.
+"""Import tasks for the Sternberg Astronomical Institute's Supernova Light
+Curve Catalog, from the ITEP-SAI group.
 """
 import csv
 import os

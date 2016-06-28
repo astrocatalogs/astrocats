@@ -1,4 +1,5 @@
-"""Import data from OGLE.
+"""Import tasks related to the Asiago supernova catalog and spectroscopic
+follow-up programs.
 """
 import calendar
 # from math import floor

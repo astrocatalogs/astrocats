@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Pan-STARRS Survey for Transients
 """
 import csv
 import os

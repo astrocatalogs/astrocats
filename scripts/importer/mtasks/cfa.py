@@ -1,4 +1,4 @@
-"""Imports from the 'CfA' sources.
+"""Import tasks for the Harvard Center for Astrophysics
 """
 import csv
 import os

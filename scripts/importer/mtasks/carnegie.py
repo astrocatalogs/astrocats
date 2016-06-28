@@ -1,4 +1,4 @@
-"""Imports from the 'Vizier' catalog.
+"""Imported tasks for the Carnegie Supernova Program.
 """
 import csv
 import os

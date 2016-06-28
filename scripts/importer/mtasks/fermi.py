@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks related to Fermi supernova remnants.
 """
 import csv
 import os

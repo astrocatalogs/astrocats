@@ -1,3 +1,5 @@
+'''Import tasks for the Supernova Legacy Survey.
+'''
 import csv
 import os
 from glob import glob

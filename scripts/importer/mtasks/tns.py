@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Transient Name Server.
 """
 import csv
 import os

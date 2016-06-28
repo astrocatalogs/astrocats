@@ -1,4 +1,4 @@
-"""Data import tasks for individual data 'donations'.
+"""Import tasks for data directly donated to the Open Supernova Catalog.
 """
 import csv
 import json

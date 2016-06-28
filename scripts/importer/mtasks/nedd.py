@@ -1,3 +1,5 @@
+'''Import tasks for NED-D, the galactic distances catalog.
+'''
 import csv
 import os
 from collections import OrderedDict

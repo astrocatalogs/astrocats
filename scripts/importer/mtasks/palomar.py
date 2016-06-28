@@ -1,4 +1,4 @@
-"""Import data from the Palomar Transient Factory (PTF).
+"""Import tasks for the Palomar Transient Factory (PTF).
 """
 import os
 

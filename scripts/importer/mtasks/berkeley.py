@@ -1,4 +1,4 @@
-"""Import data from UC Berkeley group.
+"""Import tasks for Alex Fillipenko's UC Berkeley group.
 """
 import csv
 import json

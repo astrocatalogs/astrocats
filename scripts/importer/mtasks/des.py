@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Dark Energy Survey.
 """
 import json
 import os

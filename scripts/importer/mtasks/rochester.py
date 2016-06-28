@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for David Bishop's Latest Supernovae page.
 """
 import csv
 import os

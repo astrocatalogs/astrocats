@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Sloan Digital Sky Survey.
 """
 import csv
 import os

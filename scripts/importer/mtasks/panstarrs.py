@@ -1,4 +1,4 @@
-"""Import data from Pan-STARRS.
+"""Import tasks for Pan-STARRS.
 """
 import json
 import os

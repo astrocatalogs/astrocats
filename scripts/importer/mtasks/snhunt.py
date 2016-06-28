@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Supernova Hunt.
 """
 import os
 import re

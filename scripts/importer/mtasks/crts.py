@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the Catalina Real-Time Transient Survey.
 """
 import os
 import re

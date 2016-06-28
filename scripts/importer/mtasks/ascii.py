@@ -1,4 +1,5 @@
-"""General data import tasks.
+"""ASCII datafiles, often produced from LaTeX tables in the original papers,
+but sometimes provided as supplementary datafiles on the journal webpages.
 """
 import csv
 import os

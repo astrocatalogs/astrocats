@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for the PESSTO spectroscopic program.
 """
 import csv
 import os

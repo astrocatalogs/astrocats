@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Tasks related to the ASASSN survey.
 """
 import os
 

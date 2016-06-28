@@ -1,4 +1,4 @@
-"""Imports from the 'WISeREP' catalogs.
+"""Imports for the WISeREP spectroscopic repository.
 """
 import os
 import re

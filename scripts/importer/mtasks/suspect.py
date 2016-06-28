@@ -1,4 +1,4 @@
-"""General data import tasks.
+"""Import tasks for SUSPECT.
 """
 import csv
 import json
