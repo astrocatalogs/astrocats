@@ -136,7 +136,7 @@ class Entry(OrderedDict):
         >>> events[name] = events[name].get_stub()
 
         """
-        stub = Entry(self[KEYS.NAME], stub=True)
+        stub = type(self)(self[KEYS.NAME], stub=True)
         if KEYS.ALIAS in self.keys():
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
