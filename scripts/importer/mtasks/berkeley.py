@@ -42,7 +42,8 @@ def do_ucb_photo(catalog):
         catalog.events[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
         if phot['Reference']:
-            sources += [catalog.events[name].add_source(bibcode=phot['Reference'])]
+            sources += [catalog.events[name]
+                        .add_source(bibcode=phot['Reference'])]
         sources = uniq_cdl(sources)
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
@@ -63,7 +64,8 @@ def do_ucb_photo(catalog):
             raise ValueError('ID not found for SNDB phot!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
-        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(filepath):
+        if (catalog.current_task.load_archive(catalog.args) and
+                os.path.isfile(filepath)):
             with open(filepath, 'r') as ff:
                 phottxt = ff.read()
         else:
@@ -104,7 +106,8 @@ def do_ucb_spectra(catalog):
     ucbspectracnt = 0
 
     jsontxt = load_cached_url(
-        catalog.args, 'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
+        catalog.args,
+        'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
     if not jsontxt:
         return
@@ -125,7 +128,8 @@ def do_ucb_spectra(catalog):
         catalog.events[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
-            sources += [catalog.events[name].add_source(bibcode=spectrum['Reference'])]
+            sources += [catalog.events[name]
+                        .add_source(bibcode=spectrum['Reference'])]
         sources = uniq_cdl(sources)
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
@@ -159,7 +163,8 @@ def do_ucb_spectra(catalog):
             raise ValueError('ID not found for SNDB spectrum!')
 
         filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
-        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(filepath):
+        if (catalog.current_task.load_archive(catalog.args) and
+                os.path.isfile(filepath)):
             with open(filepath, 'r') as ff:
                 spectxt = ff.read()
         else:

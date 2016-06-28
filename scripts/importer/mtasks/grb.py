@@ -27,11 +27,13 @@ def do_grb(catalog):
             continue
         (name,
          source) = catalog.new_event('GRB ' +
-                                    row[0],
-                                    srcname='Gamma-ray Bursts Catalog',
-                                    url='http://grbcatalog.org')
-        catalog.events[name].add_quantity('ra', row[2], source, unit='floatdegrees')
-        catalog.events[name].add_quantity('dec', row[3], source, unit='floatdegrees')
+                                     row[0],
+                                     srcname='Gamma-ray Bursts Catalog',
+                                     url='http://grbcatalog.org')
+        catalog.events[name].add_quantity(
+            'ra', row[2], source, unit='floatdegrees')
+        catalog.events[name].add_quantity(
+            'dec', row[3], source, unit='floatdegrees')
         catalog.events[name].add_quantity('redshift', row[8], source)
 
     catalog.journal_events()

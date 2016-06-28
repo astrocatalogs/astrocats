@@ -13,7 +13,7 @@ from scripts import PATH
 from .. import Events
 from ...utils import is_number, pbar, pbar_strings
 from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-from ..funcs import (clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl)
+from ..funcs import clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl
 
 
 def do_cfa_photo(catalog):
@@ -50,7 +50,8 @@ def do_cfa_photo(catalog):
         catalog.events[name].add_quantity('alias', name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
-        catalog.events[name].add_quantity('discoverdate', year, secondarysource)
+        catalog.events[name].add_quantity(
+            'discoverdate', year, secondarysource)
 
         eventbands = list(eventparts[1])
 
@@ -71,7 +72,8 @@ def do_cfa_photo(catalog):
                             refstr = ' '.join(row[2 + ci:])
                             refstr = refstr.replace('(', '').replace(')', '')
                             bibcode = unescape(refstr)
-                            source = catalog.events[name].add_source(bibcode=bibcode)
+                            source = catalog.events[
+                                name].add_source(bibcode=bibcode)
                 elif len(row) > 1 and row[1] == 'HJD':
                     tu = 'HJD'
                 continue
@@ -114,7 +116,8 @@ def do_cfa_photo(catalog):
 
             name = catalog.add_event(name)
 
-            source = catalog.events[name].add_source(bibcode='2012ApJS..200...12H')
+            source = catalog.events[name].add_source(
+                bibcode='2012ApJS..200...12H')
             catalog.events[name].add_quantity('alias', name, source)
             catalog.events[name].add_quantity('claimedtype', 'Ia', source)
             catalog.events[name].add_photometry(
@@ -131,7 +134,8 @@ def do_cfa_photo(catalog):
             name = 'SN' + row[0]
             name = catalog.add_event(name)
 
-            source = catalog.events[name].add_source(bibcode='2014ApJS..213...19B')
+            source = catalog.events[name].add_source(
+                bibcode='2014ApJS..213...19B')
             catalog.events[name].add_quantity('alias', name, source)
             catalog.events[name].add_photometry(
                 u_time='MJD', time=row[2], band=row[1],
@@ -246,7 +250,8 @@ def do_cfa_spectra(catalog):
             fluxes = data[1]
             sources = uniq_cdl(
                 [source,
-                 catalog.events[name].add_source(bibcode='2014AJ....147...99M')])
+                 catalog.events[name]
+                 .add_source(bibcode='2014AJ....147...99M')])
             catalog.events[name].add_spectrum(
                 'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,

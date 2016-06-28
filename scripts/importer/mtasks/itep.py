@@ -58,9 +58,10 @@ def do_itep(catalog):
 
         if bibcode not in itepbadsources:
             catalog.events[name].add_photometry(time=mjd, band=band,
-                           magnitude=magnitude,
-                           e_magnitude=e_magnitude, source=sec_source + ',' +
-                           source)
+                                                magnitude=magnitude,
+                                                e_magnitude=e_magnitude,
+                                                source=sec_source + ',' +
+                                                source)
 
     # Write out references that could use aa bibcode
     needsbib = list(OrderedDict.fromkeys(needsbib))

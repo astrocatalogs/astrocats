@@ -92,7 +92,8 @@ def do_csp_spectra(catalog):
                 jd = row[1].strip()
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
-                catalog.events[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.events[name].add_quantity('redshift', row[1].strip(),
+                                                  source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))

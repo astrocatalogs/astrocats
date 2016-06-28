@@ -21,7 +21,8 @@ def do_fermi(catalog):
                 continue
             name = row[0].replace('SNR', 'G')
             name = catalog.add_event(name)
-            source = catalog.events[name].add_source(bibcode='2016ApJS..224....8A')
+            source = (catalog.events[name]
+                      .add_source(bibcode='2016ApJS..224....8A'))
             catalog.events[name].add_quantity('alias', name, source)
             catalog.events[name].add_quantity(
                 'alias', row[0].replace('SNR', 'MWSNR'), source)
