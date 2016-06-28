@@ -3,7 +3,7 @@
         "nice_name": "%pre metadata and photometry",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.tasks.general_data",
         "function": "do_internal",
         "priority": 1
     },
@@ -11,7 +11,7 @@
         "nice_name": "%pre radio data",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.tasks.general_data",
         "function": "do_external_radio",
         "priority": 2
     },
@@ -19,7 +19,7 @@
         "nice_name": "%pre X-ray data",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.general_data",
+        "module": "importer.tasks.general_data",
         "function": "do_external_xray",
         "priority": 2
     },
@@ -27,7 +27,7 @@
         "nice_name": "%pre SIMBAD",
         "active": false,
         "update": false,
-        "module": "importer.mtasks.simbad",
+        "module": "importer.tasks.simbad",
         "function": "do_simbad",
         "priority": 3
     },
@@ -35,7 +35,7 @@
         "nice_name": "%pre VizieR",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.vizier",
+        "module": "importer.tasks.vizier",
         "function": "do_vizier",
         "priority": 3
     },
@@ -43,7 +43,7 @@
         "nice_name": "%pre donations",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.donations",
+        "module": "importer.tasks.donations",
         "function": "do_donations",
         "priority": 4
     },
@@ -51,7 +51,7 @@
         "nice_name": "%pre PESSTO DR1",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.pessto",
+        "module": "importer.tasks.pessto",
         "function": "do_pessto",
         "priority": 5
     },
@@ -59,7 +59,7 @@
         "nice_name": "%pre SCP",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.scp",
+        "module": "importer.tasks.scp",
         "function": "do_scp",
         "priority": 6
     },
@@ -67,7 +67,7 @@
         "nice_name": "%pre ASCII",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.ascii",
+        "module": "importer.tasks.ascii",
         "function": "do_ascii",
         "priority": 7
     },
@@ -76,7 +76,7 @@
         "active": true,
         "update": false,
         "archived": true,
-        "module": "importer.mtasks.cccp",
+        "module": "importer.tasks.cccp",
         "function": "do_cccp",
         "priority": 8
     },
@@ -84,7 +84,7 @@
         "nice_name": "%pre SUSPECT",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.suspect",
+        "module": "importer.tasks.suspect",
         "function": "do_suspect_photo",
         "priority": 9
     },
@@ -92,7 +92,7 @@
         "nice_name": "%pre CfA archive photometry",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.cfa",
+        "module": "importer.tasks.cfa",
         "function": "do_cfa_photo",
         "priority": 10
     },
@@ -101,7 +101,7 @@
         "active": true,
         "update": false,
         "archived": true,
-        "module": "importer.mtasks.berkeley",
+        "module": "importer.tasks.berkeley",
         "function": "do_ucb_photo",
         "priority": 11
     },
@@ -109,7 +109,7 @@
         "nice_name": "%pre SDSS photometry",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.sdss",
+        "module": "importer.tasks.sdss",
         "function": "do_sdss",
         "priority": 12
     },
@@ -117,7 +117,7 @@
         "nice_name": "%pre CSP photometry",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.carnegie",
+        "module": "importer.tasks.carnegie",
         "function": "do_csp_photo",
         "priority": 13
     },
@@ -125,7 +125,7 @@
         "nice_name": "%pre ITEP",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.itep",
+        "module": "importer.tasks.itep",
         "function": "do_itep",
         "priority": 14
     },
@@ -133,7 +133,7 @@
         "nice_name": "%pre Asiago metadata",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.asiago",
+        "module": "importer.tasks.asiago",
         "function": "do_asiago_photo",
         "priority": 15
     },
@@ -142,7 +142,7 @@
         "active": true,
         "update": true,
         "archived": true,
-        "module": "importer.mtasks.tns",
+        "module": "importer.tasks.tns",
         "function": "do_tns",
         "priority": 16
     },
@@ -151,7 +151,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.rochester",
+        "module": "importer.tasks.rochester",
         "function": "do_rochester",
         "priority": 17
     },
@@ -159,7 +159,7 @@
         "nice_name": "%pre Lennarz",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.vizier",
+        "module": "importer.tasks.vizier",
         "function": "do_lennarz",
         "priority": 18
     },
@@ -167,7 +167,7 @@
         "nice_name": "%pre Fermi",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.fermi",
+        "module": "importer.tasks.fermi",
         "function": "do_fermi",
         "priority": 19
     },
@@ -176,7 +176,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.gaia",
+        "module": "importer.tasks.gaia",
         "function": "do_gaia",
         "priority": 20
     },
@@ -185,7 +185,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.ogle",
+        "module": "importer.tasks.ogle",
         "function": "do_ogle",
         "priority": 21
     },
@@ -193,7 +193,7 @@
         "nice_name": "%pre SNLS",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.snls",
+        "module": "importer.tasks.snls",
         "function": "do_snls_photo",
         "priority": 22
     },
@@ -202,7 +202,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.panstarrs",
+        "module": "importer.tasks.panstarrs",
         "function": "do_ps_threepi",
         "priority": 23
     },
@@ -210,7 +210,7 @@
         "nice_name": "%pre Pan-STARRS MDS",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.panstarrs",
+        "module": "importer.tasks.panstarrs",
         "function": "do_ps_mds",
         "priority": 24
     },
@@ -218,7 +218,7 @@
         "nice_name": "%pre PSST",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.psst",
+        "module": "importer.tasks.psst",
         "function": "do_psst",
         "priority": 25
     },
@@ -227,7 +227,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.grb",
+        "module": "importer.tasks.grb",
         "function": "do_grb",
         "priority": 26
     },
@@ -236,7 +236,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.crts",
+        "module": "importer.tasks.crts",
         "function": "do_crts",
         "priority": 27
     },
@@ -245,7 +245,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.snhunt",
+        "module": "importer.tasks.snhunt",
         "function": "do_snhunt",
         "priority": 28
     },
@@ -253,7 +253,7 @@
         "nice_name": "%pre NED-D",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.nedd",
+        "module": "importer.tasks.nedd",
         "function": "do_nedd",
         "priority": 29
     },
@@ -262,7 +262,7 @@
         "active": true,
         "update": true,
         "archived": false,
-        "module": "importer.mtasks.cpcs",
+        "module": "importer.tasks.cpcs",
         "function": "do_cpcs",
         "priority": 30
     },
@@ -271,7 +271,7 @@
         "active": true,
         "update": false,
         "archived": false,
-        "module": "importer.mtasks.palomar",
+        "module": "importer.tasks.palomar",
         "function": "do_ptf",
         "priority": 31
     },
@@ -280,7 +280,7 @@
         "active": true,
         "update": false,
         "archived": false,
-        "module": "importer.mtasks.des",
+        "module": "importer.tasks.des",
         "function": "do_des",
         "priority": 32
     },
@@ -288,7 +288,7 @@
         "nice_name": "%pre ASASSN",
         "active": true,
         "update": true,
-        "module": "importer.mtasks.asassn",
+        "module": "importer.tasks.asassn",
         "function": "do_asassn",
         "priority": 33
     },
@@ -297,7 +297,7 @@
         "active": true,
         "update": false,
         "archived": true,
-        "module": "importer.mtasks.snfactory",
+        "module": "importer.tasks.snfactory",
         "function": "do_snf_aliases",
         "priority": 34
     },
@@ -305,7 +305,7 @@
         "nice_name": "%pre Asiago spectra",
         "active": true,
         "update": true,
-        "module": "importer.mtasks.asiago",
+        "module": "importer.tasks.asiago",
         "function": "do_asiago_spectra",
         "priority": 200
     },
@@ -313,7 +313,7 @@
         "nice_name": "%pre WISeREP spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.wiserep",
+        "module": "importer.tasks.wiserep",
         "function": "do_wiserep_spectra",
         "priority": 201
     },
@@ -321,7 +321,7 @@
         "nice_name": "%pre CfA archive spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.cfa",
+        "module": "importer.tasks.cfa",
         "function": "do_cfa_spectra",
         "priority": 202
     },
@@ -329,7 +329,7 @@
         "nice_name": "%pre SNLS spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.snls",
+        "module": "importer.tasks.snls",
         "function": "do_snls_spectra",
         "priority": 203
     },
@@ -337,7 +337,7 @@
         "nice_name": "%pre CSP spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.carnegie",
+        "module": "importer.tasks.carnegie",
         "function": "do_csp_spectra",
         "priority": 204
     },
@@ -346,7 +346,7 @@
         "active": true,
         "update": true,
         "archived": true,
-        "module": "importer.mtasks.berkeley",
+        "module": "importer.tasks.berkeley",
         "function": "do_ucb_spectra",
         "priority": 205
     },
@@ -354,7 +354,7 @@
         "nice_name": "%pre SUSPECT spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.suspect",
+        "module": "importer.tasks.suspect",
         "function": "do_suspect_spectra",
         "priority": 206
     },
@@ -362,7 +362,7 @@
         "nice_name": "%pre SNF spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.snfactory",
+        "module": "importer.tasks.snfactory",
         "function": "do_snf_specta",
         "priority": 207
     },
@@ -370,7 +370,7 @@
         "nice_name": "%pre Superfit spectra",
         "active": true,
         "update": false,
-        "module": "importer.mtasks.superfit",
+        "module": "importer.tasks.superfit",
         "function": "do_superfit_spectra",
         "priority": 208
     },
