@@ -58,11 +58,11 @@ def do_rochester(catalog):
                 if is_number(aka.strip('?')):
                     aka = 'SN' + aka.strip('?') + 'A'
                     oldname = aka
-                    name = Events.add_event(aka)
+                    name = catalog.add_event(aka)
                 elif len(aka) == 4 and is_number(aka[:4]):
                     aka = 'SN' + aka
                     oldname = aka
-                    name = Events.add_event(aka)
+                    name = catalog.add_event(aka)
 
             ra = str(cols[3].contents[0]).strip()
             dec = str(cols[4].contents[0]).strip()
@@ -158,7 +158,7 @@ def do_rochester(catalog):
                         name = 'PSN J' + name[4:]
                     if name.startswith('MASTEROTJ'):
                         name = name.replace('MASTEROTJ', 'MASTER OT J')
-                    name = Events.add_event(name)
+                    name = catalog.add_event(name)
                     sec_source = catalog.events[name].add_source(
                         srcname=sec_ref, url=sec_refurl, secondary=True)
                     catalog.events[name].add_quantity('alias', name, sec_source)
