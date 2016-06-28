@@ -50,14 +50,14 @@ def do_ptf(catalog):
                 source = catalog.events[name].add_source(bibcode='2012PASP..124..668Y')
                 catalog.events[name].add_quantity('alias', alias, source)
             else:
-                # events, name = Events.add_event(tasks, args,
+                # events, name = catalog.add_event(tasks, args,
                 #                                 events, name, log)
                 name, source = Events.new_event(name,
                     bibcode='2012PASP..124..668Y')
 
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():
-            name = Events.add_event('PTF' + suffix)
+            name = catalog.add_event('PTF' + suffix)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/perly-2016.csv')) as f:
         for row in f.read().splitlines():
             cols = [x.strip() for x in row.split(',')]
@@ -83,7 +83,7 @@ def do_ptf(catalog):
                 'maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
             catalog.events[name].add_quantity(
                 'ebv', cols[7], source, kind='spectroscopic')
-            name = Events.add_event('PTF' + suffix)
+            name = catalog.add_event('PTF' + suffix)
 
     catalog.journal_events()
     return

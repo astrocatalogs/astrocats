@@ -88,7 +88,7 @@ class Catalog():
             Name of matching event found in `events`, or new event added to
             `events`
         """
-        self.log.debug("Events.add_event()")
+        self.log.debug("catalog.add_event()")
         newname = name_clean(name)
         # If event already exists, return
         if newname in self.events:

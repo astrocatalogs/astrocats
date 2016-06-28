@@ -168,7 +168,7 @@ def do_wiserep_spectra(catalog):
                             if oldname and name != oldname:
                                 catalog.journal_events()
                             oldname = name
-                            name = Events.add_event(name)
+                            name = catalog.add_event(name)
 
                             # print(name + ' ' + claimedtype + ' ' + epoch +
                             # ' ' + observer + ' ' + reducer + ' ' + specfile +
