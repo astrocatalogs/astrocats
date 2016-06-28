@@ -33,23 +33,6 @@ def convert_aq_output(row):
                         for x in row.colnames])
 
 
-def ct_priority(events, name, attr):
-    aliases = attr['source'].split(',')
-    max_source_year = -10000
-    vaguetypes = ['CC', 'I']
-    if attr['value'] in vaguetypes:
-        return -max_source_year
-    for alias in aliases:
-        if alias == 'D':
-            continue
-        source = events[name].get_source_by_alias(alias)
-        if 'bibcode' in source:
-            source_year = get_source_year(source)
-            if source_year > max_source_year:
-                max_source_year = source_year
-    return -max_source_year
-
-
 def derive_and_sanitize(catalog):
     # Calculate some columns based on imported data, sanitize some fields
     for name, event in catalog.events.items():
@@ -81,9 +64,9 @@ def derive_and_sanitize(catalog):
         event.set_first_max_light()
 
         if 'claimedtype' in event:
-            event['claimedtype'] = list(sorted(
-                event['claimedtype'],
-                key=lambda key: ct_priority(events, name, key)))
+            # FIX: this is something that should be done completely internally
+            #      i.e. add it to `clean` or something??
+            event['claimedtype'] = event.ct_list_prioritized()
         if 'discoverdate' not in event:
             prefixes = ['MLS', 'SSS', 'CSS', 'GRB ']
             for alias in aliases:
@@ -95,7 +78,7 @@ def derive_and_sanitize(catalog):
                                               alias.replace(prefix, '')[:2],
                                               alias.replace(prefix, '')[2:4],
                                               alias.replace(prefix, '')[4:6]]))
-                        if args.verbose:
+                        if catalog.args.verbose:
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
@@ -323,8 +306,7 @@ def derive_and_sanitize(catalog):
                                           sig=bestsig),
                                sources, kind='heliocentric',
                                derived=True))
-        if ('redshift' not in event and
-                has_task(tasks, args, 'nedd') and
+        if ('redshift' not in event and len(catalog.nedd_dict) > 0 and
                 'host' in event):
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
@@ -336,14 +318,14 @@ def derive_and_sanitize(catalog):
                         srcname=reference, url=refurl, secondary=True)
                     meddist = statistics.median(
                         catalog.nedd_dict[host['value']])
-                    redshift = pretty_num(z_at_value(cosmo.comoving_distance,
-                                                     float(meddist) *
-                                                     un.Mpc),
-                                          sig=get_sig_digits(str(meddist)))
-                    (event
-                     .add_quantity(name, 'redshift', redshift,
-                                   uniq_cdl([source, secondarysource]),
-                                   kind='host', derived=True))
+                    redz = z_at_value(
+                        cosmo.comoving_distance, float(meddist) * un.Mpc)
+                    redshift = pretty_num(
+                        redz, sig=get_sig_digits(str(meddist)))
+                    event.add_quantity(
+                        name, 'redshift', redshift,
+                        uniq_cdl([source, secondarysource]),
+                        kind='host', derived=True)
         if ('maxabsmag' not in event and 'maxappmag' in event and
                 'lumdist' in event):
             # Find the "best" distance to use for this
@@ -359,6 +341,7 @@ def derive_and_sanitize(catalog):
                     bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                     secondary=True)
                 sources = uniq_cdl([source] + bestsrc.split(','))
+                # FIX: what's happening here?!
                 pnum = (float(event['maxappmag'][0]['value']) -
                         5.0 * (log10(float(bestld) * 1.0e6) - 1.0))
                 pnum = pretty_num(pnum, sig=bestsig)
@@ -373,6 +356,7 @@ def derive_and_sanitize(catalog):
                     source = event.add_source(
                         bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                         secondary=True)
+                    # FIX: what's happening here?!
                     pnum = CLIGHT / KM * \
                         ((bestz + 1.)**2. - 1.) / ((bestz + 1.)**2. + 1.)
                     pnum = pretty_num(pnum, sig=bestsig)
@@ -383,19 +367,15 @@ def derive_and_sanitize(catalog):
                     if 'lumdist' not in event:
                         dl = cosmo.luminosity_distance(bestz)
                         sources = [
-                            (event
-                             .add_source(bibcode=OSC_BIBCODE,
-                                         srcname=OSC_NAME,
-                                         url=OSC_URL,
-                                         secondary=True)),
-                            (event
-                             .add_source(bibcode='2015arXiv150201589P'))]
+                            event.add_source(
+                                bibcode=OSC_BIBCODE, srcname=OSC_NAME,
+                                url=OSC_URL, secondary=True),
+                            event.add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
-                        (event
-                         .add_quantity('lumdist',
-                                       pretty_num(dl.value, sig=bestsig),
-                                       sources, kind=PREF_KINDS[bestkind],
-                                       derived=True))
+                        event.add_quantity(
+                            'lumdist', pretty_num(dl.value, sig=bestsig),
+                            sources, kind=PREF_KINDS[bestkind],
+                            derived=True)
                         if ('maxabsmag' not in event and
                                 'maxappmag' in event):
                             source = event.add_source(
@@ -409,46 +389,45 @@ def derive_and_sanitize(catalog):
                                 'maxabsmag', pnum, sources, derived=True)
                     if 'comovingdist' not in event:
                         cd = cosmo.comoving_distance(bestz)
-                        sources = [event
-                                   .add_source(bibcode=OSC_BIBCODE,
-                                               srcname=OSC_NAME, url=OSC_URL,
-                                               secondary=True),
-                                   event
-                                   .add_source(bibcode='2015arXiv150201589P')]
+                        sources = [
+                            event.add_source(
+                                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                                secondary=True),
+                            event.add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
-                        event.add_quantity('comovingdist', pretty_num(
-                            cd.value, sig=bestsig), sources, derived=True)
+                        event.add_quantity(
+                            'comovingdist', pretty_num(cd.value, sig=bestsig),
+                            sources, derived=True)
         if all([x in event for x in ['ra', 'dec', 'hostra', 'hostdec']]):
             # For now just using first coordinates that appear in entry
             try:
-                c1 = coord(ra=event['ra'][0]['value'], dec=event[
-                           'dec'][0]['value'], unit=(un.hourangle, un.deg))
-                c2 = coord(ra=event['hostra'][0]['value'],
-                           dec=event[
-                           'hostdec'][0]['value'], unit=(un.hourangle, un.deg))
+                c1 = coord(
+                    ra=event['ra'][0]['value'], dec=event['dec'][0]['value'],
+                    unit=(un.hourangle, un.deg))
+                c2 = coord(
+                    ra=event['hostra'][0]['value'],
+                    dec=event['hostdec'][0]['value'],
+                    unit=(un.hourangle, un.deg))
             except (KeyboardInterrupt, SystemExit):
                 raise
             except:
                 pass
             else:
                 sources = uniq_cdl(
-                    [event
-                     .add_source(bibcode=OSC_BIBCODE,
-                                 srcname=OSC_NAME,
-                                 url=OSC_URL,
-                                 secondary=True)] +
+                    [event.add_source(
+                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                        secondary=True)] +
                     event['ra'][0]['source'].split(',') +
                     event['dec'][0]['source'].split(',') +
                     event['hostra'][0]['source'].split(',') +
                     event['hostdec'][0]['source'].split(','))
                 if 'hostoffsetang' not in event:
-                    (event
-                     .add_quantity('hostoffsetang',
-                                   pretty_num(Decimal(
-                                       hypot(c1.ra.degree - c2.ra.degree,
-                                             c1.dec.degree - c2.dec.degree)) *
-                                       Decimal(3600.)), sources,
-                                   derived=True, unit='arcseconds'))
+                    hosa = Decimal(hypot(c1.ra.degree - c2.ra.degree,
+                                         c1.dec.degree - c2.dec.degree))
+                    hosa = pretty_num(hosa * Decimal(3600.))
+                    event.add_quantity(
+                        'hostoffsetang', hosa, sources,
+                        derived=True, unit='arcseconds')
                 if ('comovingdist' in event and
                         'redshift' in event and
                         'hostoffsetdist' not in event):
@@ -536,9 +515,7 @@ def derive_and_sanitize(catalog):
                 sorted(event['velocity'], key=lambda key:
                        frame_priority(key)))
         if 'claimedtype' in event:
-            event['claimedtype'] = list(sorted(
-                event['claimedtype'], key=lambda key:
-                ct_priority(events, name, key)))
+            event['claimedtype'] = event.ct_list_prioritized()
 
         # event = OrderedDict(
         #    sorted(event.items(), key=lambda key:
