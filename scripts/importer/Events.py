@@ -950,13 +950,14 @@ class EVENT(Entry):
         else:
             return None, mlmag, mlband, mlsource
 
-    def _get_first_light(events, name):
-        if 'photometry' not in events[name]:
+    def _get_first_light(self):
+        if 'photometry' not in self:
             return None, None
 
+        # FIX THIS
         eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else
                        Decimal(min(float(y) for y in x['time'])),
-                       x['source']) for x in events[name]['photometry'] if
+                       x['source']) for x in self['photometry'] if
                       'upperlimit' not in x and
                       'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
         if not eventphoto:
