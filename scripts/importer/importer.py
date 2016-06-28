@@ -65,7 +65,7 @@ def import_main(catalog=None):
         log.debug("\t{}, {}, {}, {}".format(
             nice_name, priority, mod_name, func_name))
         mod = importlib.import_module('.' + mod_name, package='scripts')
-        catalog.current_task = task_obj.current_task(catalog.args)
+        catalog.current_task = task_obj
         getattr(mod, func_name)(catalog)
 
         num_events, num_stubs = catalog.count()

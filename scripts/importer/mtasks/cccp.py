@@ -18,7 +18,7 @@ from ..funcs import event_exists, load_cached_url, uniq_cdl
 
 
 def do_cccp(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
         glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')))
@@ -122,7 +122,7 @@ def do_cccp(catalog):
 
 
 def do_cpcs(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'

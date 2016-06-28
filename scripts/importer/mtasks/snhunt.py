@@ -11,7 +11,7 @@ from ..funcs import load_cached_url
 
 
 def do_snhunt(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url(catalog.args, current_task, snh_url, os.path.join(
         PATH.REPO_EXTERNAL, 'SNhunt/current.html'))

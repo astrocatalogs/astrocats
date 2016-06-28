@@ -20,7 +20,7 @@ from ..funcs import get_preferred_name, uniq_cdl
 
 
 def do_wiserep_spectra(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
     secondarybibcode = '2012PASP..124..668Y'

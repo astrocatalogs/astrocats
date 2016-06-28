@@ -14,7 +14,7 @@ from ..funcs import jd_to_mjd, load_cached_url, uniq_cdl
 
 
 def do_ogle(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']
     oglenames = []

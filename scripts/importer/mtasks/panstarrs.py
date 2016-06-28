@@ -17,7 +17,7 @@ from ..funcs import load_cached_url, make_date_string, uniq_cdl
 
 
 def do_ps_mds(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
@@ -40,7 +40,7 @@ def do_ps_mds(catalog):
 
 
 def do_ps_threepi(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     teles = 'Pan-STARRS1'
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"

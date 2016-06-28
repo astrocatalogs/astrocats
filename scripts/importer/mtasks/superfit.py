@@ -16,7 +16,7 @@ from ..funcs import event_exists
 def do_superfit_spectra(catalog):
     from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     sfdirs = list(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*')))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))

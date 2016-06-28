@@ -16,7 +16,7 @@ from ..funcs import load_cached_url
 
 def do_crts(catalog):
     crtsnameerrors = ['2011ax']
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
         html = load_cached_url(catalog.args, current_task,

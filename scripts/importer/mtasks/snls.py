@@ -51,7 +51,7 @@ def do_snls_spectra(catalog):
     """
     """
 
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     result = Vizier.get_catalogs('J/A+A/507/85/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)

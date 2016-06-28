@@ -11,7 +11,7 @@ from ..Events import KEYS
 
 
 def do_external_radio(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
@@ -42,7 +42,7 @@ def do_external_radio(catalog):
 
 
 def do_external_xray(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
@@ -74,7 +74,7 @@ def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
     from ..Events import EVENT
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     catalog.log.debug("found {} files matching '{}'".format(

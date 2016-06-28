@@ -16,7 +16,7 @@ def do_csp_photo(catalog):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'CSP/*.dat'))
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     for fname in pbar_strings(file_names, desc=current_task):
         tsvin = csv.reader(open(fname, 'r'), delimiter='\t',
                            skipinitialspace=True)
@@ -63,7 +63,7 @@ def do_csp_photo(catalog):
 
 def do_csp_spectra(catalog):
     oldname = ''
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CSP/*'))
     for fi, fname in enumerate(pbar_strings(file_names,
                                             current_task=current_task)):

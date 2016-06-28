@@ -13,7 +13,7 @@ from ..funcs import load_cached_url
 
 
 def do_des(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
     ackn_url = ('http://www.noao.edu/'

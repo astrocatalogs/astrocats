@@ -8,7 +8,7 @@ from scripts.utils import pbar
 
 
 def do_fermi(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            '1SC_catalog_v01.asc'), 'r') as ff:
         tsvin = list(csv.reader(ff, delimiter=','))

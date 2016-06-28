@@ -14,7 +14,7 @@ from ..funcs import jd_to_mjd
 
 
 def do_itep(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
     with open(os.path.join(PATH.REPO_EXTERNAL,

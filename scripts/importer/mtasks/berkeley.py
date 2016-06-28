@@ -17,7 +17,7 @@ from ..funcs import load_cached_url, uniq_cdl
 
 
 def do_ucb_photo(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
@@ -99,7 +99,7 @@ def do_ucb_photo(catalog):
 
 
 def do_ucb_spectra(catalog):
-    current_task = catalog.current_task
+    current_task = catalog.get_current_task_str()
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
