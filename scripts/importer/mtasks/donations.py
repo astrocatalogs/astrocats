@@ -133,8 +133,8 @@ def do_donations(catalog):
                     value = splitline[1].strip()
                     if field == 'name':
                         name = value[:6].upper()
-                        name += (value[6].upper() if len(value)
-                                 == 7 else value[6:])
+                        name += (value[6].upper() if len(value) == 7
+                                 else value[6:])
                         name = catalog.add_event(name)
                         source = (catalog.events[name]
                                   .add_source(bibcode=bibcode))
