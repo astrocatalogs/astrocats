@@ -349,7 +349,7 @@ def derive_and_sanitize(catalog):
                     'maxabsmag', pnum, sources, derived=True)
         if 'redshift' in event:
             # Find the "best" redshift to use for this
-            bestz, bestkind, bestsig = event.get_best_redshift()
+            bestz, bestkind, bestsig, bestsrc = event.get_best_redshift()
             if bestsig > 0:
                 bestz = float(bestz)
                 if 'velocity' not in event:

@@ -88,7 +88,7 @@ def import_main(catalog=None):
         # FIX: is this check needed here (also in 'journal_events')?
         if catalog.args.write_events:
             catalog.journal_events()
-        if args.travis and ii > TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and ii > TRAVIS_QUERY_LIMIT:
             break
 
     def json_dump(adict, fname):
