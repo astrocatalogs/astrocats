@@ -42,11 +42,10 @@ def do_asiago_photo(catalog):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            (catalog.events,
-             name,
+            (name,
              source) = catalog.new_event(oldname,
-                                        srcname=reference, url=refurl,
-                                        bibcode=refbib, secondary=True)
+                                         srcname=reference, url=refurl,
+                                         bibcode=refbib, secondary=True)
 
             year = re.findall(r'\d+', oldname)[0]
             catalog.events[name].add_quantity('discoverdate', year, source)
