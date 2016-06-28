@@ -1,9 +1,9 @@
 # Change Log #
 
 ## To-Do ##
--   `importer/mtasks/vizier.py:do_vizier`
+-   `importer/tasks/vizier.py:do_vizier`
     -   Break down into separate functions, or classes.  Can use significant templating to cleanup.
--   `importer/mtasks/donations.py:do_donations`
+-   `importer/tasks/donations.py:do_donations`
     -   Break down into separate " " " ".
 -   `main.py`
     -   Look at '--archived' vs. '--refresh[list]' and '--full-refresh'... what exactly is desired?
@@ -31,7 +31,7 @@
 
 ## Questions ##
 -   Maybe unify things in 'csv' format, e.g. `do_snls` which seem to start the same way?
--   `mtasks.general_data.do_snls` see note:
+-   `tasks.general_data.do_snls` see note:
     -   "NOTE: Datafiles avail for download suggest diff zeropoints than 30, need to inquire."
 -   What is `copy_to_event` doing with all the `null_field`s?  Why not just change the name...??
 -   [JFG] - I've currently split the "Event" and "Entry" classes into separate files, and also renamed the "Event" class "Supernova," as it is specific to the Supernova catalog. For the keys though I'm not sure how to split; there are KEYS that should be defined only for Supernova but there are definitely many keys that will be shared (names, aliases, etc.).
