@@ -10,7 +10,6 @@ from astropy.time import Time as astrotime
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar, pbar_strings
 from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
 from ..funcs import clean_snname, get_preferred_name, jd_to_mjd, uniq_cdl

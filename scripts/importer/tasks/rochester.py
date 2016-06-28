@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import load_cached_url, make_date_string, uniq_cdl
 

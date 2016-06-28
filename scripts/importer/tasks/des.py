@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 from scripts import PATH
 from scripts.utils import pbar
 
-from .. import Events
 from ..funcs import load_cached_url
 
 

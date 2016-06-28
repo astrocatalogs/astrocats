@@ -1024,3 +1024,14 @@ def uniq_cdl(values):
 
 def utf8(x):
     return str(x, 'utf-8')
+
+
+def get_event_text(eventfile):
+    import gzip
+    if eventfile.split('.')[-1] == 'gz':
+        with gzip.open(eventfile, 'rt') as f:
+            filetext = f.read()
+    else:
+        with open(eventfile, 'r') as f:
+            filetext = f.read()
+    return filetext

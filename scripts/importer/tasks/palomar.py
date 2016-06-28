@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number
 
 
@@ -52,8 +51,8 @@ def do_ptf(catalog):
             else:
                 # events, name = catalog.add_entry(tasks, args,
                 #                                 events, name, log)
-                name, source = Events.new_event(name,
-                    bibcode='2012PASP..124..668Y')
+                name, source = catalog.new_event(name,
+                                                 bibcode='2012PASP..124..668Y')
 
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():

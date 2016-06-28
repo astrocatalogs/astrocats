@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import pbar
 from ..funcs import load_cached_url
 

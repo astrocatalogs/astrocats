@@ -34,7 +34,13 @@
 -   `tasks.general_data.do_snls` see note:
     -   "NOTE: Datafiles avail for download suggest diff zeropoints than 30, need to inquire."
 -   What is `copy_to_event` doing with all the `null_field`s?  Why not just change the name...??
--   [JFG] - I've currently split the "Event" and "Entry" classes into separate files, and also renamed the "Event" class "Supernova," as it is specific to the Supernova catalog. For the keys though I'm not sure how to split; there are KEYS that should be defined only for Supernova but there are definitely many keys that will be shared (names, aliases, etc.).
+-   [JFG] I've currently split the "Event" and "Entry" classes into separate
+    files, and also renamed the "Event" class "Supernova," as it is specific to
+    the Supernova catalog. For the keys though I'm not sure how to split; there
+    are KEYS that should be defined only for Supernova but there are definitely
+    many keys that will be shared (names, aliases, etc.). The keys should
+    likely be defined in a JSON file for each catalog, in addition to a base
+    list of keys provided by the parent Catalog class.
 
 ## Current ##
 

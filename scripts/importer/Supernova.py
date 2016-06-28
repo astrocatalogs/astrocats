@@ -11,10 +11,10 @@ from astropy.time import Time as astrotime
 from cdecimal import Decimal
 from scripts import FILENAME, PATH, SCHEMA
 
-from ..Entry import Entry, KEYS
+from ..Entry import KEYS, Entry
 from ..utils import (bandmetaf, bandrepf, get_event_filename, get_repo_folders,
-                     get_repo_paths, get_repo_years, get_sig_digits, is_number,
-                     pretty_num, tprint)
+                     get_repo_years, get_sig_digits, is_number, pretty_num,
+                     tprint)
 from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL, PREF_KINDS,
                         REPR_BETTER_QUANTITY)
 from .funcs import (get_source_year, host_clean, jd_to_mjd, make_date_string,
@@ -954,14 +954,3 @@ class Supernova(Entry):
                 if source_year > max_source_year:
                     max_source_year = source_year
         return -max_source_year
-
-
-def get_event_text(eventfile):
-    import gzip
-    if eventfile.split('.')[-1] == 'gz':
-        with gzip.open(eventfile, 'rt') as f:
-            filetext = f.read()
-    else:
-        with open(eventfile, 'r') as f:
-            filetext = f.read()
-    return filetext
