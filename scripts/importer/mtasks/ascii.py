@@ -25,7 +25,7 @@ def do_ascii(catalog):
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
         name = 'SNLS-' + row[0]
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(bibcode='2006ApJ...645..841N')
         catalog.events[name].add_quantity('alias', name, source)
         catalog.events[name].add_quantity(
@@ -47,7 +47,7 @@ def do_ascii(catalog):
         else:
             name = ('SN20' if int(basename[:2]) <
                     50 else 'SN19') + basename.split('_')[0]
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(bibcode='2014ApJ...786...67A')
         catalog.events[name].add_quantity('alias', name, source)
 
@@ -75,7 +75,7 @@ def do_ascii(catalog):
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
     for row in pbar(tsvin, current_task):
         name = row[0]
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(bibcode='2004A&A...415..863G')
         catalog.events[name].add_quantity('alias', name, source)
         mjd = str(jd_to_mjd(Decimal(row[1])))
@@ -109,7 +109,7 @@ def do_ascii(catalog):
         name = namesplit[-1]
         if name.startswith('SN'):
             name = name.replace(' ', '')
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.449..451W')
         catalog.events[name].add_quantity('alias', name, source)
         if len(namesplit) > 1:
@@ -123,7 +123,7 @@ def do_ascii(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2016MNRAS.459.1039T.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    name = catalog.add_event('LSQ13zm')
+    name = catalog.add_entry('LSQ13zm')
     source = catalog.events[name].add_source(bibcode='2016MNRAS.459.1039T')
     catalog.events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
@@ -148,7 +148,7 @@ def do_ascii(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, '2015ApJ...804...28G.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    name = catalog.add_event('PS1-13arp')
+    name = catalog.add_entry('PS1-13arp')
     source = catalog.events[name].add_source(bibcode='2015ApJ...804...28G')
     catalog.events[name].add_quantity('alias', name, source)
     for rr, row in enumerate(pbar(data, current_task)):
@@ -172,7 +172,7 @@ def do_ascii(catalog):
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
-        name = catalog.add_event(row[0])
+        name = catalog.add_entry(row[0])
         source = catalog.events[name].add_source(bibcode='2016ApJ...819...35A')
         catalog.events[name].add_quantity('alias', name, source)
         catalog.events[name].add_quantity('ra', row[1], source)
@@ -190,7 +190,7 @@ def do_ascii(catalog):
     for rr, row in enumerate(pbar(data, current_task)):
         if row[0][0] == '#':
             continue
-        name = catalog.add_event(row[0])
+        name = catalog.add_entry(row[0])
         source = catalog.events[name].add_source(bibcode='2014ApJ...784..105W')
         catalog.events[name].add_quantity('alias', name, source)
         mjd = row[1]
@@ -211,7 +211,7 @@ def do_ascii(catalog):
         if row[0][0] == '#':
             bands = row[2:]
             continue
-        name = catalog.add_event(row[0])
+        name = catalog.add_entry(row[0])
         source = catalog.events[name].add_source(bibcode='2012MNRAS.425.1007B')
         catalog.events[name].add_quantity('alias', name, source)
         mjd = row[1]

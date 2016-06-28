@@ -15,7 +15,7 @@ def do_scp(catalog):
         if ri == 0:
             continue
         name = row[0].replace('SCP', 'SCP-')
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = (catalog.events[name]
                   .add_source(srcname='Supernova Cosmology Project',
                               url=('http://supernova.lbl.gov/'

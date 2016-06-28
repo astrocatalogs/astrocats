@@ -41,7 +41,7 @@ def do_cfa_photo(catalog):
         eventparts = eventname.split('_')
 
         name = clean_snname(eventparts[0])
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = catalog.events[name].add_source(
@@ -114,7 +114,7 @@ def do_cfa_photo(catalog):
             else:
                 name = row[0].strip()
 
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
 
             source = catalog.events[name].add_source(
                 bibcode='2012ApJS..200...12H')
@@ -132,7 +132,7 @@ def do_cfa_photo(catalog):
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
 
             source = catalog.events[name].add_source(
                 bibcode='2014ApJS..213...19B')
@@ -164,7 +164,7 @@ def do_cfa_spectra(catalog):
         if oldname and name != oldname:
             catalog.journal_events()
         oldname = name
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = catalog.events[name].add_source(
@@ -223,7 +223,7 @@ def do_cfa_spectra(catalog):
         if oldname and name != oldname:
             catalog.journal_events()
         oldname = name
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = catalog.events[name].add_source(
@@ -275,7 +275,7 @@ def do_cfa_spectra(catalog):
         if oldname and name != oldname:
             Events.journal_events()
         oldname = name
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = catalog.events[name].add_source(

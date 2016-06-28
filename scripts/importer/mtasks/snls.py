@@ -28,7 +28,7 @@ def do_snls_photo(catalog):
         if float(flux) < 3.0 * float(err):
             continue
         name = 'SNLS-' + row[0]
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(bibcode='2010A&A...523A...7G')
         catalog.events[name].add_quantity('alias', name, source)
         band = row[1]
@@ -71,7 +71,7 @@ def do_snls_spectra(catalog):
         if oldname and name != oldname:
             catalog.journal_events()
         oldname = name
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(bibcode='2009A&A...507...85B')
         catalog.events[name].add_quantity('alias', name, source)
 

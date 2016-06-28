@@ -7,7 +7,8 @@ from glob import glob
 from scripts import PATH
 from scripts.utils import pbar_strings
 
-from ..Events import KEYS
+from ...Entry import KEYS
+from ..Supernova import Supernova
 
 
 def do_external_radio(catalog):
@@ -15,7 +16,7 @@ def do_external_radio(catalog):
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
-        name = catalog.add_event(oldname)
+        name = catalog.add_entry(oldname)
         radiosourcedict = OrderedDict()
         with open(datafile, 'r') as ff:
             for li, line in enumerate([xx.strip() for xx in
@@ -46,7 +47,7 @@ def do_external_xray(catalog):
     path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
-        name = catalog.add_event(oldname)
+        name = catalog.add_entry(oldname)
         with open(datafile, 'r') as ff:
             for li, line in enumerate(ff.read().splitlines()):
                 if li == 0:
@@ -73,14 +74,13 @@ def do_external_xray(catalog):
 def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
-    from ..Events import EVENT
     current_task = catalog.get_current_task_str()
     path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
     files = glob(path_pattern)
     catalog.log.debug("found {} files matching '{}'".format(
         len(files), path_pattern))
     for datafile in pbar_strings(files, desc=current_task):
-        new_event = EVENT.init_from_file(path=datafile, clean=True)
+        new_event = Supernova.init_from_file(path=datafile, clean=True)
         catalog.events.update({new_event[KEYS.NAME]: new_event})
 
     return

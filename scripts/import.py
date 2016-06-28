@@ -519,13 +519,13 @@ def get_aliases(name, includename = True):
 def new_event(name, load = True, delete = True, loadifempty = True, refname = '',
     reference = '', url = '', bibcode = '', secondary = '', acknowledgment = ''):
     oldname = name
-    name = add_event(name, load = load, delete = delete, loadifempty = loadifempty)
+    name = add_entry(name, load = load, delete = delete, loadifempty = loadifempty)
     source = add_source(name, refname = refname, reference = reference, url = url,
         bibcode = bibcode, secondary = secondary, acknowledgment = acknowledgment)
     add_quantity(name, 'alias', oldname, source)
     return (name, source)
 
-def add_event(name, load = True, delete = True, loadifempty = True):
+def add_entry(name, load = True, delete = True, loadifempty = True):
     if loadifempty and args.update and not len(events):
         load_stubs()
 
@@ -1959,7 +1959,7 @@ def load_stubs():
                 shutil.copyfileobj(f_in, f_out)
             os.remove(fi)
         name = os.path.basename(os.path.splitext(fname)[0]).replace('.json', '')
-        name = add_event(name, delete = False, loadifempty = False)
+        name = add_entry(name, delete = False, loadifempty = False)
         events[name] = OrderedDict(([['name', events[name]['name']]] + ([['alias', events[name]['alias']]] if 'alias' in events[name] else []) + [['stub', True]]))
 
 path = '../atels.json'
@@ -1996,7 +1996,7 @@ for task in tasks:
     if do_task(task, 'radio'):
         for datafile in tq(sorted(glob("../sne-external-radio/*.txt"), key=lambda s: s.lower()), currenttask):
             oldname = os.path.basename(datafile).split('.')[0]
-            name = add_event(oldname)
+            name = add_entry(oldname)
             radiosourcedict = OrderedDict()
             with open(datafile, 'r') as f:
                 for li, line in enumerate([x.strip() for x in f.read().splitlines()]):
@@ -2015,7 +2015,7 @@ for task in tasks:
     if do_task(task, 'xray'):
         for datafile in tq(sorted(glob("../sne-external-xray/*.txt"), key=lambda s: s.lower()), currenttask):
             oldname = os.path.basename(datafile).split('.')[0]
-            name = add_event(oldname)
+            name = add_entry(oldname)
             with open(datafile, 'r') as f:
                 for li, line in enumerate(f.read().splitlines()):
                     if li == 0:
@@ -2069,7 +2069,7 @@ for task in tasks:
                 continue
             if is_number(name):
                 continue
-            name = add_event(name)
+            name = add_entry(name)
             source = add_source(name, refname = 'SIMBAD astronomical database', bibcode = "2000A&AS..143....9W",
                 url = "http://simbad.u-strasbg.fr/", secondary = True)
             aliases = row['ID'].split(',')
@@ -2342,7 +2342,7 @@ for task in tasks:
             if row['band'][0] == '(':
                 continue
             oldname = 'SN' + row['SN']
-            name = add_event(oldname)
+            name = add_entry(oldname)
             source = ''
             secsource = add_source(name, bibcode = '1990A&AS...82..145C', secondary = True)
             mjd = str(jd_to_mjd(Decimal(row['JD'])))
@@ -2381,7 +2381,7 @@ for task in tasks:
                 name = row["SNR"].strip()
     
             oldname = name
-            name = add_event(name)
+            name = add_entry(name)
             source = (add_source(name, bibcode = '2014BASI...42...47G') + ',' +
                       add_source(name, refname = 'Galactic SNRs', url = 'https://www.mrao.cam.ac.uk/surveys/snrs/snrs.data.html'))
             add_quantity(name, 'alias', oldname, source)
@@ -3285,7 +3285,7 @@ for task in tasks:
     
         for datafile in sorted(glob("../sne-external/Nicholl-04-01-16/*.txt"), key=lambda s: s.lower()):
             inpname = os.path.basename(datafile).split('_')[0]
-            name = add_event(inpname)
+            name = add_entry(inpname)
             bibcode = ''
             for bc in bcs:
                 if inpname in bcs[bc]:
@@ -3862,7 +3862,7 @@ for task in tasks:
             basename = os.path.basename(datafile)
             basesplit = basename.split('-')
             oldname = basesplit[1]
-            name = add_event(oldname)
+            name = add_entry(oldname)
             if name.startswith('SN') and is_number(name[2:]):
                 name = name + 'A'
             band = basesplit[3].split('.')[0]
@@ -3942,7 +3942,7 @@ for task in tasks:
             eventparts = eventname.split('_')
     
             oldname = snname(eventparts[0])
-            name = add_event(oldname)
+            name = add_entry(oldname)
             secondaryname = 'CfA Supernova Archive'
             secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
             secondarysource = add_source(name, refname = secondaryname, url = secondaryurl, secondary = True, acknowledgment = cfaack)
@@ -4038,7 +4038,7 @@ for task in tasks:
         photom = sorted(photom, key = lambda k: k['ObjName'])
         for phot in tq(photom, currenttask = currenttask):
             oldname = phot["ObjName"]
-            name = add_event(oldname)
+            name = add_entry(oldname)
     
             secondarysource = add_source(name, refname = secondaryreference, url = secondaryrefurl, bibcode = secondaryrefbib, secondary = True)
             add_quantity(name, 'alias', oldname, secondarysource)
@@ -4258,7 +4258,7 @@ for task in tasks:
     
             if curname != oldname:
                 curname = oldname
-                name = add_event(oldname)
+                name = add_entry(oldname)
     
                 secondaryreference = "Sternberg Astronomical Institute Supernova Light Curve Catalogue"
                 secondaryrefurl = "http://dau.itep.ru/sn/node/72"
@@ -4566,11 +4566,11 @@ for task in tasks:
                     if is_number(aka.strip('?')):
                         aka = 'SN' + aka.strip('?') + 'A'
                         oldname = aka
-                        name = add_event(aka)
+                        name = add_entry(aka)
                     elif len(aka) == 4 and is_number(aka[:4]):
                         aka = 'SN' + aka
                         oldname = aka
-                        name = add_event(aka)
+                        name = add_entry(aka)
     
                 ra = str(cols[3].contents[0]).strip()
                 dec = str(cols[4].contents[0]).strip()
@@ -4588,7 +4588,7 @@ for task in tasks:
                     if 'POSSIBLE' in sn.upper() and ra and dec:
                         sn = 'PSN J' + ra.replace(':', '').replace('.', '') + dec.replace(':', '').replace('.', '')
                     oldname = sn
-                    name = add_event(sn)
+                    name = add_entry(sn)
     
                 reference = cols[12].findAll('a')[0].contents[0].strip()
                 refurl = cols[12].findAll('a')[0]['href'].strip()
@@ -4729,7 +4729,7 @@ for task in tasks:
                         continue
                     oglenames.append(name)
     
-                    name = add_event(name)
+                    name = add_entry(name)
     
                     mySibling = sibling.nextSibling
                     atelref = ''
@@ -4924,7 +4924,7 @@ for task in tasks:
                         name = alias
                 if not name:
                     name = psname
-                name = add_event(name)
+                name = add_entry(name)
                 sources = [add_source(name, refname = 'Pan-STARRS 3Pi', url = 'http://psweb.mp.qub.ac.uk/ps1threepi/psdb/')]
                 add_quantity(name, 'alias', name, sources[0])
                 for ref in refs:
@@ -5330,7 +5330,7 @@ for task in tasks:
                 if event_exists(name):
                     continue
                 oldname = name
-                name = add_event(name)
+                name = add_entry(name)
             else:
                 continue
     
@@ -5379,7 +5379,7 @@ for task in tasks:
         #    name = option.text
         #    if ((name.startswith('PTF') and is_number(name[3:5])) or
         #        name.startswith('PTFS') or name.startswith('iPTF')):
-        #        name = add_event(name)
+        #        name = add_entry(name)
     
         if archived_task('ptf'):
             with open('../sne-external/PTF/update.html', 'r') as f:
@@ -5408,7 +5408,7 @@ for task in tasks:
         
         with open('../sne-external/PTF/old-ptf-events.csv') as f:
             for suffix in f.read().splitlines():
-                name = add_event('PTF' + suffix)
+                name = add_entry('PTF' + suffix)
         with open('../sne-external/PTF/perly-2016.csv') as f:
             for row in f.read().splitlines():
                 cols = [x.strip() for x in row.split(',')]
@@ -5428,7 +5428,7 @@ for task in tasks:
                 maxdate = cols[6].replace('-', '/')
                 add_quantity(name, 'maxdate', maxdate.lstrip('<'), source, upperlimit = maxdate.startswith('<'))
                 add_quantity(name, 'ebv', cols[7], source, kind = 'spectroscopic')
-                name = add_event('PTF' + suffix)
+                name = add_entry('PTF' + suffix)
         journal_events()
 
     if do_task(task, 'des'):
@@ -5445,7 +5445,7 @@ for task in tasks:
             tds = tr.findAll('td')
             for tdi, td in enumerate(tds):
                 if tdi == 0:
-                    name = add_event(td.text.strip())
+                    name = add_entry(td.text.strip())
                 if tdi == 1:
                     (ra, dec) = [x.strip() for x in td.text.split('\xa0')]
                 if tdi == 6:
@@ -5503,7 +5503,7 @@ for task in tasks:
             tds = tr.findAll('td')
             for tdi, td in enumerate(tds):
                 if tdi == 1:
-                    name = add_event(td.text.strip())
+                    name = add_entry(td.text.strip())
                     atellink = td.find('a')
                     if atellink:
                         atellink = atellink['href']
@@ -5586,7 +5586,7 @@ for task in tasks:
                     if is_number(name[:4]):
                         name = 'SN' + name
                     oldname = name
-                    name = add_event(name)
+                    name = add_entry(name)
                     reference = 'Asiago Supernova Catalogue'
                     refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                     secondarysource = add_source(name, refname = reference, url = refurl, secondary = True)
@@ -6326,7 +6326,7 @@ for task in tasks:
                 if oldname and name != oldname:
                     journal_events()
                 oldname = name
-                name = add_event(name)
+                name = add_entry(name)
                 epoch = basename.split('.')[1]
                 (mldt, mlmag, mlband, mlsource) = get_max_light(name)
                 if mldt:
@@ -6381,7 +6381,7 @@ else:
 for i, fi in enumerate(tq(files, 'Sanitizing and deriving quantities for events')):
     events = OrderedDict()
     name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-    name = add_event(name, loadifempty = False)
+    name = add_entry(name, loadifempty = False)
     derive_and_sanitize()
     if has_task('writeevents'): 
         write_all_events(empty = True, gz = True, bury = True)

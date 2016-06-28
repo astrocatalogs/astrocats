@@ -46,7 +46,7 @@ def do_cpcs(catalog):
             if catalog.event_exists(name):
                 continue
             oldname = name
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
         else:
             continue
 

@@ -54,7 +54,7 @@ def do_simbad(catalog):
             continue
         if is_number(name):
             continue
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = (catalog.events[name]
                   .add_source(srcname='SIMBAD astronomical database',
                               bibcode="2000A&AS..143....9W",

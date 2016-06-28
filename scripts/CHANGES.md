@@ -22,18 +22,19 @@
 -   `load_cached_url` add warnings for failures
 -   Have the different `add_` methods accept lists and add each
 -   `NON_SNE_TYPES` needs to be added to some sort of global namespace
--   Consider parallelizing/multithreading --- especially for html queries, throw em in the 
+-   Consider parallelizing/multithreading --- especially for html queries, throw em in the
     background.
 -   Why are there so many calls to `add_event` for the same events??  e.g. 'SN2001kd' in Vizier task
--   In `set_preferred_names`, when checking that the `newname` doesn't already exist: if it does, 
+-   In `set_preferred_names`, when checking that the `newname` doesn't already exist: if it does,
     then they should be merged (or something?).
-    
-    
+
+
 ## Questions ##
 -   Maybe unify things in 'csv' format, e.g. `do_snls` which seem to start the same way?
 -   `mtasks.general_data.do_snls` see note:
     -   "NOTE: Datafiles avail for download suggest diff zeropoints than 30, need to inquire."
 -   What is `copy_to_event` doing with all the `null_field`s?  Why not just change the name...??
+-   [JFG] - I've currently split the "Event" and "Entry" classes into separate files, and also renamed the "Event" class "Supernova," as it is specific to the Supernova catalog. For the keys though I'm not sure how to split; there are KEYS that should be defined only for Supernova but there are definitely many keys that will be shared (names, aliases, etc.).
 
 ## Current ##
 

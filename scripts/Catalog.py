@@ -6,9 +6,8 @@ from git import Repo
 
 from scripts import FILENAME, PATH, SCHEMA
 
-from .importer import Events
 from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
-from .importer.Events import EVENT, KEYS
+from .Entry import KEYS
 from .importer.funcs import (event_attr_priority, name_clean, null_field,
                              read_json_arr, read_json_dict, uniq_cdl)
 from .utils import is_number, logger, pbar, repo_file_list
@@ -19,9 +18,13 @@ class Catalog():
     Object to hold the main catalog dictionary and other catalog globals.
     """
 
-    def __init__(self, args):
+    def __init__(self, proto, args):
         # Store runtime arguments
         self.args = args
+
+        # Set the catalog prototype class
+        self.proto = proto
+
         # Load a logger object
         # Determine verbosity ('None' means use default)
         log_stream_level = None
@@ -74,19 +77,19 @@ class Catalog():
         self.nonsnetypes = read_json_arr(FILENAME.NON_SNE_TYPES)
         return
 
-    def add_event(self, name, load=True, delete=True):
+    def add_entry(self, name, load=True, delete=True):
         """Find an existing event in, or add a new one to, the `events` dict.
 
         FIX: rename to `create_event`???
 
         Returns
         -------
-        events : OrderedDict of EVENT objects
+        events : OrderedDict of Entry objects
         newname : str
             Name of matching event found in `events`, or new event added to
             `events`
         """
-        self.log.debug("catalog.add_event()")
+        self.log.debug("catalog.add_entry()")
         newname = name_clean(name)
         # If event already exists, return
         if newname in self.events:
@@ -106,7 +109,7 @@ class Catalog():
 
         # Load Event from file
         if load:
-            loaded_event = EVENT.init_from_file(name=newname)
+            loaded_event = self.proto.init_from_file(name=newname)
             if loaded_event is not None:
                 self.events[newname] = loaded_event
                 self.log.debug(
@@ -118,7 +121,7 @@ class Catalog():
                 return newname
 
         # Create new event
-        new_event = Events.EVENT(newname)
+        new_event = self.proto(newname)
         new_event['schema'] = SCHEMA.URL
         self.log.log(self.log._LOADED,
                      "Created new event for '{}'".format(newname))
@@ -249,7 +252,7 @@ class Catalog():
     def new_event(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary='', acknowledgment=''):
-        newname = self.add_event(name, load=load, delete=delete)
+        newname = self.add_entry(name, load=load, delete=delete)
         source = self.events[newname].add_source(
             bibcode=bibcode, srcname=srcname, reference=reference, url=url,
             secondary=secondary, acknowledgment=acknowledgment)
@@ -293,8 +296,8 @@ class Catalog():
                         "Found single event with multiple entries "
                         "('{}' and '{}'), merging.".format(name1, name2))
 
-                    load1 = EVENT.init_from_file(name=name1, delete=True)
-                    load2 = EVENT.init_from_file(name=name2, delete=True)
+                    load1 = self.proto.init_from_file(name=name1, delete=True)
+                    load2 = self.proto.init_from_file(name=name2, delete=True)
                     if load1 is not None and load2 is not None:
                         # Delete old files
                         self._delete_event_file(event=load1)
@@ -406,12 +409,12 @@ class Catalog():
                 newname = aliases[0]
             if newname and name != newname:
                 # Make sure new name doesn't already exist
-                if EVENT.init_from_file(name=newname):
+                if self.proto.init_from_file(name=newname):
                     self.log.error("WARNING: `newname` already exists... "
                                    "should do something about that...")
                     continue
 
-                new_event = EVENT.init_from_file(name=name)
+                new_event = self.proto.init_from_file(name=name)
                 if new_event is None:
                     self.log.error(
                         "Could not load `new_event` with name '{}'"
@@ -445,7 +448,7 @@ class Catalog():
                 fname = _uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
-            new_event = EVENT.init_from_file(path=fname, delete=False)
+            new_event = self.proto.init_from_file(path=fname, delete=False)
             # Make sure a non-stub event doesnt already exist with this name
             if name in self.events and not self.events[name]._stub:
                 err_str = (

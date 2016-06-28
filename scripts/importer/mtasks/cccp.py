@@ -29,7 +29,7 @@ def do_cccp(catalog):
                     continue
                 elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
-                    name = catalog.add_event(name)
+                    name = catalog.add_entry(name)
                     source = catalog.events[name].add_source(
                         bibcode='2012ApJ...744...10K')
                     catalog.events[name].add_quantity('alias', name, source)
@@ -62,7 +62,7 @@ def do_cccp(catalog):
     links = soup.body.findAll("a")
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
-            name = catalog.add_event(link.text.replace(' ', ''))
+            name = catalog.add_entry(link.text.replace(' ', ''))
             source = (catalog.events[name]
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
@@ -154,7 +154,7 @@ def do_cpcs(catalog):
             if catalog.event_exists(name):
                 continue
             oldname = name
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
         else:
             continue
 

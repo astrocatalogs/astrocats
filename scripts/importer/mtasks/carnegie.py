@@ -23,7 +23,7 @@ def do_csp_photo(catalog):
         eventname = os.path.basename(os.path.splitext(fname)[0])
         eventparts = eventname.split('opt+')
         name = clean_snname(eventparts[0])
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
 
         reference = 'Carnegie Supernova Project'
         refbib = '2010AJ....139..519C'
@@ -78,7 +78,7 @@ def do_csp_spectra(catalog):
         if oldname and name != oldname:
             catalog.journal_events()
         oldname = name
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
         source = catalog.events[name].add_source(bibcode='2013ApJ...773...53F')

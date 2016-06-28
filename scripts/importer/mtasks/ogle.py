@@ -62,7 +62,7 @@ def do_ogle(catalog):
                     continue
                 oglenames.append(name)
 
-                name = catalog.add_event(name)
+                name = catalog.add_entry(name)
 
                 mySibling = sibling.nextSibling
                 atelref = ''

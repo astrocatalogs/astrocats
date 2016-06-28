@@ -36,7 +36,7 @@ def do_des(catalog):
         tds = tr.findAll('td')
         for tdi, td in enumerate(tds):
             if tdi == 0:
-                name = catalog.add_event(td.text.strip())
+                name = catalog.add_entry(td.text.strip())
             if tdi == 1:
                 (ra, dec) = [xx.strip() for xx in td.text.split('\xa0')]
             if tdi == 6:

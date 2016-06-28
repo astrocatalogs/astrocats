@@ -62,7 +62,7 @@ def do_tns(catalog):
             if row[4] and 'SN' not in row[4]:
                 continue
             name = row[1].replace(' ', '')
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
             source = catalog.events[name].add_source(
                 srcname='Transient Name Server', url=tns_url)
             catalog.events[name].add_quantity('alias', name, source)

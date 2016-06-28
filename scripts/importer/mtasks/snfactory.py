@@ -40,7 +40,7 @@ def do_snf_specta(catalog):
         if oldname and name != oldname:
             catalog.journal_events()
         oldname = name
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         sec_reference = 'Nearby Supernova Factory'
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'

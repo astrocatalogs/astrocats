@@ -34,7 +34,7 @@ def do_suspect_photo(catalog):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
         oldname = basesplit[1]
-        name = catalog.add_event(oldname)
+        name = catalog.add_entry(oldname)
         if name.startswith('SN') and is_number(name[2:]):
             name = name + 'A'
         band = basesplit[3].split('.')[0]
@@ -136,7 +136,7 @@ def do_suspect_spectra(catalog):
             if oldname and name != oldname:
                 catalog.journal_events()
             oldname = name
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
             sec_ref = 'SUSPECT'
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'

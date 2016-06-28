@@ -23,7 +23,7 @@ def do_donations(catalog):
     for datafile in pbar_strings(file_names, current_task +
                                  ': Nicholl-04-01-16'):
         inpname = os.path.basename(datafile).split('_')[0]
-        name = catalog.add_event(inpname)
+        name = catalog.add_entry(inpname)
         bibcode = ''
         for bc in bcs:
             if inpname in bcs[bc]:
@@ -70,7 +70,7 @@ def do_donations(catalog):
         for row in pbar(list(tsvin), current_task +
                         ': Maggi-04-11-16/LMCSNRs'):
             name = 'MCSNR ' + row[0]
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
             ra = row[2]
             dec = row[3]
             source = (catalog.events[name]
@@ -94,7 +94,7 @@ def do_donations(catalog):
         for row in pbar(list(tsvin), current_task +
                         ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
             source = catalog.events[name].add_source(srcname='Pierre Maggi')
             ra = row[3]
             dec = row[4]
@@ -135,7 +135,7 @@ def do_donations(catalog):
                         name = value[:6].upper()
                         name += (value[6].upper() if len(value) == 7
                                  else value[6:])
-                        name = catalog.add_event(name)
+                        name = catalog.add_entry(name)
                         source = (catalog.events[name]
                                   .add_source(bibcode=bibcode))
                         catalog.events[name].add_quantity('alias', name,
@@ -192,7 +192,7 @@ def do_donations(catalog):
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
     for fi in pbar(files, current_task):
         name = os.path.basename(fi).split('_')[0]
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         source = catalog.events[name].add_source(
             srcname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
             url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
@@ -222,7 +222,7 @@ def do_donations(catalog):
 
     # Nicholl 05-03-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
-    name = catalog.add_event('SN2015bn')
+    name = catalog.add_entry('SN2015bn')
     source = catalog.events[name].add_source(bibcode='2016arXiv160304748N')
     catalog.events[name].add_quantity('alias', name, source)
     catalog.events[name].add_quantity('alias', 'PS15ae', source)

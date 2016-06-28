@@ -1,5 +1,6 @@
 """
 """
+from .importer.Supernova import Supernova
 
 
 def main():
@@ -14,7 +15,10 @@ def main():
     if args is None:
         return
 
-    catalog = Catalog.Catalog(args)
+    # Set the prototype to the desired catalog Entry type. Probably should be a
+    # switch in args.
+    proto = Supernova
+    catalog = Catalog.Catalog(proto, args)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(

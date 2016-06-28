@@ -22,7 +22,7 @@ def do_ptf(catalog):
     #    name = option.text
     #    if ((name.startswith('PTF') and is_number(name[3:5])) or
     #        name.startswith('PTFS') or name.startswith('iPTF')):
-    # name = catalog.add_event(name)
+    # name = catalog.add_entry(name)
 
     if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -46,18 +46,18 @@ def do_ptf(catalog):
             if '(' in name:
                 alias = name.split('(')[0].strip(' ')
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
-                name = catalog.add_event(name)
+                name = catalog.add_entry(name)
                 source = catalog.events[name].add_source(bibcode='2012PASP..124..668Y')
                 catalog.events[name].add_quantity('alias', alias, source)
             else:
-                # events, name = catalog.add_event(tasks, args,
+                # events, name = catalog.add_entry(tasks, args,
                 #                                 events, name, log)
                 name, source = Events.new_event(name,
                     bibcode='2012PASP..124..668Y')
 
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():
-            name = catalog.add_event('PTF' + suffix)
+            name = catalog.add_entry('PTF' + suffix)
     with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/perly-2016.csv')) as f:
         for row in f.read().splitlines():
             cols = [x.strip() for x in row.split(',')]
@@ -67,7 +67,7 @@ def do_ptf(catalog):
                 alias = 'PTF' + cols[0]
             else:
                 name = 'PTF' + cols[0]
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
             source = catalog.events[name].add_source(bibcode='2016arXiv160408207P')
             catalog.events[name].add_quantity('alias', name, source)
             if alias:
@@ -83,7 +83,7 @@ def do_ptf(catalog):
                 'maxdate', maxdate.lstrip('<'), source, upperlimit=upl)
             catalog.events[name].add_quantity(
                 'ebv', cols[7], source, kind='spectroscopic')
-            name = catalog.add_event('PTF' + suffix)
+            name = catalog.add_entry('PTF' + suffix)
 
     catalog.journal_events()
     return

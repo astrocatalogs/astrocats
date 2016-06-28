@@ -40,7 +40,7 @@ def do_superfit_spectra(catalog):
             if oldname and name != oldname:
                 catalog.journal_events()
             oldname = name
-            name = catalog.add_event(name)
+            name = catalog.add_entry(name)
             epoch = basename.split('.')[1]
             (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.events,
                                                             name)

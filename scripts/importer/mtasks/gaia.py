@@ -27,7 +27,7 @@ def do_gaia(catalog):
     for ri, row in enumerate(pbar(tsvin, current_task)):
         if ri == 0 or not row:
             continue
-        name = catalog.add_event(row[0])
+        name = catalog.add_entry(row[0])
         source = catalog.events[name].add_source(srcname=reference, url=refurl)
         catalog.events[name].add_quantity('alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]

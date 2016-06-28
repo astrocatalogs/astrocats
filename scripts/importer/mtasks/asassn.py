@@ -35,7 +35,7 @@ def do_asassn(catalog):
         tds = tr.findAll('td')
         for tdi, td in enumerate(tds):
             if tdi == 1:
-                name = catalog.add_event(td.text.strip())
+                name = catalog.add_entry(td.text.strip())
                 atellink = td.find('a')
                 if atellink:
                     atellink = atellink['href']

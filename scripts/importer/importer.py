@@ -11,6 +11,7 @@ from collections import OrderedDict
 from scripts import FILENAME
 
 from .. import Catalog, Task, main
+from . import Supernova
 from ..utils import pbar, repo_file_list
 from .constants import TRAVIS_QUERY_LIMIT
 from .funcs import derive_and_sanitize
@@ -30,7 +31,7 @@ def import_main(catalog=None):
     if catalog is None:
         warnings.warn("`args` not provided, loading new")
         args = main.load_args(args=['importer'])
-        catalog = Catalog.Catalog(args)
+        catalog = Catalog.Catalog(args, Supernova)
 
     log = catalog.log
 
@@ -82,7 +83,7 @@ def import_main(catalog=None):
     current_task = 'Sanitizing and deriving quantities for events'
     for ii, fi in enumerate(pbar(files, current_task)):
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        name = catalog.add_event(name)
+        name = catalog.add_entry(name)
         extinctions_dict, bibauthor_dict = derive_and_sanitize(catalog)
         # FIX: is this check needed here (also in 'journal_events')?
         if catalog.args.write_events:
