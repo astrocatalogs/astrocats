@@ -12,15 +12,13 @@ from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
-from astropy.time import Time as astrotime
 
-# import sys
 from cdecimal import Decimal
 from scripts import FILENAME
 
-from ..utils import (bandmetaf, bandrepf, get_sig_digits, is_number,
+from ..utils import (get_sig_digits, is_number,
                      pretty_num, round_sig, tprint, zpad)
-from .constants import (ADS_BIB_URL, CLIGHT, KM, MAX_BANDS, OSC_BIBCODE,
+from .constants import (ADS_BIB_URL, CLIGHT, KM, OSC_BIBCODE,
                         OSC_NAME, OSC_URL, PREF_KINDS)
 
 
@@ -54,39 +52,39 @@ def ct_priority(events, name, attr):
 
 def derive_and_sanitize(catalog):
     # Calculate some columns based on imported data, sanitize some fields
-    for name in catalog.events:
-        aliases = catalog.events[name].get_aliases(includename=False)
+    for name, event in catalog.events.items():
+        aliases = event.get_aliases(includename=False)
         if name not in aliases:
-            if 'sources' in catalog.events[name]:
-                events[name].add_quantity('alias', name, '1')
+            if 'sources' in event:
+                event.add_quantity('alias', name, '1')
             else:
-                source = catalog.events[name].add_source(
+                source = event.add_source(
                     bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                     secondary=True)
-                catalog.events[name].add_quantity('alias', name, source)
+                event.add_quantity('alias', name, source)
 
         if ((name.startswith('SN') and is_number(name[2:6]) and
-             'discoverdate' in catalog.events[name] and
-             int(catalog.events[name]['discoverdate'][0]['value'].
+             'discoverdate' in event and
+             int(event['discoverdate'][0]['value'].
                  split('/')[0]) >= 2016 and
              not any(['AT' in x for x in aliases]))):
-            source = catalog.events[name].add_source(
+            source = event.add_source(
                 bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                 secondary=True)
-            events[name].add_quantity('alias', 'AT' + name[2:], source)
+            event.add_quantity('alias', 'AT' + name[2:], source)
 
-        events[name]['alias'] = list(
-            sorted(events[name]['alias'],
+        event['alias'] = list(
+            sorted(event['alias'],
                    key=lambda key: alias_priority(name, key)))
-        aliases = events[name].get_aliases()
+        aliases = event.get_aliases()
 
-        set_first_max_light(events, name)
+        event.set_first_max_light()
 
-        if 'claimedtype' in events[name]:
-            events[name]['claimedtype'] = list(sorted(
-                events[name]['claimedtype'],
+        if 'claimedtype' in event:
+            event['claimedtype'] = list(sorted(
+                event['claimedtype'],
                 key=lambda key: ct_priority(events, name, key)))
-        if 'discoverdate' not in events[name]:
+        if 'discoverdate' not in event:
             prefixes = ['MLS', 'SSS', 'CSS', 'GRB ']
             for alias in aliases:
                 for prefix in prefixes:
@@ -101,15 +99,15 @@ def derive_and_sanitize(catalog):
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = events[name].add_source(
+                        source = event.add_source(
                             bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
-                if 'discoverdate' in events[name]:
+                if 'discoverdate' in event:
                     break
-        if 'discoverdate' not in events[name]:
+        if 'discoverdate' not in event:
             prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-',
                         'SNLS-', 'SPIRITS', 'LSQ', 'DES', 'SNHiTS',
                         'GND', 'GNW', 'GSD', 'GSW', 'EGS', 'COS']
@@ -118,19 +116,19 @@ def derive_and_sanitize(catalog):
                     if (alias.startswith(prefix) and
                             is_number(alias.replace(prefix, '')[:2])):
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
-                        if args.verbose:
+                        if catalog.args.verbose:
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = events[name].add_source(
+                        source = event.add_source(
                             bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
-                if 'discoverdate' in events[name]:
+                if 'discoverdate' in event:
                     break
-        if 'discoverdate' not in events[name]:
+        if 'discoverdate' not in event:
             prefixes = ['SNF']
             for alias in aliases:
                 for prefix in prefixes:
@@ -141,19 +139,19 @@ def derive_and_sanitize(catalog):
                                             [alias.replace(prefix, '')[:4],
                                              alias.replace(prefix, '')[4:6],
                                              alias.replace(prefix, '')[6:8]]))
-                        if args.verbose:
+                        if catalog.args.verbose:
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = events[name].add_source(
+                        source = event.add_source(
                             bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
-                if 'discoverdate' in events[name]:
+                if 'discoverdate' in event:
                     break
-        if 'discoverdate' not in events[name]:
+        if 'discoverdate' not in event:
             prefixes = ['PTFS', 'SNSDF']
             for alias in aliases:
                 for prefix in prefixes:
@@ -164,19 +162,19 @@ def derive_and_sanitize(catalog):
                                             ['20' +
                                              alias.replace(prefix, '')[:2],
                                              alias.replace(prefix, '')[2:4]]))
-                        if args.verbose:
+                        if catalog.args.verbose:
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = events[name].add_source(
+                        source = event.add_source(
                             bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
-                if 'discoverdate' in events[name]:
+                if 'discoverdate' in event:
                     break
-        if 'discoverdate' not in events[name]:
+        if 'discoverdate' not in event:
             prefixes = ['AT', 'SN', 'OGLE-', 'SM ', 'KSN-']
             for alias in aliases:
                 for prefix in prefixes:
@@ -184,19 +182,19 @@ def derive_and_sanitize(catalog):
                             is_number(alias.replace(prefix, '')[:4]) and
                             '.' not in alias.replace(prefix, '')[:4]):
                         discoverdate = alias.replace(prefix, '')[:4]
-                        if args.verbose:
+                        if catalog.args.verbose:
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = events[name].add_source(
+                        source = event.add_source(
                             bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
-                if 'discoverdate' in events[name]:
+                if 'discoverdate' in event:
                     break
-        if 'ra' not in events[name] or 'dec' not in events[name]:
+        if 'ra' not in event or 'dec' not in event:
             prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J', 'HST J',
                         'TCP J', 'MACS J', '2MASS J', 'EQ J', 'CRTS J',
                         'SMT J']
@@ -218,28 +216,28 @@ def derive_and_sanitize(catalog):
                         dec = (decsign + ':'
                                .join([decstr[:2], decstr[2:4], decstr[4:6]]) +
                                ('.' + decstr[6:] if len(decstr) > 6 else ''))
-                        if args.verbose:
+                        if catalog.args.verbose:
                             tprint('Added ra/dec from name: ' + ra + ' ' + dec)
-                        source = events[name].add_source(
+                        source = event.add_source(
                             bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                             secondary=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'ra', ra, source, derived=True)
-                        events[name].add_quantity(
+                        event.add_quantity(
                             'dec', dec, source, derived=True)
                         break
-                if 'ra' in events[name]:
+                if 'ra' in event:
                     break
 
-        no_host = ('host' not in events[name] or
+        no_host = ('host' not in event or
                    not any([x['value'] == 'Milky Way' for x in
-                            events[name]['host']]))
-        if ('ra' in events[name] and 'dec' in events[name] and no_host):
+                            event['host']]))
+        if ('ra' in event and 'dec' in event and no_host):
             from astroquery.irsa_dust import IrsaDust
             if name not in catalog.extinctions_dict:
                 try:
-                    ra_dec = events[name]['ra'][0]['value'] + \
-                        " " + events[name]['dec'][0]['value']
+                    ra_dec = event['ra'][0]['value'] + \
+                        " " + event['dec'][0]['value']
                     result = IrsaDust.get_query_table(ra_dec, section='ebv')
                 except:
                     warnings.warn("Coordinate lookup for " +
@@ -250,11 +248,11 @@ def derive_and_sanitize(catalog):
                     catalog.extinctions_dict[name] = [ebv, ebverr]
             if name in catalog.extinctions_dict:
                 sources = uniq_cdl(
-                    [events[name].add_source(bibcode=OSC_BIBCODE,
-                                             srcname=OSC_NAME, url=OSC_URL,
-                                             secondary=True),
-                     events[name].add_source(bibcode='2011ApJ...737..103S')])
-                (events[name]
+                    [event.add_source(
+                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                        secondary=True),
+                     event.add_source(bibcode='2011ApJ...737..103S')])
+                (event
                  .add_quantity('ebv',
                                str(catalog
                                    .extinctions_dict[name][0]),
@@ -262,9 +260,9 @@ def derive_and_sanitize(catalog):
                                error=str(catalog
                                          .extinctions_dict[name][1]),
                                derived=True))
-        if ('host' in events[name] and ('hostra' not in events[name] or
-                                        'hostdec' not in events[name])):
-            for host in events[name]['host']:
+        if (('host' in event and
+             ('hostra' not in event or 'hostdec' not in event))):
+            for host in event['host']:
                 alias = host['value']
                 if ' J' in alias and is_number(alias.split(' J')[-1][:6]):
                     noprefix = alias.split(
@@ -281,33 +279,33 @@ def derive_and_sanitize(catalog):
                     hostdec = decsign + ':'.join([decstr[:2], decstr[2:4],
                                                   decstr[4:6]]) + (
                         '.' + decstr[6:] if len(decstr) > 6 else '')
-                    if args.verbose:
+                    if catalog.args.verbose:
                         tprint('Added hostra/hostdec from name: ' +
                                hostra + ' ' + hostdec)
-                    source = events[name].add_source(
+                    source = event.add_source(
                         bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                         secondary=True)
-                    events[name].add_quantity(
+                    event.add_quantity(
                         'hostra', hostra, source, derived=True)
-                    events[name].add_quantity(
+                    event.add_quantity(
                         'hostdec', hostdec, source, derived=True)
                     break
-                if 'hostra' in events[name]:
+                if 'hostra' in event:
                     break
-        if 'claimedtype' in events[name]:
-            events[name]['claimedtype'][:] = [ct for ct in events[name][
+        if 'claimedtype' in event:
+            event['claimedtype'][:] = [ct for ct in event[
                 'claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
-            if not len(events[name]['claimedtype']):
-                del(events[name]['claimedtype'])
-        if 'claimedtype' not in events[name] and name.startswith('AT'):
-            source = events[name].add_source(
+            if not len(event['claimedtype']):
+                del(event['claimedtype'])
+        if 'claimedtype' not in event and name.startswith('AT'):
+            source = event.add_source(
                 bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                 secondary=True)
-            events[name].add_quantity('claimedtype', 'Candidate', source)
-        if 'redshift' not in events[name] and 'velocity' in events[name]:
+            event.add_quantity('claimedtype', 'Candidate', source)
+        if 'redshift' not in event and 'velocity' in event:
             # Find the "best" velocity to use for this
             bestsig = 0
-            for hv in events[name]['velocity']:
+            for hv in event['velocity']:
                 sig = get_sig_digits(hv['value'])
                 if sig > bestsig:
                     besthv = hv['value']
@@ -315,26 +313,26 @@ def derive_and_sanitize(catalog):
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv) * 1.e5 / CLIGHT
-                source = events[name].add_source(
+                source = event.add_source(
                     bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                     secondary=True)
                 sources = uniq_cdl([source] + bestsrc.split(','))
-                (events[name]
+                (event
                  .add_quantity('redshift',
                                pretty_num(sqrt((1. + voc) / (1. - voc)) - 1.,
                                           sig=bestsig),
                                sources, kind='heliocentric',
                                derived=True))
-        if ('redshift' not in events[name] and
+        if ('redshift' not in event and
                 has_task(tasks, args, 'nedd') and
-                'host' in events[name]):
+                'host' in event):
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
-            for host in events[name]['host']:
+            for host in event['host']:
                 if host['value'] in catalog.nedd_dict:
-                    source = events[name].add_source(
+                    source = event.add_source(
                         bibcode='2015arXiv150201589P')
-                    secondarysource = events[name].add_source(
+                    secondarysource = event.add_source(
                         srcname=reference, url=refurl, secondary=True)
                     meddist = statistics.median(
                         catalog.nedd_dict[host['value']])
@@ -342,92 +340,91 @@ def derive_and_sanitize(catalog):
                                                      float(meddist) *
                                                      un.Mpc),
                                           sig=get_sig_digits(str(meddist)))
-                    (events[name]
+                    (event
                      .add_quantity(name, 'redshift', redshift,
                                    uniq_cdl([source, secondarysource]),
                                    kind='host', derived=True))
-        if ('maxabsmag' not in events[name] and 'maxappmag' in events[name] and
-                'lumdist' in events[name]):
+        if ('maxabsmag' not in event and 'maxappmag' in event and
+                'lumdist' in event):
             # Find the "best" distance to use for this
             bestsig = 0
-            for ld in events[name]['lumdist']:
+            for ld in event['lumdist']:
                 sig = get_sig_digits(ld['value'])
                 if sig > bestsig:
                     bestld = ld['value']
                     bestsrc = ld['source']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                source = events[name].add_source(
+                source = event.add_source(
                     bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                     secondary=True)
                 sources = uniq_cdl([source] + bestsrc.split(','))
-                pnum = (float(events[name]['maxappmag'][0]['value']) -
+                pnum = (float(event['maxappmag'][0]['value']) -
                         5.0 * (log10(float(bestld) * 1.0e6) - 1.0))
                 pnum = pretty_num(pnum, sig=bestsig)
-                events[name].add_quantity(
+                event.add_quantity(
                     'maxabsmag', pnum, sources, derived=True)
-        if 'redshift' in events[name]:
+        if 'redshift' in event:
             # Find the "best" redshift to use for this
-            (bestz, bestkind, bestsig) = get_best_redshift(events, name)
+            bestz, bestkind, bestsig = event.get_best_redshift()
             if bestsig > 0:
                 bestz = float(bestz)
-                if 'velocity' not in events[name]:
-                    source = events[name].add_source(
+                if 'velocity' not in event:
+                    source = event.add_source(
                         bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                         secondary=True)
                     pnum = CLIGHT / KM * \
                         ((bestz + 1.)**2. - 1.) / ((bestz + 1.)**2. + 1.)
                     pnum = pretty_num(pnum, sig=bestsig)
-                    events[name].add_quantity(
+                    event.add_quantity(
                         'velocity', pnum, source, kind=PREF_KINDS[bestkind])
                 if bestz > 0.:
                     from astropy.cosmology import Planck15 as cosmo
-                    if 'lumdist' not in events[name]:
+                    if 'lumdist' not in event:
                         dl = cosmo.luminosity_distance(bestz)
                         sources = [
-                            (events[name]
+                            (event
                              .add_source(bibcode=OSC_BIBCODE,
                                          srcname=OSC_NAME,
                                          url=OSC_URL,
                                          secondary=True)),
-                            (events[name]
+                            (event
                              .add_source(bibcode='2015arXiv150201589P'))]
                         sources = uniq_cdl(sources + bestsrc.split(','))
-                        (events[name]
+                        (event
                          .add_quantity('lumdist',
                                        pretty_num(dl.value, sig=bestsig),
                                        sources, kind=PREF_KINDS[bestkind],
                                        derived=True))
-                        if ('maxabsmag' not in events[name] and
-                                'maxappmag' in events[name]):
-                            source = events[name].add_source(
+                        if ('maxabsmag' not in event and
+                                'maxappmag' in event):
+                            source = event.add_source(
                                 bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                 url=OSC_URL, secondary=True)
                             pnum = pretty_num(
-                                float(events[name]['maxappmag'][0]['value']) -
+                                float(event['maxappmag'][0]['value']) -
                                 5.0 * (log10(dl.to('pc').value) - 1.0),
                                 sig=bestsig)
-                            events[name].add_quantity(
+                            event.add_quantity(
                                 'maxabsmag', pnum, sources, derived=True)
-                    if 'comovingdist' not in events[name]:
+                    if 'comovingdist' not in event:
                         cd = cosmo.comoving_distance(bestz)
-                        sources = [events[name]
+                        sources = [event
                                    .add_source(bibcode=OSC_BIBCODE,
                                                srcname=OSC_NAME, url=OSC_URL,
                                                secondary=True),
-                                   events[name]
+                                   event
                                    .add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
-                        events[name].add_quantity('comovingdist', pretty_num(
+                        event.add_quantity('comovingdist', pretty_num(
                             cd.value, sig=bestsig), sources, derived=True)
-        if all([x in events[name] for x in ['ra', 'dec',
-                                            'hostra', 'hostdec']]):
+        if all([x in event for x in ['ra', 'dec', 'hostra', 'hostdec']]):
             # For now just using first coordinates that appear in entry
             try:
-                c1 = coord(ra=events[name]['ra'][0]['value'], dec=events[name][
+                c1 = coord(ra=event['ra'][0]['value'], dec=event[
                            'dec'][0]['value'], unit=(un.hourangle, un.deg))
-                c2 = coord(ra=events[name]['hostra'][0]['value'],
-                           dec=events[name][
+                c2 = coord(ra=event['hostra'][0]['value'],
+                           dec=event[
                            'hostdec'][0]['value'], unit=(un.hourangle, un.deg))
             except (KeyboardInterrupt, SystemExit):
                 raise
@@ -435,61 +432,61 @@ def derive_and_sanitize(catalog):
                 pass
             else:
                 sources = uniq_cdl(
-                    [events[name]
+                    [event
                      .add_source(bibcode=OSC_BIBCODE,
                                  srcname=OSC_NAME,
                                  url=OSC_URL,
                                  secondary=True)] +
-                    events[name]['ra'][0]['source'].split(',') +
-                    events[name]['dec'][0]['source'].split(',') +
-                    events[name]['hostra'][0]['source'].split(',') +
-                    events[name]['hostdec'][0]['source'].split(','))
-                if 'hostoffsetang' not in events[name]:
-                    (events[name]
+                    event['ra'][0]['source'].split(',') +
+                    event['dec'][0]['source'].split(',') +
+                    event['hostra'][0]['source'].split(',') +
+                    event['hostdec'][0]['source'].split(','))
+                if 'hostoffsetang' not in event:
+                    (event
                      .add_quantity('hostoffsetang',
                                    pretty_num(Decimal(
                                        hypot(c1.ra.degree - c2.ra.degree,
                                              c1.dec.degree - c2.dec.degree)) *
                                        Decimal(3600.)), sources,
                                    derived=True, unit='arcseconds'))
-                if ('comovingdist' in events[name] and
-                        'redshift' in events[name] and
-                        'hostoffsetdist' not in events[name]):
+                if ('comovingdist' in event and
+                        'redshift' in event and
+                        'hostoffsetdist' not in event):
                     offsetsig = get_sig_digits(
-                        events[name]['hostoffsetang'][0]['value'])
+                        event['hostoffsetang'][0]['value'])
                     sources = uniq_cdl(sources.split(',') +
-                                       (events[name]['comovingdist']
+                                       (event['comovingdist']
                                         [0]['source']).split(',') +
-                                       (events[name]['redshift']
+                                       (event['redshift']
                                         [0]['source']).split(','))
-                    (events[name]
+                    (event
                      .add_quantity('hostoffsetdist',
                                    pretty_num(
-                                       float(events[name]['hostoffsetang']
+                                       float(event['hostoffsetang']
                                              [0]['value']) /
                                        3600. * (pi / 180.) *
-                                       float(events[name]['comovingdist']
+                                       float(event['comovingdist']
                                              [0]['value']) *
                                        1000. / (1.0 +
-                                                float(events[name]['redshift']
+                                                float(event['redshift']
                                                       [0]['value'])),
                                        sig=offsetsig), sources))
 
-        if 'photometry' in events[name]:
-            events[name]['photometry'].sort(
+        if 'photometry' in event:
+            event['photometry'].sort(
                 key=lambda x: ((float(x['time']) if isinstance(x['time'], str)
                                 else min([float(y) for y in x['time']])) if
                                'time' in x else 0.0,
                                x['band'] if 'band' in x else '',
                                float(x['magnitude']) if
                                'magnitude' in x else ''))
-        if ('spectra' in events[name] and
+        if ('spectra' in event and
                 list(filter(None, ['time' in x
-                                   for x in events[name]['spectra']]))):
-            events[name]['spectra'].sort(key=lambda x: (
+                                   for x in event['spectra']]))):
+            event['spectra'].sort(key=lambda x: (
                 float(x['time']) if 'time' in x else 0.0))
-        if 'sources' in events[name]:
-            for source in events[name]['sources']:
+        if 'sources' in event:
+            for source in event['sources']:
                 if 'bibcode' in source:
                     import urllib
                     from html import unescape
@@ -522,7 +519,7 @@ def derive_and_sanitize(catalog):
                         catalog.bibauthor_dict[bibcode] = unescape(
                             bibcodeauthor).strip()
 
-            for source in events[name]['sources']:
+            for source in event['sources']:
                 if ('bibcode' in source and
                         source['bibcode'] in catalog.bibauthor_dict and
                         catalog.bibauthor_dict[source['bibcode']]):
@@ -530,24 +527,24 @@ def derive_and_sanitize(catalog):
                         source['bibcode']]
                     if 'name' not in source and source['bibcode']:
                         source['name'] = source['bibcode']
-        if 'redshift' in events[name]:
-            events[name]['redshift'] = list(
-                sorted(events[name]['redshift'], key=lambda key:
+        if 'redshift' in event:
+            event['redshift'] = list(
+                sorted(event['redshift'], key=lambda key:
                        frame_priority(key)))
-        if 'velocity' in events[name]:
-            events[name]['velocity'] = list(
-                sorted(events[name]['velocity'], key=lambda key:
+        if 'velocity' in event:
+            event['velocity'] = list(
+                sorted(event['velocity'], key=lambda key:
                        frame_priority(key)))
-        if 'claimedtype' in events[name]:
-            events[name]['claimedtype'] = list(sorted(
-                events[name]['claimedtype'], key=lambda key:
+        if 'claimedtype' in event:
+            event['claimedtype'] = list(sorted(
+                event['claimedtype'], key=lambda key:
                 ct_priority(events, name, key)))
 
-        # events[name] = OrderedDict(
-        #    sorted(events[name].items(), key=lambda key:
+        # event = OrderedDict(
+        #    sorted(event.items(), key=lambda key:
         #           event_attr_priority(key[0])))
 
-    return events, catalog.extinctions_dict, catalog.bibauthor_dict
+    return catalog.extinctions_dict, catalog.bibauthor_dict
 
 
 def event_attr_priority(attr):
@@ -656,74 +653,6 @@ def get_iaucs_dict():
     else:
         iaucs_dict = OrderedDict()
     return iaucs_dict
-
-
-def get_best_redshift(events, name):
-    bestsig = -1
-    bestkind = 10
-    for z in events[name]['redshift']:
-        kind = PREF_KINDS.index(z['kind'] if 'kind' in z else '')
-        sig = get_sig_digits(z['value'])
-        if sig > bestsig and kind <= bestkind:
-            bestz = z['value']
-            bestkind = kind
-            bestsig = sig
-            bestsrc = z['source']
-
-    return (bestz, bestkind, bestsig, bestsrc)
-
-
-def get_first_light(events, name):
-    if 'photometry' not in events[name]:
-        return (None, None)
-
-    eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else
-                   Decimal(min(float(y) for y in x['time'])),
-                   x['source']) for x in events[name]['photometry'] if
-                  'upperlimit' not in x and
-                  'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
-    if not eventphoto:
-        return (None, None)
-    flmjd = min([x[0] for x in eventphoto])
-    flindex = [x[0] for x in eventphoto].index(flmjd)
-    flmjd = float(flmjd)
-    flsource = eventphoto[flindex][1]
-    return (astrotime(flmjd, format='mjd').datetime, flsource)
-
-
-def get_max_light(events, name):
-    if 'photometry' not in events[name]:
-        return (None, None, None, None)
-
-    eventphoto = [(x['u_time'], x['time'],
-                   Decimal(x['magnitude']), x['band'] if 'band' in x else '',
-                   x['source']) for x in events[name]['photometry'] if
-                  ('magnitude' in x and 'time' in x and 'u_time' in x and
-                   'upperlimit' not in x)]
-    if not eventphoto:
-        return (None, None, None, None)
-
-    mlmag = None
-    for mb in MAX_BANDS:
-        leventphoto = [x for x in eventphoto if x[3] in mb]
-        if leventphoto:
-            mlmag = min([x[2] for x in leventphoto])
-            eventphoto = leventphoto
-            break
-
-    if not mlmag:
-        mlmag = min([x[2] for x in eventphoto])
-
-    mlindex = [x[2] for x in eventphoto].index(mlmag)
-    mlband = eventphoto[mlindex][3]
-    mlsource = eventphoto[mlindex][4]
-
-    if eventphoto[mlindex][0] == 'MJD':
-        mlmjd = float(eventphoto[mlindex][1])
-        return (astrotime(mlmjd, format='mjd').datetime, mlmag, mlband,
-                mlsource)
-    else:
-        return (None, mlmag, mlband, mlsource)
 
 
 def get_preferred_name(events, name):
@@ -1153,80 +1082,6 @@ def same_tag_str(photo, val, tag):
     issame = ((tag not in photo and not val) or (
         tag in photo and not val) or (tag in photo and photo[tag] == val))
     return issame
-
-
-def set_first_max_light(events, name):
-    if 'maxappmag' not in events[name]:
-        (mldt, mlmag, mlband, mlsource) = get_max_light(events, name)
-        if mldt:
-            source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
-            events[name].add_quantity('maxdate',
-                                      make_date_string(mldt.year,
-                                                       mldt.month,
-                                                       mldt.day),
-                                      uniq_cdl([source] +
-                                               mlsource.split(',')),
-                                      derived=True)
-        if mlmag:
-            source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
-            (events[name]
-             .add_quantity('maxappmag',
-                           pretty_num(mlmag),
-                           uniq_cdl([source] + mlsource.split(',')),
-                           derived=True))
-        if mlband:
-            source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
-            (events[name]
-             .add_quantity('maxband',
-                           mlband,
-                           uniq_cdl([source] + mlsource.split(',')),
-                           derived=True))
-
-    if ('discoverdate' not in events[name] or
-            max([len(x['value'].split('/')) for x in
-                 events[name]['discoverdate']]) < 3):
-        (fldt, flsource) = get_first_light(events, name)
-        if fldt:
-            source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
-            (events[name]
-             .add_quantity('discoverdate',
-                           make_date_string(fldt.year, fldt.month, fldt.day),
-                           uniq_cdl([source] + flsource.split(',')),
-                           derived=True))
-
-    if 'discoverdate' not in events[name] and 'spectra' in events[name]:
-        minspecmjd = float("+inf")
-        for spectrum in events[name]['spectra']:
-            if 'time' in spectrum and 'u_time' in spectrum:
-                if spectrum['u_time'] == 'MJD':
-                    mjd = float(spectrum['time'])
-                elif spectrum['u_time'] == 'JD':
-                    mjd = float(jd_to_mjd(Decimal(spectrum['time'])))
-                else:
-                    continue
-
-                if mjd < minspecmjd:
-                    minspecmjd = mjd
-                    minspecsource = spectrum['source']
-
-        if minspecmjd < float("+inf"):
-            fldt = astrotime(minspecmjd, format='mjd').datetime
-            source = events[name].add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
-            (events[name]
-             .add_quantity('discoverdate',
-                           make_date_string(fldt.year, fldt.month, fldt.day),
-                           uniq_cdl([source] + minspecsource.split(',')),
-                           derived=True))
 
 
 def clean_snname(string):

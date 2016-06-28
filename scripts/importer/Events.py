@@ -5,17 +5,21 @@ import json
 import os
 import warnings
 from collections import OrderedDict
+from astropy.time import Time as astrotime
 
 from cdecimal import Decimal
 from scripts import FILENAME, PATH, SCHEMA
 
-from ..utils import (bandmetaf, bandrepf,
+from ..utils import (bandmetaf, bandrepf, get_event_filename,
                      get_repo_folders, get_repo_paths, get_repo_years,
-                     get_sig_digits, is_number, tprint)
-from .constants import (OSC_BIBCODE, OSC_NAME, OSC_URL, REPR_BETTER_QUANTITY)
+                     get_sig_digits, is_number, pretty_num, tprint)
+from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL,
+                        PREF_KINDS, REPR_BETTER_QUANTITY)
 from .funcs import (get_atels_dict, get_cbets_dict,
-                    get_iaucs_dict, host_clean, jd_to_mjd, name_clean,
-                    radec_clean, same_tag_num, same_tag_str, trim_str_arr)
+                    get_iaucs_dict, host_clean, jd_to_mjd, make_date_string,
+                    name_clean,
+                    radec_clean, same_tag_num, same_tag_str, trim_str_arr,
+                    uniq_cdl)
 
 
 class KEYS:
@@ -911,9 +915,142 @@ class EVENT(Entry):
         self.setdefault('spectra', []).append(spectrumentry)
         return
 
+    def _get_max_light(self):
+        if 'photometry' not in self:
+            return (None, None, None, None)
 
-def get_event_filename(name):
-    return name.replace('/', '_')
+        # FIX: THIS
+        eventphoto = [(x['u_time'], x['time'],
+                       Decimal(x['magnitude']), x['band'] if 'band' in x else '',
+                       x['source']) for x in self['photometry'] if
+                      ('magnitude' in x and 'time' in x and 'u_time' in x and
+                       'upperlimit' not in x)]
+        if not eventphoto:
+            return None, None, None, None
+
+        mlmag = None
+        for mb in MAX_BANDS:
+            leventphoto = [x for x in eventphoto if x[3] in mb]
+            if leventphoto:
+                mlmag = min([x[2] for x in leventphoto])
+                eventphoto = leventphoto
+                break
+
+        if not mlmag:
+            mlmag = min([x[2] for x in eventphoto])
+
+        mlindex = [x[2] for x in eventphoto].index(mlmag)
+        mlband = eventphoto[mlindex][3]
+        mlsource = eventphoto[mlindex][4]
+
+        if eventphoto[mlindex][0] == 'MJD':
+            mlmjd = float(eventphoto[mlindex][1])
+            mlmjd = astrotime(mlmjd, format='mjd').datetime
+            return mlmjd, mlmag, mlband, mlsource
+        else:
+            return None, mlmag, mlband, mlsource
+
+    def _get_first_light(events, name):
+        if 'photometry' not in events[name]:
+            return None, None
+
+        eventphoto = [(Decimal(x['time']) if isinstance(x['time'], str) else
+                       Decimal(min(float(y) for y in x['time'])),
+                       x['source']) for x in events[name]['photometry'] if
+                      'upperlimit' not in x and
+                      'time' in x and 'u_time' in x and x['u_time'] == 'MJD']
+        if not eventphoto:
+            return None, None
+        flmjd = min([x[0] for x in eventphoto])
+        flindex = [x[0] for x in eventphoto].index(flmjd)
+        flmjd = astrotime(float(flmjd), format='mjd').datetime
+        flsource = eventphoto[flindex][1]
+        return flmjd, flsource
+
+    def set_first_max_light(self):
+        if 'maxappmag' not in self:
+            mldt, mlmag, mlband, mlsource = self._get_max_light()
+            if mldt:
+                source = self.add_source(
+                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    secondary=True)
+                max_date = make_date_string(mldt.year, mldt.month, mldt.day)
+                self.add_quantity(
+                    'maxdate', max_date,
+                    uniq_cdl([source] + mlsource.split(',')),
+                    derived=True)
+            if mlmag:
+                source = self.add_source(
+                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    secondary=True)
+                self.add_quantity(
+                    'maxappmag', pretty_num(mlmag),
+                    uniq_cdl([source] + mlsource.split(',')),
+                    derived=True)
+            if mlband:
+                source = self.add_source(
+                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    secondary=True)
+                (self
+                 .add_quantity('maxband',
+                               mlband,
+                               uniq_cdl([source] + mlsource.split(',')),
+                               derived=True))
+
+        if ('discoverdate' not in self or
+                max([len(x['value'].split('/')) for x in
+                     self['discoverdate']]) < 3):
+            fldt, flsource = self._get_first_light()
+            if fldt:
+                source = self.add_source(
+                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    secondary=True)
+                disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
+                self.add_quantity(
+                    'discoverdate', disc_date,
+                    uniq_cdl([source] + flsource.split(',')),
+                    derived=True)
+
+        if 'discoverdate' not in self and 'spectra' in self:
+            minspecmjd = float("+inf")
+            for spectrum in self['spectra']:
+                if 'time' in spectrum and 'u_time' in spectrum:
+                    if spectrum['u_time'] == 'MJD':
+                        mjd = float(spectrum['time'])
+                    elif spectrum['u_time'] == 'JD':
+                        mjd = float(jd_to_mjd(Decimal(spectrum['time'])))
+                    else:
+                        continue
+
+                    if mjd < minspecmjd:
+                        minspecmjd = mjd
+                        minspecsource = spectrum['source']
+
+            if minspecmjd < float("+inf"):
+                fldt = astrotime(minspecmjd, format='mjd').datetime
+                source = self.add_source(
+                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    secondary=True)
+                disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
+                self.add_quantity(
+                    'discoverdate', disc_date,
+                    uniq_cdl([source] + minspecsource.split(',')),
+                    derived=True)
+        return
+
+    def get_best_redshift(self):
+        bestsig = -1
+        bestkind = 10
+        for z in self['redshift']:
+            kind = PREF_KINDS.index(z['kind'] if 'kind' in z else '')
+            sig = get_sig_digits(z['value'])
+            if sig > bestsig and kind <= bestkind:
+                bestz = z['value']
+                bestkind = kind
+                bestsig = sig
+                bestsrc = z['source']
+
+        return bestz, bestkind, bestsig, bestsrc
 
 
 def get_event_text(eventfile):
