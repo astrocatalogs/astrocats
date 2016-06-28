@@ -37,5 +37,3 @@ MAX_BANDS = [
 
 PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic',
               'photometric', 'host', 'cluster', '']
-
-NON_SNE_PREFIXES = ['PNVJ', 'PNV J', 'OGLE-2013-NOVA', 'EV*', 'V*', 'Nova']

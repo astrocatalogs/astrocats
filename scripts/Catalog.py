@@ -1,22 +1,18 @@
 import os
 import sys
 from collections import OrderedDict
-import json
 
 from git import Repo
 
-from scripts import PATH, SCHEMA, FILENAME
+from scripts import FILENAME, PATH, SCHEMA
 
-from .utils import logger, pbar
-from .importer.funcs import read_dict
-
-from .utils import (is_number, repo_file_list)
+from .importer import Events
 from .importer.constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES,
                                  TRAVIS_QUERY_LIMIT)
-from .importer.funcs import (event_attr_priority,
-                             name_clean, null_field, uniq_cdl)
-from .importer import Events
-from .importer.Events import KEYS, EVENT
+from .importer.Events import EVENT, KEYS
+from .importer.funcs import (event_attr_priority, name_clean, null_field,
+                             read_json_arr, read_json_dict, uniq_cdl)
+from .utils import is_number, logger, pbar, repo_file_list
 
 
 class Catalog():
@@ -39,8 +35,11 @@ class Catalog():
         self.log = logger.get_logger(
             stream_level=log_stream_level, tofile=args.log_filename)
 
-        # Load all dictionaries
-        self._load_dicts()
+        # Create empty `events` collection
+        self.events = OrderedDict()
+
+        # Load auxiliary data
+        self._load_aux()
 
         # Make sure repositories are cloned
         self._clone_repos()
@@ -64,15 +63,16 @@ class Catalog():
                     sys.exit()
         return
 
-    def _load_dicts(self):
-        # Create empty `events` collection
-        self.events = OrderedDict()
+    def _load_aux(self):
         # Create/Load auxiliary dictionaries
         self.nedd_dict = OrderedDict()
-        self.repos_dict = read_dict(FILENAME.REPOS)
-        self.bibauthor_dict = read_dict(FILENAME.BIBAUTHORS)
-        self.biberror_dict = read_dict(FILENAME.BIBERRORS)
-        self.extinctions_dict = read_dict(FILENAME.EXTINCT)
+        self.repos_dict = read_json_dict(FILENAME.REPOS)
+        self.bibauthor_dict = read_json_dict(FILENAME.BIBAUTHORS)
+        self.biberror_dict = read_json_dict(FILENAME.BIBERRORS)
+        self.extinctions_dict = read_json_dict(FILENAME.EXTINCT)
+        # Create/Load auxiliary arrays
+        self.nonsneprefixes_dict = read_json_arr(FILENAME.NON_SNE_PREFIXES)
+        self.nonsnetypes = read_json_arr(FILENAME.NON_SNE_TYPES)
         return
 
     def add_event(self, name, load=True, delete=True):
@@ -283,7 +283,7 @@ class Catalog():
                 allnames1 = allnames1.union(['AT' + name1[2:]])
 
             # Search all later names
-            for name2 in keys[n1+1:]:
+            for name2 in keys[n1 + 1:]:
                 allnames2 = set(events[name2].get_aliases())
                 if name2.startswith('SN') and is_number(name2[2:6]):
                     allnames2.union(['AT' + name2[2:]])
@@ -496,9 +496,6 @@ class Catalog():
         """
         self.log.debug("Events.journal_events()")
         # FIX: store this somewhere instead of re-loading each time
-        with open(FILENAME.NON_SNE_TYPES, 'r') as f:
-            non_sne_types = json.loads(f.read(), object_pairs_hook=OrderedDict)
-            non_sne_types = [x.upper() for x in non_sne_types]
 
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
@@ -515,7 +512,7 @@ class Catalog():
                 save_event = True
                 ct_val = None
                 if bury:
-                    if name.startswith(NON_SNE_PREFIXES):
+                    if name.startswith(self.nonsneprefixes_dict):
                         self.log.debug(
                             "Killing '{}', non-SNe prefix.".format(name))
                         save_event = False
@@ -523,11 +520,11 @@ class Catalog():
                         if KEYS.CLAIMED_TYPE in self.events[name]:
                             for ct in self.events[name][KEYS.CLAIMED_TYPE]:
                                 up_val = ct['value'].upper()
-                                if up_val not in non_sne_types and \
+                                if up_val not in self.non_sne_types and \
                                         up_val != 'CANDIDATE':
                                     buryevent = False
                                     break
-                                if up_val in non_sne_types:
+                                if up_val in self.non_sne_types:
                                     buryevent = True
                                     ct_val = ct['value']
 

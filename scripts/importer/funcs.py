@@ -551,7 +551,7 @@ def frame_priority(attr):
     return len(PREF_KINDS)
 
 
-def read_dict(filename):
+def read_json_dict(filename):
     # path = '../atels.json'
     if os.path.isfile(filename):
         with open(filename, 'r') as f:
@@ -559,6 +559,15 @@ def read_dict(filename):
     else:
         mydict = OrderedDict()
     return mydict
+
+
+def read_json_arr(filename):
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            myarr = json.loads(f.read())
+    else:
+        myarr = []
+    return myarr
 
 
 def get_preferred_name(events, name):
