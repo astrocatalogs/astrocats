@@ -8,7 +8,6 @@ from math import isnan
 
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar, pbar_strings, rep_chars
 
 
@@ -74,7 +73,8 @@ def do_donations(catalog):
             name = catalog.add_event(name)
             ra = row[2]
             dec = row[3]
-            source = catalog.events[name].add_source(bibcode='2016A&A...585A.162M')
+            source = (catalog.events[name]
+                      .add_source(bibcode='2016A&A...585A.162M'))
             catalog.events[name].add_quantity(
                 'alias', 'LMCSNR J' + rep_chars(ra, ' :.') +
                 rep_chars(dec, ' :.'), source)
@@ -135,9 +135,11 @@ def do_donations(catalog):
                         name = value[:6].upper()
                         name += (value[6].upper() if len(value)
                                  == 7 else value[6:])
-                        name = Events.add_event(name)
-                        source = catalog.events[name].add_source(bibcode=bibcode)
-                        catalog.events[name].add_quantity('alias', name, source)
+                        name = catalog.add_event(name)
+                        source = (catalog.events[name]
+                                  .add_source(bibcode=bibcode))
+                        catalog.events[name].add_quantity('alias', name,
+                                                          source)
                     elif field == 'type':
                         claimedtype = value.replace('SN', '')
                         catalog.events[name].add_quantity(
@@ -156,7 +158,8 @@ def do_donations(catalog):
                             'dec', value, source, unit='floatdegrees')
                     elif field == 'host':
                         value = value.replace('- ', '-').replace('G ', 'G')
-                        catalog.events[name].add_quantity('host', value, source)
+                        catalog.events[name].add_quantity('host', value,
+                                                          source)
                     elif field == 'e(b-v)_mw':
                         catalog.events[name].add_quantity('ebv', value, source)
 
@@ -209,11 +212,12 @@ def do_donations(catalog):
                 mag = cols[2] if not isupp else cols[4]
                 e_mag = cols[3] if not isupp else ''
                 upp = '' if not isupp else True
-                catalog.events[name].add_photometry(time=mjd, magnitude=mag,
-                               e_magnitude=e_mag,
-                               upperlimit=upp, band=band, source=source,
-                               telescope='Swift', instrument='UVOT',
-                               system='Vega')
+                (catalog.events[name]
+                 .add_photometry(time=mjd, magnitude=mag,
+                                 e_magnitude=e_mag,
+                                 upperlimit=upp, band=band, source=source,
+                                 telescope='Swift', instrument='UVOT',
+                                 system='Vega'))
     catalog.journal_events()
 
     # Nicholl 05-03-16
@@ -247,12 +251,14 @@ def do_donations(catalog):
                         emag = ''
                         upp = True
                     instrument = 'UVOT' if telescope == 'Swift' else ''
-                    catalog.events[name].add_photometry(time=mjd, magnitude=col,
-                                   e_magnitude=emag, upperlimit=upp,
-                                   band=bands[ci], source=source,
-                                   telescope=telescope, instrument=instrument,
-                                   system='Vega' if
-                                   telescope == 'Swift' else 'AB')
+                    (catalog.events[name]
+                     .add_photometry(time=mjd, magnitude=col,
+                                     e_magnitude=emag, upperlimit=upp,
+                                     band=bands[ci], source=source,
+                                     telescope=telescope,
+                                     instrument=instrument,
+                                     system='Vega' if
+                                     telescope == 'Swift' else 'AB'))
 
     catalog.journal_events()
     return
