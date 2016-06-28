@@ -72,8 +72,7 @@ class Entry(OrderedDict):
                     break
 
         if load_path is None or not os.path.isfile(load_path):
-            warnings.warn("No path found for name: '{}', path: '{}'".format(
-                name, path))
+            # FIX: is this warning worthy?
             return None
 
         # Create a new `EVENT` instance
