@@ -20,8 +20,8 @@ def do_tns(catalog):
     tns_url = 'https://wis-tns.weizmann.ac.il/'
     search_url = tns_url + \
         'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
-    csvtxt = load_cached_url(catalog.args, current_task, search_url, os.path.join(
-        PATH.REPO_EXTERNAL, 'TNS/index.csv'))
+    csvtxt = load_cached_url(catalog.args, current_task, search_url,
+                             os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
     if not csvtxt:
         return
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
@@ -30,7 +30,8 @@ def do_tns(catalog):
     for page in pbar(range(maxpages), current_task):
         fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + \
             str(page).zfill(2) + '.csv'
-        if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname) and page < 7:
+        if (catalog.current_task.load_archive(catalog.args) and
+                os.path.isfile(fname) and page < 7):
             with open(fname, 'r') as tns_file:
                 csvtxt = tns_file.read()
         else:
@@ -86,7 +87,8 @@ def do_tns(catalog):
             # if row[9]:
             #    observers = row[9].split(',')
             #    for observer in observers:
-            #        catalog.events[name].add_quantity('observer', observer.strip(),
+            #        catalog.events[name].add_quantity('observer',
+            #                                  observer.strip(),
             #                                  source)
             if row[10]:
                 catalog.events[name].add_quantity('alias', row[10], source)
@@ -95,9 +97,9 @@ def do_tns(catalog):
                 magnitude = row[14]
                 band = row[15].split('-')[0]
                 mjd = astrotime(row[16]).mjd
-                catalog.events[name].add_photometry(time=mjd, magnitude=magnitude,
-                               band=band,
-                               survey=survey, source=source)
+                (catalog.events[name]
+                 .add_photometry(time=mjd, magnitude=magnitude,
+                                 band=band, survey=survey, source=source))
             if row[16]:
                 date = row[16].split()[0].replace('-', '/')
                 if date != '0000/00/00':
@@ -109,7 +111,8 @@ def do_tns(catalog):
                             ts[1]), seconds=int(ts[2]))
                         date += pretty_num(dt.total_seconds() /
                                            (24 * 60 * 60), sig=6).lstrip('0')
-                    catalog.events[name].add_quantity('discoverdate', date, source)
+                    catalog.events[name].add_quantity(
+                        'discoverdate', date, source)
             if catalog.args.update:
                 catalog.journal_events()
 

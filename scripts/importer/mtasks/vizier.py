@@ -223,7 +223,8 @@ def do_vizier(catalog):
         date_str = make_date_string(datesplit[0], datesplit[1].lstrip('0'),
                                     datesplit[2].lstrip('0'))
         catalog.events[name].add_quantity('discoverdate', date_str, source)
-        catalog.events[name].add_quantity('host', 'Abell ' + str(row['Abell']), source)
+        catalog.events[name].add_quantity(
+            'host', 'Abell ' + str(row['Abell']), source)
         catalog.events[name].add_quantity('claimedtype', row['Type'], source)
         catalog.events[name].add_quantity('ra', row['RAJ2000'], source)
         catalog.events[name].add_quantity('dec', row['DEJ2000'], source)
@@ -344,9 +345,11 @@ def do_vizier(catalog):
         mag = str(row['m'])
         band = row['band'].strip("'")
         if row['r_m'] in ii189bibdict:
-            source = catalog.events[name].add_source(bibcode=ii189bibdict[row['r_m']])
+            source = catalog.events[name].add_source(
+                bibcode=ii189bibdict[row['r_m']])
         else:
-            source = catalog.events[name].add_source(srcname=ii189refdict[row['r_m']])
+            source = catalog.events[name].add_source(
+                srcname=ii189refdict[row['r_m']])
         catalog.events[name].add_quantity('alias', oldname, source)
 
         catalog.events[name].add_photometry(
@@ -983,7 +986,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.448.1206M')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        catalog.events[name].add_quantity(
+            'discoverdate', '20' + name[4:6], source)
         catalog.events[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1003,7 +1007,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.448.1206M')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        catalog.events[name].add_quantity(
+            'discoverdate', '20' + name[4:6], source)
         catalog.events[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1023,7 +1028,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.448.1206M')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        catalog.events[name].add_quantity(
+            'discoverdate', '20' + name[4:6], source)
         catalog.events[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1043,7 +1049,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.448.1206M')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        catalog.events[name].add_quantity(
+            'discoverdate', '20' + name[4:6], source)
         catalog.events[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1061,7 +1068,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.448.1206M')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        catalog.events[name].add_quantity(
+            'discoverdate', '20' + name[4:6], source)
         catalog.events[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1069,7 +1077,8 @@ def do_vizier(catalog):
         catalog.events[name].add_quantity(
             'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
         catalog.events[name].add_quantity('maxband', 'r', source)
-        catalog.events[name].add_quantity('claimedtype', row['Typesoft'] + '?', source)
+        catalog.events[name].add_quantity(
+            'claimedtype', row['Typesoft'] + '?', source)
         catalog.events[name].add_quantity(
             'claimedtype', row['Typepsnid'] + '?', source)
     result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea3')
@@ -1081,7 +1090,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2015MNRAS.448.1206M')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('discoverdate', '20' + name[4:6], source)
+        catalog.events[name].add_quantity(
+            'discoverdate', '20' + name[4:6], source)
         catalog.events[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1104,7 +1114,8 @@ def do_vizier(catalog):
         name = catalog.add_event(name)
         source = catalog.events[name].add_source(bibcode='2012AJ....143..126B')
         catalog.events[name].add_quantity('alias', name, source)
-        catalog.events[name].add_quantity('claimedtype', 'Ia-' + row['Wcl'], source)
+        catalog.events[name].add_quantity(
+            'claimedtype', 'Ia-' + row['Wcl'], source)
     catalog.journal_events()
 
     # 2015ApJS..220....9F
@@ -1115,9 +1126,11 @@ def do_vizier(catalog):
         for row in pbar(table, current_task):
             row = convert_aq_output(row)
             name = catalog.add_event(name=row['SN'])
-            source = catalog.events[name].add_source(bibcode='2015ApJS..220....9F')
+            source = catalog.events[name].add_source(
+                bibcode='2015ApJS..220....9F')
             catalog.events[name].add_quantity('alias', name, source)
-            catalog.events[name].add_quantity('claimedtype', row['Type'], source)
+            catalog.events[name].add_quantity(
+                'claimedtype', row['Type'], source)
             catalog.events[name].add_quantity(
                 'ra', row['RAJ2000'], source, unit='floatdegrees')
             catalog.events[name].add_quantity(
@@ -1159,7 +1172,8 @@ def do_vizier(catalog):
             'ra', row['RAJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
             'dec', row['DEJ2000'], source, unit='floatdegrees')
-        catalog.events[name].add_quantity('redshift', row['z'], source, kind='host')
+        catalog.events[name].add_quantity(
+            'redshift', row['z'], source, kind='host')
         catalog.events[name].add_quantity(
             'hostra', row['RAGdeg'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1354,7 +1368,8 @@ def do_vizier(catalog):
         fra = Decimal(row['RAJ2000'])
         if fra < Decimal(0.0):
             fra = Decimal(360.0) + fra
-        catalog.events[name].add_quantity('ra', str(fra), source, unit='floatdegrees')
+        catalog.events[name].add_quantity(
+            'ra', str(fra), source, unit='floatdegrees')
         catalog.events[name].add_quantity(
             'dec', row['DEJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1412,7 +1427,8 @@ def do_vizier(catalog):
         fra = Decimal(row['RAJ2000'])
         if fra < Decimal(0.0):
             fra = Decimal(360.0) + fra
-        catalog.events[name].add_quantity('ra', str(fra), source, unit='floatdegrees')
+        catalog.events[name].add_quantity(
+            'ra', str(fra), source, unit='floatdegrees')
         catalog.events[name].add_quantity(
             'dec', row['DEJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1431,7 +1447,8 @@ def do_vizier(catalog):
         fra = Decimal(row['RAJ2000'])
         if fra < Decimal(0.0):
             fra = Decimal(360.0) + fra
-        catalog.events[name].add_quantity('ra', str(fra), source, unit='floatdegrees')
+        catalog.events[name].add_quantity(
+            'ra', str(fra), source, unit='floatdegrees')
         catalog.events[name].add_quantity(
             'dec', row['DEJ2000'], source, unit='floatdegrees')
         catalog.events[name].add_quantity(
@@ -1636,7 +1653,8 @@ def do_lennarz(catalog):
         if row['Ddate']:
             datestring = row['Ddate'].replace('-', '/')
 
-            catalog.events[name].add_quantity('discoverdate', datestring, source)
+            catalog.events[name].add_quantity(
+                'discoverdate', datestring, source)
 
             if 'photometry' not in catalog.events[name]:
                 if ('Dmag' in row and is_number(row['Dmag']) and not
