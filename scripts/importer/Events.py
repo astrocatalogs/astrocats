@@ -16,8 +16,8 @@ from ..utils import (bandmetaf, bandrepf, get_event_filename,
 from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL,
                         PREF_KINDS, REPR_BETTER_QUANTITY)
 from .funcs import (get_atels_dict, get_cbets_dict,
-                    get_iaucs_dict, host_clean, jd_to_mjd, make_date_string,
-                    name_clean,
+                    get_iaucs_dict, get_source_year, host_clean, jd_to_mjd,
+                    make_date_string, name_clean,
                     radec_clean, same_tag_num, same_tag_str, trim_str_arr,
                     uniq_cdl)
 
@@ -1052,6 +1052,27 @@ class EVENT(Entry):
                 bestsrc = z['source']
 
         return bestz, bestkind, bestsig, bestsrc
+
+    def ct_list_prioritized(self):
+        ct_list = list(sorted(
+            self[KEYS.CLAIMED_TYPE], key=lambda key: self._ct_priority(key)))
+        return ct_list
+
+    def _ct_priority(self, attr):
+        aliases = attr['source'].split(',')
+        max_source_year = -10000
+        vaguetypes = ['CC', 'I']
+        if attr['value'] in vaguetypes:
+            return -max_source_year
+        for alias in aliases:
+            if alias == 'D':
+                continue
+            source = self.get_source_by_alias(alias)
+            if 'bibcode' in source:
+                source_year = get_source_year(source)
+                if source_year > max_source_year:
+                    max_source_year = source_year
+        return -max_source_year
 
 
 def get_event_text(eventfile):
