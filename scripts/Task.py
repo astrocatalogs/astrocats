@@ -1,4 +1,4 @@
-class Task:
+class Task():
     name = ''
     nice_name = ''   # Name for pretty printing
     # Perform task during update

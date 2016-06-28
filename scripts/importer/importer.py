@@ -138,7 +138,7 @@ def load_task_list(args, log):
     # `defaults` is a dictionary where each `key` is a task name, and values
     # are its properties
     for key, val in data.items():
-        tasks[key] = Task(name=key, **val)
+        tasks[key] = Task.Task(name=key, **val)
         # Modify `active` tasks
         # ---------------------
         # If specific list of tasks is given, make only those active

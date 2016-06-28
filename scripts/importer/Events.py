@@ -17,7 +17,7 @@ from ..utils import (bandmetaf, bandrepf, get_event_filename, get_repo_folders,
 from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL, PREF_KINDS,
                         REPR_BETTER_QUANTITY)
 from .funcs import (get_source_year, host_clean, jd_to_mjd, make_date_string,
-                    name_clean, radec_clean, read_dict, same_tag_num,
+                    name_clean, radec_clean, read_json_dict, same_tag_num,
                     same_tag_str, trim_str_arr, uniq_cdl)
 
 
@@ -521,7 +521,7 @@ class EVENT(Entry):
         # If a `srcname` is given, try to set a `bibcode`
         elif not bibcode:
             if srcname.upper().startswith('ATEL'):
-                atels_dict = read_dict(FILENAME.ATELS)
+                atels_dict = read_json_dict(FILENAME.ATELS)
                 srcname = srcname.replace(
                     'ATEL', 'ATel').replace('Atel', 'ATel')
                 srcname = srcname.replace(
@@ -533,7 +533,7 @@ class EVENT(Entry):
                     bibcode = atels_dict[atelnum]
 
             if srcname.upper().startswith('CBET'):
-                cbets_dict = read_dict(FILENAME.CBETS)
+                cbets_dict = read_json_dict(FILENAME.CBETS)
                 srcname = srcname.replace('CBET', 'CBET ')
                 srcname = ' '.join(srcname.split())
                 cbetnum = srcname.split()[-1]
@@ -541,7 +541,7 @@ class EVENT(Entry):
                     bibcode = cbets_dict[cbetnum]
 
             if srcname.upper().startswith('IAUC'):
-                iaucs_dict = read_dict(FILENAME.IAUCS)
+                iaucs_dict = read_json_dict(FILENAME.IAUCS)
                 srcname = srcname.replace('IAUC', 'IAUC ')
                 srcname = ' '.join(srcname.split())
                 iaucnum = srcname.split()[-1]

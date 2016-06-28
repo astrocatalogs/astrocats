@@ -7,8 +7,7 @@ from git import Repo
 from scripts import FILENAME, PATH, SCHEMA
 
 from .importer import Events
-from .importer.constants import (COMPRESS_ABOVE_FILESIZE, NON_SNE_PREFIXES,
-                                 TRAVIS_QUERY_LIMIT)
+from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
 from .importer.Events import EVENT, KEYS
 from .importer.funcs import (event_attr_priority, name_clean, null_field,
                              read_json_arr, read_json_dict, uniq_cdl)
