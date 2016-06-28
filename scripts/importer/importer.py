@@ -80,14 +80,11 @@ def import_main(catalog=None):
         prev_task_name = task_name
 
     files = repo_file_list()
-
     current_task = 'Sanitizing and deriving quantities for events'
     for ii, fi in enumerate(pbar(files, current_task)):
-        events = OrderedDict()
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         name = catalog.add_event(name)
-        events, extinctions_dict, bibauthor_dict = derive_and_sanitize(
-            catalog)
+        extinctions_dict, bibauthor_dict = derive_and_sanitize(catalog)
         # FIX: is this check needed here (also in 'journal_events')?
         if catalog.args.write_events:
             catalog.journal_events()
