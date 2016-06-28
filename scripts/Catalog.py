@@ -558,6 +558,14 @@ class Catalog():
 
         return
 
+    def event_exists(self, name):
+        if name in self.events:
+            return True
+        for ev in self.events:
+            if name in self.events[ev].get_aliases():
+                return True
+        return False
+
     def count(self):
         full = 0
         stub = 0

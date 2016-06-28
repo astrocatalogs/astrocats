@@ -10,8 +10,6 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import pbar
 
-from ..funcs import event_exists
-
 
 def do_superfit_spectra(catalog):
     from .. funcs import get_max_light, get_preferred_name
@@ -34,16 +32,18 @@ def do_superfit_spectra(catalog):
 
             if 'theory' in name:
                 continue
-            if event_exists(catalog.events, name):
+            if catalog.event_exists(name):
                 prefname = get_preferred_name(catalog.events, name)
-                if 'spectra' in catalog.events[prefname] and lastname != prefname:
+                if ('spectra' in catalog.events[prefname] and
+                        lastname != prefname):
                     continue
             if oldname and name != oldname:
                 catalog.journal_events()
             oldname = name
             name = catalog.add_event(name)
             epoch = basename.split('.')[1]
-            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.events, name)
+            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.events,
+                                                            name)
             if mldt:
                 if epoch == 'max':
                     epoff = Decimal(0.0)

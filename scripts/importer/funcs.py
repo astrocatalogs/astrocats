@@ -542,15 +542,6 @@ def event_attr_priority(attr):
     return attr
 
 
-def event_exists(events, name):
-    if name in events:
-        return True
-    for ev in events:
-        if name in events[ev].get_aliases():
-            return True
-    return False
-
-
 def frame_priority(attr):
     if 'kind' in attr:
         if attr['kind'] in PREF_KINDS:

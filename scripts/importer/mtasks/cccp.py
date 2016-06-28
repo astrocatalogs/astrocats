@@ -13,7 +13,7 @@ from cdecimal import Decimal
 from scripts import PATH
 from scripts.utils import is_number, pbar, pbar_strings, round_sig
 
-from ..funcs import event_exists, load_cached_url, uniq_cdl
+from ..funcs import load_cached_url, uniq_cdl
 
 
 def do_cccp(catalog):
@@ -151,7 +151,7 @@ def do_cpcs(catalog):
             if name.upper().startswith('IPTF'):
                 name = 'iPTF' + name[4:]
             # Only add events that are classified as SN.
-            if event_exists(catalog.events, name):
+            if catalog.event_exists(name):
                 continue
             oldname = name
             name = catalog.add_event(name)
