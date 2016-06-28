@@ -12,6 +12,7 @@ class PATH:
     ROOT = str(_PATH_ROOT)
     DATA = os.path.join(ROOT, 'scripts/aux_data')
     IMPORT = os.path.join(ROOT, 'scripts/importer')
+    CACHE = os.path.join(ROOT, 'scripts/cache')
     REPO_BONEYARD = os.path.join(ROOT, 'sne-boneyard')
     REPO_INTERNAL = os.path.join(ROOT, 'sne-internal')
     REPO_EXTERNAL = os.path.join(ROOT, 'sne-external')
@@ -22,18 +23,21 @@ class PATH:
 
 
 class FILENAME:
+    # critical datafiles
+    REPOS = os.path.join(PATH.IMPORT, 'repos.json')
+    TASK_LIST = os.path.join(PATH.IMPORT, 'tasks.json')
+    # auxiliary datafiles
     TYPE_SYNONYMS = os.path.join(PATH.DATA, 'type-synonyms.json')
     SOURCE_SYNONYMS = os.path.join(PATH.DATA, 'source-synonyms.json')
     NON_SNE_TYPES = os.path.join(PATH.DATA, 'non-sne-types.json')
-    REPOS = os.path.join(PATH.IMPORT, 'repos.json')
     REPOS_LIST = os.path.join(PATH.DATA, 'rep-folders.txt')
     ATELS = os.path.join(PATH.DATA, 'atels.json')
     CBETS = os.path.join(PATH.DATA, 'cbets.json')
     IAUCS = os.path.join(PATH.DATA, 'iaucs.json')
-    EXTINCT = os.path.join(PATH.DATA, 'extinctions.json')
-    BIBAUTHORS = os.path.join(PATH.DATA, 'bibauthors.json')
     BIBERRORS = os.path.join(PATH.DATA, 'biberrors.json')
-    TASK_LIST = os.path.join(PATH.IMPORT, 'tasks.json')
+    # cached datafiles
+    EXTINCT = os.path.join(PATH.CACHE, 'extinctions.json')
+    BIBAUTHORS = os.path.join(PATH.CACHE, 'bibauthors.json')
 
 
 class SCHEMA:

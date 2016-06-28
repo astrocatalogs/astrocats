@@ -222,6 +222,8 @@ def derive_and_sanitize(catalog):
                     ra_dec = event['ra'][0]['value'] + \
                         " " + event['dec'][0]['value']
                     result = IrsaDust.get_query_table(ra_dec, section='ebv')
+                except (KeyboardInterrupt, SystemExit):
+                    raise
                 except:
                     warnings.warn("Coordinate lookup for " +
                                   name + " failed in IRSA.")
