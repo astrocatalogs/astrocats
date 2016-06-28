@@ -10,7 +10,6 @@ from astropy.cosmology import z_at_value
 from cdecimal import Decimal
 from scripts import PATH
 
-from .. import Events
 from ...utils import is_number, pbar
 from ..funcs import (get_sig_digits, host_clean, name_clean, pretty_num,
                      uniq_cdl)
@@ -50,10 +49,8 @@ def do_nedd(catalog):
             if dist:
                 nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
         if snname and 'HOST' not in snname:
-            snname, secondarysource = Events.new_event(snname,
-                                                       srcname=reference,
-                                                       url=refurl,
-                                                       secondary=True)
+            snname, secondarysource = catalog.new_event(
+                snname, srcname=reference, url=refurl, secondary=True)
             if bibcode:
                 source = catalog.events[snname].add_source(bibcode=bibcode)
                 sources = uniq_cdl([source, secondarysource])
