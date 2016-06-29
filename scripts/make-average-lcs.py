@@ -114,6 +114,9 @@ for averagetype in averagetypes:
         photoevent += [thisevent['name'] for x in prange]
         phototype += [(x['upperlimit'] if 'upperlimit' in x else False) for x in thisevent['photometry'] if photo_cut(x)]
 
+    if not len(phototime):
+        continue
+
     bandset = set(photoband)
     bandset = [i for (j, i) in sorted(list(zip(list(map(bandaliasf, bandset)), bandset)))]
 
