@@ -9,8 +9,7 @@ from git import Repo
 
 from astrocats import FILENAME, PATH, SCHEMA
 
-from ..supernovae.funcs import (name_clean, read_json_arr, read_json_dict,
-                                uniq_cdl)
+from ..supernovae.funcs import (name_clean, read_json_dict, uniq_cdl)
 from .entry import KEYS
 from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
 
@@ -54,29 +53,29 @@ class Catalog:
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
-
-        # Load repositories dictionary
-        self.repos_dict = read_json_dict(FILENAME.REPOS)
-
-        # Load auxiliary data
-        # self._load_aux()
-
-        # Make sure repositories are cloned
-        self._clone_repos()
         return
 
-    def _clone_repos(self):
-        all_repos = [self.repos_dict[x] for x in self.repos_dict]
-        all_repos = [i for x in all_repos for i in x]
+    def clone_repos(self, all_repos):
+        """Given a list of repositories, make sure they're all cloned.
+
+        Should be called from the subclassed `Catalog` objects, passed a list
+        of specific repository names.
+
+        Arguments
+        ---------
+        all_repos : list of str
+            *Absolute* path specification of each target repository.
+
+        """
         for repo in pbar(all_repos):
-            if not os.path.isdir(PATH.ROOT + "/" + repo):
+            if not os.path.isdir(repo):
                 try:
+                    repo_name = os.path.split(repo)[-1]
                     self.log.warning(
                         'Cloning "' + repo + '" (only needs to be done ' +
                         'once, may take few minutes per repo).')
                     Repo.clone_from("git@github.com:astrocatalogs/" +
-                                    repo + ".git",
-                                    PATH.ROOT + "/" + repo)
+                                    repo_name + ".git", repo)
                 except:
                     self.log.error("CLONING '{}' INTERRUPTED".format(repo))
                     raise

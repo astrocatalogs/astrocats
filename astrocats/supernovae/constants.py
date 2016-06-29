@@ -1,7 +1,24 @@
 """Supernovae specific Constant variables.
 """
+import os
 from astropy import constants as const
 from astropy import units as un
+
+_PATH_SUPERNOVAE = os.path.abspath(os.path.split(os.path.dirname(__file__)))
+_PATH_INPUT = os.path.join(_PATH_SUPERNOVAE, 'input', '')
+
+
+class FILENAME:
+    # critical datafiles
+    REPOS = os.path.join(_PATH_INPUT, 'repos.json')
+    TASK_LIST = os.path.join(_PATH_INPUT, 'tasks.json')
+    # auxiliary datafiles
+    TYPE_SYNONYMS = os.path.join(_PATH_INPUT, 'type-synonyms.json')
+    SOURCE_SYNONYMS = os.path.join(_PATH_INPUT, 'source-synonyms.json')
+    NON_SNE_TYPES = os.path.join(_PATH_INPUT, 'non-sne-types.json')
+    NON_SNE_PREFIXES = os.path.join(_PATH_INPUT, 'non-sne-prefixes.json')
+    BIBERRORS = os.path.join(_PATH_INPUT, 'biberrors.json')
+
 
 CLIGHT = const.c.cgs.value
 KM = (1.0 * un.km).cgs.value
