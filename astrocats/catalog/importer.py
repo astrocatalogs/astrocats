@@ -16,7 +16,6 @@ from .catalog import Catalog
 from . import Supernova
 from ..utils import pbar, repo_file_list
 from .constants import TRAVIS_QUERY_LIMIT
-from .funcs import derive_and_sanitize
 
 
 def import_main(catalog=None):
