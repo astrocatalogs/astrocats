@@ -6,7 +6,7 @@ import re
 import urllib
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar
 
 from ..funcs import jd_to_mjd, load_cached_url

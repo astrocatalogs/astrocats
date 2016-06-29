@@ -7,7 +7,7 @@ import urllib
 from bs4 import BeautifulSoup
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import is_number, pbar
 
 from ..constants import TRAVIS_QUERY_LIMIT

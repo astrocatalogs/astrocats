@@ -11,8 +11,8 @@ from astropy.time import Time as astrotime
 from cdecimal import Decimal
 
 from .. import FILENAME, PATH, SCHEMA
-from ..Catalog.entry import KEYS, Entry
-from ..Catalog.utils import (alias_priority, bandmetaf, bandrepf,
+from ..catalog.entry import KEYS, Entry
+from ..catalog.utils import (alias_priority, bandmetaf, bandrepf,
                              frame_priority, get_event_filename,
                              get_repo_folders, get_repo_years, get_sig_digits,
                              is_number, pretty_num, tprint)

@@ -5,7 +5,7 @@ import os
 import re
 from glob import glob
 
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar_strings
 
 

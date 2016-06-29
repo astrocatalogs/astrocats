@@ -8,7 +8,7 @@ from astropy.time import Time as astrotime
 from astroquery.vizier import Vizier
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import (get_sig_digits, is_number, pbar, pretty_num, rep_chars,
                       round_sig)

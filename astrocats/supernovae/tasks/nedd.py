@@ -10,7 +10,7 @@ from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import is_number, pbar
 from ..funcs import (get_sig_digits, host_clean, name_clean, pretty_num,

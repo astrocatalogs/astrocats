@@ -8,7 +8,7 @@ from math import log10
 from astropy.time import Time as astrotime
 from astroquery.vizier import Vizier
 
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import get_sig_digits, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT

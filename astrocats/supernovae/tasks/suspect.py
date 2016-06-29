@@ -13,7 +13,7 @@ from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT

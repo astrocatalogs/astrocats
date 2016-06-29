@@ -3,7 +3,7 @@
 import csv
 import os
 
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar
 
 from ..funcs import load_cached_url

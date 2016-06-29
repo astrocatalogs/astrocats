@@ -9,7 +9,7 @@ from math import floor
 import requests
 from astropy.time import Time as astrotime
 
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import get_sig_digits, pbar, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT

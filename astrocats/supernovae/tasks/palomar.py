@@ -5,7 +5,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import is_number
 

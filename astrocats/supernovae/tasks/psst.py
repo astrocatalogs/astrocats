@@ -5,7 +5,7 @@ import os
 
 from astropy.time import Time as astrotime
 
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar
 
 from ..funcs import make_date_string

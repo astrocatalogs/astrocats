@@ -10,7 +10,7 @@ import urllib
 # from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import is_number, pbar
 from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8

@@ -7,7 +7,7 @@ import urllib
 from bs4 import BeautifulSoup, NavigableString, Tag
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import is_number, pbar
 from ..funcs import jd_to_mjd, load_cached_url, uniq_cdl

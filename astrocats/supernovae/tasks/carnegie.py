@@ -5,7 +5,7 @@ import os
 from glob import glob
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import pbar_strings
 from ..constants import TRAVIS_QUERY_LIMIT

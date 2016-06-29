@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import is_number, pbar, pbar_strings, round_sig
 
 from ..funcs import load_cached_url, uniq_cdl

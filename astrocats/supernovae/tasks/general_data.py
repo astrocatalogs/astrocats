@@ -4,7 +4,7 @@ import os
 from collections import OrderedDict
 from glob import glob
 
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar_strings
 
 from ...Entry import SN_KEYS

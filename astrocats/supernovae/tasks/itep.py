@@ -8,7 +8,7 @@ from collections import OrderedDict
 from html import unescape
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar
 
 from ..funcs import jd_to_mjd

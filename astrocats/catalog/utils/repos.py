@@ -2,7 +2,7 @@ import os
 import warnings
 from glob import glob
 
-from scripts import FILENAME, PATH
+from astrocats import FILENAME, PATH
 
 from .digits import is_number
 

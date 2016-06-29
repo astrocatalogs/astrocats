@@ -7,7 +7,7 @@ from glob import glob
 from astropy.time import Time as astrotime
 
 from cdecimal import Decimal
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import pbar
 
 

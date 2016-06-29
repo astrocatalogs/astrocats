@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 import requests
 
-from scripts import PATH
+from astrocats import PATH
 from scripts.utils import is_number, pbar
 
 from ..funcs import load_cached_url, round_sig, uniq_cdl

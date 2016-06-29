@@ -6,7 +6,7 @@ import os
 from glob import glob
 from math import isnan
 
-from scripts import PATH
+from astrocats import PATH
 
 from ...utils import is_number, pbar, pbar_strings, rep_chars
 
