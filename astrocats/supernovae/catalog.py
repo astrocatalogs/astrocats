@@ -21,7 +21,6 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
         self._load_aux_data()
         self.FILENAME = FILENAME
-
         return
 
     def _load_aux_data(self):
@@ -38,8 +37,6 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
     def clone_repos(self):
         # Load the local 'supernovae' repository names
-        # all_repos = [self.repos_dict[x] for x in self.repos_dict]
-        # all_repos = [i for x in all_repos for i in x]
         all_repos = self._get_input_repo_folders()
         all_repos += self.get_output_repo_folders()
         super()._clone_repos(all_repos)

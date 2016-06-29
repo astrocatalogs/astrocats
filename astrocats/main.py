@@ -5,8 +5,6 @@
 def main():
     from datetime import datetime
 
-    # from .catalog.catalog import Catalog
-
     beg_time = datetime.now()
     # Process command-line arguments to determine action
     #    If no subcommand (e.g. 'impoter') is given, returns 'None' --> exit
@@ -20,8 +18,6 @@ def main():
     # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
     #    ON ARGS WHAT TO IMPORT AND INITIALIZE
 
-    # from . import supernovae
-    from astrocats.supernovae.supernova import Supernova
     from astrocats.supernovae.catalog import Catalog
     catalog = Catalog(args)
     git_vers = get_git()
