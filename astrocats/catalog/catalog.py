@@ -146,7 +146,7 @@ class Catalog:
                 for tname in arglist:
                     if tname not in data.keys():
                         raise ValueError("Value '{}' in '{}' list does not match"
-                                         "any tasks").format(tname, lname)
+                                         " any tasks".format(tname, lname))
 
         tasks = {}
         # `defaults` is a dictionary where each `key` is a task name, and values
