@@ -4,19 +4,12 @@
 import json
 import os
 from collections import OrderedDict
-from math import floor, hypot, log10, pi, sqrt
-
-from astropy import units as un
-from astropy.coordinates import SkyCoord as coord
-from astropy.cosmology import Planck15 as cosmo
-from astropy.cosmology import z_at_value
+from math import floor
 
 from cdecimal import Decimal
 
-from ..utils import (get_sig_digits, is_number, pretty_num, round_sig, tprint,
-                     zpad)
-from .constants import (ADS_BIB_URL, CLIGHT, KM, OSC_BIBCODE, OSC_NAME,
-                        OSC_URL, PREF_KINDS)
+from ..catalog.utils import (get_sig_digits, is_number, pretty_num, tprint,
+                             zpad)
 
 
 def convert_aq_output(row):

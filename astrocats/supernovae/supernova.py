@@ -13,13 +13,14 @@ from cdecimal import Decimal
 from .. import FILENAME, PATH, SCHEMA
 from ..catalog.entry import KEYS, Entry
 from ..catalog.utils import (alias_priority, bandmetaf, bandrepf,
-                             frame_priority, get_event_filename,
+                             get_event_filename, trim_str_arr,
                              get_repo_folders, get_repo_years, get_sig_digits,
-                             is_number, pretty_num, tprint)
+                             is_number, pretty_num, tprint, uniq_cdl)
 from .constants import MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
+from .utils import frame_priority
 from .funcs import (get_source_year, host_clean, jd_to_mjd, make_date_string,
                     name_clean, radec_clean, read_json_dict, same_tag_num,
-                    same_tag_str, trim_str_arr, uniq_cdl)
+                    same_tag_str)
 
 
 class SN_KEYS(KEYS):
