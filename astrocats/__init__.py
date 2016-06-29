@@ -2,8 +2,6 @@
 Supernova data.
 """
 
-print("astrocats.__init__.py")
-
 # from . import catalog
 
 import os

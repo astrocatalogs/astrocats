@@ -11,7 +11,8 @@ from astrocats import PATH
 
 from ...utils import pretty_num
 from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
-from ..funcs import get_preferred_name, jd_to_mjd, uniq_cdl
+from ..funcs import get_preferred_name, jd_to_mjd
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_snf_aliases(catalog):

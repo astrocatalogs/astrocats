@@ -12,7 +12,8 @@ from bs4 import BeautifulSoup
 from astrocats import PATH
 
 from ...utils import is_number, pbar
-from ..funcs import load_cached_url, make_date_string, uniq_cdl
+from ..funcs import load_cached_url, make_date_string
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_rochester(catalog):

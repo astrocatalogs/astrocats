@@ -10,7 +10,8 @@ from cdecimal import Decimal
 from astrocats import PATH
 
 from ...utils import is_number, pbar
-from ..funcs import jd_to_mjd, load_cached_url, uniq_cdl
+from ..funcs import jd_to_mjd, load_cached_url
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_ogle(catalog):

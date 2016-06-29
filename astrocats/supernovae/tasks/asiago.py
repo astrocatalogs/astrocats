@@ -13,7 +13,8 @@ from bs4 import BeautifulSoup
 from astrocats import PATH
 
 from ...utils import is_number, pbar
-from ..funcs import clean_snname, load_cached_url, uniq_cdl, utf8
+from ..funcs import clean_snname, load_cached_url
+from astrocats.catalog.utils import uniq_cdl, utf8
 
 
 def do_asiago_photo(catalog):

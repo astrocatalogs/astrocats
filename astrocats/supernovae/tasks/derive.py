@@ -11,9 +11,9 @@ from astropy.cosmology import z_at_value
 
 from cdecimal import Decimal
 
-from ..utils import get_sig_digits, is_number, pretty_num, tprint
+from ..catalog.utils import (get_sig_digits, is_number, pretty_num, tprint,
+                             uniq_cdl)
 from .constants import CLIGHT, KM, OSC_BIBCODE, OSC_NAME, OSC_URL, PREF_KINDS
-from .funcs import uniq_cdl
 
 
 def do_derivations(catalog):

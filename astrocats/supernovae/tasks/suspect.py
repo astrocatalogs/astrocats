@@ -17,7 +17,8 @@ from astrocats import PATH
 
 from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import (get_preferred_name, jd_to_mjd, uniq_cdl)
+from ..funcs import (get_preferred_name, jd_to_mjd
+from astrocats.catalog.utils import uniq_cdl)
 
 
 def do_suspect_photo(catalog):

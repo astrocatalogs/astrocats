@@ -1,6 +1,5 @@
 """
 """
-print("astrocats.main.py")
 
 
 def main():

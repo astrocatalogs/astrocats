@@ -13,7 +13,8 @@ from cdecimal import Decimal
 from astrocats import PATH
 from scripts.utils import is_number, pbar, pbar_strings, round_sig
 
-from ..funcs import load_cached_url, uniq_cdl
+from ..funcs import load_cached_url
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_cccp(catalog):
