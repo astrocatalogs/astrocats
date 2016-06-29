@@ -11,17 +11,19 @@ from astropy.time import Time as astrotime
 from astrocats.catalog.entry import KEYS, Entry
 from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
                                      get_event_filename, get_repo_folders,
-                                     get_repo_years, get_sig_digits,
-                                     host_clean, is_number,
+                                     get_repo_years, get_sig_digits, is_number,
                                      jd_to_mjd, make_date_string, pretty_num,
-                                     radec_clean, read_json_dict, same_tag_num,
-                                     same_tag_str, tprint, trim_str_arr,
+                                     read_json_dict, tprint, trim_str_arr,
                                      uniq_cdl)
+from astrocats.supernovae.utils import (host_clean, radec_clean, same_tag_num,
+                                        same_tag_str)
 from cdecimal import Decimal
 
 from .. import FILENAME, PATH, SCHEMA
 from .constants import MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
-from .utils import (frame_priority, name_clean)
+from .utils import frame_priority, name_clean
+
+same_tag_str
 
 
 class SN_KEYS(KEYS):
