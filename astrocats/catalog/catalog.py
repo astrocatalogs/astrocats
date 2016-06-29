@@ -27,10 +27,6 @@ class Catalog:
     OSC_NAME = 'The Open Supernova Catalog'
     OSC_URL = 'https://sne.space'
 
-    ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
-                "which is funded in part by the National Science Foundation "
-                "through grant AST 0907903.")
-
     ADS_BIB_URL = ("http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?"
                    "db_key=ALL&version=1&bibcode=")
 

@@ -12,8 +12,9 @@ from astrocats.catalog.utils import (is_number, jd_to_mjd, pbar, pbar_strings,
 from astrocats.supernovae.utils import clean_snname
 from cdecimal import Decimal
 
-from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-
+ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
+            "which is funded in part by the National Science Foundation "
+            "through grant AST 0907903.")
 
 def do_cfa_photo(catalog):
     from html import unescape
@@ -207,7 +208,7 @@ def do_cfa_spectra(catalog):
                 else '', time=time, instrument=instrument,
                 errorunit='ergs/s/cm^2/Angstrom', errors=errors,
                 source=sources, dereddened=False, deredshifted=False)
-            if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
+            if catalog.args.travis and fi >= catalog.TRAVIS_QUERY_LIMIT:
                 break
     catalog.journal_entries()
 
