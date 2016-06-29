@@ -5,23 +5,23 @@ Files: lowercase
 Classes: TitleCase  
 Variables: lowercase, underscore (for spaces)
 
--   **Catalogs**
+-   **OpenCatalogs**
+-   LICENSE
+-   README.md
+-   requirements.txt
+-   STRUCTURE.md
+-   TODO.md
+-   **astrocats**
     -   \__init__.py
     -   \__main__.py
-    -   LICENSE
     -   main.py
-    -   README.md
-    -   requirements.txt
-    -   STRUCTURE.md
-    -   TODO.md
-    -   scripts/
-    -   **Catalog** 
+    -   **catalog** 
         -   catalog.py
         -   constants.py
         -   entry.py
         -   task.py
         -   utils/
-    -   **Supernovae**
+    -   **supernovae**
         -   supernova.py
         -   tasks/
         -   input/
@@ -45,8 +45,3 @@ Variables: lowercase, underscore (for spaces)
             -   make...
         -   html/
             -   ...
-    -   **BH**
-        -   src/
-        -   input/
-        -   output/
-        -   html/
