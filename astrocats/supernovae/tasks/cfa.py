@@ -105,7 +105,7 @@ def do_cfa_photo(catalog):
     # Hicken 2012
     with open(os.path.join(catalog.get_current_task_repo(),
                            'hicken-2012-standard.dat'), 'r') as infile:
-        tsvin = csv.reader(infile, delimiter='|', skipinitialspace=True)
+        tsvin = list(csv.reader(infile, delimiter='|', skipinitialspace=True))
         for r, row in enumerate(pbar(tsvin, current_task)):
             if r <= 47:
                 continue
@@ -130,7 +130,7 @@ def do_cfa_photo(catalog):
         # Bianco 2014
         tsvin = open(os.path.join(catalog.get_current_task_repo(),
                                   'bianco-2014-standard.dat'), 'r')
-        tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
+        tsvin = list(csv.reader(tsvin, delimiter=' ', skipinitialspace=True))
         for row in pbar(tsvin, current_task):
             name = 'SN' + row[0]
             name = catalog.add_entry(name)
