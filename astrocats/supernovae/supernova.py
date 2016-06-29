@@ -19,7 +19,7 @@ from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
                                         same_tag_str)
 from cdecimal import Decimal
 
-from .. import FILENAME, PATH, SCHEMA
+from .. import SCHEMA
 from .constants import MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
 
 
