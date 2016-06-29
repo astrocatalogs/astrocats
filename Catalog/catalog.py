@@ -7,8 +7,9 @@ from git import Repo
 from scripts import FILENAME, PATH, SCHEMA
 
 from .entry import KEYS
-from .importer.funcs import (name_clean, read_json_arr, read_json_dict)
-from .utils import (is_number, logger, pbar, repo_file_list, uniq_cdl)
+from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
+from .importer.funcs import name_clean, read_json_arr, read_json_dict, uniq_cdl
+from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
 
 
 class Catalog:
@@ -134,7 +135,7 @@ class Catalog:
                 return newname
 
         # Create new entry
-        new_entry = self.proto(newname)
+        new_entry = self.proto(self, newname)
         new_entry['schema'] = SCHEMA.URL
         self.log.log(self.log._LOADED,
                      "Created new entry for '{}'".format(newname))
@@ -439,8 +440,9 @@ class Catalog:
                     self.entries[newname] = new_entry
                     self.entries[newname][KEYS.NAME] = newname
                     if name in self.entries:
-                        self.log.error("WARNING: `name` = '{}' is in `entries` "
-                                       "shouldnt happen?".format(name))
+                        self.log.error(
+                            "WARNING: `name` = '{}' is in `entries` "
+                            "shouldnt happen?".format(name))
                         del self.entries[name]
                     self.journal_entries()
 
@@ -504,10 +506,10 @@ class Catalog:
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
-        Iterates over all elements of `entries`, saving (possibly 'burying') and
-        deleting.
-        -   If ``clear == True``, then each element of `entries` is deleted, and
-            a `stubs` entry is added
+        Iterates over all elements of `entries`, saving (possibly 'burying')
+        and deleting.
+        -   If ``clear == True``, then each element of `entries` is deleted,
+            and a `stubs` entry is added
         """
         self.log.debug("Events.journal_entries()")
         # FIX: store this somewhere instead of re-loading each time

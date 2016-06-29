@@ -370,8 +370,122 @@ class Supernova(Entry):
 
         return outdir, filename
 
-    def save(self, empty=False, bury=False, gz=False):
+<<<<<<< HEAD
+    def sanitize(self):
+        # Calculate some columns based on imported data, sanitize some fields
+        name = self['name']
+
+        aliases = self.get_aliases(includename=False)
+        if name not in aliases:
+            if 'sources' in self:
+                self.add_quantity('alias', name, '1')
+            else:
+                source = self.add_source(
+                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    secondary=True)
+                self.add_quantity('alias', name, source)
+
+        if ((name.startswith('SN') and is_number(name[2:6]) and
+             'discoverdate' in self and
+             int(self['discoverdate'][0]['value'].
+                 split('/')[0]) >= 2016 and
+             not any(['AT' in x for x in aliases]))):
+            source = self.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            self.add_quantity('alias', 'AT' + name[2:], source)
+
+        self['alias'] = list(
+            sorted(self['alias'],
+                   key=lambda key: alias_priority(name, key)))
+        aliases = self.get_aliases()
+
+        if 'claimedtype' in self:
+            # FIX: this is something that should be done completely internally
+            #      i.e. add it to `clean` or something??
+            self['claimedtype'] = self.ct_list_prioritized()
+        if 'claimedtype' in self:
+            self['claimedtype'][:] = [ct for ct in self[
+                'claimedtype'] if (ct['value'] != '?' and ct['value'] != '-')]
+            if not len(self['claimedtype']):
+                del(self['claimedtype'])
+        if 'claimedtype' not in self and name.startswith('AT'):
+            source = self.add_source(
+                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                secondary=True)
+            self.add_quantity('claimedtype', 'Candidate', source)
+
+        if 'photometry' in self:
+            self['photometry'].sort(
+                key=lambda x: ((float(x['time']) if isinstance(x['time'], str)
+                                else min([float(y) for y in x['time']])) if
+                               'time' in x else 0.0,
+                               x['band'] if 'band' in x else '',
+                               float(x['magnitude']) if
+                               'magnitude' in x else ''))
+        if ('spectra' in self and
+                list(filter(None, ['time' in x
+                                   for x in self['spectra']]))):
+            self['spectra'].sort(key=lambda x: (
+                float(x['time']) if 'time' in x else 0.0))
+        if 'sources' in self:
+            for source in self['sources']:
+                if 'bibcode' in source:
+                    import urllib
+                    from html import unescape
+                    # First sanitize the bibcode
+                    if len(source['bibcode']) != 19:
+                        source['bibcode'] = urllib.parse.unquote(
+                            unescape(source['bibcode'])).replace('A.A.', 'A&A')
+                    if source['bibcode'] in self.catalog.biberror_dict:
+                        source['bibcode'] = \
+                            self.catalog.biberror_dict[source['bibcode']]
+
+                    if source['bibcode'] not in self.catalog.bibauthor_dict:
+                        bibcode = source['bibcode']
+                        adsquery = (ADS_BIB_URL +
+                                    urllib.parse.quote(bibcode) +
+                                    '&data_type=Custom&format=%253m%20%25(y)')
+                        response = urllib.request.urlopen(adsquery)
+                        html = response.read().decode('utf-8')
+                        hsplit = html.split("\n")
+                        if len(hsplit) > 5:
+                            bibcodeauthor = hsplit[5]
+                        else:
+                            bibcodeauthor = ''
+
+                        if not bibcodeauthor:
+                            warnings.warn(
+                                "Bibcode didn't return authors, not converting"
+                                "this bibcode.")
+
+                        self.catalog.bibauthor_dict[bibcode] = unescape(
+                            bibcodeauthor).strip()
+
+            for source in self['sources']:
+                if ('bibcode' in source and
+                        source['bibcode'] in self.catalog.bibauthor_dict and
+                        self.catalog.bibauthor_dict[source['bibcode']]):
+                    source['reference'] = self.catalog.bibauthor_dict[
+                        source['bibcode']]
+                    if 'name' not in source and source['bibcode']:
+                        source['name'] = source['bibcode']
+        if 'redshift' in self:
+            self['redshift'] = list(
+                sorted(self['redshift'], key=lambda key:
+                       frame_priority(key)))
+        if 'velocity' in self:
+            self['velocity'] = list(
+                sorted(self['velocity'], key=lambda key:
+                       frame_priority(key)))
+        if 'claimedtype' in self:
+            self['claimedtype'] = self.ct_list_prioritized()
+
+    def save(self, empty=False, bury=False, final=False, gz=False):
         outdir, filename = self._get_save_path(bury=bury)
+
+        if final:
+            self.sanitize()
 
         # FIX: use 'dump' not 'dumps'
         jsonstring = json.dumps({self[SN_KEYS.NAME]: self},
