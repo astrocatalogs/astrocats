@@ -6,6 +6,9 @@ from astropy import units as un
 CLIGHT = const.c.cgs.value
 KM = (1.0 * un.km).cgs.value
 
+PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic',
+              'photometric', 'host', 'cluster', '']
+
 REPR_BETTER_QUANTITY = {
     'redshift',
     'ebv',
