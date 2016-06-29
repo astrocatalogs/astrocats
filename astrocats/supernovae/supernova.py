@@ -21,7 +21,7 @@ from cdecimal import Decimal
 
 from .. import FILENAME, PATH, SCHEMA
 from .constants import MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
-from .utils import frame_priority, name_clean
+from .utils import (frame_priority, name_clean)
 
 
 class SN_KEYS(KEYS):

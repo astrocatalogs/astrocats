@@ -2,7 +2,7 @@
 '''
 from cdecimal import Decimal
 
-__all__ = ['jd_to_mjd', 'make_date_string']
+__all__ = ['jd_to_mjd', 'make_date_string', 'get_source_year']
 
 
 def jd_to_mjd(jd):
@@ -21,3 +21,12 @@ def make_date_string(year, month='', day=''):
         datestring = datestring + '/' + str(day).zfill(2)
 
     return datestring
+
+
+def get_source_year(source):
+    if 'bibcode' in source:
+        if is_number(source['bibcode'][:4]):
+            return int(source['bibcode'][:4])
+        else:
+            return -10000
+    raise ValueError('No bibcode available for source!')
