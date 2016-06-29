@@ -4,7 +4,7 @@ import os
 from astropy import constants as const
 from astropy import units as un
 
-_PATH_SUPERNOVAE = os.path.abspath(os.path.split(os.path.dirname(__file__)))
+_PATH_SUPERNOVAE = os.path.abspath(os.path.dirname(__file__))
 _PATH_INPUT = os.path.join(_PATH_SUPERNOVAE, 'input', '')
 
 

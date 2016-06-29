@@ -2,10 +2,10 @@
 """
 from ..constants import PREF_KINDS
 
-__all__ = ['event_attr_priority', 'frame_priority']
+__all__ = ['entry_attr_priority', 'frame_priority']
 
 
-def event_attr_priority(attr):
+def entry_attr_priority(attr):
     if attr == 'photometry':
         return 'zzy'
     if attr == 'spectra':

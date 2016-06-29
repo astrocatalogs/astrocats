@@ -7,11 +7,11 @@ from collections import OrderedDict
 
 from git import Repo
 
-from astrocats import FILENAME, PATH, SCHEMA
+from astrocats import SCHEMA
 
-from ..supernovae.funcs import (name_clean, read_json_dict, uniq_cdl)
+from ..supernovae.utils import (name_clean, entry_attr_priority)
 from .entry import KEYS
-from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
+from .utils import (is_number, logger, pbar, repo_file_list, uniq_cdl)
 
 
 class Catalog:
@@ -35,7 +35,6 @@ class Catalog:
     def __init__(self, proto, args):
         # Store runtime arguments
         self.args = args
-
         # Set the catalog prototype class
         self.proto = proto
 

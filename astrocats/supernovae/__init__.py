@@ -2,6 +2,5 @@
 
 Modified from `scripts/import.py`.
 """
-import os
 
 from . import supernova
