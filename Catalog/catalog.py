@@ -8,7 +8,7 @@ from scripts import FILENAME, PATH, SCHEMA
 
 from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
 from .Entry import KEYS
-from .importer.funcs import (event_attr_priority, name_clean, null_field,
+from .importer.funcs import (name_clean, null_field,
                              read_json_arr, read_json_dict, uniq_cdl)
 from .utils import is_number, logger, pbar, repo_file_list
 
@@ -17,6 +17,20 @@ class Catalog():
     """
     Object to hold the main catalog dictionary and other catalog globals.
     """
+
+    OSC_BIBCODE = '2016arXiv160501054G'
+    OSC_NAME = 'The Open Supernova Catalog'
+    OSC_URL = 'https://sne.space'
+
+    ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
+                "which is funded in part by the National Science Foundation "
+                "through grant AST 0907903.")
+
+    ADS_BIB_URL = ("http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?"
+                   "db_key=ALL&version=1&bibcode=")
+
+    TRAVIS_QUERY_LIMIT = 10
+    COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
 
     def __init__(self, proto, args):
         # Store runtime arguments
