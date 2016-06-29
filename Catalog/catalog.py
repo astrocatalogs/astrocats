@@ -6,11 +6,9 @@ from git import Repo
 
 from scripts import FILENAME, PATH, SCHEMA
 
-from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
 from .entry import KEYS
-from .importer.funcs import (name_clean,
-                             read_json_arr, read_json_dict, uniq_cdl)
-from .utils import is_number, logger, pbar, repo_file_list
+from .importer.funcs import (name_clean, read_json_arr, read_json_dict)
+from .utils import (is_number, logger, pbar, repo_file_list, uniq_cdl)
 
 
 class Catalog:
