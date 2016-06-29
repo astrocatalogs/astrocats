@@ -2,3 +2,5 @@
 
 Modified from `scripts/import.py`.
 """
+
+from . import supernova
