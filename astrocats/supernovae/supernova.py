@@ -10,7 +10,8 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS, Entry
 from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
-                                     get_event_filename, is_number, jd_to_mjd,
+                                     get_event_filename, get_sig_digits,
+                                     is_number, jd_to_mjd,
                                      make_date_string, pretty_num,
                                      read_json_dict, tprint, trim_str_arr,
                                      uniq_cdl, get_sig_digits)
