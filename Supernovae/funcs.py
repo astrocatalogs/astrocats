@@ -975,10 +975,6 @@ def host_clean(name):
     return newname
 
 
-def null_field(obj, field):
-    return obj[field] if field in obj else ''
-
-
 def same_tag_num(photo, val, tag, canbelist=False):
     issame = (
         (tag not in photo and not val) or
@@ -1009,21 +1005,6 @@ def clean_snname(string):
         newstring = head + tail
 
     return newstring
-
-
-def trim_str_arr(arr, length=10):
-    return [str(round_sig(float(x), length)) if
-            (len(x) > length and
-             len(str(round_sig(float(x), length))) < len(x))
-            else x for x in arr]
-
-
-def uniq_cdl(values):
-    return ','.join(sorted(list(set(values))))
-
-
-def utf8(x):
-    return str(x, 'utf-8')
 
 
 def get_event_text(eventfile):
