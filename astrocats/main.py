@@ -16,8 +16,8 @@ def main():
 
     # Set the prototype to the desired catalog Entry type. Probably should be a
     # switch in args.
-    from . import Supernovae
-    from .Supernovae.supernova import Supernova
+    from . import supernovae
+    from .supernovae.supernova import Supernova
     proto = Supernova
     catalog = Catalog(proto, args)
     git_vers = get_git()
@@ -30,7 +30,7 @@ def main():
     if args._name == 'sn-import':
         from .catalog import importer
         catalog.log.info("Running `importer`.")
-        importer.importer.import_main(catalog)
+        importer.import_main(catalog)
 
     end_time = datetime.now()
     catalog.log.warning("All complete at {}, After {}".format(

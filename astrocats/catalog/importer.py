@@ -9,14 +9,11 @@ import resource
 import warnings
 from collections import OrderedDict
 
-from .. import FILENAME, main
+from astrocats import FILENAME, main
 
 from . import task
 from .catalog import Catalog
-from . import Supernova
-from ..utils import pbar, repo_file_list
-from .constants import TRAVIS_QUERY_LIMIT
-from .funcs import derive_and_sanitize
+from .utils import pbar, repo_file_list
 
 
 def import_main(catalog=None):
@@ -31,6 +28,7 @@ def import_main(catalog=None):
     # parameters. If this is being called as an API function, we need to load
     # default parameters which can then be overwritten below
     if catalog is None:
+        from ..supernovae.supernova import Supernova
         warnings.warn("`args` not provided, loading new")
         args = main.load_args(args=['importer'])
         catalog = Catalog(args, Supernova)
@@ -80,18 +78,6 @@ def import_main(catalog=None):
 
         prev_priority = priority
         prev_task_name = task_name
-
-    files = repo_file_list()
-    current_task = 'Sanitizing and deriving quantities for events'
-    for ii, fi in enumerate(pbar(files, current_task)):
-        name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
-        name = catalog.add_entry(name)
-        extinctions_dict, bibauthor_dict = derive_and_sanitize(catalog)
-        # FIX: is this check needed here (also in 'journal_events')?
-        if catalog.args.write_entries:
-            catalog.journal_entries()
-        if catalog.args.travis and ii > TRAVIS_QUERY_LIMIT:
-            break
 
     def json_dump(adict, fname):
         json_str = json.dumps(adict, indent='\t', separators=(
