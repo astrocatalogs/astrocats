@@ -272,7 +272,7 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         name = get_preferred_name(catalog.entries, name)
         if oldname and name != oldname:
-            Events.journal_events()
+            catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'

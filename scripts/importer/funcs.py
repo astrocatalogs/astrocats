@@ -570,11 +570,11 @@ def read_json_arr(filename):
     return myarr
 
 
-def get_preferred_name(events, name):
-    if name not in events:
+def get_preferred_name(entries, name):
+    if name not in entries:
         # matches = []
-        for event in events:
-            aliases = events[event].get_aliases()
+        for event in entries:
+            aliases = entries[event].get_aliases()
             if len(aliases) > 1 and name in aliases:
                 return event
         return name

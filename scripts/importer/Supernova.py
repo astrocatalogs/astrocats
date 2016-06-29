@@ -59,7 +59,7 @@ class Supernova(Entry):
         return
 
     def add_source(self, srcname='', bibcode='', **src_kwargs):
-        """Add a new source to this events KEYS.SOURCES list.
+        """Add a new source to this entry's KEYS.SOURCES list.
 
         FIX: if source already exists, should dictionary be updated to any
              new values??
@@ -336,7 +336,7 @@ class Supernova(Entry):
             self[KEYS.SCHEMA] = SCHEMA.URL
         # Make sure there is a name key in dict
         if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
-            raise ValueError("Event name is empty:\n\t{}".format(
+            raise ValueError("Supernova name is empty:\n\t{}".format(
                 json.dumps(self, indent=2)))
         return
 

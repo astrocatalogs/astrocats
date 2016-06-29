@@ -49,8 +49,7 @@ def do_ptf(catalog):
                 source = catalog.entries[name].add_source(bibcode='2012PASP..124..668Y')
                 catalog.entries[name].add_quantity('alias', alias, source)
             else:
-                # events, name = catalog.add_entry(tasks, args,
-                #                                 events, name, log)
+                # name = catalog.add_entry(name)
                 name, source = catalog.new_entry(name,
                                                  bibcode='2012PASP..124..668Y')
 
