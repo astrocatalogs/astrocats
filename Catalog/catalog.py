@@ -6,17 +6,29 @@ from git import Repo
 
 from scripts import FILENAME, PATH, SCHEMA
 
-from .Entry import KEYS
+from .entry import KEYS
 from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
-from .importer.funcs import (event_attr_priority, name_clean, read_json_arr,
-                             read_json_dict, uniq_cdl)
-from .utils import is_number, logger, pbar, repo_file_list
+from .importer.funcs import name_clean, read_json_arr, read_json_dict, uniq_cdl
+from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
 
 
-class Catalog():
+class Catalog:
+    """Object to hold the main catalog dictionary and other catalog globals.
     """
-    Object to hold the main catalog dictionary and other catalog globals.
-    """
+
+    OSC_BIBCODE = '2016arXiv160501054G'
+    OSC_NAME = 'The Open Supernova Catalog'
+    OSC_URL = 'https://sne.space'
+
+    ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
+                "which is funded in part by the National Science Foundation "
+                "through grant AST 0907903.")
+
+    ADS_BIB_URL = ("http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?"
+                   "db_key=ALL&version=1&bibcode=")
+
+    TRAVIS_QUERY_LIMIT = 10
+    COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
 
     def __init__(self, proto, args):
         # Store runtime arguments
@@ -218,7 +230,7 @@ class Catalog():
                             observatory=item.get("observatory", ""),
                             observer=item.get("observer", ""),
                             host=item.get("host", ""),
-                            survey=item.get("survey"), "")
+                            survey=item.get("survey", ""))
                     elif key == 'spectra':
                         self.entries[destname].add_spectrum(
                             item.get("waveunit", ""),
@@ -235,19 +247,19 @@ class Catalog():
                             observer=item.get("observer", ""),
                             reducer=item.get("reducer", ""),
                             filename=item.get("filename", ""),
-                            observatory=item.get("observatory"), "")
+                            observatory=item.get("observatory", ""))
                     elif key == 'errors':
                         self.entries[destname].add_quantity(
                             key, item['value'], sources,
                             kind=item.get("kind", ""),
-                            extra=item.get("extra"), "")
+                            extra=item.get("extra", ""))
                     else:
                         self.entries[destname].add_quantity(
                             key, item['value'], sources,
                             error=item.get("error", ""),
                             unit=item.get("unit", ""),
                             probability=item.get("probability", ""),
-                            kind=item.get("kind"), "")
+                            kind=item.get("kind", ""))
 
         return
 
@@ -428,8 +440,9 @@ class Catalog():
                     self.entries[newname] = new_entry
                     self.entries[newname][KEYS.NAME] = newname
                     if name in self.entries:
-                        self.log.error("WARNING: `name` = '{}' is in `entries` "
-                                       "shouldnt happen?".format(name))
+                        self.log.error(
+                            "WARNING: `name` = '{}' is in `entries` "
+                            "shouldnt happen?".format(name))
                         del self.entries[name]
                     self.journal_entries()
 
@@ -493,10 +506,10 @@ class Catalog():
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
-        Iterates over all elements of `entries`, saving (possibly 'burying') and
-        deleting.
-        -   If ``clear == True``, then each element of `entries` is deleted, and
-            a `stubs` entry is added
+        Iterates over all elements of `entries`, saving (possibly 'burying')
+        and deleting.
+        -   If ``clear == True``, then each element of `entries` is deleted,
+            and a `stubs` entry is added
         """
         self.log.debug("Events.journal_entries()")
         # FIX: store this somewhere instead of re-loading each time

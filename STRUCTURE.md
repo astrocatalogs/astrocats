@@ -8,25 +8,36 @@ Variables: lowercase, underscore (for spaces)
 -   **Catalogs**
     -   \__init__.py
     -   \__main__.py
+    -   LICENSE
     -   main.py
+    -   README.md
+    -   requirements.txt
+    -   STRUCTURE.md
+    -   TODO.md
     -   scripts/
     -   **Catalog** 
         -   catalog.py
-        -   entry.py
         -   constants.py
+        -   entry.py
         -   task.py
         -   utils/
-    -   **SNe**
-        -   tasks
+    -   **Supernovae**
         -   supernova.py
+        -   tasks/
         -   input/
+            -   biberrors.json
+            -   non-sne-types.json
+            -   
+            -   repos.json
             -   tasks.json
             -   internal/
             -   external/
             -   ...
         -   output/
             -   catalog.json
-            -   bibauthors.json
+            -   cache/  
+                -   bibauthors.json
+                -   extinctions.json
             -   ...
         -   scripts/
             -   download...
