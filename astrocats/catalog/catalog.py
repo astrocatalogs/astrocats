@@ -1,17 +1,22 @@
 """Overarching catalog object for all open catalogs.
 """
 from glob import glob
+import codecs
+import importlib
+import json
 import os
+import resource
 import sys
+import warnings
 from collections import OrderedDict
 
 from git import Repo
 
 from astrocats import SCHEMA
-
-from ..supernovae.utils import (name_clean, entry_attr_priority)
-from .entry import KEYS
-from .utils import (is_number, logger, pbar, uniq_cdl)
+from astrocats.catalog.task import Task
+from astrocats.catalog.entry import KEYS
+from astrocats.catalog.utils import (is_number, logger, pbar, uniq_cdl)
+from astrocats.supernovae.utils import entry_attr_priority, name_clean
 
 
 class Catalog:
@@ -32,11 +37,9 @@ class Catalog:
     TRAVIS_QUERY_LIMIT = 10
     COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
 
-    def __init__(self, proto, args):
+    def __init__(self, args):
         # Store runtime arguments
         self.args = args
-        # Set the catalog prototype class
-        self.proto = proto
 
         # Load a logger object
         # Determine verbosity ('None' means use default)
@@ -53,6 +56,140 @@ class Catalog:
         # Create empty `entries` collection
         self.entries = OrderedDict()
         return
+
+    def import_data(self):
+        """Run all of the import tasks.
+
+        This is executed by the 'scripts.main.py' when the module is run as an
+        executable. This can also be run as a method, in which case default
+        arguments are loaded, but can be overriden using `**kwargs`.
+        """
+
+        tasks_list = self.load_task_list()
+        warnings.filterwarnings(
+            'ignore', r'Warning: converting a masked element to nan.')
+
+        if self.args.delete_old:
+            self.log.warning("Deleting all old entry files.")
+            self.delete_old_entry_files()
+
+        prev_priority = 0
+        prev_task_name = ''
+        # for task, task_obj in tasks_list.items():
+        for task_name, task_obj in tasks_list.items():
+            if not task_obj.active:
+                continue
+            self.log.warning("Task: '{}'".format(task_name))
+
+            nice_name = task_obj.nice_name
+            mod_name = task_obj.module
+            func_name = task_obj.function
+            priority = task_obj.priority
+
+            # Make sure things are running in the correct order
+            if priority < prev_priority:
+                raise RuntimeError(("Priority for '{}': '{}', less than prev,"
+                                    "'{}': '{}'.\n{}").format(
+                    task_name, priority, prev_task_name, prev_priority, task_obj))
+
+            self.log.debug("\t{}, {}, {}, {}".format(
+                nice_name, priority, mod_name, func_name))
+            mod = importlib.import_module('.' + mod_name, package='scripts')
+            self.current_task = task_obj
+            getattr(mod, func_name)(self)
+
+            num_events, num_stubs = self.count()
+            self.log.warning("Task finished.  Events: {},  Stubs: {}".format(
+                num_events, num_stubs))
+            self.journal_entries()
+            num_events, num_stubs = self.count()
+            self.log.warning("Journal finished.  Events: {}, Stubs: {}".format(
+                num_events, num_stubs))
+
+            prev_priority = priority
+            prev_task_name = task_name
+
+        def json_dump(adict, fname):
+            json_str = json.dumps(adict, indent='\t', separators=(
+                ',', ':'), ensure_ascii=False)
+            with codecs.open(fname, 'w', encoding='utf8') as jsf:
+                jsf.write(json_str)
+
+        print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
+            resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))
+        return
+
+    def load_task_list(self):
+        """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
+
+        A `Task` object is created for each entry, with the parameters filled in.
+        These are placed in an OrderedDict, sorted by the `priority` parameter,
+        with positive values and then negative values, e.g. [0, 2, 10, -10, -1].
+        """
+
+        if self.args.args_task_list is not None:
+            if self.args.yes_task_list is not None or self.args.no_task_list is not None:
+                raise ValueError(
+                    "If '--tasks' is used, '--yes' and '--no' shouldnt be.")
+
+        def_task_list_filename = self.FILENAME.TASK_LIST
+        self.log.debug(
+            "Loading task-list from '{}'".format(def_task_list_filename))
+        data = json.load(open(def_task_list_filename, 'r'))
+
+        # Make sure 'active' modification lists are all valid
+        args_lists = [self.args.args_task_list,
+                      self.args.yes_task_list, self.args.no_task_list]
+        args_names = ['--tasks', '--yes', '--no']
+        for arglist, lname in zip(args_lists, args_names):
+            if arglist is not None:
+                for tname in arglist:
+                    if tname not in data.keys():
+                        raise ValueError(("Value '{}' in '{}' list does not match"
+                                          "any tasks").format(tname, lname))
+
+        tasks = {}
+        # `defaults` is a dictionary where each `key` is a task name, and values
+        # are its properties
+        for key, val in data.items():
+            tasks[key] = Task(name=key, **val)
+            # Modify `active` tasks
+            # ---------------------
+            # If specific list of tasks is given, make only those active
+            if self.args.args_task_list is not None:
+                if key in self.args.args_task_list:
+                    tasks[key].active = True
+                else:
+                    tasks[key].active = False
+            else:
+                # Set 'yes' tasks to *active*
+                if self.args.yes_task_list is not None:
+                    if key in self.args.yes_task_list:
+                        tasks[key].active = True
+                # Set 'no' tasks to *inactive*
+                if self.args.no_task_list is not None:
+                    if key in self.args.no_task_list:
+                        tasks[key].active = False
+
+        # Sort entries as positive values, then negative values
+        #    [0, 1, 2, 2, 10, -100, -10, -1]
+        # Tuples are sorted by first element (here: '0' if positive), then second
+        # (here normal order)
+        tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (
+            t[1].priority < 0, t[1].priority, t[1].name)))
+
+        names_act = []
+        names_inact = []
+        for key, val in tasks.items():
+            if val.active:
+                names_act.append(key)
+            else:
+                names_inact.append(key)
+
+        self.log.info("Active Tasks:\n\t" + ", ".join(nn for nn in names_act))
+        self.log.debug("Inactive Tasks:\n\t" +
+                       ", ".join(nn for nn in names_inact))
+        return tasks
 
     def _clone_repos(self, all_repos):
         """Given a list of repositories, make sure they're all cloned.
