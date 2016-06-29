@@ -442,26 +442,22 @@ class Supernova(Entry):
 
         return srcname, bibcode
 
-    def clean(self):
-        """
+    def clean_internal(self):
+        """Clean input data from the 'Supernovae/input/internal' repository.
 
+        Extends `Entry.clean_internal`.
         FIX: instead of making changes in place to `dirty_event`, should a new
              event be created, values filled, then returned??
         FIX: currently will fail if no bibcode and no url
         """
-        bibcodes = []
+        # Call `Entry.clean_internal()` first
+        super().clean_internal()
 
-        # Rebuild the sources if they exist
+        bibcodes = []
         try:
-            old_sources = self[SN_KEYS.SOURCES]
-            del self[SN_KEYS.SOURCES]
-            for ss, source in enumerate(old_sources):
+            for ss, source in enumerate(self[SN_KEYS.SOURCES]):
                 if SN_KEYS.BIBCODE in source:
                     bibcodes.append(source[SN_KEYS.BIBCODE])
-                    self.add_source(bibcode=source[SN_KEYS.BIBCODE])
-                else:
-                    self.add_source(
-                        srcname=source[SN_KEYS.NAME], url=source[SN_KEYS.URL])
         except KeyError:
             pass
 

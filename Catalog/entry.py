@@ -68,7 +68,7 @@ class Entry(OrderedDict):
         new_entry._load_data_from_json(load_path)
 
         if clean:
-            new_entry.clean()
+            new_entry.clean_internal()
 
         return new_entry
 
@@ -124,3 +124,25 @@ class Entry(OrderedDict):
         if KEYS.ALIAS in self.keys():
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
+
+    def clean_internal(self):
+        """Clean input from 'internal', human added data.
+
+        This is used in the 'Entry.init_from_file' method.
+        """
+        # Rebuild the sources if they exist
+        bibcodes = []
+        try:
+            old_sources = self[KEYS.SOURCES]
+            del self[KEYS.SOURCES]
+            for ss, source in enumerate(old_sources):
+                if KEYS.BIBCODE in source:
+                    bibcodes.append(source[KEYS.BIBCODE])
+                    self.add_source(bibcode=source[KEYS.BIBCODE])
+                else:
+                    self.add_source(
+                        srcname=source[KEYS.NAME], url=source[KEYS.URL])
+        except KeyError:
+            pass
+
+        return
