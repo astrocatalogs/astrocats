@@ -9,11 +9,11 @@ from .constants import FILENAME
 
 class Catalog(astrocats.catalog.catalog.Catalog):
 
-    def __init__(self):
+    def __init__(self, proto, args):
         """
         """
         # Initialize super `astrocats.catalog.catalog.Catalog` object
-        super().__init__(self)
+        super().__init__(proto, args)
 
         self._load_aux_data()
 
