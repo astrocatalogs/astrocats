@@ -6,7 +6,7 @@ import os
 import warnings
 from collections import OrderedDict
 
-from .utils import get_event_filename, get_repo_paths, is_number
+from .utils import get_event_filename
 
 
 class KEYS:
@@ -38,7 +38,7 @@ class Entry(OrderedDict):
         return
 
     @classmethod
-    def init_from_file(cls, catalog=None, name=None, path=None, clean=False):
+    def init_from_file(cls, catalog, name=None, path=None, clean=False):
         if name is None and path is None:
             raise ValueError("Either entry `name` or `path` must be specified "
                              "to load entry.")
@@ -53,7 +53,7 @@ class Entry(OrderedDict):
             name = ''
         # If the name is given, try to find a path for it
         else:
-            repo_paths = get_repo_paths()
+            repo_paths = catalog.get_output_repo_folders()
             for rep in repo_paths:
                 filename = get_event_filename(name)
                 newpath = os.path.join(rep, filename + '.json')

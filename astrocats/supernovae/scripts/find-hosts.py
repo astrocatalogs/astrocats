@@ -11,7 +11,7 @@ from astropy.coordinates import SkyCoord as coord
 from astroquery.simbad import Simbad
 from tqdm import tqdm
 
-from utils.repos import repo_file_list
+from utils.repos import get_repo_file_list
 
 events = OrderedDict()
 
@@ -21,7 +21,7 @@ warnings.filterwarnings('ignore')
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-files = repo_file_list(bones=False)
+files = get_repo_file_list(bones=False)
 
 newcatalog = []
 

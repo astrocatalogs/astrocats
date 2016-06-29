@@ -1,6 +1,6 @@
 """Overarching catalog object for all open catalogs.
 """
-
+from glob import glob
 import os
 import sys
 from collections import OrderedDict
@@ -11,7 +11,7 @@ from astrocats import SCHEMA
 
 from ..supernovae.utils import (name_clean, entry_attr_priority)
 from .entry import KEYS
-from .utils import (is_number, logger, pbar, repo_file_list, uniq_cdl)
+from .utils import (is_number, logger, pbar, uniq_cdl)
 
 
 class Catalog:
@@ -54,7 +54,7 @@ class Catalog:
         self.entries = OrderedDict()
         return
 
-    def clone_repos(self, all_repos):
+    def _clone_repos(self, all_repos):
         """Given a list of repositories, make sure they're all cloned.
 
         Should be called from the subclassed `Catalog` objects, passed a list
@@ -113,7 +113,7 @@ class Catalog:
 
         # Load Event from file
         if load:
-            loaded_entry = self.proto.init_from_file(name=newname)
+            loaded_entry = self.proto.init_from_file(self, name=newname)
             if loaded_entry is not None:
                 self.entries[newname] = loaded_entry
                 self.log.debug(
@@ -139,11 +139,29 @@ class Catalog:
             self.log.error(err_str)
             raise RuntimeError(err_str)
         # Delete all old entry JSON files
-        repo_files = repo_file_list()
+        repo_files = self.get_repo_file_list()
         for rfil in pbar(repo_files, desc='Deleting old entries'):
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
+
+    def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
+        """Get filenames for all files in each repository, with `boneyard` files
+        optional.
+        """
+        # repo_folders = get_output_repo_folders()
+        files = []
+        for rep in repo_folders:
+            if 'boneyard' not in rep and not normal:
+                continue
+            if not bones and 'boneyard' in rep:
+                continue
+            these_files += glob(rep + "/*.json") + glob(rep + "/*.json.gz")
+            self.log.debug("Found {} files in '{}'".format(
+                len(these_files), rep))
+            files += these_files
+
+        return files
 
     def get_preferred_name(self, name):
         if name not in self.entries:
@@ -311,8 +329,8 @@ class Catalog:
                         "Found single entry with multiple entries "
                         "('{}' and '{}'), merging.".format(name1, name2))
 
-                    load1 = self.proto.init_from_file(name=name1, delete=True)
-                    load2 = self.proto.init_from_file(name=name2, delete=True)
+                    load1 = self.proto.init_from_file(self, name=name1, delete=True)
+                    load2 = self.proto.init_from_file(self, name=name2, delete=True)
                     if load1 is not None and load2 is not None:
                         # Delete old files
                         self._delete_entry_file(entry=load1)
@@ -424,12 +442,12 @@ class Catalog:
                 newname = aliases[0]
             if newname and name != newname:
                 # Make sure new name doesn't already exist
-                if self.proto.init_from_file(name=newname):
+                if self.proto.init_from_file(self, name=newname):
                     self.log.error("WARNING: `newname` already exists... "
                                    "should do something about that...")
                     continue
 
-                new_entry = self.proto.init_from_file(name=name)
+                new_entry = self.proto.init_from_file(self, name=name)
                 if new_entry is None:
                     self.log.error(
                         "Could not load `new_entry` with name '{}'"
@@ -456,7 +474,7 @@ class Catalog:
         """
         """
         currenttask = 'Loading entry stubs'
-        files = repo_file_list()
+        files = self.get_repo_file_list()
         for fi in pbar(files, currenttask):
             fname = fi
             # FIX: should this be ``fi.endswith(``.gz')`` ?
@@ -464,7 +482,7 @@ class Catalog:
                 fname = _uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
-            new_entry = self.proto.init_from_file(path=fname, delete=False)
+            new_entry = self.proto.init_from_file(self, path=fname, delete=False)
             # Make sure a non-stub entry doesnt already exist with this name
             if name in self.entries and not self.entries[name]._stub:
                 err_str = (

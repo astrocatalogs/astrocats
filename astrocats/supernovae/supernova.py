@@ -10,7 +10,7 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS, Entry
 from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
-                                     get_event_filename, get_repo_folders,
+                                     get_event_filename, get_output_repo_folders,
                                      get_repo_years, get_sig_digits,
                                      is_number,
                                      jd_to_mjd, make_date_string, pretty_num,
@@ -357,7 +357,7 @@ class Supernova(Entry):
 
         # Get normal repository save directory
         else:
-            repo_folders = get_repo_folders()
+            repo_folders = get_output_repo_folders()
             outdir = str(PATH.ROOT)
             if SN_KEYS.DISCOVERY_DATE in self.keys():
                 repo_years = get_repo_years(repo_folders)

@@ -7,11 +7,11 @@ from collections import OrderedDict
 from tqdm import tqdm
 
 from events import *
-from utils.repos import repo_file_list
+from utils.repos import get_repo_file_list
 
 errata = []
 
-files = repo_file_list(bones=False)
+files = get_repo_file_list(bones=False)
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     # if fcnt > 100:

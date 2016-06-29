@@ -7,8 +7,8 @@ Supernova data.
 import os
 from subprocess import check_output
 
+'''
 _PATH_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
 
 class PATH:
     ROOT = str(_PATH_ROOT)
@@ -41,6 +41,7 @@ class FILENAME:
     # cached datafiles
     EXTINCT = os.path.join(PATH.CACHE, 'extinctions.json')
     BIBAUTHORS = os.path.join(PATH.CACHE, 'bibauthors.json')
+'''
 
 
 class SCHEMA:
