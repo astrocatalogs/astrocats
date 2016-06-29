@@ -6,6 +6,7 @@ from astropy import units as un
 
 _PATH_SUPERNOVAE = os.path.abspath(os.path.dirname(__file__))
 _PATH_INPUT = os.path.join(_PATH_SUPERNOVAE, 'input', '')
+_PATH_OUTPUT = os.path.join(_PATH_SUPERNOVAE, 'output', '')
 
 
 class FILENAME:
@@ -18,6 +19,9 @@ class FILENAME:
     NON_SNE_TYPES = os.path.join(_PATH_INPUT, 'non-sne-types.json')
     NON_SNE_PREFIXES = os.path.join(_PATH_INPUT, 'non-sne-prefixes.json')
     BIBERRORS = os.path.join(_PATH_INPUT, 'biberrors.json')
+
+    BIBAUTHORS = os.path.join(_PATH_OUTPUT, 'cache', 'bibauthors.json')
+    EXTINCT = os.path.join(_PATH_OUTPUT, 'cache', 'extinctions.json')
 
 
 CLIGHT = const.c.cgs.value
