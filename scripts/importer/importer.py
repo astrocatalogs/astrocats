@@ -86,7 +86,7 @@ def import_main(catalog=None):
         name = catalog.add_entry(name)
         extinctions_dict, bibauthor_dict = derive_and_sanitize(catalog)
         # FIX: is this check needed here (also in 'journal_events')?
-        if catalog.args.write_events:
+        if catalog.args.write_entries:
             catalog.journal_entries()
         if catalog.args.travis and ii > TRAVIS_QUERY_LIMIT:
             break

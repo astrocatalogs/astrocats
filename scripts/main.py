@@ -58,10 +58,10 @@ def load_args(args=None):
                              help='Filename to which to store logging information.')
 
     write_group = pars_parent.add_mutually_exclusive_group()
-    write_group.add_argument('--write', action='store_true', dest='write_events', default=True,
-                             help='Write events to files [default].')
-    write_group.add_argument('--no-write', action='store_false', dest='write_events', default=True,
-                             help='do not write events to file.')
+    write_group.add_argument('--write', action='store_true', dest='write_entries', default=True,
+                             help='Write entries to files [default].')
+    write_group.add_argument('--no-write', action='store_false', dest='write_entries', default=True,
+                             help='do not write entries to file.')
 
     delete_group = pars_parent.add_mutually_exclusive_group()
     delete_group.add_argument('--predelete', action='store_true', dest='delete_old', default=True,
