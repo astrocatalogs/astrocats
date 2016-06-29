@@ -94,7 +94,7 @@ class Catalog:
 
             self.log.debug("\t{}, {}, {}, {}".format(
                 nice_name, priority, mod_name, func_name))
-            mod = importlib.import_module('.' + mod_name, package='scripts')
+            mod = importlib.import_module('.' + mod_name, package='astrocats')
             self.current_task = task_obj
             getattr(mod, func_name)(self)
 
@@ -293,7 +293,7 @@ class Catalog:
                 continue
             if not bones and 'boneyard' in rep:
                 continue
-            these_files += glob(rep + "/*.json") + glob(rep + "/*.json.gz")
+            these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
             self.log.debug("Found {} files in '{}'".format(
                 len(these_files), rep))
             files += these_files
