@@ -30,16 +30,16 @@ def do_cccp(catalog):
                 elif rr == 1:
                     name = 'SN' + row[0].split('SN ')[-1]
                     name = catalog.add_entry(name)
-                    source = catalog.events[name].add_source(
+                    source = catalog.entries[name].add_source(
                         bibcode='2012ApJ...744...10K')
-                    catalog.events[name].add_quantity('alias', name, source)
+                    catalog.entries[name].add_quantity('alias', name, source)
                 elif rr >= 5:
                     mjd = str(Decimal(row[0]) + 53000)
                     for bb, band in enumerate(cccpbands):
                         if row[2 * bb + 1]:
                             mag = row[2 * bb + 1].strip('>')
                             upl = (not row[2 * bb + 2])
-                            (catalog.events[name]
+                            (catalog.entries[name]
                              .add_photometry(time=mjd, band=band,
                                              magnitude=mag,
                                              e_magnitude=row[2 * bb + 2],
@@ -63,11 +63,11 @@ def do_cccp(catalog):
     for link in pbar(links, current_task + ': links'):
         if 'sc_sn' in link['href']:
             name = catalog.add_entry(link.text.replace(' ', ''))
-            source = (catalog.events[name]
+            source = (catalog.entries[name]
                       .add_source(srcname='CCCP',
                                   url=('https://webhome.weizmann.ac.il'
                                        '/home/iair/sc_cccp.html')))
-            catalog.events[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_quantity('alias', name, source)
 
             if catalog.current_task.load_archive(catalog.args):
                 fname = os.path.join(PATH.REPO_EXTERNAL,
@@ -111,12 +111,12 @@ def do_cccp(catalog):
                               xx.split(',')]
                              for xx in list(filter(None, html3.split('\n')))]
                     for row in table:
-                        catalog.events[name].add_photometry(
+                        catalog.entries[name].add_photometry(
                             time=str(Decimal(row[0]) + 53000),
                             band=band, magnitude=row[1],
                             e_magnitude=row[2], source=source)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
 
 
@@ -158,20 +158,20 @@ def do_cpcs(catalog):
         else:
             continue
 
-        sec_source = catalog.events[name].add_source(
+        sec_source = catalog.entries[name].add_source(
             srcname='Cambridge Photometric Calibration Server',
             url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
-        catalog.events[name].add_quantity('alias', oldname, sec_source)
+        catalog.entries[name].add_quantity('alias', oldname, sec_source)
         unit_deg = 'floatdegrees'
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity(
             'ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
-        catalog.events[name].add_quantity('dec', str(
+        catalog.entries[name].add_quantity('dec', str(
             alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = ('http://gsaweb.ast.cam.ac.uk/'
                     'followup/get_alert_lc_data?alert_id=' +
                     str(ai))
-        source = catalog.events[name].add_source(
+        source = catalog.entries[name].add_source(
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
@@ -199,13 +199,13 @@ def do_cpcs(catalog):
         bnds = cpcsalert['filter']
         obs = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
-            (catalog.events[name]
+            (catalog.entries[name]
              .add_photometry(time=mjd, magnitude=mags[mi],
                              e_magnitude=errs[mi],
                              band=bnds[mi], observatory=obs[mi],
                              source=uniq_cdl([source, sec_source])))
         if catalog.args.update:
-            catalog.journal_events()
+            catalog.journal_entries()
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

@@ -33,16 +33,16 @@ def do_superfit_spectra(catalog):
             if 'theory' in name:
                 continue
             if catalog.event_exists(name):
-                prefname = get_preferred_name(catalog.events, name)
-                if ('spectra' in catalog.events[prefname] and
+                prefname = get_preferred_name(catalog.entries, name)
+                if ('spectra' in catalog.entries[prefname] and
                         lastname != prefname):
                     continue
             if oldname and name != oldname:
-                catalog.journal_events()
+                catalog.journal_entries()
             oldname = name
             name = catalog.add_entry(name)
             epoch = basename.split('.')[1]
-            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.events,
+            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.entries,
                                                             name)
             if mldt:
                 if epoch == 'max':
@@ -54,9 +54,9 @@ def do_superfit_spectra(catalog):
             else:
                 epoff = ''
 
-            source = catalog.events[name].add_source(
+            source = catalog.entries[name].add_source(
                 srcname='Superfit', url=superfit_url, secondary=True)
-            catalog.events[name].add_quantity('alias', oldname, source)
+            catalog.entries[name].add_quantity('alias', oldname, source)
 
             with open(sffile) as ff:
                 rows = ff.read().splitlines()
@@ -78,12 +78,12 @@ def do_superfit_spectra(catalog):
                 mlmjd = str(Decimal(mlmjd) + epoff)
             else:
                 mlmjd = ''
-            catalog.events[name].add_spectrum(
+            catalog.entries[name].add_spectrum(
                 'Angstrom', 'Uncalibrated', u_time='MJD' if mlmjd else '',
                 time=mlmjd, wavelengths=wavelengths, fluxes=fluxes,
                 source=source)
 
             lastname = name
 
-        catalog.journal_events()
+        catalog.journal_entries()
     return

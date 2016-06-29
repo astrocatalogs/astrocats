@@ -35,27 +35,27 @@ def do_ucb_photo(catalog):
         oldname = phot['ObjName']
         name = catalog.add_entry(oldname)
 
-        sec_source = catalog.events[name].add_source(
+        sec_source = catalog.entries[name].add_source(
             srcname=sec_ref, url=sec_refurl,
             bibcode=sec_refbib,
             secondary=True)
-        catalog.events[name].add_quantity('alias', oldname, sec_source)
+        catalog.entries[name].add_quantity('alias', oldname, sec_source)
         sources = [sec_source]
         if phot['Reference']:
-            sources += [catalog.events[name]
+            sources += [catalog.entries[name]
                         .add_source(bibcode=phot['Reference'])]
         sources = uniq_cdl(sources)
 
         if phot['Type'] and phot['Type'].strip() != 'NoMatch':
             for ct in phot['Type'].strip().split(','):
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'claimedtype', ct.replace('-norm', '').strip(), sources)
         if phot['DiscDate']:
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 'discoverdate', phot['DiscDate'].replace('-', '/'), sources)
         if phot['HostName']:
             host = urllib.parse.unquote(phot['HostName']).replace('*', '')
-            catalog.events[name].add_quantity('host', host, sources)
+            catalog.entries[name].add_quantity('host', host, sources)
         filename = phot['Filename'] if phot['Filename'] else ''
 
         if not filename:
@@ -90,11 +90,11 @@ def do_ucb_photo(catalog):
             e_mag = row[2]
             band = row[4]
             telescope = row[5]
-            catalog.events[name].add_photometry(
+            catalog.entries[name].add_photometry(
                 time=mjd, telescope=telescope, band=band,
                 magnitude=magnitude, e_magnitude=e_mag, source=sources)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
 
 
@@ -118,30 +118,30 @@ def do_ucb_spectra(catalog):
     for spectrum in pbar(spectra, desc=current_task):
         name = spectrum['ObjName']
         if oldname and name != oldname:
-            catalog.journal_events()
+            catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
 
-        sec_source = catalog.events[name].add_source(
+        sec_source = catalog.entries[name].add_source(
             srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib,
             secondary=True)
-        catalog.events[name].add_quantity('alias', name, sec_source)
+        catalog.entries[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]
         if spectrum['Reference']:
-            sources += [catalog.events[name]
+            sources += [catalog.entries[name]
                         .add_source(bibcode=spectrum['Reference'])]
         sources = uniq_cdl(sources)
 
         if spectrum['Type'] and spectrum['Type'].strip() != 'NoMatch':
             for ct in spectrum['Type'].strip().split(','):
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'claimedtype', ct.replace('-norm', '').strip(), sources)
         if spectrum['DiscDate']:
             ddate = spectrum['DiscDate'].replace('-', '/')
-            catalog.events[name].add_quantity('discoverdate', ddate, sources)
+            catalog.entries[name].add_quantity('discoverdate', ddate, sources)
         if spectrum['HostName']:
             host = urllib.parse.unquote(spectrum['HostName']).replace('*', '')
-            catalog.events[name].add_quantity('host', host, sources)
+            catalog.entries[name].add_quantity('host', host, sources)
         if spectrum['UT_Date']:
             epoch = str(spectrum['UT_Date'])
             year = epoch[:4]
@@ -200,7 +200,7 @@ def do_ucb_spectra(catalog):
             errors = ''
 
         units = 'Uncalibrated'
-        catalog.events[name].add_spectrum(
+        catalog.entries[name].add_spectrum(
             'Angstrom', units, u_time='MJD', time=mjd,
             wavelengths=wavelengths, filename=filename, fluxes=fluxes,
             errors=errors,
@@ -211,5 +211,5 @@ def do_ucb_spectra(catalog):
         if catalog.args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
             break
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

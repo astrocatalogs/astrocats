@@ -37,8 +37,8 @@ class Catalog():
         self.log = logger.get_logger(
             stream_level=log_stream_level, tofile=args.log_filename)
 
-        # Create empty `events` collection
-        self.events = OrderedDict()
+        # Create empty `entries` collection
+        self.entries = OrderedDict()
 
         # Load repositories dictionary
         self.repos_dict = read_json_dict(FILENAME.REPOS)
@@ -80,29 +80,29 @@ class Catalog():
         return
 
     def add_entry(self, name, load=True, delete=True):
-        """Find an existing event in, or add a new one to, the `events` dict.
+        """Find an existing entry in, or add a new one to, the `entries` dict.
 
-        FIX: rename to `create_event`???
+        FIX: rename to `create_entry`???
 
         Returns
         -------
-        events : OrderedDict of Entry objects
+        entries : OrderedDict of Entry objects
         newname : str
-            Name of matching event found in `events`, or new event added to
-            `events`
+            Name of matching entry found in `entries`, or new entry added to
+            `entries`
         """
         self.log.debug("catalog.add_entry()")
         newname = name_clean(name)
-        # If event already exists, return
-        if newname in self.events:
+        # If entry already exists, return
+        if newname in self.entries:
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exists.".
                 format(newname, name))
             return newname
 
-        # If event is alias of another event *in `events`*, find and return
+        # If entry is alias of another entry *in `entries`*, find and return
         # that
-        match_name = self.find_event_name_of_alias(self.events, newname)
+        match_name = self.find_entry_name_of_alias(self.entries, newname)
         if match_name is not None:
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exist as alias for "
@@ -111,70 +111,70 @@ class Catalog():
 
         # Load Event from file
         if load:
-            loaded_event = self.proto.init_from_file(name=newname)
-            if loaded_event is not None:
-                self.events[newname] = loaded_event
+            loaded_entry = self.proto.init_from_file(name=newname)
+            if loaded_entry is not None:
+                self.entries[newname] = loaded_entry
                 self.log.debug(
-                    "Added '{}', from '{}', to `self.events`"
-                    .format(newname, loaded_event.filename))
+                    "Added '{}', from '{}', to `self.entries`"
+                    .format(newname, loaded_entry.filename))
                 # Delete source file, if desired
                 if delete:
-                    self._delete_event_file(event=loaded_event)
+                    self._delete_entry_file(entry=loaded_entry)
                 return newname
 
-        # Create new event
-        new_event = self.proto(newname)
-        new_event['schema'] = SCHEMA.URL
+        # Create new entry
+        new_entry = self.proto(newname)
+        new_entry['schema'] = SCHEMA.URL
         self.log.log(self.log._LOADED,
-                     "Created new event for '{}'".format(newname))
-        # Add event to dictionary
-        self.events[newname] = new_event
+                     "Created new entry for '{}'".format(newname))
+        # Add entry to dictionary
+        self.entries[newname] = new_entry
         return newname
 
-    def delete_old_event_files(self):
-        if len(self.events):
-            err_str = "`delete_old_event_files` with `events` not empty!"
+    def delete_old_entry_files(self):
+        if len(self.entries):
+            err_str = "`delete_old_entry_files` with `entries` not empty!"
             self.log.error(err_str)
             raise RuntimeError(err_str)
-        # Delete all old event JSON files
+        # Delete all old entry JSON files
         repo_files = repo_file_list()
-        for rfil in pbar(repo_files, desc='Deleting old events'):
+        for rfil in pbar(repo_files, desc='Deleting old entries'):
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
 
-    def find_event_name_of_alias(self, events, alias):
-        """Return the first event name with the given 'alias' included in its
+    def find_entry_name_of_alias(self, entries, alias):
+        """Return the first entry name with the given 'alias' included in its
         list of aliases.
 
         Returns
         -------
-        name of matching event (str) or 'None' if no matches
+        name of matching entry (str) or 'None' if no matches
 
         """
-        for name, event in events.items():
-            aliases = event.get_aliases()
+        for name, entry in entries.items():
+            aliases = entry.get_aliases()
             if alias in aliases:
-                if ((KEYS.DISTINCTS not in event.keys()) or
-                        (alias not in event[KEYS.DISTINCTS])):
+                if ((KEYS.DISTINCTS not in entry.keys()) or
+                        (alias not in entry[KEYS.DISTINCTS])):
                     return name
 
         return None
 
-    def copy_to_event(self, fromname, destname):
+    def copy_to_entry(self, fromname, destname):
         """
 
         Used by `merge_duplicates`
         """
-        self.log.debug("Events.copy_to_event()")
+        self.log.debug("Events.copy_to_entry()")
         self.log.info("Copy '{}' to '{}'".format(fromname, destname))
         newsourcealiases = {}
-        keys = list(sorted(self.events[fromname].keys(),
-                           key=lambda xx: event_attr_priority(xx)))
+        keys = list(sorted(self.entries[fromname].keys(),
+                           key=lambda xx: entry_attr_priority(xx)))
 
-        if 'sources' in self.events[fromname]:
-            for source in self.events[fromname]['sources']:
-                newsourcealiases[source['alias']] = (self.events[destname]
+        if 'sources' in self.entries[fromname]:
+            for source in self.entries[fromname]['sources']:
+                newsourcealiases[source['alias']] = (self.entries[destname]
                                                      .add_source(
                     bibcode=source['bibcode'] if 'bibcode' in source else '',
                     srcname=source['name'] if 'name' in source else '',
@@ -182,13 +182,13 @@ class Catalog():
                     'reference' in source else '',
                     url=source['url'] if 'url' in source else ''))
 
-        if 'errors' in self.events[fromname]:
-            for err in self.events[fromname]['errors']:
-                self.events[destname].setdefault('errors', []).append(err)
+        if 'errors' in self.entries[fromname]:
+            for err in self.entries[fromname]['errors']:
+                self.entries[destname].setdefault('errors', []).append(err)
 
         for key in keys:
             if key not in ['schema', 'name', 'sources', 'errors']:
-                for item in self.events[fromname][key]:
+                for item in self.entries[fromname][key]:
                     # isd = False
                     sources = []
                     if 'source' not in item:
@@ -203,7 +203,7 @@ class Catalog():
                     sources = uniq_cdl(sources)
 
                     if key == 'photometry':
-                        self.events[destname].add_photometry(
+                        self.entries[destname].add_photometry(
                             u_time=null_field(item, "u_time"),
                             time=null_field(item, "time"),
                             e_time=null_field(item, "e_time"),
@@ -220,7 +220,7 @@ class Catalog():
                             host=null_field(item, "host"),
                             survey=null_field(item, "survey"))
                     elif key == 'spectra':
-                        self.events[destname].add_spectrum(
+                        self.entries[destname].add_spectrum(
                             null_field(item, "waveunit"),
                             null_field(item, "fluxunit"),
                             data=null_field(item, "data"),
@@ -237,12 +237,12 @@ class Catalog():
                             filename=null_field(item, "filename"),
                             observatory=null_field(item, "observatory"))
                     elif key == 'errors':
-                        self.events[destname].add_quantity(
+                        self.entries[destname].add_quantity(
                             key, item['value'], sources,
                             kind=null_field(item, "kind"),
                             extra=null_field(item, "extra"))
                     else:
-                        self.events[destname].add_quantity(
+                        self.entries[destname].add_quantity(
                             key, item['value'], sources,
                             error=null_field(item, "error"),
                             unit=null_field(item, "unit"),
@@ -251,59 +251,59 @@ class Catalog():
 
         return
 
-    def new_event(self, name, load=True, delete=True,
+    def new_entry(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary='', acknowledgment=''):
         newname = self.add_entry(name, load=load, delete=delete)
-        source = self.events[newname].add_source(
+        source = self.entries[newname].add_source(
             bibcode=bibcode, srcname=srcname, reference=reference, url=url,
             secondary=secondary, acknowledgment=acknowledgment)
-        self.events[newname].add_quantity('alias', name, source)
+        self.entries[newname].add_quantity('alias', name, source)
         return newname, source
 
     def merge_duplicates(self):
-        """Merge and remove duplicate events.
+        """Merge and remove duplicate entries.
 
         Compares each entry ('name') in `stubs` to all later entries to check
         for duplicates in name or alias.  If a duplicate is found, they are
         merged and written to file.
         """
         self.log.debug("Events.merge_duplicates()")
-        if len(self.events) == 0:
-            self.log.error("WARNING: `events` is empty, loading stubs")
+        if len(self.entries) == 0:
+            self.log.error("WARNING: `entries` is empty, loading stubs")
             if self.args.update:
                 self.log.warning(
-                    "No sources changed, event files unchanged in update."
+                    "No sources changed, entry files unchanged in update."
                     "  Skipping merge.")
                 return
-            events = self.load_stubs()
+            entries = self.load_stubs()
 
-        currenttask = 'Merging duplicate events'
+        currenttask = 'Merging duplicate entries'
 
-        keys = list(sorted(events.keys()))
+        keys = list(sorted(entries.keys()))
         for n1, name1 in enumerate(pbar(keys, currenttask)):
-            allnames1 = set(events[name1].get_aliases())
+            allnames1 = set(entries[name1].get_aliases())
             if name1.startswith('SN') and is_number(name1[2:6]):
                 allnames1 = allnames1.union(['AT' + name1[2:]])
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
-                allnames2 = set(events[name2].get_aliases())
+                allnames2 = set(entries[name2].get_aliases())
                 if name2.startswith('SN') and is_number(name2[2:6]):
                     allnames2.union(['AT' + name2[2:]])
 
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
                     self.log.warning(
-                        "Found single event with multiple entries "
+                        "Found single entry with multiple entries "
                         "('{}' and '{}'), merging.".format(name1, name2))
 
                     load1 = self.proto.init_from_file(name=name1, delete=True)
                     load2 = self.proto.init_from_file(name=name2, delete=True)
                     if load1 is not None and load2 is not None:
                         # Delete old files
-                        self._delete_event_file(event=load1)
-                        self._delete_event_file(event=load2)
+                        self._delete_entry_file(entry=load1)
+                        self._delete_entry_file(entry=load2)
                         priority1 = 0
                         priority2 = 0
                         for an in allnames1:
@@ -314,29 +314,29 @@ class Catalog():
                                 priority2 += 1
 
                         if priority1 > priority2:
-                            self.copy_to_event(name2, name1)
+                            self.copy_to_entry(name2, name1)
                             keys.append(name1)
-                            del events[name2]
+                            del entries[name2]
                         else:
-                            self.copy_to_event(name1, name2)
+                            self.copy_to_entry(name1, name2)
                             keys.append(name2)
-                            del events[name1]
+                            del entries[name1]
                     else:
                         self.log.warning('Duplicate already deleted')
 
-                    if len(events) != 1:
+                    if len(entries) != 1:
                         self.log.error(
-                            "WARNING: len(events) = {}, expected 1.  "
-                            "Still journaling...".format(len(events)))
-                    events = self.journal_events()
+                            "WARNING: len(entries) = {}, expected 1.  "
+                            "Still journaling...".format(len(entries)))
+                    entries = self.journal_entries()
 
             if self.args.travis and n1 > TRAVIS_QUERY_LIMIT:
                 break
 
-        return events
+        return entries
 
     def set_preferred_names(self):
-        """Choose between each events given name and its possible aliases for
+        """Choose between each entries given name and its possible aliases for
         the best one.
 
         Highest preference goes to names of the form 'SN####AA'.
@@ -346,14 +346,14 @@ class Catalog():
         """
         self.log.debug("Events.set_preferred_names()")
 
-        if len(self.events) == 0:
-            self.log.error("WARNING: `events` is empty, loading stubs")
+        if len(self.entries) == 0:
+            self.log.error("WARNING: `entries` is empty, loading stubs")
             self.load_stubs()
 
         currenttask = 'Setting preferred names'
-        for ni, name in pbar(list(sorted(self.events.keys())), currenttask):
+        for ni, name in pbar(list(sorted(self.entries.keys())), currenttask):
             newname = ''
-            aliases = self.events[name].get_aliases()
+            aliases = self.entries[name].get_aliases()
             # if there are no other options to choose from, skip
             if len(aliases) <= 1:
                 continue
@@ -371,10 +371,10 @@ class Catalog():
                     newname = alias
                     break
             # Otherwise, name based on the 'discoverer' survey
-            if not newname and 'discoverer' in self.events[name]:
+            if not newname and 'discoverer' in self.entries[name]:
                 discoverer = ','.join(
                     [x['value'].upper() for x in
-                     self.events[name]['discoverer']])
+                     self.entries[name]['discoverer']])
                 if 'ASAS' in discoverer:
                     for alias in aliases:
                         if 'ASASSN' in alias.upper():
@@ -416,22 +416,22 @@ class Catalog():
                                    "should do something about that...")
                     continue
 
-                new_event = self.proto.init_from_file(name=name)
-                if new_event is None:
+                new_entry = self.proto.init_from_file(name=name)
+                if new_entry is None:
                     self.log.error(
-                        "Could not load `new_event` with name '{}'"
+                        "Could not load `new_entry` with name '{}'"
                         .format(name))
                 else:
-                    self.log.info("Changing event from name '{}' to preferred"
+                    self.log.info("Changing entry from name '{}' to preferred"
                                   " name '{}'".format(name, newname))
-                    self._delete_event_file(event=new_event)
-                    self.events[newname] = new_event
-                    self.events[newname][KEYS.NAME] = newname
-                    if name in self.events:
-                        self.log.error("WARNING: `name` = '{}' is in `events` "
+                    self._delete_entry_file(entry=new_entry)
+                    self.entries[newname] = new_entry
+                    self.entries[newname][KEYS.NAME] = newname
+                    if name in self.entries:
+                        self.log.error("WARNING: `name` = '{}' is in `entries` "
                                        "shouldnt happen?".format(name))
-                        del self.events[name]
-                    self.journal_events()
+                        del self.entries[name]
+                    self.journal_entries()
 
             if self.args.travis and ni > TRAVIS_QUERY_LIMIT:
                 break
@@ -441,7 +441,7 @@ class Catalog():
     def load_stubs(self):
         """
         """
-        currenttask = 'Loading event stubs'
+        currenttask = 'Loading entry stubs'
         files = repo_file_list()
         for fi in pbar(files, currenttask):
             fname = fi
@@ -450,94 +450,94 @@ class Catalog():
                 fname = _uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
-            new_event = self.proto.init_from_file(path=fname, delete=False)
-            # Make sure a non-stub event doesnt already exist with this name
-            if name in self.events and not self.events[name]._stub:
+            new_entry = self.proto.init_from_file(path=fname, delete=False)
+            # Make sure a non-stub entry doesnt already exist with this name
+            if name in self.entries and not self.entries[name]._stub:
                 err_str = (
-                    "ERROR: non-stub event already exists with name '{}'"
+                    "ERROR: non-stub entry already exists with name '{}'"
                     .format(name))
                 self.log.error(err_str)
                 raise RuntimeError(err_str)
 
-            self.events[name] = new_event.get_stub()
+            self.entries[name] = new_entry.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
 
         return
 
-    def _delete_event_file(self, event_name=None, event=None):
-        """Delete the file associated with the given event.
+    def _delete_entry_file(self, entry_name=None, entry=None):
+        """Delete the file associated with the given entry.
         """
-        if event_name is None and event is None:
-            raise RuntimeError("Either `event_name` or `event` must be given.")
-        elif event_name is not None and event is not None:
-            raise RuntimeError("Cannot use both `event_name` and `event`.")
+        if entry_name is None and entry is None:
+            raise RuntimeError("Either `entry_name` or `entry` must be given.")
+        elif entry_name is not None and entry is not None:
+            raise RuntimeError("Cannot use both `entry_name` and `entry`.")
 
-        if event_name is not None:
-            event_filename = self.events[event_name]
+        if entry_name is not None:
+            entry_filename = self.entries[entry_name]
         else:
-            event_name = event[KEYS.NAME]
-            event_filename = event.filename
+            entry_name = entry[KEYS.NAME]
+            entry_filename = entry.filename
 
-        if self.args.write_events:
-            os.remove(event_filename)
-            self.log.info("Deleted event '{}' file '{}'".format(
-                event_name, event_filename))
+        if self.args.write_entries:
+            os.remove(entry_filename)
+            self.log.info("Deleted entry '{}' file '{}'".format(
+                entry_name, entry_filename))
         else:
-            self.log.debug("Not deleting '{}' because `write_events`"
-                           " is Failse".format(event_filename))
+            self.log.debug("Not deleting '{}' because `write_entries`"
+                           " is Failse".format(entry_filename))
 
         return
 
-    def journal_events(self, clear=True, gz=False, bury=False,
+    def journal_entries(self, clear=True, gz=False, bury=False,
                        write_stubs=False):
-        """Write all events in `events` to files, and clear.  Depending on
+        """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
-        Iterates over all elements of `events`, saving (possibly 'burying') and
+        Iterates over all elements of `entries`, saving (possibly 'burying') and
         deleting.
-        -   If ``clear == True``, then each element of `events` is deleted, and
+        -   If ``clear == True``, then each element of `entries` is deleted, and
             a `stubs` entry is added
         """
-        self.log.debug("Events.journal_events()")
+        self.log.debug("Events.journal_entries()")
         # FIX: store this somewhere instead of re-loading each time
 
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
         # dict
-        for name in list(self.events.keys()):
-            if self.args.write_events:
+        for name in list(self.entries.keys()):
+            if self.args.write_entries:
                 # If this is a stub and we aren't writing stubs, skip
-                if self.events[name]._stub and not write_stubs:
+                if self.entries[name]._stub and not write_stubs:
                     continue
 
-                # Bury non-SN events here if only claimed type is non-SN type,
+                # Bury non-SN entries here if only claimed type is non-SN type,
                 # or if primary name starts with a non-SN prefix.
-                buryevent = False
-                save_event = True
+                buryentry = False
+                save_entry = True
                 ct_val = None
                 if bury:
                     if name.startswith(self.nonsneprefixes_dict):
                         self.log.debug(
                             "Killing '{}', non-SNe prefix.".format(name))
-                        save_event = False
+                        save_entry = False
                     else:
-                        if KEYS.CLAIMED_TYPE in self.events[name]:
-                            for ct in self.events[name][KEYS.CLAIMED_TYPE]:
+                        if KEYS.CLAIMED_TYPE in self.entries[name]:
+                            for ct in self.entries[name][KEYS.CLAIMED_TYPE]:
                                 up_val = ct['value'].upper()
                                 if up_val not in self.non_sne_types and \
                                         up_val != 'CANDIDATE':
-                                    buryevent = False
+                                    buryentry = False
                                     break
                                 if up_val in self.non_sne_types:
-                                    buryevent = True
+                                    buryentry = True
                                     ct_val = ct['value']
 
-                        if buryevent:
+                        if buryentry:
                             self.log.debug(
                                 "Burying '{}', {}.".format(name, ct_val))
 
-                if save_event:
-                    save_name = self.events[name].save(bury=buryevent)
+                if save_entry:
+                    save_name = self.entries[name].save(bury=buryentry)
                     self.log.info(
                         "Saved {} to '{}'.".format(name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >
@@ -553,24 +553,24 @@ class Catalog():
                                   '.json.gz; cd ' + '../scripts')
 
             if clear:
-                self.events[name] = self.events[name].get_stub()
+                self.entries[name] = self.entries[name].get_stub()
                 self.log.debug("Entry for '{}' converted to stub".format(name))
 
         return
 
-    def event_exists(self, name):
-        if name in self.events:
+    def entry_exists(self, name):
+        if name in self.entries:
             return True
-        for ev in self.events:
-            if name in self.events[ev].get_aliases():
+        for ev in self.entries:
+            if name in self.entries[ev].get_aliases():
                 return True
         return False
 
     def count(self):
         full = 0
         stub = 0
-        for ev in self.events:
-            if self.events[ev]._stub:
+        for ev in self.entries:
+            if self.entries[ev]._stub:
                 stub += 1
             else:
                 full += 1

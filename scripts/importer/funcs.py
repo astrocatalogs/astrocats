@@ -34,7 +34,7 @@ def convert_aq_output(row):
 
 def derive_and_sanitize(catalog):
     # Calculate some columns based on imported data, sanitize some fields
-    for name, event in catalog.events.items():
+    for name, event in catalog.entries.items():
         aliases = event.get_aliases(includename=False)
         if name not in aliases:
             if 'sources' in event:

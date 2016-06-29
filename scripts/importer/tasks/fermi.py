@@ -21,14 +21,14 @@ def do_fermi(catalog):
                 continue
             name = row[0].replace('SNR', 'G')
             name = catalog.add_entry(name)
-            source = (catalog.events[name]
+            source = (catalog.entries[name]
                       .add_source(bibcode='2016ApJS..224....8A'))
-            catalog.events[name].add_quantity('alias', name, source)
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_quantity(
                 'alias', row[0].replace('SNR', 'MWSNR'), source)
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 'ra', row[2], source, unit='floatdegrees')
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 'dec', row[3], source, unit='floatdegrees')
-    catalog.journal_events()
+    catalog.journal_entries()
     return

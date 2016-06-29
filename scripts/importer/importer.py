@@ -40,8 +40,8 @@ def import_main(catalog=None):
         'ignore', r'Warning: converting a masked element to nan.')
 
     if catalog.args.delete_old:
-        log.warning("Deleting all old event files.")
-        catalog.delete_old_event_files()
+        log.warning("Deleting all old entry files.")
+        catalog.delete_old_entry_files()
 
     prev_priority = 0
     prev_task_name = ''
@@ -71,7 +71,7 @@ def import_main(catalog=None):
         num_events, num_stubs = catalog.count()
         log.warning("Task finished.  Events: {},  Stubs: {}".format(
             num_events, num_stubs))
-        catalog.journal_events()
+        catalog.journal_entries()
         num_events, num_stubs = catalog.count()
         log.warning("Journal finished.  Events: {}, Stubs: {}".format(
             num_events, num_stubs))
@@ -87,7 +87,7 @@ def import_main(catalog=None):
         extinctions_dict, bibauthor_dict = derive_and_sanitize(catalog)
         # FIX: is this check needed here (also in 'journal_events')?
         if catalog.args.write_events:
-            catalog.journal_events()
+            catalog.journal_entries()
         if catalog.args.travis and ii > TRAVIS_QUERY_LIMIT:
             break
 

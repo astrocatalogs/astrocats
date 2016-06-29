@@ -85,12 +85,12 @@ def do_rochester(catalog):
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()
-            source = catalog.events[name].add_source(srcname=reference, url=refurl)
-            sec_source = catalog.events[name].add_source(
+            source = catalog.entries[name].add_source(srcname=reference, url=refurl)
+            sec_source = catalog.entries[name].add_source(
                 srcname=sec_ref, url=sec_refurl, secondary=True)
             sources = uniq_cdl(list(filter(None, [source, sec_source])))
-            catalog.events[name].add_quantity('alias', oldname, sources)
-            catalog.events[name].add_quantity('alias', sn, sources)
+            catalog.entries[name].add_quantity('alias', oldname, sources)
+            catalog.entries[name].add_quantity('alias', sn, sources)
 
             if cols[14].contents:
                 if aka == 'SNR G1.9+0.3':
@@ -103,41 +103,41 @@ def do_rochester(catalog):
                 if 'POSSIBLE' in aka.upper() and ra and dec:
                     aka = 'PSN J' + ra.replace(':', '').replace('.', '')
                     aka += dec.replace(':', '').replace('.', '')
-                catalog.events[name].add_quantity('alias', aka, sources)
+                catalog.entries[name].add_quantity('alias', aka, sources)
 
             if str(cols[1].contents[0]).strip() != 'unk':
                 type = str(cols[1].contents[0]).strip(' :,')
-                catalog.events[name].add_quantity('claimedtype', type, sources)
+                catalog.entries[name].add_quantity('claimedtype', type, sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
-                catalog.events[name].add_quantity('host', str(
+                catalog.entries[name].add_quantity('host', str(
                     cols[2].contents[0]).strip(), sources)
-            catalog.events[name].add_quantity('ra', ra, sources)
-            catalog.events[name].add_quantity('dec', dec, sources)
+            catalog.entries[name].add_quantity('ra', ra, sources)
+            catalog.entries[name].add_quantity('dec', dec, sources)
             if (str(cols[6].contents[0]).strip() not in
                     ['2440587', '2440587.292']):
                 astrot = astrotime(
                     float(str(cols[6].contents[0]).strip()),
                     format='jd').datetime
                 ddate = make_date_string(astrot.year, astrot.month, astrot.day)
-                catalog.events[name].add_quantity('discoverdate', ddate, sources)
+                catalog.entries[name].add_quantity('discoverdate', ddate, sources)
             if (str(cols[7].contents[0]).strip() not in
                     ['2440587', '2440587.292']):
                 astrot = astrotime(
                     float(str(cols[7].contents[0]).strip()), format='jd')
                 if ((float(str(cols[8].contents[0]).strip()) <= 90.0 and
                      not any('GRB' in xx for xx in
-                             catalog.events[name].get_aliases()))):
+                             catalog.entries[name].get_aliases()))):
                     mag = str(cols[8].contents[0]).strip()
-                    catalog.events[name].add_photometry(
+                    catalog.entries[name].add_photometry(
                         time=str(astrot.mjd), magnitude=mag,
                         source=sources)
             if cols[11].contents[0] != 'n/a':
-                catalog.events[name].add_quantity('redshift', str(
+                catalog.entries[name].add_quantity('redshift', str(
                     cols[11].contents[0]).strip(), sources)
-            catalog.events[name].add_quantity('discoverer', str(
+            catalog.entries[name].add_quantity('discoverer', str(
                 cols[13].contents[0]).strip(), sources)
             if catalog.args.update:
-                catalog.journal_events()
+                catalog.journal_entries()
 
     if not catalog.args.update:
         vsnetfiles = ['latestsne.dat']
@@ -158,9 +158,9 @@ def do_rochester(catalog):
                     if name.startswith('MASTEROTJ'):
                         name = name.replace('MASTEROTJ', 'MASTER OT J')
                     name = catalog.add_entry(name)
-                    sec_source = catalog.events[name].add_source(
+                    sec_source = catalog.entries[name].add_source(
                         srcname=sec_ref, url=sec_refurl, secondary=True)
-                    catalog.events[name].add_quantity('alias', name, sec_source)
+                    catalog.entries[name].add_quantity('alias', name, sec_source)
 
                     if not is_number(row[1]):
                         continue
@@ -194,8 +194,8 @@ def do_rochester(catalog):
                             sources = sec_source
                         else:
                             reference = ' '.join(row[refind:])
-                            source = catalog.events[name].add_source(srcname=reference)
-                            catalog.events[name].add_quantity(
+                            source = catalog.entries[name].add_source(srcname=reference)
+                            catalog.entries[name].add_quantity(
                                 'alias', name, sec_source)
                             sources = uniq_cdl([source, sec_source])
                     else:
@@ -203,9 +203,9 @@ def do_rochester(catalog):
 
                     band = row[2].lstrip('1234567890.')
 
-                    catalog.events[name].add_photometry(
+                    catalog.entries[name].add_photometry(
                         time=mjd, band=band, magnitude=magnitude,
                         e_magnitude=e_magnitude, source=sources)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

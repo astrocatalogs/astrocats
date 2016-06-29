@@ -107,33 +107,33 @@ def do_ogle(catalog):
                         f.write(csvtxt)
 
                 lcdat = csvtxt.splitlines()
-                sources = [catalog.events[name].add_source(
+                sources = [catalog.entries[name].add_source(
                     srcname=reference, url=refurl)]
-                catalog.events[name].add_quantity('alias', name, sources[0])
+                catalog.entries[name].add_quantity('alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
-                    sources.append(catalog.events[name].add_source(
+                    sources.append(catalog.entries[name].add_source(
                         srcname=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
 
                 if name.startswith('OGLE'):
                     if name[4] == '-':
                         if is_number(name[5:9]):
-                            catalog.events[name].add_quantity(
+                            catalog.entries[name].add_quantity(
                                 'discoverdate', name[5:9], sources)
                     else:
                         if is_number(name[4:6]):
-                            catalog.events[name].add_quantity(
+                            catalog.entries[name].add_quantity(
                                 'discoverdate', '20' + name[4:6], sources)
 
                 # RA and Dec from OGLE pages currently not reliable
-                # catalog.events[name].add_quantity('ra', ra, sources)
-                # catalog.events[name].add_quantity('dec', dec, sources)
+                # catalog.entries[name].add_quantity('ra', ra, sources)
+                # catalog.entries[name].add_quantity('dec', dec, sources)
                 if claimedtype and claimedtype != '-':
-                    catalog.events[name].add_quantity(
+                    catalog.entries[name].add_quantity(
                         'claimedtype', claimedtype, sources)
                 elif ('SN' not in name and 'claimedtype' not in
-                      catalog.events[name]):
-                    catalog.events[name].add_quantity(
+                      catalog.entries[name]):
+                    catalog.entries[name].add_quantity(
                         'claimedtype', 'Candidate', sources)
                 for row in lcdat:
                     row = row.split()
@@ -146,12 +146,12 @@ def do_ogle(catalog):
                     if e_mag == '-1' or float(e_mag) > 10.0:
                         e_mag = ''
                         upperlimit = True
-                    catalog.events[name].add_photometry(
+                    catalog.entries[name].add_photometry(
                         time=mjd, band='I', magnitude=magnitude,
                         e_magnitude=e_mag,
                         system='Vega', source=sources, upperlimit=upperlimit)
                 if catalog.args.update:
-                    catalog.journal_events()
+                    catalog.journal_entries()
 
-        catalog.journal_events()
+        catalog.journal_entries()
     return

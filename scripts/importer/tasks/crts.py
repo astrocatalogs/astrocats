@@ -94,22 +94,22 @@ def do_crts(catalog):
             if not name:
                 name = crtsname
             name = catalog.add_entry(name)
-            source = catalog.events[name].add_source(
+            source = catalog.entries[name].add_source(
                 srcname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
-            catalog.events[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_quantity('alias', name, source)
             for alias in validaliases:
-                catalog.events[name].add_quantity('alias', alias, source)
-            catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity('alias', alias, source)
+            catalog.entries[name].add_quantity(
                 'ra', ra, source, unit='floatdegrees')
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 'dec', dec, source, unit='floatdegrees')
 
             if hostmag:
                 # 1.0 magnitude error based on Drake 2009 assertion that SN are
                 # only considered
                 #    real if they are 2 mags brighter than host.
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_photometry(band='C', magnitude=hostmag,
                                  e_magnitude=1.0, source=source,
                                  host=True, telescope='Catalina Schmidt',
@@ -145,16 +145,16 @@ def do_crts(catalog):
                     err = re.search("showz\('(.*?)'\)", line).group(1)
                 e_mag = err if float(err) > 0.0 else ''
                 upl = (float(err) == 0.0)
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_photometry(time=mjd, band='C', magnitude=mag,
                                  source=source,
                                  includeshost=True, telescope=teles,
                                  e_magnitude=e_mag, upperlimit=upl))
             if catalog.args.update:
-                catalog.journal_events()
+                catalog.journal_entries()
 
         if catalog.args.travis and tri > TRAVIS_QUERY_LIMIT:
             break
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

@@ -45,26 +45,26 @@ def do_des(catalog):
                 else:
                     atellink = ''
 
-        sources = [catalog.events[name]
+        sources = [catalog.entries[name]
                    .add_source(url=des_url, srcname='DES Bright Transients',
                                acknowledgment=ackn_url)]
         if atellink:
             sources.append(
-                catalog.events[name]
+                catalog.entries[name]
                 .add_source(srcname='ATel ' + atellink.split('=')[-1],
                             url=atellink))
-        sources += [catalog.events[name]
+        sources += [catalog.entries[name]
                     .add_source(bibcode='2012ApJ...753..152B'),
-                    catalog.events[name].add_source(
+                    catalog.entries[name].add_source(
                         bibcode='2015AJ....150..150F'),
-                    catalog.events[name].add_source(
+                    catalog.entries[name].add_source(
                         bibcode='2015AJ....150...82G'),
-                    catalog.events[name]
+                    catalog.entries[name]
                     .add_source(bibcode='2015AJ....150..172K')]
         sources = ','.join(sources)
-        catalog.events[name].add_quantity('alias', name, sources)
-        catalog.events[name].add_quantity('ra', ra, sources)
-        catalog.events[name].add_quantity('dec', dec, sources)
+        catalog.entries[name].add_quantity('alias', name, sources)
+        catalog.entries[name].add_quantity('ra', ra, sources)
+        catalog.entries[name].add_quantity('dec', dec, sources)
 
         html2 = load_cached_url(catalog.args, current_task,
                                 des_trans_url + name,
@@ -77,7 +77,7 @@ def do_des(catalog):
                 jsontxt = json.loads(line.split('=')[-1].rstrip(';'))
                 for ii, band in enumerate(jsontxt['band']):
                     upl = True if float(jsontxt['snr'][ii]) <= 3.0 else ''
-                    (catalog.events[name]
+                    (catalog.entries[name]
                      .add_photometry(time=jsontxt['mjd'][ii],
                                      magnitude=jsontxt['mag'][ii],
                                      e_magnitude=jsontxt['mag_error'][ii],
@@ -85,5 +85,5 @@ def do_des(catalog):
                                      telescope='Blanco 4m', instrument='DECam',
                                      upperlimit=upl, source=sources))
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

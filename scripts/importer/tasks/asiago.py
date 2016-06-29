@@ -44,12 +44,12 @@ def do_asiago_photo(catalog):
             refbib = '1989A&AS...81..421B'
 
             (name,
-             source) = catalog.new_event(oldname,
+             source) = catalog.new_entry(oldname,
                                          srcname=reference, url=refurl,
                                          bibcode=refbib, secondary=True)
 
             year = re.findall(r'\d+', oldname)[0]
-            catalog.events[name].add_quantity('discoverdate', year, source)
+            catalog.entries[name].add_quantity('discoverdate', year, source)
 
             hostname = record[2]
             hostra = record[3]
@@ -77,7 +77,7 @@ def do_asiago_photo(catalog):
                     daystr = dayarr[0]
                     datestring = datestring + '/' + daystr
 
-            catalog.events[name].add_quantity(datekey + 'date', datestring,
+            catalog.entries[name].add_quantity(datekey + 'date', datestring,
                                               source)
 
             velocity = ''
@@ -93,33 +93,33 @@ def do_asiago_photo(catalog):
             claimedtype = record[17].replace(':', '').replace('*', '').strip()
 
             if (hostname != ''):
-                catalog.events[name].add_quantity('host', hostname, source)
+                catalog.entries[name].add_quantity('host', hostname, source)
             if (claimedtype != ''):
-                catalog.events[name].add_quantity('claimedtype', claimedtype,
+                catalog.entries[name].add_quantity('claimedtype', claimedtype,
                                                   source)
             if (redshift != ''):
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'redshift', redshift, source, kind='host')
             if (velocity != ''):
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'velocity', velocity, source, kind='host')
             if (hostra != ''):
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'hostra', hostra, source, unit='nospace')
             if (hostdec != ''):
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'hostdec', hostdec, source, unit='nospace')
             if (ra != ''):
-                catalog.events[name].add_quantity('ra', ra, source,
+                catalog.entries[name].add_quantity('ra', ra, source,
                                                   unit='nospace')
             if (dec != ''):
-                catalog.events[name].add_quantity('dec', dec, source,
+                catalog.entries[name].add_quantity('dec', dec, source,
                                                   unit='nospace')
             if (discoverer != ''):
-                catalog.events[name].add_quantity('discoverer', discoverer,
+                catalog.entries[name].add_quantity('discoverer', discoverer,
                                                   source)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
 
 
@@ -163,12 +163,12 @@ def do_asiago_spectra(catalog):
                 name = catalog.add_entry(name)
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
-                secondarysource = catalog.events[name].add_source(
+                secondarysource = catalog.entries[name].add_source(
                     srcname=reference, url=refurl, secondary=True)
-                catalog.events[name].add_quantity('alias', oldname,
+                catalog.entries[name].add_quantity('alias', oldname,
                                                   secondarysource)
                 if alias != name:
-                    catalog.events[name].add_quantity('alias', alias,
+                    catalog.entries[name].add_quantity('alias', alias,
                                                       secondarysource)
             elif tdi == 2:
                 host = td.text.strip()
@@ -203,9 +203,9 @@ def do_asiago_spectra(catalog):
                         reference = ref.text
                         refurl = ref['href']
                 if reference:
-                    source = catalog.events[name].add_source(
+                    source = catalog.entries[name].add_source(
                         srcname=reference, url=refurl)
-                catalog.events[name].add_quantity('alias', name,
+                catalog.entries[name].add_quantity('alias', name,
                                                   secondarysource)
                 sources = uniq_cdl(
                     list(filter(None, [source, secondarysource])))
@@ -215,14 +215,14 @@ def do_asiago_spectra(catalog):
                 # if fitslink:
                 #     fitsurl = fitslink['href']
         if name:
-            catalog.events[name].add_quantity('claimedtype', claimedtype,
+            catalog.entries[name].add_quantity('claimedtype', claimedtype,
                                               sources)
-            catalog.events[name].add_quantity('ra', ra, sources)
-            catalog.events[name].add_quantity('dec', dec, sources)
-            catalog.events[name].add_quantity('redshift', redshift, sources)
-            catalog.events[name].add_quantity('discoverer', discoverer,
+            catalog.entries[name].add_quantity('ra', ra, sources)
+            catalog.entries[name].add_quantity('dec', dec, sources)
+            catalog.entries[name].add_quantity('redshift', redshift, sources)
+            catalog.entries[name].add_quantity('discoverer', discoverer,
                                               sources)
-            catalog.events[name].add_quantity('host', host, sources)
+            catalog.entries[name].add_quantity('host', host, sources)
 
             # if fitsurl:
             #    response = urllib.request.urlopen(
@@ -236,5 +236,5 @@ def do_asiago_spectra(catalog):
             #    print(scidata[3])
             #    sys.exit()
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

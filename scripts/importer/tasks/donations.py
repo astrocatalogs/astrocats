@@ -30,8 +30,8 @@ def do_donations(catalog):
                 bibcode = bc
         if not bibcode:
             raise ValueError('Bibcode not found!')
-        source = catalog.events[name].add_source(bibcode=bibcode)
-        catalog.events[name].add_quantity('alias', inpname, source)
+        source = catalog.entries[name].add_source(bibcode=bibcode)
+        catalog.entries[name].add_quantity('alias', inpname, source)
         with open(datafile, 'r') as f:
             tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
             for r, rrow in enumerate(tsvin):
@@ -58,10 +58,10 @@ def do_donations(catalog):
                     if (is_number(row[2 * v + 2]) and
                             not isnan(float(row[2 * v + 2]))):
                         err = row[2 * v + 2]
-                    catalog.events[name].add_photometry(
+                    catalog.entries[name].add_photometry(
                         time=mjd, band=bands[v], magnitude=mag,
                         e_magnitude=err, upperlimit=upperlimit, source=source)
-    catalog.journal_events()
+    catalog.journal_entries()
 
     # Maggi 04-11-16 donation (MC SNRs)
     with open(os.path.join(PATH.REPO_EXTERNAL,
@@ -73,21 +73,21 @@ def do_donations(catalog):
             name = catalog.add_entry(name)
             ra = row[2]
             dec = row[3]
-            source = (catalog.events[name]
+            source = (catalog.entries[name]
                       .add_source(bibcode='2016A&A...585A.162M'))
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 'alias', 'LMCSNR J' + rep_chars(ra, ' :.') +
                 rep_chars(dec, ' :.'), source)
-            catalog.events[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_quantity('alias', name, source)
             if row[1] != 'noname':
-                catalog.events[name].add_quantity('alias', row[1], source)
-            catalog.events[name].add_quantity('ra', row[2], source)
-            catalog.events[name].add_quantity('dec', row[3], source)
-            catalog.events[name].add_quantity('host', 'LMC', source)
+                catalog.entries[name].add_quantity('alias', row[1], source)
+            catalog.entries[name].add_quantity('ra', row[2], source)
+            catalog.entries[name].add_quantity('dec', row[3], source)
+            catalog.entries[name].add_quantity('host', 'LMC', source)
             if row[4] == '1':
-                catalog.events[name].add_quantity('claimedtype', 'Ia', source)
+                catalog.entries[name].add_quantity('claimedtype', 'Ia', source)
             elif row[4] == '2':
-                catalog.events[name].add_quantity('claimedtype', 'CC', source)
+                catalog.entries[name].add_quantity('claimedtype', 'CC', source)
     with open(os.path.join(PATH.REPO_EXTERNAL,
                            'Maggi-04-11-16/SMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
@@ -95,19 +95,19 @@ def do_donations(catalog):
                         ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             name = catalog.add_entry(name)
-            source = catalog.events[name].add_source(srcname='Pierre Maggi')
+            source = catalog.entries[name].add_source(srcname='Pierre Maggi')
             ra = row[3]
             dec = row[4]
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 name, 'alias', 'SMCSNR J' + ra.replace(':', '')[:6] +
                 dec.replace(':', '')[:7], source)
-            catalog.events[name].add_quantity('alias', name, source)
-            catalog.events[name].add_quantity('alias', row[1], source)
-            catalog.events[name].add_quantity('alias', row[2], source)
-            catalog.events[name].add_quantity('ra', row[3], source)
-            catalog.events[name].add_quantity('dec', row[4], source)
-            catalog.events[name].add_quantity('host', 'SMC', source)
-    catalog.journal_events()
+            catalog.entries[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_quantity('alias', row[1], source)
+            catalog.entries[name].add_quantity('alias', row[2], source)
+            catalog.entries[name].add_quantity('ra', row[3], source)
+            catalog.entries[name].add_quantity('dec', row[4], source)
+            catalog.entries[name].add_quantity('host', 'SMC', source)
+    catalog.journal_entries()
 
     # Galbany 04-18-16 donation
     folders = next(os.walk(os.path.join(
@@ -136,13 +136,13 @@ def do_donations(catalog):
                         name += (value[6].upper() if len(value) == 7
                                  else value[6:])
                         name = catalog.add_entry(name)
-                        source = (catalog.events[name]
+                        source = (catalog.entries[name]
                                   .add_source(bibcode=bibcode))
-                        catalog.events[name].add_quantity('alias', name,
+                        catalog.entries[name].add_quantity('alias', name,
                                                           source)
                     elif field == 'type':
                         claimedtype = value.replace('SN', '')
-                        catalog.events[name].add_quantity(
+                        catalog.entries[name].add_quantity(
                             'claimedtype', claimedtype, source)
                     elif field == 'zhel':
                         zhel = value
@@ -151,21 +151,21 @@ def do_donations(catalog):
                     elif field == 'zcmb':
                         zcmb = value
                     elif field == 'ra':
-                        catalog.events[name].add_quantity(
+                        catalog.entries[name].add_quantity(
                             'ra', value, source, unit='floatdegrees')
                     elif field == 'dec':
-                        catalog.events[name].add_quantity(
+                        catalog.entries[name].add_quantity(
                             'dec', value, source, unit='floatdegrees')
                     elif field == 'host':
                         value = value.replace('- ', '-').replace('G ', 'G')
-                        catalog.events[name].add_quantity('host', value,
+                        catalog.entries[name].add_quantity('host', value,
                                                           source)
                     elif field == 'e(b-v)_mw':
-                        catalog.events[name].add_quantity('ebv', value, source)
+                        catalog.entries[name].add_quantity('ebv', value, source)
 
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity(
             'redshift', zhel, source, error=zerr, kind='heliocentric')
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity(
             'redshift', zcmb, source, error=zerr, kind='cmb')
 
         for path in photfiles:
@@ -181,22 +181,22 @@ def do_donations(catalog):
                         cols = list(filter(None, line.split()))
                         if not cols:
                             continue
-                        catalog.events[name].add_photometry(
+                        catalog.entries[name].add_photometry(
                             time=cols[0], magnitude=cols[1],
                             e_magnitude=cols[2],
                             band=band, system=cols[3], telescope=cols[4],
                             source=source)
-    catalog.journal_events()
+    catalog.journal_entries()
 
     # Brown 05-14-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
     for fi in pbar(files, current_task):
         name = os.path.basename(fi).split('_')[0]
         name = catalog.add_entry(name)
-        source = catalog.events[name].add_source(
+        source = catalog.entries[name].add_source(
             srcname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
             url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
-        catalog.events[name].add_quantity('alias', name, source)
+        catalog.entries[name].add_quantity('alias', name, source)
         with open(fi, 'r') as f:
             lines = f.read().splitlines()
             for line in lines:
@@ -212,20 +212,20 @@ def do_donations(catalog):
                 mag = cols[2] if not isupp else cols[4]
                 e_mag = cols[3] if not isupp else ''
                 upp = '' if not isupp else True
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_photometry(time=mjd, magnitude=mag,
                                  e_magnitude=e_mag,
                                  upperlimit=upp, band=band, source=source,
                                  telescope='Swift', instrument='UVOT',
                                  system='Vega'))
-    catalog.journal_events()
+    catalog.journal_entries()
 
     # Nicholl 05-03-16
     files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
     name = catalog.add_entry('SN2015bn')
-    source = catalog.events[name].add_source(bibcode='2016arXiv160304748N')
-    catalog.events[name].add_quantity('alias', name, source)
-    catalog.events[name].add_quantity('alias', 'PS15ae', source)
+    source = catalog.entries[name].add_source(bibcode='2016arXiv160304748N')
+    catalog.entries[name].add_quantity('alias', name, source)
+    catalog.entries[name].add_quantity('alias', 'PS15ae', source)
     for fi in pbar(files, current_task):
         telescope = os.path.basename(fi).split('_')[1]
         with open(fi, 'r') as f:
@@ -251,7 +251,7 @@ def do_donations(catalog):
                         emag = ''
                         upp = True
                     instrument = 'UVOT' if telescope == 'Swift' else ''
-                    (catalog.events[name]
+                    (catalog.entries[name]
                      .add_photometry(time=mjd, magnitude=col,
                                      e_magnitude=emag, upperlimit=upp,
                                      band=bands[ci], source=source,
@@ -260,5 +260,5 @@ def do_donations(catalog):
                                      system='Vega' if
                                      telescope == 'Swift' else 'AB'))
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

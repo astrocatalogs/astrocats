@@ -165,9 +165,9 @@ def do_wiserep_spectra(catalog):
                                 name = name.replace('MASTERJ', 'MASTER OT J')
                             if name.startswith('PSNJ'):
                                 name = name.replace('PSNJ', 'PSN J')
-                            name = get_preferred_name(catalog.events, name)
+                            name = get_preferred_name(catalog.entries, name)
                             if oldname and name != oldname:
-                                catalog.journal_events()
+                                catalog.journal_entries()
                             oldname = name
                             name = catalog.add_entry(name)
 
@@ -175,31 +175,31 @@ def do_wiserep_spectra(catalog):
                             # ' ' + observer + ' ' + reducer + ' ' + specfile +
                             # ' ' + bibcode + ' ' + redshift)
 
-                            secondarysource = catalog.events[name].add_source(
+                            secondarysource = catalog.entries[name].add_source(
                                 srcname=secondaryreference,
                                 url=secondaryrefurl,
                                 bibcode=secondarybibcode, secondary=True)
-                            catalog.events[name].add_quantity(
+                            catalog.entries[name].add_quantity(
                                 'alias', name, secondarysource)
                             if bibcode:
                                 newbibcode = bibcode
                                 if bibcode in wiserepbibcorrectdict:
                                     newbibcode = wiserepbibcorrectdict[bibcode]
                                 if newbibcode:
-                                    source = catalog.events[name].add_source(
+                                    source = catalog.entries[name].add_source(
                                         bibcode=unescape(newbibcode))
                                 else:
-                                    source = catalog.events[name].add_source(
+                                    source = catalog.entries[name].add_source(
                                         srcname=unescape(bibcode))
                                 sources = uniq_cdl([source, secondarysource])
                             else:
                                 sources = secondarysource
 
                             if claimedtype not in ['Other']:
-                                catalog.events[name].add_quantity(
+                                catalog.entries[name].add_quantity(
                                     'claimedtype', claimedtype,
                                     secondarysource)
-                            catalog.events[name].add_quantity(
+                            catalog.entries[name].add_quantity(
                                 'redshift', redshift, secondarysource)
 
                             if not specpath:
@@ -239,7 +239,7 @@ def do_wiserep_spectra(catalog):
                                 else:
                                     fluxunit = 'Uncalibrated'
 
-                                catalog.events[name].add_spectrum(
+                                catalog.entries[name].add_spectrum(
                                     'Angstrom', fluxunit,
                                     errors=errors,
                                     errorunit=fluxunit,
@@ -259,5 +259,5 @@ def do_wiserep_spectra(catalog):
                        "/" + str(len(files) - 1))
                 tprint('WISeREP spectrum count: ' + str(wiserepcnt))
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

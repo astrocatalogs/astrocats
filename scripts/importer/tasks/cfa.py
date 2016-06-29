@@ -43,13 +43,13 @@ def do_cfa_photo(catalog):
         name = catalog.add_entry(name)
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        secondarysource = catalog.events[name].add_source(
+        secondarysource = catalog.entries[name].add_source(
             srcname=secondaryname, url=secondaryurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        catalog.events[name].add_quantity('alias', name, secondarysource)
+        catalog.entries[name].add_quantity('alias', name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity(
             'discoverdate', year, secondarysource)
 
         eventbands = list(eventparts[1])
@@ -71,7 +71,7 @@ def do_cfa_photo(catalog):
                             refstr = ' '.join(row[2 + ci:])
                             refstr = refstr.replace('(', '').replace(')', '')
                             bibcode = unescape(refstr)
-                            source = catalog.events[
+                            source = catalog.entries[
                                 name].add_source(bibcode=bibcode)
                 elif len(row) > 1 and row[1] == 'HJD':
                     tu = 'HJD'
@@ -93,7 +93,7 @@ def do_cfa_photo(catalog):
                     elif v % 2 != 0:
                         if float(row[v]) < 90.0:
                             src = secondarysource + ',' + source
-                            catalog.events[name].add_photometry(
+                            catalog.entries[name].add_photometry(
                                 u_time=tuout, time=mjd,
                                 band=eventbands[(v - 1) // 2],
                                 magnitude=row[v], e_magnitude=row[v + 1],
@@ -115,11 +115,11 @@ def do_cfa_photo(catalog):
 
             name = catalog.add_entry(name)
 
-            source = catalog.events[name].add_source(
+            source = catalog.entries[name].add_source(
                 bibcode='2012ApJS..200...12H')
-            catalog.events[name].add_quantity('alias', name, source)
-            catalog.events[name].add_quantity('claimedtype', 'Ia', source)
-            catalog.events[name].add_photometry(
+            catalog.entries[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_quantity('claimedtype', 'Ia', source)
+            catalog.entries[name].add_photometry(
                 u_time='MJD', time=row[2].strip(),
                 band=row[1].strip(),
                 magnitude=row[6].strip(), e_magnitude=row[7].strip(),
@@ -133,16 +133,16 @@ def do_cfa_photo(catalog):
             name = 'SN' + row[0]
             name = catalog.add_entry(name)
 
-            source = catalog.events[name].add_source(
+            source = catalog.entries[name].add_source(
                 bibcode='2014ApJS..213...19B')
-            catalog.events[name].add_quantity('alias', name, source)
-            catalog.events[name].add_photometry(
+            catalog.entries[name].add_quantity('alias', name, source)
+            catalog.entries[name].add_photometry(
                 u_time='MJD', time=row[2], band=row[1],
                 magnitude=row[3],
                 e_magnitude=row[4], telescope=row[5], system='Standard',
                 source=source)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
 
 
@@ -159,17 +159,17 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         if name.startswith('snf') and is_number(name[3:7]):
             name = 'SNF' + name[3:]
-        name = get_preferred_name(catalog.events, name)
+        name = get_preferred_name(catalog.entries, name)
         if oldname and name != oldname:
-            catalog.journal_events()
+            catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = catalog.events[name].add_source(
+        source = catalog.entries[name].add_source(
             srcname=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        catalog.events[name].add_quantity('alias', name, source)
+        catalog.entries[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'),
                                           key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -194,11 +194,11 @@ def do_cfa_spectra(catalog):
             fluxes = data[1]
             errors = data[2]
             sources = uniq_cdl([source,
-                                (catalog.events[name]
+                                (catalog.entries[name]
                                  .add_source(bibcode='2012AJ....143..126B')),
-                                (catalog.events[name]
+                                (catalog.entries[name]
                                  .add_source(bibcode='2008AJ....135.1598M'))])
-            catalog.events[name].add_spectrum(
+            catalog.entries[name].add_spectrum(
                 'Angstrom', 'erg/s/cm^2/Angstrom',
                 filename=filename,
                 wavelengths=wavelengths, fluxes=fluxes, u_time='MJD' if time
@@ -207,7 +207,7 @@ def do_cfa_spectra(catalog):
                 source=sources, dereddened=False, deredshifted=False)
             if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    catalog.journal_events()
+    catalog.journal_entries()
 
     # Ibc spectra
     oldname = ''
@@ -218,17 +218,17 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(catalog.events, name)
+        name = get_preferred_name(catalog.entries, name)
         if oldname and name != oldname:
-            catalog.journal_events()
+            catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = catalog.events[name].add_source(
+        source = catalog.entries[name].add_source(
             srcname=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        catalog.events[name].add_quantity('alias', name, source)
+        catalog.entries[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'),
                                           key=lambda s: s.lower())):
             filename = os.path.basename(fname)
@@ -249,9 +249,9 @@ def do_cfa_spectra(catalog):
             fluxes = data[1]
             sources = uniq_cdl(
                 [source,
-                 catalog.events[name]
+                 catalog.entries[name]
                  .add_source(bibcode='2014AJ....147...99M')])
-            catalog.events[name].add_spectrum(
+            catalog.entries[name].add_spectrum(
                 'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
@@ -259,7 +259,7 @@ def do_cfa_spectra(catalog):
                 dereddened=False, deredshifted=False)
             if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
-    catalog.journal_events()
+    catalog.journal_entries()
 
     # Other spectra
     oldname = ''
@@ -270,17 +270,17 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(catalog.events, name)
+        name = get_preferred_name(catalog.entries, name)
         if oldname and name != oldname:
             Events.journal_events()
         oldname = name
         name = catalog.add_entry(name)
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
-        source = catalog.events[name].add_source(
+        source = catalog.entries[name].add_source(
             srcname=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
-        catalog.events[name].add_quantity('alias', name, source)
+        catalog.entries[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s:
                                           s.lower())):
             if not os.path.isfile(fname):
@@ -309,7 +309,7 @@ def do_cfa_spectra(catalog):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = [str(Decimal(x) * Decimal(1.0e-15)) for x in data[1]]
-            catalog.events[name].add_spectrum(
+            catalog.entries[name].add_spectrum(
                 'Angstrom', 'erg/s/cm^2/Angstrom',
                 wavelengths=wavelengths, filename=filename,
                 fluxes=fluxes, u_time='MJD' if time else '', time=time,
@@ -318,5 +318,5 @@ def do_cfa_spectra(catalog):
             if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
                 break
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

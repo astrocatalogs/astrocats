@@ -29,8 +29,8 @@ def do_snls_photo(catalog):
             continue
         name = 'SNLS-' + row[0]
         name = catalog.add_entry(name)
-        source = catalog.events[name].add_source(bibcode='2010A&A...523A...7G')
-        catalog.events[name].add_quantity('alias', name, source)
+        source = catalog.entries[name].add_source(bibcode='2010A&A...523A...7G')
+        catalog.entries[name].add_quantity('alias', name, source)
         band = row[1]
         mjd = row[2]
         sig = get_sig_digits(flux.split('E')[0]) + 1
@@ -41,11 +41,11 @@ def do_snls_photo(catalog):
         e_mag = pretty_num(
             2.5 * log10(1.0 + float(err) / float(flux)), sig=sig)
         # e_mag = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
-        catalog.events[name].add_photometry(
+        catalog.entries[name].add_photometry(
             time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag,
             counts=flux, e_counts=err, source=source)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
 
 
@@ -67,15 +67,15 @@ def do_snls_spectra(catalog):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
-        name = get_preferred_name(catalog.events, name)
+        name = get_preferred_name(catalog.entries, name)
         if oldname and name != oldname:
-            catalog.journal_events()
+            catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
-        source = catalog.events[name].add_source(bibcode='2009A&A...507...85B')
-        catalog.events[name].add_quantity('alias', name, source)
+        source = catalog.entries[name].add_source(bibcode='2009A&A...507...85B')
+        catalog.entries[name].add_quantity('alias', name, source)
 
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity(
             'discoverdate', '20' + fileparts[1][:2], source)
 
         f = open(fname, 'r')
@@ -85,7 +85,7 @@ def do_snls_spectra(catalog):
             if row[0] == '@TELESCOPE':
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                catalog.events[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.entries[name].add_quantity('redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
@@ -97,12 +97,12 @@ def do_snls_spectra(catalog):
         # FIX: this isnt being used
         # errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
 
-        catalog.events[name].add_spectrum(
+        catalog.entries[name].add_spectrum(
             'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
             time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
             filename=filename)
         if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
             break
-    catalog.journal_events()
+    catalog.journal_entries()
     return

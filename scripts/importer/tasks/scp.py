@@ -16,18 +16,18 @@ def do_scp(catalog):
             continue
         name = row[0].replace('SCP', 'SCP-')
         name = catalog.add_entry(name)
-        source = (catalog.events[name]
+        source = (catalog.entries[name]
                   .add_source(srcname='Supernova Cosmology Project',
                               url=('http://supernova.lbl.gov/'
                                    '2009ClusterSurvey/')))
-        catalog.events[name].add_quantity('alias', name, source)
+        catalog.entries[name].add_quantity('alias', name, source)
         if row[1]:
-            catalog.events[name].add_quantity('alias', row[1], source)
+            catalog.entries[name].add_quantity('alias', row[1], source)
         if row[2]:
             kind = 'spectroscopic' if row[3] == 'sn' else 'host'
-            catalog.events[name].add_quantity('redshift', row[2], source, kind=kind)
+            catalog.entries[name].add_quantity('redshift', row[2], source, kind=kind)
         if row[4]:
-            catalog.events[name].add_quantity(
+            catalog.entries[name].add_quantity(
                 'redshift', row[2], source, kind='cluster')
         if row[6]:
             claimedtype = row[6].replace('SN ', '')
@@ -37,8 +37,8 @@ def do_scp(catalog):
                     'light curve' if 'c' in row[7]
                     else '')
             if claimedtype != '?':
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'claimedtype', claimedtype, source, kind=kind)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

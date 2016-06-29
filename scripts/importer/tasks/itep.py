@@ -43,22 +43,22 @@ def do_itep(catalog):
             sec_reference = ('Sternberg Astronomical Institute '
                              'Supernova Light Curve Catalogue')
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
-            sec_source = catalog.events[name].add_source(
+            sec_source = catalog.entries[name].add_source(
                 srcname=sec_reference, url=sec_refurl, secondary=True)
-            catalog.events[name].add_quantity('alias', oldname, sec_source)
+            catalog.entries[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
-            catalog.events[name].add_quantity('discoverdate', year, sec_source)
+            catalog.entries[name].add_quantity('discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
-            source = catalog.events[name].add_source(bibcode=bibcode)
+            source = catalog.entries[name].add_source(bibcode=bibcode)
         else:
             needsbib.append(reference)
-            source = catalog.events[name].add_source(
+            source = catalog.entries[name].add_source(
                 srcname=reference) if reference else ''
 
         if bibcode not in itepbadsources:
-            catalog.events[name].add_photometry(time=mjd, band=band,
+            catalog.entries[name].add_photometry(time=mjd, band=band,
                                                 magnitude=magnitude,
                                                 e_magnitude=e_magnitude,
                                                 source=sec_source + ',' +
@@ -68,5 +68,5 @@ def do_itep(catalog):
     needsbib = list(OrderedDict.fromkeys(needsbib))
     with open('../itep-needsbib.txt', 'w') as bib_file:
         bib_file.writelines(['%ss\n' % ii for ii in needsbib])
-    catalog.journal_events()
+    catalog.journal_entries()
     return

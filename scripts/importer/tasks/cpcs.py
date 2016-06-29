@@ -50,20 +50,20 @@ def do_cpcs(catalog):
         else:
             continue
 
-        sec_source = catalog.events[name].add_source(
+        sec_source = catalog.entries[name].add_source(
             srcname='Cambridge Photometric Calibration Server',
             url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
-        catalog.events[name].add_quantity('alias', oldname, sec_source)
+        catalog.entries[name].add_quantity('alias', oldname, sec_source)
         unit_deg = 'floatdegrees'
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity(
             'ra', str(alertindex[ii]['ra']), sec_source, unit=unit_deg)
-        catalog.events[name].add_quantity('dec', str(
+        catalog.entries[name].add_quantity('dec', str(
             alertindex[ii]['dec']), sec_source, unit=unit_deg)
 
         alerturl = ('http://gsaweb.ast.cam.ac.uk/'
                     'followup/get_alert_lc_data?alert_id=' +
                     str(ai))
-        source = catalog.events[name].add_source(
+        source = catalog.entries[name].add_source(
             srcname='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(PATH.REPO_EXTERNAL,
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
@@ -91,12 +91,12 @@ def do_cpcs(catalog):
         bnds = cpcsalert['filter']
         obs = cpcsalert['observatory']
         for mi, mjd in enumerate(mjds):
-            catalog.events[name].add_photometry(
+            catalog.entries[name].add_photometry(
                 time=mjd, magnitude=mags[mi], e_magnitude=errs[mi],
                 band=bnds[mi], observatory=obs[mi],
                 source=uniq_cdl([source, sec_source]))
         if catalog.args.update:
-            catalog.journal_events()
+            catalog.journal_entries()
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

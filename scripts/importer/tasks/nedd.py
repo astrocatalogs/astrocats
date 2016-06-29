@@ -51,19 +51,19 @@ def do_nedd(catalog):
             if dist:
                 nedd_dict.setdefault(cleanhost, []).append(Decimal(dist))
         if snname and 'HOST' not in snname:
-            snname, secondarysource = catalog.new_event(
+            snname, secondarysource = catalog.new_entry(
                 snname, srcname=reference, url=refurl, secondary=True)
             if bibcode:
-                source = catalog.events[snname].add_source(bibcode=bibcode)
+                source = catalog.entries[snname].add_source(bibcode=bibcode)
                 sources = uniq_cdl([source, secondarysource])
             else:
                 sources = secondarysource
             if name == snname:
                 if redshift:
-                    catalog.events[snname].add_quantity(
+                    catalog.entries[snname].add_quantity(
                         'redshift', redshift, sources)
                 if dist:
-                    catalog.events[snname].add_quantity(
+                    catalog.entries[snname].add_quantity(
                         'comovingdist', dist, sources)
                     if not redshift:
                         try:
@@ -76,19 +76,19 @@ def do_nedd(catalog):
                         except:
                             pass
                         else:
-                            cosmosource = catalog.events[name].add_source(
+                            cosmosource = catalog.entries[name].add_source(
                                 bibcode='2015arXiv150201589P')
                             combsources = uniq_cdl(sources.split(',') +
                                                    [cosmosource])
-                            catalog.events[snname].add_quantity('redshift',
+                            catalog.entries[snname].add_quantity('redshift',
                                                                 redshift,
                                                                 combsources)
             if cleanhost:
-                catalog.events[snname].add_quantity('host', cleanhost, sources)
+                catalog.entries[snname].add_quantity('host', cleanhost, sources)
             if catalog.args.update and olddistname != distname:
-                catalog.journal_events()
+                catalog.journal_entries()
         olddistname = distname
-    catalog.journal_events()
+    catalog.journal_entries()
 
     f.close()
 

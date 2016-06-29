@@ -55,7 +55,7 @@ def do_simbad(catalog):
         if is_number(name):
             continue
         name = catalog.add_entry(name)
-        source = (catalog.events[name]
+        source = (catalog.entries[name]
                   .add_source(srcname='SIMBAD astronomical database',
                               bibcode="2000A&AS..143....9W",
                               url="http://simbad.u-strasbg.fr/",
@@ -68,23 +68,23 @@ def do_simbad(catalog):
             if is_number(ali):
                 continue
             ali = name_clean(ali)
-            catalog.events[name].add_quantity('alias', ali, source)
+            catalog.entries[name].add_quantity('alias', ali, source)
         if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
             csources = ','.join(
-                [source, catalog.events[name].add_source(bibcode=row['COO_BIBCODE'])])
-            catalog.events[name].add_quantity('ra', row['RA'], csources)
-            catalog.events[name].add_quantity('dec', row['DEC'], csources)
+                [source, catalog.entries[name].add_source(bibcode=row['COO_BIBCODE'])])
+            catalog.entries[name].add_quantity('ra', row['RA'], csources)
+            catalog.entries[name].add_quantity('dec', row['DEC'], csources)
         if row['SP_BIBCODE']:
             ssources = uniq_cdl([source,
-                                 catalog.events[name]
+                                 catalog.entries[name]
                                  .add_source(bibcode=row['SP_BIBCODE'])] +
-                                ([catalog.events[name]
+                                ([catalog.entries[name]
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
-            catalog.events[name].add_quantity('claimedtype',
+            catalog.entries[name].add_quantity('claimedtype',
                                       row['SP_TYPE']
                                       .replace('SN.', '')
                                       .replace('SN', '').replace('(~)', '')
                                       .strip(': '), ssources)
-    catalog.journal_events()
+    catalog.journal_entries()
     return

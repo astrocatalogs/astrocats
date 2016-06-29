@@ -18,12 +18,12 @@ def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
-            events, name, source = catalog.new_event(
+            events, name, source = catalog.new_entry(
                 row[0], bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                 secondary=True)
-            catalog.events[name].add_quantity('alias', row[1], source)
+            catalog.entries[name].add_quantity('alias', row[1], source)
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
 
 
@@ -36,19 +36,19 @@ def do_snf_specta(catalog):
         PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
     for eventfolder in eventfolders:
         name = eventfolder
-        name = get_preferred_name(catalog.events, name)
+        name = get_preferred_name(catalog.entries, name)
         if oldname and name != oldname:
-            catalog.journal_events()
+            catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
         sec_reference = 'Nearby Supernova Factory'
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
-        sec_source = catalog.events[name].add_source(
+        sec_source = catalog.entries[name].add_source(
             srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode, secondary=True)
-        catalog.events[name].add_quantity('alias', name, sec_source)
+        catalog.entries[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]
-        source = catalog.events[name].add_source(bibcode=bibcode)
+        source = catalog.entries[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])
         use_path = os.path.join(
             PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')
@@ -112,7 +112,7 @@ def do_snf_specta(catalog):
 
             unit_err = 'Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'
             unit_flx = 'erg/s/cm^2/Angstrom'
-            catalog.events[name].add_spectrum(
+            catalog.entries[name].add_spectrum(
                 'Angstrom', unit_flx, u_time='MJD', time=time,
                 wavelengths=wavelengths, fluxes=fluxes, errors=errors, observer=observer,
                 observatory=observatory, telescope=telescope, instrument=instrument,
@@ -121,5 +121,5 @@ def do_snf_specta(catalog):
             if catalog.args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
                 break
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return

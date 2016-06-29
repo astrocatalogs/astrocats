@@ -60,35 +60,35 @@ def do_asassn(catalog):
             if tdi == 12:
                 host = td.text
 
-        sources = [catalog.events[name].add_source(
+        sources = [catalog.entries[name].add_source(
             url=asn_url, srcname='ASAS-SN Supernovae')]
         typesources = sources[:]
         if atellink:
             sources.append(
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_source(srcname='ATel ' +
                              atellink.split('=')[-1], url=atellink)))
         if typelink:
             typesources.append(
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_source(srcname='ATel ' +
                              typelink.split('=')[-1], url=typelink)))
         sources = ','.join(sources)
         typesources = ','.join(typesources)
-        catalog.events[name].add_quantity('alias', name, sources)
-        catalog.events[name].add_quantity('discoverdate', discdate, sources)
-        catalog.events[name].add_quantity('ra', ra, sources,
+        catalog.entries[name].add_quantity('alias', name, sources)
+        catalog.entries[name].add_quantity('discoverdate', discdate, sources)
+        catalog.entries[name].add_quantity('ra', ra, sources,
                                           unit='floatdegrees')
-        catalog.events[name].add_quantity('dec', dec, sources,
+        catalog.entries[name].add_quantity('dec', dec, sources,
                                           unit='floatdegrees')
-        catalog.events[name].add_quantity('redshift', redshift, sources)
-        catalog.events[name].add_quantity(
+        catalog.entries[name].add_quantity('redshift', redshift, sources)
+        catalog.entries[name].add_quantity(
             'hostoffsetang', hostoff, sources, unit='arcseconds')
         for ct in claimedtype.split('/'):
             if ct != 'Unk':
-                catalog.events[name].add_quantity('claimedtype', ct,
+                catalog.entries[name].add_quantity('claimedtype', ct,
                                                   typesources)
         if host != 'Uncatalogued':
-            catalog.events[name].add_quantity('host', host, sources)
-    catalog.journal_events()
+            catalog.entries[name].add_quantity('host', host, sources)
+    catalog.journal_entries()
     return

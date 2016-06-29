@@ -32,23 +32,23 @@ def do_sdss(catalog):
                 else:
                     name = 'SN' + row[5]
                 name = catalog.add_entry(name)
-                source = catalog.events[name].add_source(bibcode=bibcode)
-                catalog.events[name].add_quantity('alias', name, source)
-                catalog.events[name].add_quantity(
+                source = catalog.entries[name].add_source(bibcode=bibcode)
+                catalog.entries[name].add_quantity('alias', name, source)
+                catalog.entries[name].add_quantity(
                     'alias', 'SDSS-II SN ' + row[3], source)
 
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
-                    catalog.events[name].add_quantity('discoverdate', year,
+                    catalog.entries[name].add_quantity('discoverdate', year,
                                                       source)
 
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'ra', row[-4], source, unit='floatdegrees')
-                catalog.events[name].add_quantity(
+                catalog.entries[name].add_quantity(
                     'dec', row[-2], source, unit='floatdegrees')
             if rr == 1:
                 error = row[4] if float(row[4]) >= 0.0 else ''
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_quantity('redshift', row[2], source,
                                error=error,
                                kind='heliocentric'))
@@ -62,11 +62,11 @@ def do_sdss(catalog):
                 magnitude = row[3]
                 e_mag = row[4]
                 telescope = 'SDSS'
-                (catalog.events[name]
+                (catalog.entries[name]
                  .add_photometry(time=mjd, telescope=telescope,
                                  band=band, magnitude=magnitude,
                                  e_magnitude=e_mag, source=source,
                                  system='SDSS'))
 
-    catalog.journal_events()
+    catalog.journal_entries()
     return
