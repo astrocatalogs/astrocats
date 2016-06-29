@@ -7,14 +7,14 @@ from math import isnan
 from astropy.time import Time as astrotime
 from astroquery.vizier import Vizier
 
+from astrocats.catalog.utils import (convert_aq_output, get_sig_digits,
+                                     is_number, jd_to_mjd, make_date_string,
+                                     pbar, pretty_num, rep_chars, round_sig,
+                                     uniq_cdl)
+from astrocats.supernovae.utils import radec_clean
 from cdecimal import Decimal
-from astrocats import PATH
 
-from ...utils import (get_sig_digits, is_number, pbar, pretty_num, rep_chars,
-                      round_sig)
 from ..constants import CLIGHT, KM
-from ..funcs import (convert_aq_output, jd_to_mjd, make_date_string,
-                     radec_clean, uniq_cdl)
 
 
 def do_vizier(catalog):
@@ -34,7 +34,8 @@ def do_vizier(catalog):
         if is_number(name[:4]):
             name = 'SN' + name
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2012ApJS..200...12H')
+        source = catalog.entries[name].add_source(
+            bibcode='2012ApJS..200...12H')
         catalog.entries[name].add_quantity('alias', name, source)
         if '[' not in row['Gal']:
             catalog.entries[name].add_quantity(
@@ -57,7 +58,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = row['Name'].replace('SCP', 'SCP-')
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2012ApJ...746...85S')
+        source = catalog.entries[name].add_source(
+            bibcode='2012ApJ...746...85S')
         catalog.entries[name].add_quantity('alias', name, source)
         if row['f_Name']:
             catalog.entries[name].add_quantity('claimedtype', 'Ia', source)
@@ -89,7 +91,8 @@ def do_vizier(catalog):
         if float(e_magnitude) > 5.0:
             continue
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2012ApJ...746...85S')
+        source = catalog.entries[name].add_source(
+            bibcode='2012ApJ...746...85S')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_photometry(
             time=str(row['MJD']), band=row['Filter'],
@@ -115,7 +118,8 @@ def do_vizier(catalog):
         if float(e_magnitude) > 5.0:
             continue
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2004ApJ...602..571B')
+        source = catalog.entries[name].add_source(
+            bibcode='2004ApJ...602..571B')
         catalog.entries[name].add_quantity('alias', name, source)
         band = row['Filt']
         system = ''
@@ -140,7 +144,8 @@ def do_vizier(catalog):
             continue
         oldname = name
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014MNRAS.444.3258M')
+        source = catalog.entries[name].add_source(
+            bibcode='2014MNRAS.444.3258M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('redshift', str(
             row['z']), source, kind='heliocentric', error=str(row['e_z']))
@@ -157,7 +162,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = row['SN']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014MNRAS.438.1391P')
+        source = catalog.entries[name].add_source(
+            bibcode='2014MNRAS.438.1391P')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('redshift', str(
             row['zh']), source, kind='heliocentric')
@@ -172,7 +178,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = row['Name'].replace(' ', '')
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2012ApJ...749...18B')
+        source = catalog.entries[name].add_source(
+            bibcode='2012ApJ...749...18B')
         catalog.entries[name].add_quantity('alias', name, source)
         mjd = str(astrotime(2450000. + row['JD'], format='jd').mjd)
         band = row['Filt']
@@ -194,7 +201,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = 'SNLS-' + row['SNLS']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2010A&A...523A...7G')
+        source = catalog.entries[name].add_source(
+            bibcode='2010A&A...523A...7G')
         catalog.entries[name].add_quantity('alias', name, source)
         astrot = astrotime(2450000. + row['Date1'], format='jd').datetime
         catalog.entries[name].add_quantity('discoverdate', make_date_string(
@@ -217,7 +225,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = 'SN' + row['SN']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2004A&A...415..863G')
+        source = catalog.entries[name].add_source(
+            bibcode='2004A&A...415..863G')
         catalog.entries[name].add_quantity('alias', name, source)
         datesplit = row['Date'].split('-')
         date_str = make_date_string(datesplit[0], datesplit[1].lstrip('0'),
@@ -243,7 +252,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = 'SDSS-II SN ' + str(row['SNID'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2008AJ....136.2306H')
+        source = catalog.entries[name].add_source(
+            bibcode='2008AJ....136.2306H')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'claimedtype', row['SpType'].replace('SN.', '').strip(':'), source)
@@ -261,7 +271,8 @@ def do_vizier(catalog):
         else:
             name = 'SN' + name
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2010ApJ...708..661D')
+        source = catalog.entries[name].add_source(
+            bibcode='2010ApJ...708..661D')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'alias', 'SDSS-II ' + str(row['SDSS-II']), source)
@@ -278,7 +289,8 @@ def do_vizier(catalog):
         else:
             name = 'SN' + row['SN']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2010ApJ...708..661D')
+        source = catalog.entries[name].add_source(
+            bibcode='2010ApJ...708..661D')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('redshift', str(
             row['z']), source, error=str(row['e_z']))
@@ -291,7 +303,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = row['SN']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014ApJ...795...44R')
+        source = catalog.entries[name].add_source(
+            bibcode='2014ApJ...795...44R')
         catalog.entries[name].add_quantity('alias', name, source)
         astrot = astrotime(row['tdisc'], format='mjd').datetime
         catalog.entries[name].add_quantity('discoverdate',  make_date_string(
@@ -308,7 +321,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         name = row['SN']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014ApJ...795...44R')
+        source = catalog.entries[name].add_source(
+            bibcode='2014ApJ...795...44R')
         catalog.entries[name].add_quantity('alias', name, source)
         if row['mag'] != '--':
             catalog.entries[name].add_photometry(
@@ -416,7 +430,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014MNRAS.442..844F')
+        source = catalog.entries[name].add_source(
+            bibcode='2014MNRAS.442..844F')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('redshift', str(
             row['zhost']), source, kind='host')
@@ -431,7 +446,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014MNRAS.442..844F')
+        source = catalog.entries[name].add_source(
+            bibcode='2014MNRAS.442..844F')
         catalog.entries[name].add_quantity('alias', name, source)
         for band in ['B', 'V', 'R', 'I']:
             bandtag = band + 'mag'
@@ -451,7 +467,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = ''.join(row['SimbadName'].split(' '))
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2012MNRAS.425.1789S')
+        source = catalog.entries[name].add_source(
+            bibcode='2012MNRAS.425.1789S')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('alias', 'SN' + row['SN'], source)
         catalog.entries[name].add_quantity('host', row['Gal'], source)
@@ -472,7 +489,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = u'LSQ' + str(row['LSQ'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015ApJS..219...13W')
+        source = catalog.entries[name].add_source(
+            bibcode='2015ApJS..219...13W')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('ra', row['RAJ2000'], source)
         catalog.entries[name].add_quantity('dec', row['DEJ2000'], source)
@@ -488,7 +506,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015ApJS..219...13W')
+        source = catalog.entries[name].add_source(
+            bibcode='2015ApJS..219...13W')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_photometry(
             time=str(jd_to_mjd(Decimal(row['JD']))),
@@ -546,7 +565,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2011Natur.474..484Q')
+        source = catalog.entries[name].add_source(
+            bibcode='2011Natur.474..484Q')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_photometry(
             time=row['MJD'], band=row['Filt'], telescope=row['Tel'],
@@ -965,7 +985,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['SN'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2011ApJ...741...97D')
+        source = catalog.entries[name].add_source(
+            bibcode='2011ApJ...741...97D')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_photometry(
             time=str(jd_to_mjd(Decimal(row['JD']))),
@@ -984,7 +1005,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.448.1206M')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.448.1206M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + name[4:6], source)
@@ -1005,7 +1027,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.448.1206M')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.448.1206M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + name[4:6], source)
@@ -1026,7 +1049,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.448.1206M')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.448.1206M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + name[4:6], source)
@@ -1047,7 +1071,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.448.1206M')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.448.1206M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + name[4:6], source)
@@ -1066,7 +1091,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.448.1206M')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.448.1206M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + name[4:6], source)
@@ -1088,7 +1114,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.448.1206M')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.448.1206M')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + name[4:6], source)
@@ -1112,7 +1139,8 @@ def do_vizier(catalog):
         row = convert_aq_output(row)
         name = str(row['SN']).replace(' ', '')
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2012AJ....143..126B')
+        source = catalog.entries[name].add_source(
+            bibcode='2012AJ....143..126B')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'claimedtype', 'Ia-' + row['Wcl'], source)
@@ -1152,7 +1180,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         name = catalog.add_entry(row['SN'])
-        source = catalog.entries[name].add_source(bibcode='2015ApJS..220....9F')
+        source = catalog.entries[name].add_source(
+            bibcode='2015ApJS..220....9F')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('claimedtype', row['Type'], source)
         catalog.entries[name].add_photometry(
@@ -1166,7 +1195,8 @@ def do_vizier(catalog):
     for row in pbar(table, current_task):
         row = convert_aq_output(row)
         name = catalog.add_entry(name='SN' + row['SN'])
-        source = catalog.entries[name].add_source(bibcode='2008ApJ...673..999P')
+        source = catalog.entries[name].add_source(
+            bibcode='2008ApJ...673..999P')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'ra', row['RAJ2000'], source, unit='floatdegrees')
@@ -1194,7 +1224,7 @@ def do_vizier(catalog):
         catalog.entries[name].add_quantity('ra', row['RAJ2000'], source)
         catalog.entries[name].add_quantity('dec', row['DEJ2000'], source)
         catalog.entries[name].add_quantity('redshift', row['zsp'] if row['zsp']
-                                          else row['zph'], source, kind='host')
+                                           else row['zph'], source, kind='host')
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + row['SNSDF'][:2] + '/' + row['SNSDF'][2:4],
             source, kind='host')

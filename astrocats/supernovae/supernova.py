@@ -13,7 +13,7 @@ from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
                                      get_event_filename, is_number, jd_to_mjd,
                                      make_date_string, pretty_num,
                                      read_json_dict, tprint, trim_str_arr,
-                                     uniq_cdl)
+                                     uniq_cdl, get_sig_digits)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
                                         radec_clean, same_tag_num,
                                         same_tag_str)

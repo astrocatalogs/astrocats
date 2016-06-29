@@ -8,7 +8,7 @@ from math import floor
 from astropy.time import Time as astrotime
 
 from cdecimal import Decimal
-from astrocats import PATH
+
 
 from ...utils import is_number, pbar, pbar_strings
 from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT

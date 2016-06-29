@@ -7,7 +7,7 @@ import re
 from collections import OrderedDict
 from html import unescape
 
-from astrocats import PATH
+
 from astrocats.catalog.utils import jd_to_mjd, pbar
 from cdecimal import Decimal
 

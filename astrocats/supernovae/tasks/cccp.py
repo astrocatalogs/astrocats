@@ -9,7 +9,7 @@ from glob import glob
 import requests
 from bs4 import BeautifulSoup
 
-from astrocats import PATH
+
 from astrocats.catalog.utils import (is_number, pbar, pbar_strings, round_sig,
                                      uniq_cdl)
 from cdecimal import Decimal

@@ -10,7 +10,7 @@ import requests
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-from astrocats import PATH
+
 from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 

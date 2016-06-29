@@ -3,7 +3,7 @@
 import csv
 import os
 
-from astrocats import PATH
+
 from astrocats.catalog.utils import pbar
 
 
