@@ -1,4 +1,5 @@
-#!/usr/local/bin/python3.5
+"""Data import methods.
+"""
 
 import codecs
 import importlib
@@ -8,9 +9,10 @@ import resource
 import warnings
 from collections import OrderedDict
 
-from scripts import FILENAME
+from .. import FILENAME, main
 
-from .. import Catalog, Task, main
+from . import task
+from .catalog import Catalog
 from . import Supernova
 from ..utils import pbar, repo_file_list
 from .constants import TRAVIS_QUERY_LIMIT
@@ -31,7 +33,7 @@ def import_main(catalog=None):
     if catalog is None:
         warnings.warn("`args` not provided, loading new")
         args = main.load_args(args=['importer'])
-        catalog = Catalog.Catalog(args, Supernova)
+        catalog = Catalog(args, Supernova)
 
     log = catalog.log
 
@@ -113,9 +115,6 @@ def load_task_list(args, log):
     with positive values and then negative values, e.g. [0, 2, 10, -10, -1].
     """
 
-    # print("refresh_list = ", args.refresh_list)
-    # sys.exit(3189752)
-
     if args.args_task_list is not None:
         if args.yes_task_list is not None or args.no_task_list is not None:
             raise ValueError(
@@ -139,7 +138,7 @@ def load_task_list(args, log):
     # `defaults` is a dictionary where each `key` is a task name, and values
     # are its properties
     for key, val in data.items():
-        tasks[key] = Task.Task(name=key, **val)
+        tasks[key] = task.Task(name=key, **val)
         # Modify `active` tasks
         # ---------------------
         # If specific list of tasks is given, make only those active
