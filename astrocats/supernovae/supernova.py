@@ -91,7 +91,7 @@ class Supernova(Entry):
         if not srcname or not bibcode:
             srcname, bibcode = self._parse_srcname_bibcode(srcname, bibcode)
 
-        self.catalog.log.debug("`srcname`: '{}', `bibcode`: '{}'".foramt(
+        self.catalog.log.debug("`srcname`: '{}', `bibcode`: '{}'".format(
             srcname, bibcode))
 
         # These are empty lists if no sources
