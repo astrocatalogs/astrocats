@@ -1,5 +1,6 @@
 """Object for each 'task' needed to be carried out by the 'importer'.
 """
+import os
 
 
 class Task():
@@ -12,6 +13,8 @@ class Task():
     active = True    # Whether this task should be performed or not
     # Module in which to find `function` for carrying out this task
     module = None
+    # Repository in which the data comes from
+    repo = None
     function = ''    # Function to execute when carrying out this task
     priority = None  # Order in which tasks should be executed
 
@@ -24,10 +27,11 @@ class Task():
 
     def __repr__(self):
         retval = ("Task(name='{}', nice_name='{}', active='{}', update='{}', "
-                  "archived='{}', module='{}', function='{}', priority='{}'")
+                  "archived='{}', module='{}', function='{}', repo='{}', "
+                  "priority='{}'")
         retval = retval.format(self.name, self.nice_name, self.active,
                                self.update, self.archived, self.module,
-                               self.function, self.priority)
+                               self.function, self.repo, self.priority)
         return retval
 
     def current_task(self, args):
@@ -59,3 +63,8 @@ class Task():
             return True
 
         return False
+
+    def get_repo_path(self, base_path):
+        """
+        """
+        return os.path.join(base_path, self.repo, '')
