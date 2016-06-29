@@ -86,7 +86,6 @@ def import_main(catalog=None):
     for ii, fi in enumerate(pbar(files, current_task)):
         name = os.path.basename(os.path.splitext(fi)[0]).replace('.json', '')
         name = catalog.add_entry(name)
-        extinctions_dict, bibauthor_dict = derive_and_sanitize(catalog)
         # FIX: is this check needed here (also in 'journal_events')?
         if catalog.args.write_entries:
             catalog.journal_entries()
@@ -98,9 +97,6 @@ def import_main(catalog=None):
             ',', ':'), ensure_ascii=False)
         with codecs.open(fname, 'w', encoding='utf8') as jsf:
             jsf.write(json_str)
-
-    json_dump(bibauthor_dict, FILENAME.BIBAUTHORS)
-    json_dump(extinctions_dict, FILENAME.EXTINCT)
 
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
         resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))
