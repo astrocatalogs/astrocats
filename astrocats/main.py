@@ -5,7 +5,7 @@
 def main():
     from datetime import datetime
 
-    from .catalog.catalog import Catalog
+    # from .catalog.catalog import Catalog
 
     beg_time = datetime.now()
     # Process command-line arguments to determine action
@@ -16,8 +16,13 @@ def main():
 
     # Set the prototype to the desired catalog Entry type. Probably should be a
     # switch in args.
-    from . import supernovae
+
+    # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
+    #    ON ARGS WHAT TO IMPORT AND INITIALIZE
+
+    # from . import supernovae
     from .supernovae.supernova import Supernova
+    from .supernovae.catalog import Catalog
     proto = Supernova
     catalog = Catalog(proto, args)
     git_vers = get_git()
