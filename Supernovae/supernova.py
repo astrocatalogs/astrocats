@@ -9,15 +9,14 @@ from collections import OrderedDict
 from astropy.time import Time as astrotime
 
 from cdecimal import Decimal
-from scripts import FILENAME, PATH, SCHEMA
 
-from .. Catalog.entry import KEYS, Entry
-
-from ..utils import (bandmetaf, bandrepf, get_event_filename, get_repo_folders,
-                     get_repo_years, get_sig_digits, is_number, pretty_num,
-                     tprint)
-from .constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL, PREF_KINDS,
-                        REPR_BETTER_QUANTITY)
+from .. import FILENAME, PATH, SCHEMA
+from ..Catalog.entry import KEYS, Entry
+from ..Catalog.utils import (alias_priority, bandmetaf, bandrepf,
+                             frame_priority, get_event_filename,
+                             get_repo_folders, get_repo_years, get_sig_digits,
+                             is_number, pretty_num, tprint)
+from .constants import MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
 from .funcs import (get_source_year, host_clean, jd_to_mjd, make_date_string,
                     name_clean, radec_clean, read_json_dict, same_tag_num,
                     same_tag_str, trim_str_arr, uniq_cdl)
@@ -370,7 +369,6 @@ class Supernova(Entry):
 
         return outdir, filename
 
-<<<<<<< HEAD
     def sanitize(self):
         # Calculate some columns based on imported data, sanitize some fields
         name = self['name']
@@ -381,7 +379,8 @@ class Supernova(Entry):
                 self.add_quantity('alias', name, '1')
             else:
                 source = self.add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 self.add_quantity('alias', name, source)
 
@@ -391,8 +390,8 @@ class Supernova(Entry):
                  split('/')[0]) >= 2016 and
              not any(['AT' in x for x in aliases]))):
             source = self.add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
             self.add_quantity('alias', 'AT' + name[2:], source)
 
         self['alias'] = list(
@@ -411,8 +410,8 @@ class Supernova(Entry):
                 del(self['claimedtype'])
         if 'claimedtype' not in self and name.startswith('AT'):
             source = self.add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
-                secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
             self.add_quantity('claimedtype', 'Candidate', source)
 
         if 'photometry' in self:
@@ -443,7 +442,7 @@ class Supernova(Entry):
 
                     if source['bibcode'] not in self.catalog.bibauthor_dict:
                         bibcode = source['bibcode']
-                        adsquery = (ADS_BIB_URL +
+                        adsquery = (self.catalog.ADS_BIB_URL +
                                     urllib.parse.quote(bibcode) +
                                     '&data_type=Custom&format=%253m%20%25(y)')
                         response = urllib.request.urlopen(adsquery)
@@ -505,7 +504,8 @@ class Supernova(Entry):
             if source['alias'] == alias:
                 return source
         raise ValueError(
-            "Source '{}': alias '{}' not found!".format(self[SN_KEYS.NAME], alias))
+            "Source '{}': alias '{}' not found!".format(
+                self[SN_KEYS.NAME], alias))
 
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
@@ -578,7 +578,8 @@ class Supernova(Entry):
         # Clean some legacy fields
         if 'aliases' in self and isinstance(self['aliases'], list):
             source = self.add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
             for alias in self['aliases']:
                 self.add_quantity('alias', alias, source)
             del self['aliases']
@@ -590,7 +591,8 @@ class Supernova(Entry):
             distinctfroms = [x for x in self[SN_KEYS.DISTINCTS]]
             del self[SN_KEYS.DISTINCTS]
             source = self.add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
             for df in distinctfroms:
                 self.add_quantity(SN_KEYS.DISTINCTS, df, source)
 
@@ -598,20 +600,23 @@ class Supernova(Entry):
                 isinstance(self['errors'], list) and \
                 'sourcekind' in self['errors'][0]:
             source = self.add_source(
-                bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL, secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
             for err in self['errors']:
                 self.add_quantity('error', err['quantity'], source,
                                   kind=err['sourcekind'], extra=err['id'])
             del self['errors']
 
         if not bibcodes:
-            self.add_source(bibcode=OSC_BIBCODE,
-                            srcname=OSC_NAME, url=OSC_URL, secondary=True)
-            bibcodes = [OSC_BIBCODE]
+            self.add_source(bibcode=self.catalog.OSC_BIBCODE,
+                            srcname=self.catalog.OSC_NAME,
+                            url=self.catalog.OSC_URL, secondary=True)
+            bibcodes = [self.catalog.OSC_BIBCODE]
 
         # Go through all keys in 'dirty' event
         for key in self.keys():
-            if key in [SN_KEYS.NAME, SN_KEYS.SCHEMA, SN_KEYS.SOURCES, SN_KEYS.ERRORS]:
+            if key in [SN_KEYS.NAME, SN_KEYS.SCHEMA,
+                       SN_KEYS.SOURCES, SN_KEYS.ERRORS]:
                 pass
             elif key == 'photometry':
                 for p, photo in enumerate(self['photometry']):
@@ -637,7 +642,8 @@ class Supernova(Entry):
                        scorrected="", observatory="", observer="", host=False,
                        includeshost=False, survey="", kcorrected="", flux="",
                        fluxdensity="", e_flux="", e_fluxdensity="", u_flux="",
-                       u_fluxdensity="", frequency="", u_frequency="", counts="",
+                       u_fluxdensity="", frequency="", u_frequency="",
+                       counts="",
                        e_counts="", nhmw="", photonindex="", unabsorbedflux="",
                        e_unabsorbedflux="", energy="", u_energy="",
                        e_lower_magnitude="", e_upper_magnitude="",
@@ -653,10 +659,9 @@ class Supernova(Entry):
                    band + '", AB magnitude: "' + magnitude + '"')
             return
 
-        if (not host and not is_number(time)) or (not is_number(magnitude) and not
-                                                  is_number(flux) and not
-                                                  is_number(fluxdensity) and not
-                                                  is_number(counts)):
+        if ((not host and not is_number(time)) or
+            (not is_number(magnitude) and not is_number(flux) and not
+             is_number(fluxdensity) and not is_number(counts))):
             warnings.warn('Time or brightness not numerical, not adding.')
             tprint('Name : "' + name + '", Time: "' + time + '", Band: "' +
                    band + '", AB magnitude: "' + magnitude + '"')
@@ -971,7 +976,8 @@ class Supernova(Entry):
             mldt, mlmag, mlband, mlsource = self._get_max_light()
             if mldt:
                 source = self.add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 max_date = make_date_string(mldt.year, mldt.month, mldt.day)
                 self.add_quantity(
@@ -980,7 +986,8 @@ class Supernova(Entry):
                     derived=True)
             if mlmag:
                 source = self.add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 self.add_quantity(
                     'maxappmag', pretty_num(mlmag),
@@ -988,7 +995,8 @@ class Supernova(Entry):
                     derived=True)
             if mlband:
                 source = self.add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 (self
                  .add_quantity('maxband',
@@ -1002,7 +1010,8 @@ class Supernova(Entry):
             fldt, flsource = self._get_first_light()
             if fldt:
                 source = self.add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
@@ -1028,7 +1037,8 @@ class Supernova(Entry):
             if minspecmjd < float("+inf"):
                 fldt = astrotime(minspecmjd, format='mjd').datetime
                 source = self.add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
