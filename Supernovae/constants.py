@@ -34,6 +34,3 @@ MAX_BANDS = [
     ['V', 'G'],       # if not, V-like bands
     ['R', 'r']        # if not, R-like bands
 ]
-
-PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic',
-              'photometric', 'host', 'cluster', '']

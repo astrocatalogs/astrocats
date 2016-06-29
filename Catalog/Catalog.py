@@ -6,10 +6,10 @@ from git import Repo
 
 from scripts import FILENAME, PATH, SCHEMA
 
-from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
 from .Entry import KEYS
-from .importer.funcs import (event_attr_priority, name_clean,
-                             read_json_arr, read_json_dict, uniq_cdl)
+from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
+from .importer.funcs import (event_attr_priority, name_clean, read_json_arr,
+                             read_json_dict, uniq_cdl)
 from .utils import is_number, logger, pbar, repo_file_list
 
 
@@ -123,7 +123,7 @@ class Catalog():
                 return newname
 
         # Create new entry
-        new_entry = self.proto(newname)
+        new_entry = self.proto(self, newname)
         new_entry['schema'] = SCHEMA.URL
         self.log.log(self.log._LOADED,
                      "Created new entry for '{}'".format(newname))
@@ -489,7 +489,7 @@ class Catalog():
         return
 
     def journal_entries(self, clear=True, gz=False, bury=False,
-                       write_stubs=False):
+                        write_stubs=False):
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 

@@ -1,5 +1,6 @@
 """
 """
+import codecs
 import json
 import os
 import warnings
@@ -39,8 +40,9 @@ class Entry(OrderedDict):
     # Whether or not this entry is a 'stub'.  Assume False
     _stub = False
     filename = None
+    catalog = None
 
-    def __init__(self, name, stub=False):
+    def __init__(self, catalog, name, stub=False):
         """Create a new `Entry` object with the given `name`.
         """
         # if not name:
@@ -48,10 +50,11 @@ class Entry(OrderedDict):
         self[KEYS.NAME] = name
         self._stub = stub
         self.filename = None
+        self.catalog = catalog
         return
 
     @classmethod
-    def init_from_file(cls, name=None, path=None, clean=False):
+    def init_from_file(cls, catalog=None, name=None, path=None, clean=False):
         if name is None and path is None:
             raise ValueError("Either entry `name` or `path` must be specified "
                              "to load entry.")
@@ -79,7 +82,7 @@ class Entry(OrderedDict):
             return None
 
         # Create a new `Entry` instance
-        new_entry = cls(name)
+        new_entry = cls(catalog, name)
         # Fill it with data from json file
         new_entry._load_data_from_json(load_path)
 
@@ -112,6 +115,28 @@ class Entry(OrderedDict):
                 self_name, name))
 
         self.check()
+        return
+
+    def save(self, empty=False, bury=False, gz=False, final=False):
+        outdir, filename = self._get_save_path(bury=bury)
+
+        if final:
+            self.sanitize()
+
+        # FIX: use 'dump' not 'dumps'
+        jsonstring = json.dumps({self[KEYS.NAME]: self},
+                                indent='\t', separators=(',', ':'),
+                                ensure_ascii=False)
+        if not os.path.isdir(outdir):
+            raise RuntimeError("Output directory '{}' for event '{}' does "
+                               "not exist.".format(outdir, self[KEYS.NAME]))
+        save_name = os.path.join(outdir, filename + '.json')
+        with codecs.open(save_name, 'w', encoding='utf8') as sf:
+            sf.write(jsonstring)
+
+        return save_name
+
+    def sanitize(self):
         return
 
     def get_aliases(self, includename=True):
