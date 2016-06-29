@@ -300,6 +300,15 @@ class Catalog:
 
         return files
 
+    def get_repo_boneyard(self):
+        bone_path = self.repos_dict['boneyard']
+        try:
+            bone_path = bone_path[0]
+        except TypeError:
+            pass
+        bone_path = os.path.join(self.FILENAME.PATH_OUTPUT, bone_path, '')
+        return bone_path
+
     def get_preferred_name(self, name):
         if name not in self.entries:
             # matches = []
