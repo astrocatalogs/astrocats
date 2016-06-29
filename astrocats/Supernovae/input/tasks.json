@@ -1,0 +1,401 @@
+{
+    "internal": {
+        "nice_name": "%pre metadata and photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.general_data",
+        "function": "do_internal",
+        "priority": 1
+    },
+    "radio": {
+        "nice_name": "%pre radio data",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.general_data",
+        "function": "do_external_radio",
+        "priority": 2
+    },
+    "xray": {
+        "nice_name": "%pre X-ray data",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.general_data",
+        "function": "do_external_xray",
+        "priority": 2
+    },
+    "simbad": {
+        "nice_name": "%pre SIMBAD",
+        "active": false,
+        "update": false,
+        "module": "importer.tasks.simbad",
+        "function": "do_simbad",
+        "priority": 3
+    },
+    "vizier": {
+        "nice_name": "%pre VizieR",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.vizier",
+        "function": "do_vizier",
+        "priority": 3
+    },
+    "donations": {
+        "nice_name": "%pre donations",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.donations",
+        "function": "do_donations",
+        "priority": 4
+    },
+    "pessto-dr1": {
+        "nice_name": "%pre PESSTO DR1",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.pessto",
+        "function": "do_pessto",
+        "priority": 5
+    },
+    "scp": {
+        "nice_name": "%pre SCP",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.scp",
+        "function": "do_scp",
+        "priority": 6
+    },
+    "ascii": {
+        "nice_name": "%pre ASCII",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.ascii",
+        "function": "do_ascii",
+        "priority": 7
+    },
+    "cccp": {
+        "nice_name": "%pre CCCP",
+        "active": true,
+        "update": false,
+        "archived": true,
+        "module": "importer.tasks.cccp",
+        "function": "do_cccp",
+        "priority": 8
+    },
+    "suspect_photo": {
+        "nice_name": "%pre SUSPECT",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.suspect",
+        "function": "do_suspect_photo",
+        "priority": 9
+    },
+    "cfa_photo": {
+        "nice_name": "%pre CfA archive photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.cfa",
+        "function": "do_cfa_photo",
+        "priority": 10
+    },
+    "ucb_photo": {
+        "nice_name": "%pre UCB photometry",
+        "active": true,
+        "update": false,
+        "archived": true,
+        "module": "importer.tasks.berkeley",
+        "function": "do_ucb_photo",
+        "priority": 11
+    },
+    "sdss": {
+        "nice_name": "%pre SDSS photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.sdss",
+        "function": "do_sdss",
+        "priority": 12
+    },
+    "csp_photo": {
+        "nice_name": "%pre CSP photometry",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.carnegie",
+        "function": "do_csp_photo",
+        "priority": 13
+    },
+    "itep": {
+        "nice_name": "%pre ITEP",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.itep",
+        "function": "do_itep",
+        "priority": 14
+    },
+    "asiago_photo": {
+        "nice_name": "%pre Asiago metadata",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.asiago",
+        "function": "do_asiago_photo",
+        "priority": 15
+    },
+    "tns": {
+        "nice_name": "%pre TNS metadata",
+        "active": true,
+        "update": true,
+        "archived": true,
+        "module": "importer.tasks.tns",
+        "function": "do_tns",
+        "priority": 16
+    },
+    "rochester": {
+        "nice_name": "%pre Latest Supernovae",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.rochester",
+        "function": "do_rochester",
+        "priority": 17
+    },
+    "lennarz": {
+        "nice_name": "%pre Lennarz",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.vizier",
+        "function": "do_lennarz",
+        "priority": 18
+    },
+    "fermi": {
+        "nice_name": "%pre Fermi",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.fermi",
+        "function": "do_fermi",
+        "priority": 19
+    },
+    "gaia": {
+        "nice_name": "%pre GAIA",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.gaia",
+        "function": "do_gaia",
+        "priority": 20
+    },
+    "ogle": {
+        "nice_name": "%pre OGLE",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.ogle",
+        "function": "do_ogle",
+        "priority": 21
+    },
+    "snls_photo": {
+        "nice_name": "%pre SNLS",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.snls",
+        "function": "do_snls_photo",
+        "priority": 22
+    },
+    "psthreepi": {
+        "nice_name": "%pre Pan-STARRS 3π",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.panstarrs",
+        "function": "do_ps_threepi",
+        "priority": 23
+    },
+    "psmds": {
+        "nice_name": "%pre Pan-STARRS MDS",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.panstarrs",
+        "function": "do_ps_mds",
+        "priority": 24
+    },
+    "psst": {
+        "nice_name": "%pre PSST",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.psst",
+        "function": "do_psst",
+        "priority": 25
+    },
+    "grb": {
+        "nice_name": "%pre GRB catalog",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.grb",
+        "function": "do_grb",
+        "priority": 26
+    },
+    "crts": {
+        "nice_name": "%pre CRTS",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.crts",
+        "function": "do_crts",
+        "priority": 27
+    },
+    "snhunt": {
+        "nice_name": "%pre SNhunt",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.snhunt",
+        "function": "do_snhunt",
+        "priority": 28
+    },
+    "nedd": {
+        "nice_name": "%pre NED-D",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.nedd",
+        "function": "do_nedd",
+        "priority": 29
+    },
+    "cpcs": {
+        "nice_name": "%pre CPCS",
+        "active": true,
+        "update": true,
+        "archived": false,
+        "module": "importer.tasks.cpcs",
+        "function": "do_cpcs",
+        "priority": 30
+    },
+    "ptf": {
+        "nice_name": "%pre PTF",
+        "active": true,
+        "update": false,
+        "archived": false,
+        "module": "importer.tasks.palomar",
+        "function": "do_ptf",
+        "priority": 31
+    },
+    "des": {
+        "nice_name": "%pre DES",
+        "active": true,
+        "update": false,
+        "archived": false,
+        "module": "importer.tasks.des",
+        "function": "do_des",
+        "priority": 32
+    },
+    "asassn": {
+        "nice_name": "%pre ASASSN",
+        "active": true,
+        "update": true,
+        "module": "importer.tasks.asassn",
+        "function": "do_asassn",
+        "priority": 33
+    },
+    "snf": {
+        "nice_name": "%pre SNF aliases",
+        "active": true,
+        "update": false,
+        "archived": true,
+        "module": "importer.tasks.snfactory",
+        "function": "do_snf_aliases",
+        "priority": 34
+    },
+    "asiago_spectra": {
+        "nice_name": "%pre Asiago spectra",
+        "active": true,
+        "update": true,
+        "module": "importer.tasks.asiago",
+        "function": "do_asiago_spectra",
+        "priority": 200
+    },
+    "wiserep_spectra": {
+        "nice_name": "%pre WISeREP spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.wiserep",
+        "function": "do_wiserep_spectra",
+        "priority": 201
+    },
+    "cfa_spectra": {
+        "nice_name": "%pre CfA archive spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.cfa",
+        "function": "do_cfa_spectra",
+        "priority": 202
+    },
+    "snls_spectra": {
+        "nice_name": "%pre SNLS spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.snls",
+        "function": "do_snls_spectra",
+        "priority": 203
+    },
+    "csp_spectra": {
+        "nice_name": "%pre CSP spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.carnegie",
+        "function": "do_csp_spectra",
+        "priority": 204
+    },
+    "ucb_spectra": {
+        "nice_name": "%pre UCB spectra",
+        "active": true,
+        "update": true,
+        "archived": true,
+        "module": "importer.tasks.berkeley",
+        "function": "do_ucb_spectra",
+        "priority": 205
+    },
+    "suspect_spectra": {
+        "nice_name": "%pre SUSPECT spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.suspect",
+        "function": "do_suspect_spectra",
+        "priority": 206
+    },
+    "snf_spectra": {
+        "nice_name": "%pre SNF spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.snfactory",
+        "function": "do_snf_specta",
+        "priority": 207
+    },
+    "superfit_spectra": {
+        "nice_name": "%pre Superfit spectra",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.superfit",
+        "function": "do_superfit_spectra",
+        "priority": 208
+    },
+    "mergeduplicates": {
+        "nice_name": "Merging duplicates",
+        "active": true,
+        "update": false,
+        "module": "importer.Events",
+        "function": "merge_duplicates",
+        "priority": -100
+    },
+    "setprefnames": {
+        "nice_name": "Setting preferred names",
+        "active": true,
+        "update": false,
+        "module": "importer.Events",
+        "function": "set_preferred_names",
+        "priority": -10
+    },
+    "derive": {
+        "nice_name": "Added derived quantities",
+        "active": true,
+        "update": false,
+        "module": "importer.tasks.derive",
+        "function": "do_derivations",
+        "priority": -1
+    }
+}
