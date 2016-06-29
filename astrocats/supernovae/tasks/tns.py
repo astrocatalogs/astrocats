@@ -7,7 +7,7 @@ from math import ceil
 import requests
 from astropy.time import Time as astrotime
 
-from astrocats import PATH
+
 from scripts.utils import pbar, pretty_num
 
 from ..funcs import load_cached_url

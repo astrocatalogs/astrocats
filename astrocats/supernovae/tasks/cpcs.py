@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 import requests
 
-from astrocats import PATH
+
 from astrocats.catalog.utils import uniq_cdl, is_number, pbar, round_sig
 
 

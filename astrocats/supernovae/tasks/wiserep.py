@@ -11,7 +11,7 @@ from html import unescape
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-from astrocats import PATH
+
 
 from ...utils import is_number, pbar, pbar_strings, tprint
 from ..constants import TRAVIS_QUERY_LIMIT

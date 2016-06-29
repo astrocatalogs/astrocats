@@ -3,7 +3,7 @@
 import csv
 import os
 
-from astrocats import PATH
+
 
 
 def do_pessto(catalog):

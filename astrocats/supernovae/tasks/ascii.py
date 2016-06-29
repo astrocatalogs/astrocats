@@ -9,7 +9,7 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-from astrocats import PATH
+
 from astrocats.catalog.utils import (is_number, jd_to_mjd, make_date_string,
                                      pbar, pbar_strings)
 from cdecimal import Decimal

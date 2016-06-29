@@ -40,6 +40,7 @@
         "update": false,
         "module": "supernovae.tasks.vizier",
         "function": "do_vizier",
+        "repo": "input/sne-external",
         "priority": 3
     },
     "donations": {

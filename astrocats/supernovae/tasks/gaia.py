@@ -6,7 +6,7 @@ import re
 import urllib
 
 from cdecimal import Decimal
-from astrocats import PATH
+
 from astrocats.catalog.utils import pbar, jd_to_mjd
 
 
