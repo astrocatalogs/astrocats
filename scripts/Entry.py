@@ -53,10 +53,10 @@ class Entry(OrderedDict):
     @classmethod
     def init_from_file(cls, name=None, path=None, clean=False):
         if name is None and path is None:
-            raise ValueError("Either event `name` or `path` must be specified "
-                             "to load event.")
+            raise ValueError("Either entry `name` or `path` must be specified "
+                             "to load entry.")
         if name is not None and path is not None:
-            raise ValueError("Either event `name` or `path` should be "
+            raise ValueError("Either entry `name` or `path` should be "
                              "specified, not both.")
 
         # If the path is given, use that to load from
@@ -79,14 +79,14 @@ class Entry(OrderedDict):
             return None
 
         # Create a new `Entry` instance
-        new_event = cls(name)
+        new_entry = cls(name)
         # Fill it with data from json file
-        new_event._load_data_from_json(load_path)
+        new_entry._load_data_from_json(load_path)
 
         if clean:
-            new_event.clean()
+            new_entry.clean()
 
-        return new_event
+        return new_entry
 
     def _load_data_from_json(self, fhand):
         """FIX: check for overwrite??
@@ -131,9 +131,9 @@ class Entry(OrderedDict):
 
         Usage:
         -----
-        To convert a normal event into a stub (for example), overwrite the event
-        in place, i.e.
-        >>> events[name] = events[name].get_stub()
+        To convert a normal entry into a stub (for example), overwrite the
+        entry in place, i.e.
+        >>> entries[name] = entries[name].get_stub()
 
         """
         stub = type(self)(self[KEYS.NAME], stub=True)

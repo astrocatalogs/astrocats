@@ -18,7 +18,7 @@ def do_snf_aliases(catalog):
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
-            events, name, source = catalog.new_entry(
+            name, source = catalog.new_entry(
                 row[0], bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                 secondary=True)
             catalog.entries[name].add_quantity('alias', row[1], source)
