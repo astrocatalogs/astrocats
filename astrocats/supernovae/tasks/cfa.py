@@ -7,20 +7,20 @@ from math import floor
 
 from astropy.time import Time as astrotime
 
+from astrocats.catalog.utils import (is_number, jd_to_mjd, pbar, pbar_strings,
+                                     uniq_cdl)
+from astrocats.supernovae.utils import clean_snname
 from cdecimal import Decimal
 
-
-from ...utils import is_number, pbar, pbar_strings
 from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-from ..funcs import clean_snname, jd_to_mjd
-from astrocats.catalog.utils import uniq_cdl
 
 
 def do_cfa_photo(catalog):
     from html import unescape
     import re
     current_task = catalog.get_current_task_str()
-    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'cfa-input/*.dat'))
+    file_names = glob(os.path.join(
+        catalog.get_current_task_repo(), 'cfa-input/*.dat'))
     for fname in pbar_strings(file_names, desc=current_task):
         f = open(fname, 'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -154,7 +154,8 @@ def do_cfa_spectra(catalog):
     file_names = next(os.walk(os.path.join(
         catalog.get_current_task_repo(), 'CfA_SNIa')))[1]
     for name in pbar_strings(file_names, current_task):
-        fullpath = os.path.join(catalog.get_current_task_repo(), 'CfA_SNIa/') + name
+        fullpath = os.path.join(
+            catalog.get_current_task_repo(), 'CfA_SNIa/') + name
         origname = name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
