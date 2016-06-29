@@ -7,7 +7,6 @@ from git import Repo
 from scripts import FILENAME, PATH, SCHEMA
 
 from .entry import KEYS
-from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
 from .importer.funcs import name_clean, read_json_arr, read_json_dict, uniq_cdl
 from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
 
@@ -342,7 +341,7 @@ class Catalog:
                             "Still journaling...".format(len(entries)))
                     entries = self.journal_entries()
 
-            if self.args.travis and n1 > TRAVIS_QUERY_LIMIT:
+            if self.args.travis and n1 > self.TRAVIS_QUERY_LIMIT:
                 break
 
         return entries
@@ -446,7 +445,7 @@ class Catalog:
                         del self.entries[name]
                     self.journal_entries()
 
-            if self.args.travis and ni > TRAVIS_QUERY_LIMIT:
+            if self.args.travis and ni > self.TRAVIS_QUERY_LIMIT:
                 break
 
         return
@@ -554,7 +553,7 @@ class Catalog:
                     self.log.info(
                         "Saved {} to '{}'.".format(name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >
-                            COMPRESS_ABOVE_FILESIZE):
+                            self.COMPRESS_ABOVE_FILESIZE):
                         save_name = _compress_gz(save_name)
                         self.log.debug("Compressed '{}' to '{}'".format(
                             name, save_name))
