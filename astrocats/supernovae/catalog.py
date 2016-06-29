@@ -20,6 +20,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         super().__init__(args)
 
         self._load_aux_data()
+        self.FILENAME = FILENAME
 
         return
 
@@ -53,8 +54,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         """
         """
         repo_folders = []
-        repo_folders.append(self.repos_dict['external'])
-        repo_folders.append(self.repos_dict['internal'])
+        repo_folders += self.repos_dict['external']
+        repo_folders += self.repos_dict['internal']
         repo_folders = [os.path.join(FILENAME.PATH_INPUT, rf)
                         for rf in repo_folders]
         return repo_folders
@@ -63,8 +64,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         """
         """
         repo_folders = []
-        repo_folders.append(self.repos_dict['output'])
-        repo_folders.append(self.repos_dict['boneyard'])
+        repo_folders += self.repos_dict['output']
+        repo_folders += self.repos_dict['boneyard']
         repo_folders = [os.path.join(FILENAME.PATH_OUTPUT, rf)
                         for rf in repo_folders]
         return repo_folders
