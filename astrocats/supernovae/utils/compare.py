@@ -3,6 +3,8 @@ they are unique.
 '''
 from cdecimal import Decimal
 
+__all__ = ['same_tag_num', 'same_tag_str']
+
 
 def same_tag_num(photo, val, tag, canbelist=False):
     issame = (
