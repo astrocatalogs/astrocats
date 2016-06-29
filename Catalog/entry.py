@@ -5,32 +5,16 @@ import os
 import warnings
 from collections import OrderedDict
 
-from astropy.time import Time as astrotime
-
-from cdecimal import Decimal
-from scripts import FILENAME, PATH
-
-from .importer.constants import (MAX_BANDS, OSC_BIBCODE, OSC_NAME, OSC_URL,
-                                 PREF_KINDS, REPR_BETTER_QUANTITY)
-from .importer.funcs import (get_source_year, host_clean, jd_to_mjd,
-                             make_date_string, name_clean, radec_clean,
-                             read_json_dict, same_tag_num, same_tag_str,
-                             trim_str_arr, uniq_cdl)
-from .utils import (bandmetaf, bandrepf, get_event_filename, get_repo_folders,
-                    get_repo_paths, get_repo_years, get_sig_digits, is_number,
-                    pretty_num, tprint)
+from .utils import (get_event_filename, get_repo_paths)
 
 
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
-    CLAIMED_TYPE = 'claimedtype'
     DISTINCTS = 'distinctfrom'
-    DISCOVERY_DATE = 'discoverdate'
-    ERRORS = 'errors'
     NAME = 'name'
-    SOURCES = 'sources'
     SCHEMA = 'schema'
+    SOURCES = 'sources'
     URL = 'url'
 
 

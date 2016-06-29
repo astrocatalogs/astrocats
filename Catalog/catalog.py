@@ -7,15 +7,14 @@ from git import Repo
 from scripts import FILENAME, PATH, SCHEMA
 
 from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
-from .Entry import KEYS
+from .entry import KEYS
 from .importer.funcs import (name_clean, null_field,
                              read_json_arr, read_json_dict, uniq_cdl)
 from .utils import is_number, logger, pbar, repo_file_list
 
 
-class Catalog():
-    """
-    Object to hold the main catalog dictionary and other catalog globals.
+class Catalog:
+    """Object to hold the main catalog dictionary and other catalog globals.
     """
 
     OSC_BIBCODE = '2016arXiv160501054G'
@@ -503,7 +502,7 @@ class Catalog():
         return
 
     def journal_entries(self, clear=True, gz=False, bury=False,
-                       write_stubs=False):
+                        write_stubs=False):
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
