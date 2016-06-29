@@ -1,124 +1,5 @@
-"""Utility functions for OSC import.
-"""
-
-import json
-import os
-from collections import OrderedDict
-from math import floor
-
-from cdecimal import Decimal
-
-from ..catalog.utils import (get_sig_digits, is_number, pretty_num, tprint,
-                             zpad)
-
-
-def convert_aq_output(row):
-    return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x])
-                        for x in row.colnames])
-
-
-def read_json_dict(filename):
-    # path = '../atels.json'
-    if os.path.isfile(filename):
-        with open(filename, 'r') as f:
-            mydict = json.loads(f.read(), object_pairs_hook=OrderedDict)
-    else:
-        mydict = OrderedDict()
-    return mydict
-
-
-def read_json_arr(filename):
-    if os.path.isfile(filename):
-        with open(filename, 'r') as f:
-            myarr = json.loads(f.read())
-    else:
-        myarr = []
-    return myarr
-
-
-def get_preferred_name(entries, name):
-    if name not in entries:
-        # matches = []
-        for event in entries:
-            aliases = entries[event].get_aliases()
-            if len(aliases) > 1 and name in aliases:
-                return event
-        return name
-    else:
-        return name
-
-
-def get_source_year(source):
-    if 'bibcode' in source:
-        if is_number(source['bibcode'][:4]):
-            return int(source['bibcode'][:4])
-        else:
-            return -10000
-    raise ValueError('No bibcode available for source!')
-
-
-def has_task(tasks, args, task):
-    return task in tasks and (not args.update or tasks[task]['update'])
-
-
-def jd_to_mjd(jd):
-    return jd - Decimal(2400000.5)
-
-
-def load_cached_url(args, current_task, url, filepath, timeout=120, write=True,
-                    failhard=False):
-    import codecs
-    from hashlib import md5
-    filemd5 = ''
-    filetxt = ''
-    if not args.refresh and os.path.isfile(filepath):
-        with codecs.open(filepath, 'r', encoding='utf8') as f:
-            filetxt = f.read()
-            if args.update:
-                filemd5 = md5(filetxt.encode('utf-8')).hexdigest()
-
-    try:
-        import requests
-        session = requests.Session()
-        response = session.get(url, timeout=timeout)
-        response.raise_for_status()
-        for x in response.history:
-            x.raise_for_status()
-            if (x.status_code == 500 or x.status_code == 307 or
-                    x.status_code == 404):
-                raise
-        txt = response.text
-        newmd5 = md5(txt.encode('utf-8')).hexdigest()
-        # tprint(filemd5 + ": " + newmd5)
-        if args.update and newmd5 == filemd5:
-            tprint('Skipping file in "' + current_task +
-                   '," local and remote copies identical [' + newmd5 + '].')
-            return False
-    except (KeyboardInterrupt, SystemExit):
-        raise
-    except:
-        if failhard:
-            return ''
-        return filetxt
-    else:
-        if write:
-            with codecs.open(filepath, 'w', encoding='utf8') as f:
-                f.write(txt if txt else filetxt)
-    return txt
-
-
-def make_date_string(year, month='', day=''):
-    if not year:
-        raise ValueError(
-            "At least the year must be specified when constructing date "
-            "string")
-    datestring = str(year)
-    if month:
-        datestring = datestring + '/' + str(month).zfill(2)
-    if day:
-        datestring = datestring + '/' + str(day).zfill(2)
-
-    return datestring
+'''Clean various supernova-specific values.
+'''
 
 
 def name_clean(name):
@@ -441,26 +322,6 @@ def host_clean(name):
     return newname
 
 
-def same_tag_num(photo, val, tag, canbelist=False):
-    issame = (
-        (tag not in photo and not val) or
-        (tag in photo and not val) or
-        (tag in photo and
-         ((not canbelist and Decimal(photo[tag]) == Decimal(val)) or
-          (canbelist and
-           ((isinstance(photo[tag], str) and isinstance(val, str) and
-             Decimal(photo[tag]) == Decimal(val)) or
-            (isinstance(photo[tag], list) and isinstance(val, list) and
-             photo[tag] == val))))))
-    return issame
-
-
-def same_tag_str(photo, val, tag):
-    issame = ((tag not in photo and not val) or (
-        tag in photo and not val) or (tag in photo and photo[tag] == val))
-    return issame
-
-
 def clean_snname(string):
     newstring = string.replace(' ', '').upper()
     if (newstring[:2] == "SN"):
@@ -471,14 +332,3 @@ def clean_snname(string):
         newstring = head + tail
 
     return newstring
-
-
-def get_event_text(eventfile):
-    import gzip
-    if eventfile.split('.')[-1] == 'gz':
-        with gzip.open(eventfile, 'rt') as f:
-            filetext = f.read()
-    else:
-        with open(eventfile, 'r') as f:
-            filetext = f.read()
-    return filetext

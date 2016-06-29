@@ -9,9 +9,10 @@ from git import Repo
 
 from astrocats import FILENAME, PATH, SCHEMA
 
+from ..supernovae.funcs import (name_clean, read_json_arr, read_json_dict,
+                                uniq_cdl)
 from .entry import KEYS
-from ..supernovae.funcs import name_clean, read_json_arr, read_json_dict
-from .utils import is_number, logger, pbar, repo_file_list, uniq_cdl
+from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
 
 
 class Catalog:
@@ -156,6 +157,17 @@ class Catalog:
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
+
+    def get_preferred_name(self, name):
+        if name not in self.entries:
+            # matches = []
+            for entry in self.entries:
+                aliases = self.entries[entry].get_aliases()
+                if len(aliases) > 1 and name in aliases:
+                    return entry
+            return name
+        else:
+            return name
 
     def find_entry_name_of_alias(self, entries, alias):
         """Return the first entry name with the given 'alias' included in its
@@ -593,6 +605,52 @@ class Catalog:
 
     def get_current_task_str(self):
         return self.current_task.current_task(self.args)
+
+    def has_task(self, task):
+        return task in self.tasks and (not self.args.update or
+                                       self.tasks[task]['update'])
+
+    def load_cached_url(self, url, filepath, timeout=120, write=True,
+                        failhard=False):
+        import codecs
+        from hashlib import md5
+        filemd5 = ''
+        filetxt = ''
+        if not self.args.refresh and os.path.isfile(filepath):
+            with codecs.open(filepath, 'r', encoding='utf8') as f:
+                filetxt = f.read()
+                if self.args.update:
+                    filemd5 = md5(filetxt.encode('utf-8')).hexdigest()
+
+        try:
+            import requests
+            session = requests.Session()
+            response = session.get(url, timeout=timeout)
+            response.raise_for_status()
+            for x in response.history:
+                x.raise_for_status()
+                if (x.status_code == 500 or x.status_code == 307 or
+                        x.status_code == 404):
+                    raise
+            txt = response.text
+            newmd5 = md5(txt.encode('utf-8')).hexdigest()
+            # tprint(filemd5 + ": " + newmd5)
+            if self.args.update and newmd5 == filemd5:
+                self.log.debug(
+                    'Skipping file in "' + self.current_task +
+                    '," local and remote copies identical [' + newmd5 + '].')
+                return False
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            if failhard:
+                return ''
+            return filetxt
+        else:
+            if write:
+                with codecs.open(filepath, 'w', encoding='utf8') as f:
+                    f.write(txt if txt else filetxt)
+        return txt
 
 
 def _compress_gz(fname):
