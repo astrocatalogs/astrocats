@@ -4,10 +4,9 @@ import re
 
 from astroquery.simbad import Simbad
 
-from scripts.utils import is_number, pbar, single_spaces
-
-from ..funcs import name_clean
 from astrocats.catalog.utils import uniq_cdl
+from astrocats.supernovae.utils import name_clean
+from scripts.utils import is_number, pbar, single_spaces
 
 
 def do_simbad(catalog):
@@ -83,9 +82,9 @@ def do_simbad(catalog):
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
             catalog.entries[name].add_quantity('claimedtype',
-                                      row['SP_TYPE']
-                                      .replace('SN.', '')
-                                      .replace('SN', '').replace('(~)', '')
-                                      .strip(': '), ssources)
+                                               row['SP_TYPE']
+                                               .replace('SN.', '')
+                                               .replace('SN', '').replace('(~)', '')
+                                               .strip(': '), ssources)
     catalog.journal_entries()
     return

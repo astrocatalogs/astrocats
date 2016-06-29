@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 from astrocats import PATH
 
 from ...utils import is_number, pbar
-from ..funcs import clean_snname, load_cached_url
+from ..funcs import clean_snname
 from astrocats.catalog.utils import uniq_cdl, utf8
 
 
@@ -126,7 +126,7 @@ def do_asiago_photo(catalog):
 
 def do_asiago_spectra(catalog):
     current_task = catalog.get_current_task_str()
-    html = load_cached_url(catalog.args, current_task,
+    html = load_cached_url(
                            ('http://sngroup.oapd.inaf.it./'
                             'cgi-bin/output_class.cgi?sn=1990'),
                            os.path.join(PATH.REPO_EXTERNAL_SPECTRA,

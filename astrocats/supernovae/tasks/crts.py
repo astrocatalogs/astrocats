@@ -8,10 +8,9 @@ from bs4 import BeautifulSoup
 
 from cdecimal import Decimal
 from astrocats import PATH
-from scripts.utils import is_number, pbar
+from astrocats.catalog.utils import is_number, pbar
 
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import load_cached_url
 
 
 def do_crts(catalog):
@@ -19,7 +18,7 @@ def do_crts(catalog):
     current_task = catalog.get_current_task_str()
     folders = ['catalina', 'MLS', 'SSS']
     for fold in pbar(folders, current_task):
-        html = load_cached_url(catalog.args, current_task,
+        html = load_cached_url(
                                'http://nesssi.cacr.caltech.edu/' + fold +
                                '/AllSN.html',
                                os.path.join(PATH.REPO_EXTERNAL, 'CRTS', fold +

@@ -6,9 +6,7 @@ import os
 from bs4 import BeautifulSoup
 
 from astrocats import PATH
-from scripts.utils import pbar
-
-from ..funcs import load_cached_url
+from astrocats.catalog.utils import pbar
 
 
 def do_des(catalog):
@@ -66,7 +64,7 @@ def do_des(catalog):
         catalog.entries[name].add_quantity('ra', ra, sources)
         catalog.entries[name].add_quantity('dec', dec, sources)
 
-        html2 = load_cached_url(catalog.args, current_task,
+        html2 = load_cached_url(
                                 des_trans_url + name,
                                 des_path + name + '.html')
         if not html2:

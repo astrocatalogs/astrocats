@@ -11,10 +11,7 @@ from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
 from astrocats import PATH
-
-from ...utils import is_number, pbar
-from ..funcs import load_cached_url, make_date_string
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 
 def do_ps_mds(catalog):
@@ -26,7 +23,8 @@ def do_ps_mds(catalog):
                 continue
             cols = [x.strip() for x in row.split(',')]
             name = catalog.add_entry(cols[0])
-            source = catalog.entries[name].add_source(bibcode='2015ApJ...799..208S')
+            source = catalog.entries[name].add_source(
+                bibcode='2015ApJ...799..208S')
             catalog.entries[name].add_quantity('alias', name, source)
             catalog.entries[name].add_quantity('ra', cols[2], source)
             catalog.entries[name].add_quantity('dec', cols[3], source)
@@ -46,7 +44,7 @@ def do_ps_threepi(catalog):
     fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"
               "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
-    html = load_cached_url(catalog.args, current_task, ps_url, fname, write=False)
+    html = load_cached_url(ps_url, fname, write=False)
     if not html:
         return
 
@@ -220,17 +218,19 @@ def do_ps_threepi(catalog):
                     continue
                 for obs in line:
                     catalog.entries[name].add_photometry(time=str(obs[0]),
-                                   band=nslabels[li], magnitude=str(obs[1]),
-                                   e_magnitude=str(obs[2]), source=source,
-                                   telescope=teles)
+                                                         band=nslabels[
+                                                             li], magnitude=str(obs[1]),
+                                                         e_magnitude=str(obs[2]), source=source,
+                                                         telescope=teles)
             for li, line in enumerate(nslines[2 * len(nslabels):]):
                 if not line:
                     continue
                 for obs in line:
                     catalog.entries[name].add_photometry(time=str(obs[0]),
-                                   band=nslabels[li], magnitude=str(obs[1]),
-                                   upperlimit=True, source=source,
-                                   telescope=teles)
+                                                         band=nslabels[
+                                                             li], magnitude=str(obs[1]),
+                                                         upperlimit=True, source=source,
+                                                         telescope=teles)
             assoctab = bs2.find('table', {'class': 'generictable'})
             hostname = ''
             redshift = ''

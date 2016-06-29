@@ -12,13 +12,10 @@ from math import floor
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-from cdecimal import Decimal
 from astrocats import PATH
-
-from ...utils import get_sig_digits, is_number, pbar, pbar_strings, pretty_num
-from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import (get_preferred_name, jd_to_mjd
-from astrocats.catalog.utils import uniq_cdl)
+from astrocats.catalog.utils import (get_sig_digits, is_number, jd_to_mjd,
+                                     pbar, pbar_strings, pretty_num, uniq_cdl)
+from cdecimal import Decimal
 
 
 def do_suspect_photo(catalog):
@@ -62,7 +59,8 @@ def do_suspect_photo(catalog):
 
         if ei == 1:
             year = re.findall(r'\d+', name)[0]
-            catalog.entries[name].add_quantity('discoverdate', year, sec_source)
+            catalog.entries[name].add_quantity(
+                'discoverdate', year, sec_source)
             catalog.entries[name].add_quantity(
                 'host', names[1].split(':')[1].strip(), sec_source)
 
@@ -133,7 +131,7 @@ def do_suspect_spectra(catalog):
             name = eventfolder
             if is_number(name[:4]):
                 name = 'SN' + name
-            name = get_preferred_name(catalog.entries, name)
+            name = catalog.get_preferred_name(name)
             if oldname and name != oldname:
                 catalog.journal_entries()
             oldname = name
@@ -160,7 +158,8 @@ def do_suspect_spectra(catalog):
                 elif name in sourcedict:
                     bibcode = sourcedict[name]
                 if bibcode:
-                    source = catalog.entries[name].add_source(bibcode=unescape(bibcode))
+                    source = catalog.entries[name].add_source(
+                        bibcode=unescape(bibcode))
                     sources += [source]
                 sources = uniq_cdl(sources)
 
@@ -206,7 +205,7 @@ def do_suspect_spectra(catalog):
                     errorunit='Uncalibrated',
                     source=sources, filename=spectrum)
                 suspectcnt = suspectcnt + 1
-                if catalog.args.travis and suspectcnt % TRAVIS_QUERY_LIMIT == 0:
+                if catalog.args.travis and suspectcnt % catalog.TRAVIS_QUERY_LIMIT == 0:
                     break
 
     catalog.journal_entries()

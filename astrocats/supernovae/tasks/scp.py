@@ -4,7 +4,7 @@ import csv
 import os
 
 from astrocats import PATH
-from scripts.utils import pbar
+from astrocats.catalog.utils import pbar
 
 
 def do_scp(catalog):

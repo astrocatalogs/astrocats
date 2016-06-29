@@ -4,20 +4,17 @@ import csv
 import os
 
 from astrocats import PATH
-from scripts.utils import pbar
-
-from ..funcs import load_cached_url
+from astrocats.catalog.utils import pbar
 
 
 def do_grb(catalog):
     current_task = 'GRB'
     file_path = os.path.join(PATH.REPO_EXTERNAL, 'GRB-catalog/catalog.csv')
-    csvtxt = load_cached_url(catalog.args,
-                             current_task,
-                             ('http://grb.pa.msu.edu/grbcatalog/'
-                              'download_data?cut_0_min=10&cut_0=BAT%20T90'
-                              '&cut_0_max=100000&num_cuts=1&no_date_cut=True'),
-                             file_path)
+    csvtxt = catalog.load_cached_url(
+        'http://grb.pa.msu.edu/grbcatalog/'
+        'download_data?cut_0_min=10&cut_0=BAT%20T90'
+        '&cut_0_max=100000&num_cuts=1&no_date_cut=True',
+        file_path)
     if not csvtxt:
         return
     data = list(csv.reader(csvtxt.splitlines(), delimiter=',',

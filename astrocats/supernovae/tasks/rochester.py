@@ -10,10 +10,7 @@ from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
 from astrocats import PATH
-
-from ...utils import is_number, pbar
-from ..funcs import load_cached_url, make_date_string
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 
 def do_rochester(catalog):
@@ -31,7 +28,7 @@ def do_rochester(catalog):
         filepath = os.path.join(
             PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
         for mirror in rochestermirrors:
-            html = load_cached_url(catalog.args, current_task, mirror + path,
+            html = load_cached_url(mirror + path,
                                    filepath, failhard=(mirror !=
                                                        rochestermirrors[-1]))
             if html:
@@ -86,7 +83,8 @@ def do_rochester(catalog):
 
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()
-            source = catalog.entries[name].add_source(srcname=reference, url=refurl)
+            source = catalog.entries[name].add_source(
+                srcname=reference, url=refurl)
             sec_source = catalog.entries[name].add_source(
                 srcname=sec_ref, url=sec_refurl, secondary=True)
             sources = uniq_cdl(list(filter(None, [source, sec_source])))
@@ -108,7 +106,8 @@ def do_rochester(catalog):
 
             if str(cols[1].contents[0]).strip() != 'unk':
                 type = str(cols[1].contents[0]).strip(' :,')
-                catalog.entries[name].add_quantity('claimedtype', type, sources)
+                catalog.entries[name].add_quantity(
+                    'claimedtype', type, sources)
             if str(cols[2].contents[0]).strip() != 'anonymous':
                 catalog.entries[name].add_quantity('host', str(
                     cols[2].contents[0]).strip(), sources)
@@ -120,7 +119,8 @@ def do_rochester(catalog):
                     float(str(cols[6].contents[0]).strip()),
                     format='jd').datetime
                 ddate = make_date_string(astrot.year, astrot.month, astrot.day)
-                catalog.entries[name].add_quantity('discoverdate', ddate, sources)
+                catalog.entries[name].add_quantity(
+                    'discoverdate', ddate, sources)
             if (str(cols[7].contents[0]).strip() not in
                     ['2440587', '2440587.292']):
                 astrot = astrotime(
@@ -161,7 +161,8 @@ def do_rochester(catalog):
                     name = catalog.add_entry(name)
                     sec_source = catalog.entries[name].add_source(
                         srcname=sec_ref, url=sec_refurl, secondary=True)
-                    catalog.entries[name].add_quantity('alias', name, sec_source)
+                    catalog.entries[name].add_quantity(
+                        'alias', name, sec_source)
 
                     if not is_number(row[1]):
                         continue
@@ -195,7 +196,8 @@ def do_rochester(catalog):
                             sources = sec_source
                         else:
                             reference = ' '.join(row[refind:])
-                            source = catalog.entries[name].add_source(srcname=reference)
+                            source = catalog.entries[
+                                name].add_source(srcname=reference)
                             catalog.entries[name].add_quantity(
                                 'alias', name, sec_source)
                             sources = uniq_cdl([source, sec_source])

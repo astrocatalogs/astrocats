@@ -5,10 +5,9 @@ from collections import OrderedDict
 from glob import glob
 
 from astrocats import PATH
+from astrocats.entry import SN_KEYS
+from astrocats.supernovae import Supernova
 from scripts.utils import pbar_strings
-
-from ...Entry import SN_KEYS
-from ..Supernova import Supernova
 
 
 def do_external_radio(catalog):
@@ -36,7 +35,8 @@ def do_external_radio(catalog):
                         fluxdensity=cols[3], e_fluxdensity=cols[4],
                         u_fluxdensity='µJy',
                         instrument=cols[5], source=source)
-                    catalog.entries[name].add_quantity('alias', oldname, source)
+                    catalog.entries[name].add_quantity(
+                        'alias', oldname, source)
 
     catalog.journal_entries()
     return
@@ -65,7 +65,8 @@ def do_external_xray(catalog):
                         photonindex=cols[15], instrument=cols[
                             17], nhmw=cols[11],
                         upperlimit=(float(cols[5]) < 0), source=source)
-                    catalog.entries[name].add_quantity('alias', oldname, source)
+                    catalog.entries[name].add_quantity(
+                        'alias', oldname, source)
 
     catalog.journal_entries()
     return

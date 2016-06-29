@@ -6,7 +6,7 @@ import re
 from glob import glob
 
 from astrocats import PATH
-from scripts.utils import pbar_strings
+from astrocats.catalog.utils import pbar_strings
 
 
 def do_sdss(catalog):

@@ -9,11 +9,10 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-from cdecimal import Decimal
 from astrocats import PATH
-from scripts.utils import is_number, pbar, pbar_strings
-
-from ..funcs import jd_to_mjd, make_date_string
+from astrocats.catalog.utils import (is_number, jd_to_mjd, make_date_string,
+                                     pbar, pbar_strings)
+from cdecimal import Decimal
 
 
 def do_ascii(catalog):
@@ -26,7 +25,8 @@ def do_ascii(catalog):
     for ri, row in enumerate(pbar(tsvin, current_task)):
         name = 'SNLS-' + row[0]
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2006ApJ...645..841N')
+        source = catalog.entries[name].add_source(
+            bibcode='2006ApJ...645..841N')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity(
             'redshift', row[1], source, kind='spectroscopic')
@@ -48,7 +48,8 @@ def do_ascii(catalog):
             name = ('SN20' if int(basename[:2]) <
                     50 else 'SN19') + basename.split('_')[0]
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2014ApJ...786...67A')
+        source = catalog.entries[name].add_source(
+            bibcode='2014ApJ...786...67A')
         catalog.entries[name].add_quantity('alias', name, source)
 
         if name in ['SN1999ca', 'SN2003dq', 'SN2008aw']:
@@ -76,7 +77,8 @@ def do_ascii(catalog):
     for row in pbar(tsvin, current_task):
         name = row[0]
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2004A&A...415..863G')
+        source = catalog.entries[name].add_source(
+            bibcode='2004A&A...415..863G')
         catalog.entries[name].add_quantity('alias', name, source)
         mjd = str(jd_to_mjd(Decimal(row[1])))
         for ri, ci in enumerate(range(2, len(row), 3)):
@@ -110,7 +112,8 @@ def do_ascii(catalog):
         if name.startswith('SN'):
             name = name.replace(' ', '')
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015MNRAS.449..451W')
+        source = catalog.entries[name].add_source(
+            bibcode='2015MNRAS.449..451W')
         catalog.entries[name].add_quantity('alias', name, source)
         if len(namesplit) > 1:
             catalog.entries[name].add_quantity('alias', namesplit[0], source)
@@ -173,7 +176,8 @@ def do_ascii(catalog):
         if row[0][0] == '#':
             continue
         name = catalog.add_entry(row[0])
-        source = catalog.entries[name].add_source(bibcode='2016ApJ...819...35A')
+        source = catalog.entries[name].add_source(
+            bibcode='2016ApJ...819...35A')
         catalog.entries[name].add_quantity('alias', name, source)
         catalog.entries[name].add_quantity('ra', row[1], source)
         catalog.entries[name].add_quantity('dec', row[2], source)
@@ -191,7 +195,8 @@ def do_ascii(catalog):
         if row[0][0] == '#':
             continue
         name = catalog.add_entry(row[0])
-        source = catalog.entries[name].add_source(bibcode='2014ApJ...784..105W')
+        source = catalog.entries[name].add_source(
+            bibcode='2014ApJ...784..105W')
         catalog.entries[name].add_quantity('alias', name, source)
         mjd = row[1]
         band = row[2]
@@ -212,7 +217,8 @@ def do_ascii(catalog):
             bands = row[2:]
             continue
         name = catalog.add_entry(row[0])
-        source = catalog.entries[name].add_source(bibcode='2012MNRAS.425.1007B')
+        source = catalog.entries[name].add_source(
+            bibcode='2012MNRAS.425.1007B')
         catalog.entries[name].add_quantity('alias', name, source)
         mjd = row[1]
         mags = [xx.split('±')[0].strip() for xx in row[2:]]
@@ -290,7 +296,7 @@ def do_ascii(catalog):
             catalog.entries[name].add_quantity('ra', row[1], source)
             catalog.entries[name].add_quantity('dec', row[2], source)
             catalog.entries[name].add_quantity('redshift', row[3], source,
-                                              kind='host')
+                                               kind='host')
     catalog.journal_entries()
 
     # 2009MNRAS.398.1041B

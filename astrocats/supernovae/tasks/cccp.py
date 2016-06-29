@@ -9,12 +9,10 @@ from glob import glob
 import requests
 from bs4 import BeautifulSoup
 
-from cdecimal import Decimal
 from astrocats import PATH
-from scripts.utils import is_number, pbar, pbar_strings, round_sig
-
-from ..funcs import load_cached_url
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import (is_number, pbar, pbar_strings, round_sig,
+                                     uniq_cdl)
+from cdecimal import Decimal
 
 
 def do_cccp(catalog):
@@ -127,7 +125,7 @@ def do_cpcs(catalog):
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'
                 'hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-    jsontxt = load_cached_url(catalog.args, current_task, cpcs_url,
+    jsontxt = load_cached_url(cpcs_url,
                               os.path.join(PATH.REPO_EXTERNAL,
                                            'CPCS/index.json'))
     if not jsontxt:

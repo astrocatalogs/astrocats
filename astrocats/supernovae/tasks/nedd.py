@@ -9,12 +9,11 @@ from astropy import units as un
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 
-from cdecimal import Decimal
 from astrocats import PATH
-
-from ...utils import is_number, pbar
-from ..funcs import (get_sig_digits, host_clean, name_clean, pretty_num,
-                     uniq_cdl)
+from astrocats.catalog.utils import (get_sig_digits, is_number, pbar,
+                                     pretty_num, uniq_cdl)
+from astrocats.supernovae.utils import host_clean, name_clean
+from cdecimal import Decimal
 
 
 def do_nedd(catalog):
@@ -81,10 +80,11 @@ def do_nedd(catalog):
                             combsources = uniq_cdl(sources.split(',') +
                                                    [cosmosource])
                             catalog.entries[snname].add_quantity('redshift',
-                                                                redshift,
-                                                                combsources)
+                                                                 redshift,
+                                                                 combsources)
             if cleanhost:
-                catalog.entries[snname].add_quantity('host', cleanhost, sources)
+                catalog.entries[snname].add_quantity(
+                    'host', cleanhost, sources)
             if catalog.args.update and olddistname != distname:
                 catalog.journal_entries()
         olddistname = distname

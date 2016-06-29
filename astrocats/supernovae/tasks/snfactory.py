@@ -6,13 +6,9 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-from cdecimal import Decimal
 from astrocats import PATH
-
-from ...utils import pretty_num
-from ..constants import OSC_BIBCODE, OSC_NAME, OSC_URL, TRAVIS_QUERY_LIMIT
-from ..funcs import get_preferred_name, jd_to_mjd
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import jd_to_mjd, pretty_num, uniq_cdl
+from cdecimal import Decimal
 
 
 def do_snf_aliases(catalog):
@@ -20,7 +16,7 @@ def do_snf_aliases(catalog):
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
             name, source = catalog.new_entry(
-                row[0], bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                row[0], bibcode=catalog.OSC_BIBCODE, srcname=catalog.OSC_NAME, url=catalog.OSC_URL,
                 secondary=True)
             catalog.entries[name].add_quantity('alias', row[1], source)
 
@@ -37,7 +33,7 @@ def do_snf_specta(catalog):
         PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
     for eventfolder in eventfolders:
         name = eventfolder
-        name = get_preferred_name(catalog.entries, name)
+        name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
             catalog.journal_entries()
         oldname = name
@@ -119,7 +115,7 @@ def do_snf_specta(catalog):
                 observatory=observatory, telescope=telescope, instrument=instrument,
                 errorunit=unit_err, source=sources, filename=filename)
             snfcnt = snfcnt + 1
-            if catalog.args.travis and snfcnt % TRAVIS_QUERY_LIMIT == 0:
+            if catalog.args.travis and snfcnt % catalog.TRAVIS_QUERY_LIMIT == 0:
                 break
 
     catalog.journal_entries()
