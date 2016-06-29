@@ -59,7 +59,7 @@ class Catalog:
         self.repos_dict = read_json_dict(FILENAME.REPOS)
 
         # Load auxiliary data
-        self._load_aux()
+        # self._load_aux()
 
         # Make sure repositories are cloned
         self._clone_repos()
@@ -81,17 +81,6 @@ class Catalog:
                     self.log.error("CLONING '{}' INTERRUPTED".format(repo))
                     raise
                     sys.exit()
-        return
-
-    def _load_aux(self):
-        # Create/Load auxiliary dictionaries
-        self.nedd_dict = OrderedDict()
-        self.bibauthor_dict = read_json_dict(FILENAME.BIBAUTHORS)
-        self.biberror_dict = read_json_dict(FILENAME.BIBERRORS)
-        self.extinctions_dict = read_json_dict(FILENAME.EXTINCT)
-        # Create/Load auxiliary arrays
-        self.nonsneprefixes_dict = read_json_arr(FILENAME.NON_SNE_PREFIXES)
-        self.nonsnetypes = read_json_arr(FILENAME.NON_SNE_TYPES)
         return
 
     def add_entry(self, name, load=True, delete=True):
