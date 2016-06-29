@@ -17,3 +17,18 @@ def single_spaces(string):
 
 def get_event_filename(name):
     return name.replace('/', '_')
+
+
+def uniq_cdl(values):
+    return ','.join(sorted(list(set(values))))
+
+
+def trim_str_arr(arr, length=10):
+    return [str(round_sig(float(x), length)) if
+            (len(x) > length and
+             len(str(round_sig(float(x), length))) < len(x))
+            else x for x in arr]
+
+
+def utf8(x):
+    return str(x, 'utf-8')

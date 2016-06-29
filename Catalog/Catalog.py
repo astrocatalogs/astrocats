@@ -8,7 +8,7 @@ from scripts import FILENAME, PATH, SCHEMA
 
 from .importer.constants import COMPRESS_ABOVE_FILESIZE, TRAVIS_QUERY_LIMIT
 from .Entry import KEYS
-from .importer.funcs import (event_attr_priority, name_clean, null_field,
+from .importer.funcs import (event_attr_priority, name_clean,
                              read_json_arr, read_json_dict, uniq_cdl)
 from .utils import is_number, logger, pbar, repo_file_list
 
@@ -204,50 +204,50 @@ class Catalog():
 
                     if key == 'photometry':
                         self.entries[destname].add_photometry(
-                            u_time=null_field(item, "u_time"),
-                            time=null_field(item, "time"),
-                            e_time=null_field(item, "e_time"),
-                            telescope=null_field(item, "telescope"),
-                            instrument=null_field(item, "instrument"),
-                            band=null_field(item, "band"),
-                            magnitude=null_field(item, "magnitude"),
-                            e_magnitude=null_field(item, "e_magnitude"),
+                            u_time=item.get("u_time", ""),
+                            time=item.get("time", ""),
+                            e_time=item.get("e_time", ""),
+                            telescope=item.get("telescope", ""),
+                            instrument=item.get("instrument", ""),
+                            band=item.get("band", ""),
+                            magnitude=item.get("magnitude", ""),
+                            e_magnitude=item.get("e_magnitude", ""),
                             source=sources,
-                            upperlimit=null_field(item, "upperlimit"),
-                            system=null_field(item, "system"),
-                            observatory=null_field(item, "observatory"),
-                            observer=null_field(item, "observer"),
-                            host=null_field(item, "host"),
-                            survey=null_field(item, "survey"))
+                            upperlimit=item.get("upperlimit", ""),
+                            system=item.get("system", ""),
+                            observatory=item.get("observatory", ""),
+                            observer=item.get("observer", ""),
+                            host=item.get("host", ""),
+                            survey=item.get("survey"), "")
                     elif key == 'spectra':
                         self.entries[destname].add_spectrum(
-                            null_field(item, "waveunit"),
-                            null_field(item, "fluxunit"),
-                            data=null_field(item, "data"),
-                            u_time=null_field(item, "u_time"),
-                            time=null_field(item, "time"),
-                            instrument=null_field(item, "instrument"),
-                            deredshifted=null_field(item, "deredshifted"),
-                            dereddened=null_field(item, "dereddened"),
-                            errorunit=null_field(item, "errorunit"),
-                            source=sources, snr=null_field(item, "snr"),
-                            telescope=null_field(item, "telescope"),
-                            observer=null_field(item, "observer"),
-                            reducer=null_field(item, "reducer"),
-                            filename=null_field(item, "filename"),
-                            observatory=null_field(item, "observatory"))
+                            item.get("waveunit", ""),
+                            item.get("fluxunit", ""),
+                            data=item.get("data", ""),
+                            u_time=item.get("u_time", ""),
+                            time=item.get("time", ""),
+                            instrument=item.get("instrument", ""),
+                            deredshifted=item.get("deredshifted", ""),
+                            dereddened=item.get("dereddened", ""),
+                            errorunit=item.get("errorunit", ""),
+                            source=sources, snr=item.get("snr", ""),
+                            telescope=item.get("telescope", ""),
+                            observer=item.get("observer", ""),
+                            reducer=item.get("reducer", ""),
+                            filename=item.get("filename", ""),
+                            observatory=item.get("observatory"), "")
                     elif key == 'errors':
                         self.entries[destname].add_quantity(
                             key, item['value'], sources,
-                            kind=null_field(item, "kind"),
-                            extra=null_field(item, "extra"))
+                            kind=item.get("kind", ""),
+                            extra=item.get("extra"), "")
                     else:
                         self.entries[destname].add_quantity(
                             key, item['value'], sources,
-                            error=null_field(item, "error"),
-                            unit=null_field(item, "unit"),
-                            probability=null_field(item, "probability"),
-                            kind=null_field(item, "kind"))
+                            error=item.get("error", ""),
+                            unit=item.get("unit", ""),
+                            probability=item.get("probability", ""),
+                            kind=item.get("kind"), "")
 
         return
 
