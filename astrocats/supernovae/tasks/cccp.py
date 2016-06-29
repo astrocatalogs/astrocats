@@ -19,7 +19,7 @@ def do_cccp(catalog):
     current_task = catalog.get_current_task_str()
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
-        glob(os.path.join(PATH.REPO_EXTERNAL, 'CCCP/apj407397*.txt')))
+        glob(os.path.join(catalog.get_current_task_repo(), 'CCCP/apj407397*.txt')))
     for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
         with open(datafile, 'r') as ff:
             tsvin = csv.reader(ff, delimiter='\t', skipinitialspace=True)
@@ -45,7 +45,7 @@ def do_cccp(catalog):
                                              upperlimit=upl, source=source))
 
     if catalog.current_task.load_archive(catalog.args):
-        with open(os.path.join(PATH.REPO_EXTERNAL,
+        with open(os.path.join(catalog.get_current_task_repo(),
                                'CCCP/sc_cccp.html'), 'r') as ff:
             html = ff.read()
     else:
@@ -53,7 +53,7 @@ def do_cccp(catalog):
         response = session.get(
             'https://webhome.weizmann.ac.il/home/iair/sc_cccp.html')
         html = response.text
-        with open(os.path.join(PATH.REPO_EXTERNAL,
+        with open(os.path.join(catalog.get_current_task_repo(),
                                'CCCP/sc_cccp.html'), 'w') as ff:
             ff.write(html)
 
@@ -69,7 +69,7 @@ def do_cccp(catalog):
             catalog.entries[name].add_quantity('alias', name, source)
 
             if catalog.current_task.load_archive(catalog.args):
-                fname = os.path.join(PATH.REPO_EXTERNAL,
+                fname = os.path.join(catalog.get_current_task_repo(),
                                      'CCCP/') + link['href'].split('/')[-1]
                 with open(fname, 'r') as ff:
                     html2 = ff.read()
@@ -77,7 +77,7 @@ def do_cccp(catalog):
                 response2 = session.get(
                     'https://webhome.weizmann.ac.il/home/iair/' + link['href'])
                 html2 = response2.text
-                fname = os.path.join(PATH.REPO_EXTERNAL,
+                fname = os.path.join(catalog.get_current_task_repo(),
                                      'CCCP/') + link['href'].split('/')[-1]
                 with open(fname, 'w') as ff:
                     ff.write(html2)
@@ -88,7 +88,7 @@ def do_cccp(catalog):
                 if '.txt' in link2['href'] and '_' in link2['href']:
                     band = link2['href'].split('_')[1].split('.')[0].upper()
                     if catalog.current_task.load_archive(catalog.args):
-                        fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
+                        fname = os.path.join(catalog.get_current_task_repo(), 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
                             continue
@@ -102,7 +102,7 @@ def do_cccp(catalog):
                         if response3.status_code == 404:
                             continue
                         html3 = response3.text
-                        fname = os.path.join(PATH.REPO_EXTERNAL, 'CCCP/')
+                        fname = os.path.join(catalog.get_current_task_repo(), 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         with open(fname, 'w') as ff:
                             ff.write(html3)
@@ -126,7 +126,7 @@ def do_cpcs(catalog):
                 'published=1&observed_only=1&'
                 'hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
     jsontxt = load_cached_url(cpcs_url,
-                              os.path.join(PATH.REPO_EXTERNAL,
+                              os.path.join(catalog.get_current_task_repo(),
                                            'CPCS/index.json'))
     if not jsontxt:
         return
@@ -172,7 +172,7 @@ def do_cpcs(catalog):
                     str(ai))
         source = catalog.entries[name].add_source(
             srcname='CPCS Alert ' + str(ai), url=alerturl)
-        fname = os.path.join(PATH.REPO_EXTERNAL,
+        fname = os.path.join(catalog.get_current_task_repo(),
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(fname)):

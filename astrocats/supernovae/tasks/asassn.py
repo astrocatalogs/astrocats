@@ -13,7 +13,7 @@ def do_asassn(catalog):
     current_task = catalog.get_current_task_str()
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
     html = catalog.load_cached_url(asn_url, os.path.join(
-        PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
+        catalog.get_current_task_repo(), 'ASASSN/sn_list.html'))
     if not html:
         return
     bs = BeautifulSoup(html, 'html5lib')

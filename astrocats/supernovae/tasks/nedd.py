@@ -19,7 +19,7 @@ from cdecimal import Decimal
 def do_nedd(catalog):
     current_task = 'NED-D'
     nedd_path = os.path.join(
-        PATH.REPO_EXTERNAL, 'NED26.05.1-D-12.1.0-20160501.csv')
+        catalog.get_current_task_repo(), 'NED26.05.1-D-12.1.0-20160501.csv')
 
     f = open(nedd_path, 'r')
 

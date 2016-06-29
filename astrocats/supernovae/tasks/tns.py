@@ -21,14 +21,14 @@ def do_tns(catalog):
     search_url = tns_url + \
         'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
     csvtxt = load_cached_url( search_url,
-                             os.path.join(PATH.REPO_EXTERNAL, 'TNS/index.csv'))
+                             os.path.join(catalog.get_current_task_repo(), 'TNS/index.csv'))
     if not csvtxt:
         return
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
     maxpages = ceil(int(maxid) / 1000.)
 
     for page in pbar(range(maxpages), current_task):
-        fname = os.path.join(PATH.REPO_EXTERNAL, 'TNS/page-') + \
+        fname = os.path.join(catalog.get_current_task_repo(), 'TNS/page-') + \
             str(page).zfill(2) + '.csv'
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(fname) and page < 7):

@@ -14,12 +14,12 @@ from astrocats.catalog.utils import is_number, pbar, pbar_strings, rep_chars
 def do_donations(catalog):
     current_task = catalog.get_current_task_str()
     # Nicholl 04-01-16 donation
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'Nicholl-04-01-16/bibcodes.json'), 'r') as f:
         bcs = json.loads(f.read())
 
     file_names = glob(os.path.join(
-        PATH.REPO_EXTERNAL, 'Nicholl-04-01-16/*.txt'))
+        catalog.get_current_task_repo(), 'Nicholl-04-01-16/*.txt'))
     for datafile in pbar_strings(file_names, current_task +
                                  ': Nicholl-04-01-16'):
         inpname = os.path.basename(datafile).split('_')[0]
@@ -64,7 +64,7 @@ def do_donations(catalog):
     catalog.journal_entries()
 
     # Maggi 04-11-16 donation (MC SNRs)
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'Maggi-04-11-16/LMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in pbar(list(tsvin), current_task +
@@ -88,7 +88,7 @@ def do_donations(catalog):
                 catalog.entries[name].add_quantity('claimedtype', 'Ia', source)
             elif row[4] == '2':
                 catalog.entries[name].add_quantity('claimedtype', 'CC', source)
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'Maggi-04-11-16/SMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
         for row in pbar(list(tsvin), current_task +
@@ -111,13 +111,13 @@ def do_donations(catalog):
 
     # Galbany 04-18-16 donation
     folders = next(os.walk(os.path.join(
-        PATH.REPO_EXTERNAL, 'galbany-04-18-16/')))[1]
+        catalog.get_current_task_repo(), 'galbany-04-18-16/')))[1]
     bibcode = '2016AJ....151...33G'
     for folder in folders:
-        infofiles = glob(os.path.join(PATH.REPO_EXTERNAL,
+        infofiles = glob(os.path.join(catalog.get_current_task_repo(),
                                       'galbany-04-18-16/') + folder +
                          '/*.info')
-        photfiles = glob(os.path.join(PATH.REPO_EXTERNAL,
+        photfiles = glob(os.path.join(catalog.get_current_task_repo(),
                                       'galbany-04-18-16/') + folder +
                          '/*.out*')
 
@@ -189,7 +189,7 @@ def do_donations(catalog):
     catalog.journal_entries()
 
     # Brown 05-14-16
-    files = glob(os.path.join(PATH.REPO_EXTERNAL, 'brown-05-14-16/*.dat'))
+    files = glob(os.path.join(catalog.get_current_task_repo(), 'brown-05-14-16/*.dat'))
     for fi in pbar(files, current_task):
         name = os.path.basename(fi).split('_')[0]
         name = catalog.add_entry(name)
@@ -221,7 +221,7 @@ def do_donations(catalog):
     catalog.journal_entries()
 
     # Nicholl 05-03-16
-    files = glob(os.path.join(PATH.REPO_EXTERNAL, 'nicholl-05-03-16/*.txt'))
+    files = glob(os.path.join(catalog.get_current_task_repo(), 'nicholl-05-03-16/*.txt'))
     name = catalog.add_entry('SN2015bn')
     source = catalog.entries[name].add_source(bibcode='2016arXiv160304748N')
     catalog.entries[name].add_quantity('alias', name, source)

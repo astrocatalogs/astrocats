@@ -20,7 +20,7 @@ def do_cfa_photo(catalog):
     from html import unescape
     import re
     current_task = catalog.get_current_task_str()
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'cfa-input/*.dat'))
+    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'cfa-input/*.dat'))
     for fname in pbar_strings(file_names, desc=current_task):
         f = open(fname, 'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -102,7 +102,7 @@ def do_cfa_photo(catalog):
         f.close()
 
     # Hicken 2012
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'hicken-2012-standard.dat'), 'r') as infile:
         tsvin = csv.reader(infile, delimiter='|', skipinitialspace=True)
         for r, row in enumerate(pbar(tsvin, current_task)):
@@ -127,7 +127,7 @@ def do_cfa_photo(catalog):
                 source=source)
 
         # Bianco 2014
-        tsvin = open(os.path.join(PATH.REPO_EXTERNAL,
+        tsvin = open(os.path.join(catalog.get_current_task_repo(),
                                   'bianco-2014-standard.dat'), 'r')
         tsvin = csv.reader(tsvin, delimiter=' ', skipinitialspace=True)
         for row in pbar(tsvin, current_task):
@@ -152,9 +152,9 @@ def do_cfa_spectra(catalog):
     # Ia spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(
-        PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa')))[1]
+        catalog.get_current_task_repo(), 'CfA_SNIa')))[1]
     for name in pbar_strings(file_names, current_task):
-        fullpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIa/') + name
+        fullpath = os.path.join(catalog.get_current_task_repo(), 'CfA_SNIa/') + name
         origname = name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
@@ -213,10 +213,10 @@ def do_cfa_spectra(catalog):
     # Ibc spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(
-        PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc')))[1]
+        catalog.get_current_task_repo(), 'CfA_SNIbc')))[1]
     for name in pbar(file_names, current_task):
         fullpath = os.path.join(
-            PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
+            catalog.get_current_task_repo(), 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = catalog.get_preferred_name(name)
@@ -265,10 +265,10 @@ def do_cfa_spectra(catalog):
     # Other spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(
-        PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra')))[1]
+        catalog.get_current_task_repo(), 'CfA_Extra')))[1]
     for name in pbar_strings(file_names, current_task):
         fullpath = os.path.join(
-            PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
+            catalog.get_current_task_repo(), 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = catalog.get_preferred_name(name)

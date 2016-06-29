@@ -145,7 +145,7 @@ class Entry(OrderedDict):
         >>> entries[name] = entries[name].get_stub()
 
         """
-        stub = type(self)(self[KEYS.NAME], stub=True)
+        stub = type(self)(self.catalog, self[KEYS.NAME], stub=True)
         if KEYS.ALIAS in self.keys():
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub

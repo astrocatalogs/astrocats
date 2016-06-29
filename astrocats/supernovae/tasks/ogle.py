@@ -21,7 +21,7 @@ def do_ogle(catalog):
         if catalog.args.update and not ogleupdate[b]:
             continue
 
-        filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
+        filepath = os.path.join(catalog.get_current_task_repo(), 'OGLE-')
         filepath += bn.replace('/', '-') + '-transients.html'
         htmltxt = load_cached_url(
             'http://ogle.astrouw.edu.pl/ogle4/' + bn +
@@ -92,7 +92,7 @@ def do_ogle(catalog):
                 # ra = radec[0]
                 # dec = radec[1]
 
-                fname = os.path.join(PATH.REPO_EXTERNAL,
+                fname = os.path.join(catalog.get_current_task_repo(),
                                      'OGLE/') + datafnames[ec]
                 if (catalog.current_task.load_archive(catalog.args) and
                         os.path.isfile(fname)):

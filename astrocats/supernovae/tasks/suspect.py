@@ -20,14 +20,14 @@ from cdecimal import Decimal
 
 def do_suspect_photo(catalog):
     current_task = catalog.get_current_task_str()
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
         suspectrefdict = {}
         for row in tsvin:
             suspectrefdict[row[0]] = row[1]
 
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL, 'SUSPECT/*.html'))
+    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'SUSPECT/*.html'))
     for datafile in pbar_strings(file_names, desc=current_task):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
@@ -106,11 +106,11 @@ def do_suspect_photo(catalog):
 
 def do_suspect_spectra(catalog):
     current_task = catalog.get_current_task_str()
-    with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())
 
-    with open(os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'Suspect/filename-changes.txt'), 'r') as f:
         rows = f.readlines()
         changedict = {}
@@ -122,10 +122,10 @@ def do_suspect_spectra(catalog):
 
     suspectcnt = 0
     folders = next(os.walk(os.path.join(
-        PATH.REPO_EXTERNAL_SPECTRA, 'Suspect')))[1]
+        catalog.get_current_task_repo(), 'Suspect')))[1]
     for folder in pbar(folders, current_task):
         eventfolders = next(os.walk(os.path.join(
-            PATH.REPO_EXTERNAL_SPECTRA, 'Suspect/') + folder))[1]
+            catalog.get_current_task_repo(), 'Suspect/') + folder))[1]
         oldname = ''
         for eventfolder in pbar(eventfolders, current_task):
             name = eventfolder
@@ -143,7 +143,7 @@ def do_suspect_spectra(catalog):
                 srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc,
                 secondary=True)
             catalog.entries[name].add_quantity('alias', name, sec_source)
-            fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA,
+            fpath = os.path.join(catalog.get_current_task_repo(),
                                  'Suspect', folder, eventfolder)
             eventspectra = next(os.walk(fpath))[2]
             for spectrum in eventspectra:
@@ -173,7 +173,7 @@ def do_suspect_spectra(catalog):
                 time = time + float(day) - floor(float(day))
                 time = pretty_num(time, sig=sig)
 
-                fpath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'Suspect',
+                fpath = os.path.join(catalog.get_current_task_repo(), 'Suspect',
                                      folder,
                                      eventfolder, spectrum)
                 with open() as f:
