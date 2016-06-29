@@ -4,7 +4,6 @@ import os
 from collections import OrderedDict
 from glob import glob
 
-from astrocats import PATH
 from astrocats.entry import SN_KEYS
 from astrocats.supernovae import Supernova
 from scripts.utils import pbar_strings
@@ -12,7 +11,7 @@ from scripts.utils import pbar_strings
 
 def do_external_radio(catalog):
     current_task = catalog.get_current_task_str()
-    path_pattern = os.path.join(PATH.REPO_EXTERNAL_RADIO, '*.txt')
+    path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
@@ -44,7 +43,7 @@ def do_external_radio(catalog):
 
 def do_external_xray(catalog):
     current_task = catalog.get_current_task_str()
-    path_pattern = os.path.join(PATH.REPO_EXTERNAL_XRAY, '*.txt')
+    path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
     for datafile in pbar_strings(glob(path_pattern), desc=current_task):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
@@ -76,7 +75,7 @@ def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
     current_task = catalog.get_current_task_str()
-    path_pattern = os.path.join(PATH.REPO_INTERNAL, '*.json')
+    path_pattern = os.path.join(catalog.get_current_task_repo(), '*.json')
     files = glob(path_pattern)
     catalog.log.debug("found {} files matching '{}'".format(
         len(files), path_pattern))
