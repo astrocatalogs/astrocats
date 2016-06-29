@@ -1,3 +1,7 @@
+"""Object for each 'task' needed to be carried out by the 'importer'.
+"""
+
+
 class Task():
     name = ''
     nice_name = ''   # Name for pretty printing
