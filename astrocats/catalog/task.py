@@ -64,7 +64,7 @@ class Task():
 
         return False
 
-    def get_repo_path(self, base_path):
+    def _get_repo_path(self, base_path):
         """
         """
         return os.path.join(base_path, self.repo, '')
