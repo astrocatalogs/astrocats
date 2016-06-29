@@ -1,8 +1,7 @@
-"""Constant variables used by OSC import methods.
+"""Supernovae specific Constant variables.
 """
 from astropy import constants as const
 from astropy import units as un
-
 
 CLIGHT = const.c.cgs.value
 KM = (1.0 * un.km).cgs.value

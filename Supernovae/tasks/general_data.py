@@ -7,7 +7,7 @@ from glob import glob
 from scripts import PATH
 from scripts.utils import pbar_strings
 
-from ...Entry import KEYS
+from ...Entry import SN_KEYS
 from ..Supernova import Supernova
 
 
@@ -81,6 +81,6 @@ def do_internal(catalog):
         len(files), path_pattern))
     for datafile in pbar_strings(files, desc=current_task):
         new_event = Supernova.init_from_file(path=datafile, clean=True)
-        catalog.entries.update({new_event[KEYS.NAME]: new_event})
+        catalog.entries.update({new_event[SN_KEYS.NAME]: new_event})
 
     return
