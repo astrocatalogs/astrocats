@@ -13,7 +13,8 @@ from astrocats import PATH
 
 from ...utils import get_sig_digits, pbar, pretty_num
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import load_cached_url, uniq_cdl
+from ..funcs import load_cached_url
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_ucb_photo(catalog):

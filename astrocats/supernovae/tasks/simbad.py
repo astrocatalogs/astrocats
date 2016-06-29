@@ -6,7 +6,8 @@ from astroquery.simbad import Simbad
 
 from scripts.utils import is_number, pbar, single_spaces
 
-from ..funcs import name_clean, uniq_cdl
+from ..funcs import name_clean
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_simbad(catalog):

@@ -7,8 +7,8 @@ from git import Repo
 from astrocats import FILENAME, PATH, SCHEMA
 
 from .entry import KEYS
-from ..supernovae.funcs import name_clean, read_json_arr, read_json_dict, uniq_cdl
-from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
+from ..supernovae.funcs import name_clean, read_json_arr, read_json_dict
+from .utils import is_number, logger, pbar, repo_file_list, uniq_cdl
 
 
 class Catalog:

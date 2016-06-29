@@ -9,7 +9,8 @@ import requests
 from astrocats import PATH
 from scripts.utils import is_number, pbar
 
-from ..funcs import load_cached_url, round_sig, uniq_cdl
+from ..funcs import load_cached_url, round_sig
+from astrocats.catalog.utils import uniq_cdl
 
 
 def do_cpcs(catalog):
