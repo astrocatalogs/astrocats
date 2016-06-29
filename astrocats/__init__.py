@@ -2,6 +2,10 @@
 Supernova data.
 """
 
+print("astrocats.__init__.py")
+
+# from . import catalog
+
 import os
 from subprocess import check_output
 

@@ -1,12 +1,12 @@
 """
 """
-from .importer.Supernova import Supernova
+print("astrocats.main.py")
 
 
 def main():
     from datetime import datetime
 
-    from . import Catalog
+    from .catalog.catalog import Catalog
 
     beg_time = datetime.now()
     # Process command-line arguments to determine action
@@ -17,8 +17,10 @@ def main():
 
     # Set the prototype to the desired catalog Entry type. Probably should be a
     # switch in args.
+    from . import Supernovae
+    from .Supernovae.supernova import Supernova
     proto = Supernova
-    catalog = Catalog.Catalog(proto, args)
+    catalog = Catalog(proto, args)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(
@@ -26,8 +28,8 @@ def main():
 
     # Choose which submodule to run (note: can also use `set_default` with
     # function)
-    if args._name == 'importer':
-        from . import importer
+    if args._name == 'sn-import':
+        from .catalog import importer
         catalog.log.info("Running `importer`.")
         importer.importer.import_main(catalog)
 
@@ -71,7 +73,7 @@ def load_args(args=None):
 
     # Construct the subparser for `importer` submodule --- importing supernova
     # data
-    pars_imp = subparsers.add_parser("importer", parents=[pars_parent],
+    pars_imp = subparsers.add_parser("sn-import", parents=[pars_parent],
                                      help="Generate a catalog JSON file")
     pars_imp.add_argument('--update', '-u', dest='update',
                           default=False, action='store_true',

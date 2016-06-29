@@ -4,10 +4,10 @@ from collections import OrderedDict
 
 from git import Repo
 
-from scripts import FILENAME, PATH, SCHEMA
+from astrocats import FILENAME, PATH, SCHEMA
 
 from .entry import KEYS
-from .importer.funcs import name_clean, read_json_arr, read_json_dict, uniq_cdl
+from ..supernovae.funcs import name_clean, read_json_arr, read_json_dict, uniq_cdl
 from .utils import entry_attr_priority, is_number, logger, pbar, repo_file_list
 
 
