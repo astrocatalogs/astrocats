@@ -172,14 +172,6 @@ class Entry(OrderedDict):
 
         return
 
-    def get_source_year(source):
-        if 'bibcode' in source:
-            if is_number(source['bibcode'][:4]):
-                return int(source['bibcode'][:4])
-            else:
-                return -10000
-        raise ValueError('No bibcode available for source!')
-
     def get_event_text(eventfile):
         import gzip
         if eventfile.split('.')[-1] == 'gz':
