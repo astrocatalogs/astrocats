@@ -21,7 +21,7 @@ def do_crts(catalog):
         html = load_cached_url(
                                'http://nesssi.cacr.caltech.edu/' + fold +
                                '/AllSN.html',
-                               os.path.join(PATH.REPO_EXTERNAL, 'CRTS', fold +
+                               os.path.join(catalog.get_current_task_repo(), 'CRTS', fold +
                                             '.html'))
         if not html:
             continue
@@ -114,7 +114,7 @@ def do_crts(catalog):
                                  host=True, telescope='Catalina Schmidt',
                                  upperlimit=hostupper))
 
-            fname2 = (PATH.REPO_EXTERNAL + '/' + fold + '/' +
+            fname2 = (catalog.get_current_task_repo() + '/' + fold + '/' +
                       lclink.split('.')[-2].rstrip('p').split('/')[-1] +
                       '.html')
             if (catalog.current_task.load_archive(catalog.args) and

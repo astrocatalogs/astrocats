@@ -14,7 +14,7 @@ from cdecimal import Decimal
 def do_superfit_spectra(catalog):
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = catalog.get_current_task_str()
-    sfdirs = list(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*')))
+    sfdirs = list(glob(os.path.join(catalog.get_current_task_repo(), 'superfit/*')))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))
         lastname = ''

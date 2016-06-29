@@ -16,7 +16,7 @@ from astrocats.catalog.utils import (get_sig_digits, pbar, pbar_strings,
 def do_snls_photo(catalog):
     current_task = 'SNLS'
     from scripts.utils import get_sig_digits
-    snls_path = os.path.join(PATH.REPO_EXTERNAL, 'SNLS-ugriz.dat')
+    snls_path = os.path.join(catalog.get_current_task_repo(), 'SNLS-ugriz.dat')
     data = list(csv.reader(open(snls_path, 'r'), delimiter=' ',
                            quotechar='"', skipinitialspace=True))
     for row in pbar(data, current_task):
@@ -61,7 +61,7 @@ def do_snls_spectra(catalog):
         datedict['SNLS-' + row['SN']] = str(astrotime(row['Date']).mjd)
 
     oldname = ''
-    file_names = glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'SNLS/*'))
+    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'SNLS/*'))
     for fi, fname in enumerate(pbar_strings(file_names, current_task)):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')

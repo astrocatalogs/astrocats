@@ -16,11 +16,11 @@ def do_itep(catalog):
     current_task = catalog.get_current_task_str()
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'itep-refs.txt'), 'r') as refs_file:
         refrep = refs_file.read().splitlines()
     refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
-    fname = os.path.join(PATH.REPO_EXTERNAL, 'itep-lc-cat-28dec2015.txt')
+    fname = os.path.join(catalog.get_current_task_repo(), 'itep-lc-cat-28dec2015.txt')
     tsvin = list(csv.reader(open(fname, 'r'),
                             delimiter='|', skipinitialspace=True))
     curname = ''

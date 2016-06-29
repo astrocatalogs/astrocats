@@ -16,7 +16,7 @@ from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 def do_ps_mds(catalog):
     current_task = catalog.get_current_task_str()
-    with open(os.path.join(PATH.REPO_EXTERNAL,
+    with open(os.path.join(catalog.get_current_task_repo(),
                            'MDS/apj506838t1_mrt.txt')) as f:
         for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
             if ri < 35:
@@ -41,7 +41,7 @@ def do_ps_mds(catalog):
 def do_ps_threepi(catalog):
     current_task = catalog.get_current_task_str()
     teles = 'Pan-STARRS1'
-    fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page00.html')
+    fname = os.path.join(catalog.get_current_task_repo(), '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"
               "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
     html = load_cached_url(ps_url, fname, write=False)
@@ -72,9 +72,9 @@ def do_ps_threepi(catalog):
             f.write(html)
 
     numpages = int(links[-2].contents[0])
-    oldnumpages = len(glob(os.path.join(PATH.REPO_EXTERNAL, '3pi/page*')))
+    oldnumpages = len(glob(os.path.join(catalog.get_current_task_repo(), '3pi/page*')))
     for page in pbar(range(1, numpages), current_task):
-        fname = os.path.join(PATH.REPO_EXTERNAL, '3pi/page') + \
+        fname = os.path.join(catalog.get_current_task_repo(), '3pi/page') + \
             str(page).zfill(2) + '.html'
         if offline:
             if not os.path.isfile(fname):
@@ -163,7 +163,7 @@ def do_ps_threepi(catalog):
             catalog.entries[name].add_quantity('dec', dec, source)
             catalog.entries[name].add_quantity('claimedtype', ctype, source)
 
-            fname2 = os.path.join(PATH.REPO_EXTERNAL, '3pi/candidate-')
+            fname2 = os.path.join(catalog.get_current_task_repo(), '3pi/candidate-')
             fname2 += pslink.rstrip('/').split('/')[-1] + '.html'
             if offline:
                 if not os.path.isfile(fname2):

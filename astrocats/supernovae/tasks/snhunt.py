@@ -12,7 +12,7 @@ def do_snhunt(catalog):
     current_task = catalog.get_current_task_str()
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = load_cached_url( snh_url, os.path.join(
-        PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
+        catalog.get_current_task_repo(), 'SNhunt/current.html'))
     if not html:
         return
     text = html.splitlines()

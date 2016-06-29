@@ -7,7 +7,7 @@ from astrocats import PATH
 
 
 def do_pessto(catalog):
-    pessto_path = os.path.join(PATH.REPO_EXTERNAL, 'PESSTO_MPHOT.csv')
+    pessto_path = os.path.join(catalog.get_current_task_repo(), 'PESSTO_MPHOT.csv')
     tsvin = list(csv.reader(open(pessto_path, 'r'), delimiter=','))
     for ri, row in enumerate(tsvin):
         if ri == 0:

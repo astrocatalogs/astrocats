@@ -12,7 +12,7 @@ from cdecimal import Decimal
 
 
 def do_snf_aliases(catalog):
-    file_path = os.path.join(PATH.REPO_EXTERNAL, 'SNF/snf-aliases.csv')
+    file_path = os.path.join(catalog.get_current_task_repo(), 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
             name, source = catalog.new_entry(
@@ -30,7 +30,7 @@ def do_snf_specta(catalog):
     oldname = ''
     snfcnt = 0
     eventfolders = next(os.walk(os.path.join(
-        PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory')))[1]
+        catalog.get_current_task_repo(), 'SNFactory')))[1]
     for eventfolder in eventfolders:
         name = eventfolder
         name = catalog.get_preferred_name(name)
@@ -48,7 +48,7 @@ def do_snf_specta(catalog):
         source = catalog.entries[name].add_source(bibcode=bibcode)
         sources = uniq_cdl([source, sec_source])
         use_path = os.path.join(
-            PATH.REPO_EXTERNAL_SPECTRA, 'SNFactory', eventfolder, '*.dat')
+            catalog.get_current_task_repo(), 'SNFactory', eventfolder, '*.dat')
         eventspectra = glob(use_path)
         for spectrum in eventspectra:
             filename = os.path.basename(spectrum)

@@ -24,14 +24,14 @@ def do_ptf(catalog):
     # name = catalog.add_entry(name)
 
     if catalog.current_task.load_archive(catalog.args):
-        with open(os.path.join(PATH.REPO_EXTERNAL,
+        with open(os.path.join(catalog.get_current_task_repo(),
                                'PTF/update.html'), 'r') as f:
             html = f.read()
     else:
         session = requests.Session()
         response = session.get('http://wiserep.weizmann.ac.il/spectra/update')
         html = response.text
-        with open(os.path.join(PATH.REPO_EXTERNAL,
+        with open(os.path.join(catalog.get_current_task_repo(),
                                'PTF/update.html'), 'w') as f:
             f.write(html)
 
@@ -53,10 +53,10 @@ def do_ptf(catalog):
                 name, source = catalog.new_entry(name,
                                                  bibcode='2012PASP..124..668Y')
 
-    with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/old-ptf-events.csv')) as f:
+    with open(os.path.join(catalog.get_current_task_repo(), 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():
             name = catalog.add_entry('PTF' + suffix)
-    with open(os.path.join(PATH.REPO_EXTERNAL, 'PTF/perly-2016.csv')) as f:
+    with open(os.path.join(catalog.get_current_task_repo(), 'PTF/perly-2016.csv')) as f:
         for row in f.read().splitlines():
             cols = [x.strip() for x in row.split(',')]
             alias = ''

@@ -17,7 +17,7 @@ def do_des(catalog):
                 'noao/library/NOAO_Publications_Acknowledgments.html'
                 '#DESdatause')
     # Make sure there is aa trailing slash
-    des_path = os.path.join(PATH.REPO_EXTERNAL, 'DES', '')
+    des_path = os.path.join(catalog.get_current_task_repo(), 'DES', '')
     html = load_cached_url(
         catalog.args, current_task, des_trans_url,
         des_path + 'transients.html')

@@ -13,7 +13,7 @@ def do_psst(catalog):
     current_task = catalog.get_current_task_str()
     # 2016arXiv160204156S
     file_path = os.path.join(
-        PATH.REPO_EXTERNAL, '2016arXiv160204156S-tab1.tsv')
+        catalog.get_current_task_repo(), '2016arXiv160204156S-tab1.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -29,7 +29,7 @@ def do_psst(catalog):
                 '() '), source, kind='spectroscopic')
 
     file_path = os.path.join(
-        PATH.REPO_EXTERNAL, '2016arXiv160204156S-tab2.tsv')
+        catalog.get_current_task_repo(), '2016arXiv160204156S-tab2.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -49,7 +49,7 @@ def do_psst(catalog):
     catalog.journal_entries()
 
     # 1606.04795
-    file_path = os.path.join(PATH.REPO_EXTERNAL, '1606.04795.tsv')
+    file_path = os.path.join(catalog.get_current_task_repo(), '1606.04795.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))

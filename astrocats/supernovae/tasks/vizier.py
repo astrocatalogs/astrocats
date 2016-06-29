@@ -323,7 +323,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
 
-    with open(os.path.join(PATH.REPO_EXTERNAL, 'II_189_refs.csv')) as f:
+    with open(os.path.join(catalog.get_current_task_repo(), 'II_189_refs.csv')) as f:
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
         ii189bibdict = {}
         ii189refdict = {}

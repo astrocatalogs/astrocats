@@ -17,7 +17,7 @@ def do_cpcs(catalog):
                 'published=1&observed_only=1'
                 '&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
     jsontxt = load_cached_url(cpcs_url,
-                              os.path.join(PATH.REPO_EXTERNAL,
+                              os.path.join(catalog.get_current_task_repo(),
                                            'CPCS/index.json'))
     if not jsontxt:
         return
@@ -63,7 +63,7 @@ def do_cpcs(catalog):
                     str(ai))
         source = catalog.entries[name].add_source(
             srcname='CPCS Alert ' + str(ai), url=alerturl)
-        fname = os.path.join(PATH.REPO_EXTERNAL,
+        fname = os.path.join(catalog.get_current_task_repo(),
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(fname)):

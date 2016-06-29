@@ -26,7 +26,7 @@ def do_rochester(catalog):
             continue
 
         filepath = os.path.join(
-            PATH.REPO_EXTERNAL, 'rochester/') + os.path.basename(path)
+            catalog.get_current_task_repo(), 'rochester/') + os.path.basename(path)
         for mirror in rochestermirrors:
             html = load_cached_url(mirror + path,
                                    filepath, failhard=(mirror !=
@@ -143,7 +143,7 @@ def do_rochester(catalog):
     if not catalog.args.update:
         vsnetfiles = ['latestsne.dat']
         for vsnetfile in vsnetfiles:
-            file_name = os.path.join(PATH.REPO_EXTERNAL, "" + vsnetfile)
+            file_name = os.path.join(catalog.get_current_task_repo(), "" + vsnetfile)
             with open(file_name, 'r', encoding='latin1') as csv_file:
                 tsvin = csv.reader(csv_file, delimiter=' ',
                                    skipinitialspace=True)

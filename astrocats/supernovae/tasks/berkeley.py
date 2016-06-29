@@ -22,7 +22,7 @@ def do_ucb_photo(catalog):
     jsontxt = load_cached_url(
         catalog.args, current_task,
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
-        os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
+        os.path.join(catalog.get_current_task_repo(), 'UCB/allpub.json'))
     if not jsontxt:
         return
 
@@ -60,7 +60,7 @@ def do_ucb_photo(catalog):
         if not phot['PhotID']:
             raise ValueError('ID not found for SNDB phot!')
 
-        filepath = os.path.join(PATH.REPO_EXTERNAL, 'SNDB/') + filename
+        filepath = os.path.join(catalog.get_current_task_repo(), 'SNDB/') + filename
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(filepath)):
             with open(filepath, 'r') as ff:
@@ -105,7 +105,7 @@ def do_ucb_spectra(catalog):
     jsontxt = load_cached_url(
         catalog.args,
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
-        os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/allpub.json'))
+        os.path.join(catalog.get_current_task_repo(), 'UCB/allpub.json'))
     if not jsontxt:
         return
 
@@ -159,7 +159,7 @@ def do_ucb_spectra(catalog):
         if not spectrum['SpecID']:
             raise ValueError('ID not found for SNDB spectrum!')
 
-        filepath = os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'UCB/') + filename
+        filepath = os.path.join(catalog.get_current_task_repo(), 'UCB/') + filename
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(filepath)):
             with open(filepath, 'r') as ff:

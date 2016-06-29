@@ -12,7 +12,7 @@ from astrocats.catalog.utils import pbar, jd_to_mjd
 
 def do_gaia(catalog):
     current_task = catalog.get_current_task_str()
-    fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
+    fname = os.path.join(catalog.get_current_task_repo(), 'GAIA/alerts.csv')
     csvtxt = load_cached_url(
                              'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',
                              fname)
@@ -61,7 +61,7 @@ def do_gaia(catalog):
                     catalog.entries[name].add_quantity('alias', alias, source)
                     break
 
-        fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/') + row[0] + '.csv'
+        fname = os.path.join(catalog.get_current_task_repo(), 'GAIA/') + row[0] + '.csv'
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(fname)):
             with open(fname, 'r') as ff:
