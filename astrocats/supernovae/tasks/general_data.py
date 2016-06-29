@@ -4,9 +4,8 @@ import os
 from collections import OrderedDict
 from glob import glob
 
-from astrocats.entry import SN_KEYS
-from astrocats.supernovae import Supernova
-from scripts.utils import pbar_strings
+from astrocats.supernovae.supernova import Supernova, SN_KEYS
+from astrocats.catalog.utils import pbar_strings
 
 
 def do_external_radio(catalog):

@@ -10,8 +10,8 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS, Entry
 from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
-                                     is_number,
-                                     jd_to_mjd, make_date_string, pretty_num,
+                                     get_event_filename, is_number, jd_to_mjd,
+                                     make_date_string, pretty_num,
                                      read_json_dict, tprint, trim_str_arr,
                                      uniq_cdl)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
@@ -20,7 +20,7 @@ from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
 from cdecimal import Decimal
 
 from .. import SCHEMA
-from .constants import MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY, FILENAME
+from .constants import FILENAME, MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
 
 
 class SN_KEYS(KEYS):
@@ -55,8 +55,8 @@ class Supernova(Entry):
     filename = ''
     _source_syns = {}
 
-    def __init__(self, name, stub=False):
-        super().__init__(name, stub=stub)
+    def __init__(self, catalog, name, stub=False):
+        super().__init__(catalog, name, stub=stub)
 
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
@@ -352,21 +352,20 @@ class Supernova(Entry):
 
         # Put non-SNe in the boneyard
         if bury:
-            outdir = str(PATH.REPO_BONEYARD)
+            outdir = self.catalog.get_repo_boneyard()
 
         # Get normal repository save directory
         else:
-            repo_folders = get_output_repo_folders()
-            outdir = str(PATH.ROOT)
+            repo_folders = self.catalog.get_output_repo_folders()
             if SN_KEYS.DISCOVERY_DATE in self.keys():
-                repo_years = get_repo_years(repo_folders)
+                repo_years = self.catalog.get_repo_years()
                 for r, year in enumerate(repo_years):
                     if int(self[SN_KEYS.DISCOVERY_DATE][0]['value'].
                            split('/')[0]) <= year:
-                        outdir = os.path.join(outdir, repo_folders[r])
+                        outdir = repo_folders[r]
                         break
             else:
-                outdir = os.path.join(outdir, repo_folders[0])
+                outdir = repo_folders[0]
 
         return outdir, filename
 
