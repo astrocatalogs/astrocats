@@ -4,7 +4,6 @@
 import codecs
 import importlib
 import json
-import os
 import resource
 import warnings
 from collections import OrderedDict
@@ -13,7 +12,6 @@ from astrocats import FILENAME, main
 
 from . import task
 from .catalog import Catalog
-from .utils import pbar, repo_file_list
 
 
 def import_main(catalog=None):
@@ -84,9 +82,6 @@ def import_main(catalog=None):
             ',', ':'), ensure_ascii=False)
         with codecs.open(fname, 'w', encoding='utf8') as jsf:
             jsf.write(json_str)
-
-    json_dump(bibauthor_dict, FILENAME.BIBAUTHORS)
-    json_dump(extinctions_dict, FILENAME.EXTINCT)
 
     print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
         resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))

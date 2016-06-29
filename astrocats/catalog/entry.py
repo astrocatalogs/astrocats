@@ -6,7 +6,7 @@ import os
 import warnings
 from collections import OrderedDict
 
-from .utils import (get_event_filename, get_repo_paths)
+from .utils import get_event_filename, get_repo_paths, is_number
 
 
 class KEYS:

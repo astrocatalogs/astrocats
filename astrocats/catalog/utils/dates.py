@@ -2,6 +2,8 @@
 '''
 from cdecimal import Decimal
 
+__all__ = ['jd_to_mjd', 'make_date_string']
+
 
 def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
