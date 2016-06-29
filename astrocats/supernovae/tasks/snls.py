@@ -9,10 +9,8 @@ from astropy.time import Time as astrotime
 from astroquery.vizier import Vizier
 
 from astrocats import PATH
-
-from ...utils import get_sig_digits, pbar, pbar_strings, pretty_num
-from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import get_preferred_name
+from astrocats.catalog.utils import (get_sig_digits, pbar, pbar_strings,
+                                     pretty_num)
 
 
 def do_snls_photo(catalog):
@@ -29,7 +27,8 @@ def do_snls_photo(catalog):
             continue
         name = 'SNLS-' + row[0]
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2010A&A...523A...7G')
+        source = catalog.entries[name].add_source(
+            bibcode='2010A&A...523A...7G')
         catalog.entries[name].add_quantity('alias', name, source)
         band = row[1]
         mjd = row[2]
@@ -67,12 +66,13 @@ def do_snls_spectra(catalog):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]
-        name = get_preferred_name(catalog.entries, name)
+        name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
             catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2009A&A...507...85B')
+        source = catalog.entries[name].add_source(
+            bibcode='2009A&A...507...85B')
         catalog.entries[name].add_quantity('alias', name, source)
 
         catalog.entries[name].add_quantity(
@@ -85,7 +85,8 @@ def do_snls_spectra(catalog):
             if row[0] == '@TELESCOPE':
                 telescope = row[1].strip()
             elif row[0] == '@REDSHIFT':
-                catalog.entries[name].add_quantity('redshift', row[1].strip(), source)
+                catalog.entries[name].add_quantity(
+                    'redshift', row[1].strip(), source)
             if r < 14:
                 continue
             specdata.append(list(filter(None, [x.strip(' \t') for x in row])))
@@ -102,7 +103,7 @@ def do_snls_spectra(catalog):
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
             time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
             filename=filename)
-        if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and fi >= catalog.TRAVIS_QUERY_LIMIT:
             break
     catalog.journal_entries()
     return

@@ -12,7 +12,7 @@ from astrocats import PATH
 
 from ...utils import is_number, pbar, pbar_strings
 from ..constants import ACKN_CFA, TRAVIS_QUERY_LIMIT
-from ..funcs import clean_snname, get_preferred_name, jd_to_mjd
+from ..funcs import clean_snname, jd_to_mjd
 from astrocats.catalog.utils import uniq_cdl
 
 
@@ -160,7 +160,7 @@ def do_cfa_spectra(catalog):
             name = 'SN' + name[2:]
         if name.startswith('snf') and is_number(name[3:7]):
             name = 'SNF' + name[3:]
-        name = get_preferred_name(catalog.entries, name)
+        name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
             catalog.journal_entries()
         oldname = name
@@ -219,7 +219,7 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(catalog.entries, name)
+        name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
             catalog.journal_entries()
         oldname = name
@@ -271,7 +271,7 @@ def do_cfa_spectra(catalog):
             PATH.REPO_EXTERNAL_SPECTRA, 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):
             name = 'SN' + name[2:]
-        name = get_preferred_name(catalog.entries, name)
+        name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
             catalog.journal_entries()
         oldname = name

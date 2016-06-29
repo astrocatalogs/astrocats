@@ -1,5 +1,6 @@
 '''Clean various supernova-specific values.
 '''
+from astrocats.catalog.utils import is_number
 
 __all__ = ['name_clean', 'host_clean', 'radec_clean', 'clean_snname']
 

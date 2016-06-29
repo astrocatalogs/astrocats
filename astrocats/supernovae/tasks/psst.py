@@ -6,9 +6,7 @@ import os
 from astropy.time import Time as astrotime
 
 from astrocats import PATH
-from scripts.utils import pbar
-
-from ..funcs import make_date_string
+from astrocats.catalog.utils import make_date_string, pbar
 
 
 def do_psst(catalog):
@@ -46,7 +44,7 @@ def do_psst(catalog):
             mldt = astrotime(float(row[4]), format='mjd').datetime
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
             catalog.entries[name].add_quantity('discoverdate', discoverdate,
-                                              source)
+                                               source)
 
     catalog.journal_entries()
 
@@ -67,7 +65,7 @@ def do_psst(catalog):
             mldt = astrotime(float(row[3]), format='mjd').datetime
             discoverdate = make_date_string(mldt.year, mldt.month, mldt.day)
             catalog.entries[name].add_quantity('discoverdate', discoverdate,
-                                              source)
+                                               source)
             catalog.entries[name].add_quantity('claimedtype', row[6], source)
             catalog.entries[name].add_quantity(
                 'redshift', row[7], source, kind='spectroscopic')

@@ -8,7 +8,7 @@ from math import isnan
 
 from astrocats import PATH
 
-from ...utils import is_number, pbar, pbar_strings, rep_chars
+from astrocats.catalog.utils import is_number, pbar, pbar_strings, rep_chars
 
 
 def do_donations(catalog):

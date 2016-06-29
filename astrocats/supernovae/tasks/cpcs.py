@@ -7,10 +7,7 @@ from collections import OrderedDict
 import requests
 
 from astrocats import PATH
-from scripts.utils import is_number, pbar
-
-from ..funcs import load_cached_url, round_sig
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import uniq_cdl, is_number, pbar, round_sig
 
 
 def do_cpcs(catalog):
@@ -19,7 +16,7 @@ def do_cpcs(catalog):
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1'
                 '&hashtag=JG_530ad9462a0b8785bfb385614bf178c6')
-    jsontxt = load_cached_url(catalog.args, current_task, cpcs_url,
+    jsontxt = load_cached_url(cpcs_url,
                               os.path.join(PATH.REPO_EXTERNAL,
                                            'CPCS/index.json'))
     if not jsontxt:

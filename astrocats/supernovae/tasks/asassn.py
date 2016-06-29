@@ -7,13 +7,12 @@ from bs4 import BeautifulSoup
 from astrocats import PATH
 
 from ...utils import pbar
-from ..funcs import load_cached_url
 
 
 def do_asassn(catalog):
     current_task = catalog.get_current_task_str()
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
-    html = load_cached_url(catalog.args, current_task, asn_url, os.path.join(
+    html = catalog.load_cached_url(asn_url, os.path.join(
         PATH.REPO_EXTERNAL, 'ASASSN/sn_list.html'))
     if not html:
         return

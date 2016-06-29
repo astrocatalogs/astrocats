@@ -7,15 +7,13 @@ import urllib
 
 from cdecimal import Decimal
 from astrocats import PATH
-from scripts.utils import pbar
-
-from ..funcs import jd_to_mjd, load_cached_url
+from astrocats.catalog.utils import pbar, jd_to_mjd
 
 
 def do_gaia(catalog):
     current_task = catalog.get_current_task_str()
     fname = os.path.join(PATH.REPO_EXTERNAL, 'GAIA/alerts.csv')
-    csvtxt = load_cached_url(catalog.args, current_task,
+    csvtxt = load_cached_url(
                              'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',
                              fname)
     if not csvtxt:

@@ -5,15 +5,13 @@ import re
 
 from bs4 import BeautifulSoup
 from astrocats import PATH
-from scripts.utils import pbar
-
-from ..funcs import load_cached_url
+from astrocats.catalog.utils import pbar
 
 
 def do_snhunt(catalog):
     current_task = catalog.get_current_task_str()
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
-    html = load_cached_url(catalog.args, current_task, snh_url, os.path.join(
+    html = load_cached_url( snh_url, os.path.join(
         PATH.REPO_EXTERNAL, 'SNhunt/current.html'))
     if not html:
         return

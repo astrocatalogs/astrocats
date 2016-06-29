@@ -4,12 +4,10 @@ import csv
 import os
 from glob import glob
 
-from cdecimal import Decimal
 from astrocats import PATH
-
-from ...utils import pbar_strings
-from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import (clean_snname, get_preferred_name, jd_to_mjd)
+from astrocats.catalog.utils import jd_to_mjd, pbar_strings
+from astrocats.supernovae.utils import clean_snname
+from cdecimal import Decimal
 
 
 def do_csp_photo(catalog):
@@ -74,14 +72,15 @@ def do_csp_spectra(catalog):
         sfile = sfile[0]
         fileparts = sfile.split('_')
         name = 'SN20' + fileparts[0][2:]
-        name = get_preferred_name(catalog.entries, name)
+        name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
             catalog.journal_entries()
         oldname = name
         name = catalog.add_entry(name)
         telescope = fileparts[-2]
         instrument = fileparts[-1]
-        source = catalog.entries[name].add_source(bibcode='2013ApJ...773...53F')
+        source = catalog.entries[name].add_source(
+            bibcode='2013ApJ...773...53F')
         catalog.entries[name].add_quantity('alias', name, source)
 
         data = csv.reader(open(fname, 'r'), delimiter=' ',
@@ -93,7 +92,7 @@ def do_csp_spectra(catalog):
                 time = str(jd_to_mjd(Decimal(jd)))
             elif row[0] == '#Redshift:':
                 catalog.entries[name].add_quantity('redshift', row[1].strip(),
-                                                  source)
+                                                   source)
             if r < 7:
                 continue
             specdata.append(list(filter(None, [x.strip(' ') for x in row])))
@@ -106,7 +105,7 @@ def do_csp_spectra(catalog):
             time=time, wavelengths=wavelengths, fluxes=fluxes,
             telescope=telescope, instrument=instrument,
             source=source, deredshifted=True, filename=filename)
-        if catalog.args.travis and fi >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and fi >= catalog.TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_entries()

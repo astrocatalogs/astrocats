@@ -6,13 +6,12 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-from cdecimal import Decimal
 from astrocats import PATH
-from scripts.utils import pbar
+from astrocats.catalog.utils import pbar
+from cdecimal import Decimal
 
 
 def do_superfit_spectra(catalog):
-    from .. funcs import get_max_light, get_preferred_name
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = catalog.get_current_task_str()
     sfdirs = list(glob(os.path.join(PATH.REPO_EXTERNAL_SPECTRA, 'superfit/*')))
@@ -33,7 +32,7 @@ def do_superfit_spectra(catalog):
             if 'theory' in name:
                 continue
             if catalog.event_exists(name):
-                prefname = get_preferred_name(catalog.entries, name)
+                prefname = catalog.get_preferred_name(name)
                 if ('spectra' in catalog.entries[prefname] and
                         lastname != prefname):
                     continue
@@ -42,8 +41,7 @@ def do_superfit_spectra(catalog):
             oldname = name
             name = catalog.add_entry(name)
             epoch = basename.split('.')[1]
-            (mldt, mlmag, mlband, mlsource) = get_max_light(catalog.entries,
-                                                            name)
+            (mldt, mlmag, mlband, mlsource) = catalog.get_max_light(name)
             if mldt:
                 if epoch == 'max':
                     epoff = Decimal(0.0)

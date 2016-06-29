@@ -6,12 +6,9 @@ import urllib
 
 from bs4 import BeautifulSoup, NavigableString, Tag
 
-from cdecimal import Decimal
 from astrocats import PATH
-
-from ...utils import is_number, pbar
-from ..funcs import jd_to_mjd, load_cached_url
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import is_number, jd_to_mjd, pbar, uniq_cdl
+from cdecimal import Decimal
 
 
 def do_ogle(catalog):
@@ -26,9 +23,9 @@ def do_ogle(catalog):
 
         filepath = os.path.join(PATH.REPO_EXTERNAL, 'OGLE-')
         filepath += bn.replace('/', '-') + '-transients.html'
-        htmltxt = load_cached_url(catalog.args, current_task,
-                                  'http://ogle.astrouw.edu.pl/ogle4/' + bn +
-                                  '/transients.html', filepath)
+        htmltxt = load_cached_url(
+            'http://ogle.astrouw.edu.pl/ogle4/' + bn +
+            '/transients.html', filepath)
         if not htmltxt:
             continue
 

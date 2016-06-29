@@ -10,11 +10,7 @@ import requests
 from astropy.time import Time as astrotime
 
 from astrocats import PATH
-
-from ...utils import get_sig_digits, pbar, pretty_num
-from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import load_cached_url
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import get_sig_digits, pbar, pretty_num, uniq_cdl
 
 
 def do_ucb_photo(catalog):
@@ -209,7 +205,7 @@ def do_ucb_spectra(catalog):
             observer=observer,
             reducer=reducer, deredshifted=('-noz' in filename))
         ucbspectracnt = ucbspectracnt + 1
-        if catalog.args.travis and ucbspectracnt >= TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and ucbspectracnt >= catalog.TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_entries()

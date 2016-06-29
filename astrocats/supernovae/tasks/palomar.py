@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 from astrocats import PATH
 
-from ...utils import is_number
+from astrocats.catalog.utils import is_number
 
 
 def do_ptf(catalog):

@@ -7,11 +7,9 @@ import re
 from collections import OrderedDict
 from html import unescape
 
-from cdecimal import Decimal
 from astrocats import PATH
-from scripts.utils import pbar
-
-from ..funcs import jd_to_mjd
+from astrocats.catalog.utils import jd_to_mjd, pbar
+from cdecimal import Decimal
 
 
 def do_itep(catalog):
@@ -48,7 +46,8 @@ def do_itep(catalog):
             catalog.entries[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
-            catalog.entries[name].add_quantity('discoverdate', year, sec_source)
+            catalog.entries[name].add_quantity(
+                'discoverdate', year, sec_source)
         if reference in refrepf:
             bibcode = unescape(refrepf[reference])
             source = catalog.entries[name].add_source(bibcode=bibcode)
@@ -59,10 +58,10 @@ def do_itep(catalog):
 
         if bibcode not in itepbadsources:
             catalog.entries[name].add_photometry(time=mjd, band=band,
-                                                magnitude=magnitude,
-                                                e_magnitude=e_magnitude,
-                                                source=sec_source + ',' +
-                                                source)
+                                                 magnitude=magnitude,
+                                                 e_magnitude=e_magnitude,
+                                                 source=sec_source + ',' +
+                                                 source)
 
     # Write out references that could use aa bibcode
     needsbib = list(OrderedDict.fromkeys(needsbib))

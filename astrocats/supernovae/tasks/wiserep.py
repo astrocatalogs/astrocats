@@ -15,7 +15,6 @@ from astrocats import PATH
 
 from ...utils import is_number, pbar, pbar_strings, tprint
 from ..constants import TRAVIS_QUERY_LIMIT
-from ..funcs import get_preferred_name
 from astrocats.catalog.utils import uniq_cdl
 
 
@@ -166,7 +165,7 @@ def do_wiserep_spectra(catalog):
                                 name = name.replace('MASTERJ', 'MASTER OT J')
                             if name.startswith('PSNJ'):
                                 name = name.replace('PSNJ', 'PSN J')
-                            name = get_preferred_name(catalog.entries, name)
+                            name = catalog.get_preferred_name(name)
                             if oldname and name != oldname:
                                 catalog.journal_entries()
                             oldname = name
