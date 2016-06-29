@@ -1,3 +1,6 @@
+"""Overarching catalog object for all open catalogs.
+"""
+
 import os
 import sys
 from collections import OrderedDict
