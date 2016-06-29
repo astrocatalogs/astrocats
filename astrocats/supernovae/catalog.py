@@ -1,7 +1,9 @@
 """Supernovae specific catalog class.
 """
 from collections import OrderedDict
+
 import astrocats.catalog
+from astrocats.supernovae.supernova import Supernova
 from astrocats.catalog.utils.imports import read_json_arr, read_json_dict
 
 from .constants import FILENAME
@@ -9,11 +11,12 @@ from .constants import FILENAME
 
 class Catalog(astrocats.catalog.catalog.Catalog):
 
-    def __init__(self, proto, args):
+    def __init__(self, args):
         """
         """
+        self.proto = Supernova
         # Initialize super `astrocats.catalog.catalog.Catalog` object
-        super().__init__(proto, args)
+        super().__init__(args)
 
         self._load_aux_data()
 

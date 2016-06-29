@@ -21,10 +21,9 @@ def main():
     #    ON ARGS WHAT TO IMPORT AND INITIALIZE
 
     # from . import supernovae
-    from .supernovae.supernova import Supernova
-    from .supernovae.catalog import Catalog
-    proto = Supernova
-    catalog = Catalog(proto, args)
+    from astrocats.supernovae.supernova import Supernova
+    from astrocats.supernovae.catalog import Catalog
+    catalog = Catalog(args)
     git_vers = get_git()
     title_str = "Open Supernova Catalog, version: {}".format(git_vers)
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(
@@ -33,9 +32,8 @@ def main():
     # Choose which submodule to run (note: can also use `set_default` with
     # function)
     if args._name == 'sn-import':
-        from .catalog import importer
         catalog.log.info("Running `importer`.")
-        importer.import_main(catalog)
+        catalog.import_data()
 
     end_time = datetime.now()
     catalog.log.warning("All complete at {}, After {}".format(
