@@ -1,6 +1,6 @@
 """
 """
-
+import os
 from astrocats.supernovae.supernova import SN_KEYS
 
 TEST_NAME = 'SN-TEST-AA'
@@ -20,6 +20,9 @@ def do_test(catalog):
     current_task = catalog.get_current_task_str()
     log.error("`current_task`: '{}'".format(current_task))
 
+    if len(catalog.entries) != 0:
+        raise RuntimeError("Run test only with empty catalog.")
+
     # Create a Fake Entry, with some Fake Data
     # ----------------------------------------
     _first_source(catalog)
@@ -31,6 +34,23 @@ def do_test(catalog):
     # Add new Data, from different source, to same fake entry
     # -------------------------------------------------------
     _second_source(catalog)
+
+    # Make sure output file for this test exists
+    outdir, filename = catalog.entries[TEST_NAME]._get_save_path()
+    save_name = os.path.join(outdir, filename + '.json')
+    if not os.path.exists(save_name):
+        raise RuntimeError("File not found in '{}'".format(save_name))
+    # Delete created test file
+    catalog._delete_entry_file(entry_name=TEST_NAME)
+    # Make sure it was deleted
+    if os.path.exists(save_name):
+        raise RuntimeError("File not deleted at '{}'".format(save_name))
+
+    # Delete entry in catalog
+    del catalog.entries[TEST_NAME]
+    # Make sure entry was deleted
+    if len(catalog.entries) != 0:
+        raise RuntimeError("Error deleting test entry!")
 
     return
 
