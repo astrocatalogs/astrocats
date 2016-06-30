@@ -4,7 +4,8 @@ from astrocats.catalog.utils import is_number
 
 
 class KeyCollection:
-
+    """
+    """
     @classmethod
     def keys(cls):
         _keys = [kk for kk in vars(cls).keys() if not kk.startswith('_')]

@@ -109,18 +109,16 @@ class Photometry(OrderedDict):
 
     def _check(self):
         REQ_KEY_TYPES = [
+            [PHOTOMETRY.SOURCE],
             [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
             [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
              PHOTOMETRY.COUNTS]]
 
         for req_any in REQ_KEY_TYPES:
             if not any([req_key in self for req_key in req_any]):
-                err_str = "Require one of: " + ",".join(
+                err_str = "Require one or more of: " + ",".join(
                     "'{}'".format(rk) for rk in req_any)
                 raise ValueError(err_str)
-
-        if PHOTOMETRY.SOURCE not in self:
-            raise ValueError('Photometry must have source before being added!')
 
         return
 
