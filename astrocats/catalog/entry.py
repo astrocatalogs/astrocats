@@ -12,11 +12,14 @@ from .utils import get_event_filename
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
-    DISTINCTS = 'distinctfrom'
+    DEC = 'dec'
+    DISTINCT_FROM = 'distinctfrom'
     NAME = 'name'
+    RA = 'ra'
     SCHEMA = 'schema'
     SOURCES = 'sources'
     URL = 'url'
+    DISCOVER_DATE = 'discoverdate'
 
 
 class Entry(OrderedDict):

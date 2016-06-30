@@ -182,7 +182,7 @@ class Supernova(Entry):
         # Handle certain quantity
         if quantity == 'alias':
             svalue = name_clean(svalue)
-            for df in self.get(KEYS.DISTINCTS, []):
+            for df in self.get(KEYS.DISTINCT_FROM, []):
                 if svalue == df['value']:
                     return
 
@@ -588,17 +588,17 @@ class Supernova(Entry):
             del self['aliases']
 
         # FIX: should this be an error if false??
-        if ((KEYS.DISTINCTS in self and
-             isinstance(self[KEYS.DISTINCTS], list) and
-             isinstance(self[KEYS.DISTINCTS][0], str))):
-            distinctfroms = [x for x in self[KEYS.DISTINCTS]]
-            del self[KEYS.DISTINCTS]
+        if ((KEYS.DISTINCT_FROM in self and
+             isinstance(self[KEYS.DISTINCT_FROM], list) and
+             isinstance(self[KEYS.DISTINCT_FROM][0], str))):
+            distinctfroms = [x for x in self[KEYS.DISTINCT_FROM]]
+            del self[KEYS.DISTINCT_FROM]
             source = self.add_source(
                 bibcode=self.catalog.OSC_BIBCODE,
                 srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             for df in distinctfroms:
-                self.add_quantity(KEYS.DISTINCTS, df, source)
+                self.add_quantity(KEYS.DISTINCT_FROM, df, source)
 
         if 'errors' in self and \
                 isinstance(self['errors'], list) and \

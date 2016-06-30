@@ -381,8 +381,8 @@ class Catalog:
         for name, entry in entries.items():
             aliases = entry.get_aliases()
             if alias in aliases:
-                if ((KEYS.DISTINCTS not in entry.keys()) or
-                        (alias not in entry[KEYS.DISTINCTS])):
+                if ((KEYS.DISTINCT_FROM not in entry.keys()) or
+                        (alias not in entry[KEYS.DISTINCT_FROM])):
                     return name
 
         return None
