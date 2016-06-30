@@ -35,9 +35,16 @@ class Catalog:
     COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
 
     class PATHS:
-        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
+        """Store and control catalog file-structure information.
+
+        Individual catalogs must provide the below file structure.
+        -   `repos.json`
+        -   `tasks.json`
+
+        """
 
         def __init__(self):
+            self.PATH_BASE = os.path.abspath(os.path.dirname(__file__))
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
@@ -45,10 +52,9 @@ class Catalog:
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
 
         def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
-            """Get filenames for all files in each repository, with `boneyard` files
-            optional.
+            """Get filenames for files in each repository, `boneyard` optional.
             """
-            # repo_folders = get_output_repo_folders()
+            # repo_folders = get_repo_output_folders()
             files = []
             for rep in repo_folders:
                 if 'boneyard' not in rep and not normal:
@@ -345,7 +351,7 @@ class Catalog:
             self.log.error(err_str)
             raise RuntimeError(err_str)
         # Delete all old entry JSON files
-        repo_files = self.get_repo_file_list()
+        repo_files = self.get_repo_output_file_list()
         for rfil in pbar(repo_files, desc='Deleting old entries'):
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
@@ -664,7 +670,7 @@ class Catalog:
         """
         """
         currenttask = 'Loading entry stubs'
-        files = self.get_repo_file_list()
+        files = self.PATHS.get_repo_output_file_list()
         for fi in pbar(files, currenttask):
             fname = fi
             # FIX: should this be ``fi.endswith(``.gz')`` ?

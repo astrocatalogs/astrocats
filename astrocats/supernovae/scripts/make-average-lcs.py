@@ -13,7 +13,7 @@ from bokeh.resources import CDN
 
 from events import *
 from utils.photometry import bandaliasf, bandcolorf
-from utils.repos import get_repo_file_list
+from utils.repos import get_repo_output_file_list
 from utils.tq_funcs import tq, tprint
 
 tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
@@ -25,7 +25,7 @@ averagetypes = ['Ia', 'I P', 'Ia P', 'Ib P', 'Ic P', 'Ia/c', 'Ib/c', 'Ib/c P',
                 'IIb P', 'Ia CSM', 'SLSN-Ic', 'SLSN-I', 'SLSN-II', 'Ia-91bg',
                 'Ia-91T', 'Ia-02cx', 'Ib-Ca', 'II P-97D', 'Ic BL']
 
-files = get_repo_file_list(bones=False)
+files = get_repo_output_file_list(bones=False)
 
 
 def photo_cut(x):

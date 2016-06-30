@@ -53,7 +53,7 @@ class Entry(OrderedDict):
             name = ''
         # If the name is given, try to find a path for it
         else:
-            repo_paths = catalog.get_output_repo_folders()
+            repo_paths = catalog.PATHS.get_repo_output_folders()
             for rep in repo_paths:
                 filename = get_event_filename(name)
                 newpath = os.path.join(rep, filename + '.json')

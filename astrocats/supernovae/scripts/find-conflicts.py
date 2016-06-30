@@ -11,7 +11,7 @@ from astropy.coordinates import SkyCoord as coord
 from tqdm import tqdm
 
 from digits import round_sig
-from utils.repos import get_repo_file_list
+from utils.repos import get_repo_output_file_list
 
 conflicts = []
 
@@ -19,7 +19,7 @@ conflicts = []
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-files = get_repo_file_list(bones=False)
+files = get_repo_output_file_list(bones=False)
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     # if fcnt > 100:

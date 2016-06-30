@@ -13,7 +13,7 @@ from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
 from tqdm import tqdm
 
-from utils.repos import get_repo_file_list
+from utils.repos import get_repo_output_file_list
 
 dupes = OrderedDict()
 
@@ -21,7 +21,7 @@ dupes = OrderedDict()
 def get_event_filename(name):
     return(name.replace('/', '_'))
 
-files = get_repo_file_list(bones=False)
+files = get_repo_output_file_list(bones=False)
 
 newcatalog = []
 

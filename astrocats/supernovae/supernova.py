@@ -357,9 +357,9 @@ class Supernova(Entry):
 
         # Get normal repository save directory
         else:
-            repo_folders = self.catalog.get_output_repo_folders()
+            repo_folders = self.catalog.PATHS.get_repo_output_folders()
             if KEYS.DISCOVERY_DATE in self.keys():
-                repo_years = self.catalog.get_repo_years()
+                repo_years = self.catalog.PATHS.get_repo_years()
                 for r, year in enumerate(repo_years):
                     if int(self[KEYS.DISCOVERY_DATE][0]['value'].
                            split('/')[0]) <= year:

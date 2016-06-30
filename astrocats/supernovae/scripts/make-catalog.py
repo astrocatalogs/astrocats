@@ -42,7 +42,7 @@ from events import *
 from utils.photometry import (xraycolorf, radiocolorf, bandcolorf, bandaliasf,
                               bandshortaliasf, bandwavef, bandcodes,
                               bandwavelengths)
-from utils.repos import get_repo_file_list, get_repo_folder_for_year
+from utils.repos import get_repo_output_file_list, get_repo_folder_for_year
 from utils.tq_funcs import tq, tprint
 
 parser = argparse.ArgumentParser(
@@ -336,7 +336,7 @@ if os.path.isfile(outdir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = get_repo_file_list(normal=(not args.boneyard), bones=args.boneyard)
+files = get_repo_output_file_list(normal=(not args.boneyard), bones=args.boneyard)
 
 md5s = []
 if os.path.isfile(outdir + 'md5s.json'):

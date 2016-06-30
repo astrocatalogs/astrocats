@@ -15,7 +15,7 @@ from bokeh.resources import CDN
 from palettable import cubehelix
 
 from events import *
-from utils.repos import get_repo_file_list
+from utils.repos import get_repo_output_file_list
 from utils.tq_funcs import tq, tprint
 
 tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
@@ -41,7 +41,7 @@ colors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
           cubehelix.perceptual_rainbow_16.hex_colors)
 shuffle(colors)
 
-files = get_repo_file_list(bones=False)
+files = get_repo_output_file_list(bones=False)
 
 with open('non-sne-types.json', 'r') as f:
     nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
