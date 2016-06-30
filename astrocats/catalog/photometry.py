@@ -16,42 +16,45 @@ REQUIRE_KEY_IN_PHOTOMETRY = True
 class PHOTOMETRY:
     TIME = Key('time', KEY_TYPES.NUMERIC)
     E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
-    TELESCOPE = Key('telescope', KEY_TYPES.ANY)
-    INSTRUMENT = Key('instrument', KEY_TYPES.ANY)
-    BAND = Key('band', KEY_TYPES.ANY)
     MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC)
-    E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC)
-    SOURCE = Key('source', KEY_TYPES.ANY)
-    SYSTEM = Key('system', KEY_TYPES.ANY)
-    OBSERVATORY = Key('observatory', KEY_TYPES.ANY)
-    OBSERVER = Key('observer', KEY_TYPES.ANY)
-    SURVEY = Key('survey', KEY_TYPES.ANY)
     FLUX = Key('flux', KEY_TYPES.NUMERIC)
     FLUX_DENSITY = Key('fluxdensity', KEY_TYPES.NUMERIC)
+    COUNTS = Key('counts', KEY_TYPES.NUMERIC)
+
+    FREQUENCY = Key('frequency', KEY_TYPES.NUMERIC)
+    NHMW = Key('nhmw', KEY_TYPES.NUMERIC)
+    PHOTON_INDEX = Key('photonindex', KEY_TYPES.NUMERIC)
+    UNABSORBED_FLUX = Key('unabsorbedflux', KEY_TYPES.NUMERIC)
+    ENERGY = Key('energy', KEY_TYPES.NUMERIC)
+
+    E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC)
     E_FLUX = Key('e_flux', KEY_TYPES.NUMERIC)
     E_FLUX_DENSITY = Key('e_fluxdensity', KEY_TYPES.NUMERIC)
-    COUNTS = Key('counts', KEY_TYPES.NUMERIC)
     E_COUNTS = Key('e_counts', KEY_TYPES.NUMERIC)
-    FREQUENCY = Key('frequency', _type_)
-    NHMW = Key('nhmw', _type_)
-    PHOTON_INDEX = Key('photonindex', _type_)
-    UNABSORBED_FLUX = Key('unabsorbedflux', _type_)
-    E_UNABSORBED_FLUX = Key('e_unabsorbedflux', _type_)
-    ENERGY = Key('energy', _type_)
-    E_LOWER_MAGNITUDE = Key('e_lower_magnitude', _type_)
-    E_UPPER_MAGNITUDE = Key('e_upper_magnitude', _type_)
-    E_LOWER_TIME = Key('e_lower_time', _type_)
-    E_UPPER_TIME = Key('e_upper_time', _type_)
+    E_UNABSORBED_FLUX = Key('e_unabsorbedflux', KEY_TYPES.NUMERIC)
+    E_LOWER_MAGNITUDE = Key('e_lower_magnitude', KEY_TYPES.NUMERIC)
+    E_UPPER_MAGNITUDE = Key('e_upper_magnitude', KEY_TYPES.NUMERIC)
+    E_LOWER_TIME = Key('e_lower_time', KEY_TYPES.NUMERIC)
+    E_UPPER_TIME = Key('e_upper_time', KEY_TYPES.NUMERIC)
+
+    TELESCOPE = Key('telescope', KEY_TYPES.STRING)
+    INSTRUMENT = Key('instrument', KEY_TYPES.STRING)
+    BAND = Key('band', KEY_TYPES.STRING)
+    SOURCE = Key('source', KEY_TYPES.STRING)
+    SYSTEM = Key('system', KEY_TYPES.STRING)
+    OBSERVATORY = Key('observatory', KEY_TYPES.STRING)
+    OBSERVER = Key('observer', KEY_TYPES.STRING)
+    SURVEY = Key('survey', KEY_TYPES.STRING)
 
     U_TIME = Key('u_time', KEY_TYPES.STRING)
-    U_FLUX = Key('u_flux', STRING)
-    U_FLUX_DENSITY = Key('u_fluxdensity', STRING)
-    U_FREQUENCY = Key('u_frequency', STRING)
-    U_ENERGY = Key('u_energy', STRING)
+    U_FLUX = Key('u_flux', KEY_TYPES.STRING)
+    U_FLUX_DENSITY = Key('u_fluxdensity', KEY_TYPES.STRING)
+    U_FREQUENCY = Key('u_frequency', KEY_TYPES.STRING)
+    U_ENERGY = Key('u_energy', KEY_TYPES.STRING)
+
     SCORRECTED = Key('scorrected', KEY_TYPES.BOOL)
     KCORRECTED = Key('kcorrected', KEY_TYPES.BOOL)
-    MCORRECTED = Key('mcorrected', BOOL)
-
+    MCORRECTED = Key('mcorrected', KEY_TYPES.BOOL)
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL)
     HOST = Key('host', KEY_TYPES.BOOL)
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL)
@@ -69,16 +72,14 @@ class Photometry(OrderedDict):
         for key in PHOTOMETRY._keys:
             # If this key is given, process and store it
             if key in kwargs:
+                if not key.check(kwargs[key]):
+                    raise ValueError("Value for '{}' is invalid '{}'".format(
+                        repr(key), kwargs[key]))
+
                 # Handle Special Cases
                 # --------------------
-                # For these boolean values, only store if True (toss if False)
-                if key.name == PHOTOMETRY.UPPER_LIMIT and not kwargs[key]:
-                    del kwargs[key]
-                    continue
-                if key.name == PHOTOMETRY.HOST and not kwargs[key]:
-                    del kwargs[key]
-                    continue
-                if key.name == PHOTOMETRY.INCLUDES_HOST and not kwargs[key]:
+                # Only keep booleans if they are true
+                if key.type == KEY_TYPES.BOOL and not kwargs[key]:
                     del kwargs[key]
                     continue
 
