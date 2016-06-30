@@ -43,7 +43,8 @@ class Catalog:
         """
         PATH_BASE = os.path.abspath(os.path.dirname(__file__))
 
-        def __init__(self):
+        def __init__(self, catalog):
+            self.catalog = catalog
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
@@ -62,7 +63,7 @@ class Catalog:
                 if not bones and 'boneyard' in rep:
                     continue
                 these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
-                self.log.debug("Found {} files in '{}'".format(
+                self.catalog.log.debug("Found {} files in '{}'".format(
                     len(these_files), rep))
                 files += these_files
 
@@ -98,7 +99,7 @@ class Catalog:
             stream_level=log_stream_level, tofile=args.log_filename)
 
         # Instantiate PATHS
-        self.PATHS = self.PATHS()
+        self.PATHS = self.PATHS(self)
 
         # Load repos dictionary (required)
         self.repos_dict = read_json_dict(self.PATHS.REPOS)

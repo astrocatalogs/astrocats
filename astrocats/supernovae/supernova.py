@@ -341,7 +341,7 @@ class Supernova(Entry):
     def check(self):
         # Make sure there is a schema key in dict
         if KEYS.SCHEMA not in self.keys():
-            self[KEYS.SCHEMA] = self.SCHEMA.URL
+            self[KEYS.SCHEMA] = self.catalog.SCHEMA.URL
         # Make sure there is a name key in dict
         if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
             raise ValueError("Supernova name is empty:\n\t{}".format(

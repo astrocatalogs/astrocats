@@ -15,8 +15,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
         PATH_BASE = os.path.abspath(os.path.dirname(__file__))
 
-        def __init__(self):
-            super().__init__()
+        def __init__(self, catalog):
+            super().__init__(catalog)
             # auxiliary datafiles
             self.TYPE_SYNONYMS = os.path.join(
                 self.PATH_INPUT, 'type-synonyms.json')
@@ -37,7 +37,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
                 self.PATH_OUTPUT, 'cache', 'extinctions.json')
 
         def get_repo_output_file_list(self, normal=True, bones=True):
-            repo_folders = self.PATHS.get_repo_output_folders()
+            repo_folders = self.get_repo_output_folders()
             return super()._get_repo_file_list(
                 repo_folders, normal=normal, bones=bones)
 
