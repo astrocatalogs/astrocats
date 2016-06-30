@@ -9,10 +9,9 @@ from astropy.time import Time as astrotime
 from astrocats.catalog.entry import KEYS, Entry
 from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
                                      get_event_filename, get_sig_digits,
-                                     is_number, jd_to_mjd,
-                                     make_date_string, pretty_num,
-                                     read_json_dict, tprint, trim_str_arr,
-                                     uniq_cdl, get_sig_digits)
+                                     is_number, jd_to_mjd, make_date_string,
+                                     pretty_num, tprint, trim_str_arr,
+                                     uniq_cdl)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
                                         radec_clean, same_tag_num,
                                         same_tag_str)
@@ -144,7 +143,8 @@ class Supernova(Entry):
                              "'s quantity must be specified for "
                              "add_quantity.")
         if not sources:
-            raise ValueError(self[SN_KEYS.NAME] + "'s source must be specified for "
+            raise ValueError(self[SN_KEYS.NAME] +
+                             "'s source must be specified for "
                              "quantity " +
                              quantity + ' before it is added.')
         if ((not isinstance(value, str) and
@@ -391,7 +391,8 @@ class Supernova(Entry):
                  split('/')[0]) >= 2016 and
              not any(['AT' in x for x in aliases]))):
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             self.add_quantity('alias', 'AT' + name[2:], source)
 
@@ -411,7 +412,8 @@ class Supernova(Entry):
                 del(self['claimedtype'])
         if 'claimedtype' not in self and name.startswith('AT'):
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             self.add_quantity('claimedtype', 'Candidate', source)
 
@@ -533,21 +535,21 @@ class Supernova(Entry):
                 srcname = ' '.join(srcname.split())
                 atelnum = srcname.split()[-1]
                 if is_number(atelnum) and atelnum in self.catalog.atels_dict:
-                    bibcode = atels_dict[atelnum]
+                    bibcode = self.catalog.atels_dict[atelnum]
 
             if srcname.upper().startswith('CBET'):
                 srcname = srcname.replace('CBET', 'CBET ')
                 srcname = ' '.join(srcname.split())
                 cbetnum = srcname.split()[-1]
                 if is_number(cbetnum) and cbetnum in self.catalog.cbets_dict:
-                    bibcode = cbets_dict[cbetnum]
+                    bibcode = self.catalog.cbets_dict[cbetnum]
 
             if srcname.upper().startswith('IAUC'):
                 srcname = srcname.replace('IAUC', 'IAUC ')
                 srcname = ' '.join(srcname.split())
                 iaucnum = srcname.split()[-1]
                 if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
-                    bibcode = iaucs_dict[iaucnum]
+                    bibcode = self.catalog.iaucs_dict[iaucnum]
 
         for rep in self._source_syns:
             if srcname in self._source_syns[rep]:
@@ -578,7 +580,8 @@ class Supernova(Entry):
         # Clean some legacy fields
         if 'aliases' in self and isinstance(self['aliases'], list):
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             for alias in self['aliases']:
                 self.add_quantity('alias', alias, source)
@@ -591,7 +594,8 @@ class Supernova(Entry):
             distinctfroms = [x for x in self[SN_KEYS.DISTINCTS]]
             del self[SN_KEYS.DISTINCTS]
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             for df in distinctfroms:
                 self.add_quantity(SN_KEYS.DISTINCTS, df, source)
@@ -600,7 +604,8 @@ class Supernova(Entry):
                 isinstance(self['errors'], list) and \
                 'sourcekind' in self['errors'][0]:
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE, srcname=self.catalog.OSC_NAME,
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             for err in self['errors']:
                 self.add_quantity('error', err['quantity'], source,
@@ -686,8 +691,8 @@ class Supernova(Entry):
                                        (not frequency and not band and not
                                         energy))):
             warnings.warn(
-                "Unit and band/frequency must be set when adding photometry by "
-                "flux or flux density, not adding.")
+                "Unit and band/frequency must be set when adding photometry "
+                "by flux or flux density, not adding.")
             tprint('Name : "' + name + '", Time: "' + time)
             return
 
@@ -735,7 +740,8 @@ class Supernova(Entry):
                      same_tag_num(photo, e_upper_magnitude,
                                   'e_upper_magnitude') and
                      same_tag_num(photo, e_flux, 'e_flux') and
-                     same_tag_num(photo, e_unabsorbedflux, 'e_unabsorbedflux') and
+                     same_tag_num(photo, e_unabsorbedflux,
+                                  'e_unabsorbedflux') and
                      same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
                      same_tag_num(photo, e_counts, 'e_counts') and
                      same_tag_str(photo, u_flux, 'u_flux') and
@@ -774,8 +780,9 @@ class Supernova(Entry):
         if e_upper_magnitude:
             photoentry['e_upper_magnitude'] = str(e_upper_magnitude)
         if frequency:
-            photoentry['frequency'] = frequency if isinstance(
-                frequency, list) or isinstance(frequency, str) else str(frequency)
+            photoentry['frequency'] = (frequency if isinstance(
+                frequency, list) or isinstance(frequency, str) else
+                str(frequency))
         if u_frequency:
             photoentry['u_frequency'] = u_frequency
         if energy:
@@ -865,8 +872,8 @@ class Supernova(Entry):
             return
 
         if not data or (not wavelengths or not fluxes):
-            ValueError("Spectrum must have wavelengths and fluxes set, or data "
-                       "set.")
+            ValueError(
+                "Spectrum must have wavelengths and fluxes set, or data set.")
 
         if not source:
             ValueError('Spectrum must have source before being added!')
@@ -1063,7 +1070,8 @@ class Supernova(Entry):
 
     def ct_list_prioritized(self):
         ct_list = list(sorted(
-            self[SN_KEYS.CLAIMED_TYPE], key=lambda key: self._ct_priority(key)))
+            self[SN_KEYS.CLAIMED_TYPE], key=lambda key:
+            self._ct_priority(key)))
         return ct_list
 
     def _ct_priority(self, attr):
