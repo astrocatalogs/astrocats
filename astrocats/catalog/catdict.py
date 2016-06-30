@@ -2,7 +2,7 @@
 """
 from collections import OrderedDict
 
-from .key import Key, KEY_TYPES, KeyCollection
+from .key import KEY_TYPES, KeyCollection
 
 
 class CatDict(OrderedDict):
@@ -11,20 +11,22 @@ class CatDict(OrderedDict):
 
     # The `KeyCollection` object associated with this dictionary
     #    For example, `PHOTOMETRY` for the `Photometry(CatDict)` subclass
-    KEYS = KeyCollection
+    _KEYS = KeyCollection
 
-    # If `REQUIRE_KEY_IN_PHOTOMETRY` is 'True', then only parameters with names
-    #    included in `PHOTOMETRY` are allowed.  Others will raise an error.
-    #    If this parameter is 'False', then parameters corresponding to those in
-    #    `PHOTOMETRY` are still checked (for type etc), but additional parameters
-    #    are just tacked onto the `Photometry` object without any checks or errors.
-    REQUIRE_KEY_IN_PHOTOMETRY = True
+    # If `_ALLOW_UNKNOWN_KEYS` is 'False', then only parameters with names
+    #    included in `_KEYS` are allowed.  Others will raise an error.
+    #    If this parameter is 'True', then parameters corresponding to those in
+    #    `_KEYS` are still checked (for type etc), but additional parameters
+    #    are just tacked onto the `CatDict` object without any checks or errors.
+    _ALLOW_UNKNOWN_KEYS = True
+
+    REQ_KEY_TYPES = []
 
     def __init__(self, **kwargs):
-        # Iterate over all `PHOTOMETRY` parameters, load each if given
-        #    note that the stored `values` are the `Key` objects, referred to
+        # Iterate over all `_KEYS` parameters, load each if given
+        #    note that the stored 'values' are the `Key` objects, referred to
         #    here with the name 'key'
-        for key in PHOTOMETRY.vals():
+        for key in self._KEYS.vals():
             # If this key is given, process and store it
             if key in kwargs:
                 # Make sure value is compatible with the 'Key' specification
@@ -43,11 +45,11 @@ class CatDict(OrderedDict):
                 # ----------------------
                 # Remove key-value pair from `kwargs` dictionary
                 value = kwargs.pop(key)
-                self[key] = self._clean_value(key, value)
+                self[key] = self._clean_value_for_key(key, value)
 
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
         #    elements should have been removed from `kwargs`
-        if REQUIRE_KEY_IN_PHOTOMETRY and len(kwargs):
+        if not self._ALLOW_UNKNOWN_KEYS and len(kwargs):
             raise ValueError(
                 "All permitted keys stored, remaining: '{}'".format(kwargs))
 
@@ -65,7 +67,7 @@ class CatDict(OrderedDict):
             return False
 
         # Go over all expected parameters and check equality of each
-        for key in self.KEYS.vals():
+        for key in self._KEYS.vals():
             # Skip parameters which shouldnt be compared
             if not key.compare:
                 continue
@@ -84,13 +86,7 @@ class CatDict(OrderedDict):
         return True
 
     def _check(self):
-        REQ_KEY_TYPES = [
-            [PHOTOMETRY.SOURCE],
-            [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
-            [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
-             PHOTOMETRY.COUNTS]]
-
-        for req_any in REQ_KEY_TYPES:
+        for req_any in self.REQ_KEY_TYPES:
             if not any([req_key in self for req_key in req_any]):
                 err_str = "Require one or more of: " + ",".join(
                     "'{}'".format(rk) for rk in req_any)
@@ -98,7 +94,7 @@ class CatDict(OrderedDict):
 
         return
 
-    def _clean_value(self, key, value):
+    def _clean_value_for_key(self, key, value):
         """
         """
         # Store whether given value started as a list or not
