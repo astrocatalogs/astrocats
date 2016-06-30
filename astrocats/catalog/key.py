@@ -15,18 +15,23 @@ class KEY_TYPES:
 
 
 class Key(str):
-    def __new__(cls, string, type=None, canbelist=False):
-        return str.__new__(cls, string)
+    def __new__(cls, name, type=None, canbelist=False):
+        return str.__new__(cls, name)
 
-    def __init__(self, string, type=None, canbelist=False):
+    def __init__(self, name, type=None, canbelist=False):
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES._vals:
             raise ValueError(
                 "Key `type` ('{}') must be 'None' or one of '{}'".format(
                     type, KEY_TYPES._keys))
-        self.string = str(string)
+        self.name = str(name)
         self.type = type
         self.canbelist = canbelist
+
+    def __repr__(self):
+        retval = "Key(name={}, type={}, cambelist={})".format(
+            self.name, self.key, self.canbelist)
+        return retval
 
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
@@ -38,6 +43,7 @@ class Key(str):
 
         # If there is a type requirement, check that
         if self.type is not None:
+            # `is_number` already checks for either list or single value
             if self.type == KEY_TYPES.NUMERIC and not is_number(val):
                 return False
             elif self.type == KEY_TYPES.STRING:
@@ -48,7 +54,9 @@ class Key(str):
                 elif not isinstance(val, str):
                     return False
             elif self.type == KEY_TYPES.BOOL:
-                if is_list and not isinstance(json.loads(val[0]), bool):
+                if is_list and not isinstance(val[0], bool):
+                    return False
+                elif not isinstance(val, bool):
                     return False
 
         return True
