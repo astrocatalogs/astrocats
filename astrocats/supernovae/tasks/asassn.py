@@ -1,12 +1,9 @@
 """Tasks related to the ASASSN survey.
 """
 import os
-
 from bs4 import BeautifulSoup
 
-
-
-from ...utils import pbar
+from astrocats.catalog.utils import pbar
 
 
 def do_asassn(catalog):
@@ -77,16 +74,16 @@ def do_asassn(catalog):
         catalog.entries[name].add_quantity('alias', name, sources)
         catalog.entries[name].add_quantity('discoverdate', discdate, sources)
         catalog.entries[name].add_quantity('ra', ra, sources,
-                                          unit='floatdegrees')
+                                           unit='floatdegrees')
         catalog.entries[name].add_quantity('dec', dec, sources,
-                                          unit='floatdegrees')
+                                           unit='floatdegrees')
         catalog.entries[name].add_quantity('redshift', redshift, sources)
         catalog.entries[name].add_quantity(
             'hostoffsetang', hostoff, sources, unit='arcseconds')
         for ct in claimedtype.split('/'):
             if ct != 'Unk':
                 catalog.entries[name].add_quantity('claimedtype', ct,
-                                                  typesources)
+                                                   typesources)
         if host != 'Uncatalogued':
             catalog.entries[name].add_quantity('host', host, sources)
     catalog.journal_entries()
