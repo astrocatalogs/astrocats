@@ -6,7 +6,8 @@ from collections import OrderedDict
 
 from astropy.time import Time as astrotime
 
-from astrocats.catalog.entry import KEYS, Entry
+from astrocats.catalog.entry import KEYS as BASEKEYS
+from astrocats.catalog.entry import Entry
 from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
                                      get_event_filename, get_sig_digits,
                                      is_number, jd_to_mjd, make_date_string,
@@ -20,7 +21,7 @@ from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
 from cdecimal import Decimal
 
 
-class SN_KEYS(KEYS):
+class KEYS(BASEKEYS):
     CLAIMED_TYPE = 'claimedtype'
     DISCOVERY_DATE = 'discoverdate'
     ERRORS = 'errors'
@@ -38,7 +39,7 @@ class Supernova(Entry):
     FIX: distinguish between '.filename' and 'get_filename'
 
     sources
-    -   All sources must have SN_KEYS.NAME and 'alias' parameters
+    -   All sources must have KEYS.NAME and 'alias' parameters
     -   FIX: is url required if no bibcode???
     -   FIX: consider changing 'alias' for each source to 'src_num' or
              something
@@ -63,7 +64,7 @@ class Supernova(Entry):
         return
 
     def add_source(self, srcname='', bibcode='', **src_kwargs):
-        """Add a new source to this entry's SN_KEYS.SOURCES list.
+        """Add a new source to this entry's KEYS.SOURCES list.
 
         FIX: if source already exists, should dictionary be updated to any
              new values??
@@ -91,28 +92,28 @@ class Supernova(Entry):
             srcname, bibcode))
 
         # These are empty lists if no sources
-        my_sources = self.get(SN_KEYS.SOURCES, [])
-        my_src_aliases = [src[SN_KEYS.ALIAS] for src in my_sources]
+        my_sources = self.get(KEYS.SOURCES, [])
+        my_src_aliases = [src[KEYS.ALIAS] for src in my_sources]
         nsources = len(my_sources)
 
         # Try to find existing, matching source
         # -------------------------------------
         # If this source name already exists, return alias number
         try:
-            my_src_names = [src[SN_KEYS.NAME] for src in my_sources]
+            my_src_names = [src[KEYS.NAME] for src in my_sources]
             name_idx = my_src_names.index(srcname)
             return my_src_aliases[name_idx]
-        # `KeyError` from `SN_KEYS.NAME` not existing, `ValueError` from
+        # `KeyError` from `KEYS.NAME` not existing, `ValueError` from
         # `srcname` not existing
         except (KeyError, ValueError):
             pass
 
         # If this bibcode already exists, return alias number
         try:
-            my_src_bibs = [src[SN_KEYS.BIBCODE] for src in my_sources]
+            my_src_bibs = [src[KEYS.BIBCODE] for src in my_sources]
             bib_idx = my_src_bibs.index(bibcode)
             return my_src_aliases[bib_idx]
-        # `KeyError` from `SN_KEYS.BIBCODE` not existing, `ValueError` from
+        # `KeyError` from `KEYS.BIBCODE` not existing, `ValueError` from
         # `bibcode` not existing
         except (KeyError, ValueError):
             pass
@@ -121,14 +122,14 @@ class Supernova(Entry):
         # --------------------------------
         source_alias = str(nsources + 1)
         new_src = OrderedDict()
-        new_src[SN_KEYS.NAME] = srcname
+        new_src[KEYS.NAME] = srcname
         if bibcode:
-            new_src[SN_KEYS.BIBCODE] = bibcode
-        new_src[SN_KEYS.ALIAS] = source_alias
+            new_src[KEYS.BIBCODE] = bibcode
+        new_src[KEYS.ALIAS] = source_alias
         # Add in any additional arguments passed (e.g. url, acknowledgment,
         # etc)
         new_src.update({k: v for (k, v) in src_kwargs.items() if k})
-        self.setdefault(SN_KEYS.SOURCES, []).append(new_src)
+        self.setdefault(KEYS.SOURCES, []).append(new_src)
         return source_alias
 
     def add_quantity(self, quantity, value, sources,
@@ -138,17 +139,17 @@ class Supernova(Entry):
         """
         """
         if not quantity:
-            raise ValueError(self[SN_KEYS.NAME] +
+            raise ValueError(self[KEYS.NAME] +
                              "'s quantity must be specified for "
                              "add_quantity.")
         if not sources:
-            raise ValueError(self[SN_KEYS.NAME] +
+            raise ValueError(self[KEYS.NAME] +
                              "'s source must be specified for "
                              "quantity " +
                              quantity + ' before it is added.')
         if ((not isinstance(value, str) and
              (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise ValueError(self[SN_KEYS.NAME] + "'s Quantity " + quantity +
+            raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
                              " must be a string or an array of strings.")
 
         if self.is_erroneous(quantity, sources):
@@ -165,7 +166,7 @@ class Supernova(Entry):
         if not svalue or svalue == '--' or svalue == '-':
             return
         if serror and (not is_number(serror) or float(serror) < 0):
-            raise ValueError(self[SN_KEYS.NAME] + "'s quanta " + quantity +
+            raise ValueError(self[KEYS.NAME] + "'s quanta " + quantity +
                              ' error value must be a number and positive.')
 
         # Set default units
@@ -181,7 +182,7 @@ class Supernova(Entry):
         # Handle certain quantity
         if quantity == 'alias':
             svalue = name_clean(svalue)
-            for df in self.get(SN_KEYS.DISTINCTS, []):
+            for df in self.get(KEYS.DISTINCTS, []):
                 if svalue == df['value']:
                     return
 
@@ -200,7 +201,7 @@ class Supernova(Entry):
                                  is_number(svalue[5:].strip())) or
                                 'cluster' in svalue.lower()))):
                 skind = 'cluster'
-        elif quantity == SN_KEYS.CLAIMED_TYPE:
+        elif quantity == KEYS.CLAIMED_TYPE:
             isq = False
             svalue = svalue.replace('young', '')
             if svalue.lower() in ['unknown', 'unk', '?', '-']:
@@ -319,7 +320,7 @@ class Supernova(Entry):
         return
 
     def is_erroneous(self, field, sources):
-        if hasattr(self, SN_KEYS.ERRORS):
+        if hasattr(self, KEYS.ERRORS):
             my_errors = self['errors']
             for alias in sources.split(','):
                 source = self.get_source_by_alias(alias)
@@ -339,16 +340,16 @@ class Supernova(Entry):
 
     def check(self):
         # Make sure there is a schema key in dict
-        if SN_KEYS.SCHEMA not in self.keys():
-            self[SN_KEYS.SCHEMA] = self.SCHEMA.URL
+        if KEYS.SCHEMA not in self.keys():
+            self[KEYS.SCHEMA] = self.SCHEMA.URL
         # Make sure there is a name key in dict
-        if SN_KEYS.NAME not in self.keys() or len(self[SN_KEYS.NAME]) == 0:
+        if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
             raise ValueError("Supernova name is empty:\n\t{}".format(
                 json.dumps(self, indent=2)))
         return
 
     def _get_save_path(self, bury=False):
-        filename = get_event_filename(self[SN_KEYS.NAME])
+        filename = get_event_filename(self[KEYS.NAME])
 
         # Put non-SNe in the boneyard
         if bury:
@@ -357,10 +358,10 @@ class Supernova(Entry):
         # Get normal repository save directory
         else:
             repo_folders = self.catalog.get_output_repo_folders()
-            if SN_KEYS.DISCOVERY_DATE in self.keys():
+            if KEYS.DISCOVERY_DATE in self.keys():
                 repo_years = self.catalog.get_repo_years()
                 for r, year in enumerate(repo_years):
-                    if int(self[SN_KEYS.DISCOVERY_DATE][0]['value'].
+                    if int(self[KEYS.DISCOVERY_DATE][0]['value'].
                            split('/')[0]) <= year:
                         outdir = repo_folders[r]
                         break
@@ -490,12 +491,12 @@ class Supernova(Entry):
             self.sanitize()
 
         # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[SN_KEYS.NAME]: self},
+        jsonstring = json.dumps({self[KEYS.NAME]: self},
                                 indent='\t', separators=(',', ':'),
                                 ensure_ascii=False)
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir, self[SN_KEYS.NAME]))
+                               "not exist.".format(outdir, self[KEYS.NAME]))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
@@ -504,12 +505,12 @@ class Supernova(Entry):
     '''
 
     def get_source_by_alias(self, alias):
-        for source in self.get(SN_KEYS.SOURCES, []):
+        for source in self.get(KEYS.SOURCES, []):
             if source['alias'] == alias:
                 return source
         raise ValueError(
             "Source '{}': alias '{}' not found!".format(
-                self[SN_KEYS.NAME], alias))
+                self[KEYS.NAME], alias))
 
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
@@ -570,9 +571,9 @@ class Supernova(Entry):
 
         bibcodes = []
         try:
-            for ss, source in enumerate(self[SN_KEYS.SOURCES]):
-                if SN_KEYS.BIBCODE in source:
-                    bibcodes.append(source[SN_KEYS.BIBCODE])
+            for ss, source in enumerate(self[KEYS.SOURCES]):
+                if KEYS.BIBCODE in source:
+                    bibcodes.append(source[KEYS.BIBCODE])
         except KeyError:
             pass
 
@@ -587,17 +588,17 @@ class Supernova(Entry):
             del self['aliases']
 
         # FIX: should this be an error if false??
-        if ((SN_KEYS.DISTINCTS in self and
-             isinstance(self[SN_KEYS.DISTINCTS], list) and
-             isinstance(self[SN_KEYS.DISTINCTS][0], str))):
-            distinctfroms = [x for x in self[SN_KEYS.DISTINCTS]]
-            del self[SN_KEYS.DISTINCTS]
+        if ((KEYS.DISTINCTS in self and
+             isinstance(self[KEYS.DISTINCTS], list) and
+             isinstance(self[KEYS.DISTINCTS][0], str))):
+            distinctfroms = [x for x in self[KEYS.DISTINCTS]]
+            del self[KEYS.DISTINCTS]
             source = self.add_source(
                 bibcode=self.catalog.OSC_BIBCODE,
                 srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             for df in distinctfroms:
-                self.add_quantity(SN_KEYS.DISTINCTS, df, source)
+                self.add_quantity(KEYS.DISTINCTS, df, source)
 
         if 'errors' in self and \
                 isinstance(self['errors'], list) and \
@@ -619,8 +620,8 @@ class Supernova(Entry):
 
         # Go through all keys in 'dirty' event
         for key in self.keys():
-            if key in [SN_KEYS.NAME, SN_KEYS.SCHEMA,
-                       SN_KEYS.SOURCES, SN_KEYS.ERRORS]:
+            if key in [KEYS.NAME, KEYS.SCHEMA,
+                       KEYS.SOURCES, KEYS.ERRORS]:
                 pass
             elif key == 'photometry':
                 for p, photo in enumerate(self['photometry']):
@@ -652,7 +653,7 @@ class Supernova(Entry):
                        e_unabsorbedflux="", energy="", u_energy="",
                        e_lower_magnitude="", e_upper_magnitude="",
                        e_lower_time="", e_upper_time="", mcorrected=""):
-        name = self[SN_KEYS.NAME]
+        name = self[KEYS.NAME]
         if (not time and not host) or (not magnitude and not flux and not
                                        fluxdensity and not counts and not
                                        unabsorbedflux):
@@ -1069,7 +1070,7 @@ class Supernova(Entry):
 
     def ct_list_prioritized(self):
         ct_list = list(sorted(
-            self[SN_KEYS.CLAIMED_TYPE], key=lambda key:
+            self[KEYS.CLAIMED_TYPE], key=lambda key:
             self._ct_priority(key)))
         return ct_list
 

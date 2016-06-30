@@ -40,7 +40,7 @@ def do_cpcs(catalog):
             if name.upper().startswith('IPTF'):
                 name = 'iPTF' + name[4:]
             # Only add events that are classified as SN.
-            if catalog.event_exists(name):
+            if catalog.entry_exists(name):
                 continue
             oldname = name
             name = catalog.add_entry(name)

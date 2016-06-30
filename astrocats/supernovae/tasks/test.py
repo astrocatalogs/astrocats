@@ -2,7 +2,7 @@
 """
 import os
 
-from astrocats.supernovae.supernova import SN_KEYS
+from astrocats.supernovae.supernova import KEYS
 
 TEST_NAME = 'SN-TEST-AA'
 
@@ -70,10 +70,10 @@ def _first_source(catalog):
         raise RuntimeError("`TEST_NAME`: '{}' is not in entries".format(
             TEST_NAME))
     # Make sure entry has the correct name
-    stored_name = catalog.entries[TEST_NAME][SN_KEYS.NAME]
+    stored_name = catalog.entries[TEST_NAME][KEYS.NAME]
     if stored_name != TEST_NAME:
         raise RuntimeError("`TEST_NAME`[{}]: '{}' does not match".format(
-            SN_KEYS.NAME, stored_name, TEST_NAME))
+            KEYS.NAME, stored_name, TEST_NAME))
 
     # Add source to entry
     log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_1))
@@ -93,7 +93,7 @@ def _first_source(catalog):
     catalog.entries[name].add_quantity('alias', FAKE_ALIAS_1, source)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure source alias is correct
-    stored_aliases = catalog.entries[name][SN_KEYS.ALIAS]
+    stored_aliases = catalog.entries[name][KEYS.ALIAS]
     if ((len(stored_aliases) != 1 or
          stored_aliases[0]['value'] != FAKE_ALIAS_1 or
          stored_aliases[0]['source'] != source)):
@@ -154,19 +154,19 @@ def _second_source(catalog):
 
 
 def check_source_1(catalog, name):
-    stored_sources = catalog.entries[name][SN_KEYS.SOURCES]
+    stored_sources = catalog.entries[name][KEYS.SOURCES]
     if ((len(stored_sources) != 1 or
-         stored_sources[0][SN_KEYS.NAME] != FAKE_BIBCODE_1 or
-         stored_sources[0][SN_KEYS.BIBCODE] != FAKE_BIBCODE_1)):
+         stored_sources[0][KEYS.NAME] != FAKE_BIBCODE_1 or
+         stored_sources[0][KEYS.BIBCODE] != FAKE_BIBCODE_1)):
         raise RuntimeError("Stored source: '{}' looks wrong.".format(
             stored_sources[0]))
     return
 
 
 def check_source_2(catalog, name):
-    stored_sources = catalog.entries[name][SN_KEYS.SOURCES]
-    names = [src[SN_KEYS.NAME] for src in stored_sources]
-    codes = [src[SN_KEYS.NAME] for src in stored_sources]
+    stored_sources = catalog.entries[name][KEYS.SOURCES]
+    names = [src[KEYS.NAME] for src in stored_sources]
+    codes = [src[KEYS.NAME] for src in stored_sources]
     if ((len(stored_sources) != 2 or
          FAKE_BIBCODE_1 not in names or FAKE_BIBCODE_2 not in names or
          FAKE_BIBCODE_1 not in codes or FAKE_BIBCODE_2 not in codes)):
@@ -178,10 +178,10 @@ def check_source_2(catalog, name):
 def check_stub(catalog, name):
     if not catalog.entries[name]._stub:
         raise RuntimeError("Remaining entry is not a stub.")
-    if SN_KEYS.ALIAS not in catalog.entries[name]:
+    if KEYS.ALIAS not in catalog.entries[name]:
         raise RuntimeError("Remaining entry is missing '{}'.".format(
-            SN_KEYS.ALIAS))
-    if SN_KEYS.SOURCES in catalog.entries[name]:
+            KEYS.ALIAS))
+    if KEYS.SOURCES in catalog.entries[name]:
         raise RuntimeError("Remaining still has '{}'.".format(
-            SN_KEYS.SOURCES))
+            KEYS.SOURCES))
     return

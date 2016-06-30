@@ -5,7 +5,7 @@ from collections import OrderedDict
 from glob import glob
 
 from astrocats.catalog.utils import pbar_strings
-from astrocats.supernovae.supernova import SN_KEYS, Supernova
+from astrocats.supernovae.supernova import KEYS, Supernova
 
 
 def do_external_radio(catalog):
@@ -81,6 +81,6 @@ def do_internal(catalog):
     for datafile in pbar_strings(files, desc=current_task):
         new_event = Supernova.init_from_file(
             catalog, path=datafile, clean=True)
-        catalog.entries.update({new_event[SN_KEYS.NAME]: new_event})
+        catalog.entries.update({new_event[KEYS.NAME]: new_event})
 
     return
