@@ -1,6 +1,6 @@
 """
 """
-from astrocats.catalog.utils import is_bool, is_number
+from astrocats.catalog.utils import is_number
 import json
 
 
@@ -10,7 +10,8 @@ class KEY_TYPES:
     BOOL = 'bool'
     ANY = None
 
-    _keys = sorted([kk for kk in dir() if not kk.startswith('_')])
+    _keys = sorted([kk for kk in vars().keys() if not kk.startswith('_')])
+    _vals = [vv for kk, vv in vars().items() if not kk.startswith('_')]
 
 
 class Key(str):
@@ -19,7 +20,7 @@ class Key(str):
 
     def __init__(self, string, type=None, canbelist=False):
         # Make sure type is allowed
-        if type is not None and type not in KEY_TYPES._keys:
+        if type is not None and type not in KEY_TYPES._vals:
             raise ValueError(
                 "Key `type` ('{}') must be 'None' or one of '{}'".format(
                     type, KEY_TYPES._keys))
