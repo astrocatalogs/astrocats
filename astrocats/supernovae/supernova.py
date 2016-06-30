@@ -525,7 +525,6 @@ class Supernova(Entry):
         # If a `srcname` is given, try to set a `bibcode`
         elif not bibcode:
             if srcname.upper().startswith('ATEL'):
-                atels_dict = read_json_dict(FILENAME.ATELS)
                 srcname = srcname.replace(
                     'ATEL', 'ATel').replace('Atel', 'ATel')
                 srcname = srcname.replace(
@@ -533,23 +532,21 @@ class Supernova(Entry):
                 srcname = srcname.replace('ATel', 'ATel ')
                 srcname = ' '.join(srcname.split())
                 atelnum = srcname.split()[-1]
-                if is_number(atelnum) and atelnum in atels_dict:
+                if is_number(atelnum) and atelnum in self.catalog.atels_dict:
                     bibcode = atels_dict[atelnum]
 
             if srcname.upper().startswith('CBET'):
-                cbets_dict = read_json_dict(FILENAME.CBETS)
                 srcname = srcname.replace('CBET', 'CBET ')
                 srcname = ' '.join(srcname.split())
                 cbetnum = srcname.split()[-1]
-                if is_number(cbetnum) and cbetnum in cbets_dict:
+                if is_number(cbetnum) and cbetnum in self.catalog.cbets_dict:
                     bibcode = cbets_dict[cbetnum]
 
             if srcname.upper().startswith('IAUC'):
-                iaucs_dict = read_json_dict(FILENAME.IAUCS)
                 srcname = srcname.replace('IAUC', 'IAUC ')
                 srcname = ' '.join(srcname.split())
                 iaucnum = srcname.split()[-1]
-                if is_number(iaucnum) and iaucnum in iaucs_dict:
+                if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
                     bibcode = iaucs_dict[iaucnum]
 
         for rep in self._source_syns:

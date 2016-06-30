@@ -44,7 +44,7 @@ def do_ps_threepi(catalog):
     fname = os.path.join(catalog.get_current_task_repo(), '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"
               "ps1threepi/psdb/public/?page=1&sort=followup_flag_date")
-    html = load_cached_url(ps_url, fname, write=False)
+    html = catalog.load_cached_url(ps_url, fname, write=False)
     if not html:
         return
 

@@ -11,7 +11,7 @@ from astrocats.catalog.utils import pbar
 def do_snhunt(catalog):
     current_task = catalog.get_current_task_str()
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
-    html = load_cached_url( snh_url, os.path.join(
+    html = catalog.load_cached_url(snh_url, os.path.join(
         catalog.get_current_task_repo(), 'SNhunt/current.html'))
     if not html:
         return

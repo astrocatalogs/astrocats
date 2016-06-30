@@ -18,7 +18,10 @@ class FILENAME:
     NON_SNE_TYPES = os.path.join(PATH_INPUT, 'non-sne-types.json')
     NON_SNE_PREFIXES = os.path.join(PATH_INPUT, 'non-sne-prefixes.json')
     BIBERRORS = os.path.join(PATH_INPUT, 'biberrors.json')
-
+    ATELS = os.path.join(PATH_INPUT, 'atels.json')
+    CBETS = os.path.join(PATH_INPUT, 'cbets.json')
+    IAUCS = os.path.join(PATH_INPUT, 'iaucs.json')
+    # cached datafiles
     BIBAUTHORS = os.path.join(PATH_OUTPUT, 'cache', 'bibauthors.json')
     EXTINCT = os.path.join(PATH_OUTPUT, 'cache', 'extinctions.json')
 

@@ -101,8 +101,7 @@ def do_ucb_spectra(catalog):
     sec_refbib = '2012MNRAS.425.1789S'
     ucbspectracnt = 0
 
-    jsontxt = load_cached_url(
-        catalog.args,
+    jsontxt = catalog.load_cached_url(
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubspec',
         os.path.join(catalog.get_current_task_repo(), 'UCB/allpub.json'))
     if not jsontxt:

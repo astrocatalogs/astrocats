@@ -13,9 +13,8 @@ from astrocats.catalog.utils import pbar, jd_to_mjd
 def do_gaia(catalog):
     current_task = catalog.get_current_task_str()
     fname = os.path.join(catalog.get_current_task_repo(), 'GAIA/alerts.csv')
-    csvtxt = load_cached_url(
-                             'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv',
-                             fname)
+    csvtxt = catalog.load_cached_url(
+        'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
     if not csvtxt:
         return
     tsvin = list(csv.reader(csvtxt.splitlines(),

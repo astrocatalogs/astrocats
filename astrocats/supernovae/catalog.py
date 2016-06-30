@@ -18,7 +18,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         self.proto = Supernova
         # Initialize super `astrocats.catalog.catalog.Catalog` object
         super().__init__(args)
-
+        # Load repos dictionary (required)
+        self.repos_dict = read_json_dict(FILENAME.REPOS)
         self._load_aux_data()
         self.FILENAME = FILENAME
         return
@@ -26,10 +27,12 @@ class Catalog(astrocats.catalog.catalog.Catalog):
     def _load_aux_data(self):
         # Create/Load auxiliary dictionaries
         self.nedd_dict = OrderedDict()
-        self.repos_dict = read_json_dict(FILENAME.REPOS)
         self.bibauthor_dict = read_json_dict(FILENAME.BIBAUTHORS)
         self.biberror_dict = read_json_dict(FILENAME.BIBERRORS)
         self.extinctions_dict = read_json_dict(FILENAME.EXTINCT)
+        self.iaucs_dict = read_json_dict(FILENAME.IAUCS)
+        self.cbets_dict = read_json_dict(FILENAME.CBETS)
+        self.atels_dict = read_json_dict(FILENAME.ATELS)
         # Create/Load auxiliary arrays
         self.nonsneprefixes_dict = read_json_arr(FILENAME.NON_SNE_PREFIXES)
         self.nonsnetypes = read_json_arr(FILENAME.NON_SNE_TYPES)
