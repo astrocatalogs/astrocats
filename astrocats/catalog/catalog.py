@@ -34,6 +34,47 @@ class Catalog:
     TRAVIS_QUERY_LIMIT = 10
     COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
 
+    class PATHS:
+        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
+
+        def __init__(self):
+            self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
+            self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
+            # critical datafiles
+            self.REPOS = os.path.join(self.PATH_INPUT, 'repos.json')
+            self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
+
+        def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
+            """Get filenames for all files in each repository, with `boneyard` files
+            optional.
+            """
+            # repo_folders = get_output_repo_folders()
+            files = []
+            for rep in repo_folders:
+                if 'boneyard' not in rep and not normal:
+                    continue
+                if not bones and 'boneyard' in rep:
+                    continue
+                these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
+                self.log.debug("Found {} files in '{}'".format(
+                    len(these_files), rep))
+                files += these_files
+
+            return files
+
+        def get_repo_boneyard(self):
+            bone_path = self.repos_dict['boneyard']
+            try:
+                bone_path = bone_path[0]
+            except TypeError:
+                pass
+            bone_path = os.path.join(self.PATHS.PATH_OUTPUT, bone_path, '')
+            return bone_path
+
+    class SCHEMA:
+        HASH = ''
+        URL = ''
+
     def __init__(self, args):
         # Store runtime arguments
         self.args = args
@@ -59,20 +100,6 @@ class Catalog:
         # Create empty `entries` collection
         self.entries = OrderedDict()
         return
-
-    class PATHS:
-        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
-
-        def __init__(self):
-            self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
-            self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
-            # critical datafiles
-            self.REPOS = os.path.join(self.PATH_INPUT, 'repos.json')
-            self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
-
-    class SCHEMA:
-        HASH = ''
-        URL = ''
 
     def import_data(self):
         """Run all of the import tasks.
@@ -323,33 +350,6 @@ class Catalog:
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
-
-    def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
-        """Get filenames for all files in each repository, with `boneyard` files
-        optional.
-        """
-        # repo_folders = get_output_repo_folders()
-        files = []
-        for rep in repo_folders:
-            if 'boneyard' not in rep and not normal:
-                continue
-            if not bones and 'boneyard' in rep:
-                continue
-            these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
-            self.log.debug("Found {} files in '{}'".format(
-                len(these_files), rep))
-            files += these_files
-
-        return files
-
-    def get_repo_boneyard(self):
-        bone_path = self.repos_dict['boneyard']
-        try:
-            bone_path = bone_path[0]
-        except TypeError:
-            pass
-        bone_path = os.path.join(self.PATHS.PATH_OUTPUT, bone_path, '')
-        return bone_path
 
     def get_preferred_name(self, name):
         if name not in self.entries:

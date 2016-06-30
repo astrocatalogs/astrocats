@@ -11,6 +11,39 @@ from astrocats.supernovae.supernova import Supernova
 
 class Catalog(astrocats.catalog.catalog.Catalog):
 
+    class PATHS(astrocats.catalog.catalog.Catalog.PATHS):
+        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
+
+        def __init__(self):
+            super().__init__()
+
+            # auxiliary datafiles
+            self.TYPE_SYNONYMS = os.path.join(self.PATH_INPUT,
+                                              'type-synonyms.json')
+            self.SOURCE_SYNONYMS = os.path.join(self.PATH_INPUT,
+                                                'source-synonyms.json')
+            self.NON_SNE_TYPES = os.path.join(self.PATH_INPUT,
+                                              'non-sne-types.json')
+            self.NON_SNE_PREFIXES = os.path.join(self.PATH_INPUT,
+                                                 'non-sne-prefixes.json')
+            self.BIBERRORS = os.path.join(self.PATH_INPUT, 'biberrors.json')
+            self.ATELS = os.path.join(self.PATH_INPUT, 'atels.json')
+            self.CBETS = os.path.join(self.PATH_INPUT, 'cbets.json')
+            self.IAUCS = os.path.join(self.PATH_INPUT, 'iaucs.json')
+            # cached datafiles
+            self.BIBAUTHORS = os.path.join(self.PATH_OUTPUT,
+                                           'cache', 'bibauthors.json')
+            self.EXTINCT = os.path.join(self.PATH_OUTPUT,
+                                        'cache', 'extinctions.json')
+
+    class SCHEMA:
+        HASH = (check_output(['git', 'log', '-n', '1', '--format="%H"',
+                              '--',
+                              'OSC-JSON-format.md'])
+                .decode('ascii').strip().strip('"').strip())
+        URL = ('https://github.com/astrocatalogs/sne/blob/' + HASH +
+               '/OSC-JSON-format.md')
+
     def __init__(self, args):
         """
         """
@@ -75,36 +108,3 @@ class Catalog(astrocats.catalog.catalog.Catalog):
                       for x in range(len(repo_folders) - 1)]
         repo_years[0] -= 1
         return repo_years
-
-    class PATHS(astrocats.catalog.catalog.Catalog.PATHS):
-        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
-
-        def __init__(self):
-            super().__init__()
-
-            # auxiliary datafiles
-            self.TYPE_SYNONYMS = os.path.join(self.PATH_INPUT,
-                                              'type-synonyms.json')
-            self.SOURCE_SYNONYMS = os.path.join(self.PATH_INPUT,
-                                                'source-synonyms.json')
-            self.NON_SNE_TYPES = os.path.join(self.PATH_INPUT,
-                                              'non-sne-types.json')
-            self.NON_SNE_PREFIXES = os.path.join(self.PATH_INPUT,
-                                                 'non-sne-prefixes.json')
-            self.BIBERRORS = os.path.join(self.PATH_INPUT, 'biberrors.json')
-            self.ATELS = os.path.join(self.PATH_INPUT, 'atels.json')
-            self.CBETS = os.path.join(self.PATH_INPUT, 'cbets.json')
-            self.IAUCS = os.path.join(self.PATH_INPUT, 'iaucs.json')
-            # cached datafiles
-            self.BIBAUTHORS = os.path.join(self.PATH_OUTPUT,
-                                           'cache', 'bibauthors.json')
-            self.EXTINCT = os.path.join(self.PATH_OUTPUT,
-                                        'cache', 'extinctions.json')
-
-    class SCHEMA:
-        HASH = (check_output(['git', 'log', '-n', '1', '--format="%H"',
-                              '--',
-                              'OSC-JSON-format.md'])
-                .decode('ascii').strip().strip('"').strip())
-        URL = ('https://github.com/astrocatalogs/sne/blob/' + HASH +
-               '/OSC-JSON-format.md')
