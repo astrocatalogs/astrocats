@@ -237,16 +237,21 @@ class Catalog:
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exists.".
                 format(newname, name))
-            return newname
+            # If this is a stub, we need to continue, possibly load file
+            if self.entries[newname]._stub:
+                self.log.debug("'{}' is a stub".format(newname))
+            # If a full (non-stub) event exists, return its name
+            else:
+                self.log.debug("'{}' is not a stub, returning".format(newname))
+                return newname
 
-        # If entry is alias of another entry *in `entries`*, find and return
-        # that
+        # If entry is alias of another entry in `entries`, find and return that
         match_name = self.find_entry_name_of_alias(self.entries, newname)
         if match_name is not None:
             self.log.debug(
-                "`newname`: '{}' (name: '{}') already exist as alias for "
+                "`newname`: '{}' (name: '{}') already exists as alias for "
                 "'{}'.".format(newname, name, match_name))
-            return match_name
+            newname = match_name
 
         # Load Event from file
         if load:
@@ -254,12 +259,16 @@ class Catalog:
             if loaded_entry is not None:
                 self.entries[newname] = loaded_entry
                 self.log.debug(
-                    "Added '{}', from '{}', to `self.entries`"
-                    .format(newname, loaded_entry.filename))
+                    "Added '{}', from '{}', to `self.entries`".format(
+                        newname, loaded_entry.filename))
                 # Delete source file, if desired
                 if delete:
                     self._delete_entry_file(entry=loaded_entry)
                 return newname
+
+        # If we match an existing event, return that
+        if match_name is not None:
+            return match_name
 
         # Create new entry
         new_entry = self.proto(self, newname)
