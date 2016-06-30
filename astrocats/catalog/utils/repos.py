@@ -47,7 +47,7 @@ def get_repo_folder_for_year(entry):
 def get_output_repo_folders():
     """Get the names of all repositories given in the 'rep-folders.txt' file.
     """
-    with open(FILENAME.REPOS_LIST, 'r') as f:
+    with open(PATHS.REPOS_LIST, 'r') as f:
         repo_folders = f.read().splitlines()
     return repo_folders
 

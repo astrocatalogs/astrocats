@@ -23,16 +23,16 @@ class Catalog(astrocats.catalog.catalog.Catalog):
     def _load_aux_data(self):
         # Create/Load auxiliary dictionaries
         self.nedd_dict = OrderedDict()
-        self.bibauthor_dict = read_json_dict(self.FILENAME.BIBAUTHORS)
-        self.biberror_dict = read_json_dict(self.FILENAME.BIBERRORS)
-        self.extinctions_dict = read_json_dict(self.FILENAME.EXTINCT)
-        self.iaucs_dict = read_json_dict(self.FILENAME.IAUCS)
-        self.cbets_dict = read_json_dict(self.FILENAME.CBETS)
-        self.atels_dict = read_json_dict(self.FILENAME.ATELS)
+        self.bibauthor_dict = read_json_dict(self.PATHS.BIBAUTHORS)
+        self.biberror_dict = read_json_dict(self.PATHS.BIBERRORS)
+        self.extinctions_dict = read_json_dict(self.PATHS.EXTINCT)
+        self.iaucs_dict = read_json_dict(self.PATHS.IAUCS)
+        self.cbets_dict = read_json_dict(self.PATHS.CBETS)
+        self.atels_dict = read_json_dict(self.PATHS.ATELS)
         # Create/Load auxiliary arrays
         self.nonsneprefixes_dict = read_json_arr(
-            self.FILENAME.NON_SNE_PREFIXES)
-        self.nonsnetypes = read_json_arr(self.FILENAME.NON_SNE_TYPES)
+            self.PATHS.NON_SNE_PREFIXES)
+        self.nonsnetypes = read_json_arr(self.PATHS.NON_SNE_TYPES)
         return
 
     def clone_repos(self):
@@ -53,7 +53,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         repo_folders = []
         repo_folders += self.repos_dict['external']
         repo_folders += self.repos_dict['internal']
-        repo_folders = [os.path.join(self.FILENAME.PATH_INPUT, rf)
+        repo_folders = [os.path.join(self.PATHS.PATH_INPUT, rf)
                         for rf in repo_folders]
         return repo_folders
 
@@ -63,7 +63,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         repo_folders = []
         repo_folders += self.repos_dict['output']
         repo_folders += self.repos_dict['boneyard']
-        repo_folders = [os.path.join(self.FILENAME.PATH_OUTPUT, rf)
+        repo_folders = [os.path.join(self.PATHS.PATH_OUTPUT, rf)
                         for rf in repo_folders]
         return repo_folders
 
@@ -76,7 +76,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         repo_years[0] -= 1
         return repo_years
 
-    class FILENAME(astrocats.catalog.catalog.Catalog.FILENAME):
+    class PATHS(astrocats.catalog.catalog.Catalog.PATHS):
         PATH_BASE = os.path.abspath(os.path.dirname(__file__))
 
         def __init__(self):

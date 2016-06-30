@@ -50,17 +50,17 @@ class Catalog:
         self.log = logger.get_logger(
             stream_level=log_stream_level, tofile=args.log_filename)
 
-        # Instantiate FILENAME
-        self.FILENAME = self.FILENAME()
+        # Instantiate PATHS
+        self.PATHS = self.PATHS()
 
         # Load repos dictionary (required)
-        self.repos_dict = read_json_dict(self.FILENAME.REPOS)
+        self.repos_dict = read_json_dict(self.PATHS.REPOS)
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
         return
 
-    class FILENAME:
+    class PATHS:
         PATH_BASE = os.path.abspath(os.path.dirname(__file__))
 
         def __init__(self):
@@ -142,7 +142,7 @@ class Catalog:
         return
 
     def load_task_list(self):
-        """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
+        """Load the list of tasks in the `PATHS.TASK_LIST` json file.
 
         A `Task` object is created for each entry, with the parameters filled
         in. These are placed in an OrderedDict, sorted by the `priority`
@@ -156,7 +156,7 @@ class Catalog:
                 raise ValueError(
                     "If '--tasks' is used, '--yes' and '--no' shouldnt be.")
 
-        def_task_list_filename = self.FILENAME.TASK_LIST
+        def_task_list_filename = self.PATHS.TASK_LIST
         self.log.debug(
             "Loading task-list from '{}'".format(def_task_list_filename))
         data = json.load(open(def_task_list_filename, 'r'))
@@ -348,7 +348,7 @@ class Catalog:
             bone_path = bone_path[0]
         except TypeError:
             pass
-        bone_path = os.path.join(self.FILENAME.PATH_OUTPUT, bone_path, '')
+        bone_path = os.path.join(self.PATHS.PATH_OUTPUT, bone_path, '')
         return bone_path
 
     def get_preferred_name(self, name):
@@ -780,7 +780,7 @@ class Catalog:
                         filename = filename.split('.')[:-1]
                         os.system('cd ' + outdir + '; git rm ' + filename +
                                   '.json; git add -f ' + filename +
-                                  '.json.gz; cd ' + self.FILENAME.PATH_BASE)
+                                  '.json.gz; cd ' + self.PATHS.PATH_BASE)
 
             if clear:
                 self.entries[name] = self.entries[name].get_stub()
@@ -810,7 +810,7 @@ class Catalog:
         return self.current_task.current_task(self.args)
 
     def get_current_task_repo(self):
-        return self.current_task._get_repo_path(self.FILENAME.PATH_BASE)
+        return self.current_task._get_repo_path(self.PATHS.PATH_BASE)
 
     def has_task(self, task):
         return task in self.tasks and (not self.args.update or

@@ -58,7 +58,7 @@ class Supernova(Entry):
 
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
-        with open(catalog.FILENAME.SOURCE_SYNONYMS, 'r') as f:
+        with open(catalog.PATHS.SOURCE_SYNONYMS, 'r') as f:
             self._source_syns = json.loads(
                 f.read(), object_pairs_hook=OrderedDict)
         return
