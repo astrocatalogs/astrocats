@@ -37,7 +37,7 @@
     },
     "simbad": {
         "nice_name": "%pre SIMBAD",
-        "active": false,
+        "active": true,
         "update": false,
         "module": "supernovae.tasks.simbad",
         "function": "do_simbad",

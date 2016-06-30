@@ -10,18 +10,16 @@ import urllib
 # from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-
-
-from ...utils import is_number, pbar
-from ..funcs import clean_snname
-from astrocats.catalog.utils import uniq_cdl, utf8
+from astrocats.catalog.utils import is_number, pbar, uniq_cdl, utf8
+from astrocats.supernovae.utils import clean_snname
 
 
 def do_asiago_photo(catalog):
     current_task = catalog.get_current_task_str()
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
-    path = os.path.abspath(os.path.join(catalog.get_current_task_repo(), 'asiago-cat.php'))
+    path = os.path.abspath(os.path.join(
+        catalog.get_current_task_repo(), 'asiago-cat.php'))
     response = urllib.request.urlopen('file://' + path)
     html = response.read().decode('utf-8')
     html = html.replace('\r', "")
@@ -44,10 +42,9 @@ def do_asiago_photo(catalog):
             refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
             refbib = '1989A&AS...81..421B'
 
-            (name,
-             source) = catalog.new_entry(oldname,
-                                         srcname=reference, url=refurl,
-                                         bibcode=refbib, secondary=True)
+            name, source = catalog.new_entry(
+                oldname, srcname=reference, url=refurl, bibcode=refbib,
+                secondary=True)
 
             year = re.findall(r'\d+', oldname)[0]
             catalog.entries[name].add_quantity('discoverdate', year, source)
@@ -79,7 +76,7 @@ def do_asiago_photo(catalog):
                     datestring = datestring + '/' + daystr
 
             catalog.entries[name].add_quantity(datekey + 'date', datestring,
-                                              source)
+                                               source)
 
             velocity = ''
             redshift = ''
@@ -97,7 +94,7 @@ def do_asiago_photo(catalog):
                 catalog.entries[name].add_quantity('host', hostname, source)
             if (claimedtype != ''):
                 catalog.entries[name].add_quantity('claimedtype', claimedtype,
-                                                  source)
+                                                   source)
             if (redshift != ''):
                 catalog.entries[name].add_quantity(
                     'redshift', redshift, source, kind='host')
@@ -112,13 +109,13 @@ def do_asiago_photo(catalog):
                     'hostdec', hostdec, source, unit='nospace')
             if (ra != ''):
                 catalog.entries[name].add_quantity('ra', ra, source,
-                                                  unit='nospace')
+                                                   unit='nospace')
             if (dec != ''):
                 catalog.entries[name].add_quantity('dec', dec, source,
-                                                  unit='nospace')
+                                                   unit='nospace')
             if (discoverer != ''):
                 catalog.entries[name].add_quantity('discoverer', discoverer,
-                                                  source)
+                                                   source)
 
     catalog.journal_entries()
     return
@@ -127,10 +124,10 @@ def do_asiago_photo(catalog):
 def do_asiago_spectra(catalog):
     current_task = catalog.get_current_task_str()
     html = catalog.load_cached_url(
-                           ('http://sngroup.oapd.inaf.it./'
-                            'cgi-bin/output_class.cgi?sn=1990'),
-                           os.path.join(catalog.get_current_task_repo(),
-                                        'Asiago/spectra.html'))
+        ('http://sngroup.oapd.inaf.it./'
+         'cgi-bin/output_class.cgi?sn=1990'),
+        os.path.join(catalog.get_current_task_repo(),
+                     'Asiago/spectra.html'))
     if not html:
         return
 
@@ -167,10 +164,10 @@ def do_asiago_spectra(catalog):
                 secondarysource = catalog.entries[name].add_source(
                     srcname=reference, url=refurl, secondary=True)
                 catalog.entries[name].add_quantity('alias', oldname,
-                                                  secondarysource)
+                                                   secondarysource)
                 if alias != name:
                     catalog.entries[name].add_quantity('alias', alias,
-                                                      secondarysource)
+                                                       secondarysource)
             elif tdi == 2:
                 host = td.text.strip()
                 if host == 'anonymous':
@@ -207,7 +204,7 @@ def do_asiago_spectra(catalog):
                     source = catalog.entries[name].add_source(
                         srcname=reference, url=refurl)
                 catalog.entries[name].add_quantity('alias', name,
-                                                  secondarysource)
+                                                   secondarysource)
                 sources = uniq_cdl(
                     list(filter(None, [source, secondarysource])))
             elif tdi == 12:
@@ -217,12 +214,12 @@ def do_asiago_spectra(catalog):
                 #     fitsurl = fitslink['href']
         if name:
             catalog.entries[name].add_quantity('claimedtype', claimedtype,
-                                              sources)
+                                               sources)
             catalog.entries[name].add_quantity('ra', ra, sources)
             catalog.entries[name].add_quantity('dec', dec, sources)
             catalog.entries[name].add_quantity('redshift', redshift, sources)
             catalog.entries[name].add_quantity('discoverer', discoverer,
-                                              sources)
+                                               sources)
             catalog.entries[name].add_quantity('host', host, sources)
 
             # if fitsurl:

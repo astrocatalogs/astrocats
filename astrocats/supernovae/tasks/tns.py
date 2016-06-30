@@ -8,9 +8,7 @@ import requests
 from astropy.time import Time as astrotime
 
 
-from scripts.utils import pbar, pretty_num
-
-from ..funcs import load_cached_url
+from astrocats.catalog.utils import pbar, pretty_num
 
 
 def do_tns(catalog):

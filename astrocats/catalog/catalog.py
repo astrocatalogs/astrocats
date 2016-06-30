@@ -118,13 +118,15 @@ class Catalog:
     def load_task_list(self):
         """Load the list of tasks in the `FILENAME.TASK_LIST` json file.
 
-        A `Task` object is created for each entry, with the parameters filled in.
-        These are placed in an OrderedDict, sorted by the `priority` parameter,
-        with positive values and then negative values, e.g. [0, 2, 10, -10, -1].
+        A `Task` object is created for each entry, with the parameters filled
+        in. These are placed in an OrderedDict, sorted by the `priority`
+        parameter, with positive values and then negative values, e.g. [0, 2,
+        10, -10, -1].
         """
 
         if self.args.args_task_list is not None:
-            if self.args.yes_task_list is not None or self.args.no_task_list is not None:
+            if (self.args.yes_task_list is not None or
+                    self.args.no_task_list is not None):
                 raise ValueError(
                     "If '--tasks' is used, '--yes' and '--no' shouldnt be.")
 
@@ -141,8 +143,9 @@ class Catalog:
             if arglist is not None:
                 for tname in arglist:
                     if tname not in data.keys():
-                        raise ValueError("Value '{}' in '{}' list does not match"
-                                         " any tasks".format(tname, lname))
+                        raise ValueError(
+                            "Value '{}' in '{}' list does not match"
+                            " any tasks".format(tname, lname))
 
         tasks = {}
         # `defaults` is a dictionary where each `key` is a task name, and values

@@ -4,9 +4,8 @@ import re
 
 from astroquery.simbad import Simbad
 
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import is_number, pbar, single_spaces, uniq_cdl
 from astrocats.supernovae.utils import name_clean
-from scripts.utils import is_number, pbar, single_spaces
 
 
 def do_simbad(catalog):
