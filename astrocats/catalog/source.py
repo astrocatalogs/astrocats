@@ -1,8 +1,7 @@
 """Class for representing sources of data.
 """
-from Collections import OrderedDict
-
-from .key import KEY_TYPES, Key, KeyCollection
+from astrocats.catalog.catdict import CatDict
+from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
 # If `REQUIRE_KEY_IN_SOURCE` is 'True', then only parameters with names
 # included in `SOURCE` are allowed.  Others will raise an error. If this
@@ -24,61 +23,14 @@ class SOURCE(KeyCollection):
     SECONDARY = Key('secondary', KEY_TYPES.BOOL)
 
 
-class Source(OrderedDict):
+class Source(CatDict):
     """
     """
+
+    _KEYS = SOURCE
 
     def __init__(self, **kwargs):
-        # Iterate over all `PHOTOMETRY` parameters, load each if given
-        #    note that the stored `values` are the `Key` objects, referred to
-        #    here with the name 'key'
-        for key in SOURCE.vals():
-            # If this key is given, process and store it
-            if key in kwargs:
-                if not key.check(kwargs[key]):
-                    raise ValueError("Value for '{}' is invalid '{}'".format(
-                        repr(key), kwargs[key]))
-
-                # Handle Special Cases
-                # --------------------
-                # Only keep booleans if they are true
-                if key.type == KEY_TYPES.BOOL and not kwargs[key]:
-                    del kwargs[key]
-                    continue
-
-                # Check and store values
-                # ----------------------
-                # Remove key-value pair from `kwargs` dictionary
-                value = kwargs.pop(key)
-                # Make sure value is compatible with the 'Key' specification
-                if key.check(value):
-                    self[key] = value
-                else:
-                    raise ValueError("Value for '{}' is invalid '{}'".format(
-                        repr(key), value))
-
-        # If we require all parameters to be a key in `PHOTOMETRY`, then all
-        #    elements should have been removed from `kwargs`
-        if REQUIRE_KEY_IN_SOURCE and len(kwargs):
-            raise ValueError(
-                "All permitted keys stored, remaining: '{}'".format(kwargs))
-
-        # Make sure that currently stored values are valid
-        self._check()
-
-        return
-
-    def __repr__(self):
-        pass
-
-    def _check(self):
-        REQ_KEY_TYPES = [
-            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME]]
-
-        for req_any in REQ_KEY_TYPES:
-            if not any([req_key in self for req_key in req_any]):
-                err_str = "Require one of: " + ",".join(
-                    "'{}'".format(rk) for rk in req_any)
-                raise ValueError(err_str)
-
-        return
+        super().__init__(kwargs)
+        self.REQ_KEY_TYPES = [
+            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME]
+        ]
