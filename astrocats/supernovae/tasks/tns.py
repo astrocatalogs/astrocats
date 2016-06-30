@@ -7,7 +7,6 @@ from math import ceil
 import requests
 from astropy.time import Time as astrotime
 
-
 from astrocats.catalog.utils import pbar, pretty_num
 
 
@@ -81,7 +80,8 @@ def do_tns(catalog):
                 catalog.entries[name].add_quantity(
                     'redshift', row[7], source, kind='host')
             if row[8]:
-                catalog.entries[name].add_quantity('discoverer', row[8], source)
+                catalog.entries[name].add_quantity(
+                    'discoverer', row[8], source)
             # Currently, all events listing all possible observers. TNS bug?
             # if row[9]:
             #    observers = row[9].split(',')

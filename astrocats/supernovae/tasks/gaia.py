@@ -5,9 +5,8 @@ import os
 import re
 import urllib
 
+from astrocats.catalog.utils import jd_to_mjd, pbar
 from cdecimal import Decimal
-
-from astrocats.catalog.utils import pbar, jd_to_mjd
 
 
 def do_gaia(catalog):
@@ -25,7 +24,8 @@ def do_gaia(catalog):
         if ri == 0 or not row:
             continue
         name = catalog.add_entry(row[0])
-        source = catalog.entries[name].add_source(srcname=reference, url=refurl)
+        source = catalog.entries[name].add_source(
+            srcname=reference, url=refurl)
         catalog.entries[name].add_quantity('alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
         catalog.entries[name].add_quantity('discoverdate', year, source)
@@ -60,7 +60,8 @@ def do_gaia(catalog):
                     catalog.entries[name].add_quantity('alias', alias, source)
                     break
 
-        fname = os.path.join(catalog.get_current_task_repo(), 'GAIA/') + row[0] + '.csv'
+        fname = os.path.join(catalog.get_current_task_repo(),
+                             'GAIA/') + row[0] + '.csv'
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(fname)):
             with open(fname, 'r') as ff:
@@ -84,10 +85,9 @@ def do_gaia(catalog):
             e_mag = 0.
             telescope = 'GAIA'
             band = 'G'
-            catalog.entries[name].add_photometry(time=mjd, telescope=telescope,
-                                                band=band, magnitude=magnitude,
-                                                e_magnitude=e_mag,
-                                                source=source)
+            catalog.entries[name].add_photometry(
+                time=mjd, telescope=telescope, band=band, magnitude=magnitude,
+                e_magnitude=e_mag, source=source)
         if catalog.args.update:
             catalog.journal_entries()
     catalog.journal_entries()

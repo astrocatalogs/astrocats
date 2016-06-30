@@ -9,7 +9,6 @@ from astropy import units as un
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 
-
 from astrocats.catalog.utils import (get_sig_digits, is_number, pbar,
                                      pretty_num, uniq_cdl)
 from astrocats.supernovae.utils import host_clean, name_clean

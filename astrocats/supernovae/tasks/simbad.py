@@ -70,7 +70,8 @@ def do_simbad(catalog):
             catalog.entries[name].add_quantity('alias', ali, source)
         if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
             csources = ','.join(
-                [source, catalog.entries[name].add_source(bibcode=row['COO_BIBCODE'])])
+                [source, catalog.entries[name].add_source(
+                    bibcode=row['COO_BIBCODE'])])
             catalog.entries[name].add_quantity('ra', row['RA'], csources)
             catalog.entries[name].add_quantity('dec', row['DEC'], csources)
         if row['SP_BIBCODE']:
@@ -80,10 +81,11 @@ def do_simbad(catalog):
                                 ([catalog.entries[name]
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
-            catalog.entries[name].add_quantity('claimedtype',
-                                               row['SP_TYPE']
-                                               .replace('SN.', '')
-                                               .replace('SN', '').replace('(~)', '')
-                                               .strip(': '), ssources)
+            catalog.entries[name].add_quantity(
+                'claimedtype', (row['SP_TYPE']
+                                .replace('SN.', '')
+                                .replace('SN', '')
+                                .replace('(~)', '')
+                                .strip(': ')), ssources)
     catalog.journal_entries()
     return

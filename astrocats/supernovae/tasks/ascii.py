@@ -9,7 +9,6 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-
 from astrocats.catalog.utils import (is_number, jd_to_mjd, make_date_string,
                                      pbar, pbar_strings)
 from cdecimal import Decimal
@@ -37,7 +36,8 @@ def do_ascii(catalog):
 
     # Anderson 2014
     file_names = list(
-        glob(os.path.join(catalog.get_current_task_repo(), 'SNII_anderson2014/*.dat')))
+        glob(os.path.join(
+            catalog.get_current_task_repo(), 'SNII_anderson2014/*.dat')))
     for datafile in pbar_strings(file_names, desc=current_task):
         basename = os.path.basename(datafile)
         if not is_number(basename[:2]):
@@ -101,7 +101,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2015MNRAS.449..451W
-    file_path = os.path.join(catalog.get_current_task_repo(), '2015MNRAS.449..451W.dat')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2015MNRAS.449..451W.dat')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
@@ -123,7 +124,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2016MNRAS.459.1039T
-    file_path = os.path.join(catalog.get_current_task_repo(), '2016MNRAS.459.1039T.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2016MNRAS.459.1039T.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
     name = catalog.add_entry('LSQ13zm')
@@ -148,7 +150,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2015ApJ...804...28G
-    file_path = os.path.join(catalog.get_current_task_repo(), '2015ApJ...804...28G.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2015ApJ...804...28G.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
     name = catalog.add_entry('PS1-13arp')
@@ -169,7 +172,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2016ApJ...819...35A
-    file_path = os.path.join(catalog.get_current_task_repo(), '2016ApJ...819...35A.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2016ApJ...819...35A.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
@@ -188,7 +192,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2014ApJ...784..105W
-    file_path = os.path.join(catalog.get_current_task_repo(), '2014ApJ...784..105W.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2014ApJ...784..105W.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
@@ -209,7 +214,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2012MNRAS.425.1007B
-    file_path = os.path.join(catalog.get_current_task_repo(), '2012MNRAS.425.1007B.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2012MNRAS.425.1007B.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
     for rr, row in enumerate(pbar(data, current_task)):
@@ -244,7 +250,8 @@ def do_ascii(catalog):
         catalog.journal_entries()
 
     # 2014ApJ...783...28G
-    file_path = os.path.join(catalog.get_current_task_repo(), 'apj490105t2_ascii.txt')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), 'apj490105t2_ascii.txt')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -263,7 +270,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2005ApJ...634.1190H
-    file_path = os.path.join(catalog.get_current_task_repo(), '2005ApJ...634.1190H.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2005ApJ...634.1190H.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -281,7 +289,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2014MNRAS.444.2133S
-    file_path = os.path.join(catalog.get_current_task_repo(), '2014MNRAS.444.2133S.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2014MNRAS.444.2133S.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -300,7 +309,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2009MNRAS.398.1041B
-    file_path = os.path.join(catalog.get_current_task_repo(), '2009MNRAS.398.1041B.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2009MNRAS.398.1041B.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -328,7 +338,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2010arXiv1007.0011P
-    file_path = os.path.join(catalog.get_current_task_repo(), '2010arXiv1007.0011P.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2010arXiv1007.0011P.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
@@ -353,7 +364,8 @@ def do_ascii(catalog):
     catalog.journal_entries()
 
     # 2000ApJ...533..320G
-    file_path = os.path.join(catalog.get_current_task_repo(), '2000ApJ...533..320G.tsv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), '2000ApJ...533..320G.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))

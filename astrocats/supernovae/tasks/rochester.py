@@ -9,7 +9,6 @@ from string import ascii_letters
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-
 from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 
@@ -25,8 +24,9 @@ def do_rochester(catalog):
         if catalog.args.update and not rochesterupdate[pp]:
             continue
 
-        filepath = os.path.join(
-            catalog.get_current_task_repo(), 'rochester/') + os.path.basename(path)
+        filepath = (os.path.join(
+            catalog.get_current_task_repo(), 'rochester/') +
+                    os.path.basename(path))
         for mirror in rochestermirrors:
             html = catalog.load_cached_url(
                 mirror + path, filepath,
@@ -143,7 +143,8 @@ def do_rochester(catalog):
     if not catalog.args.update:
         vsnetfiles = ['latestsne.dat']
         for vsnetfile in vsnetfiles:
-            file_name = os.path.join(catalog.get_current_task_repo(), "" + vsnetfile)
+            file_name = os.path.join(
+                catalog.get_current_task_repo(), "" + vsnetfile)
             with open(file_name, 'r', encoding='latin1') as csv_file:
                 tsvin = csv.reader(csv_file, delimiter=' ',
                                    skipinitialspace=True)

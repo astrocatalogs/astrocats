@@ -9,7 +9,6 @@ from math import floor
 import requests
 from astropy.time import Time as astrotime
 
-
 from astrocats.catalog.utils import get_sig_digits, pbar, pretty_num, uniq_cdl
 
 
@@ -59,7 +58,8 @@ def do_ucb_photo(catalog):
         if not phot['PhotID']:
             raise ValueError('ID not found for SNDB phot!')
 
-        filepath = os.path.join(catalog.get_current_task_repo(), 'SNDB/') + filename
+        filepath = os.path.join(
+            catalog.get_current_task_repo(), 'SNDB/') + filename
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(filepath)):
             with open(filepath, 'r') as ff:
@@ -157,7 +157,8 @@ def do_ucb_spectra(catalog):
         if not spectrum['SpecID']:
             raise ValueError('ID not found for SNDB spectrum!')
 
-        filepath = os.path.join(catalog.get_current_task_repo(), 'UCB/') + filename
+        filepath = os.path.join(
+            catalog.get_current_task_repo(), 'UCB/') + filename
         if (catalog.current_task.load_archive(catalog.args) and
                 os.path.isfile(filepath)):
             with open(filepath, 'r') as ff:

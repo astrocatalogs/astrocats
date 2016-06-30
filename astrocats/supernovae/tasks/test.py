@@ -1,6 +1,7 @@
 """
 """
 import os
+
 from astrocats.supernovae.supernova import SN_KEYS
 
 TEST_NAME = 'SN-TEST-AA'
@@ -29,7 +30,7 @@ def do_test(catalog):
 
     #
     log_str = "ADDING SECOND SOURCE"
-    log.error("\n\n{}\n{}\n{}\n\n".format("="*100, log_str, "="*100))
+    log.error("\n\n{}\n{}\n{}\n\n".format("=" * 100, log_str, "=" * 100))
 
     # Add new Data, from different source, to same fake entry
     # -------------------------------------------------------

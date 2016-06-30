@@ -6,8 +6,6 @@ import os
 from glob import glob
 from math import isnan
 
-
-
 from astrocats.catalog.utils import is_number, pbar, pbar_strings, rep_chars
 
 
@@ -139,7 +137,7 @@ def do_donations(catalog):
                         source = (catalog.entries[name]
                                   .add_source(bibcode=bibcode))
                         catalog.entries[name].add_quantity('alias', name,
-                                                          source)
+                                                           source)
                     elif field == 'type':
                         claimedtype = value.replace('SN', '')
                         catalog.entries[name].add_quantity(
@@ -159,9 +157,10 @@ def do_donations(catalog):
                     elif field == 'host':
                         value = value.replace('- ', '-').replace('G ', 'G')
                         catalog.entries[name].add_quantity('host', value,
-                                                          source)
+                                                           source)
                     elif field == 'e(b-v)_mw':
-                        catalog.entries[name].add_quantity('ebv', value, source)
+                        catalog.entries[name].add_quantity(
+                            'ebv', value, source)
 
         catalog.entries[name].add_quantity(
             'redshift', zhel, source, error=zerr, kind='heliocentric')
@@ -189,7 +188,8 @@ def do_donations(catalog):
     catalog.journal_entries()
 
     # Brown 05-14-16
-    files = glob(os.path.join(catalog.get_current_task_repo(), 'brown-05-14-16/*.dat'))
+    files = glob(os.path.join(
+        catalog.get_current_task_repo(), 'brown-05-14-16/*.dat'))
     for fi in pbar(files, current_task):
         name = os.path.basename(fi).split('_')[0]
         name = catalog.add_entry(name)
@@ -221,7 +221,8 @@ def do_donations(catalog):
     catalog.journal_entries()
 
     # Nicholl 05-03-16
-    files = glob(os.path.join(catalog.get_current_task_repo(), 'nicholl-05-03-16/*.txt'))
+    files = glob(os.path.join(
+        catalog.get_current_task_repo(), 'nicholl-05-03-16/*.txt'))
     name = catalog.add_entry('SN2015bn')
     source = catalog.entries[name].add_source(bibcode='2016arXiv160304748N')
     catalog.entries[name].add_quantity('alias', name, source)

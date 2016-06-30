@@ -3,13 +3,13 @@
 import csv
 import os
 
-
 from astrocats.catalog.utils import pbar
 
 
 def do_grb(catalog):
     current_task = 'GRB'
-    file_path = os.path.join(catalog.get_current_task_repo(), 'GRB-catalog/catalog.csv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), 'GRB-catalog/catalog.csv')
     csvtxt = catalog.load_cached_url(
         'http://grb.pa.msu.edu/grbcatalog/'
         'download_data?cut_0_min=10&cut_0=BAT%20T90'

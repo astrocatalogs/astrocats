@@ -6,8 +6,7 @@ from collections import OrderedDict
 
 import requests
 
-
-from astrocats.catalog.utils import uniq_cdl, is_number, pbar, round_sig
+from astrocats.catalog.utils import is_number, pbar, round_sig, uniq_cdl
 
 
 def do_cpcs(catalog):

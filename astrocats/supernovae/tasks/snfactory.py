@@ -6,18 +6,18 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-
 from astrocats.catalog.utils import jd_to_mjd, pretty_num, uniq_cdl
 from cdecimal import Decimal
 
 
 def do_snf_aliases(catalog):
-    file_path = os.path.join(catalog.get_current_task_repo(), 'SNF/snf-aliases.csv')
+    file_path = os.path.join(
+        catalog.get_current_task_repo(), 'SNF/snf-aliases.csv')
     with open(file_path, 'r') as f:
         for row in [x.split(',') for x in f.read().splitlines()]:
             name, source = catalog.new_entry(
-                row[0], bibcode=catalog.OSC_BIBCODE, srcname=catalog.OSC_NAME, url=catalog.OSC_URL,
-                secondary=True)
+                row[0], bibcode=catalog.OSC_BIBCODE, srcname=catalog.OSC_NAME,
+                url=catalog.OSC_URL, secondary=True)
             catalog.entries[name].add_quantity('alias', row[1], source)
 
     catalog.journal_entries()
@@ -25,8 +25,10 @@ def do_snf_aliases(catalog):
 
 
 def do_snf_specta(catalog):
-    bibcodes = {'SN2005gj': '2006ApJ...650..510A', 'SN2006D': '2007ApJ...654L..53T',
-                'SN2007if': '2010ApJ...713.1073S', 'SN2011fe': '2013A&A...554A..27P'}
+    bibcodes = {'SN2005gj': '2006ApJ...650..510A',
+                'SN2006D': '2007ApJ...654L..53T',
+                'SN2007if': '2010ApJ...713.1073S',
+                'SN2011fe': '2013A&A...554A..27P'}
     oldname = ''
     snfcnt = 0
     eventfolders = next(os.walk(os.path.join(
@@ -42,7 +44,8 @@ def do_snf_specta(catalog):
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
         sec_source = catalog.entries[name].add_source(
-            srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode, secondary=True)
+            srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode,
+            secondary=True)
         catalog.entries[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]
         source = catalog.entries[name].add_source(bibcode=bibcode)
@@ -107,15 +110,18 @@ def do_snf_specta(catalog):
             if haserrors:
                 errors = specdata[2]
 
-            unit_err = 'Variance' if name == 'SN2011fe' else 'erg/s/cm^2/Angstrom'
+            unit_err = ('Variance' if name == 'SN2011fe' else
+                        'erg/s/cm^2/Angstrom')
             unit_flx = 'erg/s/cm^2/Angstrom'
             catalog.entries[name].add_spectrum(
                 'Angstrom', unit_flx, u_time='MJD', time=time,
-                wavelengths=wavelengths, fluxes=fluxes, errors=errors, observer=observer,
-                observatory=observatory, telescope=telescope, instrument=instrument,
-                errorunit=unit_err, source=sources, filename=filename)
+                wavelengths=wavelengths, fluxes=fluxes, errors=errors,
+                observer=observer, observatory=observatory,
+                telescope=telescope, instrument=instrument, errorunit=unit_err,
+                source=sources, filename=filename)
             snfcnt = snfcnt + 1
-            if catalog.args.travis and snfcnt % catalog.TRAVIS_QUERY_LIMIT == 0:
+            if (catalog.args.travis and
+                    snfcnt % catalog.TRAVIS_QUERY_LIMIT == 0):
                 break
 
     catalog.journal_entries()

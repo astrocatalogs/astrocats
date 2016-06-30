@@ -5,7 +5,6 @@ import os
 import re
 from glob import glob
 
-
 from astrocats.catalog.utils import pbar_strings
 
 
@@ -15,7 +14,8 @@ def do_sdss(catalog):
                            'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
     sdssbands = ['u', 'g', 'r', 'i', 'z']
-    file_names = list(glob(os.path.join(catalog.get_current_task_repo(), 'SDSS/*.sum')))
+    file_names = list(
+        glob(os.path.join(catalog.get_current_task_repo(), 'SDSS/*.sum')))
     for fname in pbar_strings(file_names, desc=current_task):
         tsvin = csv.reader(open(fname, 'r'), delimiter=' ',
                            skipinitialspace=True)
@@ -40,7 +40,7 @@ def do_sdss(catalog):
                 if row[5] != 'RA:':
                     year = re.findall(r'\d+', name)[0]
                     catalog.entries[name].add_quantity('discoverdate', year,
-                                                      source)
+                                                       source)
 
                 catalog.entries[name].add_quantity(
                     'ra', row[-4], source, unit='floatdegrees')

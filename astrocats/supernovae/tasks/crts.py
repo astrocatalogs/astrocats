@@ -6,11 +6,8 @@ import urllib
 
 from bs4 import BeautifulSoup
 
-from cdecimal import Decimal
-
 from astrocats.catalog.utils import is_number, pbar
-
-from ..constants import TRAVIS_QUERY_LIMIT
+from cdecimal import Decimal
 
 
 def do_crts(catalog):
@@ -151,7 +148,7 @@ def do_crts(catalog):
             if catalog.args.update:
                 catalog.journal_entries()
 
-        if catalog.args.travis and tri > TRAVIS_QUERY_LIMIT:
+        if catalog.args.travis and tri > catalog.TRAVIS_QUERY_LIMIT:
             break
 
     catalog.journal_entries()

@@ -8,7 +8,6 @@ from math import log10
 from astropy.time import Time as astrotime
 from astroquery.vizier import Vizier
 
-
 from astrocats.catalog.utils import (get_sig_digits, pbar, pbar_strings,
                                      pretty_num)
 
@@ -39,7 +38,8 @@ def do_snls_photo(catalog):
         magnitude = pretty_num(30.0 - 2.5 * log10(float(flux)), sig=sig)
         e_mag = pretty_num(
             2.5 * log10(1.0 + float(err) / float(flux)), sig=sig)
-        # e_mag = pretty_num(2.5*(log10(float(flux) + float(err)) - log10(float(flux))), sig=sig)
+        # e_mag = pretty_num(2.5*(log10(float(flux) + float(err)) -
+        # log10(float(flux))), sig=sig)
         catalog.entries[name].add_photometry(
             time=mjd, band=band, magnitude=magnitude, e_magnitude=e_mag,
             counts=flux, e_counts=err, source=source)
@@ -96,12 +96,14 @@ def do_snls_spectra(catalog):
         fluxes = [pretty_num(float(x) * 1.e-16, sig=get_sig_digits(x))
                   for x in specdata[2]]
         # FIX: this isnt being used
-        # errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in specdata[3]]
+        # errors = [pretty_num(float(x)*1.e-16, sig=get_sig_digits(x)) for x in
+        # specdata[3]]
 
         catalog.entries[name].add_spectrum(
             'Angstrom', 'erg/s/cm^2/Angstrom', wavelengths=wavelengths,
             fluxes=fluxes, u_time='MJD' if name in datedict else '',
-            time=datedict[name] if name in datedict else '', telescope=telescope, source=source,
+            time=datedict[name] if name in datedict else '',
+            telescope=telescope, source=source,
             filename=filename)
         if catalog.args.travis and fi >= catalog.TRAVIS_QUERY_LIMIT:
             break

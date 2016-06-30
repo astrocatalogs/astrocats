@@ -1,5 +1,6 @@
 '''Utility functions related to dates.
 '''
+from astrocats.catalog.utils import is_number
 from cdecimal import Decimal
 
 __all__ = ['jd_to_mjd', 'make_date_string', 'get_source_year']

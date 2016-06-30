@@ -9,11 +9,11 @@ from astropy.coordinates import SkyCoord as coord
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 
+from astrocats.catalog.utils import (get_sig_digits, is_number, pretty_num,
+                                     tprint, uniq_cdl)
+from astrocats.supernovae.constants import (CLIGHT, KM, OSC_BIBCODE, OSC_NAME,
+                                            OSC_URL, PREF_KINDS)
 from cdecimal import Decimal
-
-from ..catalog.utils import (get_sig_digits, is_number, pretty_num, tprint,
-                             uniq_cdl)
-from .constants import CLIGHT, KM, OSC_BIBCODE, OSC_NAME, OSC_URL, PREF_KINDS
 
 
 def do_derivations(catalog):
@@ -135,7 +135,8 @@ def do_derivations(catalog):
                 if 'discoverdate' in catalog.entries[name]:
                     break
 
-        if 'ra' not in catalog.entries[name] or 'dec' not in catalog.entries[name]:
+        if ('ra' not in catalog.entries[name] or
+                'dec' not in catalog.entries[name]):
             prefixes = ['PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J', 'HST J',
                         'TCP J', 'MACS J', '2MASS J', 'EQ J', 'CRTS J',
                         'SMT J']
@@ -173,7 +174,8 @@ def do_derivations(catalog):
         no_host = ('host' not in catalog.entries[name] or
                    not any([x['value'] == 'Milky Way' for x in
                             catalog.entries[name]['host']]))
-        if ('ra' in catalog.entries[name] and 'dec' in catalog.entries[name] and no_host):
+        if ('ra' in catalog.entries[name] and
+                'dec' in catalog.entries[name] and no_host):
             from astroquery.irsa_dust import IrsaDust
             if name not in catalog.extinctions_dict:
                 try:
@@ -194,7 +196,8 @@ def do_derivations(catalog):
                     [catalog.entries[name].add_source(
                         bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
                         secondary=True),
-                     catalog.entries[name].add_source(bibcode='2011ApJ...737..103S')])
+                     catalog.entries[name]
+                     .add_source(bibcode='2011ApJ...737..103S')])
                 (catalog.entries[name]
                  .add_quantity('ebv',
                                str(catalog
@@ -204,7 +207,8 @@ def do_derivations(catalog):
                                          .extinctions_dict[name][1]),
                                derived=True))
         if (('host' in catalog.entries[name] and
-             ('hostra' not in catalog.entries[name] or 'hostdec' not in catalog.entries[name]))):
+             ('hostra' not in catalog.entries[name] or
+              'hostdec' not in catalog.entries[name]))):
             for host in catalog.entries[name]['host']:
                 alias = host['value']
                 if ' J' in alias and is_number(alias.split(' J')[-1][:6]):
@@ -236,7 +240,8 @@ def do_derivations(catalog):
                 if 'hostra' in catalog.entries[name]:
                     break
 
-        if 'redshift' not in catalog.entries[name] and 'velocity' in catalog.entries[name]:
+        if ('redshift' not in catalog.entries[name] and
+                'velocity' in catalog.entries[name]):
             # Find the "best" velocity to use for this
             bestsig = 0
             for hv in catalog.entries[name]['velocity']:
@@ -257,7 +262,8 @@ def do_derivations(catalog):
                                           sig=bestsig),
                                sources, kind='heliocentric',
                                derived=True))
-        if ('redshift' not in catalog.entries[name] and len(catalog.nedd_dict) > 0 and
+        if ('redshift' not in catalog.entries[name] and
+                len(catalog.nedd_dict) > 0 and
                 'host' in catalog.entries[name]):
             reference = "NED-D"
             refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
@@ -277,7 +283,8 @@ def do_derivations(catalog):
                         name, 'redshift', redshift,
                         uniq_cdl([source, secondarysource]),
                         kind='host', derived=True)
-        if ('maxabsmag' not in catalog.entries[name] and 'maxappmag' in catalog.entries[name] and
+        if ('maxabsmag' not in catalog.entries[name] and
+                'maxappmag' in catalog.entries[name] and
                 'lumdist' in catalog.entries[name]):
             # Find the "best" distance to use for this
             bestsig = 0
@@ -322,7 +329,8 @@ def do_derivations(catalog):
                             catalog.entries[name].add_source(
                                 bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                 url=OSC_URL, secondary=True),
-                            catalog.entries[name].add_source(bibcode='2015arXiv150201589P')]
+                            catalog.entries[name]
+                            .add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
                         catalog.entries[name].add_quantity(
                             'lumdist', pretty_num(dl.value, sig=bestsig),
@@ -334,7 +342,8 @@ def do_derivations(catalog):
                                 bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                 url=OSC_URL, secondary=True)
                             pnum = pretty_num(
-                                float(catalog.entries[name]['maxappmag'][0]['value']) -
+                                float(catalog.entries[name]['maxappmag'][0][
+                                    'value']) -
                                 5.0 * (log10(dl.to('pc').value) - 1.0),
                                 sig=bestsig)
                             catalog.entries[name].add_quantity(
@@ -346,12 +355,14 @@ def do_derivations(catalog):
                                 bibcode=OSC_BIBCODE, srcname=OSC_NAME,
                                 url=OSC_URL,
                                 secondary=True),
-                            catalog.entries[name].add_source(bibcode='2015arXiv150201589P')]
+                            catalog.entries[name]
+                            .add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
                         catalog.entries[name].add_quantity(
                             'comovingdist', pretty_num(cd.value, sig=bestsig),
                             sources, derived=True)
-        if all([x in catalog.entries[name] for x in ['ra', 'dec', 'hostra', 'hostdec']]):
+        if all([x in catalog.entries[name] for x in
+                ['ra', 'dec', 'hostra', 'hostdec']]):
             # For now just using first coordinates that appear in entry
             try:
                 c1 = coord(
@@ -395,13 +406,16 @@ def do_derivations(catalog):
                     (catalog.entries[name]
                      .add_quantity('hostoffsetdist',
                                    pretty_num(
-                                       float(catalog.entries[name]['hostoffsetang']
+                                       float(catalog.entries[name][
+                                           'hostoffsetang']
                                              [0]['value']) /
                                        3600. * (pi / 180.) *
-                                       float(catalog.entries[name]['comovingdist']
+                                       float(catalog.entries[name][
+                                           'comovingdist']
                                              [0]['value']) *
                                        1000. / (1.0 +
-                                                float(catalog.entries[name]['redshift']
+                                                float(catalog.entries[name][
+                                                    'redshift']
                                                       [0]['value'])),
                                        sig=offsetsig), sources))
 

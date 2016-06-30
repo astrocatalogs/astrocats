@@ -337,7 +337,8 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
 
-    with open(os.path.join(catalog.get_current_task_repo(), 'II_189_refs.csv')) as f:
+    with open(os.path.join(
+            catalog.get_current_task_repo(), 'II_189_refs.csv')) as f:
         tsvin = csv.reader(f, delimiter='\t', skipinitialspace=True)
         ii189bibdict = {}
         ii189refdict = {}
@@ -396,7 +397,8 @@ def do_vizier(catalog):
 
         oldname = name
         name = catalog.add_entry(oldname)
-        source = (catalog.entries[name].add_source(bibcode='2014BASI...42...47G') +
+        source = (catalog.entries[name]
+                  .add_source(bibcode='2014BASI...42...47G') +
                   ',' +
                   (catalog.entries[name]
                    .add_source(srcname='Galactic SNRs',
@@ -1037,7 +1039,8 @@ def do_vizier(catalog):
         catalog.entries[name].add_quantity(
             'dec', row['DEJ2000'], source, unit='floatdegrees')
         catalog.entries[name].add_quantity(
-            'redshift', row['zph'], source, error=row['e_zph'], kind='photometric')
+            'redshift', row['zph'], source, error=row['e_zph'],
+            kind='photometric')
         catalog.entries[name].add_quantity(
             'maxappmag', row['rP1mag'], source, error=row['e_rP1mag'])
         catalog.entries[name].add_quantity('maxband', 'r', source)
@@ -1223,8 +1226,9 @@ def do_vizier(catalog):
             bibcode="2011MNRAS.417..916G")
         catalog.entries[name].add_quantity('ra', row['RAJ2000'], source)
         catalog.entries[name].add_quantity('dec', row['DEJ2000'], source)
-        catalog.entries[name].add_quantity('redshift', row['zsp'] if row['zsp']
-                                           else row['zph'], source, kind='host')
+        catalog.entries[name].add_quantity(
+            'redshift', row['zsp'] if row['zsp'] else row['zph'], source,
+            kind='host')
         catalog.entries[name].add_quantity(
             'discoverdate', '20' + row['SNSDF'][:2] + '/' + row['SNSDF'][2:4],
             source, kind='host')
@@ -1316,7 +1320,8 @@ def do_vizier(catalog):
         catalog.entries[name].add_quantity('ra', row['RAJ2000'], source)
         catalog.entries[name].add_quantity('dec', row['DEJ2000'], source)
         catalog.entries[name].add_quantity(
-            'redshift', row['zSN'], source, error=row['e_zSN'], kind='heliocentric')
+            'redshift', row['zSN'], source, error=row['e_zSN'],
+            kind='heliocentric')
         catalog.entries[name].add_quantity(
             'redshift', row['zGal'], source, kind='host')
         catalog.entries[name].add_quantity(
@@ -1357,7 +1362,8 @@ def do_vizier(catalog):
         catalog.entries[name].add_quantity(
             'dec', row['_DE'], source, unit='floatdegrees')
         catalog.entries[name].add_quantity(
-            'redshift', row['z'], source, error=row['e_z'], kind='heliocentric')
+            'redshift', row['z'], source, error=row['e_z'],
+            kind='heliocentric')
     catalog.journal_entries()
 
     # 2012ApJ...755...61S

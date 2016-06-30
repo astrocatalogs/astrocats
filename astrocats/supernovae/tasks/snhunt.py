@@ -40,19 +40,24 @@ def do_snhunt(catalog):
         name = re.sub('<[^<]+?>', '', cols[4]
                       ).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(srcname='Supernova Hunt', url=snh_url)
+        source = catalog.entries[name].add_source(
+            srcname='Supernova Hunt', url=snh_url)
         catalog.entries[name].add_quantity('alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
         catalog.entries[name].add_quantity('host', host, source)
-        catalog.entries[name].add_quantity('ra', cols[2], source, unit='floatdegrees')
-        catalog.entries[name].add_quantity('dec', cols[3], source, unit='floatdegrees')
+        catalog.entries[name].add_quantity(
+            'ra', cols[2], source, unit='floatdegrees')
+        catalog.entries[name].add_quantity(
+            'dec', cols[3], source, unit='floatdegrees')
         dd = cols[0]
         discoverdate = dd[:4] + '/' + dd[4:6] + '/' + dd[6:8]
-        catalog.entries[name].add_quantity('discoverdate', discoverdate, source)
+        catalog.entries[name].add_quantity(
+            'discoverdate', discoverdate, source)
         discoverers = cols[5].split('/')
         for discoverer in discoverers:
             catalog.entries[name].add_quantity('discoverer', 'CRTS', source)
-            catalog.entries[name].add_quantity('discoverer', discoverer, source)
+            catalog.entries[name].add_quantity(
+                'discoverer', discoverer, source)
         if catalog.args.update:
             catalog.journal_entries()
 

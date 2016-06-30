@@ -16,6 +16,7 @@ ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
             "which is funded in part by the National Science Foundation "
             "through grant AST 0907903.")
 
+
 def do_cfa_photo(catalog):
     from html import unescape
     import re

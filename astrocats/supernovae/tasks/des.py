@@ -5,7 +5,6 @@ import os
 
 from bs4 import BeautifulSoup
 
-
 from astrocats.catalog.utils import pbar
 
 

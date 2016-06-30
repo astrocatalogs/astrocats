@@ -6,7 +6,6 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-
 from astrocats.catalog.utils import pbar
 from cdecimal import Decimal
 
@@ -14,7 +13,8 @@ from cdecimal import Decimal
 def do_superfit_spectra(catalog):
     superfit_url = 'http://www.dahowell.com/superfit.html'
     current_task = catalog.get_current_task_str()
-    sfdirs = list(glob(os.path.join(catalog.get_current_task_repo(), 'superfit/*')))
+    sfdirs = list(
+        glob(os.path.join(catalog.get_current_task_repo(), 'superfit/*')))
     for sfdir in pbar(sfdirs, desc=current_task):
         sffiles = sorted(glob(sfdir + '/*.dat'))
         lastname = ''

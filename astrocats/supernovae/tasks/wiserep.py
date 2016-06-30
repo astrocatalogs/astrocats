@@ -11,11 +11,10 @@ from html import unescape
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-
+from astrocats.catalog.utils import uniq_cdl
 
 from ...utils import is_number, pbar, pbar_strings, tprint
 from ..constants import TRAVIS_QUERY_LIMIT
-from astrocats.catalog.utils import uniq_cdl
 
 
 def do_wiserep_spectra(catalog):

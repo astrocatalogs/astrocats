@@ -9,7 +9,6 @@ from glob import glob
 import requests
 from bs4 import BeautifulSoup
 
-
 from astrocats.catalog.utils import (is_number, pbar, pbar_strings, round_sig,
                                      uniq_cdl)
 from cdecimal import Decimal
@@ -19,7 +18,8 @@ def do_cccp(catalog):
     current_task = catalog.get_current_task_str()
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
-        glob(os.path.join(catalog.get_current_task_repo(), 'CCCP/apj407397*.txt')))
+        glob(os.path.join(catalog.get_current_task_repo(),
+                          'CCCP/apj407397*.txt')))
     for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
         with open(datafile, 'r') as ff:
             tsvin = csv.reader(ff, delimiter='\t', skipinitialspace=True)
@@ -88,7 +88,8 @@ def do_cccp(catalog):
                 if '.txt' in link2['href'] and '_' in link2['href']:
                     band = link2['href'].split('_')[1].split('.')[0].upper()
                     if catalog.current_task.load_archive(catalog.args):
-                        fname = os.path.join(catalog.get_current_task_repo(), 'CCCP/')
+                        fname = os.path.join(
+                            catalog.get_current_task_repo(), 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         if not os.path.isfile(fname):
                             continue
@@ -102,7 +103,8 @@ def do_cccp(catalog):
                         if response3.status_code == 404:
                             continue
                         html3 = response3.text
-                        fname = os.path.join(catalog.get_current_task_repo(), 'CCCP/')
+                        fname = os.path.join(
+                            catalog.get_current_task_repo(), 'CCCP/')
                         fname += link2['href'].split('/')[-1]
                         with open(fname, 'w') as ff:
                             ff.write(html3)

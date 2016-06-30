@@ -3,14 +3,14 @@
 import csv
 import os
 
-
 from astrocats.catalog.utils import pbar
 
 
 def do_scp(catalog):
     current_task = catalog.get_current_task_str()
-    tsvin = list(csv.reader(open(os.path.join(catalog.get_current_task_repo(), 'SCP09.csv'),
-                                 'r'), delimiter=','))
+    tsvin = list(csv.reader(open(
+        os.path.join(catalog.get_current_task_repo(), 'SCP09.csv'), 'r'),
+                            delimiter=','))
     for ri, row in enumerate(pbar(tsvin, current_task)):
         if ri == 0:
             continue
@@ -25,7 +25,8 @@ def do_scp(catalog):
             catalog.entries[name].add_quantity('alias', row[1], source)
         if row[2]:
             kind = 'spectroscopic' if row[3] == 'sn' else 'host'
-            catalog.entries[name].add_quantity('redshift', row[2], source, kind=kind)
+            catalog.entries[name].add_quantity(
+                'redshift', row[2], source, kind=kind)
         if row[4]:
             catalog.entries[name].add_quantity(
                 'redshift', row[2], source, kind='cluster')

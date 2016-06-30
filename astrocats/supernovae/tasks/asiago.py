@@ -2,7 +2,6 @@
 follow-up programs.
 """
 import calendar
-# from math import floor
 import os
 import re
 import urllib

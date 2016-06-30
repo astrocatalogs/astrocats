@@ -4,10 +4,9 @@ import csv
 import os
 
 
-
-
 def do_pessto(catalog):
-    pessto_path = os.path.join(catalog.get_current_task_repo(), 'PESSTO_MPHOT.csv')
+    pessto_path = os.path.join(
+        catalog.get_current_task_repo(), 'PESSTO_MPHOT.csv')
     tsvin = list(csv.reader(open(pessto_path, 'r'), delimiter=','))
     for ri, row in enumerate(tsvin):
         if ri == 0:
@@ -17,7 +16,8 @@ def do_pessto(catalog):
             continue
         name = row[1]
         name = catalog.add_entry(name)
-        source = catalog.entries[name].add_source(bibcode='2015A&A...579A..40S')
+        source = catalog.entries[name].add_source(
+            bibcode='2015A&A...579A..40S')
         catalog.entries[name].add_quantity('alias', name, source)
         for hi, ci in enumerate(range(3, len(row) - 1, 2)):
             if not row[ci]:

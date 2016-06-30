@@ -10,7 +10,6 @@ import requests
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-
 from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 
@@ -72,7 +71,8 @@ def do_ps_threepi(catalog):
             f.write(html)
 
     numpages = int(links[-2].contents[0])
-    oldnumpages = len(glob(os.path.join(catalog.get_current_task_repo(), '3pi/page*')))
+    oldnumpages = len(
+        glob(os.path.join(catalog.get_current_task_repo(), '3pi/page*')))
     for page in pbar(range(1, numpages), current_task):
         fname = os.path.join(catalog.get_current_task_repo(), '3pi/page') + \
             str(page).zfill(2) + '.html'
@@ -82,7 +82,8 @@ def do_ps_threepi(catalog):
             with open(fname, 'r') as f:
                 html = f.read()
         else:
-            if (not catalog.args.full_refresh and catalog.current_task.load_archive(catalog.args) and
+            if (not catalog.args.full_refresh and
+                    catalog.current_task.load_archive(catalog.args) and
                     page < oldnumpages and os.path.isfile(fname)):
                 with open(fname, 'r') as f:
                     html = f.read()
@@ -163,7 +164,8 @@ def do_ps_threepi(catalog):
             catalog.entries[name].add_quantity('dec', dec, source)
             catalog.entries[name].add_quantity('claimedtype', ctype, source)
 
-            fname2 = os.path.join(catalog.get_current_task_repo(), '3pi/candidate-')
+            fname2 = os.path.join(
+                catalog.get_current_task_repo(), '3pi/candidate-')
             fname2 += pslink.rstrip('/').split('/')[-1] + '.html'
             if offline:
                 if not os.path.isfile(fname2):
@@ -171,7 +173,8 @@ def do_ps_threepi(catalog):
                 with open(fname2, 'r') as f:
                     html2 = f.read()
             else:
-                if catalog.current_task.load_archive(catalog.args) and os.path.isfile(fname2):
+                if (catalog.current_task.load_archive(catalog.args) and
+                        os.path.isfile(fname2)):
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
@@ -217,20 +220,18 @@ def do_ps_threepi(catalog):
                 if not line:
                     continue
                 for obs in line:
-                    catalog.entries[name].add_photometry(time=str(obs[0]),
-                                                         band=nslabels[
-                                                             li], magnitude=str(obs[1]),
-                                                         e_magnitude=str(obs[2]), source=source,
-                                                         telescope=teles)
+                    catalog.entries[name].add_photometry(
+                        time=str(obs[0]), band=nslabels[li],
+                        magnitude=str(obs[1]), e_magnitude=str(obs[2]),
+                        source=source, telescope=teles)
             for li, line in enumerate(nslines[2 * len(nslabels):]):
                 if not line:
                     continue
                 for obs in line:
-                    catalog.entries[name].add_photometry(time=str(obs[0]),
-                                                         band=nslabels[
-                                                             li], magnitude=str(obs[1]),
-                                                         upperlimit=True, source=source,
-                                                         telescope=teles)
+                    catalog.entries[name].add_photometry(
+                        time=str(obs[0]), band=nslabels[li],
+                        magnitude=str(obs[1]), upperlimit=True, source=source,
+                        telescope=teles)
             assoctab = bs2.find('table', {'class': 'generictable'})
             hostname = ''
             redshift = ''

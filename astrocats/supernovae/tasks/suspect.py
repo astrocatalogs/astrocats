@@ -12,7 +12,6 @@ from math import floor
 from astropy.time import Time as astrotime
 from bs4 import BeautifulSoup
 
-
 from astrocats.catalog.utils import (get_sig_digits, is_number, jd_to_mjd,
                                      pbar, pbar_strings, pretty_num, uniq_cdl)
 from cdecimal import Decimal
@@ -27,7 +26,8 @@ def do_suspect_photo(catalog):
         for row in tsvin:
             suspectrefdict[row[0]] = row[1]
 
-    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'SUSPECT/*.html'))
+    file_names = glob(os.path.join(
+        catalog.get_current_task_repo(), 'SUSPECT/*.html'))
     for datafile in pbar_strings(file_names, desc=current_task):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')

@@ -7,7 +7,6 @@ import re
 from collections import OrderedDict
 from html import unescape
 
-
 from astrocats.catalog.utils import jd_to_mjd, pbar
 from cdecimal import Decimal
 
@@ -20,7 +19,8 @@ def do_itep(catalog):
                            'itep-refs.txt'), 'r') as refs_file:
         refrep = refs_file.read().splitlines()
     refrepf = dict(list(zip(refrep[1::2], refrep[::2])))
-    fname = os.path.join(catalog.get_current_task_repo(), 'itep-lc-cat-28dec2015.txt')
+    fname = os.path.join(catalog.get_current_task_repo(),
+                         'itep-lc-cat-28dec2015.txt')
     tsvin = list(csv.reader(open(fname, 'r'),
                             delimiter='|', skipinitialspace=True))
     curname = ''

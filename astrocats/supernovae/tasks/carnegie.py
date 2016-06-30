@@ -4,7 +4,6 @@ import csv
 import os
 from glob import glob
 
-
 from astrocats.catalog.utils import jd_to_mjd, pbar_strings
 from astrocats.supernovae.utils import clean_snname
 from cdecimal import Decimal
@@ -13,7 +12,8 @@ from cdecimal import Decimal
 def do_csp_photo(catalog):
     import re
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
-    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'CSP/*.dat'))
+    file_names = glob(
+        os.path.join(catalog.get_current_task_repo(), 'CSP/*.dat'))
     current_task = catalog.get_current_task_str()
     for fname in pbar_strings(file_names, desc=current_task):
         tsvin = csv.reader(open(fname, 'r'), delimiter='\t',

@@ -1,4 +1,5 @@
-"""General Catalog Classes and Functions, used and subclassed by each specific catalog.
+"""General Catalog Classes and Functions, used and subclassed by each specific
+catalog.
 """
 
 from . import catalog

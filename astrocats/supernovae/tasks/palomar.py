@@ -5,8 +5,6 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-
-
 from astrocats.catalog.utils import is_number
 
 
@@ -46,17 +44,20 @@ def do_ptf(catalog):
                 alias = name.split('(')[0].strip(' ')
                 name = name.split('(')[-1].strip(') ').replace('sn', 'SN')
                 name = catalog.add_entry(name)
-                source = catalog.entries[name].add_source(bibcode='2012PASP..124..668Y')
+                source = catalog.entries[name].add_source(
+                    bibcode='2012PASP..124..668Y')
                 catalog.entries[name].add_quantity('alias', alias, source)
             else:
                 # name = catalog.add_entry(name)
                 name, source = catalog.new_entry(name,
                                                  bibcode='2012PASP..124..668Y')
 
-    with open(os.path.join(catalog.get_current_task_repo(), 'PTF/old-ptf-events.csv')) as f:
+    with open(os.path.join(
+            catalog.get_current_task_repo(), 'PTF/old-ptf-events.csv')) as f:
         for suffix in f.read().splitlines():
             name = catalog.add_entry('PTF' + suffix)
-    with open(os.path.join(catalog.get_current_task_repo(), 'PTF/perly-2016.csv')) as f:
+    with open(os.path.join(
+            catalog.get_current_task_repo(), 'PTF/perly-2016.csv')) as f:
         for row in f.read().splitlines():
             cols = [x.strip() for x in row.split(',')]
             alias = ''
@@ -66,13 +67,15 @@ def do_ptf(catalog):
             else:
                 name = 'PTF' + cols[0]
             name = catalog.add_entry(name)
-            source = catalog.entries[name].add_source(bibcode='2016arXiv160408207P')
+            source = catalog.entries[name].add_source(
+                bibcode='2016arXiv160408207P')
             catalog.entries[name].add_quantity('alias', name, source)
             if alias:
                 catalog.entries[name].add_quantity('alias', alias, source)
             catalog.entries[name].add_quantity('ra', cols[1], source)
             catalog.entries[name].add_quantity('dec', cols[2], source)
-            catalog.entries[name].add_quantity('claimedtype', 'SLSN-' + cols[3], source)
+            catalog.entries[name].add_quantity(
+                'claimedtype', 'SLSN-' + cols[3], source)
             catalog.entries[name].add_quantity(
                 'redshift', cols[4], source, kind='spectroscopic')
             maxdate = cols[6].replace('-', '/')
