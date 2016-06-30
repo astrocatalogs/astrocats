@@ -23,32 +23,32 @@ class CatDict(OrderedDict):
     REQ_KEY_TYPES = []
 
     def __init__(self, **kwargs):
-        # Iterate over all `_KEYS` parameters, load each if given
-        #    note that the stored 'values' are the `Key` objects, referred to
-        #    here with the name 'key'
+        # Iterate over all `_KEYS` parameters, load each if given note that the
+        # stored 'values' are the `Key` objects, referred to here with the name
+        # 'key'.
         for key in self._KEYS.vals():
-            # If this key is given, process and store it
+            # If this key is given, process and store it.
             if key in kwargs:
-                # Make sure value is compatible with the 'Key' specification
+                # Make sure value is compatible with the 'Key' specification.
                 if not key.check(kwargs[key]):
                     raise ValueError("Value for '{}' is invalid '{}'".format(
                         repr(key), kwargs[key]))
 
                 # Handle Special Cases
                 # --------------------
-                # Only keep booleans if they are true
+                # Only keep booleans if they are true.
                 if key.type == KEY_TYPES.BOOL and not kwargs[key]:
                     del kwargs[key]
                     continue
 
                 # Check and store values
                 # ----------------------
-                # Remove key-value pair from `kwargs` dictionary
+                # Remove key-value pair from `kwargs` dictionary.
                 value = kwargs.pop(key)
                 self[key] = self._clean_value_for_key(key, value)
 
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
-        #    elements should have been removed from `kwargs`
+        # elements should have been removed from `kwargs`.
         if not self._ALLOW_UNKNOWN_KEYS and len(kwargs):
             raise ValueError(
                 "All permitted keys stored, remaining: '{}'".format(kwargs))
