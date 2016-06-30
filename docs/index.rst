@@ -11,6 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+.. automodule:: astrocats
+   :members:
 
 
 Indices and tables
