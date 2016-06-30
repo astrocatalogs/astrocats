@@ -104,7 +104,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
     def clone_repos(self):
         # Load the local 'supernovae' repository names
-        all_repos = self.get_repo_input_folders()
+        all_repos = self.PATHS.get_repo_input_folders()
         all_repos += self.PATHS.get_repo_output_folders()
         super()._clone_repos(all_repos)
         return

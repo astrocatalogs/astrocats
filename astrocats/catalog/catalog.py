@@ -16,8 +16,7 @@ from astrocats.catalog.entry import KEYS
 from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_number, logger, pbar,
                                      read_json_dict, uniq_cdl, uncompress_gz)
-from astrocats.supernovae.utils import (entry_attr_priority,
-                                        name_clean)
+from astrocats.supernovae.utils import (entry_attr_priority, name_clean)
 
 
 class Catalog:
