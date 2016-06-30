@@ -641,18 +641,29 @@ class Supernova(Entry):
         self.check()
         return
 
-    def add_photometry(self, time="", u_time="MJD", e_time="",
-                       telescope="", instrument="", band="", magnitude="",
-                       e_magnitude="", source="", upperlimit=False, system="",
-                       scorrected="", observatory="", observer="", host=False,
-                       includeshost=False, survey="", kcorrected="", flux="",
-                       fluxdensity="", e_flux="", e_fluxdensity="", u_flux="",
-                       u_fluxdensity="", frequency="", u_frequency="",
-                       counts="",
-                       e_counts="", nhmw="", photonindex="", unabsorbedflux="",
-                       e_unabsorbedflux="", energy="", u_energy="",
-                       e_lower_magnitude="", e_upper_magnitude="",
-                       e_lower_time="", e_upper_time="", mcorrected=""):
+    def add_photometry(self, **kwargs):
+        try:
+            photo_entry = Photometry(**kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' `add_photometry`: Error: '{}'".format(
+                self.name, str(err)))
+
+        if self.is_erroneous('photometry', self[PHOTOMETRY.SOURCE]):
+            pass
+        return
+
+    def _add_photometry(self, time="", u_time="MJD", e_time="",
+                        telescope="", instrument="", band="", magnitude="",
+                        e_magnitude="", source="", upperlimit=False, system="",
+                        scorrected="", observatory="", observer="", host=False,
+                        includeshost=False, survey="", kcorrected="", flux="",
+                        fluxdensity="", e_flux="", e_fluxdensity="", u_flux="",
+                        u_fluxdensity="", frequency="", u_frequency="",
+                        counts="",
+                        e_counts="", nhmw="", photonindex="", unabsorbedflux="",
+                        e_unabsorbedflux="", energy="", u_energy="",
+                        e_lower_magnitude="", e_upper_magnitude="",
+                        e_lower_time="", e_upper_time="", mcorrected=""):
         name = self[KEYS.NAME]
         if (not time and not host) or (not magnitude and not flux and not
                                        fluxdensity and not counts and not
