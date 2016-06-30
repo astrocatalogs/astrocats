@@ -224,13 +224,13 @@ class Catalog:
             else:
                 # Only run tasks above minimum priority
                 if (self.args.min_task_priority is not None and
-                        ((is_integer(self.args_min_task_priority) and
-                          tasks[key].priority <
-                          int(self.args.min_task_priority)) or
-                         (isinstance(self.args_min_task_priority, str) and
-                          self.args_min_task_priority in tasks and
-                          tasks[key].priority <
-                          tasks[self.args_min_task_priority].priority))):
+                        ((is_integer(self.args.min_task_priority) and
+                          (tasks[key].priority <
+                           int(self.args.min_task_priority))) or
+                         (isinstance(self.args.min_task_priority, str) and
+                          self.args.min_task_priority in tasks and
+                          (tasks[key].priority <
+                           tasks[self.args.min_task_priority].priority)))):
                     tasks[key].active = False
                 # Only run tasks below maximum priority
                 if (self.args.max_task_priority is not None and

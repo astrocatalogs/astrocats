@@ -8,11 +8,11 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
-                                     get_event_filename, get_sig_digits,
-                                     is_number, jd_to_mjd, make_date_string,
-                                     pretty_num, tprint, trim_str_arr,
-                                     uniq_cdl)
+from astrocats.catalog.photometry import bandmetaf, bandrepf
+from astrocats.catalog.utils import (alias_priority, get_event_filename,
+                                     get_sig_digits, is_number, jd_to_mjd,
+                                     make_date_string, pretty_num, tprint,
+                                     trim_str_arr, uniq_cdl)
 from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
                                             REPR_BETTER_QUANTITY)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
