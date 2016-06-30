@@ -69,8 +69,70 @@ class Photometry(OrderedDict):
             [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
             [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
              PHOTOMETRY.COUNTS]]
+        # Note: `_check()` is called at end of `super().__init__`
         super().__init__(kwargs)
+
+        # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
+        if self._KEYS.BAND in self:
+            sband = self[self._KEYS.BAND]
+            bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE,
+                              self._KEYS.SYSTEM]
+
+            for bmf in bandmetaf_keys:
+                if bmf not in self:
+                    temp = bandmetaf(sband, bmf)
+                    if temp is not None:
+                        self[bmf] = temp
+
         return
+
+    def _check(self):
+        """
+
+        This is automatically called in `super().__init__()` called from above
+        """
+        # Run the super method
+        super()._check()
+
+        err_str = None
+        has_flux = self._KEYS.FLUX in self
+        has_flux_dens = self._KEYS.FLUX_DENSITY in self
+        has_u_flux = self._KEYS.U_FLUX in self
+        has_u_flux_dens = self._KEYS.U_FLUX in self
+
+        has_freq = self._KEYS.FREQUENCY in self
+        has_band = self._KEYS.BAND in self
+        has_ener = self._KEYS.ENERGY in self
+
+        if has_flux or has_flux_dens:
+            if not any([has_freq, has_band, has_ener]):
+                err_str = (
+                    "Has `{}` or `{}`".format(
+                        self._KEYS.FLUX, self._KEYS.FLUX_DENSITY) +
+                    " but None of `{}`, `{}`, `{}`".format(
+                        self._KEYS.FREQUENCY, self._KEYS.BAND, self._KEYS.ENERGY
+                    ))
+            elif has_flux and not has_u_flux:
+                err_str = "`{}` provided without `{}`.".format(
+                    self._KEYS.FLUX, self._KEYS.U_FLUX)
+            elif has_flux_dens and not has_u_flux_dens:
+                err_str = "`{}` provided without `{}`.".format(
+                    self._KEYS.FLUX_DENS, self._KEYS.U_FLUX_DENS)
+
+        if err_str is not None:
+            raise ValueError(err_str)
+
+        return
+
+    def _clean_value_for_key(self, key, value):
+        value = super()._clean_value_for_key(key, value)
+
+        # Do some basic homogenization
+        if key == self._KEYS.BAND:
+            return bandrepf(value)
+
+        return value
+
 
 BAND_REPS = {
     'Ks': ['K_s'],
@@ -82,12 +144,12 @@ BAND_REPS = {
 # Some bands are uniquely tied to an instrument/telescope/system, add this
 # info here.
 BAND_META = {
-    'M2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
-    'W1':     {'telescope': 'Swift', 'instrument': 'UVOT'},
-    'W2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
-    'F110W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
-    'F775W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
-    'F850LP': {'telescope': 'Hubble', 'instrument': 'WFC3'}
+    'M2':     {PHOTOMETRY.TELESCOPE: 'Swift', PHOTOMETRY.INSTRUMENT: 'UVOT'},
+    'W1':     {PHOTOMETRY.TELESCOPE: 'Swift', PHOTOMETRY.INSTRUMENT: 'UVOT'},
+    'W2':     {PHOTOMETRY.TELESCOPE: 'Swift', PHOTOMETRY.INSTRUMENT: 'UVOT'},
+    'F110W':  {PHOTOMETRY.TELESCOPE: 'Hubble', PHOTOMETRY.INSTRUMENT: 'WFC3'},
+    'F775W':  {PHOTOMETRY.TELESCOPE: 'Hubble', PHOTOMETRY.INSTRUMENT: 'WFC3'},
+    'F850LP': {PHOTOMETRY.TELESCOPE: 'Hubble', PHOTOMETRY.INSTRUMENT: 'WFC3'}
 }
 
 BAND_CODES = [
@@ -262,4 +324,4 @@ def bandmetaf(band, field):
     if band in BAND_META:
         if field in BAND_META[band]:
             return BAND_META[band][field]
-    return ''
+    return None
