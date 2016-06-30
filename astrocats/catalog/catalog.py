@@ -1,6 +1,5 @@
 """Overarching catalog object for all open catalogs.
 """
-from glob import glob
 import codecs
 import importlib
 import json
@@ -9,13 +8,14 @@ import resource
 import sys
 import warnings
 from collections import OrderedDict
+from glob import glob
 
 from git import Repo
 
-from astrocats import SCHEMA
-from astrocats.catalog.task import Task
 from astrocats.catalog.entry import KEYS
-from astrocats.catalog.utils import (is_number, logger, pbar, uniq_cdl)
+from astrocats.catalog.task import Task
+from astrocats.catalog.utils import (is_number, logger, pbar, read_json_dict,
+                                     uniq_cdl)
 from astrocats.supernovae.utils import entry_attr_priority, name_clean
 
 
@@ -49,9 +49,29 @@ class Catalog:
         self.log = logger.get_logger(
             stream_level=log_stream_level, tofile=args.log_filename)
 
+        # Instantiate FILENAME
+        self.FILENAME = self.FILENAME()
+
+        # Load repos dictionary (required)
+        self.repos_dict = read_json_dict(self.FILENAME.REPOS)
+
         # Create empty `entries` collection
         self.entries = OrderedDict()
         return
+
+    class FILENAME:
+        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
+
+        def __init__(self):
+            self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
+            self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
+            # critical datafiles
+            self.REPOS = os.path.join(self.PATH_INPUT, 'repos.json')
+            self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
+
+    class SCHEMA:
+        HASH = ''
+        URL = ''
 
     def import_data(self):
         """Run all of the import tasks.
@@ -282,7 +302,7 @@ class Catalog:
 
         # Create new entry
         new_entry = self.proto(self, newname)
-        new_entry['schema'] = SCHEMA.URL
+        new_entry['schema'] = self.SCHEMA.URL
         self.log.log(self.log._LOADED,
                      "Created new entry for '{}'".format(newname))
         # Add entry to dictionary
@@ -757,7 +777,7 @@ class Catalog:
                         filename = filename.split('.')[:-1]
                         os.system('cd ' + outdir + '; git rm ' + filename +
                                   '.json; git add -f ' + filename +
-                                  '.json.gz; cd ' + '../scripts')
+                                  '.json.gz; cd ' + self.FILENAME.PATH_BASE)
 
             if clear:
                 self.entries[name] = self.entries[name].get_stub()

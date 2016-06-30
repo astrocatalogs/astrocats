@@ -12,13 +12,12 @@ from astrocats.catalog.utils import (alias_priority, bandmetaf, bandrepf,
                                      is_number, jd_to_mjd, make_date_string,
                                      pretty_num, tprint, trim_str_arr,
                                      uniq_cdl)
+from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
+                                            REPR_BETTER_QUANTITY)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
                                         radec_clean, same_tag_num,
                                         same_tag_str)
 from cdecimal import Decimal
-
-from .. import SCHEMA
-from .constants import FILENAME, MAX_BANDS, PREF_KINDS, REPR_BETTER_QUANTITY
 
 
 class SN_KEYS(KEYS):
@@ -58,7 +57,7 @@ class Supernova(Entry):
 
         # FIX: move this somewhere else (shouldnt be in each event)
         # Load source-name synonyms
-        with open(FILENAME.SOURCE_SYNONYMS, 'r') as f:
+        with open(catalog.FILENAME.SOURCE_SYNONYMS, 'r') as f:
             self._source_syns = json.loads(
                 f.read(), object_pairs_hook=OrderedDict)
         return
@@ -341,7 +340,7 @@ class Supernova(Entry):
     def check(self):
         # Make sure there is a schema key in dict
         if SN_KEYS.SCHEMA not in self.keys():
-            self[SN_KEYS.SCHEMA] = SCHEMA.URL
+            self[SN_KEYS.SCHEMA] = self.SCHEMA.URL
         # Make sure there is a name key in dict
         if SN_KEYS.NAME not in self.keys() or len(self[SN_KEYS.NAME]) == 0:
             raise ValueError("Supernova name is empty:\n\t{}".format(

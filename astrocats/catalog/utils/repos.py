@@ -2,8 +2,6 @@ import os
 import warnings
 from glob import glob
 
-# from astrocats import FILENAME, PATH
-
 from .digits import is_number
 
 __all__ = []
