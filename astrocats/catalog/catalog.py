@@ -212,8 +212,6 @@ class Catalog:
         for key, val in data.items():
             tasks[key] = Task(name=key, **val)
 
-        # `defaults` is a dictionary where each `key` is a task name, and
-        # values are its properties
         for key in tasks:
             # Modify `active` tasks
             # ---------------------
