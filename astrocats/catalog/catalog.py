@@ -351,7 +351,7 @@ class Catalog:
             self.log.error(err_str)
             raise RuntimeError(err_str)
         # Delete all old entry JSON files
-        repo_files = self.get_repo_output_file_list()
+        repo_files = self.PATHS.get_repo_output_file_list()
         for rfil in pbar(repo_files, desc='Deleting old entries'):
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
