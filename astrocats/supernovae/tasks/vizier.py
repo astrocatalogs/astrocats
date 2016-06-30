@@ -20,7 +20,7 @@ from ..constants import CLIGHT, KM
 def do_vizier(catalog):
     """
     """
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
 
     Vizier.ROW_LIMIT = -1
 
@@ -29,7 +29,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
     oldname = ''
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['SN']
         if is_number(name[:4]):
             name = 'SN' + name
@@ -55,7 +55,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
     oldname = ''
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['Name'].replace('SCP', 'SCP-')
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -77,7 +77,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
     oldname = ''
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['Name'].replace('SCP', 'SCP-')
         flux = Decimal(float(row['Flux']))
         if flux <= 0.0:
@@ -104,7 +104,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
     oldname = ''
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = 'SN' + row['SN']
         flux = Decimal(float(row['Flux']))
         if flux <= 0.0:
@@ -138,7 +138,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
     oldname = ''
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['SN']
         if name == oldname:
             continue
@@ -159,7 +159,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/438/1391/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['SN']
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -175,7 +175,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/749/18/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['Name'].replace(' ', '')
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -198,7 +198,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/A+A/523/A7/table9')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = 'SNLS-' + row['SNLS']
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -222,7 +222,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/A+A/415/863/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = 'SN' + row['SN']
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -249,7 +249,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/AJ/136/2306/sources')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = 'SDSS-II SN ' + str(row['SNID'])
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -264,7 +264,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/708/661/sn')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['SN']
         if not name:
             name = 'SDSS-II SN ' + str(row['SDSS-II'])
@@ -283,7 +283,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/708/661/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         if row['f_SN'] == 'a':
             name = 'SDSS-II ' + str(row['SN'])
         else:
@@ -300,7 +300,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/795/44/ps1_snIa')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['SN']
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -318,7 +318,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/795/44/table6')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         name = row['SN']
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -348,7 +348,7 @@ def do_vizier(catalog):
             else:
                 ii189refdict[r + 1] = row[2]
 
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         if row['band'][0] == '(':
             continue
         oldname = 'SN' + row['SN']
@@ -377,7 +377,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
 
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = ''
         if row['Names']:
@@ -428,7 +428,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/442/844/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = catalog.add_entry(name)
@@ -444,7 +444,7 @@ def do_vizier(catalog):
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
     instr = 'KAIT'
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = 'SN' + str(row['SN'])
         name = catalog.add_entry(name)
@@ -465,7 +465,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/425/1789/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = ''.join(row['SimbadName'].split(' '))
         name = catalog.add_entry(name)
@@ -487,7 +487,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJS/219/13/table3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = u'LSQ' + str(row['LSQ'])
         name = catalog.add_entry(name)
@@ -504,7 +504,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJS/219/13/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = 'LSQ' + row['LSQ']
         name = catalog.add_entry(name)
@@ -528,7 +528,7 @@ def do_vizier(catalog):
     source = catalog.entries[name].add_source(bibcode='2012Natur.491..228C')
     catalog.entries[name].add_quantity('alias', name, source)
     catalog.entries[name].add_quantity('claimedtype', 'SLSN-R', source)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['g', 'r', 'i']:
             bandtag = band + '_mag'
@@ -547,7 +547,7 @@ def do_vizier(catalog):
     source = catalog.entries[name].add_source(bibcode='2012Natur.491..228C')
     catalog.entries[name].add_quantity('alias', name, source)
     catalog.entries[name].add_quantity('claimedtype', 'SLSN-II?', source)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['g', 'r', 'i']:
             bandtag = band + '_mag'
@@ -563,7 +563,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/other/Nat/474.484/tables1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -583,7 +583,7 @@ def do_vizier(catalog):
     name = catalog.add_entry(name)
     source = catalog.entries[name].add_source(bibcode='2011ApJ...736..159G')
     catalog.entries[name].add_quantity('alias', name, source)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         catalog.entries[name].add_photometry(
             time=str(jd_to_mjd(Decimal(row['JD']))),
@@ -601,7 +601,7 @@ def do_vizier(catalog):
     name = catalog.add_entry(name)
     source = catalog.entries[name].add_source(bibcode='2012ApJ...760L..33B')
     catalog.entries[name].add_quantity('alias', name, source)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         # Fixing a typo in VizieR table
         if str(row['JD']) == '2455151.456':
@@ -621,7 +621,7 @@ def do_vizier(catalog):
     name = catalog.add_entry(name)
     source = catalog.entries[name].add_source(bibcode='2013ApJ...769...39S')
     catalog.entries[name].add_quantity('alias', name, source)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         instrument = ''
         telescope = ''
@@ -646,7 +646,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/394/2266/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['U', 'B', 'V', 'R', 'I']:
             bandtag = band + 'mag'
@@ -671,7 +671,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/394/2266/table3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['B', 'V', 'R']:
             bandtag = band + 'mag'
@@ -688,7 +688,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/394/2266/table4')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['J', 'H', 'K']:
             bandtag = band + 'mag'
@@ -708,7 +708,7 @@ def do_vizier(catalog):
     name = catalog.add_entry(name)
     source = catalog.entries[name].add_source(bibcode='2013AJ....145...99A')
     catalog.entries[name].add_quantity('alias', name, source)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['B', 'R']:
             bandtag = band + 'mag'
@@ -743,7 +743,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/729/143/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         e_mag = row['e_mag'] if not row['l_mag'] else ''
         catalog.entries[name].add_photometry(
@@ -754,7 +754,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/729/143/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['J', 'H', 'Ks']:
             bandtag = band + 'mag'
@@ -769,7 +769,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/729/143/table4')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         catalog.entries[name].add_photometry(
             time=row['MJD'], band=row['Filt'], telescope='P60',
@@ -778,7 +778,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/729/143/table5')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         catalog.entries[name].add_photometry(
             time=row['MJD'], band=row['Filt'], instrument='UVOT',
@@ -795,7 +795,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/728/14/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['B', 'V', 'R', 'I']:
             bandtag = band + 'mag'
@@ -810,7 +810,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/728/14/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['u', 'g', 'r', 'i', 'z']:
             bandtag = band + 'mag'
@@ -825,7 +825,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/728/14/table3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['Y', 'J', 'H']:
             bandtag = band + 'mag'
@@ -847,7 +847,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/PAZh/37/837/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = str(jd_to_mjd(Decimal(row['JD']) + 2455000))
         for band in ['U', 'B', 'V', 'R', 'I']:
@@ -869,7 +869,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/433/1871/table3a')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = str(jd_to_mjd(Decimal(row['JD']) + 2456000))
         for band in ['U', 'B', 'V', 'Rc', 'Ic']:
@@ -884,7 +884,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/433/1871/table3b')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = str(jd_to_mjd(Decimal(row['JD']) + 2456000))
         for band in ['g', 'r', 'i', 'z']:
@@ -906,7 +906,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/AJ/148/1/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = row['MJD']
         for band in ['B', 'V', 'R', 'I']:
@@ -922,7 +922,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/AJ/148/1/table3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = row['MJD']
         for band in ['U', 'B', 'V', 'UVW1', 'UVW2', 'UVM2']:
@@ -938,7 +938,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/AJ/148/1/table5')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = row['MJD']
         for band in ['B', 'V', 'R', 'I']:
@@ -960,7 +960,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/805/74/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         mjd = row['MJD']
         if ('mag' in row and is_number(row['mag']) and not
@@ -983,7 +983,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/741/97/table2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['SN'])
         name = catalog.add_entry(name)
@@ -1003,7 +1003,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -1025,7 +1025,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table4')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -1048,7 +1048,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table5')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -1070,7 +1070,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/448/1206/table6')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -1090,7 +1090,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea2')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -1113,7 +1113,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/MNRAS/448/1206/tablea3')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = str(row['Name'])
         name = catalog.add_entry(name)
@@ -1136,7 +1136,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/AJ/143/126/table4')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         if not row['Wcl'] or row['Wcl'] == 'N':
             continue
         row = convert_aq_output(row)
@@ -1154,7 +1154,7 @@ def do_vizier(catalog):
         result = Vizier.get_catalogs('J/ApJS/220/9/table' + viztab)
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for row in pbar(table, current_task):
+        for row in pbar(table, task_str):
             row = convert_aq_output(row)
             name = catalog.add_entry(name=row['SN'])
             source = catalog.entries[name].add_source(
@@ -1180,7 +1180,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJS/220/9/table8')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = catalog.add_entry(row['SN'])
         source = catalog.entries[name].add_source(
@@ -1195,7 +1195,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs('J/ApJ/673/999/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = catalog.add_entry(name='SN' + row['SN'])
         source = catalog.entries[name].add_source(
@@ -1219,7 +1219,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/MNRAS/417/916/table2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name, source = catalog.new_entry(
             'SNSDF' + row['SNSDF'],
@@ -1241,7 +1241,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/MNRAS/430/1746/table4")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name, source = catalog.new_entry(
             'SDSS' + row['SDSS'],
@@ -1260,7 +1260,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/AJ/148/13/high_z")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name, source = catalog.new_entry(
             row['Name'],
@@ -1282,7 +1282,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/AJ/148/13/low_z")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name, source = catalog.new_entry(
             row['Name'],
@@ -1307,7 +1307,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/666/674/table3")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         essname = 'ESSENCE ' + row['ESSENCE']
         if row['SN']:
@@ -1333,7 +1333,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/AcA/63/1/table1")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         if 'OGLE' not in row['Name']:
             continue
@@ -1352,7 +1352,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/MNRAS/410/1262/tablea2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name, source = catalog.new_entry(
             'SNLS-' + row['SN'],
@@ -1370,7 +1370,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/755/61/table3")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         sdssname = 'SDSS-II SN ' + row['SNID']
         if row['SN']:
@@ -1391,7 +1391,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/AJ/135/348/SNe")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         sdssname = 'SDSS-II SN ' + row['SNID']
         if row['SN']:
@@ -1418,7 +1418,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/713/1026/SNe")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         sdssname = 'SDSS-II SN ' + row['ID']
         if row['IAU']:
@@ -1440,7 +1440,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/770/107/galaxies")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name, source = catalog.new_entry(
             row['SN'], bibcode="2013ApJ...770..107C")
@@ -1455,7 +1455,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/738/162/table3")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = 'SDSS-II SN ' + row['CID']
         name, source = catalog.new_entry(
@@ -1475,7 +1475,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/738/162/table4")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = 'SDSS-II SN ' + row['CID']
         name, source = catalog.new_entry(
@@ -1497,11 +1497,11 @@ def do_vizier(catalog):
     snrtabs = ["ngc2403", "ngc2903", "ngc300", "ngc3077", "ngc4214", "ngc4395",
                "ngc4449", "ngc5204", "ngc5585", "ngc6946", "ngc7793", "m33",
                "m74", "m81", "m82", "m83", "m101", "m31"]
-    for tab in pbar(snrtabs, current_task):
+    for tab in pbar(snrtabs, task_str):
         result = Vizier.get_catalogs("J/MNRAS/446/943/" + tab)
         table = result[list(result.keys())[0]]
         table.convert_bytestring_to_unicode(python3_only=True)
-        for ri, row in enumerate(pbar(table, current_task)):
+        for ri, row in enumerate(pbar(table, task_str)):
             ra = (row['RAJ2000'] if isinstance(row['RAJ2000'], str) else
                   radec_clean(str(row['RAJ2000']), 'ra',
                               unit='floatdegrees')[0])
@@ -1521,7 +1521,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/703/370/tables")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         ra = row['RAJ2000']
         dec = row['DEJ2000']
@@ -1540,7 +1540,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/821/57/table1")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['UVW2', 'UVM2', 'UVW1', 'U', 'B', 'V']:
             bandtag = band + 'mag'
@@ -1555,7 +1555,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/821/57/table2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['B', 'V', 'R', 'I']:
             bandtag = band + 'mag'
@@ -1569,7 +1569,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/821/57/table3")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['B', 'V', "r'", "i'"]:
             bandtag = band + 'mag'
@@ -1583,7 +1583,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/821/57/table4")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         for band in ['r', 'i', 'z']:
             bandtag = band + 'mag'
@@ -1604,7 +1604,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/607/665/table1")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = row['Name'].replace('SN ', 'SN')
         name, source = catalog.new_entry(
@@ -1615,7 +1615,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/607/665/table2")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = row['Name'].replace('SN ', 'SN')
         name, source = catalog.new_entry(
@@ -1628,7 +1628,7 @@ def do_vizier(catalog):
     result = Vizier.get_catalogs("J/ApJ/607/665/table5")
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = row['Name'].replace('SN ', 'SN')
         name, source = catalog.new_entry(
@@ -1643,14 +1643,14 @@ def do_vizier(catalog):
 def do_lennarz(catalog):
     """
     """
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     Vizier.ROW_LIMIT = -1
     result = Vizier.get_catalogs('J/A+A/538/A120/usc')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
 
     bibcode = '2012A&A...538A.120L'
-    for row in pbar(table, current_task):
+    for row in pbar(table, task_str):
         row = convert_aq_output(row)
         name = 'SN' + row['SN']
         name = catalog.add_entry(name)

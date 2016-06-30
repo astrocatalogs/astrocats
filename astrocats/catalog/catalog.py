@@ -846,6 +846,7 @@ class Catalog:
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
+            raise
             if failhard:
                 return ''
             return filetxt

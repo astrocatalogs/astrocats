@@ -12,9 +12,9 @@ from cdecimal import Decimal
 
 def do_crts(catalog):
     crtsnameerrors = ['2011ax']
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     folders = ['catalina', 'MLS', 'SSS']
-    for fold in pbar(folders, current_task):
+    for fold in pbar(folders, task_str):
         html = catalog.load_cached_url(
             'http://nesssi.cacr.caltech.edu/' + fold + '/AllSN.html',
             os.path.join(catalog.get_current_task_repo(), 'CRTS', fold +
@@ -23,7 +23,7 @@ def do_crts(catalog):
             continue
         bs = BeautifulSoup(html, 'html5lib')
         trs = bs.findAll('tr')
-        for tri, tr in enumerate(pbar(trs, current_task)):
+        for tri, tr in enumerate(pbar(trs, task_str)):
             tds = tr.findAll('td')
             if not tds:
                 continue

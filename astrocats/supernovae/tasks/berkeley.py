@@ -13,7 +13,7 @@ from astrocats.catalog.utils import get_sig_digits, pbar, pretty_num, uniq_cdl
 
 
 def do_ucb_photo(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     sec_ref = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
@@ -26,7 +26,7 @@ def do_ucb_photo(catalog):
 
     photom = json.loads(jsontxt)
     photom = sorted(photom, key=lambda kk: kk['ObjName'])
-    for phot in pbar(photom, desc=current_task):
+    for phot in pbar(photom, task_str):
         oldname = phot['ObjName']
         name = catalog.add_entry(oldname)
 
@@ -95,7 +95,7 @@ def do_ucb_photo(catalog):
 
 
 def do_ucb_spectra(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     sec_reference = 'UCB Filippenko Group\'s Supernova Database (SNDB)'
     sec_refurl = 'http://heracles.astro.berkeley.edu/sndb/info'
     sec_refbib = '2012MNRAS.425.1789S'
@@ -110,7 +110,7 @@ def do_ucb_spectra(catalog):
     spectra = json.loads(jsontxt)
     spectra = sorted(spectra, key=lambda kk: kk['ObjName'])
     oldname = ''
-    for spectrum in pbar(spectra, desc=current_task):
+    for spectrum in pbar(spectra, task_str):
         name = spectrum['ObjName']
         if oldname and name != oldname:
             catalog.journal_entries()

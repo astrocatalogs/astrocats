@@ -7,11 +7,11 @@ from astrocats.catalog.utils import pbar
 
 
 def do_fermi(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     with open(os.path.join(catalog.get_current_task_repo(),
                            '1SC_catalog_v01.asc'), 'r') as ff:
         tsvin = list(csv.reader(ff, delimiter=','))
-        for ri, row in enumerate(pbar(tsvin, current_task)):
+        for ri, row in enumerate(pbar(tsvin, task_str)):
             if row[0].startswith('#'):
                 if len(row) > 1 and 'UPPER_LIMITS' in row[1]:
                     break

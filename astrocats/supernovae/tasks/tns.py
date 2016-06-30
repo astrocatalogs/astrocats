@@ -13,7 +13,7 @@ from astrocats.catalog.utils import pbar, pretty_num
 def do_tns(catalog):
     from datetime import timedelta
     session = requests.Session()
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     tns_url = 'https://wis-tns.weizmann.ac.il/'
     search_url = tns_url + \
         'search?&num_page=1&format=html&sort=desc&order=id&format=csv&page=0'
@@ -25,7 +25,7 @@ def do_tns(catalog):
     maxid = csvtxt.splitlines()[1].split(',')[0].strip('"')
     maxpages = ceil(int(maxid) / 1000.)
 
-    for page in pbar(range(maxpages), current_task):
+    for page in pbar(range(maxpages), task_str):
         fname = os.path.join(catalog.get_current_task_repo(), 'TNS/page-') + \
             str(page).zfill(2) + '.csv'
         if (catalog.current_task.load_archive(catalog.args) and
@@ -54,7 +54,7 @@ def do_tns(catalog):
                 tns_file.write(csvtxt)
 
         tsvin = list(csv.reader(csvtxt.splitlines(), delimiter=','))
-        for ri, row in enumerate(pbar(tsvin, current_task, leave=False)):
+        for ri, row in enumerate(pbar(tsvin, task_str, leave=False)):
             if ri == 0:
                 continue
             if row[4] and 'SN' not in row[4]:

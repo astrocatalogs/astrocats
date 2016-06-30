@@ -13,11 +13,11 @@ from astrocats.catalog.utils import (get_sig_digits, pbar, pbar_strings,
 
 
 def do_snls_photo(catalog):
-    current_task = 'SNLS'
+    task_str = catalog.get_current_task_str()
     snls_path = os.path.join(catalog.get_current_task_repo(), 'SNLS-ugriz.dat')
     data = list(csv.reader(open(snls_path, 'r'), delimiter=' ',
                            quotechar='"', skipinitialspace=True))
-    for row in pbar(data, current_task):
+    for row in pbar(data, task_str):
         flux = row[3]
         err = row[4]
         # Being extra strict here with the flux constraint, see note below.
@@ -51,7 +51,7 @@ def do_snls_spectra(catalog):
     """
     """
 
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     result = Vizier.get_catalogs('J/A+A/507/85/table1')
     table = result[list(result.keys())[0]]
     table.convert_bytestring_to_unicode(python3_only=True)
@@ -61,7 +61,7 @@ def do_snls_spectra(catalog):
 
     oldname = ''
     file_names = glob(os.path.join(catalog.get_current_task_repo(), 'SNLS/*'))
-    for fi, fname in enumerate(pbar_strings(file_names, current_task)):
+    for fi, fname in enumerate(pbar_strings(file_names, task_str)):
         filename = os.path.basename(fname)
         fileparts = filename.split('_')
         name = 'SNLS-' + fileparts[1]

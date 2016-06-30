@@ -10,7 +10,7 @@ from astrocats.catalog.utils import is_number, pbar, pbar_strings, rep_chars
 
 
 def do_donations(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     # Nicholl 04-01-16 donation
     with open(os.path.join(catalog.get_current_task_repo(),
                            'Nicholl-04-01-16/bibcodes.json'), 'r') as f:
@@ -18,7 +18,7 @@ def do_donations(catalog):
 
     file_names = glob(os.path.join(
         catalog.get_current_task_repo(), 'Nicholl-04-01-16/*.txt'))
-    for datafile in pbar_strings(file_names, current_task +
+    for datafile in pbar_strings(file_names, task_str +
                                  ': Nicholl-04-01-16'):
         inpname = os.path.basename(datafile).split('_')[0]
         name = catalog.add_entry(inpname)
@@ -65,7 +65,7 @@ def do_donations(catalog):
     with open(os.path.join(catalog.get_current_task_repo(),
                            'Maggi-04-11-16/LMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
-        for row in pbar(list(tsvin), current_task +
+        for row in pbar(list(tsvin), task_str +
                         ': Maggi-04-11-16/LMCSNRs'):
             name = 'MCSNR ' + row[0]
             name = catalog.add_entry(name)
@@ -89,7 +89,7 @@ def do_donations(catalog):
     with open(os.path.join(catalog.get_current_task_repo(),
                            'Maggi-04-11-16/SMCSNRs_OpenSNe.csv')) as f:
         tsvin = csv.reader(f, delimiter=',')
-        for row in pbar(list(tsvin), current_task +
+        for row in pbar(list(tsvin), task_str +
                         ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             name = catalog.add_entry(name)
@@ -190,7 +190,7 @@ def do_donations(catalog):
     # Brown 05-14-16
     files = glob(os.path.join(
         catalog.get_current_task_repo(), 'brown-05-14-16/*.dat'))
-    for fi in pbar(files, current_task):
+    for fi in pbar(files, task_str):
         name = os.path.basename(fi).split('_')[0]
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -227,7 +227,7 @@ def do_donations(catalog):
     source = catalog.entries[name].add_source(bibcode='2016arXiv160304748N')
     catalog.entries[name].add_quantity('alias', name, source)
     catalog.entries[name].add_quantity('alias', 'PS15ae', source)
-    for fi in pbar(files, current_task):
+    for fi in pbar(files, task_str):
         telescope = os.path.basename(fi).split('_')[1]
         with open(fi, 'r') as f:
             lines = f.read().splitlines()

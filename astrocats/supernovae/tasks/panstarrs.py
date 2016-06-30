@@ -14,10 +14,10 @@ from astrocats.catalog.utils import is_number, make_date_string, pbar, uniq_cdl
 
 
 def do_ps_mds(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     with open(os.path.join(catalog.get_current_task_repo(),
                            'MDS/apj506838t1_mrt.txt')) as f:
-        for ri, row in enumerate(pbar(f.read().splitlines(), current_task)):
+        for ri, row in enumerate(pbar(f.read().splitlines(), task_str)):
             if ri < 35:
                 continue
             cols = [x.strip() for x in row.split(',')]
@@ -38,7 +38,7 @@ def do_ps_mds(catalog):
 
 
 def do_ps_threepi(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     teles = 'Pan-STARRS1'
     fname = os.path.join(catalog.get_current_task_repo(), '3pi/page00.html')
     ps_url = ("http://psweb.mp.qub.ac.uk/"
@@ -73,7 +73,7 @@ def do_ps_threepi(catalog):
     numpages = int(links[-2].contents[0])
     oldnumpages = len(
         glob(os.path.join(catalog.get_current_task_repo(), '3pi/page*')))
-    for page in pbar(range(1, numpages), current_task):
+    for page in pbar(range(1, numpages), task_str):
         fname = os.path.join(catalog.get_current_task_repo(), '3pi/page') + \
             str(page).zfill(2) + '.html'
         if offline:
@@ -97,7 +97,7 @@ def do_ps_threepi(catalog):
 
         bs = BeautifulSoup(html, 'html5lib')
         trs = bs.findAll('tr')
-        for tr in pbar(trs, current_task):
+        for tr in pbar(trs, task_str):
             tds = tr.findAll('td')
             if not tds:
                 continue

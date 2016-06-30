@@ -11,12 +11,12 @@ from cdecimal import Decimal
 
 
 def do_ogle(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     basenames = ['transients', 'transients/2014b', 'transients/2014',
                  'transients/2013', 'transients/2012']
     oglenames = []
     ogleupdate = [True, False, False, False, False]
-    for b, bn in enumerate(pbar(basenames, current_task)):
+    for b, bn in enumerate(pbar(basenames, task_str)):
         if catalog.args.update and not ogleupdate[b]:
             continue
 
@@ -45,7 +45,7 @@ def do_ogle(catalog):
         ec = -1
         reference = 'OGLE-IV Transient Detection System'
         refurl = 'http://ogle.astrouw.edu.pl/ogle4/transients/transients.html'
-        for br in pbar(breaks, current_task):
+        for br in pbar(breaks, task_str):
             sibling = br.nextSibling
             if 'Ra,Dec=' in sibling:
                 line = sibling.replace('\n', '').split('Ra,Dec=')

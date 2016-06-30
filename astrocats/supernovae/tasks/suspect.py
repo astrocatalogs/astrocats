@@ -18,7 +18,7 @@ from cdecimal import Decimal
 
 
 def do_suspect_photo(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     with open(os.path.join(catalog.get_current_task_repo(),
                            'suspectreferences.csv'), 'r') as f:
         tsvin = csv.reader(f, delimiter=',', skipinitialspace=True)
@@ -28,7 +28,7 @@ def do_suspect_photo(catalog):
 
     file_names = glob(os.path.join(
         catalog.get_current_task_repo(), 'SUSPECT/*.html'))
-    for datafile in pbar_strings(file_names, desc=current_task):
+    for datafile in pbar_strings(file_names, task_str):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
         oldname = basesplit[1]
@@ -105,7 +105,7 @@ def do_suspect_photo(catalog):
 
 
 def do_suspect_spectra(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     with open(os.path.join(catalog.get_current_task_repo(),
                            'Suspect/sources.json'), 'r') as f:
         sourcedict = json.loads(f.read())
@@ -123,11 +123,11 @@ def do_suspect_spectra(catalog):
     suspectcnt = 0
     folders = next(os.walk(os.path.join(
         catalog.get_current_task_repo(), 'Suspect')))[1]
-    for folder in pbar(folders, current_task):
+    for folder in pbar(folders, task_str):
         eventfolders = next(os.walk(os.path.join(
             catalog.get_current_task_repo(), 'Suspect/') + folder))[1]
         oldname = ''
-        for eventfolder in pbar(eventfolders, current_task):
+        for eventfolder in pbar(eventfolders, task_str):
             name = eventfolder
             if is_number(name[:4]):
                 name = 'SN' + name

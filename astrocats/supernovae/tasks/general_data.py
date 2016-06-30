@@ -9,9 +9,9 @@ from astrocats.supernovae.supernova import KEYS, Supernova
 
 
 def do_external_radio(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
-    for datafile in pbar_strings(glob(path_pattern), desc=current_task):
+    for datafile in pbar_strings(glob(path_pattern), task_str):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
         radiosourcedict = OrderedDict()
@@ -41,9 +41,9 @@ def do_external_radio(catalog):
 
 
 def do_external_xray(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
-    for datafile in pbar_strings(glob(path_pattern), desc=current_task):
+    for datafile in pbar_strings(glob(path_pattern), task_str):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
         with open(datafile, 'r') as ff:
@@ -73,12 +73,12 @@ def do_external_xray(catalog):
 def do_internal(catalog):
     """Load events from files in the 'internal' repository, and save them.
     """
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.json')
     files = glob(path_pattern)
     catalog.log.debug("found {} files matching '{}'".format(
         len(files), path_pattern))
-    for datafile in pbar_strings(files, desc=current_task):
+    for datafile in pbar_strings(files, task_str):
         new_event = Supernova.init_from_file(
             catalog, path=datafile, clean=True)
         catalog.entries.update({new_event[KEYS.NAME]: new_event})

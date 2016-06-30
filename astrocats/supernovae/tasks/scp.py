@@ -7,11 +7,11 @@ from astrocats.catalog.utils import pbar
 
 
 def do_scp(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     tsvin = list(csv.reader(open(
         os.path.join(catalog.get_current_task_repo(), 'SCP09.csv'), 'r'),
                             delimiter=','))
-    for ri, row in enumerate(pbar(tsvin, current_task)):
+    for ri, row in enumerate(pbar(tsvin, task_str)):
         if ri == 0:
             continue
         name = row[0].replace('SCP', 'SCP-')

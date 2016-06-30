@@ -12,7 +12,7 @@ from cdecimal import Decimal
 
 
 def do_itep(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     itepbadsources = ['2004ApJ...602..571B']
     needsbib = []
     with open(os.path.join(catalog.get_current_task_repo(),
@@ -24,7 +24,7 @@ def do_itep(catalog):
     tsvin = list(csv.reader(open(fname, 'r'),
                             delimiter='|', skipinitialspace=True))
     curname = ''
-    for rr, row in enumerate(pbar(tsvin, current_task)):
+    for rr, row in enumerate(pbar(tsvin, task_str)):
         if rr <= 1 or len(row) < 7:
             continue
         oldname = 'SN' + row[0].strip()

@@ -14,7 +14,7 @@ from astrocats.supernovae.utils import clean_snname
 
 
 def do_asiago_photo(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     # response = (urllib.request
     # .urlopen('http://graspa.oapd.inaf.it/cgi-bin/sncat.php'))
     path = os.path.abspath(os.path.join(
@@ -33,7 +33,7 @@ def do_asiago_photo(catalog):
         col = row.findAll('td')
         records.append([utf8(x.renderContents()) for x in col])
 
-    for record in pbar(records, current_task):
+    for record in pbar(records, task_str):
         if len(record) > 1 and record[1] != '':
             oldname = clean_snname("SN" + record[1]).strip('?')
 
@@ -121,7 +121,7 @@ def do_asiago_photo(catalog):
 
 
 def do_asiago_spectra(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     html = catalog.load_cached_url(
         ('http://sngroup.oapd.inaf.it./'
          'cgi-bin/output_class.cgi?sn=1990'),
@@ -132,7 +132,7 @@ def do_asiago_spectra(catalog):
 
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.findAll('tr')
-    for tr in pbar(trs, current_task):
+    for tr in pbar(trs, task_str):
         tds = tr.findAll('td')
         name = ''
         host = ''

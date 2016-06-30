@@ -12,14 +12,14 @@ from cdecimal import Decimal
 
 def do_superfit_spectra(catalog):
     superfit_url = 'http://www.dahowell.com/superfit.html'
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     sfdirs = list(
         glob(os.path.join(catalog.get_current_task_repo(), 'superfit/*')))
-    for sfdir in pbar(sfdirs, desc=current_task):
+    for sfdir in pbar(sfdirs, task_str):
         sffiles = sorted(glob(sfdir + '/*.dat'))
         lastname = ''
         oldname = ''
-        for sffile in pbar(sffiles, desc=current_task):
+        for sffile in pbar(sffiles, task_str):
             basename = os.path.basename(sffile)
             name = basename.split('.')[0]
             if name.startswith('sn'):

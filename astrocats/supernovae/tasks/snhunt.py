@@ -9,7 +9,7 @@ from astrocats.catalog.utils import pbar
 
 
 def do_snhunt(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     snh_url = 'http://nesssi.cacr.caltech.edu/catalina/current.html'
     html = catalog.load_cached_url(snh_url, os.path.join(
         catalog.get_current_task_repo(), 'SNhunt/current.html'))
@@ -33,7 +33,7 @@ def do_snhunt(catalog):
     tablestr = tablestr + '</table></body></html>'
     bs = BeautifulSoup(tablestr, 'html5lib')
     trs = bs.find('table').findAll('tr')
-    for tr in pbar(trs, current_task):
+    for tr in pbar(trs, task_str):
         cols = [str(xx.text) for xx in tr.findAll('td')]
         if not cols:
             continue

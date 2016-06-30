@@ -18,9 +18,9 @@ def do_rochester(catalog):
     rochesterpaths = ['snimages/snredshiftall.html',
                       'sn2016/snredshift.html', 'snimages/snredboneyard.html']
     rochesterupdate = [False, True, True]
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
 
-    for pp, path in enumerate(pbar(rochesterpaths, current_task)):
+    for pp, path in enumerate(pbar(rochesterpaths, task_str)):
         if catalog.args.update and not rochesterupdate[pp]:
             continue
 
@@ -42,7 +42,7 @@ def do_rochester(catalog):
         sec_ref = 'Latest Supernovae'
         sec_refurl = ('http://www.rochesterastronomy.org/'
                       'snimages/snredshiftall.html')
-        for rr, row in enumerate(pbar(rows, current_task)):
+        for rr, row in enumerate(pbar(rows, task_str)):
             if rr == 0:
                 continue
             cols = row.findAll('td')

@@ -9,14 +9,14 @@ from astrocats.catalog.utils import pbar_strings
 
 
 def do_sdss(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     with open(os.path.join(catalog.get_current_task_repo(),
                            'SDSS/2010ApJ...708..661D.txt'), 'r') as sdss_file:
         bibcodes2010 = sdss_file.read().split('\n')
     sdssbands = ['u', 'g', 'r', 'i', 'z']
     file_names = list(
         glob(os.path.join(catalog.get_current_task_repo(), 'SDSS/*.sum')))
-    for fname in pbar_strings(file_names, desc=current_task):
+    for fname in pbar_strings(file_names, task_str):
         tsvin = csv.reader(open(fname, 'r'), delimiter=' ',
                            skipinitialspace=True)
         basename = os.path.basename(fname)

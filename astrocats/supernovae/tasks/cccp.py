@@ -15,12 +15,12 @@ from cdecimal import Decimal
 
 
 def do_cccp(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     cccpbands = ['B', 'V', 'R', 'I']
     file_names = list(
         glob(os.path.join(catalog.get_current_task_repo(),
                           'CCCP/apj407397*.txt')))
-    for datafile in pbar_strings(file_names, current_task + ': apj407397...'):
+    for datafile in pbar_strings(file_names, task_str + ': apj407397...'):
         with open(datafile, 'r') as ff:
             tsvin = csv.reader(ff, delimiter='\t', skipinitialspace=True)
             for rr, row in enumerate(tsvin):
@@ -59,7 +59,7 @@ def do_cccp(catalog):
 
     soup = BeautifulSoup(html, 'html5lib')
     links = soup.body.findAll("a")
-    for link in pbar(links, current_task + ': links'):
+    for link in pbar(links, task_str + ': links'):
         if 'sc_sn' in link['href']:
             name = catalog.add_entry(link.text.replace(' ', ''))
             source = (catalog.entries[name]
@@ -122,7 +122,7 @@ def do_cccp(catalog):
 
 
 def do_cpcs(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1&'
@@ -134,7 +134,7 @@ def do_cpcs(catalog):
         return
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
     ids = [xx['id'] for xx in alertindex]
-    for ii, ai in enumerate(pbar(ids, current_task)):
+    for ii, ai in enumerate(pbar(ids, task_str)):
         name = alertindex[ii]['ivorn'].split('/')[-1].strip()
         # Skip aa few weird entries
         if name == 'ASASSNli':

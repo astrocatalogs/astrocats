@@ -18,8 +18,8 @@ FAKE_REDZ_2 = '0.987'
 def do_test(catalog):
     log = catalog.log
     log.error("do_test()")
-    current_task = catalog.get_current_task_str()
-    log.error("`current_task`: '{}'".format(current_task))
+    task_str = catalog.get_current_task_str()
+    log.error("`task_str`: '{}'".format(task_str))
 
     if len(catalog.entries) != 0:
         raise RuntimeError("Run test only with empty catalog.")

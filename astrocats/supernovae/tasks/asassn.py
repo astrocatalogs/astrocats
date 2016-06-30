@@ -7,7 +7,7 @@ from astrocats.catalog.utils import pbar
 
 
 def do_asassn(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     asn_url = 'http://www.astronomy.ohio-state.edu/~assassin/sn_list.html'
     html = catalog.load_cached_url(asn_url, os.path.join(
         catalog.get_current_task_repo(), 'ASASSN/sn_list.html'))
@@ -15,7 +15,7 @@ def do_asassn(catalog):
         return
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('table').findAll('tr')
-    for tri, tr in enumerate(pbar(trs, current_task)):
+    for tri, tr in enumerate(pbar(trs, task_str)):
         name = ''
         ra = ''
         dec = ''

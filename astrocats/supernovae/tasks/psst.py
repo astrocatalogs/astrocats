@@ -9,14 +9,14 @@ from astrocats.catalog.utils import make_date_string, pbar
 
 
 def do_psst(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     # 2016arXiv160204156S
     file_path = os.path.join(
         catalog.get_current_task_repo(), '2016arXiv160204156S-tab1.tsv')
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 continue
             (name,
@@ -32,7 +32,7 @@ def do_psst(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 continue
             (name,
@@ -52,7 +52,7 @@ def do_psst(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 continue
             (name,

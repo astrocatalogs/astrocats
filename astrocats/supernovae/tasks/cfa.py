@@ -20,10 +20,10 @@ ACKN_CFA = ("This research has made use of the CfA Supernova Archive, "
 def do_cfa_photo(catalog):
     from html import unescape
     import re
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     file_names = glob(os.path.join(
         catalog.get_current_task_repo(), 'cfa-input/*.dat'))
-    for fname in pbar_strings(file_names, desc=current_task):
+    for fname in pbar_strings(file_names, task_str):
         f = open(fname, 'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         csv_data = []
@@ -107,7 +107,7 @@ def do_cfa_photo(catalog):
     with open(os.path.join(catalog.get_current_task_repo(),
                            'hicken-2012-standard.dat'), 'r') as infile:
         tsvin = list(csv.reader(infile, delimiter='|', skipinitialspace=True))
-        for r, row in enumerate(pbar(tsvin, current_task)):
+        for r, row in enumerate(pbar(tsvin, task_str)):
             if r <= 47:
                 continue
 
@@ -132,7 +132,7 @@ def do_cfa_photo(catalog):
         tsvin = open(os.path.join(catalog.get_current_task_repo(),
                                   'bianco-2014-standard.dat'), 'r')
         tsvin = list(csv.reader(tsvin, delimiter=' ', skipinitialspace=True))
-        for row in pbar(tsvin, current_task):
+        for row in pbar(tsvin, task_str):
             name = 'SN' + row[0]
             name = catalog.add_entry(name)
 
@@ -150,12 +150,12 @@ def do_cfa_photo(catalog):
 
 
 def do_cfa_spectra(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     # Ia spectra
     oldname = ''
     file_names = next(os.walk(os.path.join(
         catalog.get_current_task_repo(), 'CfA_SNIa')))[1]
-    for name in pbar_strings(file_names, current_task):
+    for name in pbar_strings(file_names, task_str):
         fullpath = os.path.join(
             catalog.get_current_task_repo(), 'CfA_SNIa/') + name
         origname = name
@@ -217,7 +217,7 @@ def do_cfa_spectra(catalog):
     oldname = ''
     file_names = next(os.walk(os.path.join(
         catalog.get_current_task_repo(), 'CfA_SNIbc')))[1]
-    for name in pbar(file_names, current_task):
+    for name in pbar(file_names, task_str):
         fullpath = os.path.join(
             catalog.get_current_task_repo(), 'CfA_SNIbc/') + name
         if name.startswith('sn') and is_number(name[2:6]):
@@ -269,7 +269,7 @@ def do_cfa_spectra(catalog):
     oldname = ''
     file_names = next(os.walk(os.path.join(
         catalog.get_current_task_repo(), 'CfA_Extra')))[1]
-    for name in pbar_strings(file_names, current_task):
+    for name in pbar_strings(file_names, task_str):
         fullpath = os.path.join(
             catalog.get_current_task_repo(), 'CfA_Extra/') + name
         if name.startswith('sn') and is_number(name[2:6]):

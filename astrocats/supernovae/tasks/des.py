@@ -9,7 +9,7 @@ from astrocats.catalog.utils import pbar
 
 
 def do_des(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     des_url = 'https://portal.nersc.gov/des-sn/'
     des_trans_url = des_url + 'transients/'
     ackn_url = ('http://www.noao.edu/'
@@ -17,13 +17,12 @@ def do_des(catalog):
                 '#DESdatause')
     # Make sure there is aa trailing slash
     des_path = os.path.join(catalog.get_current_task_repo(), 'DES', '')
-    html = catalog.load_cached_url(
-        current_task, des_trans_url, des_path + 'transients.html')
+    html = catalog.load_cached_url(des_trans_url, des_path + 'transients.html')
     if not html:
         return
     bs = BeautifulSoup(html, 'html5lib')
     trs = bs.find('tbody').findAll('tr')
-    for tri, tr in enumerate(pbar(trs, current_task)):
+    for tri, tr in enumerate(pbar(trs, task_str)):
         name = ''
         # source = ''
         if tri == 0:

@@ -7,7 +7,7 @@ from astrocats.catalog.utils import pbar
 
 
 def do_grb(catalog):
-    current_task = 'GRB'
+    task_str = catalog.get_current_task_str()
     file_path = os.path.join(
         catalog.get_current_task_repo(), 'GRB-catalog/catalog.csv')
     csvtxt = catalog.load_cached_url(
@@ -19,7 +19,7 @@ def do_grb(catalog):
         return
     data = list(csv.reader(csvtxt.splitlines(), delimiter=',',
                            quotechar='"', skipinitialspace=True))
-    for r, row in enumerate(pbar(data, current_task)):
+    for r, row in enumerate(pbar(data, task_str)):
         if r == 0:
             continue
         (name,

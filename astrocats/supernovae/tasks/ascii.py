@@ -15,13 +15,13 @@ from cdecimal import Decimal
 
 
 def do_ascii(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
 
     # 2006ApJ...645..841N
     file_path = os.path.join(
         catalog.get_current_task_repo(), '2006ApJ...645..841N-table3.csv')
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
-    for ri, row in enumerate(pbar(tsvin, current_task)):
+    for ri, row in enumerate(pbar(tsvin, task_str)):
         name = 'SNLS-' + row[0]
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -38,7 +38,7 @@ def do_ascii(catalog):
     file_names = list(
         glob(os.path.join(
             catalog.get_current_task_repo(), 'SNII_anderson2014/*.dat')))
-    for datafile in pbar_strings(file_names, desc=current_task):
+    for datafile in pbar_strings(file_names, task_str):
         basename = os.path.basename(datafile)
         if not is_number(basename[:2]):
             continue
@@ -74,7 +74,7 @@ def do_ascii(catalog):
     file_path = os.path.join(
         catalog.get_current_task_repo(), 'J_A+A_415_863-1/photometry.csv')
     tsvin = list(csv.reader(open(file_path, 'r'), delimiter=','))
-    for row in pbar(tsvin, current_task):
+    for row in pbar(tsvin, task_str):
         name = row[0]
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
@@ -105,7 +105,7 @@ def do_ascii(catalog):
         catalog.get_current_task_repo(), '2015MNRAS.449..451W.dat')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    for rr, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, task_str)):
         if rr == 0:
             continue
         namesplit = row[0].split('/')
@@ -131,7 +131,7 @@ def do_ascii(catalog):
     name = catalog.add_entry('LSQ13zm')
     source = catalog.entries[name].add_source(bibcode='2016MNRAS.459.1039T')
     catalog.entries[name].add_quantity('alias', name, source)
-    for rr, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, task_str)):
         if row[0][0] == '#':
             bands = [xx.replace('(err)', '') for xx in row[3:-1]]
             continue
@@ -157,7 +157,7 @@ def do_ascii(catalog):
     name = catalog.add_entry('PS1-13arp')
     source = catalog.entries[name].add_source(bibcode='2015ApJ...804...28G')
     catalog.entries[name].add_quantity('alias', name, source)
-    for rr, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, task_str)):
         if rr == 0:
             continue
         mjd = row[1]
@@ -176,7 +176,7 @@ def do_ascii(catalog):
         catalog.get_current_task_repo(), '2016ApJ...819...35A.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    for rr, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, task_str)):
         if row[0][0] == '#':
             continue
         name = catalog.add_entry(row[0])
@@ -196,7 +196,7 @@ def do_ascii(catalog):
         catalog.get_current_task_repo(), '2014ApJ...784..105W.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    for rr, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, task_str)):
         if row[0][0] == '#':
             continue
         name = catalog.add_entry(row[0])
@@ -218,7 +218,7 @@ def do_ascii(catalog):
         catalog.get_current_task_repo(), '2012MNRAS.425.1007B.tsv')
     data = list(csv.reader(open(file_path, 'r'), delimiter='\t',
                            quotechar='"', skipinitialspace=True))
-    for rr, row in enumerate(pbar(data, current_task)):
+    for rr, row in enumerate(pbar(data, task_str)):
         if row[0][0] == '#':
             bands = row[2:]
             continue
@@ -255,7 +255,7 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 continue
             name, source = catalog.new_entry(
@@ -275,7 +275,7 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             name, source = catalog.new_entry(
                 'SNLS-' + row[0], bibcode='2005ApJ...634.1190H')
             catalog.entries[name].add_quantity(
@@ -294,7 +294,7 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 continue
             name = row[0]
@@ -314,7 +314,7 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 bands = row[2:-1]
                 continue
@@ -343,7 +343,7 @@ def do_ascii(catalog):
     with open(file_path, 'r') as f:
         data = list(csv.reader(f, delimiter='\t',
                                quotechar='"', skipinitialspace=True))
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 bands = row[1:]
                 continue
@@ -371,7 +371,7 @@ def do_ascii(catalog):
                                quotechar='"', skipinitialspace=True))
         name, source = catalog.new_entry(
             'SN1997cy', bibcode='2000ApJ...533..320G')
-        for r, row in enumerate(pbar(data, current_task)):
+        for r, row in enumerate(pbar(data, task_str)):
             if row[0][0] == '#':
                 bands = row[1:-1]
                 continue

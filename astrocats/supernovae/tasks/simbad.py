@@ -12,7 +12,7 @@ def do_simbad(catalog):
     # Simbad.list_votable_fields()
     # Some coordinates that SIMBAD claims belong to the SNe actually belong to
     # the host.
-    current_task = 'SIMBAD'
+    task_str = catalog.get_current_task_str()
     simbadmirrors = ['http://simbad.harvard.edu/simbad/sim-script',
                      'http://simbad.u-strasbg.fr/simbad/sim-script']
     simbadbadcoordbib = ['2013ApJ...770..107C']
@@ -34,7 +34,7 @@ def do_simbad(catalog):
             break
 
     # 2000A&AS..143....9W
-    for brow in pbar(table, current_task):
+    for brow in pbar(table, task_str):
         row = {x: re.sub(r'b\'(.*)\'', r'\1',
                          str(brow[x])) for x in brow.colnames}
         # Skip items with no bibliographic info aside from SIMBAD, too

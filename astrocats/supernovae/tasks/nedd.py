@@ -16,7 +16,7 @@ from cdecimal import Decimal
 
 
 def do_nedd(catalog):
-    current_task = 'NED-D'
+    task_str = catalog.get_current_task_str()
     nedd_path = os.path.join(
         catalog.get_current_task_repo(), 'NED26.05.1-D-12.1.0-20160501.csv')
 
@@ -28,7 +28,7 @@ def do_nedd(catalog):
     refurl = "http://ned.ipac.caltech.edu/Library/Distances/"
     nedd_dict = OrderedDict()
     olddistname = ''
-    for r, row in enumerate(pbar(data, current_task)):
+    for r, row in enumerate(pbar(data, task_str)):
         if r <= 12:
             continue
         distname = row[3]

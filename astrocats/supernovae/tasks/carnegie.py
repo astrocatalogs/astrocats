@@ -14,8 +14,8 @@ def do_csp_photo(catalog):
     cspbands = ['u', 'B', 'V', 'g', 'r', 'i', 'Y', 'J', 'H', 'K']
     file_names = glob(
         os.path.join(catalog.get_current_task_repo(), 'CSP/*.dat'))
-    current_task = catalog.get_current_task_str()
-    for fname in pbar_strings(file_names, desc=current_task):
+    task_str = catalog.get_current_task_str()
+    for fname in pbar_strings(file_names, task_str):
         tsvin = csv.reader(open(fname, 'r'), delimiter='\t',
                            skipinitialspace=True)
         eventname = os.path.basename(os.path.splitext(fname)[0])
@@ -61,10 +61,9 @@ def do_csp_photo(catalog):
 
 def do_csp_spectra(catalog):
     oldname = ''
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     file_names = glob(os.path.join(catalog.get_current_task_repo(), 'CSP/*'))
-    for fi, fname in enumerate(pbar_strings(file_names,
-                                            current_task=current_task)):
+    for fi, fname in enumerate(pbar_strings(file_names, task_str)):
         filename = os.path.basename(fname)
         sfile = filename.split('.')
         if sfile[1] == 'txt':

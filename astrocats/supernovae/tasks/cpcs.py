@@ -10,7 +10,7 @@ from astrocats.catalog.utils import is_number, pbar, round_sig, uniq_cdl
 
 
 def do_cpcs(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     cpcs_url = ('http://gsaweb.ast.cam.ac.uk/'
                 'followup/list_of_alerts?format=json&num=100000&'
                 'published=1&observed_only=1'
@@ -22,7 +22,7 @@ def do_cpcs(catalog):
         return
     alertindex = json.loads(jsontxt, object_pairs_hook=OrderedDict)
     ids = [xx['id'] for xx in alertindex]
-    for ii, ai in enumerate(pbar(ids, current_task)):
+    for ii, ai in enumerate(pbar(ids, task_str)):
         name = alertindex[ii]['ivorn'].split('/')[-1].strip()
         # Skip aa few weird entries
         if name == 'ASASSNli':

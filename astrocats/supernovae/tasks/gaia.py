@@ -10,7 +10,7 @@ from cdecimal import Decimal
 
 
 def do_gaia(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     fname = os.path.join(catalog.get_current_task_repo(), 'GAIA/alerts.csv')
     csvtxt = catalog.load_cached_url(
         'http://gsaweb.ast.cam.ac.uk/alerts/alerts.csv', fname)
@@ -20,7 +20,7 @@ def do_gaia(catalog):
                             delimiter=',', skipinitialspace=True))
     reference = 'Gaia Photometric Science Alerts'
     refurl = 'http://gsaweb.ast.cam.ac.uk/alerts/alertsindex'
-    for ri, row in enumerate(pbar(tsvin, current_task)):
+    for ri, row in enumerate(pbar(tsvin, task_str)):
         if ri == 0 or not row:
             continue
         name = catalog.add_entry(row[0])

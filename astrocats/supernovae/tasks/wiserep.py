@@ -17,7 +17,7 @@ from astrocats.catalog.utils import is_number, pbar, pbar_strings, tprint
 
 
 def do_wiserep_spectra(catalog):
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
     secondaryreference = 'WISeREP'
     secondaryrefurl = 'http://wiserep.weizmann.ac.il/'
     secondarybibcode = '2012PASP..124..668Y'
@@ -41,9 +41,9 @@ def do_wiserep_spectra(catalog):
 
     oldname = ''
     file_names = next(os.walk(catalog.get_current_task_repo()))[1]
-    for folder in pbar_strings(file_names, current_task):
+    for folder in pbar_strings(file_names, task_str):
         files = glob(catalog.get_current_task_repo() + '/' + folder + '/*')
-        for fname in pbar(files, current_task):
+        for fname in pbar(files, task_str):
             if '.html' in fname:
                 lfiles = deepcopy(files)
                 with open(fname, 'r') as f:

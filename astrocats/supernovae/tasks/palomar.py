@@ -20,7 +20,7 @@ def do_ptf(catalog):
     #    if ((name.startswith('PTF') and is_number(name[3:5])) or
     #        name.startswith('PTFS') or name.startswith('iPTF')):
     # name = catalog.add_entry(name)
-    current_task = catalog.get_current_task_str()
+    task_str = catalog.get_current_task_str()
 
     if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(catalog.get_current_task_repo(),
@@ -37,7 +37,7 @@ def do_ptf(catalog):
     bs = BeautifulSoup(html, 'html5lib')
     select = bs.find('select', {'name': 'objid'})
     options = select.findAll('option')
-    for option in pbar(options, current_task):
+    for option in pbar(options, task_str):
         name = option.text
         if (((name.startswith('PTF') and is_number(name[3:5])) or
              name.startswith('PTFS') or name.startswith('iPTF'))):
@@ -55,11 +55,11 @@ def do_ptf(catalog):
 
     with open(os.path.join(
             catalog.get_current_task_repo(), 'PTF/old-ptf-events.csv')) as f:
-        for suffix in pbar(f.read().splitlines(), current_task):
+        for suffix in pbar(f.read().splitlines(), task_str):
             name = catalog.add_entry('PTF' + suffix)
     with open(os.path.join(
             catalog.get_current_task_repo(), 'PTF/perly-2016.csv')) as f:
-        for row in pbar(f.read().splitlines(), current_task):
+        for row in pbar(f.read().splitlines(), task_str):
             cols = [x.strip() for x in row.split(',')]
             alias = ''
             if cols[8]:
