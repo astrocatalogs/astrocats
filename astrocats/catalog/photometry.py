@@ -5,15 +5,7 @@ from random import seed, shuffle
 
 from palettable import colorbrewer, cubehelix, wesanderson
 
-# from .entry import KEYS
 from .key import Key, KEY_TYPES, KeyCollection
-
-# If `_ALLOW_UNKNOWN_KEYS` is 'True', then only parameters with names
-#    included in `PHOTOMETRY` are allowed.  Others will raise an error.
-#    If this parameter is 'False', then parameters corresponding to those in
-#    `PHOTOMETRY` are still checked (for type etc), but additional parameters
-#    are just tacked onto the `Photometry` object without any checks or errors.
-_ALLOW_UNKNOWN_KEYS = True
 
 
 class PHOTOMETRY(KeyCollection):
@@ -68,16 +60,17 @@ class Photometry(OrderedDict):
     """
     """
 
+    _ALLOW_UNKNOWN_KEYS = True
     _KEYS = PHOTOMETRY
 
     def __init__(self, **kwargs):
-        super().__init__(kwargs)
         self.REQ_KEY_TYPES = [
             [PHOTOMETRY.SOURCE],
             [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
             [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
              PHOTOMETRY.COUNTS]]
-
+        super().__init__(kwargs)
+        return
 
 BAND_REPS = {
     'Ks': ['K_s'],
