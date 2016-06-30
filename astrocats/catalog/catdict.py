@@ -59,6 +59,30 @@ class CatDict(OrderedDict):
     def __repr__(self):
         pass
 
+    def is_duplicate_of(self, other):
+        # If these are not the same type, return False
+        if type(other) is not type(self):
+            return False
+
+        # Go over all expected parameters and check equality of each
+        for key in self.KEYS.vals():
+            # Skip parameters which shouldnt be compared
+            if not key.compare:
+                continue
+
+            # If only one object has this parameter, not the same
+            if (key in self) != (key in other):
+                return False
+            # If self doesnt have this parameter (and thus neither does), skip
+            if key not in self:
+                continue
+
+            # Now, both objects have the same parameter, compare them
+            if self[key] != other[key]:
+                return False
+
+        return True
+
     def _check(self):
         REQ_KEY_TYPES = [
             [PHOTOMETRY.SOURCE],

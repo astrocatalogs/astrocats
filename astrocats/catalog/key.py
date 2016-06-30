@@ -25,10 +25,10 @@ class KEY_TYPES(KeyCollection):
 
 
 class Key(str):
-    def __new__(cls, name, type=None, listable=False, **kwargs):
+    def __new__(cls, name, type=None, listable=False, compare=True, **kwargs):
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None, listable=False, **kwargs):
+    def __init__(self, name, type=None, listable=False, compare=True, **kwargs):
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
             raise ValueError(
@@ -37,12 +37,13 @@ class Key(str):
         self.name = str(name)
         self.type = type
         self.listable = listable
+        self.compare = compare
         for key, val in kwargs.items():
             setattr(self, key, val)
 
     def __repr__(self):
-        retval = "Key(name={}, type={}, cambelist={})".format(
-            self.name, self.key, self.listable)
+        retval = "Key(name={}, type={}, listable={}, compare={})".format(
+            self.name, self.key, self.listable, self.compare)
         return retval
 
     def check(self, val):
