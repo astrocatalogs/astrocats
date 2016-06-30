@@ -209,10 +209,10 @@ class Catalog:
                             " any tasks".format(tname, lname))
 
         tasks = {}
-        # `defaults` is a dictionary where each `key` is a task name, and
-        # values are its properties
         for key, val in data.items():
             tasks[key] = Task(name=key, **val)
+
+        for key in tasks:
             # Modify `active` tasks
             # ---------------------
             # If specific list of tasks is given, make only those active
