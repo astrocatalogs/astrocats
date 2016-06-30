@@ -84,9 +84,11 @@ class Catalog:
 
             # Make sure things are running in the correct order
             if priority < prev_priority:
-                raise RuntimeError(("Priority for '{}': '{}', less than prev,"
-                                    "'{}': '{}'.\n{}").format(
-                    task_name, priority, prev_task_name, prev_priority, task_obj))
+                raise RuntimeError(
+                    "Priority for '{}': '{}', less than prev,"
+                    "'{}': '{}'.\n{}"
+                    .format(task_name, priority, prev_task_name, prev_priority,
+                            task_obj))
 
             self.log.debug("\t{}, {}, {}, {}".format(
                 nice_name, priority, mod_name, func_name))
@@ -111,8 +113,9 @@ class Catalog:
             with codecs.open(fname, 'w', encoding='utf8') as jsf:
                 jsf.write(json_str)
 
-        print('Memory used (MBs on Mac, GBs on Linux): ' + '{:,}'.format(
-            resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024. / 1024.))
+        print('Memory used (MBs on Mac, GBs on Linux): '
+              '{:,}'.format(resource.getrusage(resource.RUSAGE_SELF)
+                            .ru_maxrss / 1024. / 1024.))
         return
 
     def load_task_list(self):
@@ -148,8 +151,8 @@ class Catalog:
                             " any tasks".format(tname, lname))
 
         tasks = {}
-        # `defaults` is a dictionary where each `key` is a task name, and values
-        # are its properties
+        # `defaults` is a dictionary where each `key` is a task name, and
+        # values are its properties
         for key, val in data.items():
             tasks[key] = Task(name=key, **val)
             # Modify `active` tasks
@@ -161,6 +164,14 @@ class Catalog:
                 else:
                     tasks[key].active = False
             else:
+                # Only run tasks above minimum priority
+                if (self.args.min_task_priority is not None and
+                        tasks[key].priority < self.args.min_task_priority):
+                    tasks[key].active = False
+                # Only run tasks below maximum priority
+                if (self.args.max_task_priority is not None and
+                        tasks[key].priority > self.args.max_task_priority):
+                    tasks[key].active = False
                 # Set 'yes' tasks to *active*
                 if self.args.yes_task_list is not None:
                     if key in self.args.yes_task_list:
@@ -172,8 +183,8 @@ class Catalog:
 
         # Sort entries as positive values, then negative values
         #    [0, 1, 2, 2, 10, -100, -10, -1]
-        # Tuples are sorted by first element (here: '0' if positive), then second
-        # (here normal order)
+        # Tuples are sorted by first element (here: '0' if positive), then
+        # second (here normal order)
         tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (
             t[1].priority < 0, t[1].priority, t[1].name)))
 
@@ -483,8 +494,10 @@ class Catalog:
                         "Found single entry with multiple entries "
                         "('{}' and '{}'), merging.".format(name1, name2))
 
-                    load1 = self.proto.init_from_file(self, name=name1, delete=True)
-                    load2 = self.proto.init_from_file(self, name=name2, delete=True)
+                    load1 = self.proto.init_from_file(
+                        self, name=name1, delete=True)
+                    load2 = self.proto.init_from_file(
+                        self, name=name2, delete=True)
                     if load1 is not None and load2 is not None:
                         # Delete old files
                         self._delete_entry_file(entry=load1)
@@ -636,7 +649,8 @@ class Catalog:
                 fname = _uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
-            new_entry = self.proto.init_from_file(self, path=fname, delete=False)
+            new_entry = self.proto.init_from_file(
+                self, path=fname, delete=False)
             # Make sure a non-stub entry doesnt already exist with this name
             if name in self.entries and not self.entries[name]._stub:
                 err_str = (
