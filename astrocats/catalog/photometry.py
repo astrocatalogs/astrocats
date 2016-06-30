@@ -17,18 +17,18 @@ REQUIRE_KEY_IN_PHOTOMETRY = True
 
 
 class PHOTOMETRY(KeyCollection):
-    TIME = Key('time', KEY_TYPES.NUMERIC)
+    TIME = Key('time', KEY_TYPES.NUMERIC, listable=True)
     E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
     MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC)
     FLUX = Key('flux', KEY_TYPES.NUMERIC)
     FLUX_DENSITY = Key('fluxdensity', KEY_TYPES.NUMERIC)
     COUNTS = Key('counts', KEY_TYPES.NUMERIC)
 
-    FREQUENCY = Key('frequency', KEY_TYPES.NUMERIC)
+    FREQUENCY = Key('frequency', KEY_TYPES.NUMERIC, listable=True)
     NHMW = Key('nhmw', KEY_TYPES.NUMERIC)
     PHOTON_INDEX = Key('photonindex', KEY_TYPES.NUMERIC)
     UNABSORBED_FLUX = Key('unabsorbedflux', KEY_TYPES.NUMERIC)
-    ENERGY = Key('energy', KEY_TYPES.NUMERIC)
+    ENERGY = Key('energy', KEY_TYPES.NUMERIC, listable=True)
 
     E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC)
     E_FLUX = Key('e_flux', KEY_TYPES.NUMERIC)
@@ -40,14 +40,15 @@ class PHOTOMETRY(KeyCollection):
     E_LOWER_TIME = Key('e_lower_time', KEY_TYPES.NUMERIC)
     E_UPPER_TIME = Key('e_upper_time', KEY_TYPES.NUMERIC)
 
-    TELESCOPE = Key('telescope', KEY_TYPES.STRING)
-    INSTRUMENT = Key('instrument', KEY_TYPES.STRING)
-    BAND = Key('band', KEY_TYPES.STRING)
-    SOURCE = Key('source', KEY_TYPES.STRING)
+    SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
+    TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
+    INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
+    BAND = Key('band', KEY_TYPES.STRING, compare=False)
+    OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
+    OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
+    SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
+
     SYSTEM = Key('system', KEY_TYPES.STRING)
-    OBSERVATORY = Key('observatory', KEY_TYPES.STRING)
-    OBSERVER = Key('observer', KEY_TYPES.STRING)
-    SURVEY = Key('survey', KEY_TYPES.STRING)
 
     U_TIME = Key('u_time', KEY_TYPES.STRING)
     U_FLUX = Key('u_flux', KEY_TYPES.STRING)
@@ -74,6 +75,7 @@ class Photometry(OrderedDict):
         for key in PHOTOMETRY.vals():
             # If this key is given, process and store it
             if key in kwargs:
+                # Make sure value is compatible with the 'Key' specification
                 if not key.check(kwargs[key]):
                     raise ValueError("Value for '{}' is invalid '{}'".format(
                         repr(key), kwargs[key]))
@@ -89,12 +91,7 @@ class Photometry(OrderedDict):
                 # ----------------------
                 # Remove key-value pair from `kwargs` dictionary
                 value = kwargs.pop(key)
-                # Make sure value is compatible with the 'Key' specification
-                if key.check(value):
-                    self[key] = value
-                else:
-                    raise ValueError("Value for '{}' is invalid '{}'".format(
-                        repr(key), value))
+                self[key] = self._clean_value(key, value)
 
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
         #    elements should have been removed from `kwargs`
@@ -126,6 +123,40 @@ class Photometry(OrderedDict):
             raise ValueError('Photometry must have source before being added!')
 
         return
+
+    def _clean_value(self, key, value):
+        """
+        """
+        # Store whether given value started as a list or not
+        single = True
+        # Make everything a list for conversions below
+        if isinstance(value, list):
+            # But if lists arent allowed, and this is, raise error
+            if not key.listable:
+                raise ValueError(
+                    "`value` '{}' for '{}' shouldnt be a list.".format(
+                        value, repr(key)))
+
+            single = False
+        else:
+            single = True
+            value = [value]
+
+        # Store booleans as booleans, make sure each element of list is bool
+        if key.type == KEY_TYPES.BOOL:
+            if not all(isinstance(val, bool) for val in value):
+                raise ValueError(
+                    "`value` '{}' for '{}' should be boolean".format(
+                        value, repr(key)))
+        # Strings and numeric types should be stored as strings
+        elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
+            value = [str(val) for val in value]
+
+        # Convert back to single value, if thats how it started
+        if single:
+            value = value[0]
+
+        return value
 
 
 BAND_REPS = {
