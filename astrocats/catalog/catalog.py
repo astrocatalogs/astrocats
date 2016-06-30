@@ -660,15 +660,21 @@ class Catalog:
             raise RuntimeError("Cannot use both `entry_name` and `entry`.")
 
         if entry_name is not None:
-            entry_filename = self.entries[entry_name]
+            entry = self.entries[entry_name]
         else:
             entry_name = entry[KEYS.NAME]
-            entry_filename = entry.filename
+
+        outdir, filename = entry._get_save_path()
+        entry_filename = os.path.join(outdir, filename + '.json')
+        # entry_filename = entry.filename
 
         if self.args.write_entries:
-            os.remove(entry_filename)
-            self.log.info("Deleted entry '{}' file '{}'".format(
+            self.log.info("Deleting entry '{}' file '{}'".format(
                 entry_name, entry_filename))
+            if not os.path.exists(entry_filename):
+                self.log.error("Filename '{}' does not exist".format(
+                    entry_filename))
+            os.remove(entry_filename)
         else:
             self.log.debug("Not deleting '{}' because `write_entries`"
                            " is Failse".format(entry_filename))
