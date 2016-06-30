@@ -109,11 +109,11 @@ def load_args(args=None):
         '--no', dest='no_task_list', nargs='+', default=None,
         help='space delimited list of tasks to omit from default list.')
     pars_imp.add_argument(
-        '--min-task-priority', dest='min_task_priority', type=int,
+        '--min-task-priority', dest='min_task_priority',
         default=None,
         help='minimum priority for a task to run')
     pars_imp.add_argument(
-        '--max-task-priority', dest='max_task_priority', type=int,
+        '--max-task-priority', dest='max_task_priority',
         default=None,
         help='maximum priority for a task to run')
 

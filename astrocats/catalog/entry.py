@@ -7,16 +7,38 @@ import warnings
 from collections import OrderedDict
 
 from .utils import get_event_filename
+from astrocats.catalog import photometry, spectra, sources
 
 
 class KEYS:
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
-    DISTINCTS = 'distinctfrom'
+    COMOVING_DIST = 'comovingdist'
+    DEC = 'dec'
+    DISCOVER_DATE = 'discoverdate'
+    DISCOVERER = 'discoverer'
+    DISTINCT_FROM = 'distinctfrom'
+    EBV = 'ebv'
+    HOST = 'host'
+    HOST_DEC = 'hostdec'
+    HOST_OFFSET_ANG = 'hostoffsetang'
+    HOST_OFFSET_DIST = 'hostoffsetdist'
+    HOST_RA = 'hostra'
+    LUM_DIST = 'lumdist'
+    MAX_ABS_MAG = 'maxabsmag'
+    MAX_APP_MAG = 'maxappmag'
+    MAX_BAND = 'maxband'
+    MAX_DATE = 'maxdate'
     NAME = 'name'
+    PHOTOMETRY = photometry.PHOTOMETRY
+    RA = 'ra'
+    REDSHIFT = 'redshift'
     SCHEMA = 'schema'
     SOURCES = 'sources'
+    SOURCES = sources.SOURCES
+    SPECTRA = spectra.SPECTRA
     URL = 'url'
+    VELOCITY = 'velocity'
 
 
 class Entry(OrderedDict):
