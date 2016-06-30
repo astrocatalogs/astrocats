@@ -121,7 +121,6 @@ Photometry and spectra are stored in a similar way, but have different and many 
 | `e_lower_time` | Lower error in the time | yes
 | `e_upper_time` | Upper error in the time | yes
 | `u_time` | Unit for time | yes
-| `system` | Photometric system used | yes
 | `survey` | Name of survey observations were collected by | yes
 | `instrument` | Instrument used for observation | yes
 | `telescope` | Telescope used for observation | yes
@@ -140,6 +139,7 @@ For IR/optical/UV photometry specifically, typical field names are:
 | `e_lower_magnitude` | Lower (i.e. more negative) error in the magnitude | yes
 | `e_upper_magnitude` | Upper (i.e. more positive) error in the magnitude | yes
 | `band` | Photometric band filter used | yes
+| `system` | Photometric system used | yes
 | `upperlimit` | Measurement is an upper limit | yes
 | `kcorrected` | Photometry has been K-corrected for redshift effects | yes
 | `scorrected` | Photometry has been S-corrected for extinction in host galaxy | yes

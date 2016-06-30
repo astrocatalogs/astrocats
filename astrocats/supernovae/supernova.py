@@ -8,8 +8,11 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.photometry import (bandmetaf, bandrepf, Photometry,
-                                          PHOTOMETRY)
+from astrocats.catalog.photometry import (PHOTOMETRY, Photometry, bandmetaf,
+                                          bandrepf)
+from astrocats.catalog.quantity import QUANTITY, Quantity
+from astrocats.catalog.source import SOURCE, Source
+from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, tprint,
@@ -64,7 +67,21 @@ class Supernova(Entry):
                 f.read(), object_pairs_hook=OrderedDict)
         return
 
-    def add_source(self, srcname='', bibcode='', **src_kwargs):
+    def add_source(self, **kwargs):
+        try:
+            source_obj = Source(**kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
+                self.name, str(err)))
+
+        for item in self[KEYS.SOURCES]:
+            if source_obj.is_duplicate_of(item):
+                pass
+
+        self.setdefault(KEYS.SOURCES, []).append(source_obj)
+        return
+
+    def _add_source(self, srcname='', bibcode='', **src_kwargs):
         """Add a new source to this entry's KEYS.SOURCES list.
 
         FIX: if source already exists, should dictionary be updated to any
@@ -133,10 +150,27 @@ class Supernova(Entry):
         self.setdefault(KEYS.SOURCES, []).append(new_src)
         return source_alias
 
-    def add_quantity(self, quantity, value, sources,
-                     forcereplacebetter=False, derived='',
-                     lowerlimit='', upperlimit='', error='', unit='',
-                     kind='', extra='', probability=''):
+    def add_quantity(self, quantity, **kwargs):
+        try:
+            quantity_obj = Quantity(**kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' `add_quantity`: Error: '{}'".format(
+                self.name, str(err)))
+
+        if self.is_erroneous(quantity, self[QUANTITY.SOURCE]):
+            pass
+
+        for item in self[quantity]:
+            if quantity_obj.is_duplicate_of(item):
+                quantity_obj.append_sources(item)
+
+        self.setdefault(quantity, []).append(quantity_obj)
+        return
+
+    def _add_quantity(self, quantity, value, sources,
+                      forcereplacebetter=False, derived='',
+                      lowerlimit='', upperlimit='', error='', unit='',
+                      kind='', extra='', probability=''):
         """
         """
         if not quantity:
@@ -782,11 +816,28 @@ class Supernova(Entry):
         self.setdefault('photometry', []).append(photoentry)
         return
 
-    def add_spectrum(self, waveunit, fluxunit, wavelengths="", fluxes="",
-                     u_time="", time="", instrument="", deredshifted="",
-                     dereddened="", errorunit="", errors="", source="",
-                     snr="", telescope="", observer="", survey="", reducer="",
-                     filename="", observatory="", data=""):
+    def add_spectrum(self, **kwargs):
+        try:
+            spectrum_obj = Spectrum(**kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' `add_quantity`: Error: '{}'".format(
+                self.name, str(err)))
+
+        if self.is_erroneous(KEYS.SPECTRA, self[QUANTITY.SOURCE]):
+            pass
+
+        for item in self[KEYS.SPECTRA]:
+            if spectrum_obj.is_duplicate_of(item):
+                pass
+
+        self.setdefault(KEYS.SPECTRA, []).append(spectrum_obj)
+        return
+
+    def _add_spectrum(self, waveunit, fluxunit, wavelengths="", fluxes="",
+                      u_time="", time="", instrument="", deredshifted="",
+                      dereddened="", errorunit="", errors="", source="",
+                      snr="", telescope="", observer="", survey="", reducer="",
+                      filename="", observatory="", data=""):
 
         if self.is_erroneous('spectra', source):
             return

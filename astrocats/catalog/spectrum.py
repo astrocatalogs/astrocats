@@ -3,13 +3,6 @@
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
-# If `_ALLOW_UNKNOWN_KEYS` is 'True', then only parameters with names
-#    included in `PHOTOMETRY` are allowed.  Others will raise an error.
-#    If this parameter is 'False', then parameters corresponding to those in
-#    `PHOTOMETRY` are still checked (for type etc), but additional parameters
-#    are just tacked onto the `Photometry` object without any checks or errors.
-REQUIRE_KEY_IN_SPECTRA = False
-
 
 class SPECTRUM(KeyCollection):
     # Arrays
