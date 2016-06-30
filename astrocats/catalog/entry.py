@@ -75,6 +75,12 @@ class Entry(OrderedDict):
 
         return new_entry
 
+    def __repr__(self):
+        jsonstring = json.dumps({self[KEYS.NAME]: self},
+                                indent='\t', separators=(',', ':'),
+                                ensure_ascii=False)
+        return jsonstring
+
     def _load_data_from_json(self, fhand):
         """FIX: check for overwrite??
         """
