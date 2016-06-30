@@ -1,9 +1,9 @@
 """Class for representing sources of data.
 """
-from .key import Key, KEY_TYPES
+from .key import KEY_TYPES, Key, KeyCollection
 
 
-class SOURCES:
+class SOURCES(KeyCollection):
     # Strings
     NAME = Key('name', KEY_TYPES.STRING)
     ALIAS = Key('alias', KEY_TYPES.STRING)
