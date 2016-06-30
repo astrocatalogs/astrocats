@@ -16,7 +16,6 @@ __all__ = []
 __all__.extend(digits.__all__)
 __all__.extend(logger.__all__)
 __all__.extend(photometry.__all__)
-__all__.extend(repos.__all__)
 __all__.extend(sorting.__all__)
 __all__.extend(strings.__all__)
 __all__.extend(tq_funcs.__all__)
