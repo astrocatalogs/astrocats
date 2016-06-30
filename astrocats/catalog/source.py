@@ -3,13 +3,6 @@
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
-# If `REQUIRE_KEY_IN_SOURCE` is 'True', then only parameters with names
-# included in `SOURCE` are allowed.  Others will raise an error. If this
-# parameter is 'False', then parameters corresponding to those in `SOURCE` are
-# still checked (for type etc), but additional parameters are just tacked onto
-# the `Source` object without any checks or errors.
-REQUIRE_KEY_IN_SOURCE = True
-
 
 class SOURCE(KeyCollection):
     # Strings
@@ -32,5 +25,6 @@ class Source(CatDict):
     def __init__(self, **kwargs):
         super().__init__(kwargs)
         self.REQ_KEY_TYPES = [
-            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME]
+            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME],
+            [SOURCE.ALIAS]
         ]
