@@ -1,7 +1,7 @@
 """
 """
 
-from math import log10, floor
+from math import floor, log10
 
 __all__ = ['get_sig_digits', 'is_integer', 'is_number', 'pretty_num',
            'round_sig', 'zpad']
@@ -53,7 +53,7 @@ def pretty_num(x, sig=4):
 def round_sig(x, sig=4):
     if x == 0.0:
         return 0.0
-    return round(x, sig-int(floor(log10(abs(x))))-1)
+    return round(x, sig - int(floor(log10(abs(x)))) - 1)
 
 
 def zpad(val, n=2):
