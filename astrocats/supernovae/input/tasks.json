@@ -1,4 +1,13 @@
 {
+    "test": {
+        "nice_name": "%pre TEST",
+        "active": false,
+        "update": false,
+        "module": "supernovae.tasks.test",
+        "function": "do_test",
+        "repo": "input/internal",
+        "priority": 0
+    },
     "internal": {
         "nice_name": "%pre metadata and photometry",
         "active": true,
