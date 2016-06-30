@@ -7,6 +7,7 @@ import warnings
 from collections import OrderedDict
 
 from .utils import get_event_filename
+from astrocats.catalog import photometry, spectra, sources
 
 
 class KEYS:
@@ -29,10 +30,13 @@ class KEYS:
     MAX_BAND = 'maxband'
     MAX_DATE = 'maxdate'
     NAME = 'name'
+    PHOTOMETRY = photometry.PHOTOMETRY
     RA = 'ra'
     REDSHIFT = 'redshift'
     SCHEMA = 'schema'
     SOURCES = 'sources'
+    SOURCES = sources.SOURCES
+    SPECTRA = spectra.SPECTRA
     URL = 'url'
     VELOCITY = 'velocity'
 

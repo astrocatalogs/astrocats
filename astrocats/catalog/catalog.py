@@ -14,9 +14,10 @@ from git import Repo
 
 from astrocats.catalog.entry import KEYS
 from astrocats.catalog.task import Task
-from astrocats.catalog.utils import (compress_gz, is_number, logger, pbar,
-                                     read_json_dict, uniq_cdl, uncompress_gz)
-from astrocats.supernovae.utils import (entry_attr_priority, name_clean)
+from astrocats.catalog.utils import (compress_gz, is_integer, is_number,
+                                     logger, pbar, read_json_dict,
+                                     uncompress_gz, uniq_cdl)
+from astrocats.supernovae.utils import entry_attr_priority, name_clean
 
 
 class Catalog:
@@ -223,7 +224,13 @@ class Catalog:
             else:
                 # Only run tasks above minimum priority
                 if (self.args.min_task_priority is not None and
-                        tasks[key].priority < self.args.min_task_priority):
+                        ((is_integer(self.args_min_task_priority) and
+                          tasks[key].priority <
+                          int(self.args.min_task_priority)) or
+                         (isinstance(self.args_min_task_priority, str) and
+                          self.args_min_task_priority in tasks and
+                          tasks[key].priority <
+                          tasks[self.args_min_task_priority].priority))):
                     tasks[key].active = False
                 # Only run tasks below maximum priority
                 if (self.args.max_task_priority is not None and
