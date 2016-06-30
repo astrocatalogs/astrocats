@@ -37,7 +37,7 @@ def do_ptf(catalog):
     bs = BeautifulSoup(html, 'html5lib')
     select = bs.find('select', {'name': 'objid'})
     options = select.findAll('option')
-    for option in options:
+    for option in pbar(options, current_task):
         name = option.text
         if (((name.startswith('PTF') and is_number(name[3:5])) or
              name.startswith('PTFS') or name.startswith('iPTF'))):
