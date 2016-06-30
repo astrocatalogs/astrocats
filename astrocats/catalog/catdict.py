@@ -9,15 +9,15 @@ class CatDict(OrderedDict):
     """
     """
 
-    # The `KeyCollection` object associated with this dictionary
-    #    For example, `PHOTOMETRY` for the `Photometry(CatDict)` subclass
+    # The `KeyCollection` object associated with this dictionary For example,
+    # `PHOTOMETRY` for the `Photometry(CatDict)` subclass
     _KEYS = KeyCollection
 
     # If `_ALLOW_UNKNOWN_KEYS` is 'False', then only parameters with names
-    #    included in `_KEYS` are allowed.  Others will raise an error.
-    #    If this parameter is 'True', then parameters corresponding to those in
-    #    `_KEYS` are still checked (for type etc), but additional parameters
-    #    are just tacked onto the `CatDict` object without any checks or errors.
+    # included in `_KEYS` are allowed.  Others will raise an error. If this
+    # parameter is 'True', then parameters corresponding to those in `_KEYS`
+    # are still checked (for type etc), but additional parameters are just
+    # tacked onto the `CatDict` object without any checks or errors.
     _ALLOW_UNKNOWN_KEYS = True
 
     REQ_KEY_TYPES = []

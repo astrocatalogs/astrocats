@@ -8,8 +8,8 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.photometry import (bandmetaf, bandrepf, Photometry,
-                                          PHOTOMETRY)
+from astrocats.catalog.photometry import (PHOTOMETRY, Photometry, bandmetaf,
+                                          bandrepf)
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, tprint,
