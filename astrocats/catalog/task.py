@@ -50,8 +50,6 @@ class Task():
         """Depending on run configuration, whether previously archived data
         should be loaded.
         """
-        if not self.archived:
-            return False
         # If we're running in 'archived' mode, and only loading 'archived'
         # things, then True
         if (args.archived and self.name not in args.refresh_list and not
