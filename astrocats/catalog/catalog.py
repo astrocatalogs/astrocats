@@ -14,10 +14,10 @@ from git import Repo
 
 from astrocats.catalog.entry import KEYS
 from astrocats.catalog.task import Task
-from astrocats.catalog.utils import (is_number, logger, pbar, read_json_dict,
-                                     uniq_cdl)
-from astrocats.supernovae.utils import (compress_gz, entry_attr_priority,
-                                        name_clean, uncompress_gz)
+from astrocats.catalog.utils import (compress_gz, is_number, logger, pbar,
+                                     read_json_dict, uniq_cdl, uncompress_gz)
+from astrocats.supernovae.utils import (entry_attr_priority,
+                                        name_clean)
 
 
 class Catalog:
@@ -85,6 +85,8 @@ class Catalog:
         tasks_list = self.load_task_list()
         warnings.filterwarnings(
             'ignore', r'Warning: converting a masked element to nan.')
+        warnings.filterwarnings(
+            'ignore', category=DeprecationWarning)
 
         if self.args.delete_old:
             self.log.warning("Deleting all old entry files.")
