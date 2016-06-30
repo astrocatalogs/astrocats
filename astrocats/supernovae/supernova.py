@@ -1,8 +1,6 @@
 """
 """
-import codecs
 import json
-import os
 import warnings
 from collections import OrderedDict
 
@@ -133,7 +131,6 @@ class Supernova(Entry):
         # etc)
         new_src.update({k: v for (k, v) in src_kwargs.items() if k})
         self.setdefault(SN_KEYS.SOURCES, []).append(new_src)
-
         return source_alias
 
     def add_quantity(self, quantity, value, sources,
@@ -484,6 +481,7 @@ class Supernova(Entry):
         if 'claimedtype' in self:
             self['claimedtype'] = self.ct_list_prioritized()
 
+    '''
     def save(self, empty=False, bury=False, final=False, gz=False):
         outdir, filename = self._get_save_path(bury=bury)
 
@@ -502,6 +500,7 @@ class Supernova(Entry):
             sf.write(jsonstring)
 
         return save_name
+    '''
 
     def get_source_by_alias(self, alias):
         for source in self.get(SN_KEYS.SOURCES, []):
