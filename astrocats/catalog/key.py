@@ -1,36 +1,47 @@
 """
 """
 from astrocats.catalog.utils import is_number
-import json
 
 
-class KEY_TYPES:
+class KeyCollection:
+
+    @classmethod
+    def keys(cls):
+        _keys = [kk for kk in vars(cls).keys() if not kk.startswith('_')]
+        return _keys
+
+    @classmethod
+    def vals(cls):
+        _vals = [vv for kk, vv in vars(cls).items() if not kk.startswith('_')]
+        return _vals
+
+
+class KEY_TYPES(KeyCollection):
     NUMERIC = 'numeric'
     STRING = 'string'
     BOOL = 'bool'
     ANY = None
 
-    _keys = sorted([kk for kk in vars().keys() if not kk.startswith('_')])
-    _vals = [vv for kk, vv in vars().items() if not kk.startswith('_')]
-
 
 class Key(str):
-    def __new__(cls, name, type=None, canbelist=False):
+    def __new__(cls, name, type=None, listable=False, **kwargs):
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None, canbelist=False):
+    def __init__(self, name, type=None, listable=False, **kwargs):
         # Make sure type is allowed
-        if type is not None and type not in KEY_TYPES._vals:
+        if type is not None and type not in KEY_TYPES.vals():
             raise ValueError(
                 "Key `type` ('{}') must be 'None' or one of '{}'".format(
-                    type, KEY_TYPES._keys))
+                    type, KEY_TYPES.keys()))
         self.name = str(name)
         self.type = type
-        self.canbelist = canbelist
+        self.listable = listable
+        for key, val in kwargs.items():
+            setattr(self, key, val)
 
     def __repr__(self):
         retval = "Key(name={}, type={}, cambelist={})".format(
-            self.name, self.key, self.canbelist)
+            self.name, self.key, self.listable)
         return retval
 
     def check(self, val):
@@ -38,7 +49,7 @@ class Key(str):
         """
         is_list = isinstance(val, list)
         # If lists are not allowed, and this is a list --> false
-        if not self.canbelist and is_list:
+        if not self.listable and is_list:
             return False
 
         # If there is a type requirement, check that
