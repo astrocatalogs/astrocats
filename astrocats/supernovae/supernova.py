@@ -8,7 +8,8 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.photometry import bandmetaf, bandrepf
+from astrocats.catalog.photometry import (bandmetaf, bandrepf, Photometry,
+                                          PHOTOMETRY)
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, tprint,
@@ -650,6 +651,8 @@ class Supernova(Entry):
 
         if self.is_erroneous('photometry', self[PHOTOMETRY.SOURCE]):
             pass
+
+        self.setdefault('photometry', []).append(photo_entry)
         return
 
     def _add_photometry(self, time="", u_time="MJD", e_time="",
