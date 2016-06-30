@@ -6,14 +6,17 @@ from random import seed, shuffle
 from palettable import colorbrewer, cubehelix, wesanderson
 
 # from .entry import KEYS
-from .key import Key, KEY_TYPES
+from .key import Key, KEY_TYPES, KeyCollection
 
 # If `REQUIRE_KEY_IN_PHOTOMETRY` is 'True', then only parameters with names
-#    included in `PHOTOMETRY`
+#    included in `PHOTOMETRY` are allowed.  Others will raise an error.
+#    If this parameter is 'False', then parameters corresponding to those in
+#    `PHOTOMETRY` are still checked (for type etc), but additional parameters
+#    are just tacked onto the `Photometry` object without any checks or errors.
 REQUIRE_KEY_IN_PHOTOMETRY = True
 
 
-class PHOTOMETRY:
+class PHOTOMETRY(KeyCollection):
     TIME = Key('time', KEY_TYPES.NUMERIC)
     E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
     MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC)
@@ -59,9 +62,6 @@ class PHOTOMETRY:
     HOST = Key('host', KEY_TYPES.BOOL)
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL)
 
-    # _keys = sorted([kk for kk in vars().keys() if not kk.startswith('_')])
-    _keys = [vv for kk, vv in vars().items() if not kk.startswith('_')]
-
 
 class Photometry(OrderedDict):
     """
@@ -69,7 +69,9 @@ class Photometry(OrderedDict):
 
     def __init__(self, **kwargs):
         # Iterate over all `PHOTOMETRY` parameters, load each if given
-        for key in PHOTOMETRY._keys:
+        #    note that the stored `values` are the `Key` objects, referred to
+        #    here with the name 'key'
+        for key in PHOTOMETRY.vals():
             # If this key is given, process and store it
             if key in kwargs:
                 if not key.check(kwargs[key]):
