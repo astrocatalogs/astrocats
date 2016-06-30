@@ -665,19 +665,20 @@ class Catalog:
             entry_name = entry[KEYS.NAME]
 
         outdir, filename = entry._get_save_path()
+        # FIX: do we also need to check for gzipped files??
         entry_filename = os.path.join(outdir, filename + '.json')
         # entry_filename = entry.filename
 
         if self.args.write_entries:
-            self.log.info("Deleting entry '{}' file '{}'".format(
-                entry_name, entry_filename))
+            self.log.info("Deleting entry file '{}' of entry '{}'".format(
+                entry_filename, entry_name))
             if not os.path.exists(entry_filename):
                 self.log.error("Filename '{}' does not exist".format(
                     entry_filename))
             os.remove(entry_filename)
         else:
             self.log.debug("Not deleting '{}' because `write_entries`"
-                           " is Failse".format(entry_filename))
+                           " is False".format(entry_filename))
 
         return
 
