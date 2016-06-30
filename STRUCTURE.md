@@ -1,47 +1,48 @@
 # Structure #
 
-Directories: Titlecase,  
-Files: lowercase  
-Classes: TitleCase  
-Variables: lowercase, underscore (for spaces)
+### Naming Conventions ###
+-   Directories: `lowercase`,  
+-   Files: `lowercase`  
+-   Classes: `TitleCase`  
+-   Variables: `lower_case` (i.e. underscores for breaks/spaces)
+    -   Constants: `UPPER_CASE`
 
+
+## File and Directory Structure ##
 -   **OpenCatalogs**
--   LICENSE
--   README.md
--   requirements.txt
--   STRUCTURE.md
--   TODO.md
--   **astrocats**
-    -   \__init__.py
-    -   \__main__.py
-    -   main.py
-    -   **catalog** 
-        -   catalog.py
-        -   constants.py
-        -   entry.py
-        -   task.py
-        -   utils/
+-   `LICENSE`
+-   `README.md`
+-   `requirements.txt`
+-   `STRUCTURE.md`
+-   `TODO.md`
+-   **astrocats**:
+    -   `__init__.py`
+    -   `__main__.py`
+    -   `main.py`:  *the primary entry point for all catalog operations*
+    -   **catalog**: *templates and basic machinery for all individual catalogs*
+        -   `catalog.py`: *the primary class which handles catalogs*
+        -   `entry.py`: *the base class for individual 'entries' in each catalog*
+        -   `task.py`: *object to represent the underlying list of operations to construct a catalog (see also `tasks.json`)*
+        -   `utils/`: *general purpose utility functions*
     -   **supernovae**
-        -   supernova.py
-        -   tasks/
-        -   input/
-            -   biberrors.json
-            -   non-sne-types.json
-            -   
-            -   repos.json
-            -   tasks.json
-            -   internal/
-            -   external/
+        -   `supernova.py`: *subclass of `entry` specific for the supernova catalog*
+        -   `tasks/`: *files associated with operations to build this catalog.*
+        -   `input/`: *data files and repositories contributing data/parameters*
+            -   `biberrors.json`: *Specific bibcodes with errors*
+            -   `non-sne-types.json`: *list of types which are *not* supernovae*
+            -   `repos.json`: *list of git repositories in the supernovae catalog*
+            -   `tasks.json`: *list of tasks and associated parameters to construct the catalog*
+            -   `sne-internal/`: *Hand-made supernovae data files to be loaded and processed*
+            -   `sne-external.../`: *Downloaded/externally retrieved data files to be loaded and processed*
             -   ...
-        -   output/
-            -   catalog.json
-            -   cache/  
-                -   bibauthors.json
-                -   extinctions.json
-            -   ...
-        -   scripts/
+        -   `output/`: *data products constructed by the supernova catalog*
+            -   `catalog.json`: *output of all supernova data*
+            -   `cache/`: *intermediate files used during catalog creation*
+                -   `bibauthors.json`
+                -   `extinctions.json`
+        -   `scripts/`: *individual catalog operations scripts()*
             -   download...
             -   find...
             -   make...
-        -   html/
+        -   `html/`: *files associated with the supernova catalog webpage*
             -   ...
