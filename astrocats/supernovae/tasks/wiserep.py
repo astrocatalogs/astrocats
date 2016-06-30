@@ -13,8 +13,7 @@ from bs4 import BeautifulSoup
 
 from astrocats.catalog.utils import uniq_cdl
 
-from ...utils import is_number, pbar, pbar_strings, tprint
-from ..constants import TRAVIS_QUERY_LIMIT
+from astrocats.catalog.utils import is_number, pbar, pbar_strings, tprint
 
 
 def do_wiserep_spectra(catalog):
@@ -251,7 +250,8 @@ def do_wiserep_spectra(catalog):
                                 wiserepcnt = wiserepcnt + 1
 
                                 if (catalog.args.travis and
-                                        wiserepcnt % TRAVIS_QUERY_LIMIT == 0):
+                                        wiserepcnt %
+                                        catalog.TRAVIS_QUERY_LIMIT == 0):
                                     break
 
                 tprint('Unadded files: ' + str(len(lfiles) - 1) +

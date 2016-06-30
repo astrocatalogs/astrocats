@@ -5,7 +5,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-from astrocats.catalog.utils import is_number
+from astrocats.catalog.utils import is_number, pbar
 
 
 def do_ptf(catalog):
@@ -20,6 +20,7 @@ def do_ptf(catalog):
     #    if ((name.startswith('PTF') and is_number(name[3:5])) or
     #        name.startswith('PTFS') or name.startswith('iPTF')):
     # name = catalog.add_entry(name)
+    current_task = catalog.get_current_task_str()
 
     if catalog.current_task.load_archive(catalog.args):
         with open(os.path.join(catalog.get_current_task_repo(),
@@ -54,11 +55,11 @@ def do_ptf(catalog):
 
     with open(os.path.join(
             catalog.get_current_task_repo(), 'PTF/old-ptf-events.csv')) as f:
-        for suffix in f.read().splitlines():
+        for suffix in pbar(f.read().splitlines(), current_task):
             name = catalog.add_entry('PTF' + suffix)
     with open(os.path.join(
             catalog.get_current_task_repo(), 'PTF/perly-2016.csv')) as f:
-        for row in f.read().splitlines():
+        for row in pbar(f.read().splitlines(), current_task):
             cols = [x.strip() for x in row.split(',')]
             alias = ''
             if cols[8]:
