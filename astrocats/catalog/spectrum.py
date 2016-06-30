@@ -3,7 +3,7 @@
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
-# If `REQUIRE_KEY_IN_PHOTOMETRY` is 'True', then only parameters with names
+# If `_ALLOW_UNKNOWN_KEYS` is 'True', then only parameters with names
 #    included in `PHOTOMETRY` are allowed.  Others will raise an error.
 #    If this parameter is 'False', then parameters corresponding to those in
 #    `PHOTOMETRY` are still checked (for type etc), but additional parameters

@@ -8,12 +8,12 @@ from palettable import colorbrewer, cubehelix, wesanderson
 # from .entry import KEYS
 from .key import Key, KEY_TYPES, KeyCollection
 
-# If `REQUIRE_KEY_IN_PHOTOMETRY` is 'True', then only parameters with names
+# If `_ALLOW_UNKNOWN_KEYS` is 'True', then only parameters with names
 #    included in `PHOTOMETRY` are allowed.  Others will raise an error.
 #    If this parameter is 'False', then parameters corresponding to those in
 #    `PHOTOMETRY` are still checked (for type etc), but additional parameters
 #    are just tacked onto the `Photometry` object without any checks or errors.
-REQUIRE_KEY_IN_PHOTOMETRY = True
+_ALLOW_UNKNOWN_KEYS = True
 
 
 class PHOTOMETRY(KeyCollection):
