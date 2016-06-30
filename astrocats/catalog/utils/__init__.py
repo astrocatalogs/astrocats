@@ -1,14 +1,13 @@
 """General utility functions used by multiple OSC scripts.
 """
 
-from . import (dates, digits, imports, logger, photometry, repos, sorting,
+from . import (dates, digits, imports, logger, photometry, sorting,
                strings, tq_funcs)
 from .dates import *
 from .digits import *
 from .imports import *
 from .logger import *
 from .photometry import *
-from .repos import *
 from .sorting import *
 from .strings import *
 from .tq_funcs import *
