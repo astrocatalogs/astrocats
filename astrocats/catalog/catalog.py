@@ -42,14 +42,15 @@ class Catalog:
         -   `tasks.json`
 
         """
+        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
 
         def __init__(self):
-            self.PATH_BASE = os.path.abspath(os.path.dirname(__file__))
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
             self.REPOS = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
+            self.repos_dict = read_json_dict(self.REPOS)
 
         def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
             """Get filenames for files in each repository, `boneyard` optional.
@@ -74,7 +75,7 @@ class Catalog:
                 bone_path = bone_path[0]
             except TypeError:
                 pass
-            bone_path = os.path.join(self.PATHS.PATH_OUTPUT, bone_path, '')
+            bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
             return bone_path
 
     class SCHEMA:

@@ -13,10 +13,10 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
     class PATHS(astrocats.catalog.catalog.Catalog.PATHS):
 
+        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
+
         def __init__(self):
             super().__init__()
-            # Override base-path to *this* file location
-            self.PATH_BASE = os.path.abspath(os.path.dirname(__file__))
             # auxiliary datafiles
             self.TYPE_SYNONYMS = os.path.join(
                 self.PATH_INPUT, 'type-synonyms.json')
@@ -47,7 +47,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
             repo_folders = []
             repo_folders += self.repos_dict['external']
             repo_folders += self.repos_dict['internal']
-            repo_folders = [os.path.join(self.PATHS.PATH_INPUT, rf)
+            repo_folders = [os.path.join(self.PATH_INPUT, rf)
                             for rf in repo_folders]
             return repo_folders
 
@@ -57,14 +57,14 @@ class Catalog(astrocats.catalog.catalog.Catalog):
             repo_folders = []
             repo_folders += self.repos_dict['output']
             repo_folders += self.repos_dict['boneyard']
-            repo_folders = [os.path.join(self.PATHS.PATH_OUTPUT, rf)
+            repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
                             for rf in repo_folders]
             return repo_folders
 
         def get_repo_years(self):
             """
             """
-            repo_folders = self.PATHS.get_repo_output_folders()
+            repo_folders = self.get_repo_output_folders()
             repo_years = [int(repo_folders[x][-4:])
                           for x in range(len(repo_folders) - 1)]
             repo_years[0] -= 1
