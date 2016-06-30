@@ -16,7 +16,8 @@ from astrocats.catalog.entry import KEYS
 from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (is_number, logger, pbar, read_json_dict,
                                      uniq_cdl)
-from astrocats.supernovae.utils import entry_attr_priority, name_clean
+from astrocats.supernovae.utils import (compress_gz, entry_attr_priority,
+                                        name_clean, uncompress_gz)
 
 
 class Catalog:
@@ -666,7 +667,7 @@ class Catalog:
             fname = fi
             # FIX: should this be ``fi.endswith(``.gz')`` ?
             if '.gz' in fi:
-                fname = _uncompress_gz(fi)
+                fname = uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
             new_entry = self.proto.init_from_file(
@@ -769,7 +770,7 @@ class Catalog:
                         "Saved {} to '{}'.".format(name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >
                             self.COMPRESS_ABOVE_FILESIZE):
-                        save_name = _compress_gz(save_name)
+                        save_name = compress_gz(save_name)
                         self.log.debug("Compressed '{}' to '{}'".format(
                             name, save_name))
                         # FIX: use subprocess
@@ -855,23 +856,3 @@ class Catalog:
                 with codecs.open(filepath, 'w', encoding='utf8') as f:
                     f.write(txt if txt else filetxt)
         return txt
-
-
-def _compress_gz(fname):
-    import shutil
-    import gzip
-    comp_fname = fname + '.gz'
-    with open(fname, 'rb') as f_in, gzip.open(comp_fname, 'wb') as f_out:
-        shutil.copyfileobj(f_in, f_out)
-    os.remove(fname)
-    return comp_fname
-
-
-def _uncompress_gz(fname):
-    import shutil
-    import gzip
-    uncomp_name = fname.replace('.gz', '')
-    with gzip.open(fname, 'rb') as f_in, open(uncomp_name, 'wb') as f_out:
-        shutil.copyfileobj(f_in, f_out)
-    os.remove(fname)
-    return uncomp_name

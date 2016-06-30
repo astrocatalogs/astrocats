@@ -6,7 +6,8 @@ from collections import OrderedDict
 
 from .digits import is_number
 
-__all__ = ['convert_aq_output', 'read_json_dict', 'read_json_arr']
+__all__ = ['compress_gz', 'convert_aq_output', 'read_json_dict',
+           'read_json_arr', 'uncompress_gz']
 
 
 def convert_aq_output(row):
@@ -31,3 +32,23 @@ def read_json_arr(filename):
     else:
         myarr = []
     return myarr
+
+
+def compress_gz(fname):
+    import shutil
+    import gzip
+    comp_fname = fname + '.gz'
+    with open(fname, 'rb') as f_in, gzip.open(comp_fname, 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    os.remove(fname)
+    return comp_fname
+
+
+def uncompress_gz(fname):
+    import shutil
+    import gzip
+    uncomp_name = fname.replace('.gz', '')
+    with gzip.open(fname, 'rb') as f_in, open(uncomp_name, 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    os.remove(fname)
+    return uncomp_name
