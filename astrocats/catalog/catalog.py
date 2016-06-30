@@ -214,7 +214,7 @@ class Catalog:
 
         # `defaults` is a dictionary where each `key` is a task name, and
         # values are its properties
-        for key, val in data.items():
+        for key in tasks:
             # Modify `active` tasks
             # ---------------------
             # If specific list of tasks is given, make only those active
