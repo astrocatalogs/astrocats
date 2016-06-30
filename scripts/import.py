@@ -4030,7 +4030,7 @@ for task in tasks:
         secondaryrefbib = "2012MNRAS.425.1789S"
     
         jsontxt = load_cached_url("http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot",
-            '../sne-external-spectra/UCB/allpub.json')
+            '../sne-external/SNDB/allpub.json')
         if not jsontxt:
             continue
     
