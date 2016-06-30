@@ -21,7 +21,7 @@ def do_ucb_photo(catalog):
 
     jsontxt = catalog.load_cached_url(
         'http://heracles.astro.berkeley.edu/sndb/download?id=allpubphot',
-        os.path.join(catalog.get_current_task_repo(), 'UCB/allpub.json'))
+        os.path.join(catalog.get_current_task_repo(), 'SNDB/allpub.json'))
     if not jsontxt:
         return
 
