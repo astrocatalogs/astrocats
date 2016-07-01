@@ -56,6 +56,7 @@ class Supernova(Entry):
 
     filename = ''
     _source_syns = {}
+    _KEYS = KEYS
 
     def __init__(self, catalog, name, stub=False):
         super().__init__(catalog, name, stub=stub)
@@ -69,16 +70,17 @@ class Supernova(Entry):
 
     def add_source(self, **kwargs):
         try:
-            source_obj = Source(**kwargs)
+            source_obj = Source(self, **kwargs)
         except ValueError as err:
             self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
                 self.name, str(err)))
+            return
 
-        for item in self[KEYS.SOURCES]:
+        for item in self[self._KEYS.SOURCES]:
             if source_obj.is_duplicate_of(item):
-                pass
+                return
 
-        self.setdefault(KEYS.SOURCES, []).append(source_obj)
+        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return
 
     def _add_source(self, srcname='', bibcode='', **src_kwargs):
@@ -151,20 +153,7 @@ class Supernova(Entry):
         return source_alias
 
     def add_quantity(self, quantity, **kwargs):
-        try:
-            quantity_obj = Quantity(**kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_quantity`: Error: '{}'".format(
-                self.name, str(err)))
-
-        if self.is_erroneous(quantity, self[QUANTITY.SOURCE]):
-            pass
-
-        for item in self[quantity]:
-            if quantity_obj.is_duplicate_of(item):
-                quantity_obj.append_sources(item)
-
-        self.setdefault(quantity, []).append(quantity_obj)
+        self._add_cat_dict(self, Quantity, quantity, **kwargs)
         return
 
     def _add_quantity(self, quantity, value, sources,
@@ -677,160 +666,36 @@ class Supernova(Entry):
         return
 
     def add_photometry(self, **kwargs):
+        self._add_cat_dict(self, Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        '''
+        # Make sure that a source is given
+        source = kwargs.get(self._KEYS.SOURCE, None)
+        if source is None:
+            raise ValueError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]))
+
+        # If this source/data is erroneous, skip it
+        if self.is_erroneous(self._KEYS.PHOTOMETRY, source):
+            return
+
         try:
-            photo_entry = Photometry(**kwargs)
+            photo_entry = Photometry(self, **kwargs)
         except ValueError as err:
             self.catalog.log.error("'{}' `add_photometry`: Error: '{}'".format(
                 self.name, str(err)))
+            return
 
-        if self.is_erroneous('photometry', self[PHOTOMETRY.SOURCE]):
-            pass
+        for item in self[self._KEYS.PHOTOMETRY]:
+            if photo_entry.is_duplicate_of(item):
+                item.append_sources(photo_entry)
+                return
 
-        self.setdefault('photometry', []).append(photo_entry)
-        return
-
-    def _add_photometry(self):
-
-        # Look for duplicate data and don't add if duplicate
-        if 'photometry' in self:
-            for photo in self['photometry']:
-                if ((same_tag_str(photo, sband, 'band') and
-                     same_tag_str(photo, u_time, 'u_time') and
-                     same_tag_num(photo, time, 'time', canbelist=True) and
-                     same_tag_num(photo, magnitude, 'magnitude') and
-                     (('host' not in photo and not host) or
-                      ('host' in photo and host)) and
-                     same_tag_num(photo, flux, 'flux') and
-                     same_tag_num(photo, unabsorbedflux, 'unabsorbedflux') and
-                     same_tag_num(photo, fluxdensity, 'fluxdensity') and
-                     same_tag_num(photo, counts, 'counts') and
-                     same_tag_num(photo, energy, 'energy', canbelist=True) and
-                     same_tag_num(photo, frequency, 'frequency') and
-                     same_tag_num(photo, photonindex, 'photonindex') and
-                     same_tag_num(photo, e_magnitude, 'e_magnitude') and
-                     same_tag_num(photo, e_lower_time, 'e_lower_time') and
-                     same_tag_num(photo, e_upper_time, 'e_upper_time') and
-                     same_tag_num(photo, e_lower_magnitude,
-                                  'e_lower_magnitude') and
-                     same_tag_num(photo, e_upper_magnitude,
-                                  'e_upper_magnitude') and
-                     same_tag_num(photo, e_flux, 'e_flux') and
-                     same_tag_num(photo, e_unabsorbedflux,
-                                  'e_unabsorbedflux') and
-                     same_tag_num(photo, e_fluxdensity, 'e_fluxdensity') and
-                     same_tag_num(photo, e_counts, 'e_counts') and
-                     same_tag_str(photo, u_flux, 'u_flux') and
-                     same_tag_str(photo, u_fluxdensity, 'u_fluxdensity') and
-                     same_tag_str(photo, u_frequency, 'u_frequency') and
-                     same_tag_str(photo, u_energy, 'u_energy') and
-                     same_tag_num(photo, u_flux, 'u_flux') and
-                     same_tag_num(photo, u_fluxdensity, 'u_fluxdensity') and
-                     same_tag_num(photo, u_frequency, 'u_frequency') and
-                     same_tag_num(photo, u_energy, 'u_energy') and
-                     same_tag_str(photo, ssystem, 'system'))):
-                    return
-
-        photoentry = OrderedDict()
-        if time:
-            photoentry['time'] = time if isinstance(
-                time, list) or isinstance(time, str) else str(time)
-        if e_time:
-            photoentry['e_time'] = str(e_time)
-        if e_lower_time:
-            photoentry['e_lower_time'] = str(e_lower_time)
-        if e_upper_time:
-            photoentry['e_upper_time'] = str(e_upper_time)
-        if u_time:
-            photoentry['u_time'] = u_time
-        if sband:
-            photoentry['band'] = sband
-        if ssystem:
-            photoentry['system'] = ssystem
-        if magnitude:
-            photoentry['magnitude'] = str(magnitude)
-        if e_magnitude:
-            photoentry['e_magnitude'] = str(e_magnitude)
-        if e_lower_magnitude:
-            photoentry['e_lower_magnitude'] = str(e_lower_magnitude)
-        if e_upper_magnitude:
-            photoentry['e_upper_magnitude'] = str(e_upper_magnitude)
-        if frequency:
-            photoentry['frequency'] = (frequency if isinstance(
-                frequency, list) or isinstance(frequency, str) else
-                str(frequency))
-        if u_frequency:
-            photoentry['u_frequency'] = u_frequency
-        if energy:
-            photoentry['energy'] = energy if isinstance(
-                energy, list) or isinstance(energy, str) else str(energy)
-        if u_energy:
-            photoentry['u_energy'] = u_energy
-        if flux:
-            photoentry['flux'] = str(flux)
-        if e_flux:
-            photoentry['e_flux'] = str(e_flux)
-        if unabsorbedflux:
-            photoentry['unabsorbedflux'] = str(unabsorbedflux)
-        if e_unabsorbedflux:
-            photoentry['e_unabsorbedflux'] = str(e_unabsorbedflux)
-        if u_flux:
-            photoentry['u_flux'] = str(u_flux)
-        if photonindex:
-            photoentry['photonindex'] = str(photonindex)
-        if fluxdensity:
-            photoentry['fluxdensity'] = str(fluxdensity)
-        if e_fluxdensity:
-            photoentry['e_fluxdensity'] = str(e_fluxdensity)
-        if u_fluxdensity:
-            photoentry['u_fluxdensity'] = str(u_fluxdensity)
-        if counts:
-            photoentry['counts'] = str(counts)
-        if e_counts:
-            photoentry['e_counts'] = str(e_counts)
-        if upperlimit:
-            photoentry['upperlimit'] = upperlimit
-        if host:
-            photoentry['host'] = host
-        if includeshost:
-            photoentry['includeshost'] = includeshost
-        if kcorrected:
-            photoentry['kcorrected'] = kcorrected
-        if scorrected:
-            photoentry['scorrected'] = scorrected
-        if mcorrected:
-            photoentry['mcorrected'] = mcorrected
-        if observer:
-            photoentry['observer'] = observer
-        if survey:
-            photoentry['survey'] = survey
-        if observatory:
-            photoentry['observatory'] = observatory
-        if stelescope:
-            photoentry['telescope'] = stelescope
-        if sinstrument:
-            photoentry['instrument'] = sinstrument
-        if nhmw:
-            photoentry['nhmw'] = nhmw
-        if source:
-            photoentry['source'] = source
-        self.setdefault('photometry', []).append(photoentry)
+        self.setdefault(self._KEYS.PHOTOMETRY, []).append(photo_entry)
+        '''
         return
 
     def add_spectrum(self, **kwargs):
-        try:
-            spectrum_obj = Spectrum(**kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_quantity`: Error: '{}'".format(
-                self.name, str(err)))
-
-        if self.is_erroneous(KEYS.SPECTRA, self[QUANTITY.SOURCE]):
-            pass
-
-        for item in self[KEYS.SPECTRA]:
-            if spectrum_obj.is_duplicate_of(item):
-                pass
-
-        self.setdefault(KEYS.SPECTRA, []).append(spectrum_obj)
+        self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         return
 
     def _add_spectrum(self, waveunit, fluxunit, wavelengths="", fluxes="",

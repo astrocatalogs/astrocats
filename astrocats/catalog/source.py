@@ -28,3 +28,9 @@ class Source(CatDict):
             [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME],
             [SOURCE.ALIAS]
         ]
+        return
+
+    def append_sources_from(self, other):
+        """`CatDict.append_sources_from` should never be called in `Source`.
+        """
+        raise RuntimeError("`Source.append_sources_from` called.")
