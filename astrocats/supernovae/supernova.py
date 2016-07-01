@@ -22,8 +22,8 @@ from cdecimal import Decimal
 
 
 class KEYS(BASEKEYS):
-    CLAIMED_TYPE = self._KEYS.CLAIMED_TYPE
-    DISCOVERY_DATE = self._KEYS.DISCOVER_DATE
+    CLAIMED_TYPE = 'clamedtype'
+    DISCOVERY_DATE = 'discoverdate'
     ERRORS = 'errors'
 
 
