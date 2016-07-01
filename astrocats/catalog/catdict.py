@@ -117,7 +117,8 @@ class CatDict(OrderedDict):
         """
         for req_any in self.REQ_KEY_TYPES:
             if not any([req_key in self for req_key in req_any]):
-                err_str = ("'{}' Requires one or more of: ".format(self._name) +
+                err_str = ("'{}' Requires one or more of: "
+                           .format(self._name) +
                            ",".join("'{}'".format(rk) for rk in req_any))
                 self._log.error(err_str)
                 raise ValueError(err_str)

@@ -10,6 +10,7 @@ class SOURCE(KeyCollection):
     BIBCODE = Key('bibcode', KEY_TYPES.STRING)
     URL = Key('url', KEY_TYPES.STRING, compare=False)
     ACKNOWLEDGMENT = Key('acknowledgment', KEY_TYPES.STRING, compare=False)
+    REFERENCE = Key('reference', KEY_TYPES.STRING, compare=False)
     # Numbers
     ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
     # Booleans
