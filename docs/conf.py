@@ -27,25 +27,6 @@ sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 sys.path.append(os.path.join(os.path.dirname(__name__), '..'))
 
-
-def run_apidoc(_):
-    modules = ['../astrocats']
-    for module in modules:
-        cur_dir = os.path.abspath(os.path.dirname(__file__))
-        output_path = os.path.join(cur_dir, module, 'doc')
-        cmd_path = 'sphinx-apidoc'
-        # Check to see if we are in a virtualenv
-        if hasattr(sys, 'real_prefix'):
-            # If we are, assemble the path manually
-            cmd_path = os.path.abspath(os.path.join(
-                sys.prefix, 'bin', 'sphinx-apidoc'))
-        subprocess.check_call(
-            [cmd_path, '-e', '-o', output_path, module, '--force'])
-
-
-def setup(app):
-    app.connect('builder-inited', run_apidoc)
-
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -364,3 +345,22 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #
 # texinfo_no_detailmenu = False
+
+
+def run_apidoc(_):
+    modules = ['../astrocats']
+    for module in modules:
+        cur_dir = os.path.abspath(os.path.dirname(__file__))
+        output_path = os.path.join(cur_dir, module, 'doc')
+        cmd_path = 'sphinx-apidoc'
+        # Check to see if we are in a virtualenv
+        if hasattr(sys, 'real_prefix'):
+            # If we are, assemble the path manually
+            cmd_path = os.path.abspath(os.path.join(
+                sys.prefix, 'bin', 'sphinx-apidoc'))
+        subprocess.check_call(
+            [cmd_path, '-e', '-o', output_path, module, '--force'])
+
+
+def setup(app):
+    app.connect('builder-inited', run_apidoc)
