@@ -11,7 +11,7 @@ from astrocats.catalog.entry import Entry
 from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.source import SOURCE
-from astrocats.catalog.source import SPECTRUM
+from astrocats.catalog.spectrum import SPECTRUM
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, uniq_cdl)
