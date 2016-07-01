@@ -3,10 +3,10 @@
 import codecs
 import json
 import os
-import warnings
+import sys
 from collections import OrderedDict
 
-from .utils import get_event_filename
+from .utils import dict_to_pretty_string, get_event_filename
 from astrocats.catalog.source import Source
 
 
@@ -100,15 +100,14 @@ class Entry(OrderedDict):
         return new_entry
 
     def __repr__(self):
-        jsonstring = json.dumps({self[KEYS.NAME]: self},
-                                indent='\t', separators=(',', ':'),
-                                ensure_ascii=False)
+        jsonstring = dict_to_pretty_string({self[KEYS.NAME]: self})
         return jsonstring
 
     def _load_data_from_json(self, fhand):
         """FIX: check for overwrite??
         """
-        self.catalog.log.debug("_load_data_from_json()")
+        log = self.catalog.log
+        log.debug("_load_data_from_json(): {}".format(self.name()))
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
 
@@ -117,16 +116,22 @@ class Entry(OrderedDict):
                 raise ValueError("json file '{}' has multiple keys: {}".format(
                     fhand, list(name)))
             name = name[0]
+            # Remove the outmost dict level
             data = data[name]
+            log.debug("Name: {}".format(name))
 
-            # TEMPORARY FIX, NEEDS CLEANUP
-            if 'sources' in data:
-                newsources = []
-                for source in data['sources']:
-                    newsources.append(Source(self, **source))
-                data['sources'] = newsources
+            # Convert the OrderedDict data from json into class structure
+            #    i.e. `Sources` will be extracted and created from the dict
+            #    Everything that remains afterwards should be okay to just store
+            #    to this `Entry`
+            self._convert_odict_to_classes(data)
+            if len(data):
+                log.debug(
+                    "Adding remaining dictionary entries to self:\n{}".format(
+                        dict_to_pretty_string(data)))
+                self.update(data)
 
-            self.update(data)
+        # Store the filename this was loaded from
         self.filename = fhand
         # If object doesnt have a name yet, but json does, store it
         self_name = self[KEYS.NAME]
@@ -134,12 +139,46 @@ class Entry(OrderedDict):
             self[KEYS.NAME] = name
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
-            warnings.warn(("Object name '{}' does not match name in json:"
-                           "'{}'").format(
-                self_name, name))
+            log.warning("Object name '{}' does not match name in json:"
+                        "'{}'".format(self_name, name))
 
         self.check()
+        sys.exit(5)
         return
+
+    def _convert_odict_to_classes(self, data):
+        """
+        """
+        log = self.catalog.log
+        log.debug("_convert_odict_to_classes(): {}".format(self.name()))
+        log.warning("This should be a temporary fix.  Dont be lazy.")
+        print("\n\n" + dict_to_pretty_string(data) + "\n\n")
+
+        # Handle 'sources'
+        # ----------------
+        src_key = self._KEYS.SOURCES
+        if 'sources' in data:
+            # Remove from `data`
+            sources = data.pop('sources')
+            log.debug("Found {} '{}' entries".format(len(sources), src_key))
+
+            newsources = []
+            for src in sources:
+                newsources.append(Source(self, **src))
+            data['sources'] = newsources
+
+        # Handle `photometry`
+        # -------------------
+        photo_key = self._KEYS.PHOTOMETRY
+        if photo_key in data:
+            photoms = data.pop(photo_key)
+            log.debug("Found {} '{}' entries".format(len(photoms, photo_key)))
+            new_photoms = []
+            for photo in photoms:
+                new_photoms.append(Photometry())
+
+        return
+
 
     def save(self, empty=False, bury=False, gz=False, final=False):
         """Write entry to JSON file in the proper location
@@ -253,3 +292,9 @@ class Entry(OrderedDict):
 
         self.setdefault(key_in_self, []).append(new_entry)
         return
+
+    def name(self):
+        try:
+            return self[self._KEYS.NAME]
+        except KeyError:
+            return None
