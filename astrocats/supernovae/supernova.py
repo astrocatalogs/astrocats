@@ -649,90 +649,36 @@ class Supernova(Entry):
         return
 
     def add_spectrum(self, **kwargs):
-        self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
-        return
+        # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
+        # Make sure that a source is given
+        source = kwargs.get(self._KEYS.SOURCE, None)
+        if source is None:
+            raise ValueError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]))
 
-    def _add_spectrum(self, waveunit, fluxunit, wavelengths="", fluxes="",
-                      u_time="", time="", instrument="", deredshifted="",
-                      dereddened="", errorunit="", errors="", source="",
-                      snr="", telescope="", observer="", survey="", reducer="",
-                      filename="", observatory="", data=""):
-
-        if self.is_erroneous('spectra', source):
+        # If this source/data is erroneous, skip it
+        if self.is_erroneous(self._KEYS.SPECTRA, source):
             return
 
-        spectrumentry = OrderedDict()
-
-        if 'spectra' in self:
-            for si, spectrum in enumerate(self['spectra']):
-                if 'filename' in spectrum and spectrum['filename'] == filename:
-                    # Copy exclude info
-                    if 'exclude' in spectrum:
-                        spectrumentry['exclude'] = spectrum['exclude']
-                    # Don't add duplicate spectra
-                    if 'data' in spectrum:
-                        return
-                    del self['spectra'][si]
-                    break
-
-        if not waveunit:
-            warnings.warn('No error unit specified, not adding spectrum.')
-            return
-        if not fluxunit:
-            warnings.warn('No flux unit specified, not adding spectrum.')
+        try:
+            new_spectrum = Spectrum(self, **kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
+                self.name, self._KEYS.SPECTRA, str(err)))
             return
 
-        if not data or (not wavelengths or not fluxes):
-            ValueError(
-                "Spectrum must have wavelengths and fluxes set, or data set.")
+        num_spec = len(self[self._KEYS.SPECTRA])
+        for si in range(num_spec):
+            item = self[self._KEYS.SPECTRA][si]
+            # Only the `filename` should be compared for duplicates
+            #    If a duplicate is found, that means the previous `exclude`
+            #    array should be saved to the new object, and the old deleted
+            if new_entry.is_duplicate_of(item):
+                new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
+                del self[self._KEYS.SPECTRA][si]
+                break
 
-        if not source:
-            ValueError('Spectrum must have source before being added!')
-
-        if deredshifted != '':
-            spectrumentry['deredshifted'] = deredshifted
-        if dereddened != '':
-            spectrumentry['dereddened'] = dereddened
-        if instrument:
-            spectrumentry['instrument'] = instrument
-        if telescope:
-            spectrumentry['telescope'] = telescope
-        if observatory:
-            spectrumentry['observatory'] = observatory
-        if u_time:
-            spectrumentry['u_time'] = u_time
-        if time:
-            spectrumentry['time'] = time
-        if snr:
-            spectrumentry['snr'] = snr
-        if observer:
-            spectrumentry['observer'] = observer
-        if reducer:
-            spectrumentry['reducer'] = reducer
-        if survey:
-            spectrumentry['survey'] = survey
-        if filename:
-            spectrumentry['filename'] = filename
-
-        spectrumentry['waveunit'] = waveunit
-        spectrumentry['fluxunit'] = fluxunit
-        if data:
-            spectrumentry['data'] = data
-        else:
-            if errors and max([float(x) for x in errors]) > 0.:
-                if not errorunit:
-                    warnings.warn(
-                        'No error unit specified, not adding spectrum.')
-                    return
-                spectrumentry['errorunit'] = errorunit
-                data = [trim_str_arr(wavelengths), trim_str_arr(
-                    fluxes), trim_str_arr(errors)]
-            else:
-                data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
-            spectrumentry['data'] = [list(i) for i in zip(*data)]
-        if source:
-            spectrumentry['source'] = source
-        self.setdefault('spectra', []).append(spectrumentry)
+        self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
         return
 
     def _get_max_light(self):
