@@ -11,7 +11,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   astrocats
+.. automodule:: astrocats
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Indices and tables
 ==================
