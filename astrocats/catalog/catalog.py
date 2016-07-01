@@ -304,7 +304,6 @@ class Catalog:
             Name of matching entry found in `entries`, or new entry added to
             `entries`
         """
-        self.log.debug("catalog.add_entry()")
         newname = name_clean(name)
         # If entry already exists, return
         if newname in self.entries:
@@ -385,7 +384,6 @@ class Catalog:
         name of matching entry (str) or 'None' if no matches
 
         """
-        self.log.debug("find_entry_name_of_alias()")
         for name, entry in entries.items():
             aliases = entry.get_aliases()
             if alias in aliases:
@@ -400,7 +398,6 @@ class Catalog:
 
         Used by `merge_duplicates`
         """
-        self.log.debug("Events.copy_to_entry()")
         self.log.info("Copy '{}' to '{}'".format(fromname, destname))
         newsourcealiases = {}
         keys = list(sorted(self.entries[fromname].keys(),
@@ -488,7 +485,6 @@ class Catalog:
     def new_entry(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary=False, acknowledgment=''):
-        self.log.debug("new_entry()")
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(
             bibcode=bibcode, srcname=srcname, reference=reference, url=url,
@@ -503,7 +499,6 @@ class Catalog:
         for duplicates in name or alias.  If a duplicate is found, they are
         merged and written to file.
         """
-        self.log.debug("Events.merge_duplicates()")
         if len(self.entries) == 0:
             self.log.error("WARNING: `entries` is empty, loading stubs")
             if self.args.update:
@@ -581,8 +576,6 @@ class Catalog:
 
         FIX: create function to match SN####AA type names.
         """
-        self.log.debug("Events.set_preferred_names()")
-
         if len(self.entries) == 0:
             self.log.error("WARNING: `entries` is empty, loading stubs")
             self.load_stubs()
@@ -679,7 +672,6 @@ class Catalog:
     def load_stubs(self):
         """
         """
-        self.log.debug("load_stubs()")
         currenttask = 'Loading entry stubs'
         files = self.PATHS.get_repo_output_file_list()
         for fi in pbar(files, currenttask):
@@ -707,7 +699,6 @@ class Catalog:
     def _delete_entry_file(self, entry_name=None, entry=None):
         """Delete the file associated with the given entry.
         """
-        self.log.debug("_delete_entry_file()")
         if entry_name is None and entry is None:
             raise RuntimeError("Either `entry_name` or `entry` must be given.")
         elif entry_name is not None and entry is not None:
@@ -746,9 +737,6 @@ class Catalog:
         -   If ``clear == True``, then each element of `entries` is deleted,
             and a `stubs` entry is added
         """
-        self.log.debug("Events.journal_entries()")
-        # FIX: store this somewhere instead of re-loading each time
-
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
         # dict

@@ -371,7 +371,6 @@ class Entry(OrderedDict):
         # Compare this new entry with all previous entries to make sure is new
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
-                self._log.debug("Duplicate found, appending sources")
                 item.append_sources_from(new_entry)
                 # Return the entry in case we want to use any additional tags
                 # to augment the old entry
