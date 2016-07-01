@@ -74,14 +74,16 @@ class Supernova(Entry):
         except ValueError as err:
             self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
                 self.name, str(err)))
-            return
+            return None
 
         for item in self.get(self._KEYS.SOURCES, ''):
             if source_obj.is_duplicate_of(item):
-                return
+                return item[item._KEYS.ALIAS]
+
+        source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return
+        return source_obj[source_obj._KEYS.ALIAS]
 
     def _add_source(self, srcname='', bibcode='', **src_kwargs):
         """Add a new source to this entry's KEYS.SOURCES list.
@@ -152,8 +154,9 @@ class Supernova(Entry):
         self.setdefault(KEYS.SOURCES, []).append(new_src)
         return source_alias
 
-    def add_quantity(self, quantity, **kwargs):
-        self._add_cat_dict(self, Quantity, quantity, **kwargs)
+    def add_quantity(self, quantity, value, sources, **kwargs):
+        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
+        self._add_cat_dict(Quantity, quantity, **kwargs)
         return
 
     def _add_quantity(self, quantity, value, sources,
@@ -645,7 +648,7 @@ class Supernova(Entry):
         return
 
     def add_photometry(self, **kwargs):
-        self._add_cat_dict(self, Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
     def add_spectrum(self, **kwargs):

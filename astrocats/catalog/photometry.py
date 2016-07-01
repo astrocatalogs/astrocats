@@ -5,7 +5,8 @@ from random import seed, shuffle
 
 from palettable import colorbrewer, cubehelix, wesanderson
 
-from .key import Key, KEY_TYPES, KeyCollection
+from astrocats.catalog.key import Key, KEY_TYPES, KeyCollection
+from astrocats.catalog.catdict import CatDict
 
 
 class PHOTOMETRY(KeyCollection):
@@ -56,7 +57,7 @@ class PHOTOMETRY(KeyCollection):
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL)
 
 
-class Photometry(OrderedDict):
+class Photometry(CatDict):
     """
     """
 
@@ -116,7 +117,7 @@ class Photometry(OrderedDict):
                     self._KEYS.FLUX, self._KEYS.U_FLUX)
             elif has_flux_dens and not has_u_flux_dens:
                 err_str = "`{}` provided without `{}`.".format(
-                    self._KEYS.FLUX_DENS, self._KEYS.U_FLUX_DENS)
+                    self._KEYS.FLUX_DENSITY, self._KEYS.U_FLUX_DENSITY)
 
         if err_str is not None:
             raise ValueError(err_str)

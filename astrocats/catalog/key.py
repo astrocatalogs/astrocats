@@ -45,10 +45,10 @@ class Key(str):
         for key, val in kwargs.items():
             setattr(self, key, val)
 
-    def __repr__(self):
-        retval = "Key(name={}, type={}, listable={}, compare={})".format(
-            self.name, self.key, self.listable, self.compare)
-        return retval
+    # def __repr__(self):
+    #     retval = "Key(name={}, type={}, listable={}, compare={})".format(
+    #         self.name, self.type, self.listable, self.compare)
+    #     return retval
 
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
