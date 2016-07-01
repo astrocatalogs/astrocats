@@ -61,6 +61,7 @@ class Entry(OrderedDict):
 
     @classmethod
     def init_from_file(cls, catalog, name=None, path=None, clean=False):
+        catalog.log.debug("init_from_file()")
         if name is None and path is None:
             raise ValueError("Either entry `name` or `path` must be specified "
                              "to load entry.")
@@ -106,6 +107,7 @@ class Entry(OrderedDict):
     def _load_data_from_json(self, fhand):
         """FIX: check for overwrite??
         """
+        self.catalog.log.debug("_load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -211,6 +213,7 @@ class Entry(OrderedDict):
         return filetext
 
     def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        self.catalog.log.debug("_add_cat_dict()")
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
@@ -219,6 +222,7 @@ class Entry(OrderedDict):
 
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
+            self.catalog.log.info("This source is erroneous, skipping")
             return
 
         try:
@@ -230,6 +234,7 @@ class Entry(OrderedDict):
 
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
+                self.catalog.log.debug("Duplicate found, appending sources")
                 item.append_sources_from(new_entry)
                 return
 

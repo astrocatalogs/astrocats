@@ -385,6 +385,7 @@ class Catalog:
         name of matching entry (str) or 'None' if no matches
 
         """
+        self.log.debug("find_entry_name_of_alias()")
         for name, entry in entries.items():
             aliases = entry.get_aliases()
             if alias in aliases:
@@ -487,6 +488,7 @@ class Catalog:
     def new_entry(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
                   bibcode='', secondary='', acknowledgment=''):
+        self.log.debug("new_entry()")
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(
             bibcode=bibcode, srcname=srcname, reference=reference, url=url,
@@ -677,6 +679,7 @@ class Catalog:
     def load_stubs(self):
         """
         """
+        self.log.debug("load_stubs()")
         currenttask = 'Loading entry stubs'
         files = self.PATHS.get_repo_output_file_list()
         for fi in pbar(files, currenttask):
@@ -704,6 +707,7 @@ class Catalog:
     def _delete_entry_file(self, entry_name=None, entry=None):
         """Delete the file associated with the given entry.
         """
+        self.log.debug("_delete_entry_file()")
         if entry_name is None and entry is None:
             raise RuntimeError("Either `entry_name` or `entry` must be given.")
         elif entry_name is not None and entry is not None:

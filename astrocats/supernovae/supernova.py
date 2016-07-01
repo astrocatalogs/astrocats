@@ -69,6 +69,7 @@ class Supernova(Entry):
         return
 
     def add_source(self, **kwargs):
+        self.catalog.log.debug("add_source()")
         try:
             source_obj = Source(self, **kwargs)
         except ValueError as err:
@@ -155,6 +156,7 @@ class Supernova(Entry):
         return source_alias
 
     def add_quantity(self, quantity, value, sources, **kwargs):
+        self.catalog.log.debug("add_quantity()")
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
         self._add_cat_dict(Quantity, quantity, **kwargs)
         return
@@ -366,6 +368,7 @@ class Supernova(Entry):
         return False
 
     def check(self):
+        self.catalog.log.debug("check()")
         # Make sure there is a schema key in dict
         if KEYS.SCHEMA not in self.keys():
             self[KEYS.SCHEMA] = self.catalog.SCHEMA.URL
@@ -648,10 +651,12 @@ class Supernova(Entry):
         return
 
     def add_photometry(self, **kwargs):
+        self.catalog.log.debug("add_photometry()")
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
     def add_spectrum(self, **kwargs):
+        self.catalog.log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
         source = kwargs.get(self._KEYS.SOURCE, None)
