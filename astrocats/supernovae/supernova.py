@@ -8,21 +8,13 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.photometry import (PHOTOMETRY, Photometry, bandmetaf,
-                                          bandrepf)
-from astrocats.catalog.quantity import QUANTITY, Quantity
-from astrocats.catalog.source import SOURCE, Source
-from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-from astrocats.catalog.error import ERROR, Error
+from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
-                                     make_date_string, pretty_num, tprint,
-                                     trim_str_arr, uniq_cdl)
-from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
-                                            REPR_BETTER_QUANTITY)
+                                     make_date_string, pretty_num, uniq_cdl)
+from astrocats.supernovae.constants import MAX_BANDS, PREF_KINDS
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
-                                        radec_clean, same_tag_num,
-                                        same_tag_str)
+                                        radec_clean)
 from cdecimal import Decimal
 
 
@@ -68,24 +60,6 @@ class Supernova(Entry):
             self._source_syns = json.loads(
                 f.read(), object_pairs_hook=OrderedDict)
         return
-
-    def add_source(self, **kwargs):
-        self.catalog.log.debug("add_source()")
-        try:
-            source_obj = Source(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
-                self.name, str(err)))
-            return None
-
-        for item in self.get(self._KEYS.SOURCES, ''):
-            if source_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
-
-        source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
-
-        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[source_obj._KEYS.ALIAS]
 
     def _add_source(self, srcname='', bibcode='', **src_kwargs):
         """Add a new source to this entry's KEYS.SOURCES list.
@@ -156,203 +130,164 @@ class Supernova(Entry):
         self.setdefault(KEYS.SOURCES, []).append(new_src)
         return source_alias
 
-    def add_quantity(self, quantity, value, sources, **kwargs):
-        self.catalog.log.debug("add_quantity()")
-        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
-        return
+    def _append_additional_tags(self, name, sources, quantity):
+        # Should be called if two objects are found to be duplicates but are
+        # not bit-for-bit identical
+        svalue = quantity[QUANTITY.VALUE]
+        serror = quantity[QUANTITY.ERROR]
+        sprob = quantity[QUANTITY.PROB]
+        skind = quantity[QUANTITY.KIND]
 
-    def add_error(self, quantity, value, **kwargs):
-        kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
-        return
+        for ii, ct in enumerate(self[name]):
+            if ct[QUANTITY.VALUE] == svalue and sources:
+                if (QUANTITY.KIND in ct and skind and
+                        ct[QUANTITY.KIND] != skind):
+                    return
+                for source in sources.split(','):
+                    if (source not in
+                            self[name][ii][QUANTITY.SOURCE].split(',')):
+                        self[name][ii][QUANTITY.SOURCE] += ',' + source
+                        if serror and quantity.ERROR not in self[name][ii]:
+                            self[name][ii][QUANTITY.ERROR] = serror
+                        if sprob and QUANTITY.PROB not in self[name][ii]:
+                            self[name][ii][QUANTITY.PROB] = sprob
+                return
 
-    def _add_quantity(self, quantity, value, sources,
-                      forcereplacebetter=False, derived='',
-                      lowerlimit='', upperlimit='', error='', unit='',
-                      kind='', extra='', probability=''):
-        """
-        """
-        # if not quantity:
-        #     raise ValueError(self[KEYS.NAME] +
-        #                      "'s quantity must be specified for "
-        #                      "add_quantity.")
-        # if not sources:
-        #     raise ValueError(self[KEYS.NAME] +
-        #                      "'s source must be specified for "
-        #                      "quantity " +
-        #                      quantity + ' before it is added.')
-        # if ((not isinstance(value, str) and
-        #      (not isinstance(value, list) or not isinstance(value[0], str)))):
-        #     raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
-        #                      " must be a string or an array of strings.")
+    def _clean_quantity(self, quantity):
+        value = quantity.get(QUANTITY.VALUE, '')
+        error = quantity.get(QUANTITY.ERROR, '')
+        unit = quantity.get(QUANTITY.UNIT, '')
+        kind = quantity.get(QUANTITY.KIND, '')
+        name = quantity._name
 
-        # if self.is_erroneous(quantity, sources):
-        #     return None
-
-        # my_quantity_list = self.get(quantity, [])
-        #
-        # svalue = value.strip()
-        # serror = error.strip()
-        # skind = kind.strip()
-        # sprob = probability.strip()
-        sunit = ''
-
-        if not svalue or svalue == '--' or svalue == '-':
+        if not quantity[QUANTITY.VALUE] or value == '--' or value == '-':
             return
-        if serror and (not is_number(serror) or float(serror) < 0):
-            raise ValueError(self[KEYS.NAME] + "'s quanta " + quantity +
+        if error and (not is_number(error) or float(error) < 0):
+            raise ValueError(self.parent[self.parent._KEYS.NAME] +
+                             "'s quanta " + name +
                              ' error value must be a number and positive.')
 
         # Set default units
-        if not unit and quantity == 'velocity':
+        if not unit and name == 'velocity':
             unit = 'KM/s'
-        if not unit and quantity == 'ra':
+        if not unit and name == 'ra':
             unit = 'hours'
-        if not unit and quantity == 'dec':
+        if not unit and name == 'dec':
             unit = 'degrees'
-        if not unit and quantity in ['lumdist', 'comovingdist']:
+        if not unit and name in ['lumdist', 'comovingdist']:
             unit = 'Mpc'
 
-        # Handle certain quantity
-        if quantity == 'alias':
-            svalue = name_clean(svalue)
-            for df in self.get(KEYS.DISTINCT_FROM, []):
-                if svalue == df['value']:
+        # Handle certain name
+        if name == 'alias':
+            value = name_clean(value)
+            for df in quantity.get(KEYS.DISTINCT_FROM, []):
+                if value == df['value']:
                     return
 
-        if quantity in ['velocity', 'redshift', 'ebv', 'lumdist',
-                        'comovingdist']:
-            if not is_number(svalue):
+        if name in ['velocity', 'redshift', 'ebv', 'lumdist',
+                    'comovingdist']:
+            if not is_number(value):
                 return
-        if quantity == 'host':
-            if is_number(svalue):
+        if name == 'host':
+            if is_number(value):
                 return
-            if svalue.lower() in ['anonymous', 'anon.', 'anon',
-                                  'intergalactic']:
+            if value.lower() in ['anonymous', 'anon.', 'anon',
+                                 'intergalactic']:
                 return
-            svalue = host_clean(svalue)
-            if ((not skind and ((svalue.lower().startswith('abell') and
-                                 is_number(svalue[5:].strip())) or
-                                'cluster' in svalue.lower()))):
-                skind = 'cluster'
-        elif quantity == KEYS.CLAIMED_TYPE:
+            value = host_clean(value)
+            if ((not kind and ((value.lower().startswith('abell') and
+                                is_number(value[5:].strip())) or
+                               'cluster' in value.lower()))):
+                kind = 'cluster'
+        elif name == KEYS.CLAIMED_TYPE:
             isq = False
-            svalue = svalue.replace('young', '')
-            if svalue.lower() in ['unknown', 'unk', '?', '-']:
+            value = value.replace('young', '')
+            if value.lower() in ['unknown', 'unk', '?', '-']:
                 return
-            if '?' in svalue:
+            if '?' in value:
                 isq = True
-                svalue = svalue.strip(' ?')
-            for rep in self._source_syns:
-                if svalue in self._source_syns[rep]:
-                    svalue = rep
+                value = value.strip(' ?')
+            for rep in quantity._source_syns:
+                if value in quantity._source_syns[rep]:
+                    value = rep
                     break
             if isq:
-                svalue = svalue + '?'
+                value = value + '?'
 
-        elif quantity in ['ra', 'dec', 'hostra', 'hostdec']:
-            (svalue, sunit) = radec_clean(svalue, quantity, unit=unit)
-        elif quantity == 'maxdate' or quantity == 'discoverdate':
+        elif name in ['ra', 'dec', 'hostra', 'hostdec']:
+            (value, unit) = radec_clean(value, name, unit=unit)
+        elif name == 'maxdate' or name == 'discoverdate':
             # Make sure month and day have leading zeroes
-            sparts = svalue.split('/')
+            sparts = value.split('/')
             if len(sparts[0]) > 4 and int(sparts[0]) > 0:
                 raise ValueError('Date years limited to four digits.')
             if len(sparts) >= 2:
-                svalue = sparts[0] + '/' + sparts[1].zfill(2)
+                value = sparts[0] + '/' + sparts[1].zfill(2)
             if len(sparts) == 3:
-                svalue = svalue + '/' + sparts[2].zfill(2)
+                value = value + '/' + sparts[2].zfill(2)
 
-            for ii, ct in enumerate(my_quantity_list):
-                # Only add dates if they have more information
-                if len(ct['value'].split('/')) > len(svalue.split('/')):
-                    return
+            # for ii, ct in enumerate(self.parent[name]):
+            #     # Only add dates if they have more information
+            #     if len(ct['value'].split('/')) > len(value.split('/')):
+            #         return
 
-        if is_number(svalue):
-            svalue = '%g' % Decimal(svalue)
-        if serror:
-            serror = '%g' % Decimal(serror)
+        if is_number(value):
+            value = '%g' % Decimal(value)
+        if error:
+            error = '%g' % Decimal(error)
 
-        for ii, ct in enumerate(my_quantity_list):
-            if ct['value'] == svalue and sources:
-                if 'kind' in ct and skind and ct['kind'] != skind:
-                    return
-                for source in sources.split(','):
-                    if source not in my_quantity_list[ii]['source'].split(','):
-                        my_quantity_list[ii]['source'] += ',' + source
-                        if serror and 'error' not in my_quantity_list[ii]:
-                            my_quantity_list[ii]['error'] = serror
-                        if sprob and 'probability' not in my_quantity_list[ii]:
-                            my_quantity_list[ii]['probability'] = sprob
-                return
+        quantity[QUANTITY.VALUE] = value
+        quantity[QUANTITY.ERROR] = error
+        quantity[QUANTITY.UNIT] = unit
+        quantity[QUANTITY.KIND] = kind
 
-        if not sunit:
-            sunit = unit
-
-        quanta_entry = OrderedDict()
-        quanta_entry['value'] = svalue
-        if serror:
-            quanta_entry['error'] = serror
-        if sources:
-            quanta_entry['source'] = sources
-        if skind:
-            quanta_entry['kind'] = skind
-        if sprob:
-            quanta_entry['probability'] = sprob
-        if sunit:
-            quanta_entry['unit'] = sunit
-        if lowerlimit:
-            quanta_entry['lowerlimit'] = lowerlimit
-        if upperlimit:
-            quanta_entry['upperlimit'] = upperlimit
-        if derived:
-            quanta_entry['derived'] = derived
-        if extra:
-            quanta_entry['extra'] = extra
-        if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
-                len(my_quantity_list):
-            newquantities = []
-            isworse = True
-            if quantity in ['discoverdate', 'maxdate']:
-                for ct in my_quantity_list:
-                    ctsplit = ct['value'].split('/')
-                    svsplit = svalue.split('/')
-                    if len(ctsplit) < len(svsplit):
-                        isworse = False
-                        continue
-                    elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
-                        val_one = max(2, get_sig_digits(
-                            ctsplit[-1].lstrip('0')))
-                        val_two = max(2, get_sig_digits(
-                            svsplit[-1].lstrip('0')))
-                        if val_one < val_two:
-                            isworse = False
-                            continue
-                    newquantities.append(ct)
-            else:
-                newsig = get_sig_digits(svalue)
-                for ct in my_quantity_list:
-                    if 'error' in ct:
-                        if serror:
-                            if float(serror) < float(ct['error']):
-                                isworse = False
-                                continue
-                        newquantities.append(ct)
-                    else:
-                        if serror:
-                            isworse = False
-                            continue
-                        oldsig = get_sig_digits(ct['value'])
-                        if oldsig >= newsig:
-                            newquantities.append(ct)
-                        if newsig >= oldsig:
-                            isworse = False
-            if not isworse:
-                newquantities.append(quanta_entry)
-            self[quantity] = newquantities
-        else:
-            self.setdefault(quantity, []).append(quanta_entry)
-        return
+    # This needs to be moved to sanitize; currently is not being used but
+    # should be.
+    # def _replace_inferior_quantities(self, quantity, forcereplacebetter):
+    #     my_quantity_list = self.get(quantity, [])
+    #     if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
+    #             len(my_quantity_list):
+    #         newquantities = []
+    #         isworse = True
+    #         if quantity in [QUANTITY.DISCOVER_DATE, QUANTITY.MAX_DATE]:
+    #             for ct in my_quantity_list:
+    #                 ctsplit = ct[QUANTITY.VALUE].split('/')
+    #                 svsplit = quantity[QUANTITY.VALUE].split('/')
+    #                 if len(ctsplit) < len(svsplit):
+    #                     isworse = False
+    #                     continue
+    #                 elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
+    #                     val_one = max(2, get_sig_digits(
+    #                         ctsplit[-1].lstrip('0')))
+    #                     val_two = max(2, get_sig_digits(
+    #                         svsplit[-1].lstrip('0')))
+    #                     if val_one < val_two:
+    #                         isworse = False
+    #                         continue
+    #                 newquantities.append(ct)
+    #         else:
+    #             newsig = get_sig_digits(quantity[QUANTITY.VALUE])
+    #             for ct in my_quantity_list:
+    #                 if 'error' in ct:
+    #                     if quantity[QUANTITY.ERROR]:
+    #                         if (float(quantity[QUANTITY.ERROR]) <
+    #                             float(ct[QUANTITY.ERROR])):
+    #                             isworse = False
+    #                             continue
+    #                     newquantities.append(ct)
+    #                 else:
+    #                     if quantity[QUANTITY.ERROR]:
+    #                         isworse = False
+    #                         continue
+    #                     oldsig = get_sig_digits(ct['value'])
+    #                     if oldsig >= newsig:
+    #                         newquantities.append(ct)
+    #                     if newsig >= oldsig:
+    #                         isworse = False
+    #         self[quantity] = newquantities
+    #     else:
+    #         self.setdefault(quantity, []).append(quanta_entry)
+    #     return
 
     def is_erroneous(self, field, sources):
         if hasattr(self, KEYS.ERRORS):
@@ -372,6 +307,9 @@ class Supernova(Entry):
                     return True
 
         return False
+
+    def clean_entry_name(name):
+        return name_clean(name)
 
     def check(self):
         self.catalog.log.debug("check()")
@@ -519,14 +457,6 @@ class Supernova(Entry):
         if 'claimedtype' in self:
             self['claimedtype'] = self.ct_list_prioritized()
 
-    def get_source_by_alias(self, alias):
-        for source in self.get(KEYS.SOURCES, []):
-            if source['alias'] == alias:
-                return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(
-                self[KEYS.NAME], alias))
-
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
         if not srcname:
@@ -667,45 +597,6 @@ class Supernova(Entry):
                         data[key][qi]['source'] = source
 
         return data
-
-    def add_photometry(self, **kwargs):
-        self.catalog.log.debug("add_photometry()")
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
-        return
-
-    def add_spectrum(self, **kwargs):
-        self.catalog.log.debug("add_spectrum()")
-        # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
-        # Make sure that a source is given
-        source = kwargs.get(self._KEYS.SOURCE, None)
-        if source is None:
-            raise ValueError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]))
-
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(self._KEYS.SPECTRA, source):
-            return
-
-        try:
-            new_spectrum = Spectrum(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
-                self.name, self._KEYS.SPECTRA, str(err)))
-            return
-
-        num_spec = len(self[self._KEYS.SPECTRA])
-        for si in range(num_spec):
-            item = self[self._KEYS.SPECTRA][si]
-            # Only the `filename` should be compared for duplicates
-            #    If a duplicate is found, that means the previous `exclude`
-            #    array should be saved to the new object, and the old deleted
-            if new_spectrum.is_duplicate_of(item):
-                new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[self._KEYS.SPECTRA][si]
-                break
-
-        self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
-        return
 
     def _get_max_light(self):
         if 'photometry' not in self:

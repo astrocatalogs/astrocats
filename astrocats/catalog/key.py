@@ -32,7 +32,8 @@ class Key(str):
     def __new__(cls, name, type=None, listable=False, compare=True, **kwargs):
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None, listable=False, compare=True, **kwargs):
+    def __init__(self, name, type=None,
+                 listable=False, compare=True, **kwargs):
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
             raise ValueError(

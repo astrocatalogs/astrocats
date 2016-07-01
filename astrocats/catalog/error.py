@@ -7,6 +7,7 @@ from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 class ERROR(KeyCollection):
     # Any
     VALUE = Key('value')
+    EXTRA = Key('extra')
     # Numeric
     ERROR = Key('error', KEY_TYPES.NUMERIC)
     # Booleans
