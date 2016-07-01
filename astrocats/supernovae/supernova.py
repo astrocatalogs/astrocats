@@ -323,6 +323,7 @@ class Supernova(Entry):
         return
 
     def _get_save_path(self, bury=False):
+        self._log.debug("_get_save_path(): {}".format(self.name()))
         filename = get_event_filename(self[KEYS.NAME])
 
         # Put non-SNe in the boneyard
@@ -335,8 +336,8 @@ class Supernova(Entry):
             if KEYS.DISCOVERY_DATE in self.keys():
                 repo_years = self.catalog.PATHS.get_repo_years()
                 for r, year in enumerate(repo_years):
-                    if int(self[KEYS.DISCOVERY_DATE][0]['value'].
-                           split('/')[0]) <= year:
+                    dyr = self[KEYS.DISCOVERY_DATE][0]['value'].split('/')[0]
+                    if int(dyr) <= year:
                         outdir = repo_folders[r]
                         break
             else:
