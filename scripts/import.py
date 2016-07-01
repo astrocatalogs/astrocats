@@ -5179,7 +5179,10 @@ for task in tasks:
                 lines = html2.splitlines()
                 for line in lines:
                     if 'javascript:showx' in line:
-                        mjdstr = re.search("showx\('(.*?)'\)", line).group(1).split('(')[0].strip()
+                        search = re.search("showx\('(.*?)'\)", line)
+                        if not search:
+                            continue
+                        mjdstr = search.group(1).split('(')[0].strip()
                         if not is_number(mjdstr):
                             continue
                         mjd = str(Decimal(mjdstr) + Decimal(53249.0))
@@ -5189,6 +5192,8 @@ for task in tasks:
                         mag = re.search("showy\('(.*?)'\)", line).group(1)
                     if 'javascript:showz' in line:
                         err = re.search("showz\('(.*?)'\)", line).group(1)
+                    if not is_number(mag) or (err and not is_number(err)):
+                        continue
                     add_photometry(name, time = mjd, band = 'C', magnitude = mag, source = source, includeshost = True,
                         telescope = 'Catalina Schmidt', e_magnitude = err if float(err) > 0.0 else '', upperlimit = (float(err) == 0.0))
                 if args.update:
