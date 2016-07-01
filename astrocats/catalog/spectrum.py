@@ -56,8 +56,9 @@ class Spectrum(CatDict):
         # Note: `_check()` is called at end of `super().__init__`
         super().__init__(parent, **kwargs)
 
-        # If `data` is not given, construct it from wavelengths, fluxes [errors]
-        #    `errors` is optional, but if given, then `errorunit` is also req'd
+        # If `data` is not given, construct it from wavelengths, fluxes
+        # [errors] `errors` is optional, but if given, then `errorunit` is also
+        # req'd
         if SPECTRUM.DATA not in self:
             errors = self.get(SPECTRUM.ERRORS, None)
             if errors is not None:

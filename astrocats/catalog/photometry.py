@@ -110,7 +110,8 @@ class Photometry(CatDict):
                     "Has `{}` or `{}`".format(
                         self._KEYS.FLUX, self._KEYS.FLUX_DENSITY) +
                     " but None of `{}`, `{}`, `{}`".format(
-                        self._KEYS.FREQUENCY, self._KEYS.BAND, self._KEYS.ENERGY
+                        self._KEYS.FREQUENCY, self._KEYS.BAND,
+                        self._KEYS.ENERGY
                     ))
             elif has_flux and not has_u_flux:
                 err_str = "`{}` provided without `{}`.".format(
