@@ -80,10 +80,9 @@ class Supernova(Entry):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
 
-        source_obj['alias'] = str(len(self[self._KEYS.SOURCES]) + 1)
+        source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        print(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
 
     def _add_source(self, srcname='', bibcode='', **src_kwargs):
