@@ -29,7 +29,7 @@ sys.path.append(os.path.join(os.path.dirname(__name__), '..'))
 
 
 def run_apidoc(_):
-    modules = ['astrocats']
+    modules = ['../astrocats']
     for module in modules:
         cur_dir = os.path.abspath(os.path.dirname(__file__))
         output_path = os.path.join(cur_dir, module, 'doc')
