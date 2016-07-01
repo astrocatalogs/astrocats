@@ -45,12 +45,14 @@ class Spectrum(CatDict):
 
     _KEYS = SPECTRUM
 
-    def __init__(self, parent, **kwargs):
+    def __init__(self, parent, require_data=True, **kwargs):
+        self._require_data = require_data
         self.REQ_KEY_TYPES = [
             [SPECTRUM.SOURCE],
             [SPECTRUM.FLUX_UNIT],
             [SPECTRUM.WAVE_UNIT],
         ]
+
         # FIX: add this back in
         # [SPECTRUM.TIME, SPECTRUM.HOST]
 
@@ -61,20 +63,28 @@ class Spectrum(CatDict):
         # [errors] `errors` is optional, but if given, then `errorunit` is also
         # req'd
         if SPECTRUM.DATA not in self:
-            errors = self.get(SPECTRUM.ERRORS, None)
-            if errors is not None:
+            try:
                 wavelengths = self[SPECTRUM.WAVELENGTHS]
                 fluxes = self[SPECTRUM.FLUXES]
-                if max([float(err) for err in errors]) > 0.0:
-                    if SPECTRUM.ERROR_UNIT not in self:
-                        raise ValueError(
-                            "Without `{}`,".format(SPECTRUM.DATA) +
-                            " but with `{}`,".format(SPECTRUM.ERRORS) +
-                            " `{}` also required".format(SPECTRUM.ERROR_UNIT))
-                    data = [trim_str_arr(wavelengths), trim_str_arr(fluxes),
-                            trim_str_arr(errors)]
+            except KeyError:
+                if not self._require_data:
+                    return
                 else:
-                    data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
+                    err_str = "Neither data nor (wavelengths and fluxes) given"
+                    self._log.error(err_str)
+                    raise
+
+            errors = self.get(SPECTRUM.ERRORS, None)
+            if errors is not None and max([float(err) for err in errors]) > 0.0:
+                if SPECTRUM.ERROR_UNIT not in self:
+                    raise ValueError(
+                        "Without `{}`,".format(SPECTRUM.DATA) +
+                        " but with `{}`,".format(SPECTRUM.ERRORS) +
+                        " `{}` also required".format(SPECTRUM.ERROR_UNIT))
+                data = [trim_str_arr(wavelengths), trim_str_arr(fluxes),
+                        trim_str_arr(errors)]
+            else:
+                data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
 
             self[SPECTRUM.DATA] = [list(i) for i in zip(*data)]
 
@@ -84,6 +94,13 @@ class Spectrum(CatDict):
         """
 
         """
+        # In general require certain parameters
+        # In the special case of 'cleaning' data from the internal repository
+        # then we might want to have an entry that is special, so ignore the
+        # requirements (specifically, may just be a 'filename')
+        if not self._require_data:
+            return
+
         # Run the super method
         super()._check()
 
