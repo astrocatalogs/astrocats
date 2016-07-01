@@ -74,7 +74,8 @@ class Spectrum(CatDict):
                     raise
 
             errors = self.get(SPECTRUM.ERRORS, None)
-            if errors is not None and max([float(err) for err in errors]) > 0.0:
+            if (errors is not None and
+                    max([float(err) for err in errors]) > 0.0):
                 if SPECTRUM.ERROR_UNIT not in self:
                     raise ValueError(
                         "Without `{}`,".format(SPECTRUM.DATA) +
@@ -86,6 +87,10 @@ class Spectrum(CatDict):
                 data = [trim_str_arr(wavelengths), trim_str_arr(fluxes)]
 
             self[SPECTRUM.DATA] = [list(i) for i in zip(*data)]
+            if SPECTRUM.WAVELENGTHS in self:
+                del self[SPECTRUM.WAVELENGTHS]
+            if SPECTRUM.FLUXES in self:
+                del self[SPECTRUM.FLUXES]
 
         return
 
