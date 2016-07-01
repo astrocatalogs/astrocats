@@ -6,12 +6,14 @@ import os
 import sys
 from collections import OrderedDict
 
-from .utils import dict_to_pretty_string, get_event_filename
-from astrocats.catalog.source import Source
+from astrocats.catalog.error import Error
 from astrocats.catalog.photometry import Photometry
+from astrocats.catalog.source import Source
 from astrocats.catalog.spectrum import Spectrum
 from astrocats.catalog.error import Error
 from astrocats.catalog.quantity import Quantity
+
+from .utils import dict_to_pretty_string, get_event_filename
 
 
 class KEYS:
@@ -320,7 +322,7 @@ class Entry(OrderedDict):
             return
 
         try:
-            new_entry = cat_dict_class(self, **kwargs)
+            new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
         except ValueError as err:
             self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
                 self[self._KEYS.NAME], key_in_self, str(err)))
