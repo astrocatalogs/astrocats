@@ -10,6 +10,7 @@ from .utils import dict_to_pretty_string, get_event_filename
 from astrocats.catalog.source import Source
 from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.spectrum import Spectrum
+from astrocats.catalog.error import Error
 
 
 class KEYS:
@@ -183,7 +184,7 @@ class Entry(OrderedDict):
             data[photo_key] = new_photoms
 
         # Handle `spectra`
-        # ----------------
+        # ---------------
         spec_key = self._KEYS.SPECTRA
         if spec_key in data:
             spectra = data.pop(spec_key)
@@ -194,8 +195,30 @@ class Entry(OrderedDict):
                 new_specs.append(Spectrum(self, **spec))
             data[spec_key] = new_specs
 
-        return
+        # Handle `error`
+        # --------------
+        err_key = self._KEYS.ERROR
+        if err_key in data:
+            errors = data.pop(err_key)
+            log.debug("Found {} '{}' entries".format(
+                len(spectra), err_key))
+            new_errors = []
+            for err in errors:
+                new_errors.append(Error(self, **err))
+            data[err_key] = new_errors
 
+        # Handle everything else --- should be `Quantity`s
+        # ------------------------------------------------
+        if len(data):
+            log.debug("{} remaining entries, assuming `Quantity`".format(
+                len(data)))
+            quantities = []
+            # Iterate over remaining keys
+            for key in list(data.keys()):
+
+
+
+        return
 
     def save(self, empty=False, bury=False, gz=False, final=False):
         """Write entry to JSON file in the proper location
