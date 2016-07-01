@@ -11,11 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: astrocats
-   :members:
-   :undoc-members:
-
-   README.md
+   astrocats
+   modules
 
 Indices and tables
 ==================
