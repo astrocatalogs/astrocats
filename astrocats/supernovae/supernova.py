@@ -308,7 +308,7 @@ class Supernova(Entry):
 
         return False
 
-    def clean_entry_name(name):
+    def clean_entry_name(self, name):
         return name_clean(name)
 
     def check(self):

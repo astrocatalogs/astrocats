@@ -384,7 +384,7 @@ class Entry(OrderedDict):
             self._append_additional_tags(quantity, sources, cat_dict)
         return
 
-    def clean_entry_name(name):
+    def clean_entry_name(self, name):
         return name
 
     def add_error(self, quantity, value, **kwargs):
