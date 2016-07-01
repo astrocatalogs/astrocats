@@ -65,6 +65,7 @@ class Entry(OrderedDict):
         self._stub = stub
         self.filename = None
         self.catalog = catalog
+        self._log = catalog.log
         return
 
     @classmethod
@@ -99,10 +100,7 @@ class Entry(OrderedDict):
         # Create a new `Entry` instance
         new_entry = cls(catalog, name)
         # Fill it with data from json file
-        new_entry._load_data_from_json(load_path)
-
-        if clean:
-            new_entry.clean_internal()
+        new_entry._load_data_from_json(load_path, clean=clean)
 
         return new_entry
 
@@ -110,13 +108,14 @@ class Entry(OrderedDict):
         jsonstring = dict_to_pretty_string({self[KEYS.NAME]: self})
         return jsonstring
 
-    def _load_data_from_json(self, fhand):
+    def _load_data_from_json(self, fhand, clean=False):
         """FIX: check for overwrite??
         """
         log = self.catalog.log
         log.debug("_load_data_from_json(): {}".format(self.name()))
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
+            log.error("\n~1~\n" + dict_to_pretty_string(data) + "\n\n")
 
             name = list(data.keys())
             if len(name) != 1:
@@ -125,13 +124,14 @@ class Entry(OrderedDict):
             name = name[0]
             # Remove the outmost dict level
             data = data[name]
+            log.error("\n~2~\n" + dict_to_pretty_string(data) + "\n\n")
             log.debug("Name: {}".format(name))
 
             # Convert the OrderedDict data from json into class structure
             #    i.e. `Sources` will be extracted and created from the dict
             #    Everything that remains afterwards should be okay to just store
             #    to this `Entry`
-            self._convert_odict_to_classes(data)
+            self._convert_odict_to_classes(data, clean=clean)
             if len(data):
                 err_str = ("Remaining entries in `data` after "
                            "`_convert_odict_to_classes`.")
@@ -154,13 +154,25 @@ class Entry(OrderedDict):
         sys.exit(5)
         return
 
-    def _convert_odict_to_classes(self, data):
+    def _convert_odict_to_classes(self, data, clean=False):
         """
         """
         log = self.catalog.log
         log.debug("_convert_odict_to_classes(): {}".format(self.name()))
         log.warning("This should be a temporary fix.  Dont be lazy.")
-        print("\n\n" + dict_to_pretty_string(data) + "\n\n")
+        log.error("\n~3~\n" + dict_to_pretty_string(data) + "\n\n")
+
+        # Handle 'name'
+        name_key = self._KEYS.NAME
+        if name_key in data:
+            self[name_key] = data.pop(name_key)
+
+        # Cleanup 'internal' repository stuff
+        if clean:
+            # Add data to `self` in ways accomodating 'internal' formats and
+            #    leeway.  Removes each added entry from `data` so the remaining
+            #    stuff can be handled normally
+            data = self.clean_internal(data)
 
         # Handle 'sources'
         # ----------------
@@ -173,7 +185,8 @@ class Entry(OrderedDict):
             newsources = []
             for src in sources:
                 newsources.append(Source(self, **src))
-            data['sources'] = newsources
+            # data['sources'] = newsources
+            self.setdefault(src_key, []).append(newsources)
 
         # Handle `photometry`
         # -------------------
@@ -185,7 +198,8 @@ class Entry(OrderedDict):
             new_photoms = []
             for photo in photoms:
                 new_photoms.append(Photometry(self, **photo))
-            data[photo_key] = new_photoms
+            # data[photo_key] = new_photoms
+            self.setdefault(photo_key, []).append(new_photoms)
 
         # Handle `spectra`
         # ---------------
@@ -197,7 +211,8 @@ class Entry(OrderedDict):
             new_specs = []
             for spec in spectra:
                 new_specs.append(Spectrum(self, **spec))
-            data[spec_key] = new_specs
+            # data[spec_key] = new_specs
+            self.setdefault(spec_key, []).append(new_specs)
 
         # Handle `error`
         # --------------
@@ -209,18 +224,27 @@ class Entry(OrderedDict):
             new_errors = []
             for err in errors:
                 new_errors.append(Error(self, **err))
-            data[err_key] = new_errors
+            # data[err_key] = new_errors
+            self.setdefault(err_key, []).append(new_errors)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
         if len(data):
             log.debug("{} remaining entries, assuming `Quantity`".format(
                 len(data)))
-            new_quantities = []
             # Iterate over remaining keys
             for key in list(data.keys()):
                 vals = data.pop(key)
-                new_quantities.append(Quantity(self, name=key, **vals))
+                # All quantities should be in lists of that quantity
+                #    E.g. `aliases` is a list of alias quantities
+                if not isinstance(vals, list):
+                    vals = [vals]
+                log.debug("{}: {}".format(key, vals))
+                new_quantities = []
+                for vv in vals:
+                    new_quantities.append(Quantity(self, name=key, **vv))
+
+                self.setdefault(key, []).append(newsources)
 
         return
 
@@ -276,27 +300,12 @@ class Entry(OrderedDict):
             stub[KEYS.ALIAS] = self[KEYS.ALIAS]
         return stub
 
-    def clean_internal(self):
+    def clean_internal(self, data=None):
         """Clean input from 'internal', human added data.
 
         This is used in the 'Entry.init_from_file' method.
         """
-        # Rebuild the sources if they exist
-        bibcodes = []
-        try:
-            old_sources = self[KEYS.SOURCES]
-            del self[KEYS.SOURCES]
-            for ss, source in enumerate(old_sources):
-                if KEYS.BIBCODE in source:
-                    bibcodes.append(source[KEYS.BIBCODE])
-                    self.add_source(bibcode=source[KEYS.BIBCODE])
-                else:
-                    self.add_source(
-                        srcname=source[KEYS.NAME], url=source[KEYS.URL])
-        except KeyError:
-            pass
-
-        return
+        return data
 
     def get_event_text(eventfile):
         import gzip
