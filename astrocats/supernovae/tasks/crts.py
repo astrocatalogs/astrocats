@@ -127,8 +127,10 @@ def do_crts(catalog):
             teles = 'Catalina Schmidt'
             for line in lines:
                 if 'javascript:showx' in line:
-                    mjdstr = re.search("showx\('(.*?)'\)",
-                                       line).group(1).split('(')[0].strip()
+                    search = re.search("showx\('(.*?)'\)", line)
+                    if not search:
+                        continue
+                    mjdstr = search.group(1).split('(')[0].strip()
                     if not is_number(mjdstr):
                         continue
                     mjd = str(Decimal(mjdstr) + Decimal(53249.0))
