@@ -22,7 +22,10 @@ class CatDict(OrderedDict):
 
     REQ_KEY_TYPES = []
 
-    def __init__(self, **kwargs):
+    def __init__(self, parent, **kwargs):
+        # Store the parent object (an `Entry` subclass) to which this instance
+        #    will belong.  e.g. a `Supernova` entry.
+        self._parent = parent
         # Iterate over all `_KEYS` parameters, load each if given note that the
         # stored 'values' are the `Key` objects, referred to here with the name
         # 'key'.
@@ -84,6 +87,31 @@ class CatDict(OrderedDict):
                 return False
 
         return True
+
+    def append_sources_from(self, other):
+        """
+        """
+        # Get aliases list from the parent `Entry` subclass (e.g. `Supernova`)
+        parent_aliases = set(self._parent[self._parent._KEYS.ALIAS])
+        # Get aliases lists from this `CatDict` and other
+        self_aliases = set(self[self._KEYS.SOURCE])
+        other_aliases = set(other[self._KEYS.SOURCE])
+
+        # Iterate over `other` aliases, looking for different entries
+        for oa in other_aliases:
+            # If this other alias is not in current list, store it
+            if oa not in self_aliases:
+                # Make sure other alias is in parent, otherwise error
+                if oa not in parent_aliases:
+                    parn = self._parent[self._parent._KEYS.NAME]
+                    raise RuntimeError("Error: parent '{}'".format(parn) +
+                                       " missing source alias '{}'".format(oa) +
+                                       ", from '{}'".format(repr(other)))
+
+                # Store alias to `self`
+                self.setdefault(self._KEYS.SOURCE, []).append(oa)
+
+        return
 
     def _check(self):
         for req_any in self.REQ_KEY_TYPES:
