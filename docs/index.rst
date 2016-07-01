@@ -9,12 +9,13 @@ Welcome to Astrocats's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
 
-.. automodule:: astrocats
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. currentmodule:: astrocats
+
+.. autosummary::
+   :toctree: _autosummary
+
+   astrocats
 
 Indices and tables
 ==================
