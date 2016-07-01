@@ -7,13 +7,55 @@ from astrocats.catalog.utils import uniq_cdl
 
 
 class CatDictError(Exception):
-
-    def __init__(self, *args, **kwargs):
+    """Special Error class for non-fatal errors raised in CatDict.
+    """
+    def __init__(self, warn=True, *args, **kwargs):
+        # If `warn` is True, then a warning should be issues.  Otherwise ignore
+        # completely
+        self.warn = warn
         Exception.__init__(self, *args, **kwargs)
 
 
 class CatDict(OrderedDict):
-    """
+    """General data storage super-class used throughout catalogs.
+
+    In general, `CatDict` subclasses are used to manage/store data which ends up
+    in the lowest-level dictionaries saved to output json files.  For example,
+    and individual `Source` or `Photometry` entry.
+
+    Attributes
+    ----------
+    These attributes should be overridden in subclasses as needed:
+    _KEYS : `KeyCollection` object
+        Contains the `Key` strings and associated specifications which makeup
+        the keys for data in this object.  For example: `PHOTOMETRY` for the
+        `Photometry` `CatDict` subclass.
+    _ALLOW_UNKNOWN_KEYS : bool
+        Whether data with keys *not* in the `_KEYS` object are allowed.
+        'True': additional keyword arguments passed to the constructor are
+            add without validation or sanitization.
+        'False': keyword arguments passed to the constructor which are not in
+            `KEYS` will produce errors.
+    _REQ_KEY_SETS : list of lists
+        Which elements of the associated `_KEYS` are required for each instance
+        of this class.
+        The structure of this variable is a list of lists, where each inner list
+        contains a set of 'Key's, *at least one* of which are required for
+        validity.  For example, if
+        ``_REQ_KEY_SETS = [[_KEYS.ONE, _KEYS.TWO], [_KEYS.THREE]]``
+        then either `_KEYS.ONE` *or* `_KEYS.TWO` is required, and `_KEYS.THREE`
+        if also required.
+
+    Notes
+    -----
+    -   Invalid data and Errors
+        If, for any reason, the `CatDict` being constructed looks invalid in a
+        not unexpected way (e.g. required arguments are missing), then a
+        `CatDictError` exception should be raised.  The method in the parent
+        class (e.g. `Supernova`) which tries to construct the `CatDict` (e.g.
+        `add_photometry`) should catch those errors specifically and deal
+        with them appropriately.
+
     """
 
     # The `KeyCollection` object associated with this dictionary For example,
@@ -27,7 +69,7 @@ class CatDict(OrderedDict):
     # tacked onto the `CatDict` object without any checks or errors.
     _ALLOW_UNKNOWN_KEYS = True
 
-    REQ_KEY_TYPES = []
+    _REQ_KEY_SETS = []
 
     def __init__(self, parent, name=None, **kwargs):
         # Store the parent object (an `Entry` subclass) to which this instance
@@ -35,6 +77,14 @@ class CatDict(OrderedDict):
         self._parent = parent
         self._name = name
         self._log = parent.catalog.log
+
+        # Store any individual keys which are required
+        self._req_keys = []
+        for rks in self._REQ_KEY_SETS:
+            # If this set is only 1 long, that key is individually required
+            if len(rks) == 1:
+                self._req_keys.append(rks[0])
+
         # Iterate over all `_KEYS` parameters, load each if given note that the
         # stored 'values' are the `Key` objects, referred to here with the name
         # 'key'.
@@ -43,8 +93,10 @@ class CatDict(OrderedDict):
             if key in kwargs:
                 # Make sure value is compatible with the 'Key' specification.
                 if not key.check(kwargs[key]):
-                    raise ValueError("Value for '{}' is invalid '{}'".format(
-                        repr(key), kwargs[key]))
+                    # Have the parent log a warning if this is a required key
+                    warn = (key in self._req_keys)
+                    raise CatDictError("Value for '{}' is invalid '{}'".format(
+                        key.pretty(), kwargs[key]), warn=warn)
 
                 # Handle Special Cases
                 # --------------------
@@ -65,16 +117,19 @@ class CatDict(OrderedDict):
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
         # elements should have been removed from `kwargs`.
         if not self._ALLOW_UNKNOWN_KEYS and len(kwargs):
-            raise ValueError(
-                "All permitted keys stored, remaining: '{}'".format(kwargs))
+            raise CatDictError(
+                "All permitted keys stored, remaining: '{}'".format(kwargs),
+                warn=True)
 
         # Make sure that currently stored values are valid
         self._check()
 
         return
 
-    # def __repr__(self):
-    #    pass
+    def pretty(self):
+        retval = "{}({}, Parent:{})".format(
+            type(self), self._name, self._parent)
+        return retval
 
     def is_duplicate_of(self, other):
         # If these are not the same type, return False
@@ -115,12 +170,12 @@ class CatDict(OrderedDict):
     def _check(self):
         """
         """
-        for req_any in self.REQ_KEY_TYPES:
+        for req_any in self._REQ_KEY_SETS:
             if not any([req_key in self for req_key in req_any]):
                 err_str = ("'{}' Requires one or more of: ".format(self._name) +
                            ",".join("'{}'".format(rk) for rk in req_any))
                 self._log.error(err_str)
-                raise ValueError(err_str)
+                raise CatDictError(err_str)
 
         return
 
@@ -138,9 +193,9 @@ class CatDict(OrderedDict):
         if isinstance(value, list):
             # But if lists arent allowed, and this is, raise error
             if not key.listable:
-                raise ValueError(
+                raise CatDictError(
                     "`value` '{}' for '{}' shouldnt be a list.".format(
-                        value, repr(key)))
+                        value, key.pretty()))
 
             single = False
         else:
@@ -150,9 +205,9 @@ class CatDict(OrderedDict):
         # Store booleans as booleans, make sure each element of list is bool
         if key.type == KEY_TYPES.BOOL:
             if not all(isinstance(val, bool) for val in value):
-                raise ValueError(
+                raise CatDictError(
                     "`value` '{}' for '{}' should be boolean".format(
-                        value, repr(key)))
+                        value, key.pretty()))
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
             # Clean leading/trailing whitespace
