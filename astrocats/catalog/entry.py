@@ -372,7 +372,7 @@ class Entry(OrderedDict):
         self.catalog.log.debug("add_quantity()")
 
         # Aliases not added if in DISTINCT_FROM
-        if quantity == QUANTITY.ALIAS:
+        if quantity == KEYS.ALIAS:
             value = self.clean_entry_name(value)
             for df in self.get(KEYS.DISTINCT_FROM, []):
                 if value == df[QUANTITY.VALUE]:
