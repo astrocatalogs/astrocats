@@ -332,7 +332,6 @@ class Entry(OrderedDict):
         return filetext
 
     def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        self._log.debug("_add_cat_dict()")
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
@@ -366,7 +365,6 @@ class Entry(OrderedDict):
         return None
 
     def add_source(self, **kwargs):
-        self._log.debug("add_source()")
         try:
             source_obj = Source(self, **kwargs)
         except ValueError as err:
@@ -385,8 +383,6 @@ class Entry(OrderedDict):
 
     def add_quantity(self, quantity, value, sources,
                      forcereplacebetter=False, **kwargs):
-        self._log.debug("add_quantity()")
-
         # Aliases not added if in DISTINCT_FROM
         if quantity == KEYS.ALIAS:
             value = self.clean_entry_name(value)
@@ -409,14 +405,12 @@ class Entry(OrderedDict):
         return
 
     def add_photometry(self, **kwargs):
-        self._log.debug("add_photometry()")
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
         kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
                        SPECTRUM.FLUX_UNIT: fluxunit})
-        self._log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
         source = kwargs.get(self._KEYS.SOURCE, None)
