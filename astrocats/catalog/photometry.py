@@ -65,7 +65,7 @@ class Photometry(CatDict):
     _KEYS = PHOTOMETRY
 
     def __init__(self, parent, **kwargs):
-        self.REQ_KEY_TYPES = [
+        self._REQ_KEY_SETS = [
             [PHOTOMETRY.SOURCE],
             [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
             [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
