@@ -76,7 +76,7 @@ class Supernova(Entry):
                 self.name, str(err)))
             return
 
-        for item in self[self._KEYS.SOURCES]:
+        for item in self.get(self._KEYS.SOURCES, ''):
             if source_obj.is_duplicate_of(item):
                 return
 
