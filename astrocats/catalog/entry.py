@@ -160,6 +160,13 @@ class Entry(OrderedDict):
         if name_key in data:
             self[name_key] = data.pop(name_key)
 
+        # Handle 'schema'
+        schema_key = self._KEYS.SCHEMA
+        if schema_key in data:
+            # Schema should be re-added every execution (done elsewhere) so just
+            # delete the old entry
+            data.pop(schema_key)
+
         # Cleanup 'internal' repository stuff
         if clean:
             # Add data to `self` in ways accomodating 'internal' formats and
