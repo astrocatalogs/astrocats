@@ -560,7 +560,7 @@ class Supernova(Entry):
                 srcname=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             for df in distincts:
-                data.add_quantity(dist_key, df, source)
+                self.add_quantity(dist_key, df, source)
 
         # This is a legacy/deprecated field, no 'Key' for it
         errs_key = 'errors'
@@ -568,7 +568,7 @@ class Supernova(Entry):
             errors = data.pop(errs_key)
             try:
                 for err in errors:
-                    data.add_error('error', err['quantity'],
+                    self.add_error('error', err['quantity'],
                                    kind=err['sourcekind'], extra=err['id'])
             except Exception as err:
                 err_str = ("{}: `{}` is invalid '{}': Error: '{}'".format(
