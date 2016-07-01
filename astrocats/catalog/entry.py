@@ -38,7 +38,7 @@ class KEYS:
     RA = 'ra'
     REDSHIFT = 'redshift'
     SCHEMA = 'schema'
-    SOURCE = 'source'
+    SOURCES = 'sources'
     SPECTRA = 'spectra'
     URL = 'url'
     VELOCITY = 'velocity'
@@ -371,7 +371,7 @@ class Entry(OrderedDict):
                 self.name, str(err)))
             return None
 
-        for item in self.get(self._KEYS.SOURCE, ''):
+        for item in self.get(self._KEYS.SOURCES, ''):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
 
@@ -416,7 +416,7 @@ class Entry(OrderedDict):
         self._log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
-        source = kwargs.get(self._KEYS.SOURCE, None)
+        source = kwargs.get(SPECTRUM.SOURCE, None)
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
                 self[self._KEYS.NAME]))
@@ -432,7 +432,7 @@ class Entry(OrderedDict):
                 self.name, self._KEYS.SPECTRA, str(err)))
             return
 
-        num_spec = len(self[self._KEYS.SPECTRA])
+        num_spec = len(self.get(KEYS.SPECTRA, []))
         for si in range(num_spec):
             item = self[self._KEYS.SPECTRA][si]
             # Only the `filename` should be compared for duplicates If a
