@@ -1,10 +1,10 @@
 """
 """
-
+import json
 from .digits import round_sig
 
-__all__ = ['get_event_filename', 'rep_chars', 'single_spaces',
-           'trim_str_arr', 'uniq_cdl', 'utf8']
+__all__ = ['dict_to_pretty_string', 'get_event_filename', 'rep_chars',
+           'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8']
 
 
 def get_event_filename(name):
@@ -35,3 +35,10 @@ def uniq_cdl(values):
 
 def utf8(x):
     return str(x, 'utf-8')
+
+
+def dict_to_pretty_string(odict):
+    jsonstring = json.dumps(odict,
+                            indent='\t', separators=(',', ':'),
+                            ensure_ascii=False)
+    return jsonstring
