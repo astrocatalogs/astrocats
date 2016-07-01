@@ -126,7 +126,12 @@ class CatDict(OrderedDict):
 
     def _clean_value_for_key(self, key, value):
         """
+
+        FIX: should this be in `key`??  like 'check()'??
         """
+        if key.type is None:
+            return value
+
         # Store whether given value started as a list or not
         single = True
         # Make everything a list for conversions below
