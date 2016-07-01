@@ -171,29 +171,29 @@ class Supernova(Entry):
                       kind='', extra='', probability=''):
         """
         """
-        if not quantity:
-            raise ValueError(self[KEYS.NAME] +
-                             "'s quantity must be specified for "
-                             "add_quantity.")
-        if not sources:
-            raise ValueError(self[KEYS.NAME] +
-                             "'s source must be specified for "
-                             "quantity " +
-                             quantity + ' before it is added.')
-        if ((not isinstance(value, str) and
-             (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
-                             " must be a string or an array of strings.")
+        # if not quantity:
+        #     raise ValueError(self[KEYS.NAME] +
+        #                      "'s quantity must be specified for "
+        #                      "add_quantity.")
+        # if not sources:
+        #     raise ValueError(self[KEYS.NAME] +
+        #                      "'s source must be specified for "
+        #                      "quantity " +
+        #                      quantity + ' before it is added.')
+        # if ((not isinstance(value, str) and
+        #      (not isinstance(value, list) or not isinstance(value[0], str)))):
+        #     raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
+        #                      " must be a string or an array of strings.")
 
-        if self.is_erroneous(quantity, sources):
-            return None
+        # if self.is_erroneous(quantity, sources):
+        #     return None
 
-        my_quantity_list = self.get(quantity, [])
-
-        svalue = value.strip()
-        serror = error.strip()
-        skind = kind.strip()
-        sprob = probability.strip()
+        # my_quantity_list = self.get(quantity, [])
+        # 
+        # svalue = value.strip()
+        # serror = error.strip()
+        # skind = kind.strip()
+        # sprob = probability.strip()
         sunit = ''
 
         if not svalue or svalue == '--' or svalue == '-':

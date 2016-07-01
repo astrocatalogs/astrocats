@@ -6,6 +6,12 @@ from astrocats.catalog.key import KEY_TYPES, KeyCollection
 from astrocats.catalog.utils import uniq_cdl
 
 
+class CatDictError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 class CatDict(OrderedDict):
     """
     """
