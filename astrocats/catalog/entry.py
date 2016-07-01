@@ -371,7 +371,7 @@ class Entry(OrderedDict):
                 self.name, str(err)))
             return None
 
-        for item in self.get(self._KEYS.SOURCES, ''):
+        for item in self.get(self._KEYS.SOURCE, ''):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
 
@@ -416,7 +416,6 @@ class Entry(OrderedDict):
         self._log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
-        print(self._KEYS)
         source = kwargs.get(self._KEYS.SOURCE, None)
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
