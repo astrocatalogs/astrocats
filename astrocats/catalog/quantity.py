@@ -26,7 +26,7 @@ class Quantity(CatDict):
     _KEYS = QUANTITY
 
     def __init__(self, parent, **kwargs):
-        self.REQ_KEY_TYPES = [
+        self._REQ_KEY_SETS = [
             [QUANTITY.VALUE],
             [QUANTITY.SOURCE]
         ]

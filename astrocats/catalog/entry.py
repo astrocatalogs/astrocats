@@ -11,6 +11,7 @@ from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
+from astrocats.catalog.catdict import CatDictError
 
 
 class KEYS:
@@ -331,29 +332,45 @@ class Entry(OrderedDict):
                 filetext = f.read()
         return filetext
 
-    def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        self._log.debug("_add_cat_dict()")
+    def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
                 self[self._KEYS.NAME]))
-
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
             return None
+        return source
 
+    def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        # Catch errors associated with crappy, but not unexpected data
+        # log warning if instructed
         try:
             new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
-        except ValueError as err:
-            self._log.error("'{}' Error adding '{}': '{}'".format(
-                self[self._KEYS.NAME], key_in_self, str(err)))
+        except CatDictError as err:
+            if err.warn:
+                self._log.warning("'{}' Error adding '{}': '{}'".format(
+                    self[self._KEYS.NAME], key_in_self, str(err)))
+            return None
+        return new_entry
+
+    def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        # Make sure that a source is given, and is valid (nor erroneous)
+        source = self._check_cat_dict_source(
+            cat_dict_class, key_in_self, **kwargs)
+        if source is None:
             return None
 
+        # Try to create a new instance of this subclass of `CatDict`
+        new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
+        if new_entry is None:
+            return None
+
+        # Compare this new entry with all previous entries to make sure is new
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
-                self._log.debug("Duplicate found, appending sources")
                 item.append_sources_from(new_entry)
                 # Return the entry in case we want to use any additional tags
                 # to augment the old entry
@@ -363,18 +380,15 @@ class Entry(OrderedDict):
         return None
 
     def add_source(self, **kwargs):
-        self._log.debug("add_source()")
-        try:
-            source_obj = Source(self, **kwargs)
-        except ValueError as err:
-            self._log.error("'{}' `add_source`: Error: '{}'".format(
-                self.name, str(err)))
+        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES)
+        if source_obj is None:
             return None
 
         for item in self.get(self._KEYS.SOURCES, ''):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
 
+        # Set 'alias' number to be one higher than existing length of sources
         source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
@@ -382,8 +396,6 @@ class Entry(OrderedDict):
 
     def add_quantity(self, quantity, value, sources,
                      forcereplacebetter=False, **kwargs):
-        self._log.debug("add_quantity()")
-
         # Aliases not added if in DISTINCT_FROM
         if quantity == KEYS.ALIAS:
             value = self.clean_entry_name(value)
@@ -406,44 +418,36 @@ class Entry(OrderedDict):
         return
 
     def add_photometry(self, **kwargs):
-        self._log.debug("add_photometry()")
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
         kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
                        SPECTRUM.FLUX_UNIT: fluxunit})
-        self._log.debug("add_spectrum()")
-        # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
-        # Make sure that a source is given
-        source = kwargs.get(SPECTRUM.SOURCE, None)
+        spec_key = self._KEYS.SPECTRA
+        # Make sure that a source is given, and is valid (nor erroneous)
+        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
         if source is None:
-            raise ValueError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]))
+            return None
 
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(self._KEYS.SPECTRA, source):
-            return
+        # Try to create a new instance of `Spectrum`
+        new_spectrum = self._init_cat_dict(
+            Spectrum, spec_key, **kwargs)
+        if new_spectrum is None:
+            return None
 
-        try:
-            new_spectrum = Spectrum(self, **kwargs)
-        except ValueError as err:
-            self._log.error("'{}' Error adding '{}': '{}'".format(
-                self.name, self._KEYS.SPECTRA, str(err)))
-            return
-
-        num_spec = len(self.get(KEYS.SPECTRA, []))
+        num_spec = len(self.get(spec_key, []))
         for si in range(num_spec):
-            item = self[self._KEYS.SPECTRA][si]
+            item = self[spec_key][si]
             # Only the `filename` should be compared for duplicates If a
             # duplicate is found, that means the previous `exclude` array
             # should be saved to the new object, and the old deleted
             if new_spectrum.is_duplicate_of(item):
                 new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[self._KEYS.SPECTRA][si]
+                del self[spec_key][si]
                 break
 
-        self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
+        self.setdefault(spec_key, []).append(new_spectrum)
         return
 
     def get_source_by_alias(self, alias):
