@@ -530,7 +530,7 @@ class Supernova(Entry):
             bibcodes = [self.catalog.OSC_BIBCODE]
 
         # Clean some legacy fields
-        alias_key = self._KEYS.ALIAS
+        alias_key = 'aliases'
         if alias_key in data:
             # Remove the entry in the data
             aliases = data.pop(alias_key)
