@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Imports for the WISeREP spectroscopic repository.
 """
 import os

@@ -2,7 +2,8 @@
 """
 from collections import OrderedDict
 
-from .key import KEY_TYPES, KeyCollection
+from astrocats.catalog.key import KEY_TYPES, KeyCollection
+from astrocats.catalog.utils import uniq_cdl
 
 
 class CatDict(OrderedDict):
@@ -89,32 +90,20 @@ class CatDict(OrderedDict):
         return True
 
     def append_sources_from(self, other):
+        """Merge the source alias lists of two CatDicts.
         """
-        """
-        # Get aliases list from the parent `Entry` subclass (e.g. `Supernova`)
-        sources = self._parent[self._parent._KEYS.SOURCES]
-        parent_aliases = [x[x._KEYS.ALIAS] for x in sources]
         # Get aliases lists from this `CatDict` and other
         self_aliases = self[self._KEYS.SOURCE].split(',')
         other_aliases = other[self._KEYS.SOURCE].split(',')
 
-        # Iterate over `other` aliases, looking for different entries
-        for oa in other_aliases:
-            # If this other alias is not in current list, store it
-            if oa not in self_aliases:
-                # Make sure other alias is in parent, otherwise error
-                if oa not in parent_aliases:
-                    parn = self._parent[self._parent._KEYS.NAME]
-                    raise RuntimeError("Error: parent '{}'".format(parn) +
-                                       " missing source alias '{}'".format(oa) +
-                                       ", from '{}'".format(repr(other)))
-
-                # Store alias to `self`
-                self.setdefault(self._KEYS.SOURCE, []).append(oa)
+        # Store alias to `self`
+        self[self._KEYS.SOURCE] = uniq_cdl(self_aliases + other_aliases)
 
         return
 
     def _check(self):
+        """
+        """
         for req_any in self.REQ_KEY_TYPES:
             if not any([req_key in self for req_key in req_any]):
                 err_str = "Require one or more of: " + ",".join(

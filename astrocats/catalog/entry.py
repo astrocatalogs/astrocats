@@ -7,6 +7,7 @@ import warnings
 from collections import OrderedDict
 
 from .utils import get_event_filename
+from astrocats.catalog.source import Source
 
 
 class KEYS:
@@ -110,12 +111,21 @@ class Entry(OrderedDict):
         self.catalog.log.debug("_load_data_from_json()")
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
+
             name = list(data.keys())
             if len(name) != 1:
                 raise ValueError("json file '{}' has multiple keys: {}".format(
                     fhand, list(name)))
             name = name[0]
             data = data[name]
+
+            # TEMPORARY FIX, NEEDS CLEANUP
+            if 'sources' in data:
+                newsources = []
+                for source in data['sources']:
+                    newsources.append(Source(self, **source))
+                data['sources'] = newsources
+
             self.update(data)
         self.filename = fhand
         # If object doesnt have a name yet, but json does, store it
@@ -132,6 +142,9 @@ class Entry(OrderedDict):
         return
 
     def save(self, empty=False, bury=False, gz=False, final=False):
+        """Write entry to JSON file in the proper location
+        FIX: gz option not being used?
+        """
         outdir, filename = self._get_save_path(bury=bury)
 
         if final:
