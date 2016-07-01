@@ -9,10 +9,12 @@ from astrocats.catalog.utils import uniq_cdl
 class CatDictError(Exception):
     """Special Error class for non-fatal errors raised in CatDict.
     """
-    def __init__(self, warn=True, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         # If `warn` is True, then a warning should be issues.  Otherwise ignore
         # completely
-        self.warn = warn
+        self.warn = True
+        if 'warn' in kwargs:
+            self.warn = kwargs.pop('warn')
         Exception.__init__(self, *args, **kwargs)
 
 
@@ -97,7 +99,7 @@ class CatDict(OrderedDict):
                     warn = (key in self._req_keys)
                     raise CatDictError(
                         "Value for '{}' is invalid '{}'".format(
-                            key.pretty(), kwargs[key]))
+                            key.pretty(), kwargs[key]), warn=warn)
 
                 # Handle Special Cases
                 # --------------------
