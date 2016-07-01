@@ -358,13 +358,13 @@ class Entry(OrderedDict):
 
     def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         # Make sure that a source is given, and is valid (nor erroneous)
-        source = _check_cat_dict_source(
-            self, cat_dict_class, key_in_self, **kwargs)
+        source = self._check_cat_dict_source(
+            cat_dict_class, key_in_self, **kwargs)
         if source is None:
             return None
 
         # Try to create a new instance of this subclass of `CatDict`
-        new_entry = _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs)
+        new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
         if new_entry is None:
             return None
 
@@ -425,30 +425,30 @@ class Entry(OrderedDict):
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
         kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
                        SPECTRUM.FLUX_UNIT: fluxunit})
+        spec_key = self._KEYS.SPECTRA
         # Make sure that a source is given, and is valid (nor erroneous)
-        source = _check_cat_dict_source(
-            self, cat_dict_class, key_in_self, **kwargs)
+        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
         if source is None:
             return None
 
         # Try to create a new instance of `Spectrum`
-        new_spectrum = _init_cat_dict(
-            self, cat_dict_class, key_in_self, **kwargs)
+        new_spectrum = self._init_cat_dict(
+            Spectrum, spec_key, **kwargs)
         if new_spectrum is None:
             return None
 
-        num_spec = len(self[self._KEYS.SPECTRA])
+        num_spec = len(self.get(spec_key, []))
         for si in range(num_spec):
-            item = self[self._KEYS.SPECTRA][si]
+            item = self[spec_key][si]
             # Only the `filename` should be compared for duplicates If a
             # duplicate is found, that means the previous `exclude` array
             # should be saved to the new object, and the old deleted
             if new_spectrum.is_duplicate_of(item):
                 new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[self._KEYS.SPECTRA][si]
+                del self[spec_key][si]
                 break
 
-        self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
+        self.setdefault(spec_key, []).append(new_spectrum)
         return
 
     def get_source_by_alias(self, alias):
