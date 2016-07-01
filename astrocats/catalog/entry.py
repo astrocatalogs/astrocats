@@ -38,7 +38,7 @@ class KEYS:
     RA = 'ra'
     REDSHIFT = 'redshift'
     SCHEMA = 'schema'
-    SOURCES = 'sources'
+    SOURCE = 'source'
     SPECTRA = 'spectra'
     URL = 'url'
     VELOCITY = 'velocity'
@@ -416,6 +416,7 @@ class Entry(OrderedDict):
         self._log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
+        print(self._KEYS)
         source = kwargs.get(self._KEYS.SOURCE, None)
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
