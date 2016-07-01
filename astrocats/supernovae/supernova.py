@@ -160,11 +160,17 @@ class Supernova(Entry):
     def add_quantity(self, quantity, value, sources,
                      forcereplacebetter=False, **kwargs):
         self.catalog.log.debug("add_quantity()")
+
+        # Aliases not added if in DISTINCT_FROM
+        if quantity == QUANTITY.ALIAS:
+            value = name_clean(value)
+            for df in self.get(KEYS.DISTINCT_FROM, []):
+                if value == df[QUANTITY.VALUE]:
+                    return
+
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
         cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
         if cat_dict:
-            self._remove_inferior_quantities(quantity, forcereplacebetter)
-        elif isinstance(cat_dict, CatDict):
             self._append_additional_tags(quantity, sources, cat_dict)
         return
 
@@ -269,10 +275,10 @@ class Supernova(Entry):
             if len(sparts) == 3:
                 value = value + '/' + sparts[2].zfill(2)
 
-            for ii, ct in enumerate(my_name_list):
-                # Only add dates if they have more information
-                if len(ct['value'].split('/')) > len(value.split('/')):
-                    return
+            # for ii, ct in enumerate(self.parent[name]):
+            #     # Only add dates if they have more information
+            #     if len(ct['value'].split('/')) > len(value.split('/')):
+            #         return
 
         if is_number(value):
             value = '%g' % Decimal(value)
@@ -284,15 +290,18 @@ class Supernova(Entry):
         quantity[QUANTITY.UNIT] = unit
         quantity[QUANTITY.KIND] = kind
 
+    # This needs to be moved to sanitize; currently is not being used but
+    # should be.
     def _replace_inferior_quantities(self, quantity, forcereplacebetter):
+        my_quantity_list = self.get(quantity, [])
         if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
                 len(my_quantity_list):
             newquantities = []
             isworse = True
-            if quantity in ['discoverdate', 'maxdate']:
+            if quantity in [QUANTITY.DISCOVER_DATE, QUANTITY.MAX_DATE]:
                 for ct in my_quantity_list:
-                    ctsplit = ct['value'].split('/')
-                    svsplit = svalue.split('/')
+                    ctsplit = ct[QUANTITY.VALUE].split('/')
+                    svsplit = quantity[QUANTITY.VALUE].split('/')
                     if len(ctsplit) < len(svsplit):
                         isworse = False
                         continue
@@ -306,16 +315,16 @@ class Supernova(Entry):
                             continue
                     newquantities.append(ct)
             else:
-                newsig = get_sig_digits(svalue)
+                newsig = get_sig_digits(quantity[QUANTITY.VALUE])
                 for ct in my_quantity_list:
                     if 'error' in ct:
-                        if serror:
-                            if float(serror) < float(ct['error']):
+                        if quantity[QUANTITY.ERROR]:
+                            if float(quantity[QUANTITY.ERROR]) < float(ct[QUANTITY.ERROR]):
                                 isworse = False
                                 continue
                         newquantities.append(ct)
                     else:
-                        if serror:
+                        if quantity[QUANTITY.ERROR]:
                             isworse = False
                             continue
                         oldsig = get_sig_digits(ct['value'])
@@ -323,8 +332,6 @@ class Supernova(Entry):
                             newquantities.append(ct)
                         if newsig >= oldsig:
                             isworse = False
-            if not isworse:
-                newquantities.append(quanta_entry)
             self[quantity] = newquantities
         else:
             self.setdefault(quantity, []).append(quanta_entry)

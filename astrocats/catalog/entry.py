@@ -317,14 +317,14 @@ class Entry(OrderedDict):
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self.catalog.log.info("This source is erroneous, skipping")
-            return False
+            return None
 
         try:
             new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
         except ValueError as err:
             self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
                 self[self._KEYS.NAME], key_in_self, str(err)))
-            return False
+            return None
 
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
@@ -335,7 +335,7 @@ class Entry(OrderedDict):
                 return new_entry
 
         self.setdefault(key_in_self, []).append(new_entry)
-        return True
+        return None
 
     def name(self):
         try:
