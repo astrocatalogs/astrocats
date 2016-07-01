@@ -44,7 +44,7 @@ class Spectrum(CatDict):
 
     _KEYS = SPECTRUM
 
-    def __init__(self, **kwargs):
+    def __init__(self, parent, **kwargs):
         self.REQ_KEY_TYPES = [
             [SPECTRUM.SOURCE],
             [SPECTRUM.FLUX_UNIT],
@@ -54,7 +54,7 @@ class Spectrum(CatDict):
         # [SPECTRUM.TIME, SPECTRUM.HOST]
 
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(kwargs)
+        super().__init__(parent, **kwargs)
 
         # If `data` is not given, construct it from wavelengths, fluxes [errors]
         #    `errors` is optional, but if given, then `errorunit` is also req'd

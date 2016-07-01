@@ -63,14 +63,14 @@ class Photometry(OrderedDict):
     _ALLOW_UNKNOWN_KEYS = True
     _KEYS = PHOTOMETRY
 
-    def __init__(self, **kwargs):
+    def __init__(self, parent, **kwargs):
         self.REQ_KEY_TYPES = [
             [PHOTOMETRY.SOURCE],
             [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
             [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
              PHOTOMETRY.COUNTS]]
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(kwargs)
+        super().__init__(parent, **kwargs)
 
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
         if self._KEYS.BAND in self:

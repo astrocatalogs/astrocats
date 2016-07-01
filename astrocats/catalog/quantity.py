@@ -23,8 +23,8 @@ class Quantity(CatDict):
 
     _KEYS = QUANTITY
 
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
         self.REQ_KEY_TYPES = [
             [QUANTITY.VALUE],
             [QUANTITY.SOURCE]
