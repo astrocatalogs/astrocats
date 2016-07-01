@@ -13,6 +13,7 @@ from astrocats.catalog.photometry import (PHOTOMETRY, Photometry, bandmetaf,
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
+from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, tprint,
@@ -161,35 +162,40 @@ class Supernova(Entry):
         self._add_cat_dict(Quantity, quantity, **kwargs)
         return
 
+    def add_error(self, quantity, value, **kwargs):
+        kwargs.update({ERROR.VALUE: value})
+        self._add_cat_dict(Quantity, quantity, **kwargs)
+        return
+
     def _add_quantity(self, quantity, value, sources,
                       forcereplacebetter=False, derived='',
                       lowerlimit='', upperlimit='', error='', unit='',
                       kind='', extra='', probability=''):
         """
         """
-        if not quantity:
-            raise ValueError(self[KEYS.NAME] +
-                             "'s quantity must be specified for "
-                             "add_quantity.")
-        if not sources:
-            raise ValueError(self[KEYS.NAME] +
-                             "'s source must be specified for "
-                             "quantity " +
-                             quantity + ' before it is added.')
-        if ((not isinstance(value, str) and
-             (not isinstance(value, list) or not isinstance(value[0], str)))):
-            raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
-                             " must be a string or an array of strings.")
+        # if not quantity:
+        #     raise ValueError(self[KEYS.NAME] +
+        #                      "'s quantity must be specified for "
+        #                      "add_quantity.")
+        # if not sources:
+        #     raise ValueError(self[KEYS.NAME] +
+        #                      "'s source must be specified for "
+        #                      "quantity " +
+        #                      quantity + ' before it is added.')
+        # if ((not isinstance(value, str) and
+        #      (not isinstance(value, list) or not isinstance(value[0], str)))):
+        #     raise ValueError(self[KEYS.NAME] + "'s Quantity " + quantity +
+        #                      " must be a string or an array of strings.")
 
-        if self.is_erroneous(quantity, sources):
-            return None
+        # if self.is_erroneous(quantity, sources):
+        #     return None
 
-        my_quantity_list = self.get(quantity, [])
-
-        svalue = value.strip()
-        serror = error.strip()
-        skind = kind.strip()
-        sprob = probability.strip()
+        # my_quantity_list = self.get(quantity, [])
+        # 
+        # svalue = value.strip()
+        # serror = error.strip()
+        # skind = kind.strip()
+        # sprob = probability.strip()
         sunit = ''
 
         if not svalue or svalue == '--' or svalue == '-':
@@ -612,13 +618,10 @@ class Supernova(Entry):
         if 'errors' in self and \
                 isinstance(self['errors'], list) and \
                 'sourcekind' in self['errors'][0]:
-            source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
             for err in self['errors']:
-                self.add_quantity('error', err['quantity'], source,
-                                  kind=err['sourcekind'], extra=err['id'])
+                self.add_error(
+                    'error', err['quantity'],
+                    kind=err['sourcekind'], extra=err['id'])
             del self['errors']
 
         if not bibcodes:
