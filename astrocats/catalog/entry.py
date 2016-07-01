@@ -245,7 +245,7 @@ class Entry(OrderedDict):
                 for vv in vals:
                     new_quantities.append(Quantity(self, name=key, **vv))
 
-                self.setdefault(key, []).append(newsources)
+                self.setdefault(key, []).append(new_quantities)
 
         return
 
