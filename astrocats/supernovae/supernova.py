@@ -207,8 +207,8 @@ class Supernova(Entry):
             if '?' in value:
                 isq = True
                 value = value.strip(' ?')
-            for rep in quantity._source_syns:
-                if value in quantity._source_syns[rep]:
+            for rep in self._source_syns:
+                if value in self._source_syns[rep]:
                     value = rep
                     break
             if isq:
