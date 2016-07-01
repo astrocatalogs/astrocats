@@ -23,7 +23,7 @@ class KEYS:
     DISCOVERER = 'discoverer'
     DISTINCT_FROM = 'distinctfrom'
     EBV = 'ebv'
-    ERROR = 'error'
+    ERRORS = 'errors'
     HOST = 'host'
     HOST_DEC = 'hostdec'
     HOST_OFFSET_ANG = 'hostoffsetang'
