@@ -6,11 +6,11 @@ import os
 import sys
 from collections import OrderedDict
 
-from astrocats.catalog.error import Error
+from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.photometry import Photometry
-from astrocats.catalog.quantity import Quantity
+from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import Source
-from astrocats.catalog.spectrum import Spectrum
+from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
 
 
@@ -339,6 +339,96 @@ class Entry(OrderedDict):
 
         self.setdefault(key_in_self, []).append(new_entry)
         return None
+
+    def add_source(self, **kwargs):
+        self.catalog.log.debug("add_source()")
+        try:
+            source_obj = Source(self, **kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
+                self.name, str(err)))
+            return None
+
+        for item in self.get(self._KEYS.SOURCES, ''):
+            if source_obj.is_duplicate_of(item):
+                return item[item._KEYS.ALIAS]
+
+        source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
+
+        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
+        return source_obj[source_obj._KEYS.ALIAS]
+
+    def add_quantity(self, quantity, value, sources,
+                     forcereplacebetter=False, **kwargs):
+        self.catalog.log.debug("add_quantity()")
+
+        # Aliases not added if in DISTINCT_FROM
+        if quantity == QUANTITY.ALIAS:
+            value = self.clean_entry_name(value)
+            for df in self.get(KEYS.DISTINCT_FROM, []):
+                if value == df[QUANTITY.VALUE]:
+                    return
+
+        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
+        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
+        if cat_dict:
+            self._append_additional_tags(quantity, sources, cat_dict)
+        return
+
+    def clean_entry_name(name):
+        return name
+
+    def add_error(self, quantity, value, **kwargs):
+        kwargs.update({ERROR.VALUE: value})
+        self._add_cat_dict(Quantity, quantity, **kwargs)
+        return
+
+    def add_photometry(self, **kwargs):
+        self.catalog.log.debug("add_photometry()")
+        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        return
+
+    def add_spectrum(self, **kwargs):
+        self.catalog.log.debug("add_spectrum()")
+        # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
+        # Make sure that a source is given
+        source = kwargs.get(self._KEYS.SOURCE, None)
+        if source is None:
+            raise ValueError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]))
+
+        # If this source/data is erroneous, skip it
+        if self.is_erroneous(self._KEYS.SPECTRA, source):
+            return
+
+        try:
+            new_spectrum = Spectrum(self, **kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
+                self.name, self._KEYS.SPECTRA, str(err)))
+            return
+
+        num_spec = len(self[self._KEYS.SPECTRA])
+        for si in range(num_spec):
+            item = self[self._KEYS.SPECTRA][si]
+            # Only the `filename` should be compared for duplicates
+            #    If a duplicate is found, that means the previous `exclude`
+            #    array should be saved to the new object, and the old deleted
+            if new_spectrum.is_duplicate_of(item):
+                new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
+                del self[self._KEYS.SPECTRA][si]
+                break
+
+        self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
+        return
+
+    def get_source_by_alias(self, alias):
+        for source in self.get(KEYS.SOURCES, []):
+            if source['alias'] == alias:
+                return source
+        raise ValueError(
+            "Source '{}': alias '{}' not found!".format(
+                self[KEYS.NAME], alias))
 
     def name(self):
         try:

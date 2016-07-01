@@ -8,11 +8,7 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.error import ERROR
-from astrocats.catalog.photometry import Photometry
-from astrocats.catalog.quantity import QUANTITY, Quantity
-from astrocats.catalog.source import Source
-from astrocats.catalog.spectrum import SPECTRUM, Spectrum
+from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, uniq_cdl)
@@ -64,24 +60,6 @@ class Supernova(Entry):
             self._source_syns = json.loads(
                 f.read(), object_pairs_hook=OrderedDict)
         return
-
-    def add_source(self, **kwargs):
-        self.catalog.log.debug("add_source()")
-        try:
-            source_obj = Source(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
-                self.name, str(err)))
-            return None
-
-        for item in self.get(self._KEYS.SOURCES, ''):
-            if source_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
-
-        source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
-
-        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[source_obj._KEYS.ALIAS]
 
     def _add_source(self, srcname='', bibcode='', **src_kwargs):
         """Add a new source to this entry's KEYS.SOURCES list.
@@ -151,28 +129,6 @@ class Supernova(Entry):
         new_src.update({k: v for (k, v) in src_kwargs.items() if k})
         self.setdefault(KEYS.SOURCES, []).append(new_src)
         return source_alias
-
-    def add_quantity(self, quantity, value, sources,
-                     forcereplacebetter=False, **kwargs):
-        self.catalog.log.debug("add_quantity()")
-
-        # Aliases not added if in DISTINCT_FROM
-        if quantity == QUANTITY.ALIAS:
-            value = name_clean(value)
-            for df in self.get(KEYS.DISTINCT_FROM, []):
-                if value == df[QUANTITY.VALUE]:
-                    return
-
-        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
-        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
-        if cat_dict:
-            self._append_additional_tags(quantity, sources, cat_dict)
-        return
-
-    def add_error(self, quantity, value, **kwargs):
-        kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
-        return
 
     def _append_additional_tags(self, name, sources, quantity):
         # Should be called if two objects are found to be duplicates but are
@@ -352,6 +308,9 @@ class Supernova(Entry):
 
         return False
 
+    def clean_entry_name(name):
+        return name_clean(name)
+
     def check(self):
         self.catalog.log.debug("check()")
         # Make sure there is a schema key in dict
@@ -498,14 +457,6 @@ class Supernova(Entry):
         if 'claimedtype' in self:
             self['claimedtype'] = self.ct_list_prioritized()
 
-    def get_source_by_alias(self, alias):
-        for source in self.get(KEYS.SOURCES, []):
-            if source['alias'] == alias:
-                return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(
-                self[KEYS.NAME], alias))
-
     def _parse_srcname_bibcode(self, srcname, bibcode):
         # If no `srcname` is given, use `bibcode` after checking its validity
         if not srcname:
@@ -630,45 +581,6 @@ class Supernova(Entry):
                         self[key][qi]['source'] = source
 
         self.check()
-        return
-
-    def add_photometry(self, **kwargs):
-        self.catalog.log.debug("add_photometry()")
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
-        return
-
-    def add_spectrum(self, **kwargs):
-        self.catalog.log.debug("add_spectrum()")
-        # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
-        # Make sure that a source is given
-        source = kwargs.get(self._KEYS.SOURCE, None)
-        if source is None:
-            raise ValueError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]))
-
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(self._KEYS.SPECTRA, source):
-            return
-
-        try:
-            new_spectrum = Spectrum(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
-                self.name, self._KEYS.SPECTRA, str(err)))
-            return
-
-        num_spec = len(self[self._KEYS.SPECTRA])
-        for si in range(num_spec):
-            item = self[self._KEYS.SPECTRA][si]
-            # Only the `filename` should be compared for duplicates
-            #    If a duplicate is found, that means the previous `exclude`
-            #    array should be saved to the new object, and the old deleted
-            if new_spectrum.is_duplicate_of(item):
-                new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[self._KEYS.SPECTRA][si]
-                break
-
-        self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
         return
 
     def _get_max_light(self):
