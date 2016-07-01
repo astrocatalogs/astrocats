@@ -61,8 +61,8 @@ class CatDict(OrderedDict):
 
         return
 
-    def __repr__(self):
-        pass
+    # def __repr__(self):
+    #    pass
 
     def is_duplicate_of(self, other):
         # If these are not the same type, return False

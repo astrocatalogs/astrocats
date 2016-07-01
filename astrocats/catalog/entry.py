@@ -212,7 +212,7 @@ class Entry(OrderedDict):
 
     def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         # Make sure that a source is given
-        source = kwargs.get(self._KEYS.SOURCE, None)
+        source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
                 self[self._KEYS.NAME]))
