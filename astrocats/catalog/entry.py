@@ -8,6 +8,7 @@ from collections import OrderedDict
 
 from .utils import dict_to_pretty_string, get_event_filename
 from astrocats.catalog.source import Source
+from astrocats.catalog.photometry import Photometry
 
 
 class KEYS:
@@ -172,10 +173,12 @@ class Entry(OrderedDict):
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
-            log.debug("Found {} '{}' entries".format(len(photoms, photo_key)))
+            log.debug("Found {} '{}' entries".format(
+                len(photoms, photo_key)))
             new_photoms = []
             for photo in photoms:
-                new_photoms.append(Photometry())
+                new_photoms.append(Photometry(self, **photo))
+            data[photo_key] = new_photoms
 
         return
 
