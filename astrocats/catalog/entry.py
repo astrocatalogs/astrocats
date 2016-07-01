@@ -166,8 +166,8 @@ class Entry(OrderedDict):
         # Handle 'schema'
         schema_key = self._KEYS.SCHEMA
         if schema_key in data:
-            # Schema should be re-added every execution (done elsewhere) so just
-            # delete the old entry
+            # Schema should be re-added every execution (done elsewhere) so
+            # just delete the old entry
             data.pop(schema_key)
 
         # Cleanup 'internal' repository stuff
@@ -255,6 +255,8 @@ class Entry(OrderedDict):
         return
 
     def check(self):
+        """Check that the entry has some required fields.
+        """
         self.catalog.log.debug("check()")
         # Make sure there is a schema key in dict
         if KEYS.SCHEMA not in self.keys():
@@ -288,6 +290,8 @@ class Entry(OrderedDict):
         return save_name
 
     def sanitize(self):
+        """Sanitize the data (sort it, etc.) before writing it to disk.
+        """
         return
 
     def get_aliases(self, includename=True):
@@ -324,13 +328,15 @@ class Entry(OrderedDict):
         """
         return data
 
-    def get_event_text(eventfile):
+    def get_entry_text(fname):
+        """Retrieve the raw text from a file.
+        """
         import gzip
-        if eventfile.split('.')[-1] == 'gz':
-            with gzip.open(eventfile, 'rt') as f:
+        if fname.split('.')[-1] == 'gz':
+            with gzip.open(fname, 'rt') as f:
                 filetext = f.read()
         else:
-            with open(eventfile, 'r') as f:
+            with open(fname, 'r') as f:
                 filetext = f.read()
         return filetext
 

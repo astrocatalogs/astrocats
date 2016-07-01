@@ -66,7 +66,7 @@ for averagetype in averagetypes:
         else:
             continue
 
-        filetext = get_event_text(eventfile)
+        filetext = get_entry_text(eventfile)
 
         thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
         thisevent = thisevent[list(thisevent.keys())[0]]

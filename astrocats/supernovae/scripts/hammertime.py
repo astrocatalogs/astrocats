@@ -52,7 +52,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
     # if fcnt > 20:
     #    break
 
-    filetext = get_event_text(eventfile)
+    filetext = get_entry_text(eventfile)
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]

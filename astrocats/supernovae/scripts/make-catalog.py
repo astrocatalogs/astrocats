@@ -360,7 +360,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     checksum = md5file(eventfile)
     md5s.append([eventfile, checksum])
 
-    filetext = get_event_text(eventfile)
+    filetext = get_entry_text(eventfile)
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))

@@ -19,7 +19,7 @@ for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):
     fileeventname = os.path.splitext(os.path.basename(eventfile))[
         0].replace('.json', '')
 
-    filetext = get_event_text(eventfile)
+    filetext = get_entry_text(eventfile)
 
     item = json.loads(filetext, object_pairs_hook=OrderedDict)
     item = item[list(item.keys())[0]]
