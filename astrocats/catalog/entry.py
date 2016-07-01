@@ -107,6 +107,8 @@ class Entry(OrderedDict):
         return jsonstring
 
     def _clean_quantity(self, quantity):
+        """Clean quantity value before it is added to entry.
+        """
         pass
 
     def _load_data_from_json(self, fhand, clean=False):

@@ -162,7 +162,8 @@ class Supernova(Entry):
 
             # for ii, ct in enumerate(self.parent[name]):
             #     # Only add dates if they have more information
-            #     if len(ct[QUANTITY.VALUE].split('/')) > len(value.split('/')):
+            #     if len(ct[QUANTITY.VALUE].split('/')) >
+            #            len(value.split('/')):
             #         return
 
         if is_number(value):
@@ -235,7 +236,8 @@ class Supernova(Entry):
                 bib_err_values = [err[QUANTITY.VALUE] for err in my_errors
                                   if err['kind'] == SOURCE.BIBCODE and
                                   err['extra'] == field]
-                if SOURCE.BIBCODE in source and source[SOURCE.BIBCODE] in bib_err_values:
+                if (SOURCE.BIBCODE in source and source[SOURCE.BIBCODE] in
+                        bib_err_values):
                     return True
 
                 name_err_values = [err[QUANTITY.VALUE] for err in my_errors
@@ -310,7 +312,8 @@ class Supernova(Entry):
             self[self._KEYS.CLAIMED_TYPE] = self.ct_list_prioritized()
         if self._KEYS.CLAIMED_TYPE in self:
             self[self._KEYS.CLAIMED_TYPE][:] = [ct for ct in self[
-                self._KEYS.CLAIMED_TYPE] if (ct[QUANTITY.VALUE] != '?' and ct[QUANTITY.VALUE] != '-')]
+                self._KEYS.CLAIMED_TYPE] if (ct[QUANTITY.VALUE] != '?' and
+                                             ct[QUANTITY.VALUE] != '-')]
             if not len(self[self._KEYS.CLAIMED_TYPE]):
                 del(self[self._KEYS.CLAIMED_TYPE])
         if self._KEYS.CLAIMED_TYPE not in self and name.startswith('AT'):
@@ -344,12 +347,14 @@ class Supernova(Entry):
                     # First sanitize the bibcode
                     if len(source[SOURCE.BIBCODE]) != 19:
                         source[SOURCE.BIBCODE] = urllib.parse.unquote(
-                            unescape(source[SOURCE.BIBCODE])).replace('A.A.', 'A&A')
+                            unescape(source[SOURCE.BIBCODE])).replace(
+                                'A.A.', 'A&A')
                     if source[SOURCE.BIBCODE] in self.catalog.biberror_dict:
                         source[SOURCE.BIBCODE] = \
                             self.catalog.biberror_dict[source[SOURCE.BIBCODE]]
 
-                    if source[SOURCE.BIBCODE] not in self.catalog.bibauthor_dict:
+                    if (source[SOURCE.BIBCODE] not in
+                            self.catalog.bibauthor_dict):
                         bibcode = source[SOURCE.BIBCODE]
                         adsquery = (self.catalog.ADS_BIB_URL +
                                     urllib.parse.quote(bibcode) +
@@ -372,7 +377,8 @@ class Supernova(Entry):
 
             for source in self[self._KEYS.SOURCES]:
                 if (SOURCE.BIBCODE in source and
-                        source[SOURCE.BIBCODE] in self.catalog.bibauthor_dict and
+                        source[SOURCE.BIBCODE] in
+                        self.catalog.bibauthor_dict and
                         self.catalog.bibauthor_dict[source[SOURCE.BIBCODE]]):
                     source[SOURCE.REFERENCE] = self.catalog.bibauthor_dict[
                         source[SOURCE.BIBCODE]]
