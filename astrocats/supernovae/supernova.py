@@ -236,10 +236,14 @@ class Supernova(Entry):
         if error:
             error = '%g' % Decimal(error)
 
-        quantity[QUANTITY.VALUE] = value
-        quantity[QUANTITY.ERROR] = error
-        quantity[QUANTITY.UNIT] = unit
-        quantity[QUANTITY.KIND] = kind
+        if value:
+            quantity[QUANTITY.VALUE] = value
+        if error:
+            quantity[QUANTITY.ERROR] = error
+        if unit:
+            quantity[QUANTITY.UNIT] = unit
+        if kind:
+            quantity[QUANTITY.KIND] = kind
 
     # This needs to be moved to sanitize; currently is not being used but
     # should be.
