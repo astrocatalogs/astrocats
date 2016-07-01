@@ -214,7 +214,7 @@ class Entry(OrderedDict):
         if err_key in data:
             errors = data.pop(err_key)
             self._log.debug("Found {} '{}' entries".format(
-                len(spectra), err_key))
+                len(errors), err_key))
             new_errors = []
             for err in errors:
                 new_errors.append(Error(self, **err))
