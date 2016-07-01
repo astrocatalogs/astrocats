@@ -524,10 +524,10 @@ class Supernova(Entry):
 
         # If there are no existing sources, add OSC as one
         if len(bibcodes) == 0:
-            data.add_source(bibcode=data.catalog.OSC_BIBCODE,
-                            srcname=data.catalog.OSC_NAME,
-                            url=data.catalog.OSC_URL, secondary=True)
-            bibcodes = [data.catalog.OSC_BIBCODE]
+            self.add_source(bibcode=self.catalog.OSC_BIBCODE,
+                            srcname=self.catalog.OSC_NAME,
+                            url=self.catalog.OSC_URL, secondary=True)
+            bibcodes = [self.catalog.OSC_BIBCODE]
 
         # Clean some legacy fields
         alias_key = self._KEYS.ALIAS
@@ -540,11 +540,11 @@ class Supernova(Entry):
                     self.name(), aliases))
             # Add OSC source entry
             source = self.add_source(
-                bibcode=data.catalog.OSC_BIBCODE,
-                srcname=data.catalog.OSC_NAME,
-                url=data.catalog.OSC_URL, secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
 
-            for alias in data['aliases']:
+            for alias in aliases:
                 self.add_quantity('alias', alias, source)
 
         dist_key = KEYS.DISTINCT_FROM
@@ -556,9 +556,9 @@ class Supernova(Entry):
                     self.name(), dist_key, distincts))
 
             source = self.add_source(
-                bibcode=data.catalog.OSC_BIBCODE,
-                srcname=data.catalog.OSC_NAME,
-                url=data.catalog.OSC_URL, secondary=True)
+                bibcode=self.catalog.OSC_BIBCODE,
+                srcname=self.catalog.OSC_NAME,
+                url=self.catalog.OSC_URL, secondary=True)
             for df in distincts:
                 data.add_quantity(dist_key, df, source)
 
@@ -588,12 +588,12 @@ class Supernova(Entry):
                         data['photometry'][p]['time'] = str(
                             jd_to_mjd(Decimal(photo['time'])))
                     if 'source' not in photo:
-                        source = data.add_source(bibcode=bibcodes[0])
+                        source = self.add_source(bibcode=bibcodes[0])
                         data['photometry'][p]['source'] = source
             else:
                 for qi, quantity in enumerate(data[key]):
                     if 'source' not in quantity:
-                        source = data.add_source(bibcode=bibcodes[0])
+                        source = self.add_source(bibcode=bibcodes[0])
                         data[key][qi]['source'] = source
 
         return data
