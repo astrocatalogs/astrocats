@@ -10,6 +10,8 @@ from astrocats.catalog.error import Error
 from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.source import Source
 from astrocats.catalog.spectrum import Spectrum
+from astrocats.catalog.error import Error
+from astrocats.catalog.quantity import Quantity
 
 from .utils import dict_to_pretty_string, get_event_filename
 
@@ -134,10 +136,11 @@ class Entry(OrderedDict):
             # `Entry`
             self._convert_odict_to_classes(data)
             if len(data):
-                log.debug(
-                    "Adding remaining dictionary entries to self:\n{}".format(
-                        dict_to_pretty_string(data)))
-                self.update(data)
+                err_str = ("Remaining entries in `data` after "
+                           "`_convert_odict_to_classes`.")
+                err_str += "\n{}".format(dict_to_pretty_string(data))
+                log.error(err_str)
+                raise RuntimeError(err_str)
 
         # Store the filename this was loaded from
         self.filename = fhand
@@ -216,9 +219,11 @@ class Entry(OrderedDict):
         if len(data):
             log.debug("{} remaining entries, assuming `Quantity`".format(
                 len(data)))
-            quantities = []
+            new_quantities = []
             # Iterate over remaining keys
             for key in list(data.keys()):
+                vals = data.pop(key)
+                new_quantities.append(Quantity(self, name=key, **vals))
 
         return
 
