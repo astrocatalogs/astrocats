@@ -562,20 +562,6 @@ class Supernova(Entry):
             for df in distincts:
                 self.add_quantity(dist_key, df, source)
 
-        # This is a legacy/deprecated field, no 'Key' for it
-        errs_key = 'errors'
-        if errs_key in data:
-            errors = data.pop(errs_key)
-            try:
-                for err in errors:
-                    self.add_error('error', err['quantity'],
-                                   kind=err['sourcekind'], extra=err['id'])
-            except Exception as err:
-                err_str = ("{} ({})\n`{}` is invalid '{}': Error: '{}'".format(
-                    self.name(), self.filename, errs_key, errors, str(err)))
-                self._log.error(err_str)
-                raise
-
         # Go through all remaining keys in 'dirty' event, and make sure
         #    everything is a quantity with a source (OSC if no other)
         for key in data.keys():
