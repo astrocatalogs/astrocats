@@ -163,8 +163,8 @@ class Entry(OrderedDict):
         # Cleanup 'internal' repository stuff
         if clean:
             # Add data to `self` in ways accomodating 'internal' formats and
-            #    leeway.  Removes each added entry from `data` so the remaining
-            #    stuff can be handled normally
+            # leeway.  Removes each added entry from `data` so the remaining
+            # stuff can be handled normally
             data = self.clean_internal(data)
 
         # Handle 'sources'
@@ -413,9 +413,9 @@ class Entry(OrderedDict):
         num_spec = len(self[self._KEYS.SPECTRA])
         for si in range(num_spec):
             item = self[self._KEYS.SPECTRA][si]
-            # Only the `filename` should be compared for duplicates
-            #    If a duplicate is found, that means the previous `exclude`
-            #    array should be saved to the new object, and the old deleted
+            # Only the `filename` should be compared for duplicates If a
+            # duplicate is found, that means the previous `exclude` array
+            # should be saved to the new object, and the old deleted
             if new_spectrum.is_duplicate_of(item):
                 new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
                 del self[self._KEYS.SPECTRA][si]

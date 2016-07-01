@@ -31,7 +31,7 @@ class CatDict(OrderedDict):
 
     def __init__(self, parent, name=None, **kwargs):
         # Store the parent object (an `Entry` subclass) to which this instance
-        #    will belong.  e.g. a `Supernova` entry.
+        # will belong.  e.g. a `Supernova` entry.
         self._parent = parent
         self._name = name
         self._log = parent.catalog.log

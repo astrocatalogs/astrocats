@@ -19,7 +19,8 @@ class QUANTITY(KeyCollection):
 
 
 class Quantity(CatDict):
-    """
+    """Class for storing a single item of data associated with an astrophysical
+    entity.
     """
 
     _KEYS = QUANTITY
