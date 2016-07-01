@@ -8,12 +8,10 @@ from collections import OrderedDict
 
 from astrocats.catalog.error import Error
 from astrocats.catalog.photometry import Photometry
+from astrocats.catalog.quantity import Quantity
 from astrocats.catalog.source import Source
 from astrocats.catalog.spectrum import Spectrum
-from astrocats.catalog.error import Error
-from astrocats.catalog.quantity import Quantity
-
-from .utils import dict_to_pretty_string, get_event_filename
+from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
 
 
 class KEYS:
