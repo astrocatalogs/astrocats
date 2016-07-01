@@ -49,7 +49,10 @@ class CatDict(OrderedDict):
                 # ----------------------
                 # Remove key-value pair from `kwargs` dictionary.
                 value = kwargs.pop(key)
-                self[key] = self._clean_value_for_key(key, value)
+                value = self._clean_value_for_key(key, value)
+                # only store values that are not empty
+                if value:
+                    self[key] = value
 
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
         # elements should have been removed from `kwargs`.
@@ -138,10 +141,13 @@ class CatDict(OrderedDict):
                         value, repr(key)))
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
-            value = [str(val) for val in value]
+            # Clean leading/trailing whitespace
+            value = [str(val).strip() for val in value]
+            # Only keep values that are not empty
+            value = [val for val in value if len(val)]
 
         # Convert back to single value, if thats how it started
-        if single:
+        if single and len(value):
             value = value[0]
 
         return value
