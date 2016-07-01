@@ -133,10 +133,10 @@ class Supernova(Entry):
     def _append_additional_tags(self, name, sources, quantity):
         # Should be called if two objects are found to be duplicates but are
         # not bit-for-bit identical
-        svalue = quantity[QUANTITY.VALUE]
-        serror = quantity[QUANTITY.ERROR]
-        sprob = quantity[QUANTITY.PROB]
-        skind = quantity[QUANTITY.KIND]
+        svalue = quantity.get(QUANTITY.VALUE, '')
+        serror = quantity.get(QUANTITY.ERROR, '')
+        sprob = quantity.get(QUANTITY.PROB, '')
+        skind = quantity.get(QUANTITY.KIND, '')
 
         for ii, ct in enumerate(self[name]):
             if ct[QUANTITY.VALUE] == svalue and sources:
@@ -147,7 +147,7 @@ class Supernova(Entry):
                     if (source not in
                             self[name][ii][QUANTITY.SOURCE].split(',')):
                         self[name][ii][QUANTITY.SOURCE] += ',' + source
-                        if serror and quantity.ERROR not in self[name][ii]:
+                        if serror and QUANTITY.ERROR not in self[name][ii]:
                             self[name][ii][QUANTITY.ERROR] = serror
                         if sprob and QUANTITY.PROB not in self[name][ii]:
                             self[name][ii][QUANTITY.PROB] = sprob
