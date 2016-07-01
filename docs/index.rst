@@ -9,7 +9,8 @@ Welcome to Astrocats's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+
+.. currentmodule:: astrocats
 
 .. autosummary::
    :toctree: _autosummary
