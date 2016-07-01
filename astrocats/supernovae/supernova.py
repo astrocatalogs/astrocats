@@ -550,17 +550,14 @@ class Supernova(Entry):
         dist_key = KEYS.DISTINCT_FROM
         if dist_key in data:
             distincts = data.pop(dist_key)
-            if ((not isinstance(distincts, list) and
-                 not isinstance(distincts[0], str))):
-                raise ValueError("{}: `{}` not a list of strings '{}'".format(
-                    self.name(), dist_key, distincts))
-
-            source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
-            for df in distincts:
-                self.add_quantity(dist_key, df, source)
+            if ((isinstance(distincts, list) and
+                 isinstance(distincts[0], str))):
+                source = self.add_source(
+                    bibcode=self.catalog.OSC_BIBCODE,
+                    srcname=self.catalog.OSC_NAME,
+                    url=self.catalog.OSC_URL, secondary=True)
+                for df in distincts:
+                    self.add_quantity(dist_key, df, source)
 
         # Go through all remaining keys in 'dirty' event, and make sure
         #    everything is a quantity with a source (OSC if no other)
