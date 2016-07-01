@@ -95,8 +95,9 @@ class CatDict(OrderedDict):
                 if not key.check(kwargs[key]):
                     # Have the parent log a warning if this is a required key
                     warn = (key in self._req_keys)
-                    raise CatDictError("Value for '{}' is invalid '{}'".format(
-                        key.pretty(), kwargs[key]), warn=warn)
+                    raise CatDictError(
+                        "Value for '{}' is invalid '{}'".format(
+                            key.pretty(), kwargs[key]))
 
                 # Handle Special Cases
                 # --------------------
@@ -118,8 +119,7 @@ class CatDict(OrderedDict):
         # elements should have been removed from `kwargs`.
         if not self._ALLOW_UNKNOWN_KEYS and len(kwargs):
             raise CatDictError(
-                "All permitted keys stored, remaining: '{}'".format(kwargs),
-                warn=True)
+                "All permitted keys stored, remaining: '{}'".format(kwargs))
 
         # Make sure that currently stored values are valid
         self._check()
