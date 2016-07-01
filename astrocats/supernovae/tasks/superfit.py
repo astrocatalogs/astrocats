@@ -41,7 +41,8 @@ def do_superfit_spectra(catalog):
             oldname = name
             name = catalog.add_entry(name)
             epoch = basename.split('.')[1]
-            (mldt, mlmag, mlband, mlsource) = catalog.get_max_light(name)
+            mldt, mlmag, mlband, mlsource = \
+                catalog.entries[name]._get_max_light()
             if mldt:
                 if epoch == 'max':
                     epoff = Decimal(0.0)
