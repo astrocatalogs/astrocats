@@ -108,6 +108,9 @@ class Entry(OrderedDict):
         jsonstring = dict_to_pretty_string({self[KEYS.NAME]: self})
         return jsonstring
 
+    def _clean_quantity(self, quantity):
+        pass
+
     def _load_data_from_json(self, fhand):
         """FIX: check for overwrite??
         """
@@ -314,23 +317,25 @@ class Entry(OrderedDict):
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self.catalog.log.info("This source is erroneous, skipping")
-            return
+            return False
 
         try:
             new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
         except ValueError as err:
             self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
                 self[self._KEYS.NAME], key_in_self, str(err)))
-            return
+            return False
 
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
                 self.catalog.log.debug("Duplicate found, appending sources")
                 item.append_sources_from(new_entry)
-                return
+                # Return the entry in case we want to use any additional tags
+                # to augment the old entry
+                return new_entry
 
         self.setdefault(key_in_self, []).append(new_entry)
-        return
+        return True
 
     def name(self):
         try:
