@@ -92,10 +92,11 @@ class CatDict(OrderedDict):
         """
         """
         # Get aliases list from the parent `Entry` subclass (e.g. `Supernova`)
-        parent_aliases = set(self._parent[self._parent._KEYS.ALIAS])
+        sources = self._parent[self._parent._KEYS.SOURCES]
+        parent_aliases = [x[x._KEYS.ALIAS] for x in sources]
         # Get aliases lists from this `CatDict` and other
-        self_aliases = set(self[self._KEYS.SOURCE])
-        other_aliases = set(other[self._KEYS.SOURCE])
+        self_aliases = self[self._KEYS.SOURCE].split(',')
+        other_aliases = other[self._KEYS.SOURCE].split(',')
 
         # Iterate over `other` aliases, looking for different entries
         for oa in other_aliases:

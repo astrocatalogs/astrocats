@@ -225,12 +225,12 @@ class Entry(OrderedDict):
             new_entry = cat_dict_class(self, **kwargs)
         except ValueError as err:
             self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
-                self.name, key_in_self, str(err)))
+                self[self._KEYS.NAME], key_in_self, str(err)))
             return
 
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
-                item.append_sources(new_entry)
+                item.append_sources_from(new_entry)
                 return
 
         self.setdefault(key_in_self, []).append(new_entry)
