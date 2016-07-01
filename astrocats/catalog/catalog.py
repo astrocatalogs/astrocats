@@ -487,7 +487,7 @@ class Catalog:
 
     def new_entry(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
-                  bibcode='', secondary='', acknowledgment=''):
+                  bibcode='', secondary=False, acknowledgment=''):
         self.log.debug("new_entry()")
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(

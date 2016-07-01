@@ -49,7 +49,7 @@
         "module": "supernovae.tasks.vizier",
         "function": "do_vizier",
         "repo": "input/sne-external",
-        "priority": 3
+        "priority": 4
     },
     "donations": {
         "nice_name": "%pre donations",
@@ -58,7 +58,7 @@
         "module": "supernovae.tasks.donations",
         "function": "do_donations",
         "repo": "input/sne-external",
-        "priority": 4
+        "priority": 5
     },
     "pessto-dr1": {
         "nice_name": "%pre PESSTO DR1",
@@ -67,7 +67,7 @@
         "module": "supernovae.tasks.pessto",
         "function": "do_pessto",
         "repo": "input/sne-external",
-        "priority": 5
+        "priority": 6
     },
     "scp": {
         "nice_name": "%pre SCP",
@@ -76,7 +76,7 @@
         "module": "supernovae.tasks.scp",
         "function": "do_scp",
         "repo": "input/sne-external",
-        "priority": 6
+        "priority": 7
     },
     "ascii": {
         "nice_name": "%pre ASCII",
@@ -85,7 +85,7 @@
         "module": "supernovae.tasks.ascii",
         "function": "do_ascii",
         "repo": "input/sne-external",
-        "priority": 7
+        "priority": 8
     },
     "cccp": {
         "nice_name": "%pre CCCP",
@@ -95,7 +95,7 @@
         "module": "supernovae.tasks.cccp",
         "function": "do_cccp",
         "repo": "input/sne-external",
-        "priority": 8
+        "priority": 9
     },
     "suspect_photo": {
         "nice_name": "%pre SUSPECT",
@@ -104,7 +104,7 @@
         "module": "supernovae.tasks.suspect",
         "function": "do_suspect_photo",
         "repo": "input/sne-external",
-        "priority": 9
+        "priority": 10
     },
     "cfa_photo": {
         "nice_name": "%pre CfA archive photometry",
@@ -113,7 +113,7 @@
         "module": "supernovae.tasks.cfa",
         "function": "do_cfa_photo",
         "repo": "input/sne-external",
-        "priority": 10
+        "priority": 11
     },
     "ucb_photo": {
         "nice_name": "%pre UCB photometry",
@@ -123,7 +123,7 @@
         "module": "supernovae.tasks.berkeley",
         "function": "do_ucb_photo",
         "repo": "input/sne-external",
-        "priority": 11
+        "priority": 12
     },
     "sdss": {
         "nice_name": "%pre SDSS photometry",
@@ -132,7 +132,7 @@
         "module": "supernovae.tasks.sdss",
         "function": "do_sdss",
         "repo": "input/sne-external",
-        "priority": 12
+        "priority": 13
     },
     "csp_photo": {
         "nice_name": "%pre CSP photometry",
@@ -141,7 +141,7 @@
         "module": "supernovae.tasks.carnegie",
         "function": "do_csp_photo",
         "repo": "input/sne-external",
-        "priority": 13
+        "priority": 14
     },
     "itep": {
         "nice_name": "%pre ITEP",
@@ -150,7 +150,7 @@
         "module": "supernovae.tasks.itep",
         "function": "do_itep",
         "repo": "input/sne-external",
-        "priority": 14
+        "priority": 15
     },
     "asiago_photo": {
         "nice_name": "%pre Asiago metadata",
@@ -159,7 +159,7 @@
         "module": "supernovae.tasks.asiago",
         "function": "do_asiago_photo",
         "repo": "input/sne-external",
-        "priority": 15
+        "priority": 16
     },
     "tns": {
         "nice_name": "%pre TNS metadata",
@@ -169,7 +169,7 @@
         "module": "supernovae.tasks.tns",
         "function": "do_tns",
         "repo": "input/sne-external",
-        "priority": 16
+        "priority": 17
     },
     "rochester": {
         "nice_name": "%pre Latest Supernovae",
@@ -179,7 +179,7 @@
         "module": "supernovae.tasks.rochester",
         "function": "do_rochester",
         "repo": "input/sne-external",
-        "priority": 17
+        "priority": 18
     },
     "lennarz": {
         "nice_name": "%pre Lennarz",
@@ -187,7 +187,7 @@
         "update": false,
         "module": "supernovae.tasks.vizier",
         "function": "do_lennarz",
-        "priority": 18
+        "priority": 19
     },
     "fermi": {
         "nice_name": "%pre Fermi",
@@ -196,7 +196,7 @@
         "module": "supernovae.tasks.fermi",
         "function": "do_fermi",
         "repo": "input/sne-external",
-        "priority": 19
+        "priority": 20
     },
     "gaia": {
         "nice_name": "%pre GAIA",
@@ -206,7 +206,7 @@
         "module": "supernovae.tasks.gaia",
         "function": "do_gaia",
         "repo": "input/sne-external",
-        "priority": 20
+        "priority": 21
     },
     "ogle": {
         "nice_name": "%pre OGLE",
@@ -216,7 +216,7 @@
         "module": "supernovae.tasks.ogle",
         "function": "do_ogle",
         "repo": "input/sne-external",
-        "priority": 21
+        "priority": 22
     },
     "snls_photo": {
         "nice_name": "%pre SNLS",
@@ -225,7 +225,7 @@
         "module": "supernovae.tasks.snls",
         "function": "do_snls_photo",
         "repo": "input/sne-external",
-        "priority": 22
+        "priority": 23
     },
     "psthreepi": {
         "nice_name": "%pre Pan-STARRS 3π",
@@ -235,7 +235,7 @@
         "module": "supernovae.tasks.panstarrs",
         "function": "do_ps_threepi",
         "repo": "input/sne-external",
-        "priority": 23
+        "priority": 24
     },
     "psmds": {
         "nice_name": "%pre Pan-STARRS MDS",
@@ -244,7 +244,7 @@
         "module": "supernovae.tasks.panstarrs",
         "function": "do_ps_mds",
         "repo": "input/sne-external",
-        "priority": 24
+        "priority": 25
     },
     "psst": {
         "nice_name": "%pre PSST",
@@ -253,7 +253,7 @@
         "module": "supernovae.tasks.psst",
         "function": "do_psst",
         "repo": "input/sne-external",
-        "priority": 25
+        "priority": 26
     },
     "grb": {
         "nice_name": "%pre GRB catalog",
@@ -263,7 +263,7 @@
         "module": "supernovae.tasks.grb",
         "function": "do_grb",
         "repo": "input/sne-external",
-        "priority": 26
+        "priority": 27
     },
     "crts": {
         "nice_name": "%pre CRTS",
@@ -273,7 +273,7 @@
         "module": "supernovae.tasks.crts",
         "function": "do_crts",
         "repo": "input/sne-external",
-        "priority": 27
+        "priority": 28
     },
     "snhunt": {
         "nice_name": "%pre SNhunt",
@@ -283,7 +283,7 @@
         "module": "supernovae.tasks.snhunt",
         "function": "do_snhunt",
         "repo": "input/sne-external",
-        "priority": 28
+        "priority": 29
     },
     "nedd": {
         "nice_name": "%pre NED-D",
@@ -292,7 +292,7 @@
         "module": "supernovae.tasks.nedd",
         "function": "do_nedd",
         "repo": "input/sne-external",
-        "priority": 29
+        "priority": 30
     },
     "cpcs": {
         "nice_name": "%pre CPCS",
@@ -302,7 +302,7 @@
         "module": "supernovae.tasks.cpcs",
         "function": "do_cpcs",
         "repo": "input/sne-external",
-        "priority": 30
+        "priority": 31
     },
     "ptf": {
         "nice_name": "%pre PTF",
@@ -312,7 +312,7 @@
         "module": "supernovae.tasks.palomar",
         "function": "do_ptf",
         "repo": "input/sne-external",
-        "priority": 31
+        "priority": 32
     },
     "des": {
         "nice_name": "%pre DES",
@@ -322,7 +322,7 @@
         "module": "supernovae.tasks.des",
         "function": "do_des",
         "repo": "input/sne-external",
-        "priority": 32
+        "priority": 33
     },
     "asassn": {
         "nice_name": "%pre ASASSN",
@@ -331,7 +331,7 @@
         "module": "supernovae.tasks.asassn",
         "function": "do_asassn",
         "repo": "input/sne-external",
-        "priority": 33
+        "priority": 34
     },
     "snf": {
         "nice_name": "%pre SNF aliases",
@@ -341,7 +341,7 @@
         "module": "supernovae.tasks.snfactory",
         "function": "do_snf_aliases",
         "repo": "input/sne-external",
-        "priority": 34
+        "priority": 35
     },
     "asiago_spectra": {
         "nice_name": "%pre Asiago spectra",
