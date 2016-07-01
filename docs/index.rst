@@ -11,8 +11,11 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   README.md
+
 .. automodule:: astrocats
    :members:
+   :undoc-members:
 
 
 Indices and tables
@@ -21,4 +24,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
