@@ -128,10 +128,10 @@ class Entry(OrderedDict):
             data = data[name]
             log.debug("Name: {}".format(name))
 
-            # Convert the OrderedDict data from json into class structure
-            #    i.e. `Sources` will be extracted and created from the dict
-            #    Everything that remains afterwards should be okay to just store
-            #    to this `Entry`
+            # Convert the OrderedDict data from json into class structure i.e.
+            # `Sources` will be extracted and created from the dict Everything
+            # that remains afterwards should be okay to just store to this
+            # `Entry`
             self._convert_odict_to_classes(data)
             if len(data):
                 log.debug(

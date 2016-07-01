@@ -2,8 +2,6 @@
 """
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
-from astrocats.catalog.utils import is_number
-from astrocats.catalog.utils
 
 
 class QUANTITY(KeyCollection):

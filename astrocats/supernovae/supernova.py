@@ -8,22 +8,17 @@ from astropy.time import Time as astrotime
 
 from astrocats.catalog.entry import KEYS as BASEKEYS
 from astrocats.catalog.entry import Entry
-from astrocats.catalog.error import ERROR, Error
-from astrocats.catalog.photometry import (PHOTOMETRY, Photometry, bandmetaf,
-                                          bandrepf)
+from astrocats.catalog.error import ERROR
+from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
-from astrocats.catalog.source import SOURCE, Source
+from astrocats.catalog.source import Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
-                                     make_date_string, pretty_num, tprint,
-                                     trim_str_arr, uniq_cdl)
-from astrocats.catalog.catdict import CatDict
-from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
-                                            REPR_BETTER_QUANTITY)
+                                     make_date_string, pretty_num, uniq_cdl)
+from astrocats.supernovae.constants import MAX_BANDS, PREF_KINDS
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
-                                        radec_clean, same_tag_num,
-                                        same_tag_str)
+                                        radec_clean)
 from cdecimal import Decimal
 
 
@@ -292,50 +287,51 @@ class Supernova(Entry):
 
     # This needs to be moved to sanitize; currently is not being used but
     # should be.
-    def _replace_inferior_quantities(self, quantity, forcereplacebetter):
-        my_quantity_list = self.get(quantity, [])
-        if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
-                len(my_quantity_list):
-            newquantities = []
-            isworse = True
-            if quantity in [QUANTITY.DISCOVER_DATE, QUANTITY.MAX_DATE]:
-                for ct in my_quantity_list:
-                    ctsplit = ct[QUANTITY.VALUE].split('/')
-                    svsplit = quantity[QUANTITY.VALUE].split('/')
-                    if len(ctsplit) < len(svsplit):
-                        isworse = False
-                        continue
-                    elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
-                        val_one = max(2, get_sig_digits(
-                            ctsplit[-1].lstrip('0')))
-                        val_two = max(2, get_sig_digits(
-                            svsplit[-1].lstrip('0')))
-                        if val_one < val_two:
-                            isworse = False
-                            continue
-                    newquantities.append(ct)
-            else:
-                newsig = get_sig_digits(quantity[QUANTITY.VALUE])
-                for ct in my_quantity_list:
-                    if 'error' in ct:
-                        if quantity[QUANTITY.ERROR]:
-                            if float(quantity[QUANTITY.ERROR]) < float(ct[QUANTITY.ERROR]):
-                                isworse = False
-                                continue
-                        newquantities.append(ct)
-                    else:
-                        if quantity[QUANTITY.ERROR]:
-                            isworse = False
-                            continue
-                        oldsig = get_sig_digits(ct['value'])
-                        if oldsig >= newsig:
-                            newquantities.append(ct)
-                        if newsig >= oldsig:
-                            isworse = False
-            self[quantity] = newquantities
-        else:
-            self.setdefault(quantity, []).append(quanta_entry)
-        return
+    # def _replace_inferior_quantities(self, quantity, forcereplacebetter):
+    #     my_quantity_list = self.get(quantity, [])
+    #     if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
+    #             len(my_quantity_list):
+    #         newquantities = []
+    #         isworse = True
+    #         if quantity in [QUANTITY.DISCOVER_DATE, QUANTITY.MAX_DATE]:
+    #             for ct in my_quantity_list:
+    #                 ctsplit = ct[QUANTITY.VALUE].split('/')
+    #                 svsplit = quantity[QUANTITY.VALUE].split('/')
+    #                 if len(ctsplit) < len(svsplit):
+    #                     isworse = False
+    #                     continue
+    #                 elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
+    #                     val_one = max(2, get_sig_digits(
+    #                         ctsplit[-1].lstrip('0')))
+    #                     val_two = max(2, get_sig_digits(
+    #                         svsplit[-1].lstrip('0')))
+    #                     if val_one < val_two:
+    #                         isworse = False
+    #                         continue
+    #                 newquantities.append(ct)
+    #         else:
+    #             newsig = get_sig_digits(quantity[QUANTITY.VALUE])
+    #             for ct in my_quantity_list:
+    #                 if 'error' in ct:
+    #                     if quantity[QUANTITY.ERROR]:
+    #                         if (float(quantity[QUANTITY.ERROR]) <
+    #                             float(ct[QUANTITY.ERROR])):
+    #                             isworse = False
+    #                             continue
+    #                     newquantities.append(ct)
+    #                 else:
+    #                     if quantity[QUANTITY.ERROR]:
+    #                         isworse = False
+    #                         continue
+    #                     oldsig = get_sig_digits(ct['value'])
+    #                     if oldsig >= newsig:
+    #                         newquantities.append(ct)
+    #                     if newsig >= oldsig:
+    #                         isworse = False
+    #         self[quantity] = newquantities
+    #     else:
+    #         self.setdefault(quantity, []).append(quanta_entry)
+    #     return
 
     def is_erroneous(self, field, sources):
         if hasattr(self, KEYS.ERRORS):
