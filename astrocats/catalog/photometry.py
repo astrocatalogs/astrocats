@@ -89,7 +89,6 @@ class Photometry(OrderedDict):
     def _check(self):
         """
 
-        This is automatically called in `super().__init__()` called from above
         """
         # Run the super method
         super()._check()
