@@ -109,7 +109,7 @@ class Entry(OrderedDict):
     def _clean_quantity(self, quantity):
         pass
 
-    def _load_data_from_json(self, fhand):
+    def _load_data_from_json(self, fhand, clean=False):
         """FIX: check for overwrite??
         """
         log = self.catalog.log
