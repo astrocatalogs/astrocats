@@ -180,7 +180,7 @@ class Entry(OrderedDict):
             for src in sources:
                 newsources.append(Source(self, **src))
             # data['sources'] = newsources
-            self.setdefault(src_key, []).append(newsources)
+            self.setdefault(src_key, []).extend(newsources)
 
         # Handle `photometry`
         # -------------------
@@ -193,7 +193,7 @@ class Entry(OrderedDict):
             for photo in photoms:
                 new_photoms.append(Photometry(self, **photo))
             # data[photo_key] = new_photoms
-            self.setdefault(photo_key, []).append(new_photoms)
+            self.setdefault(photo_key, []).extend(new_photoms)
 
         # Handle `spectra`
         # ---------------
@@ -210,7 +210,7 @@ class Entry(OrderedDict):
                 new_specs.append(Spectrum(
                     self, require_data=require_data, **spec))
             # data[spec_key] = new_specs
-            self.setdefault(spec_key, []).append(new_specs)
+            self.setdefault(spec_key, []).extend(new_specs)
 
         # Handle `error`
         # --------------
@@ -223,7 +223,7 @@ class Entry(OrderedDict):
             for err in errors:
                 new_errors.append(Error(self, **err))
             # data[err_key] = new_errors
-            self.setdefault(err_key, []).append(new_errors)
+            self.setdefault(err_key, []).extend(new_errors)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
@@ -242,7 +242,7 @@ class Entry(OrderedDict):
                 for vv in vals:
                     new_quantities.append(Quantity(self, name=key, **vv))
 
-                self.setdefault(key, []).append(new_quantities)
+                self.setdefault(key, []).extend(new_quantities)
 
         return
 
