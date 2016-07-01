@@ -92,26 +92,12 @@ class CatDict(OrderedDict):
     def append_sources_from(self, other):
         """
         """
-        # Get aliases list from the parent `Entry` subclass (e.g. `Supernova`)
-        sources = self._parent[self._parent._KEYS.SOURCES]
-        parent_aliases = [x[x._KEYS.ALIAS] for x in sources]
         # Get aliases lists from this `CatDict` and other
         self_aliases = self[self._KEYS.SOURCE].split(',')
         other_aliases = other[self._KEYS.SOURCE].split(',')
 
-        # Iterate over `other` aliases, looking for different entries
-        for oa in other_aliases:
-            # If this other alias is not in current list, store it
-            if oa not in self_aliases:
-                # Make sure other alias is in parent, otherwise error
-                if oa not in parent_aliases:
-                    parn = self._parent[self._parent._KEYS.NAME]
-                    raise RuntimeError("Error: parent '{}'".format(parn) +
-                                       " missing source alias '{}'".format(oa) +
-                                       ", from '{}'".format(repr(other)))
-
-                # Store alias to `self`
-                self._KEYS.SOURCE = uniq_cdl(self_aliases + [oa])
+        # Store alias to `self`
+        self[self._KEYS.SOURCE] = uniq_cdl(self_aliases + other_aliases)
 
         return
 
