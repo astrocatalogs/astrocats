@@ -152,7 +152,6 @@ class Entry(OrderedDict):
                         "'{}'".format(self_name, name))
 
         self.check()
-        sys.exit(5)
         return
 
     def _convert_odict_to_classes(self, data, clean=False):
