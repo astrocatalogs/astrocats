@@ -3,7 +3,6 @@
 import codecs
 import json
 import os
-import sys
 from collections import OrderedDict
 
 from astrocats.catalog.error import ERROR, Error
@@ -126,10 +125,10 @@ class Entry(OrderedDict):
             data = data[name]
             self._log.debug("Name: {}".format(name))
 
-            # Convert the OrderedDict data from json into class structure
-            #    i.e. `Sources` will be extracted and created from the dict
-            #    Everything that remains afterwards should be okay to just store
-            #    to this `Entry`
+            # Convert the OrderedDict data from json into class structure i.e.
+            # `Sources` will be extracted and created from the dict Everything
+            # that remains afterwards should be okay to just store to this
+            # `Entry`
             self._convert_odict_to_classes(data, clean=clean)
             if len(data):
                 err_str = ("Remaining entries in `data` after "
@@ -145,7 +144,7 @@ class Entry(OrderedDict):
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
             self._log.warning("Object name '{}' does not match name in json:"
-                        "'{}'".format(self_name, name))
+                              "'{}'".format(self_name, name))
 
         self.check()
         return
@@ -174,7 +173,8 @@ class Entry(OrderedDict):
         if 'sources' in data:
             # Remove from `data`
             sources = data.pop('sources')
-            self._log.debug("Found {} '{}' entries".format(len(sources), src_key))
+            self._log.debug("Found {} '{}' entries"
+                            .format(len(sources), src_key))
 
             newsources = []
             for src in sources:
