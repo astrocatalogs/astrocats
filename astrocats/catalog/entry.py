@@ -413,7 +413,9 @@ class Entry(OrderedDict):
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
-    def add_spectrum(self, **kwargs):
+    def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
+        kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
+                       SPECTRUM.FLUX_UNIT: fluxunit})
         self._log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
