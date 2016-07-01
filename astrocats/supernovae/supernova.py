@@ -571,8 +571,8 @@ class Supernova(Entry):
                     self.add_error('error', err['quantity'],
                                    kind=err['sourcekind'], extra=err['id'])
             except Exception as err:
-                err_str = ("{}: `{}` is invalid '{}': Error: '{}'".format(
-                    self.name(), errs_key, errors, str(err)))
+                err_str = ("{} ({})\n`{}` is invalid '{}': Error: '{}'".format(
+                    self.name(), self.filename, errs_key, errors, str(err)))
                 self._log.error(err_str)
                 raise
 
