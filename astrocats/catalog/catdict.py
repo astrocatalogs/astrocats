@@ -90,7 +90,7 @@ class CatDict(OrderedDict):
         return True
 
     def append_sources_from(self, other):
-        """
+        """Merge the source alias lists of two CatDicts.
         """
         # Get aliases lists from this `CatDict` and other
         self_aliases = self[self._KEYS.SOURCE].split(',')
@@ -102,6 +102,8 @@ class CatDict(OrderedDict):
         return
 
     def _check(self):
+        """
+        """
         for req_any in self.REQ_KEY_TYPES:
             if not any([req_key in self for req_key in req_any]):
                 err_str = "Require one or more of: " + ",".join(

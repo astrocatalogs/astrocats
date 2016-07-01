@@ -140,6 +140,9 @@ class Entry(OrderedDict):
         return
 
     def save(self, empty=False, bury=False, gz=False, final=False):
+        """Write entry to JSON file in the proper location
+        FIX: gz option not being used?
+        """
         outdir, filename = self._get_save_path(bury=bury)
 
         if final:
