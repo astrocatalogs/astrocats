@@ -246,6 +246,17 @@ class Entry(OrderedDict):
 
         return
 
+    def check(self):
+        self.catalog.log.debug("check()")
+        # Make sure there is a schema key in dict
+        if KEYS.SCHEMA not in self.keys():
+            self[KEYS.SCHEMA] = self.catalog.SCHEMA.URL
+        # Make sure there is a name key in dict
+        if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
+            raise ValueError("Entry name is empty:\n\t{}".format(
+                json.dumps(self, indent=2)))
+        return
+
     def save(self, empty=False, bury=False, gz=False, final=False):
         """Write entry to JSON file in the proper location
         FIX: gz option not being used?

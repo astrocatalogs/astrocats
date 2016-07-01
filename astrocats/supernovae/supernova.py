@@ -315,17 +315,6 @@ class Supernova(Entry):
     def clean_entry_name(self, name):
         return name_clean(name)
 
-    def check(self):
-        self.catalog.log.debug("check()")
-        # Make sure there is a schema key in dict
-        if KEYS.SCHEMA not in self.keys():
-            self[KEYS.SCHEMA] = self.catalog.SCHEMA.URL
-        # Make sure there is a name key in dict
-        if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
-            raise ValueError("Supernova name is empty:\n\t{}".format(
-                json.dumps(self, indent=2)))
-        return
-
     def _get_save_path(self, bury=False):
         self._log.debug("_get_save_path(): {}".format(self.name()))
         filename = get_event_filename(self[KEYS.NAME])
