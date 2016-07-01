@@ -13,17 +13,38 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
+# sys.path.insert(0, os.path.abspath('.'))
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
 import os
+import subprocess
 import sys
+
 from recommonmark.parser import CommonMarkParser
-# sys.path.insert(0, os.path.abspath('.'))
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 sys.path.append(os.path.join(os.path.dirname(__name__), '..'))
+
+
+def run_apidoc(_):
+    modules = ['astrocats']
+    for module in modules:
+        cur_dir = os.path.abspath(os.path.dirname(__file__))
+        output_path = os.path.join(cur_dir, module, 'doc')
+        cmd_path = 'sphinx-apidoc'
+        # Check to see if we are in a virtualenv
+        if hasattr(sys, 'real_prefix'):
+            # If we are, assemble the path manually
+            cmd_path = os.path.abspath(os.path.join(
+                sys.prefix, 'bin', 'sphinx-apidoc'))
+        subprocess.check_call(
+            [cmd_path, '-e', '-o', output_path, module, '--force'])
+
+
+def setup(app):
+    app.connect('builder-inited', run_apidoc)
 
 # -- General configuration ------------------------------------------------
 
@@ -251,21 +272,21 @@ htmlhelp_basename = 'Astrocatsdoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-     # The paper size ('letterpaper' or 'a4paper').
-     #
-     # 'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    #
+    # 'papersize': 'letterpaper',
 
-     # The font size ('10pt', '11pt' or '12pt').
-     #
-     # 'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    #
+    # 'pointsize': '10pt',
 
-     # Additional stuff for the LaTeX preamble.
-     #
-     # 'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    #
+    # 'preamble': '',
 
-     # Latex figure (float) alignment
-     #
-     # 'figure_align': 'htbp',
+    # Latex figure (float) alignment
+    #
+    # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
