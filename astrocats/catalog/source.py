@@ -36,6 +36,11 @@ class Source(CatDict):
         raise RuntimeError("`Source.append_sources_from` called.")
 
     def is_duplicate_of(self, other):
+        """Check if this Source is a duplicate of another.
+
+        Unlike the function in the super class, this method will return True
+        if *either* name or bibcode is the same.
+        """
         # If these are not the same type, return False
         if type(other) is not type(self):
             return False
