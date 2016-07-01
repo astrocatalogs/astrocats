@@ -228,7 +228,7 @@ class Entry(OrderedDict):
                 self.name, key_in_self, str(err)))
             return
 
-        for item in self[key_in_self]:
+        for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
                 item.append_sources(new_entry)
                 return
