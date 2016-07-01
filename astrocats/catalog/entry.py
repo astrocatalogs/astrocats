@@ -34,7 +34,7 @@ class KEYS:
     REDSHIFT = 'redshift'
     SCHEMA = 'schema'
     SOURCES = 'sources'
-    SPECTRUM = 'spectrum'
+    SPECTRA = 'spectra'
     URL = 'url'
     VELOCITY = 'velocity'
 
