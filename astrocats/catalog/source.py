@@ -8,12 +8,12 @@ class SOURCE(KeyCollection):
     # Strings
     NAME = Key('name', KEY_TYPES.STRING)
     BIBCODE = Key('bibcode', KEY_TYPES.STRING)
-    URL = Key('url', KEY_TYPES.STRING)
-    ACKNOWLEDGMENT = Key('acknowledgment', KEY_TYPES.STRING)
+    URL = Key('url', KEY_TYPES.STRING, compare=False)
+    ACKNOWLEDGMENT = Key('acknowledgment', KEY_TYPES.STRING, compare=False)
     # Numbers
-    ALIAS = Key('alias', KEY_TYPES.NUMERIC)
+    ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
     # Booleans
-    SECONDARY = Key('secondary', KEY_TYPES.BOOL)
+    SECONDARY = Key('secondary', KEY_TYPES.BOOL, compare=False)
 
 
 class Source(CatDict):
@@ -34,3 +34,27 @@ class Source(CatDict):
         """`CatDict.append_sources_from` should never be called in `Source`.
         """
         raise RuntimeError("`Source.append_sources_from` called.")
+
+    def is_duplicate_of(self, other):
+        # If these are not the same type, return False
+        if type(other) is not type(self):
+            return False
+
+        # Go over all expected parameters and check equality of each
+        for key in self._KEYS.vals():
+            # Skip parameters which shouldnt be compared
+            if not key.compare:
+                continue
+
+            # If only one object has this parameter, not the same
+            if (key in self) != (key in other):
+                continue
+            # If self doesnt have this parameter (and thus neither does), skip
+            if key not in self:
+                continue
+
+            # Now, both objects have the same parameter, compare them
+            if self[key] == other[key]:
+                return True
+
+        return False
