@@ -191,7 +191,7 @@ class Supernova(Entry):
         #     return None
 
         # my_quantity_list = self.get(quantity, [])
-        # 
+        #
         # svalue = value.strip()
         # serror = error.strip()
         # skind = kind.strip()
@@ -573,85 +573,100 @@ class Supernova(Entry):
 
         return srcname, bibcode
 
-    def clean_internal(self):
+    def clean_internal(self, data):
         """Clean input data from the 'Supernovae/input/internal' repository.
 
-        Extends `Entry.clean_internal`.
         FIX: instead of making changes in place to `dirty_event`, should a new
              event be created, values filled, then returned??
         FIX: currently will fail if no bibcode and no url
         """
-        # Call `Entry.clean_internal()` first
-        super().clean_internal()
+        self._log.debug("clean_internal(): {}".format(self.name()))
 
         bibcodes = []
-        try:
-            for ss, source in enumerate(self[KEYS.SOURCES]):
-                if KEYS.BIBCODE in source:
-                    bibcodes.append(source[KEYS.BIBCODE])
-        except KeyError:
-            pass
+        # Remove 'names' when 'bibcodes' are given
+        for ss, source in enumerate(data.get(KEYS.SOURCES, [])):
+            if KEYS.BIBCODE in source
+                bibcodes.append(source[KEYS.BIBCODE])
+                # If there is a bibcode, remove the 'name'
+                #    auto construct it later instead
+                if KEYS.NAME in source:
+                    source.pop(KEYS.NAME)
+
+        # If there are no existing sources, add OSC as one
+        if len(bibcodes) == 0:
+            data.add_source(bibcode=data.catalog.OSC_BIBCODE,
+                            srcname=data.catalog.OSC_NAME,
+                            url=data.catalog.OSC_URL, secondary=True)
+            bibcodes = [data.catalog.OSC_BIBCODE]
 
         # Clean some legacy fields
-        if 'aliases' in self and isinstance(self['aliases'], list):
+        alias_key = self._KEYS.ALIAS
+        if alias_key in data:
+            # Remove the entry in the data
+            aliases = data.pop(alias_key)
+            # Make sure this is a list
+            if not isinstance(aliases, list):
+                raise ValueError("{}: aliases not a list '{}'".format(
+                    self.name(), aliases))
+            # Add OSC source entry
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
-            for alias in self['aliases']:
+                bibcode=data.catalog.OSC_BIBCODE,
+                srcname=data.catalog.OSC_NAME,
+                url=data.catalog.OSC_URL, secondary=True)
+
+            for alias in data['aliases']:
                 self.add_quantity('alias', alias, source)
-            del self['aliases']
 
-        # FIX: should this be an error if false??
-        if ((KEYS.DISTINCT_FROM in self and
-             isinstance(self[KEYS.DISTINCT_FROM], list) and
-             isinstance(self[KEYS.DISTINCT_FROM][0], str))):
-            distinctfroms = [x for x in self[KEYS.DISTINCT_FROM]]
-            del self[KEYS.DISTINCT_FROM]
+        dist_key = KEYS.DISTINCT_FROM
+        if dist_key in data:
+            distincts = data.pop(dist_key)
+            if ((not isinstance(distincts, list) and
+                 not isinstance(distincts[0], str))):
+                raise ValueError("{}: `{}` not a list of strings '{}'".format(
+                    self.name(), dist_key, distincts))
+
             source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
-            for df in distinctfroms:
-                self.add_quantity(KEYS.DISTINCT_FROM, df, source)
+                bibcode=data.catalog.OSC_BIBCODE,
+                srcname=data.catalog.OSC_NAME,
+                url=data.catalog.OSC_URL, secondary=True)
+            for df in distincts:
+                data.add_quantity(dist_key, df, source)
 
-        if 'errors' in self and \
-                isinstance(self['errors'], list) and \
-                'sourcekind' in self['errors'][0]:
-            for err in self['errors']:
-                self.add_error(
-                    'error', err['quantity'],
-                    kind=err['sourcekind'], extra=err['id'])
-            del self['errors']
+        # This is a legacy/deprecated field, no 'Key' for it
+        errs_key = 'errors'
+        if errs_key in data:
+            errors = data.pop(errs_key)
+            try:
+                for err in errors:
+                    data.add_error('error', err['quantity'],
+                                   kind=err['sourcekind'], extra=err['id'])
+            except Exception as err:
+                err_str = ("{}: `{}` is invalid '{}': Error: '{}'".format(
+                    self.name(), errs_key, errors, str(err)))
+                self._log.error(err_str)
+                raise
 
-        if not bibcodes:
-            self.add_source(bibcode=self.catalog.OSC_BIBCODE,
-                            srcname=self.catalog.OSC_NAME,
-                            url=self.catalog.OSC_URL, secondary=True)
-            bibcodes = [self.catalog.OSC_BIBCODE]
-
-        # Go through all keys in 'dirty' event
-        for key in self.keys():
-            if key in [KEYS.NAME, KEYS.SCHEMA,
-                       KEYS.SOURCES, KEYS.ERRORS]:
+        # Go through all remaining keys in 'dirty' event, and make sure
+        #    everything is a quantity with a source (OSC if no other)
+        for key in data.keys():
+            if key in [KEYS.NAME, KEYS.SCHEMA, KEYS.SOURCES, KEYS.ERRORS]:
                 pass
             elif key == 'photometry':
-                for p, photo in enumerate(self['photometry']):
+                for p, photo in enumerate(data['photometry']):
                     if photo['u_time'] == 'JD':
-                        self['photometry'][p]['u_time'] = 'MJD'
-                        self['photometry'][p]['time'] = str(
+                        data['photometry'][p]['u_time'] = 'MJD'
+                        data['photometry'][p]['time'] = str(
                             jd_to_mjd(Decimal(photo['time'])))
-                    if bibcodes and 'source' not in photo:
-                        source = self.add_source(bibcode=bibcodes[0])
-                        self['photometry'][p]['source'] = source
+                    if 'source' not in photo:
+                        source = data.add_source(bibcode=bibcodes[0])
+                        data['photometry'][p]['source'] = source
             else:
-                for qi, quantity in enumerate(self[key]):
-                    if bibcodes and 'source' not in quantity:
-                        source = self.add_source(bibcode=bibcodes[0])
-                        self[key][qi]['source'] = source
+                for qi, quantity in enumerate(data[key]):
+                    if 'source' not in quantity:
+                        source = data.add_source(bibcode=bibcodes[0])
+                        data[key][qi]['source'] = source
 
-        self.check()
-        return
+        return data
 
     def add_photometry(self, **kwargs):
         self.catalog.log.debug("add_photometry()")
