@@ -209,3 +209,29 @@ class Entry(OrderedDict):
             with open(eventfile, 'r') as f:
                 filetext = f.read()
         return filetext
+
+    def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        # Make sure that a source is given
+        source = kwargs.get(self._KEYS.SOURCE, None)
+        if source is None:
+            raise ValueError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]))
+
+        # If this source/data is erroneous, skip it
+        if self.is_erroneous(key_in_self, source):
+            return
+
+        try:
+            new_entry = cat_dict_class(self, **kwargs)
+        except ValueError as err:
+            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
+                self.name, key_in_self, str(err)))
+            return
+
+        for item in self[key_in_self]:
+            if new_entry.is_duplicate_of(item):
+                item.append_sources(new_entry)
+                return
+
+        self.setdefault(key_in_self, []).append(new_entry)
+        return

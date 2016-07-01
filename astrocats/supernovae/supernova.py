@@ -153,22 +153,7 @@ class Supernova(Entry):
         return source_alias
 
     def add_quantity(self, quantity, **kwargs):
-        try:
-            quantity_obj = Quantity(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_quantity`: Error: '{}'".format(
-                self.name, str(err)))
-            return
-
-        if self.is_erroneous(quantity, self[QUANTITY.SOURCE]):
-            return
-
-        for item in self[quantity]:
-            if quantity_obj.is_duplicate_of(item):
-                item.append_sources(quantity_obj)
-                return
-
-        self.setdefault(quantity, []).append(quantity_obj)
+        self._add_cat_dict(self, Quantity, quantity, **kwargs)
         return
 
     def _add_quantity(self, quantity, value, sources,
@@ -681,6 +666,18 @@ class Supernova(Entry):
         return
 
     def add_photometry(self, **kwargs):
+        self._add_cat_dict(self, Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        '''
+        # Make sure that a source is given
+        source = kwargs.get(self._KEYS.SOURCE, None)
+        if source is None:
+            raise ValueError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]))
+
+        # If this source/data is erroneous, skip it
+        if self.is_erroneous(self._KEYS.PHOTOMETRY, source):
+            return
+
         try:
             photo_entry = Photometry(self, **kwargs)
         except ValueError as err:
@@ -688,34 +685,17 @@ class Supernova(Entry):
                 self.name, str(err)))
             return
 
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(self._KEYS.PHOTOMETRY, self[PHOTOMETRY.SOURCE]):
-            return
-
-        for item in self[KEYS.PHOTOMETRY]:
+        for item in self[self._KEYS.PHOTOMETRY]:
             if photo_entry.is_duplicate_of(item):
                 item.append_sources(photo_entry)
                 return
 
         self.setdefault(self._KEYS.PHOTOMETRY, []).append(photo_entry)
+        '''
         return
 
     def add_spectrum(self, **kwargs):
-        try:
-            spectrum_obj = Spectrum(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_quantity`: Error: '{}'".format(
-                self.name, str(err)))
-
-        if self.is_erroneous(self._KEYS.SPECTRA, self[QUANTITY.SOURCE]):
-            pass
-
-        for item in self[self._KEYS.SPECTRA]:
-            if spectrum_obj.is_duplicate_of(item):
-                item.append_sources(spectrum_obj)
-                return
-
-        self.setdefault(self._KEYS.SPECTRA, []).append(spectrum_obj)
+        self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         return
 
     def _add_spectrum(self, waveunit, fluxunit, wavelengths="", fluxes="",
