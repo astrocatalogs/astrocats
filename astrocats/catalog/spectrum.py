@@ -45,12 +45,11 @@ class Spectrum(CatDict):
 
     _KEYS = SPECTRUM
 
-    def __init__(self, parent, require_data=True, **kwargs):
-        self._require_data = require_data
+    def __init__(self, parent, **kwargs):
         self.REQ_KEY_TYPES = [
-            [SPECTRUM.SOURCE],
-            [SPECTRUM.FLUX_UNIT],
-            [SPECTRUM.WAVE_UNIT],
+            [SPECTRUM.SOURCE, SPECTRUM.FILENAME],
+            [SPECTRUM.FLUX_UNIT, SPECTRUM.FILENAME],
+            [SPECTRUM.WAVE_UNIT, SPECTRUM.FILENAME],
         ]
 
         # FIX: add this back in
@@ -67,7 +66,7 @@ class Spectrum(CatDict):
                 wavelengths = self[SPECTRUM.WAVELENGTHS]
                 fluxes = self[SPECTRUM.FLUXES]
             except KeyError:
-                if not self._require_data:
+                if SPECTRUM.FILENAME in self:
                     return
                 else:
                     err_str = "Neither data nor (wavelengths and fluxes) given"
@@ -94,13 +93,6 @@ class Spectrum(CatDict):
         """
 
         """
-        # In general require certain parameters
-        # In the special case of 'cleaning' data from the internal repository
-        # then we might want to have an entry that is special, so ignore the
-        # requirements (specifically, may just be a 'filename')
-        if not self._require_data:
-            return
-
         # Run the super method
         super()._check()
 
@@ -108,9 +100,10 @@ class Spectrum(CatDict):
         has_data = self._KEYS.DATA in self
         has_wave = self._KEYS.WAVELENGTHS in self
         has_flux = self._KEYS.FLUXES in self
+        has_filename = self._KEYS.FILENAME in self
 
         if not has_data:
-            if not has_wave or not has_flux:
+            if (not has_wave or not has_flux) and not has_filename:
                 err_str = (
                     "If `{}` not given".format(self._KEYS.DATA) +
                     "; `{}` or `{}` needed".format(
