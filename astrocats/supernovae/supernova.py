@@ -13,6 +13,7 @@ from astrocats.catalog.photometry import (PHOTOMETRY, Photometry, bandmetaf,
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
+from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, tprint,
@@ -156,6 +157,11 @@ class Supernova(Entry):
 
     def add_quantity(self, quantity, value, sources, **kwargs):
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
+        self._add_cat_dict(Quantity, quantity, **kwargs)
+        return
+
+    def add_error(self, quantity, value, **kwargs):
+        kwargs.update({ERROR.VALUE: value})
         self._add_cat_dict(Quantity, quantity, **kwargs)
         return
 
@@ -609,13 +615,10 @@ class Supernova(Entry):
         if 'errors' in self and \
                 isinstance(self['errors'], list) and \
                 'sourcekind' in self['errors'][0]:
-            source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
             for err in self['errors']:
-                self.add_quantity('error', err['quantity'], source,
-                                  kind=err['sourcekind'], extra=err['id'])
+                self.add_error(
+                    'error', err['quantity'],
+                    kind=err['sourcekind'], extra=err['id'])
             del self['errors']
 
         if not bibcodes:
