@@ -97,7 +97,7 @@ class Photometry(OrderedDict):
         has_flux = self._KEYS.FLUX in self
         has_flux_dens = self._KEYS.FLUX_DENSITY in self
         has_u_flux = self._KEYS.U_FLUX in self
-        has_u_flux_dens = self._KEYS.U_FLUX in self
+        has_u_flux_dens = self._KEYS.U_FLUX_DENSITY in self
 
         has_freq = self._KEYS.FREQUENCY in self
         has_band = self._KEYS.BAND in self
