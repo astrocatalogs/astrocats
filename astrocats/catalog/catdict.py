@@ -29,10 +29,11 @@ class CatDict(OrderedDict):
 
     REQ_KEY_TYPES = []
 
-    def __init__(self, parent, **kwargs):
+    def __init__(self, parent, name=None, **kwargs):
         # Store the parent object (an `Entry` subclass) to which this instance
         #    will belong.  e.g. a `Supernova` entry.
         self._parent = parent
+        self._name = name
         # Iterate over all `_KEYS` parameters, load each if given note that the
         # stored 'values' are the `Key` objects, referred to here with the name
         # 'key'.
