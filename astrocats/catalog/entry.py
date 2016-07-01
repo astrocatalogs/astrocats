@@ -46,6 +46,8 @@ class Entry(OrderedDict):
     filename = None
     catalog = None
 
+    _KEYS = KEYS
+
     def __init__(self, catalog, name, stub=False):
         """Create a new `Entry` object with the given `name`.
         """
