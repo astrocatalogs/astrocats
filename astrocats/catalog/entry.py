@@ -116,8 +116,6 @@ class Entry(OrderedDict):
         log.debug("_load_data_from_json(): {}".format(self.name()))
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
-            log.error("\n~1~\n" + dict_to_pretty_string(data) + "\n\n")
-
             name = list(data.keys())
             if len(name) != 1:
                 raise ValueError("json file '{}' has multiple keys: {}".format(
@@ -125,7 +123,6 @@ class Entry(OrderedDict):
             name = name[0]
             # Remove the outmost dict level
             data = data[name]
-            log.error("\n~2~\n" + dict_to_pretty_string(data) + "\n\n")
             log.debug("Name: {}".format(name))
 
             # Convert the OrderedDict data from json into class structure
@@ -159,8 +156,7 @@ class Entry(OrderedDict):
         """
         log = self.catalog.log
         log.debug("_convert_odict_to_classes(): {}".format(self.name()))
-        log.warning("This should be a temporary fix.  Dont be lazy.")
-        log.error("\n~3~\n" + dict_to_pretty_string(data) + "\n\n")
+        log.debug("This should be a temporary fix.  Dont be lazy.")
 
         # Handle 'name'
         name_key = self._KEYS.NAME
