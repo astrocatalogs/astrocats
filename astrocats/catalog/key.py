@@ -25,6 +25,10 @@ class KEY_TYPES(KeyCollection):
 
 
 class Key(str):
+    """
+
+    NOTE: if `type` is 'None', then `listable` also is *not* checked.
+    """
     def __new__(cls, name, type=None, listable=False, compare=True, **kwargs):
         return str.__new__(cls, name)
 
@@ -48,28 +52,32 @@ class Key(str):
 
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
+
+        NOTE: if `type` is 'None', then `listable` also is *not* checked.
         """
+        # If there is no `type` requirement, everything is okay
+        if self.type is None:
+            return True
+
         is_list = isinstance(val, list)
         # If lists are not allowed, and this is a list --> false
         if not self.listable and is_list:
             return False
 
-        # If there is a type requirement, check that
-        if self.type is not None:
-            # `is_number` already checks for either list or single value
-            if self.type == KEY_TYPES.NUMERIC and not is_number(val):
+        # `is_number` already checks for either list or single value
+        if self.type == KEY_TYPES.NUMERIC and not is_number(val):
+            return False
+        elif self.type == KEY_TYPES.STRING:
+            # If its a list, check first element
+            if is_list and not isinstance(val[0], str):
                 return False
-            elif self.type == KEY_TYPES.STRING:
-                # If its a list, check first element
-                if is_list and not isinstance(val[0], str):
-                    return False
-                # Otherwise, check it
-                elif not isinstance(val, str):
-                    return False
-            elif self.type == KEY_TYPES.BOOL:
-                if is_list and not isinstance(val[0], bool):
-                    return False
-                elif not isinstance(val, bool):
-                    return False
+            # Otherwise, check it
+            elif not isinstance(val, str):
+                return False
+        elif self.type == KEY_TYPES.BOOL:
+            if is_list and not isinstance(val[0], bool):
+                return False
+            elif not isinstance(val, bool):
+                return False
 
         return True
