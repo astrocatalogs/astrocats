@@ -140,6 +140,8 @@ def do_crts(catalog):
                     mag = re.search("showy\('(.*?)'\)", line).group(1)
                 if 'javascript:showz' in line:
                     err = re.search("showz\('(.*?)'\)", line).group(1)
+                if not is_number(mag) or (err and not is_number(err)):
+                    continue
                 e_mag = err if float(err) > 0.0 else ''
                 upl = (float(err) == 0.0)
                 (catalog.entries[name]

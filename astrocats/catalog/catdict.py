@@ -2,7 +2,8 @@
 """
 from collections import OrderedDict
 
-from .key import KEY_TYPES, KeyCollection
+from astrocats.catalog.key import KEY_TYPES, KeyCollection
+from astrocats.catalog.utils import uniq_cdl
 
 
 class CatDict(OrderedDict):
@@ -110,7 +111,7 @@ class CatDict(OrderedDict):
                                        ", from '{}'".format(repr(other)))
 
                 # Store alias to `self`
-                self.setdefault(self._KEYS.SOURCE, []).append(oa)
+                self._KEYS.SOURCE = uniq_cdl(self_aliases + [oa])
 
         return
 
