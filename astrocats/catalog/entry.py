@@ -9,6 +9,7 @@ from collections import OrderedDict
 from .utils import dict_to_pretty_string, get_event_filename
 from astrocats.catalog.source import Source
 from astrocats.catalog.photometry import Photometry
+from astrocats.catalog.spectrum import Spectrum
 
 
 class KEYS:
@@ -20,6 +21,7 @@ class KEYS:
     DISCOVERER = 'discoverer'
     DISTINCT_FROM = 'distinctfrom'
     EBV = 'ebv'
+    ERROR = 'error'
     HOST = 'host'
     HOST_DEC = 'hostdec'
     HOST_OFFSET_ANG = 'hostoffsetang'
@@ -174,11 +176,23 @@ class Entry(OrderedDict):
         if photo_key in data:
             photoms = data.pop(photo_key)
             log.debug("Found {} '{}' entries".format(
-                len(photoms, photo_key)))
+                len(photoms), photo_key))
             new_photoms = []
             for photo in photoms:
                 new_photoms.append(Photometry(self, **photo))
             data[photo_key] = new_photoms
+
+        # Handle `spectra`
+        # ----------------
+        spec_key = self._KEYS.SPECTRA
+        if spec_key in data:
+            spectra = data.pop(spec_key)
+            log.debug("Found {} '{}' entries".format(
+                len(spectra), spec_key))
+            new_specs = []
+            for spec in spectra:
+                new_specs.append(Spectrum(self, **spec))
+            data[spec_key] = new_specs
 
         return
 
