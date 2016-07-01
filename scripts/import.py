@@ -709,7 +709,7 @@ def add_photometry(name, time = "", u_time = "MJD", e_time = "", telescope = "",
         return
 
     if not source:
-        ValueError('Photometry must have source before being added!')
+        raise ValueError('Photometry must have source before being added!')
 
     if is_erroneous(name, 'photometry', source):
         return
@@ -873,10 +873,10 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
         return
 
     if not data or (not wavelengths or not fluxes):
-        ValueError('Spectrum must have wavelengths and fluxes set, or data set.')
+        raise ValueError('Spectrum must have wavelengths and fluxes set, or data set.')
 
     if not source:
-        ValueError('Spectrum must have source before being added!')
+        raise ValueError('Spectrum must have source before being added!')
 
     if deredshifted != '':
         spectrumentry['deredshifted'] = deredshifted
@@ -1760,14 +1760,14 @@ def copy_to_event(fromname, destname):
                 isd = False
                 sources = []
                 if 'source' not in item:
-                    ValueError("Item has no source!")
+                    raise ValueError("Item has no source!")
                 for sid in item['source'].split(','):
                     if sid == 'D':
                         sources.append('D')
                     elif sid in newsourcealiases:
                         sources.append(newsourcealiases[sid])
                     else:
-                        ValueError("Couldn't find source alias!")
+                        raise ValueError("Couldn't find source alias!")
                 sources = uniq_cdl(sources)
 
                 if key == 'photometry':
