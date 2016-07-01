@@ -872,7 +872,7 @@ def add_spectrum(name, waveunit, fluxunit, wavelengths = "", fluxes = "", u_time
         warnings.warn('No flux unit specified, not adding spectrum.')
         return
 
-    if not data or (not wavelengths or not fluxes):
+    if not data and (not wavelengths or not fluxes):
         raise ValueError('Spectrum must have wavelengths and fluxes set, or data set.')
 
     if not source:
