@@ -515,7 +515,7 @@ class Supernova(Entry):
         bibcodes = []
         # Remove 'names' when 'bibcodes' are given
         for ss, source in enumerate(data.get(KEYS.SOURCES, [])):
-            if KEYS.BIBCODE in source
+            if KEYS.BIBCODE in source:
                 bibcodes.append(source[KEYS.BIBCODE])
                 # If there is a bibcode, remove the 'name'
                 #    auto construct it later instead
