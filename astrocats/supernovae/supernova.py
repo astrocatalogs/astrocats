@@ -76,7 +76,7 @@ class Supernova(Entry):
                 self.name, str(err)))
             return
 
-        for item in self[self._KEYS.SOURCES]:
+        for item in self.get(self._KEYS.SOURCES, ''):
             if source_obj.is_duplicate_of(item):
                 return
 
@@ -673,7 +673,7 @@ class Supernova(Entry):
             # Only the `filename` should be compared for duplicates
             #    If a duplicate is found, that means the previous `exclude`
             #    array should be saved to the new object, and the old deleted
-            if new_entry.is_duplicate_of(item):
+            if new_spectrum.is_duplicate_of(item):
                 new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
                 del self[self._KEYS.SPECTRA][si]
                 break
