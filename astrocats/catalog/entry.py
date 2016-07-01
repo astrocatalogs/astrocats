@@ -112,8 +112,9 @@ class Entry(OrderedDict):
     def _load_data_from_json(self, fhand, clean=False):
         """FIX: check for overwrite??
         """
-        log = self.catalog.log
-        log.debug("_load_data_from_json(): {}".format(self.name()))
+        self._log.debug("_load_data_from_json(): {}".format(self.name()))
+        # Store the filename this was loaded from
+        self.filename = fhand
         with open(fhand, 'r') as jfil:
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
@@ -123,7 +124,7 @@ class Entry(OrderedDict):
             name = name[0]
             # Remove the outmost dict level
             data = data[name]
-            log.debug("Name: {}".format(name))
+            self._log.debug("Name: {}".format(name))
 
             # Convert the OrderedDict data from json into class structure
             #    i.e. `Sources` will be extracted and created from the dict
@@ -134,18 +135,16 @@ class Entry(OrderedDict):
                 err_str = ("Remaining entries in `data` after "
                            "`_convert_odict_to_classes`.")
                 err_str += "\n{}".format(dict_to_pretty_string(data))
-                log.error(err_str)
+                self._log.error(err_str)
                 raise RuntimeError(err_str)
 
-        # Store the filename this was loaded from
-        self.filename = fhand
         # If object doesnt have a name yet, but json does, store it
         self_name = self[KEYS.NAME]
         if len(self_name) == 0:
             self[KEYS.NAME] = name
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
-            log.warning("Object name '{}' does not match name in json:"
+            self._log.warning("Object name '{}' does not match name in json:"
                         "'{}'".format(self_name, name))
 
         self.check()
@@ -154,9 +153,8 @@ class Entry(OrderedDict):
     def _convert_odict_to_classes(self, data, clean=False):
         """
         """
-        log = self.catalog.log
-        log.debug("_convert_odict_to_classes(): {}".format(self.name()))
-        log.debug("This should be a temporary fix.  Dont be lazy.")
+        self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
+        self._log.debug("This should be a temporary fix.  Dont be lazy.")
 
         # Handle 'name'
         name_key = self._KEYS.NAME
@@ -176,7 +174,7 @@ class Entry(OrderedDict):
         if 'sources' in data:
             # Remove from `data`
             sources = data.pop('sources')
-            log.debug("Found {} '{}' entries".format(len(sources), src_key))
+            self._log.debug("Found {} '{}' entries".format(len(sources), src_key))
 
             newsources = []
             for src in sources:
@@ -189,7 +187,7 @@ class Entry(OrderedDict):
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
-            log.debug("Found {} '{}' entries".format(
+            self._log.debug("Found {} '{}' entries".format(
                 len(photoms), photo_key))
             new_photoms = []
             for photo in photoms:
@@ -202,7 +200,7 @@ class Entry(OrderedDict):
         spec_key = self._KEYS.SPECTRA
         if spec_key in data:
             spectra = data.pop(spec_key)
-            log.debug("Found {} '{}' entries".format(
+            self._log.debug("Found {} '{}' entries".format(
                 len(spectra), spec_key))
             new_specs = []
             for spec in spectra:
@@ -215,7 +213,7 @@ class Entry(OrderedDict):
         err_key = self._KEYS.ERROR
         if err_key in data:
             errors = data.pop(err_key)
-            log.debug("Found {} '{}' entries".format(
+            self._log.debug("Found {} '{}' entries".format(
                 len(spectra), err_key))
             new_errors = []
             for err in errors:
@@ -226,7 +224,7 @@ class Entry(OrderedDict):
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
         if len(data):
-            log.debug("{} remaining entries, assuming `Quantity`".format(
+            self._log.debug("{} remaining entries, assuming `Quantity`".format(
                 len(data)))
             # Iterate over remaining keys
             for key in list(data.keys()):
@@ -235,7 +233,7 @@ class Entry(OrderedDict):
                 #    E.g. `aliases` is a list of alias quantities
                 if not isinstance(vals, list):
                     vals = [vals]
-                log.debug("{}: {}".format(key, vals))
+                self._log.debug("{}: {}".format(key, vals))
                 new_quantities = []
                 for vv in vals:
                     new_quantities.append(Quantity(self, name=key, **vv))
@@ -314,7 +312,7 @@ class Entry(OrderedDict):
         return filetext
 
     def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        self.catalog.log.debug("_add_cat_dict()")
+        self._log.debug("_add_cat_dict()")
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
@@ -323,19 +321,19 @@ class Entry(OrderedDict):
 
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
-            self.catalog.log.info("This source is erroneous, skipping")
+            self._log.info("This source is erroneous, skipping")
             return None
 
         try:
             new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
         except ValueError as err:
-            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
+            self._log.error("'{}' Error adding '{}': '{}'".format(
                 self[self._KEYS.NAME], key_in_self, str(err)))
             return None
 
         for item in self.get(key_in_self, []):
             if new_entry.is_duplicate_of(item):
-                self.catalog.log.debug("Duplicate found, appending sources")
+                self._log.debug("Duplicate found, appending sources")
                 item.append_sources_from(new_entry)
                 # Return the entry in case we want to use any additional tags
                 # to augment the old entry
@@ -345,11 +343,11 @@ class Entry(OrderedDict):
         return None
 
     def add_source(self, **kwargs):
-        self.catalog.log.debug("add_source()")
+        self._log.debug("add_source()")
         try:
             source_obj = Source(self, **kwargs)
         except ValueError as err:
-            self.catalog.log.error("'{}' `add_source`: Error: '{}'".format(
+            self._log.error("'{}' `add_source`: Error: '{}'".format(
                 self.name, str(err)))
             return None
 
@@ -364,7 +362,7 @@ class Entry(OrderedDict):
 
     def add_quantity(self, quantity, value, sources,
                      forcereplacebetter=False, **kwargs):
-        self.catalog.log.debug("add_quantity()")
+        self._log.debug("add_quantity()")
 
         # Aliases not added if in DISTINCT_FROM
         if quantity == KEYS.ALIAS:
@@ -388,12 +386,12 @@ class Entry(OrderedDict):
         return
 
     def add_photometry(self, **kwargs):
-        self.catalog.log.debug("add_photometry()")
+        self._log.debug("add_photometry()")
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
     def add_spectrum(self, **kwargs):
-        self.catalog.log.debug("add_spectrum()")
+        self._log.debug("add_spectrum()")
         # self._add_cat_dict(self, Spectrum, self._KEYS.SPECTRA, **kwargs)
         # Make sure that a source is given
         source = kwargs.get(self._KEYS.SOURCE, None)
@@ -408,7 +406,7 @@ class Entry(OrderedDict):
         try:
             new_spectrum = Spectrum(self, **kwargs)
         except ValueError as err:
-            self.catalog.log.error("'{}' Error adding '{}': '{}'".format(
+            self._log.error("'{}' Error adding '{}': '{}'".format(
                 self.name, self._KEYS.SPECTRA, str(err)))
             return
 
