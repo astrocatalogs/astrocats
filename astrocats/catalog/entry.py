@@ -199,12 +199,16 @@ class Entry(OrderedDict):
         # ---------------
         spec_key = self._KEYS.SPECTRA
         if spec_key in data:
+            # When we are cleaning internal data, we don't always want to
+            # require all of the normal spectrum data elements.
+            require_data = (not clean)
             spectra = data.pop(spec_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(spectra), spec_key))
             new_specs = []
             for spec in spectra:
-                new_specs.append(Spectrum(self, **spec))
+                new_specs.append(Spectrum(
+                    self, require_data=require_data, **spec))
             # data[spec_key] = new_specs
             self.setdefault(spec_key, []).append(new_specs)
 
