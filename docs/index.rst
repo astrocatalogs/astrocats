@@ -13,7 +13,6 @@ Contents:
 .. currentmodule:: astrocats
 
 .. autosummary::
-   :toctree: _autosummary
 
    astrocats
 
