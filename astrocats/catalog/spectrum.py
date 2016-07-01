@@ -39,7 +39,8 @@ class SPECTRUM(KeyCollection):
 
 
 class Spectrum(CatDict):
-    """
+    """Class for storing a single spectrum associated with an astrophysical
+    entity.
     """
 
     _KEYS = SPECTRUM
