@@ -344,10 +344,13 @@ class Entry(OrderedDict):
             self._log.info("This source is erroneous, skipping")
             return None
 
+        # FIX: sometimes the error message should be printed (if required
+        # parameter failes), and sometimes its expected (additional parameter
+        # is empty)
         try:
             new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
         except ValueError as err:
-            self._log.error("'{}' Error adding '{}': '{}'".format(
+            self._log.debug("'{}' Error adding '{}': '{}'".format(
                 self[self._KEYS.NAME], key_in_self, str(err)))
             return None
 
