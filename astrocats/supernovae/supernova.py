@@ -507,27 +507,6 @@ class Supernova(Entry):
         if 'claimedtype' in self:
             self['claimedtype'] = self.ct_list_prioritized()
 
-    '''
-    def save(self, empty=False, bury=False, final=False, gz=False):
-        outdir, filename = self._get_save_path(bury=bury)
-
-        if final:
-            self.sanitize()
-
-        # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[KEYS.NAME]: self},
-                                indent='\t', separators=(',', ':'),
-                                ensure_ascii=False)
-        if not os.path.isdir(outdir):
-            raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir, self[KEYS.NAME]))
-        save_name = os.path.join(outdir, filename + '.json')
-        with codecs.open(save_name, 'w', encoding='utf8') as sf:
-            sf.write(jsonstring)
-
-        return save_name
-    '''
-
     def get_source_by_alias(self, alias):
         for source in self.get(KEYS.SOURCES, []):
             if source['alias'] == alias:
@@ -667,31 +646,6 @@ class Supernova(Entry):
 
     def add_photometry(self, **kwargs):
         self._add_cat_dict(self, Photometry, self._KEYS.PHOTOMETRY, **kwargs)
-        '''
-        # Make sure that a source is given
-        source = kwargs.get(self._KEYS.SOURCE, None)
-        if source is None:
-            raise ValueError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]))
-
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(self._KEYS.PHOTOMETRY, source):
-            return
-
-        try:
-            photo_entry = Photometry(self, **kwargs)
-        except ValueError as err:
-            self.catalog.log.error("'{}' `add_photometry`: Error: '{}'".format(
-                self.name, str(err)))
-            return
-
-        for item in self[self._KEYS.PHOTOMETRY]:
-            if photo_entry.is_duplicate_of(item):
-                item.append_sources(photo_entry)
-                return
-
-        self.setdefault(self._KEYS.PHOTOMETRY, []).append(photo_entry)
-        '''
         return
 
     def add_spectrum(self, **kwargs):
