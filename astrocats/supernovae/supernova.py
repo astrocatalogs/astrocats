@@ -12,6 +12,7 @@ from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.spectrum import SPECTRUM
+from astrocats.catalog.error import ERROR
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, uniq_cdl)
@@ -102,13 +103,14 @@ class Supernova(Entry):
                              ' error value must be a number and positive.')
 
         # Set default units
-        if not unit and name == 'velocity':
+        if not unit and name == self._KEYS.VELOCITY:
             unit = 'KM/s'
-        if not unit and name == 'ra':
+        if not unit and name == self._KEYS.RA:
             unit = 'hours'
-        if not unit and name == 'dec':
+        if not unit and name == self._KEYS.DEC:
             unit = 'degrees'
-        if not unit and name in ['lumdist', 'comovingdist']:
+        if not unit and name in [self._KEYS.LUM_DIST,
+                                 self._KEYS.COMOVING_DIST]:
             unit = 'Mpc'
 
         # Handle certain name
@@ -118,11 +120,11 @@ class Supernova(Entry):
                 if value == df[QUANTITY.VALUE]:
                     return
 
-        if name in ['velocity', 'redshift', 'ebv', 'lumdist',
-                    'comovingdist']:
+        if name in [self._KEYS.VELOCITY, self._KEYS.REDSHIFT, self._KEYS.EBV,
+                    self._KEYS.LUM_DIST, self._KEYS.COMOVING_DIST]:
             if not is_number(value):
                 return
-        if name == 'host':
+        if name == self._KEYS.HOST:
             if is_number(value):
                 return
             if value.lower() in ['anonymous', 'anon.', 'anon',
@@ -148,9 +150,10 @@ class Supernova(Entry):
             if isq:
                 value = value + '?'
 
-        elif name in ['ra', 'dec', 'hostra', 'hostdec']:
+        elif name in [self._KEYS.RA, self._KEYS.DEC,
+                      self._KEYS.HOST_RA, self._KEYS.HOST_DEC]:
             (value, unit) = radec_clean(value, name, unit=unit)
-        elif name == 'maxdate' or name == self._KEYS.DISCOVER_DATE:
+        elif name == self._KEYS.MAX_DATE or name == self._KEYS.DISCOVER_DATE:
             # Make sure month and day have leading zeroes
             sparts = value.split('/')
             if len(sparts[0]) > 4 and int(sparts[0]) > 0:
@@ -230,20 +233,21 @@ class Supernova(Entry):
 
     def is_erroneous(self, field, sources):
         if hasattr(self, self._KEYS.ERRORS):
-            my_errors = self['errors']
+            my_errors = self[self._KEYS.ERRORS]
             for alias in sources.split(','):
                 source = self.get_source_by_alias(alias)
                 bib_err_values = [err[QUANTITY.VALUE] for err in my_errors
-                                  if err['kind'] == SOURCE.BIBCODE and
-                                  err['extra'] == field]
+                                  if err[ERROR.KIND] == SOURCE.BIBCODE and
+                                  err[ERROR.EXTRA] == field]
                 if (SOURCE.BIBCODE in source and source[SOURCE.BIBCODE] in
                         bib_err_values):
                     return True
 
                 name_err_values = [err[QUANTITY.VALUE] for err in my_errors
-                                   if err['kind'] == 'name' and
-                                   err['extra'] == field]
-                if 'name' in source and source['name'] in name_err_values:
+                                   if err[ERROR.KIND] == SOURCE.NAME and
+                                   err[ERROR.EXTRA] == field]
+                if (SOURCE.NAME in source and
+                        source[SOURCE.NAME] in name_err_values):
                     return True
 
         return False
