@@ -120,9 +120,11 @@ class Catalog:
         tasks_list = self.load_task_list()
         warnings.filterwarnings(
             'ignore', r'Warning: converting a masked element to nan.')
+        # FIX
         warnings.filterwarnings(
             'ignore', category=DeprecationWarning)
 
+        # Delete all old (previously constructored) output files
         if self.args.delete_old:
             self.log.warning("Deleting all old entry files.")
             self.delete_old_entry_files()
@@ -177,20 +179,22 @@ class Catalog:
         return
 
     def load_task_list(self):
-        """Load the list of tasks in the `PATHS.TASK_LIST` json file.
+        """Load the list of tasks in this catalog's 'input/tasks.json' file.
 
         A `Task` object is created for each entry, with the parameters filled
         in. These are placed in an OrderedDict, sorted by the `priority`
-        parameter, with positive values and then negative values, e.g. [0, 2,
-        10, -10, -1].
+        parameter, with positive values and then negative values,
+            e.g. [0, 2, 10, -10, -1].
         """
 
-        if self.args.args_task_list is not None:
-            if (self.args.yes_task_list is not None or
-                    self.args.no_task_list is not None):
-                raise ValueError(
-                    "If '--tasks' is used, '--yes' and '--no' shouldnt be.")
+        # Make sure appropriate command-line arguments are used
 
+        # Dont allow both a 'min' and 'max' task priority
+        if ((self.args.min_task_priority is not None and
+             self.args.max_task_priority is not None)):
+            raise ValueError("Can only use *either* 'min' *or* 'max' priority")
+
+        # Load tasks data from input json file
         def_task_list_filename = self.PATHS.TASK_LIST
         self.log.debug(
             "Loading task-list from '{}'".format(def_task_list_filename))
@@ -208,43 +212,59 @@ class Catalog:
                             "Value '{}' in '{}' list does not match"
                             " any tasks".format(tname, lname))
 
+        # Create `Task` objects for each element in the tasks data file
         tasks = {}
         for key, val in data.items():
             tasks[key] = Task(name=key, **val)
 
+        # Process min/max priority specification ('None' if none given)
+        min_priority = _get_task_priority(tasks, self.args.min_task_priority)
+        max_priority = _get_task_priority(tasks, self.args.max_task_priority)
+        task_groups = self.args.task_groups
+        if task_groups is not None:
+            if not isinstance(task_groups, list):
+                task_groups = [task_groups]
+
+        # Iterate over all tasks to determine which should be (in)active
+        # --------------------------------------------------------------
         for key in tasks:
-            # Modify `active` tasks
-            # ---------------------
             # If specific list of tasks is given, make only those active
             if self.args.args_task_list is not None:
                 if key in self.args.args_task_list:
                     tasks[key].active = True
                 else:
                     tasks[key].active = False
-            else:
-                # Only run tasks above minimum priority
-                if (self.args.min_task_priority is not None and
-                    tasks[key].priority > 0 and
-                        ((is_integer(self.args.min_task_priority) and
-                          (tasks[key].priority <
-                           int(self.args.min_task_priority))) or
-                         (isinstance(self.args.min_task_priority, str) and
-                          self.args.min_task_priority in tasks and
-                          (tasks[key].priority <
-                           tasks[self.args.min_task_priority].priority)))):
+
+            # Only run tasks above minimum priority
+            # (doesn't modify negtive priority tasks)
+            if min_priority is not None and tasks[key].priority >= 0:
+                tasks[key].active = False
+                if tasks[key].priority >= min_priority:
+                    tasks[key].active = True
+
+            # Only run tasks below maximum priority
+            # (doesnt modify negative priority tasks)
+            if max_priority is not None and tasks[key].priority >= 0:
+                tasks[key].active = False
+                if tasks[key].priority <= max_priority:
+                    tasks[key].active = True
+
+            # Set 'yes' tasks to *active*
+            if self.args.yes_task_list is not None:
+                if key in self.args.yes_task_list:
+                    tasks[key].active = True
+            # Set 'no' tasks to *inactive*
+            if self.args.no_task_list is not None:
+                if key in self.args.no_task_list:
                     tasks[key].active = False
-                # Only run tasks below maximum priority
-                if (self.args.max_task_priority is not None and
-                        tasks[key].priority > self.args.max_task_priority):
-                    tasks[key].active = False
-                # Set 'yes' tasks to *active*
-                if self.args.yes_task_list is not None:
-                    if key in self.args.yes_task_list:
+            # Set tasks in target 'groups' to *active*
+            if task_groups is not None and tasks[key].groups is not None:
+                # Go through each group defined in the command line
+                for given_group in task_groups:
+                    # If this task is a member of any of those groups
+                    if given_group in tasks[key].groups:
                         tasks[key].active = True
-                # Set 'no' tasks to *inactive*
-                if self.args.no_task_list is not None:
-                    if key in self.args.no_task_list:
-                        tasks[key].active = False
+                        break
 
         # Sort entries as positive values, then negative values
         #    [0, 1, 2, 2, 10, -100, -10, -1]
@@ -864,3 +884,21 @@ class Catalog:
                 with codecs.open(filepath, 'w', encoding='utf8') as f:
                     f.write(txt if txt else filetxt)
         return txt
+
+
+def _get_task_priority(tasks, task_priority):
+    """Get the task `priority` corresponding to the given `task_priority`.
+
+    If `task_priority` is an integer or 'None', return it.
+    If `task_priority` is a str, return the priority of the task it matches.
+    Otherwise, raise `ValueError`.
+    """
+    if task_priority is None:
+        return None
+    if is_integer(task_priority):
+        return task_priority
+    if isinstance(task_priority, str):
+        if task_priority in tasks:
+            return tasks[task_priority].priority
+
+    raise ValueError("Unrecognized task priority '{}'".format(task_priority))

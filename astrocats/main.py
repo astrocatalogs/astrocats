@@ -12,9 +12,7 @@ def main():
     if args is None:
         return
 
-    # Set the prototype to the desired catalog Entry type. Probably should be a
-    # switch in args.
-
+    # FIX
     # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
     #    ON ARGS WHAT TO IMPORT AND INITIALIZE
 
@@ -63,6 +61,8 @@ def load_args(args=None):
         '--log',  dest='log_filename',  default=None,
         help='Filename to which to store logging information.')
 
+    # If output files should be written or not
+    # ----------------------------------------
     write_group = pars_parent.add_mutually_exclusive_group()
     write_group.add_argument(
         '--write', action='store_true', dest='write_entries', default=True,
@@ -71,6 +71,8 @@ def load_args(args=None):
         '--no-write', action='store_false', dest='write_entries', default=True,
         help='do not write entries to file.')
 
+    # If previously ceared output files should be deleted or not
+    # ----------------------------------------------------------
     delete_group = pars_parent.add_mutually_exclusive_group()
     delete_group.add_argument(
         '--predelete', action='store_true', dest='delete_old', default=True,
@@ -79,8 +81,7 @@ def load_args(args=None):
         '--no-predelete', action='store_false', dest='delete_old',
         default=True, help='Do not delete all old event files to start.')
 
-    # Construct the subparser for `importer` submodule --- importing supernova
-    # data
+    # `importer` submodule --- importing supernova data
     pars_imp = subparsers.add_parser("sn-import", parents=[pars_parent],
                                      help="Generate a catalog JSON file")
     pars_imp.add_argument('--update', '-u', dest='update',
@@ -99,15 +100,17 @@ def load_args(args=None):
         '--refresh-list', '-rl', dest='refresh_list', default='', nargs='+',
         help='Space-delimited list of caches to clear.')
 
+    # Control which 'tasks' are executed
+    # ----------------------------------
     pars_imp.add_argument(
-        '--tasks', dest='args_task_list', nargs='+', default=None,
-        help='space delimited list of tasks to perform (exclusively).')
+        '--tasks', dest='args_task_list', nargs='*', default=None,
+        help='space delimited list of tasks to perform (others disabled).')
     pars_imp.add_argument(
         '--yes', dest='yes_task_list', nargs='+', default=None,
-        help='space delimited list of tasks to add to default list.')
+        help='space delimited list of tasks to turn on.')
     pars_imp.add_argument(
         '--no', dest='no_task_list', nargs='+', default=None,
-        help='space delimited list of tasks to omit from default list.')
+        help='space delimited list of tasks to turn off.')
     pars_imp.add_argument(
         '--min-task-priority', dest='min_task_priority',
         default=None,
@@ -116,10 +119,14 @@ def load_args(args=None):
         '--max-task-priority', dest='max_task_priority',
         default=None,
         help='maximum priority for a task to run')
+    pars_imp.add_argument(
+        '--task-groups', dest='task_groups',
+        default=None,
+        help='predefined group(s) of tasks to run.')
 
     args = parser.parse_args(args=args)
-    # Print the help information if no subcommand is given (required for
-    # operation)
+    # Print the help information if no subcommand is given
+    # subcommand is required for operation
     if args._name is None:
         parser.print_help()
         return None

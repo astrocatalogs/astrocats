@@ -5,6 +5,7 @@
         "update": false,
         "module": "supernovae.tasks.test",
         "function": "do_test",
+        "groups": ["meta"],
         "priority": 0
     },
     "internal": {
@@ -40,6 +41,7 @@
         "update": false,
         "module": "supernovae.tasks.simbad",
         "function": "do_simbad",
+        "groups": ["photometry"],
         "priority": 3
     },
     "vizier": {
@@ -48,6 +50,7 @@
         "update": false,
         "module": "supernovae.tasks.vizier",
         "function": "do_vizier",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 4
     },
@@ -103,6 +106,7 @@
         "update": false,
         "module": "supernovae.tasks.suspect",
         "function": "do_suspect_photo",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 10
     },
@@ -112,6 +116,7 @@
         "update": false,
         "module": "supernovae.tasks.cfa",
         "function": "do_cfa_photo",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 11
     },
@@ -122,6 +127,7 @@
         "archived": true,
         "module": "supernovae.tasks.berkeley",
         "function": "do_ucb_photo",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 12
     },
@@ -131,6 +137,7 @@
         "update": false,
         "module": "supernovae.tasks.sdss",
         "function": "do_sdss",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 13
     },
@@ -140,6 +147,7 @@
         "update": false,
         "module": "supernovae.tasks.carnegie",
         "function": "do_csp_photo",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 14
     },
@@ -158,6 +166,7 @@
         "update": false,
         "module": "supernovae.tasks.asiago",
         "function": "do_asiago_photo",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 16
     },
@@ -219,11 +228,12 @@
         "priority": 22
     },
     "snls_photo": {
-        "nice_name": "%pre SNLS",
+        "nice_name": "%pre SNLS Photometry",
         "active": true,
         "update": false,
         "module": "supernovae.tasks.snls",
         "function": "do_snls_photo",
+        "groups": ["photometry"],
         "repo": "input/sne-external",
         "priority": 23
     },
@@ -349,6 +359,7 @@
         "update": true,
         "module": "supernovae.tasks.asiago",
         "function": "do_asiago_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 200
     },
@@ -358,6 +369,7 @@
         "update": false,
         "module": "supernovae.tasks.wiserep",
         "function": "do_wiserep_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-wiserep",
         "priority": 201
     },
@@ -367,6 +379,7 @@
         "update": false,
         "module": "supernovae.tasks.cfa",
         "function": "do_cfa_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 202
     },
@@ -376,6 +389,7 @@
         "update": false,
         "module": "supernovae.tasks.snls",
         "function": "do_snls_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 203
     },
@@ -385,6 +399,7 @@
         "update": false,
         "module": "supernovae.tasks.carnegie",
         "function": "do_csp_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 204
     },
@@ -395,6 +410,7 @@
         "archived": true,
         "module": "supernovae.tasks.berkeley",
         "function": "do_ucb_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 205
     },
@@ -404,6 +420,7 @@
         "update": false,
         "module": "supernovae.tasks.suspect",
         "function": "do_suspect_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 206
     },
@@ -413,6 +430,7 @@
         "update": false,
         "module": "supernovae.tasks.snfactory",
         "function": "do_snf_specta",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 207
     },
@@ -422,6 +440,7 @@
         "update": false,
         "module": "supernovae.tasks.superfit",
         "function": "do_superfit_spectra",
+        "groups": ["spectra"],
         "repo": "input/sne-external-spectra",
         "priority": 208
     },
@@ -431,6 +450,7 @@
         "update": false,
         "module": "catalog.tasks.merge_duplicates",
         "function": "merge_duplicates",
+        "groups": ["meta"],
         "priority": -100
     },
     "set_pref_names": {
@@ -439,6 +459,7 @@
         "update": false,
         "module": "catalog.tasks.set_preferred_names",
         "function": "set_preferred_names",
+        "groups": ["meta"],
         "priority": -10
     },
     "derive": {
@@ -447,6 +468,7 @@
         "update": false,
         "module": "supernovae.tasks.derive",
         "function": "do_derivations",
+        "groups": ["meta"],
         "priority": -1
     }
 }
