@@ -8,7 +8,7 @@ from collections import OrderedDict
 from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
-from astrocats.catalog.source import Source
+from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
 from astrocats.catalog.catdict import CatDictError
@@ -180,9 +180,9 @@ class Entry(OrderedDict):
         # Handle 'sources'
         # ----------------
         src_key = self._KEYS.SOURCES
-        if 'sources' in data:
+        if src_key in data:
             # Remove from `data`
-            sources = data.pop('sources')
+            sources = data.pop(src_key)
             self._log.debug("Found {} '{}' entries"
                             .format(len(sources), src_key))
 
@@ -399,7 +399,7 @@ class Entry(OrderedDict):
                 return item[item._KEYS.ALIAS]
 
         # Set 'alias' number to be one higher than existing length of sources
-        source_obj['alias'] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
+        source_obj[SOURCE.ALIAS] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
