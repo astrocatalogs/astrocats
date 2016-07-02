@@ -345,7 +345,7 @@ class Catalog:
 
         # Create new entry
         new_entry = self.proto(self, newname)
-        new_entry['schema'] = self.SCHEMA.URL
+        new_entry[self.proto._KEYS.SCHEMA] = self.SCHEMA.URL
         self.log.log(self.log._LOADED,
                      "Created new entry for '{}'".format(newname))
         # Add entry to dictionary
