@@ -141,7 +141,7 @@ class Catalog:
             priority = task_obj.priority
 
             # Make sure things are running in the correct order
-            if priority < prev_priority:
+            if priority < prev_priority and priority > 0:
                 raise RuntimeError(
                     "Priority for '{}': '{}', less than prev,"
                     "'{}': '{}'.\n{}"
@@ -224,6 +224,7 @@ class Catalog:
             else:
                 # Only run tasks above minimum priority
                 if (self.args.min_task_priority is not None and
+                    tasks[key].priority > 0 and
                         ((is_integer(self.args.min_task_priority) and
                           (tasks[key].priority <
                            int(self.args.min_task_priority))) or
@@ -508,10 +509,10 @@ class Catalog:
                 return
             entries = self.load_stubs()
 
-        currenttask = 'Merging duplicate entries'
+        task_str = self.get_current_task_str()
 
         keys = list(sorted(entries.keys()))
-        for n1, name1 in enumerate(pbar(keys, currenttask)):
+        for n1, name1 in enumerate(pbar(keys, task_str)):
             allnames1 = set(entries[name1].get_aliases())
             if name1.startswith('SN') and is_number(name1[2:6]):
                 allnames1 = allnames1.union(['AT' + name1[2:]])

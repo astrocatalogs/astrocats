@@ -425,19 +425,19 @@
         "repo": "input/sne-external-spectra",
         "priority": 208
     },
-    "mergeduplicates": {
+    "merge_duplicates": {
         "nice_name": "Merging duplicates",
         "active": true,
         "update": false,
-        "module": "supernovae.Events",
+        "module": "catalog.tasks.merge_duplicates",
         "function": "merge_duplicates",
         "priority": -100
     },
-    "setprefnames": {
+    "set_pref_names": {
         "nice_name": "Setting preferred names",
         "active": true,
         "update": false,
-        "module": "supernovae.Events",
+        "module": "catalog.tasks.set_preferred_names",
         "function": "set_preferred_names",
         "priority": -10
     },

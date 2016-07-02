@@ -6,7 +6,7 @@ from glob import glob
 
 from astropy.time import Time as astrotime
 
-from astrocats.catalog.utils import jd_to_mjd, pretty_num, uniq_cdl
+from astrocats.catalog.utils import jd_to_mjd, pbar, pretty_num, uniq_cdl
 from cdecimal import Decimal
 
 
@@ -25,6 +25,7 @@ def do_snf_aliases(catalog):
 
 
 def do_snf_specta(catalog):
+    task_str = catalog.get_current_task_str()
     bibcodes = {'SN2005gj': '2006ApJ...650..510A',
                 'SN2006D': '2007ApJ...654L..53T',
                 'SN2007if': '2010ApJ...713.1073S',
@@ -33,7 +34,7 @@ def do_snf_specta(catalog):
     snfcnt = 0
     eventfolders = next(os.walk(os.path.join(
         catalog.get_current_task_repo(), 'SNFactory')))[1]
-    for eventfolder in eventfolders:
+    for eventfolder in pbar(eventfolders, task_str):
         name = eventfolder
         name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
@@ -53,7 +54,7 @@ def do_snf_specta(catalog):
         use_path = os.path.join(
             catalog.get_current_task_repo(), 'SNFactory', eventfolder, '*.dat')
         eventspectra = glob(use_path)
-        for spectrum in eventspectra:
+        for spectrum in pbar(eventspectra, task_str):
             filename = os.path.basename(spectrum)
             with open(spectrum) as spec_file:
                 specdata = list(csv.reader(
