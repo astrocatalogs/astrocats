@@ -114,7 +114,7 @@ class Supernova(Entry):
         # Handle certain name
         if name == self._KEYS.ALIAS:
             value = name_clean(value)
-            for df in quantity.get(KEYS.DISTINCT_FROM, []):
+            for df in quantity.get(self._KEYS.DISTINCT_FROM, []):
                 if value == df[QUANTITY.VALUE]:
                     return
 
@@ -133,7 +133,7 @@ class Supernova(Entry):
                                 is_number(value[5:].strip())) or
                                'cluster' in value.lower()))):
                 kind = 'cluster'
-        elif name == KEYS.CLAIMED_TYPE:
+        elif name == self._KEYS.CLAIMED_TYPE:
             isq = False
             value = value.replace('young', '')
             if value.lower() in ['unknown', 'unk', '?', '-']:
@@ -229,7 +229,7 @@ class Supernova(Entry):
     #     return
 
     def is_erroneous(self, field, sources):
-        if hasattr(self, KEYS.ERRORS):
+        if hasattr(self, self._KEYS.ERRORS):
             my_errors = self['errors']
             for alias in sources.split(','):
                 source = self.get_source_by_alias(alias)
@@ -253,7 +253,7 @@ class Supernova(Entry):
 
     def _get_save_path(self, bury=False):
         self._log.debug("_get_save_path(): {}".format(self.name()))
-        filename = get_event_filename(self[KEYS.NAME])
+        filename = get_event_filename(self[self._KEYS.NAME])
 
         # Put non-SNe in the boneyard
         if bury:
@@ -262,10 +262,10 @@ class Supernova(Entry):
         # Get normal repository save directory
         else:
             repo_folders = self.catalog.PATHS.get_repo_output_folders()
-            if KEYS.DISCOVERY_DATE in self.keys():
+            if self._KEYS.DISCOVERY_DATE in self.keys():
                 repo_years = self.catalog.PATHS.get_repo_years()
                 for r, year in enumerate(repo_years):
-                    dyr = self[KEYS.DISCOVERY_DATE][0][
+                    dyr = self[self._KEYS.DISCOVERY_DATE][0][
                         QUANTITY.VALUE].split('/')[0]
                     if int(dyr) <= year:
                         outdir = repo_folders[r]
@@ -452,13 +452,13 @@ class Supernova(Entry):
 
         bibcodes = []
         # Remove 'names' when 'bibcodes' are given
-        for ss, source in enumerate(data.get(KEYS.SOURCES, [])):
-            if KEYS.BIBCODE in source:
-                bibcodes.append(source[KEYS.BIBCODE])
+        for ss, source in enumerate(data.get(self._KEYS.SOURCES, [])):
+            if self._KEYS.BIBCODE in source:
+                bibcodes.append(source[self._KEYS.BIBCODE])
                 # If there is a bibcode, remove the 'name'
                 #    auto construct it later instead
-                if KEYS.NAME in source:
-                    source.pop(KEYS.NAME)
+                if self._KEYS.NAME in source:
+                    source.pop(self._KEYS.NAME)
 
         # If there are no existing sources, add OSC as one
         if len(bibcodes) == 0:
@@ -485,7 +485,7 @@ class Supernova(Entry):
             for alias in aliases:
                 self.add_quantity(self._KEYS.ALIAS, alias, source)
 
-        dist_key = KEYS.DISTINCT_FROM
+        dist_key = self._KEYS.DISTINCT_FROM
         if dist_key in data:
             distincts = data.pop(dist_key)
             if ((isinstance(distincts, list) and
@@ -500,7 +500,8 @@ class Supernova(Entry):
         # Go through all remaining keys in 'dirty' event, and make sure
         #    everything is a quantity with a source (OSC if no other)
         for key in data.keys():
-            if key in [KEYS.NAME, KEYS.SCHEMA, KEYS.SOURCES, KEYS.ERRORS]:
+            if (key in [self._KEYS.NAME, self._KEYS.SCHEMA,
+                        self._KEYS.SOURCES, self._KEYS.ERRORS]):
                 pass
             elif key == self._KEYS.PHOTOMETRY:
                 for p, photo in enumerate(data[self._KEYS.PHOTOMETRY]):
@@ -665,7 +666,7 @@ class Supernova(Entry):
 
     def ct_list_prioritized(self):
         ct_list = list(sorted(
-            self[KEYS.CLAIMED_TYPE], key=lambda key:
+            self[self._KEYS.CLAIMED_TYPE], key=lambda key:
             self._ct_priority(key)))
         return ct_list
 
