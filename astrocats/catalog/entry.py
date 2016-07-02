@@ -259,10 +259,11 @@ class Entry(OrderedDict):
         """
         self.catalog.log.debug("check()")
         # Make sure there is a schema key in dict
-        if KEYS.SCHEMA not in self.keys():
-            self[KEYS.SCHEMA] = self.catalog.SCHEMA.URL
+        if self._KEYS.SCHEMA not in self.keys():
+            self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
         # Make sure there is a name key in dict
-        if KEYS.NAME not in self.keys() or len(self[KEYS.NAME]) == 0:
+        if (self._KEYS.NAME not in self.keys() or
+                len(self[self._KEYS.NAME]) == 0):
             raise ValueError("Entry name is empty:\n\t{}".format(
                 json.dumps(self, indent=2)))
         return
@@ -277,12 +278,13 @@ class Entry(OrderedDict):
             self.sanitize()
 
         # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[KEYS.NAME]: self},
+        jsonstring = json.dumps({self[self._KEYS.NAME]: self},
                                 indent='\t', separators=(',', ':'),
                                 ensure_ascii=False)
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir, self[KEYS.NAME]))
+                               "not exist.".format(outdir,
+                                                   self[self._KEYS.NAME]))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
@@ -298,10 +300,10 @@ class Entry(OrderedDict):
         """Retrieve the aliases of this object as a list of strings.
         """
         # empty list if doesnt exist
-        alias_quanta = self.get(KEYS.ALIAS, [])
+        alias_quanta = self.get(self._KEYS.ALIAS, [])
         aliases = [aq['value'] for aq in alias_quanta]
-        if includename and self[KEYS.NAME] not in aliases:
-            aliases = [self[KEYS.NAME]] + aliases
+        if includename and self[self._KEYS.NAME] not in aliases:
+            aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
 
     def get_stub(self):
@@ -316,9 +318,9 @@ class Entry(OrderedDict):
         >>> entries[name] = entries[name].get_stub()
 
         """
-        stub = type(self)(self.catalog, self[KEYS.NAME], stub=True)
-        if KEYS.ALIAS in self.keys():
-            stub[KEYS.ALIAS] = self[KEYS.ALIAS]
+        stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
+        if self._KEYS.ALIAS in self.keys():
+            stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
         return stub
 
     def clean_internal(self, data=None):
@@ -405,9 +407,9 @@ class Entry(OrderedDict):
     def add_quantity(self, quantity, value, sources,
                      forcereplacebetter=False, **kwargs):
         # Aliases not added if in DISTINCT_FROM
-        if quantity == KEYS.ALIAS:
+        if quantity == self._KEYS.ALIAS:
             value = self.clean_entry_name(value)
-            for df in self.get(KEYS.DISTINCT_FROM, []):
+            for df in self.get(self._KEYS.DISTINCT_FROM, []):
                 if value == df[QUANTITY.VALUE]:
                     return
 
@@ -460,12 +462,12 @@ class Entry(OrderedDict):
         return
 
     def get_source_by_alias(self, alias):
-        for source in self.get(KEYS.SOURCES, []):
-            if source['alias'] == alias:
+        for source in self.get(self._KEYS.SOURCES, []):
+            if source[self._KEYS.ALIAS] == alias:
                 return source
         raise ValueError(
             "Source '{}': alias '{}' not found!".format(
-                self[KEYS.NAME], alias))
+                self[self._KEYS.NAME], alias))
 
     def name(self):
         try:
