@@ -173,10 +173,11 @@ def do_suspect_spectra(catalog):
                 time = time + float(day) - floor(float(day))
                 time = pretty_num(time, sig=sig)
 
-                fpath = os.path.join(catalog.get_current_task_repo(), 'Suspect',
+                fpath = os.path.join(catalog.get_current_task_repo(),
+                                     'Suspect',
                                      folder,
                                      eventfolder, spectrum)
-                with open() as f:
+                with open(fpath, 'r') as f:
                     specdata = list(csv.reader(
                         f, delimiter=' ', skipinitialspace=True))
                     specdata = list(filter(None, specdata))
