@@ -25,7 +25,7 @@ class Error(CatDict):
     _KEYS = ERROR
 
     def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
         self._REQ_KEY_SETS = [
             [ERROR.VALUE]
         ]
+        super().__init__(parent, **kwargs)

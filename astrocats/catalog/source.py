@@ -24,11 +24,11 @@ class Source(CatDict):
     _KEYS = SOURCE
 
     def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
         self._REQ_KEY_SETS = [
             [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME],
             [SOURCE.ALIAS]
         ]
+        super().__init__(parent, **kwargs)
         return
 
     def append_sources_from(self, other):
