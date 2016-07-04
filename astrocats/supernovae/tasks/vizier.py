@@ -360,14 +360,11 @@ def do_vizier(catalog):
         mag = str(row['m'])
         band = row['band'].strip("'")
         if row['r_m'] in ii189bibdict:
-            print(ii189bibdict[row['r_m']])
             source = catalog.entries[name].add_source(
                 bibcode=ii189bibdict[row['r_m']])
         else:
-            print(ii189refdict[row['r_m']])
             source = catalog.entries[name].add_source(
                 name=ii189refdict[row['r_m']])
-        print(source, row['r_m'])
         catalog.entries[name].add_quantity('alias', oldname, source)
 
         catalog.entries[name].add_photometry(
