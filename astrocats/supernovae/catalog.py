@@ -96,6 +96,7 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         self.iaucs_dict = read_json_dict(self.PATHS.IAUCS)
         self.cbets_dict = read_json_dict(self.PATHS.CBETS)
         self.atels_dict = read_json_dict(self.PATHS.ATELS)
+        self.source_syns = read_json_dict(self.PATHS.SOURCE_SYNONYMS)
         # Create/Load auxiliary arrays
         self.nonsneprefixes_dict = read_json_arr(
             self.PATHS.NON_SNE_PREFIXES)

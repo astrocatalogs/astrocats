@@ -55,12 +55,6 @@ class Supernova(Entry):
 
     def __init__(self, catalog, name, stub=False):
         super().__init__(catalog, name, stub=stub)
-
-        # FIX: move this somewhere else (shouldnt be in each event)
-        # Load source-name synonyms
-        with open(catalog.PATHS.SOURCE_SYNONYMS, 'r') as f:
-            self._source_syns = json.loads(
-                f.read(), object_pairs_hook=OrderedDict)
         return
 
     def _append_additional_tags(self, name, sources, quantity):
@@ -141,8 +135,8 @@ class Supernova(Entry):
             if '?' in value:
                 isq = True
                 value = value.strip(' ?')
-            for rep in self._source_syns:
-                if value in self._source_syns[rep]:
+            for rep in self.catalog.source_syns:
+                if value in self.catalog.source_syns[rep]:
                     value = rep
                     break
             if isq:
@@ -436,8 +430,8 @@ class Supernova(Entry):
                 if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
                     bibcode = self.catalog.iaucs_dict[iaucnum]
 
-        for rep in self._source_syns:
-            if srcname in self._source_syns[rep]:
+        for rep in self.catalog.source_syns:
+            if srcname in self.catalog.source_syns[rep]:
                 srcname = rep
                 break
 
