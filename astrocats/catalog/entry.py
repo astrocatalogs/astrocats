@@ -190,6 +190,9 @@ class Entry(OrderedDict):
             newsources = []
             for src in sources:
                 try:
+                    new_alias = str(self.num_sources() + 1)
+                    # Set or overwrite existing ALIAS with new one
+                    src[SOURCE.ALIAS] = new_alias
                     newsources.append(Source(self, **src))
                 except Exception as err:
                     err_str = "Failed to create Source with '{}'\n{}".format(
@@ -398,6 +401,14 @@ class Entry(OrderedDict):
         return None
 
     def add_source(self, **kwargs):
+        if SOURCE.ALIAS in kwargs:
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
+                SOURCE.ALIAS)
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        # Set alias number to be +1 of current number of sources
+        kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
         source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
         if source_obj is None:
             return None
@@ -483,3 +494,6 @@ class Entry(OrderedDict):
             return self[self._KEYS.NAME]
         except KeyError:
             return None
+
+    def num_sources(self):
+        return len(self.get(self._KEYS.SOURCES, []))
