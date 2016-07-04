@@ -12,9 +12,12 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
 from astrocats.catalog.catdict import CatDictError
+from astrocats.catalog.key import KeyCollection
 
 
-class KEYS:
+class KEYS(KeyCollection):
+    """General `CatDict` keys which should be relevant for all catalogs.
+    """
     ALIAS = 'alias'
     BIBCODE = 'bibcode'
     COMOVING_DIST = 'comovingdist'
@@ -49,23 +52,81 @@ class Entry(OrderedDict):
     """Class representing an individual element of each Catalog.
 
     For example, a single supernova in the supernova catalog, this object
-    handles and manages the addition of data for this Entry, using different
-    `CatDict` instances.
+    handles and manages the addition of data for this `Entry`, using different
+    `CatDict` instances (e.g. `Photometry`).
+
+    Notes
+    -----
+    -   Stubs: a stub is the most minimal entry, containing an entry's 'name'
+        and possible aliases.  These instances are used to represent entries
+        which are known to exist (e.g. have already been saved) for cross
+        referencing and duplicate removal.
+        +   The `Entry.get_stub` method returns the 'stub' corresponding to the
+            Entry instance.  i.e. it returns a *new object* with only the name
+            and aliases copied over.
+
+    Attributes
+    ----------
+    catalog : `astrocats.catalog.catalog.Catalog` object
+        Pointer to the parent catalog object of which this entry is a member.
+    filename : str or 'None'
+        If this entry is loaded from a file, its (full path and) filename.
+    _log : `logging.Logger` object
+        Pointer to the logger from the parent catalog.
+    _stub : bool
+        Whether this instance represents a 'stub' (see above).
+    _KEYS : `astrocats.catalog.key.KeyCollection` object
+        The associated object which contains the different dictionary keys
+        used in this type (e.g. `Supernova`) entry.
+
     """
 
     def __init__(self, catalog, name, stub=False):
         """Create a new `Entry` object with the given `name`.
+
+        Arguments
+        ---------
+        catalog : `astrocats.catalog.catalog.Catalog` instance
+            The parent catalog object of which this entry belongs.
+        name : str
+            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
+        stub : bool
+            Whether or not this instance represents a 'stub' (see above).
+
         """
         self[KEYS.NAME] = name
-        self._stub = stub
-        self.filename = None
         self.catalog = catalog
+        self.filename = None
         self._log = catalog.log
+        self._stub = stub
         self._KEYS = KEYS
         return
 
     @classmethod
     def init_from_file(cls, catalog, name=None, path=None, clean=False):
+        """Construct a new `Entry` instance from an input file.
+
+        The input file can be given explicitly by `path`, or a path will
+        be constructed appropriately if possible.
+
+        Arguments
+        ---------
+        catalog : `astrocats.catalog.catalog.Catalog` instance
+            The parent catalog object of which this entry belongs.
+        name : str or 'None'
+            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
+            If no `path` is given, a path is constructed by trying to find
+            a file in one of the 'output' repositories with this `name`.
+            note: either `name` or `path` must be provided.
+        path : str or 'None'
+            The absolutely path of the input file.
+            note: either `name` or `path` must be provided.
+        clean : bool
+            Whether special sanitization processing should be done on the input
+            data.  This is mostly for input files from the 'internal'
+            repositories.
+
+        """
         catalog.log.debug("init_from_file()")
         if name is None and path is None:
             raise ValueError("Either entry `name` or `path` must be specified "
@@ -105,16 +166,22 @@ class Entry(OrderedDict):
         return jsonstring
 
     def add_error(self, quantity, value, **kwargs):
+        """Add an `Error` instance to this entry.
+        """
         kwargs.update({ERROR.VALUE: value})
         self._add_cat_dict(Quantity, quantity, **kwargs)
         return
 
     def add_photometry(self, **kwargs):
+        """Add a `Photometry` instance to this entry.
+        """
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
     def add_quantity(self, quantity, value, sources,
                      forcereplacebetter=False, **kwargs):
+        """Add an `Quantity` instance to this entry.
+        """
         # Aliases not added if in DISTINCT_FROM
         if quantity == self._KEYS.ALIAS:
             value = self.clean_entry_name(value)
@@ -129,6 +196,8 @@ class Entry(OrderedDict):
         return
 
     def add_source(self, **kwargs):
+        """Add a `Source` instance to this entry.
+        """
         if SOURCE.ALIAS in kwargs:
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
                 SOURCE.ALIAS)
@@ -153,6 +222,8 @@ class Entry(OrderedDict):
         return source_obj[source_obj._KEYS.ALIAS]
 
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
+        """Add an `Spectrum` instance to this entry.
+        """
         kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
                        SPECTRUM.FLUX_UNIT: fluxunit})
         spec_key = self._KEYS.SPECTRA
@@ -183,9 +254,8 @@ class Entry(OrderedDict):
         return
 
     def check(self):
-        """Check that the entry has some required fields.
+        """Check that the entry has the required fields.
         """
-        self.catalog.log.debug("check()")
         # Make sure there is a schema key in dict
         if self._KEYS.SCHEMA not in self.keys():
             self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
@@ -197,6 +267,10 @@ class Entry(OrderedDict):
         return
 
     def clean_entry_name(self, name):
+        """Template method to clean/sanitize an entry name before setting it.
+
+        Should be overridden appropriately in subclasses `Entry` objects.
+        """
         return name
 
     def clean_internal(self, data=None):
@@ -208,6 +282,11 @@ class Entry(OrderedDict):
 
     def get_aliases(self, includename=True):
         """Retrieve the aliases of this object as a list of strings.
+
+        Arguments
+        ---------
+        includename : bool
+            Include the 'name' parameter in the list of aliases.
         """
         # empty list if doesnt exist
         alias_quanta = self.get(self._KEYS.ALIAS, [])
@@ -229,6 +308,22 @@ class Entry(OrderedDict):
         return filetext
 
     def get_source_by_alias(self, alias):
+        """Given an alias, find the corresponding source in this entry.
+
+        If the given alias doesn't exist (e.g. there are no sources), then a
+        `ValueError` is raised.
+
+        Arguments
+        ---------
+        alias : str
+            The str-integer (e.g. '8') of the target source.
+
+        Returns
+        -------
+        source : `astrocats.catalog.source.Source` object
+            The source object corresponding to the passed alias.
+
+        """
         for source in self.get(self._KEYS.SOURCES, []):
             if source[self._KEYS.ALIAS] == alias:
                 return source
@@ -239,13 +334,18 @@ class Entry(OrderedDict):
     def get_stub(self):
         """Get a new `Entry` which contains the 'stub' of this one.
 
-        The 'stub' is *only* the name and aliases.
+        The 'stub' is only the name and aliases.
 
         Usage:
         -----
         To convert a normal entry into a stub (for example), overwrite the
         entry in place, i.e.
         >>> entries[name] = entries[name].get_stub()
+
+        Returns
+        -------
+        stub : `astrocats.catalog.entry.Entry` subclass object
+            The type of the returned object is this instance's type.
 
         """
         stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
@@ -260,16 +360,26 @@ class Entry(OrderedDict):
             return None
 
     def num_sources(self):
+        """Return the current number of sources stored in this instance.
+
+        Returns
+        -------
+        len : int
+            The *integer* number of existing sources.
+        """
         return len(self.get(self._KEYS.SOURCES, []))
 
     def sanitize(self):
         """Sanitize the data (sort it, etc.) before writing it to disk.
+
+        Template method that can be overridden in each catalog's subclassed
+        `Entry` object.
         """
         return
 
-    def save(self, empty=False, bury=False, gz=False, final=False):
-        """Write entry to JSON file in the proper location
-        FIX: gz option not being used?
+    def save(self, bury=False, final=False):
+        """Write entry to JSON file in the proper location.
+
         """
         outdir, filename = self._get_save_path(bury=bury)
 
