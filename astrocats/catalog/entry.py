@@ -81,6 +81,8 @@ class Entry(OrderedDict):
 
     """
 
+    _KEYS = KEYS
+
     def __init__(self, catalog, name, stub=False):
         """Create a new `Entry` object with the given `name`.
 
@@ -94,12 +96,11 @@ class Entry(OrderedDict):
             Whether or not this instance represents a 'stub' (see above).
 
         """
-        self[KEYS.NAME] = name
         self.catalog = catalog
         self.filename = None
         self._log = catalog.log
         self._stub = stub
-        self._KEYS = KEYS
+        self[self._KEYS.NAME] = name
         return
 
     @classmethod

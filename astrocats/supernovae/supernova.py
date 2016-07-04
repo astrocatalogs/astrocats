@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 from astropy.time import Time as astrotime
 
-from astrocats.catalog.entry import KEYS as BASEKEYS
+from astrocats.catalog.entry import KEYS
 from astrocats.catalog.entry import Entry
 from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.quantity import QUANTITY
@@ -22,7 +22,7 @@ from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
 from cdecimal import Decimal
 
 
-class KEYS(BASEKEYS):
+class SUPERNOVA(KEYS):
     CLAIMED_TYPE = 'clamedtype'
     DISCOVERY_DATE = 'discoverdate'
     ERRORS = 'errors'
@@ -51,9 +51,7 @@ class Supernova(Entry):
 
     """
 
-    filename = ''
-    _source_syns = {}
-    _KEYS = KEYS
+    _KEYS = SUPERNOVA
 
     def __init__(self, catalog, name, stub=False):
         super().__init__(catalog, name, stub=stub)
@@ -110,7 +108,7 @@ class Supernova(Entry):
         if not unit and key == self._KEYS.DEC:
             unit = 'degrees'
         if not unit and key in [self._KEYS.LUM_DIST,
-                                 self._KEYS.COMOVING_DIST]:
+                                self._KEYS.COMOVING_DIST]:
             unit = 'Mpc'
 
         # Handle certain name
@@ -121,7 +119,7 @@ class Supernova(Entry):
                     return
 
         if key in [self._KEYS.VELOCITY, self._KEYS.REDSHIFT, self._KEYS.EBV,
-                    self._KEYS.LUM_DIST, self._KEYS.COMOVING_DIST]:
+                   self._KEYS.LUM_DIST, self._KEYS.COMOVING_DIST]:
             if not is_number(value):
                 return
         if key == self._KEYS.HOST:
@@ -151,7 +149,7 @@ class Supernova(Entry):
                 value = value + '?'
 
         elif key in [self._KEYS.RA, self._KEYS.DEC,
-                      self._KEYS.HOST_RA, self._KEYS.HOST_DEC]:
+                     self._KEYS.HOST_RA, self._KEYS.HOST_DEC]:
             (value, unit) = radec_clean(value, key, unit=unit)
         elif key == self._KEYS.MAX_DATE or key == self._KEYS.DISCOVER_DATE:
             # Make sure month and day have leading zeroes
