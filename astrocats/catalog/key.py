@@ -6,8 +6,8 @@ from astrocats.catalog.utils import is_number
 class KeyCollection:
     """General container class with methods to list attribute names and values.
 
-    Used mostly by different `CatDict` subclasses to contain the 'keys' to their
-    internal dictionaries.
+    Used mostly by different `CatDict` subclasses to contain the 'keys' to
+    their internal dictionaries.
     """
     @classmethod
     def keys(cls):
@@ -45,12 +45,13 @@ class KEY_TYPES(KeyCollection):
 class Key(str):
     """Class to act as a 'key' (with metadata) to a `CatDict` dictionary.
 
-    Used in `KeyCollection` subclasses, for example `PHOTOMETRY`. The most basic
-    function is to contain the str 'key' for a `CatDict` (or other) dictionary,
-    but can also contain (and manage) additional specifictions and metadata.
-    For example, if a `type` parameter is specified (from `KEY_TYPES`), then
-    the builtin `check()` method will ensure that a value is consistent with
-    that type.  Arbitrary additional attributes can also be stored.
+    Used in `KeyCollection` subclasses, for example `PHOTOMETRY`. The most
+    basic function is to contain the str 'key' for a `CatDict` (or other)
+    dictionary, but can also contain (and manage) additional specifictions and
+    metadata. For example, if a `type` parameter is specified (from
+    `KEY_TYPES`), then the builtin `check()` method will ensure that a value is
+    consistent with that type.  Arbitrary additional attributes can also be
+    stored.
 
     Attributes
     ----------

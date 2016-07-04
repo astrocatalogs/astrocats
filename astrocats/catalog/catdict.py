@@ -21,9 +21,9 @@ class CatDictError(Exception):
 class CatDict(OrderedDict):
     """General data storage super-class used throughout catalogs.
 
-    In general, `CatDict` subclasses are used to manage/store data which ends up
-    in the lowest-level dictionaries saved to output json files.  For example,
-    and individual `Source` or `Photometry` entry.
+    In general, `CatDict` subclasses are used to manage/store data which ends
+    up in the lowest-level dictionaries saved to output json files.  For
+    example, and individual `Source` or `Photometry` entry.
 
     Attributes
     ----------
@@ -41,8 +41,8 @@ class CatDict(OrderedDict):
     _REQ_KEY_SETS : list of lists
         Which elements of the associated `_KEYS` are required for each instance
         of this class.
-        The structure of this variable is a list of lists, where each inner list
-        contains a set of 'Key's, *at least one* of which are required for
+        The structure of this variable is a list of lists, where each inner
+        list contains a set of 'Key's, *at least one* of which are required for
         validity.  For example, if
         ``_REQ_KEY_SETS = [[_KEYS.ONE, _KEYS.TWO], [_KEYS.THREE]]``
         then either `_KEYS.ONE` *or* `_KEYS.TWO` is required, and `_KEYS.THREE`
