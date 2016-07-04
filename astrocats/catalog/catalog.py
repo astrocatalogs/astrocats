@@ -429,7 +429,7 @@ class Catalog:
                 newsourcealiases[source['alias']] = (self.entries[destname]
                                                      .add_source(
                     bibcode=source['bibcode'] if 'bibcode' in source else '',
-                    srcname=source['name'] if 'name' in source else '',
+                    name=source['name'] if 'name' in source else '',
                     reference=source['reference'] if
                     'reference' in source else '',
                     url=source['url'] if 'url' in source else ''))
@@ -508,7 +508,7 @@ class Catalog:
                   bibcode='', secondary=False, acknowledgment=''):
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(
-            bibcode=bibcode, srcname=srcname, reference=reference, url=url,
+            bibcode=bibcode, name=srcname, reference=reference, url=url,
             secondary=secondary, acknowledgment=acknowledgment)
         self.entries[newname].add_quantity('alias', name, source)
         return newname, source

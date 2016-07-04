@@ -17,7 +17,7 @@ def do_scp(catalog):
         name = row[0].replace('SCP', 'SCP-')
         name = catalog.add_entry(name)
         source = (catalog.entries[name]
-                  .add_source(srcname='Supernova Cosmology Project',
+                  .add_source(name='Supernova Cosmology Project',
                               url=('http://supernova.lbl.gov/'
                                    '2009ClusterSurvey/')))
         catalog.entries[name].add_quantity('alias', name, source)

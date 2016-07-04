@@ -105,11 +105,11 @@ def do_ogle(catalog):
 
                 lcdat = csvtxt.splitlines()
                 sources = [catalog.entries[name].add_source(
-                    srcname=reference, url=refurl)]
+                    name=reference, url=refurl)]
                 catalog.entries[name].add_quantity('alias', name, sources[0])
                 if atelref and atelref != 'ATel#----':
                     sources.append(catalog.entries[name].add_source(
-                        srcname=atelref, url=atelurl))
+                        name=atelref, url=atelurl))
                 sources = uniq_cdl(sources)
 
                 if name.startswith('OGLE'):

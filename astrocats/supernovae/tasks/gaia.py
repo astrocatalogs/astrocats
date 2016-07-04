@@ -25,7 +25,7 @@ def do_gaia(catalog):
             continue
         name = catalog.add_entry(row[0])
         source = catalog.entries[name].add_source(
-            srcname=reference, url=refurl)
+            name=reference, url=refurl)
         catalog.entries[name].add_quantity('alias', name, source)
         year = '20' + re.findall(r'\d+', row[0])[0]
         catalog.entries[name].add_quantity('discoverdate', year, source)

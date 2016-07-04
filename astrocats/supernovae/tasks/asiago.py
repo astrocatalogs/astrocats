@@ -161,7 +161,7 @@ def do_asiago_spectra(catalog):
                 reference = 'Asiago Supernova Catalogue'
                 refurl = 'http://graspa.oapd.inaf.it/cgi-bin/sncat.php'
                 secondarysource = catalog.entries[name].add_source(
-                    srcname=reference, url=refurl, secondary=True)
+                    name=reference, url=refurl, secondary=True)
                 catalog.entries[name].add_quantity('alias', oldname,
                                                    secondarysource)
                 if alias != name:
@@ -201,7 +201,7 @@ def do_asiago_spectra(catalog):
                         refurl = ref['href']
                 if reference:
                     source = catalog.entries[name].add_source(
-                        srcname=reference, url=refurl)
+                        name=reference, url=refurl)
                 catalog.entries[name].add_quantity('alias', name,
                                                    secondarysource)
                 sources = uniq_cdl(

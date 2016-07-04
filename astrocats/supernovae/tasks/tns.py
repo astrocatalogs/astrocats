@@ -62,7 +62,7 @@ def do_tns(catalog):
             name = row[1].replace(' ', '')
             name = catalog.add_entry(name)
             source = catalog.entries[name].add_source(
-                srcname='Transient Name Server', url=tns_url)
+                name='Transient Name Server', url=tns_url)
             catalog.entries[name].add_quantity('alias', name, source)
             if row[2] and row[2] != '00:00:00.00':
                 catalog.entries[name].add_quantity('ra', row[2], source)

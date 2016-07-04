@@ -54,7 +54,7 @@ def do_superfit_spectra(catalog):
                 epoff = ''
 
             source = catalog.entries[name].add_source(
-                srcname='Superfit', url=superfit_url, secondary=True)
+                name='Superfit', url=superfit_url, secondary=True)
             catalog.entries[name].add_quantity('alias', oldname, source)
 
             with open(sffile) as ff:

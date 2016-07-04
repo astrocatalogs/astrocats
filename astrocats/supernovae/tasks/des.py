@@ -41,12 +41,12 @@ def do_des(catalog):
                     atellink = ''
 
         sources = [catalog.entries[name]
-                   .add_source(url=des_url, srcname='DES Bright Transients',
+                   .add_source(url=des_url, name='DES Bright Transients',
                                acknowledgment=ackn_url)]
         if atellink:
             sources.append(
                 catalog.entries[name]
-                .add_source(srcname='ATel ' + atellink.split('=')[-1],
+                .add_source(name='ATel ' + atellink.split('=')[-1],
                             url=atellink))
         sources += [catalog.entries[name]
                     .add_source(bibcode='2012ApJ...753..152B'),

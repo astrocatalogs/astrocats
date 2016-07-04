@@ -41,7 +41,7 @@ def do_snhunt(catalog):
                       ).strip().replace(' ', '').replace('SNHunt', 'SNhunt')
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
-            srcname='Supernova Hunt', url=snh_url)
+            name='Supernova Hunt', url=snh_url)
         catalog.entries[name].add_quantity('alias', name, source)
         host = re.sub('<[^<]+?>', '', cols[1]).strip().replace('_', ' ')
         catalog.entries[name].add_quantity('host', host, source)

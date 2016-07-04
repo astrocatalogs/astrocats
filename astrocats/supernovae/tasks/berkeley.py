@@ -31,7 +31,7 @@ def do_ucb_photo(catalog):
         name = catalog.add_entry(oldname)
 
         sec_source = catalog.entries[name].add_source(
-            srcname=sec_ref, url=sec_refurl,
+            name=sec_ref, url=sec_refurl,
             bibcode=sec_refbib,
             secondary=True)
         catalog.entries[name].add_quantity('alias', oldname, sec_source)
@@ -118,7 +118,7 @@ def do_ucb_spectra(catalog):
         name = catalog.add_entry(name)
 
         sec_source = catalog.entries[name].add_source(
-            srcname=sec_reference, url=sec_refurl, bibcode=sec_refbib,
+            name=sec_reference, url=sec_refurl, bibcode=sec_refbib,
             secondary=True)
         catalog.entries[name].add_quantity('alias', name, sec_source)
         sources = [sec_source]

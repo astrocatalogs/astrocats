@@ -54,7 +54,7 @@ def do_suspect_photo(catalog):
         sec_ref = 'SUSPECT'
         sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
         sec_source = catalog.entries[name].add_source(
-            srcname=sec_ref, url=sec_refurl, secondary=True)
+            name=sec_ref, url=sec_refurl, secondary=True)
         catalog.entries[name].add_quantity('alias', oldname, sec_source)
 
         if ei == 1:
@@ -140,7 +140,7 @@ def do_suspect_spectra(catalog):
             sec_refurl = 'https://www.nhn.ou.edu/~suspect/'
             sec_bibc = '2001AAS...199.8408R'
             sec_source = catalog.entries[name].add_source(
-                srcname=sec_ref, url=sec_refurl, bibcode=sec_bibc,
+                name=sec_ref, url=sec_refurl, bibcode=sec_bibc,
                 secondary=True)
             catalog.entries[name].add_quantity('alias', name, sec_source)
             fpath = os.path.join(catalog.get_current_task_repo(),

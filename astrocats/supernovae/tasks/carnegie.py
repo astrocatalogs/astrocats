@@ -27,7 +27,7 @@ def do_csp_photo(catalog):
         refbib = '2010AJ....139..519C'
         refurl = 'http://csp.obs.carnegiescience.edu/data'
         source = catalog.entries[name].add_source(
-            bibcode=refbib, srcname=reference, url=refurl)
+            bibcode=refbib, name=reference, url=refurl)
         catalog.entries[name].add_quantity('alias', name, source)
 
         year = re.findall(r'\d+', name)[0]
