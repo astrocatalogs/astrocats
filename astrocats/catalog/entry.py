@@ -46,24 +46,22 @@ class KEYS:
 
 
 class Entry(OrderedDict):
+    """Class representing an individual element of each Catalog.
 
-    # Whether or not this entry is a 'stub'.  Assume False
-    _stub = False
-    filename = None
-    catalog = None
-
-    _KEYS = KEYS
+    For example, a single supernova in the supernova catalog, this object
+    handles and manages the addition of data for this Entry, using different
+    `CatDict` instances.
+    """
 
     def __init__(self, catalog, name, stub=False):
         """Create a new `Entry` object with the given `name`.
         """
-        # if not name:
-        #     raise ValueError("New `Entry` objects must have a valid name!")
         self[KEYS.NAME] = name
         self._stub = stub
         self.filename = None
         self.catalog = catalog
         self._log = catalog.log
+        self._KEYS = KEYS
         return
 
     @classmethod
@@ -105,6 +103,192 @@ class Entry(OrderedDict):
     def __repr__(self):
         jsonstring = dict_to_pretty_string({self[KEYS.NAME]: self})
         return jsonstring
+
+    def add_error(self, quantity, value, **kwargs):
+        kwargs.update({ERROR.VALUE: value})
+        self._add_cat_dict(Quantity, quantity, **kwargs)
+        return
+
+    def add_photometry(self, **kwargs):
+        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        return
+
+    def add_quantity(self, quantity, value, sources,
+                     forcereplacebetter=False, **kwargs):
+        # Aliases not added if in DISTINCT_FROM
+        if quantity == self._KEYS.ALIAS:
+            value = self.clean_entry_name(value)
+            for df in self.get(self._KEYS.DISTINCT_FROM, []):
+                if value == df[QUANTITY.VALUE]:
+                    return
+
+        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
+        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
+        if cat_dict:
+            self._append_additional_tags(quantity, sources, cat_dict)
+        return
+
+    def add_source(self, **kwargs):
+        if SOURCE.ALIAS in kwargs:
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
+                SOURCE.ALIAS)
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        # Set alias number to be +1 of current number of sources
+        kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
+        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
+        if source_obj is None:
+            return None
+
+        for item in self.get(self._KEYS.SOURCES, ''):
+            if source_obj.is_duplicate_of(item):
+                return item[item._KEYS.ALIAS]
+
+        # Set 'alias' number to be one higher than existing length of sources
+        source_obj[SOURCE.ALIAS] = str(
+            len(self.get(self._KEYS.SOURCES, [])) + 1)
+
+        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
+        return source_obj[source_obj._KEYS.ALIAS]
+
+    def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
+        kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
+                       SPECTRUM.FLUX_UNIT: fluxunit})
+        spec_key = self._KEYS.SPECTRA
+        # Make sure that a source is given, and is valid (nor erroneous)
+        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
+        if source is None:
+            return None
+
+        # Try to create a new instance of `Spectrum`
+        new_spectrum = self._init_cat_dict(
+            Spectrum, spec_key, **kwargs)
+        if new_spectrum is None:
+            return None
+
+        num_spec = len(self.get(spec_key, []))
+        for si in range(num_spec):
+            item = self[spec_key][si]
+            # Only the `filename` should be compared for duplicates If a
+            # duplicate is found, that means the previous `exclude` array
+            # should be saved to the new object, and the old deleted
+            if new_spectrum.is_duplicate_of(item):
+                if SPECTRUM.EXCLUDE in item:
+                    new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
+                del self[spec_key][si]
+                break
+
+        self.setdefault(spec_key, []).append(new_spectrum)
+        return
+
+    def check(self):
+        """Check that the entry has some required fields.
+        """
+        self.catalog.log.debug("check()")
+        # Make sure there is a schema key in dict
+        if self._KEYS.SCHEMA not in self.keys():
+            self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
+        # Make sure there is a name key in dict
+        if (self._KEYS.NAME not in self.keys() or
+                len(self[self._KEYS.NAME]) == 0):
+            raise ValueError("Entry name is empty:\n\t{}".format(
+                json.dumps(self, indent=2)))
+        return
+
+    def clean_entry_name(self, name):
+        return name
+
+    def clean_internal(self, data=None):
+        """Clean input from 'internal', human added data.
+
+        This is used in the 'Entry.init_from_file' method.
+        """
+        return data
+
+    def get_aliases(self, includename=True):
+        """Retrieve the aliases of this object as a list of strings.
+        """
+        # empty list if doesnt exist
+        alias_quanta = self.get(self._KEYS.ALIAS, [])
+        aliases = [aq['value'] for aq in alias_quanta]
+        if includename and self[self._KEYS.NAME] not in aliases:
+            aliases = [self[self._KEYS.NAME]] + aliases
+        return aliases
+
+    def get_entry_text(fname):
+        """Retrieve the raw text from a file.
+        """
+        import gzip
+        if fname.split('.')[-1] == 'gz':
+            with gzip.open(fname, 'rt') as f:
+                filetext = f.read()
+        else:
+            with open(fname, 'r') as f:
+                filetext = f.read()
+        return filetext
+
+    def get_source_by_alias(self, alias):
+        for source in self.get(self._KEYS.SOURCES, []):
+            if source[self._KEYS.ALIAS] == alias:
+                return source
+        raise ValueError(
+            "Source '{}': alias '{}' not found!".format(
+                self[self._KEYS.NAME], alias))
+
+    def get_stub(self):
+        """Get a new `Entry` which contains the 'stub' of this one.
+
+        The 'stub' is *only* the name and aliases.
+
+        Usage:
+        -----
+        To convert a normal entry into a stub (for example), overwrite the
+        entry in place, i.e.
+        >>> entries[name] = entries[name].get_stub()
+
+        """
+        stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
+        if self._KEYS.ALIAS in self.keys():
+            stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
+        return stub
+
+    def name(self):
+        try:
+            return self[self._KEYS.NAME]
+        except KeyError:
+            return None
+
+    def num_sources(self):
+        return len(self.get(self._KEYS.SOURCES, []))
+
+    def sanitize(self):
+        """Sanitize the data (sort it, etc.) before writing it to disk.
+        """
+        return
+
+    def save(self, empty=False, bury=False, gz=False, final=False):
+        """Write entry to JSON file in the proper location
+        FIX: gz option not being used?
+        """
+        outdir, filename = self._get_save_path(bury=bury)
+
+        if final:
+            self.sanitize()
+
+        # FIX: use 'dump' not 'dumps'
+        jsonstring = json.dumps({self[self._KEYS.NAME]: self},
+                                indent='\t', separators=(',', ':'),
+                                ensure_ascii=False)
+        if not os.path.isdir(outdir):
+            raise RuntimeError("Output directory '{}' for event '{}' does "
+                               "not exist.".format(outdir,
+                                                   self[self._KEYS.NAME]))
+        save_name = os.path.join(outdir, filename + '.json')
+        with codecs.open(save_name, 'w', encoding='utf8') as sf:
+            sf.write(jsonstring)
+
+        return save_name
 
     def _clean_quantity(self, quantity):
         """Clean quantity value before it is added to entry.
@@ -265,94 +449,6 @@ class Entry(OrderedDict):
 
         return
 
-    def check(self):
-        """Check that the entry has some required fields.
-        """
-        self.catalog.log.debug("check()")
-        # Make sure there is a schema key in dict
-        if self._KEYS.SCHEMA not in self.keys():
-            self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
-        # Make sure there is a name key in dict
-        if (self._KEYS.NAME not in self.keys() or
-                len(self[self._KEYS.NAME]) == 0):
-            raise ValueError("Entry name is empty:\n\t{}".format(
-                json.dumps(self, indent=2)))
-        return
-
-    def save(self, empty=False, bury=False, gz=False, final=False):
-        """Write entry to JSON file in the proper location
-        FIX: gz option not being used?
-        """
-        outdir, filename = self._get_save_path(bury=bury)
-
-        if final:
-            self.sanitize()
-
-        # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[self._KEYS.NAME]: self},
-                                indent='\t', separators=(',', ':'),
-                                ensure_ascii=False)
-        if not os.path.isdir(outdir):
-            raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir,
-                                                   self[self._KEYS.NAME]))
-        save_name = os.path.join(outdir, filename + '.json')
-        with codecs.open(save_name, 'w', encoding='utf8') as sf:
-            sf.write(jsonstring)
-
-        return save_name
-
-    def sanitize(self):
-        """Sanitize the data (sort it, etc.) before writing it to disk.
-        """
-        return
-
-    def get_aliases(self, includename=True):
-        """Retrieve the aliases of this object as a list of strings.
-        """
-        # empty list if doesnt exist
-        alias_quanta = self.get(self._KEYS.ALIAS, [])
-        aliases = [aq['value'] for aq in alias_quanta]
-        if includename and self[self._KEYS.NAME] not in aliases:
-            aliases = [self[self._KEYS.NAME]] + aliases
-        return aliases
-
-    def get_stub(self):
-        """Get a new `Entry` which contains the 'stub' of this one.
-
-        The 'stub' is *only* the name and aliases.
-
-        Usage:
-        -----
-        To convert a normal entry into a stub (for example), overwrite the
-        entry in place, i.e.
-        >>> entries[name] = entries[name].get_stub()
-
-        """
-        stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
-        if self._KEYS.ALIAS in self.keys():
-            stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
-        return stub
-
-    def clean_internal(self, data=None):
-        """Clean input from 'internal', human added data.
-
-        This is used in the 'Entry.init_from_file' method.
-        """
-        return data
-
-    def get_entry_text(fname):
-        """Retrieve the raw text from a file.
-        """
-        import gzip
-        if fname.split('.')[-1] == 'gz':
-            with gzip.open(fname, 'rt') as f:
-                filetext = f.read()
-        else:
-            with open(fname, 'r') as f:
-                filetext = f.read()
-        return filetext
-
     def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
@@ -399,101 +495,3 @@ class Entry(OrderedDict):
 
         self.setdefault(key_in_self, []).append(new_entry)
         return None
-
-    def add_source(self, **kwargs):
-        if SOURCE.ALIAS in kwargs:
-            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
-                SOURCE.ALIAS)
-            self._log.error(err_str)
-            raise RuntimeError(err_str)
-
-        # Set alias number to be +1 of current number of sources
-        kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
-        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
-        if source_obj is None:
-            return None
-
-        for item in self.get(self._KEYS.SOURCES, ''):
-            if source_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
-
-        # Set 'alias' number to be one higher than existing length of sources
-        source_obj[SOURCE.ALIAS] = str(
-            len(self.get(self._KEYS.SOURCES, [])) + 1)
-
-        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[source_obj._KEYS.ALIAS]
-
-    def add_quantity(self, quantity, value, sources,
-                     forcereplacebetter=False, **kwargs):
-        # Aliases not added if in DISTINCT_FROM
-        if quantity == self._KEYS.ALIAS:
-            value = self.clean_entry_name(value)
-            for df in self.get(self._KEYS.DISTINCT_FROM, []):
-                if value == df[QUANTITY.VALUE]:
-                    return
-
-        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
-        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
-        if cat_dict:
-            self._append_additional_tags(quantity, sources, cat_dict)
-        return
-
-    def clean_entry_name(self, name):
-        return name
-
-    def add_error(self, quantity, value, **kwargs):
-        kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
-        return
-
-    def add_photometry(self, **kwargs):
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
-        return
-
-    def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
-        kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
-                       SPECTRUM.FLUX_UNIT: fluxunit})
-        spec_key = self._KEYS.SPECTRA
-        # Make sure that a source is given, and is valid (nor erroneous)
-        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
-        if source is None:
-            return None
-
-        # Try to create a new instance of `Spectrum`
-        new_spectrum = self._init_cat_dict(
-            Spectrum, spec_key, **kwargs)
-        if new_spectrum is None:
-            return None
-
-        num_spec = len(self.get(spec_key, []))
-        for si in range(num_spec):
-            item = self[spec_key][si]
-            # Only the `filename` should be compared for duplicates If a
-            # duplicate is found, that means the previous `exclude` array
-            # should be saved to the new object, and the old deleted
-            if new_spectrum.is_duplicate_of(item):
-                if SPECTRUM.EXCLUDE in item:
-                    new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[spec_key][si]
-                break
-
-        self.setdefault(spec_key, []).append(new_spectrum)
-        return
-
-    def get_source_by_alias(self, alias):
-        for source in self.get(self._KEYS.SOURCES, []):
-            if source[self._KEYS.ALIAS] == alias:
-                return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(
-                self[self._KEYS.NAME], alias))
-
-    def name(self):
-        try:
-            return self[self._KEYS.NAME]
-        except KeyError:
-            return None
-
-    def num_sources(self):
-        return len(self.get(self._KEYS.SOURCES, []))
