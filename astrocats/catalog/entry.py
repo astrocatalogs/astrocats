@@ -407,7 +407,8 @@ class Entry(OrderedDict):
                 return item[item._KEYS.ALIAS]
 
         # Set 'alias' number to be one higher than existing length of sources
-        source_obj[SOURCE.ALIAS] = str(len(self.get(self._KEYS.SOURCES, [])) + 1)
+        source_obj[SOURCE.ALIAS] = str(
+            len(self.get(self._KEYS.SOURCES, [])) + 1)
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
