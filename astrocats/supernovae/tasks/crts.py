@@ -118,10 +118,13 @@ def do_crts(catalog):
                 with open(fname2, 'r') as ff:
                     html2 = ff.read()
             else:
-                with open(fname2, 'w') as ff:
-                    response2 = urllib.request.urlopen(lclink)
-                    html2 = response2.read().decode('utf-8')
-                    ff.write(html2)
+                try:
+                    with open(fname2, 'w') as ff:
+                        response2 = urllib.request.urlopen(lclink)
+                        html2 = response2.read().decode('utf-8')
+                        ff.write(html2)
+                except:
+                    continue
 
             lines = html2.splitlines()
             teles = 'Catalina Schmidt'
