@@ -1,4 +1,9 @@
-# Structure #
+# Structure and Code Style #
+
+Unless otherwise noted, everything should be
+[PEP8](https://www.python.org/dev/peps/pep-0008) compliant, with 79 characters
+maximum per line (we ignore the 72 character docstring maximum).  Please make
+variable names descriptive, and add comments describing *everything*.
 
 ### Naming Conventions ###
 -   Directories: `lowercase`,  
