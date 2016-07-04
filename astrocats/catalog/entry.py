@@ -114,7 +114,8 @@ class Entry(OrderedDict):
     def _load_data_from_json(self, fhand, clean=False):
         """FIX: check for overwrite??
         """
-        self._log.debug("_load_data_from_json(): {}".format(self.name()))
+        self._log.debug("_load_data_from_json(): {}\n\t{}".format(
+            self.name(), fhand))
         # Store the filename this was loaded from
         self.filename = fhand
         with open(fhand, 'r') as jfil:
@@ -183,12 +184,19 @@ class Entry(OrderedDict):
         if src_key in data:
             # Remove from `data`
             sources = data.pop(src_key)
-            self._log.debug("Found {} '{}' entries"
-                            .format(len(sources), src_key))
+            self._log.debug("Found {} '{}' entries".format(
+                len(sources), src_key))
 
             newsources = []
             for src in sources:
-                newsources.append(Source(self, **src))
+                try:
+                    newsources.append(Source(self, **src))
+                except Exception as err:
+                    err_str = "Failed to create Source with '{}'\n{}".format(
+                        src, str(err))
+                    print(err_str)
+                    self._log.error(err_str)
+                    raise
             # data['sources'] = newsources
             self.setdefault(src_key, []).extend(newsources)
 
@@ -390,7 +398,7 @@ class Entry(OrderedDict):
         return None
 
     def add_source(self, **kwargs):
-        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES)
+        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
         if source_obj is None:
             return None
 
