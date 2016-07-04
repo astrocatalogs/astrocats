@@ -34,20 +34,8 @@ class Supernova(Entry):
           I.e. it does not include the highest nesting level
           { name: DATA }, it *just* includes DATA
 
-    FIX: does this need to be `ordered`???
     FIX: check that no stored values are empty/invalid (delete key in that
          case?)
-    FIX: distinguish between '.filename' and 'get_filename'
-
-    sources
-    -   All sources must have KEYS.NAME and self._KEYS.ALIAS parameters
-    -   FIX: is url required if no bibcode???
-    -   FIX: consider changing self._KEYS.ALIAS for each source to 'src_num' or
-             something
-    -   FIX: Make source aliases integers (instead of strings of integers)??
-    -   FIX: have list of allowed 'source' parameters??
-    -   FIX: create class for 'errors'
-    -   FIX: class or list of valid quantities and units
 
     """
 
