@@ -175,7 +175,7 @@ def do_wiserep_spectra(catalog):
                             # ' ' + bibcode + ' ' + redshift)
 
                             secondarysource = catalog.entries[name].add_source(
-                                srcname=secondaryreference,
+                                name=secondaryreference,
                                 url=secondaryrefurl,
                                 bibcode=secondarybibcode, secondary=True)
                             catalog.entries[name].add_quantity(
@@ -189,7 +189,7 @@ def do_wiserep_spectra(catalog):
                                         bibcode=unescape(newbibcode))
                                 else:
                                     source = catalog.entries[name].add_source(
-                                        srcname=unescape(bibcode))
+                                        name=unescape(bibcode))
                                 sources = uniq_cdl([source, secondarysource])
                             else:
                                 sources = secondarysource

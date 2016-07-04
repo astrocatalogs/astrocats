@@ -364,7 +364,7 @@ def do_vizier(catalog):
                 bibcode=ii189bibdict[row['r_m']])
         else:
             source = catalog.entries[name].add_source(
-                srcname=ii189refdict[row['r_m']])
+                name=ii189refdict[row['r_m']])
         catalog.entries[name].add_quantity('alias', oldname, source)
 
         catalog.entries[name].add_photometry(
@@ -401,7 +401,7 @@ def do_vizier(catalog):
                   .add_source(bibcode='2014BASI...42...47G') +
                   ',' +
                   (catalog.entries[name]
-                   .add_source(srcname='Galactic SNRs',
+                   .add_source(name='Galactic SNRs',
                                url=('https://www.mrao.cam.ac.uk/'
                                     'surveys/snrs/snrs.data.html'))))
         catalog.entries[name].add_quantity('alias', oldname, source)

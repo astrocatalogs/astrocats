@@ -55,7 +55,7 @@ def do_simbad(catalog):
             continue
         name = catalog.add_entry(name)
         source = (catalog.entries[name]
-                  .add_source(srcname='SIMBAD astronomical database',
+                  .add_source(name='SIMBAD astronomical database',
                               bibcode="2000A&AS..143....9W",
                               url="http://simbad.u-strasbg.fr/",
                               secondary=True))

@@ -48,7 +48,7 @@ def do_cpcs(catalog):
             continue
 
         sec_source = catalog.entries[name].add_source(
-            srcname='Cambridge Photometric Calibration Server',
+            name='Cambridge Photometric Calibration Server',
             url='http://gsaweb.ast.cam.ac.uk/followup/', secondary=True)
         catalog.entries[name].add_quantity('alias', oldname, sec_source)
         unit_deg = 'floatdegrees'
@@ -61,7 +61,7 @@ def do_cpcs(catalog):
                     'followup/get_alert_lc_data?alert_id=' +
                     str(ai))
         source = catalog.entries[name].add_source(
-            srcname='CPCS Alert ' + str(ai), url=alerturl)
+            name='CPCS Alert ' + str(ai), url=alerturl)
         fname = os.path.join(catalog.get_current_task_repo(),
                              'CPCS/alert-') + str(ai).zfill(2) + '.json'
         if (catalog.current_task.load_archive(catalog.args) and

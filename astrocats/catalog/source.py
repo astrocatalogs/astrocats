@@ -25,8 +25,7 @@ class Source(CatDict):
 
     def __init__(self, parent, **kwargs):
         self._REQ_KEY_SETS = [
-            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME],
-            [SOURCE.ALIAS]
+            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME]
         ]
         super().__init__(parent, **kwargs)
         return

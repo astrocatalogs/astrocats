@@ -45,7 +45,7 @@ def do_snf_specta(catalog):
         sec_refurl = 'http://snfactory.lbl.gov/'
         sec_bibcode = '2002SPIE.4836...61A'
         sec_source = catalog.entries[name].add_source(
-            srcname=sec_reference, url=sec_refurl, bibcode=sec_bibcode,
+            name=sec_reference, url=sec_refurl, bibcode=sec_bibcode,
             secondary=True)
         catalog.entries[name].add_quantity('alias', name, sec_source)
         bibcode = bibcodes[name]

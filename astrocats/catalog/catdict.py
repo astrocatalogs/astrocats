@@ -73,11 +73,11 @@ class CatDict(OrderedDict):
 
     _REQ_KEY_SETS = []
 
-    def __init__(self, parent, name=None, **kwargs):
+    def __init__(self, parent, key=None, **kwargs):
         # Store the parent object (an `Entry` subclass) to which this instance
         # will belong.  e.g. a `Supernova` entry.
         self._parent = parent
-        self._name = name
+        self._key = key
         self._log = parent.catalog.log
 
         # Store any individual keys which are required
@@ -130,7 +130,7 @@ class CatDict(OrderedDict):
 
     def pretty(self):
         retval = "{}({}, Parent:{})".format(
-            type(self), self._name, self._parent)
+            type(self), self._key, self._parent)
         return retval
 
     def is_duplicate_of(self, other):
@@ -175,7 +175,7 @@ class CatDict(OrderedDict):
         for req_any in self._REQ_KEY_SETS:
             if not any([req_key in self for req_key in req_any]):
                 err_str = ("'{}' Requires one or more of: "
-                           .format(self._name) +
+                           .format(self._key) +
                            ",".join("'{}'".format(rk) for rk in req_any))
                 self._log.error(err_str)
                 raise CatDictError(err_str)

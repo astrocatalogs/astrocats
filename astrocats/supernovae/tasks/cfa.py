@@ -47,7 +47,7 @@ def do_cfa_photo(catalog):
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = catalog.entries[name].add_source(
-            srcname=secondaryname, url=secondaryurl, secondary=True,
+            name=secondaryname, url=secondaryurl, secondary=True,
             acknowledgment=ACKN_CFA)
         catalog.entries[name].add_quantity('alias', name, secondarysource)
 
@@ -171,7 +171,7 @@ def do_cfa_spectra(catalog):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = catalog.entries[name].add_source(
-            srcname=reference, url=refurl, secondary=True,
+            name=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
         catalog.entries[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'),
@@ -230,7 +230,7 @@ def do_cfa_spectra(catalog):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = catalog.entries[name].add_source(
-            srcname=reference, url=refurl, secondary=True,
+            name=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
         catalog.entries[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'),
@@ -282,7 +282,7 @@ def do_cfa_spectra(catalog):
         reference = 'CfA Supernova Archive'
         refurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         source = catalog.entries[name].add_source(
-            srcname=reference, url=refurl, secondary=True,
+            name=reference, url=refurl, secondary=True,
             acknowledgment=ACKN_CFA)
         catalog.entries[name].add_quantity('alias', name, source)
         for fi, fname in enumerate(sorted(glob(fullpath + '/*'), key=lambda s:

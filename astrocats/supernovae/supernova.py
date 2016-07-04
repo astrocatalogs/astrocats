@@ -93,38 +93,38 @@ class Supernova(Entry):
         error = quantity.get(QUANTITY.ERROR, '')
         unit = quantity.get(QUANTITY.UNIT, '')
         kind = quantity.get(QUANTITY.KIND, '')
-        name = quantity._name
+        key = quantity._key
 
         if not quantity[QUANTITY.VALUE] or value == '--' or value == '-':
             return
         if error and (not is_number(error) or float(error) < 0):
             raise ValueError(self.parent[self.parent._KEYS.NAME] +
-                             "'s quanta " + name +
+                             "'s quanta " + key +
                              ' error value must be a number and positive.')
 
         # Set default units
-        if not unit and name == self._KEYS.VELOCITY:
+        if not unit and key == self._KEYS.VELOCITY:
             unit = 'KM/s'
-        if not unit and name == self._KEYS.RA:
+        if not unit and key == self._KEYS.RA:
             unit = 'hours'
-        if not unit and name == self._KEYS.DEC:
+        if not unit and key == self._KEYS.DEC:
             unit = 'degrees'
-        if not unit and name in [self._KEYS.LUM_DIST,
+        if not unit and key in [self._KEYS.LUM_DIST,
                                  self._KEYS.COMOVING_DIST]:
             unit = 'Mpc'
 
         # Handle certain name
-        if name == self._KEYS.ALIAS:
+        if key == self._KEYS.ALIAS:
             value = name_clean(value)
             for df in quantity.get(self._KEYS.DISTINCT_FROM, []):
                 if value == df[QUANTITY.VALUE]:
                     return
 
-        if name in [self._KEYS.VELOCITY, self._KEYS.REDSHIFT, self._KEYS.EBV,
+        if key in [self._KEYS.VELOCITY, self._KEYS.REDSHIFT, self._KEYS.EBV,
                     self._KEYS.LUM_DIST, self._KEYS.COMOVING_DIST]:
             if not is_number(value):
                 return
-        if name == self._KEYS.HOST:
+        if key == self._KEYS.HOST:
             if is_number(value):
                 return
             if value.lower() in ['anonymous', 'anon.', 'anon',
@@ -135,7 +135,7 @@ class Supernova(Entry):
                                 is_number(value[5:].strip())) or
                                'cluster' in value.lower()))):
                 kind = 'cluster'
-        elif name == self._KEYS.CLAIMED_TYPE:
+        elif key == self._KEYS.CLAIMED_TYPE:
             isq = False
             value = value.replace('young', '')
             if value.lower() in ['unknown', 'unk', '?', '-']:
@@ -150,10 +150,10 @@ class Supernova(Entry):
             if isq:
                 value = value + '?'
 
-        elif name in [self._KEYS.RA, self._KEYS.DEC,
+        elif key in [self._KEYS.RA, self._KEYS.DEC,
                       self._KEYS.HOST_RA, self._KEYS.HOST_DEC]:
-            (value, unit) = radec_clean(value, name, unit=unit)
-        elif name == self._KEYS.MAX_DATE or name == self._KEYS.DISCOVER_DATE:
+            (value, unit) = radec_clean(value, key, unit=unit)
+        elif key == self._KEYS.MAX_DATE or key == self._KEYS.DISCOVER_DATE:
             # Make sure month and day have leading zeroes
             sparts = value.split('/')
             if len(sparts[0]) > 4 and int(sparts[0]) > 0:
@@ -163,7 +163,7 @@ class Supernova(Entry):
             if len(sparts) == 3:
                 value = value + '/' + sparts[2].zfill(2)
 
-            # for ii, ct in enumerate(self.parent[name]):
+            # for ii, ct in enumerate(self.parent[key]):
             #     # Only add dates if they have more information
             #     if len(ct[QUANTITY.VALUE].split('/')) >
             #            len(value.split('/')):
@@ -290,7 +290,7 @@ class Supernova(Entry):
             else:
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
+                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
@@ -301,7 +301,7 @@ class Supernova(Entry):
              not any(['AT' in x for x in aliases]))):
             source = self.add_source(
                 bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
+                name=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             self.add_quantity(self._KEYS.ALIAS, 'AT' + name[2:], source)
 
@@ -323,7 +323,7 @@ class Supernova(Entry):
         if self._KEYS.CLAIMED_TYPE not in self and name.startswith('AT'):
             source = self.add_source(
                 bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
+                name=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
             self.add_quantity(self._KEYS.CLAIMED_TYPE, 'Candidate', source)
 
@@ -467,7 +467,7 @@ class Supernova(Entry):
         # If there are no existing sources, add OSC as one
         if len(bibcodes) == 0:
             self.add_source(bibcode=self.catalog.OSC_BIBCODE,
-                            srcname=self.catalog.OSC_NAME,
+                            name=self.catalog.OSC_NAME,
                             url=self.catalog.OSC_URL, secondary=True)
             bibcodes = [self.catalog.OSC_BIBCODE]
 
@@ -483,7 +483,7 @@ class Supernova(Entry):
             # Add OSC source entry
             source = self.add_source(
                 bibcode=self.catalog.OSC_BIBCODE,
-                srcname=self.catalog.OSC_NAME,
+                name=self.catalog.OSC_NAME,
                 url=self.catalog.OSC_URL, secondary=True)
 
             for alias in aliases:
@@ -496,7 +496,7 @@ class Supernova(Entry):
                  isinstance(distincts[0], str))):
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME,
+                    name=self.catalog.OSC_NAME,
                     url=self.catalog.OSC_URL, secondary=True)
                 for df in distincts:
                     self.add_quantity(dist_key, df, source)
@@ -584,7 +584,7 @@ class Supernova(Entry):
             if mldt:
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
+                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 max_date = make_date_string(mldt.year, mldt.month, mldt.day)
                 self.add_quantity(
@@ -594,7 +594,7 @@ class Supernova(Entry):
             if mlmag:
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
+                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 self.add_quantity(
                     'maxappmag', pretty_num(mlmag),
@@ -603,7 +603,7 @@ class Supernova(Entry):
             if mlband:
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
+                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 (self
                  .add_quantity('maxband',
@@ -618,7 +618,7 @@ class Supernova(Entry):
             if fldt:
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
+                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
@@ -645,7 +645,7 @@ class Supernova(Entry):
                 fldt = astrotime(minspecmjd, format='mjd').datetime
                 source = self.add_source(
                     bibcode=self.catalog.OSC_BIBCODE,
-                    srcname=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
+                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
                     secondary=True)
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(

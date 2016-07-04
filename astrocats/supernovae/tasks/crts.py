@@ -90,7 +90,7 @@ def do_crts(catalog):
                 name = crtsname
             name = catalog.add_entry(name)
             source = catalog.entries[name].add_source(
-                srcname='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
+                name='Catalina Sky Survey', bibcode='2009ApJ...696..870D',
                 url='http://nesssi.cacr.caltech.edu/catalina/AllSN.html')
             catalog.entries[name].add_quantity('alias', name, source)
             for alias in validaliases:
@@ -118,10 +118,13 @@ def do_crts(catalog):
                 with open(fname2, 'r') as ff:
                     html2 = ff.read()
             else:
-                with open(fname2, 'w') as ff:
-                    response2 = urllib.request.urlopen(lclink)
-                    html2 = response2.read().decode('utf-8')
-                    ff.write(html2)
+                try:
+                    with open(fname2, 'w') as ff:
+                        response2 = urllib.request.urlopen(lclink)
+                        html2 = response2.read().decode('utf-8')
+                        ff.write(html2)
+                except:
+                    continue
 
             lines = html2.splitlines()
             teles = 'Catalina Schmidt'

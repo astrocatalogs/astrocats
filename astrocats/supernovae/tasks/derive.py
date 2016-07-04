@@ -40,7 +40,7 @@ def do_derivations(catalog):
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
                         source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
@@ -61,7 +61,7 @@ def do_derivations(catalog):
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
                         source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
@@ -84,7 +84,7 @@ def do_derivations(catalog):
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
                         source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
@@ -107,7 +107,7 @@ def do_derivations(catalog):
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
                         source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
@@ -127,7 +127,7 @@ def do_derivations(catalog):
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
                         source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
@@ -161,7 +161,7 @@ def do_derivations(catalog):
                         if catalog.args.verbose:
                             tprint('Added ra/dec from name: ' + ra + ' ' + dec)
                         source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                             secondary=True)
                         catalog.entries[name].add_quantity(
                             'ra', ra, source, derived=True)
@@ -194,7 +194,7 @@ def do_derivations(catalog):
             if name in catalog.extinctions_dict:
                 sources = uniq_cdl(
                     [catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                         secondary=True),
                      catalog.entries[name]
                      .add_source(bibcode='2011ApJ...737..103S')])
@@ -230,7 +230,7 @@ def do_derivations(catalog):
                         tprint('Added hostra/hostdec from name: ' +
                                hostra + ' ' + hostdec)
                     source = catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                         secondary=True)
                     catalog.entries[name].add_quantity(
                         'hostra', hostra, source, derived=True)
@@ -253,7 +253,7 @@ def do_derivations(catalog):
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv) * 1.e5 / CLIGHT
                 source = catalog.entries[name].add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                     secondary=True)
                 sources = uniq_cdl([source] + bestsrc.split(','))
                 (catalog.entries[name]
@@ -272,7 +272,7 @@ def do_derivations(catalog):
                     source = catalog.entries[name].add_source(
                         bibcode='2015arXiv150201589P')
                     secondarysource = catalog.entries[name].add_source(
-                        srcname=reference, url=refurl, secondary=True)
+                        name=reference, url=refurl, secondary=True)
                     meddist = statistics.median(
                         catalog.nedd_dict[host['value']])
                     redz = z_at_value(
@@ -296,7 +296,7 @@ def do_derivations(catalog):
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
                 source = catalog.entries[name].add_source(
-                    bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                    bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                     secondary=True)
                 sources = uniq_cdl([source] + bestsrc.split(','))
                 # FIX: what's happening here?!
@@ -313,7 +313,7 @@ def do_derivations(catalog):
                 bestz = float(bestz)
                 if 'velocity' not in catalog.entries[name]:
                     source = catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                         secondary=True)
                     # FIX: what's happening here?!
                     pnum = CLIGHT / KM * \
@@ -327,7 +327,7 @@ def do_derivations(catalog):
                         dl = cosmo.luminosity_distance(bestz)
                         sources = [
                             catalog.entries[name].add_source(
-                                bibcode=OSC_BIBCODE, srcname=OSC_NAME,
+                                bibcode=OSC_BIBCODE, name=OSC_NAME,
                                 url=OSC_URL, secondary=True),
                             catalog.entries[name]
                             .add_source(bibcode='2015arXiv150201589P')]
@@ -339,7 +339,7 @@ def do_derivations(catalog):
                         if ('maxabsmag' not in catalog.entries[name] and
                                 'maxappmag' in catalog.entries[name]):
                             source = catalog.entries[name].add_source(
-                                bibcode=OSC_BIBCODE, srcname=OSC_NAME,
+                                bibcode=OSC_BIBCODE, name=OSC_NAME,
                                 url=OSC_URL, secondary=True)
                             pnum = pretty_num(
                                 float(catalog.entries[name]['maxappmag'][0][
@@ -352,7 +352,7 @@ def do_derivations(catalog):
                         cd = cosmo.comoving_distance(bestz)
                         sources = [
                             catalog.entries[name].add_source(
-                                bibcode=OSC_BIBCODE, srcname=OSC_NAME,
+                                bibcode=OSC_BIBCODE, name=OSC_NAME,
                                 url=OSC_URL,
                                 secondary=True),
                             catalog.entries[name]
@@ -380,7 +380,7 @@ def do_derivations(catalog):
             else:
                 sources = uniq_cdl(
                     [catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, srcname=OSC_NAME, url=OSC_URL,
+                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
                         secondary=True)] +
                     catalog.entries[name]['ra'][0]['source'].split(',') +
                     catalog.entries[name]['dec'][0]['source'].split(',') +

@@ -84,9 +84,9 @@ def do_rochester(catalog):
             reference = cols[12].findAll('a')[0].contents[0].strip()
             refurl = cols[12].findAll('a')[0]['href'].strip()
             source = catalog.entries[name].add_source(
-                srcname=reference, url=refurl)
+                name=reference, url=refurl)
             sec_source = catalog.entries[name].add_source(
-                srcname=sec_ref, url=sec_refurl, secondary=True)
+                name=sec_ref, url=sec_refurl, secondary=True)
             sources = uniq_cdl(list(filter(None, [source, sec_source])))
             catalog.entries[name].add_quantity('alias', oldname, sources)
             catalog.entries[name].add_quantity('alias', sn, sources)
@@ -161,7 +161,7 @@ def do_rochester(catalog):
                         name = name.replace('MASTEROTJ', 'MASTER OT J')
                     name = catalog.add_entry(name)
                     sec_source = catalog.entries[name].add_source(
-                        srcname=sec_ref, url=sec_refurl, secondary=True)
+                        name=sec_ref, url=sec_refurl, secondary=True)
                     catalog.entries[name].add_quantity(
                         'alias', name, sec_source)
 
@@ -198,7 +198,7 @@ def do_rochester(catalog):
                         else:
                             reference = ' '.join(row[refind:])
                             source = catalog.entries[
-                                name].add_source(srcname=reference)
+                                name].add_source(name=reference)
                             catalog.entries[name].add_quantity(
                                 'alias', name, sec_source)
                             sources = uniq_cdl([source, sec_source])

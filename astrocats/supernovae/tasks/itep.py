@@ -42,7 +42,7 @@ def do_itep(catalog):
                              'Supernova Light Curve Catalogue')
             sec_refurl = 'http://dau.itep.ru/sn/node/72'
             sec_source = catalog.entries[name].add_source(
-                srcname=sec_reference, url=sec_refurl, secondary=True)
+                name=sec_reference, url=sec_refurl, secondary=True)
             catalog.entries[name].add_quantity('alias', oldname, sec_source)
 
             year = re.findall(r'\d+', name)[0]
@@ -54,7 +54,7 @@ def do_itep(catalog):
         else:
             needsbib.append(reference)
             source = catalog.entries[name].add_source(
-                srcname=reference) if reference else ''
+                name=reference) if reference else ''
 
         if bibcode not in itepbadsources:
             catalog.entries[name].add_photometry(time=mjd, band=band,

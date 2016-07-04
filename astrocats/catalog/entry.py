@@ -366,7 +366,7 @@ class Entry(OrderedDict):
         # Catch errors associated with crappy, but not unexpected data
         # log warning if instructed
         try:
-            new_entry = cat_dict_class(self, name=key_in_self, **kwargs)
+            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
         except CatDictError as err:
             if err.warn:
                 self._log.warning("'{}' Error adding '{}': '{}'".format(

@@ -93,7 +93,7 @@ def do_donations(catalog):
                         ': Maggi-04-11-16/SMCSNRs'):
             name = 'MCSNR ' + row[0]
             name = catalog.add_entry(name)
-            source = catalog.entries[name].add_source(srcname='Pierre Maggi')
+            source = catalog.entries[name].add_source(name='Pierre Maggi')
             ra = row[3]
             dec = row[4]
             catalog.entries[name].add_quantity(
@@ -194,7 +194,7 @@ def do_donations(catalog):
         name = os.path.basename(fi).split('_')[0]
         name = catalog.add_entry(name)
         source = catalog.entries[name].add_source(
-            srcname='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
+            name='Swift Supernovae', bibcode='2014Ap&SS.354...89B',
             url='http://people.physics.tamu.edu/pbrown/SwiftSN/swift_sn.html')
         catalog.entries[name].add_quantity('alias', name, source)
         with open(fi, 'r') as f:

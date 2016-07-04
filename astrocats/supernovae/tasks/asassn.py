@@ -57,17 +57,17 @@ def do_asassn(catalog):
                 host = td.text
 
         sources = [catalog.entries[name].add_source(
-            url=asn_url, srcname='ASAS-SN Supernovae')]
+            url=asn_url, name='ASAS-SN Supernovae')]
         typesources = sources[:]
         if atellink:
             sources.append(
                 (catalog.entries[name]
-                 .add_source(srcname='ATel ' +
+                 .add_source(name='ATel ' +
                              atellink.split('=')[-1], url=atellink)))
         if typelink:
             typesources.append(
                 (catalog.entries[name]
-                 .add_source(srcname='ATel ' +
+                 .add_source(name='ATel ' +
                              typelink.split('=')[-1], url=typelink)))
         sources = ','.join(sources)
         typesources = ','.join(typesources)

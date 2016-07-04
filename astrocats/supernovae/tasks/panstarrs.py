@@ -146,13 +146,13 @@ def do_ps_threepi(catalog):
                 name = psname
             name = catalog.add_entry(name)
             sources = [catalog.entries[name]
-                       .add_source(srcname='Pan-STARRS 3Pi',
+                       .add_source(name='Pan-STARRS 3Pi',
                                    url=('http://psweb.mp.qub.ac.uk/'
                                         'ps1threepi/psdb/'))]
             catalog.entries[name].add_quantity('alias', name, sources[0])
             for ref in refs:
                 sources.append(catalog.entries[name].add_source(
-                    srcname=ref[0], url=ref[1]))
+                    name=ref[0], url=ref[1]))
             source = uniq_cdl(sources)
             for alias in aliases:
                 newalias = alias
