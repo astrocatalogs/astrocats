@@ -377,8 +377,19 @@ class Entry(OrderedDict):
         """
         return
 
+    def _get_save_path(self, bury=False):
+        raise RuntimeError("This method must be overridden!")
+
     def save(self, bury=False, final=False):
         """Write entry to JSON file in the proper location.
+
+        Arguments
+        ---------
+        bury : bool
+
+        final : bool
+            If this is the 'final' save, perform additional sanitization and
+            cleaning operations.
 
         """
         outdir, filename = self._get_save_path(bury=bury)
