@@ -31,9 +31,10 @@ from copy import deepcopy
 from collections import OrderedDict
 from bokeh.plotting import Figure, show, save, reset_output
 from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,
-                          HBox, VBox, Range1d, LinearAxis, DatetimeAxis,
+                          Range1d, LinearAxis, DatetimeAxis,
                           Paragraph)
 from bokeh.models.widgets import Select
+from bokeh.layouts import row, column, layout, widgetbox
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
@@ -537,10 +538,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         min_y_range = 0.5 + max([(x + y) if not z else x for x, y, z in list(zip(photoAB, photoABuppererrs, phototype))])
         max_y_range = -0.5 + min([(x - y) if not z else x for x, y, z in list(zip(photoAB, photoABlowererrs, phototype))])
 
-        p1 = Figure(title='Photometry for ' + eventname,
-            y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
-            x_range = (min_x_range, max_x_range), y_range = (min_y_range, max_y_range),
-            title_text_font_size='16pt', title_text_font = 'futura')
+        p1 = Figure(title='Photometry for ' + eventname, active_drag='box_zoom',
+            y_axis_label = 'Apparent Magnitude', tools = tools, plot_width = 485, plot_height = 485, #sizing_mode = "scale_width",
+            x_range = (min_x_range, max_x_range), y_range = (min_y_range, max_y_range), toolbar_location = 'above', toolbar_sticky = False)
         p1.xaxis.axis_label_text_font = 'futura'
         p1.yaxis.axis_label_text_font = 'futura'
         p1.xaxis.major_label_text_font = 'futura'
@@ -549,6 +549,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p1.yaxis.axis_label_text_font_size = '11pt'
         p1.xaxis.major_label_text_font_size = '8pt'
         p1.yaxis.major_label_text_font_size = '8pt'
+        p1.title.align = 'center'
+        p1.title.text_font_size = '16pt'
+        p1.title.text_font = 'futura'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -710,7 +713,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     eval('s'+s).trigger('change');
                 }
             """)
-            photochecks = HBox(Paragraph(text = "Photometry to show:"), Select(value="Raw", options=["Raw", "K-Corrected", "All"], callback = photocallback))
+            photochecks = row(Paragraph(text = "Photometry to show:"), Select(value="Raw", options=["Raw", "K-Corrected", "All"], callback = photocallback))
         else:
             photochecks = ''
 
@@ -819,11 +822,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         hover = HoverTool(tooltips = tt2)
 
-        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
+        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'), active_drag='box_zoom',
             y_axis_label=label_format('Flux (scaled)' + (' + offset'
-            if (nspec > 1) else '')), x_range = x_range, tools = tools, #responsive = True,
-            plot_width = 485, plot_height = 485, y_range = y_range, title_text_font_size='16pt',
-            title_text_font = 'futura')
+            if (nspec > 1) else '')), x_range = x_range, tools = tools, #sizing_mode = "scale_width",
+            plot_width = 485, plot_height = 485, y_range = y_range, toolbar_location = 'above', toolbar_sticky = False)
         p2.xaxis.axis_label_text_font = 'futura'
         p2.yaxis.axis_label_text_font = 'futura'
         p2.xaxis.major_label_text_font = 'futura'
@@ -832,6 +834,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p2.yaxis.axis_label_text_font_size = '11pt'
         p2.xaxis.major_label_text_font_size = '8pt'
         p2.yaxis.major_label_text_font_size = '8pt'
+        p2.title.align = 'center'
+        p2.title.text_font_size = '16pt'
+        p2.title.text_font = 'futura'
         p2.add_tools(hover)
 
         sources = []
@@ -914,8 +919,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             }
         """)
 
-        binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format("Bin size (Angstrom)"), callback=callback)
-        spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format("Spacing"), callback=callback)
+        binslider = Slider(start=0, end=20, value=1, step=0.5, width=230, title=label_format("Bin size (Angstrom)"), callback=callback)
+        spacingslider = Slider(start=0, end=2, value=1, step=0.02, width=230, title=label_format("Spacing"), callback=callback)
 
     if radioavail and dohtml and args.writehtml:
         phototime = [float(x['time']) for x in catalog[entry]['photometry'] if 'fluxdensity' in x]
@@ -965,10 +970,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         max_y_range = max([x + y for x, y in list(zip(photofd, photofderrs))])
         [min_y_range, max_y_range] = [min_y_range - 0.1*(max_y_range-min_y_range), max_y_range + 0.1*(max_y_range-min_y_range)]
 
-        p3 = Figure(title='Radio Observations of ' + eventname, 
-            y_axis_label = 'Flux Density (µJy)', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
-            x_range = x_range, y_range = (min_y_range, max_y_range),
-            title_text_font_size='16pt', title_text_font = 'futura')
+        p3 = Figure(title='Radio Observations of ' + eventname, active_drag='box_zoom',
+            y_axis_label = 'Flux Density (µJy)', tools = tools, plot_width = 485, plot_height = 485, #sizing_mode = "scale_width",
+            x_range = x_range, y_range = (min_y_range, max_y_range), toolbar_location = 'above', toolbar_sticky = False)
         p3.xaxis.axis_label_text_font = 'futura'
         p3.yaxis.axis_label_text_font = 'futura'
         p3.xaxis.major_label_text_font = 'futura'
@@ -977,6 +981,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p3.yaxis.axis_label_text_font_size = '11pt'
         p3.xaxis.major_label_text_font_size = '8pt'
         p3.yaxis.major_label_text_font_size = '8pt'
+        p3.title.align = 'center'
+        p3.title.text_font_size = '16pt'
+        p3.title.text_font = 'futura'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -1157,10 +1164,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         max_y_range = max([x + y for x, y in list(zip(photofl, photoflerrs))])
         [min_y_range, max_y_range] = [min_y_range - 0.1*(max_y_range-min_y_range), max_y_range + 0.1*(max_y_range-min_y_range)]
 
-        p4 = Figure(title='X-ray Observations of ' + eventname,
-            y_axis_label = 'Flux (ergs s⁻¹ cm⁻²)', tools = tools, plot_width = 485, plot_height = 485, #responsive = True,
-            x_range = x_range, y_range = (min_y_range, max_y_range),
-            title_text_font_size='16pt', title_text_font = 'futura')
+        p4 = Figure(title='X-ray Observations of ' + eventname, active_drag='box_zoom',
+            y_axis_label = 'Flux (ergs s⁻¹ cm⁻²)', tools = tools, plot_width = 485, plot_height = 485, #sizing_mode = "scale_width",
+            x_range = x_range, y_range = (min_y_range, max_y_range), toolbar_location = 'above', toolbar_sticky = False)
         p4.xaxis.axis_label_text_font = 'futura'
         p4.yaxis.axis_label_text_font = 'futura'
         p4.xaxis.major_label_text_font = 'futura'
@@ -1170,6 +1176,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p4.xaxis.major_label_text_font_size = '8pt'
         p4.yaxis.major_label_text_font_size = '8pt'
         p4.yaxis[0].formatter.precision = 1
+        p4.title.align = 'center'
+        p4.title.text_font_size = '16pt'
+        p4.title.text_font = 'futura'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -1399,38 +1408,21 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     if dohtml and args.writehtml:
     #if (photoavail and spectraavail) and dohtml and args.writehtml:
+        plots = []
         if photoavail:
             if photochecks:
-                p1box = VBox(p1,photochecks)
+                p1box = column(p1,photochecks)
             else:
                 p1box = p1
-        if photoavail and spectraavail and radioavail and xrayavail:
-            p = VBox(HBox(p1box,VBox(p2,HBox(binslider,spacingslider))),HBox(p3,p4))
-        elif photoavail and spectraavail and xrayavail:
-            p = VBox(HBox(p1box,VBox(p2,HBox(binslider,spacingslider))),p4)
-        elif photoavail and spectraavail and radioavail:
-            p = VBox(HBox(p1box,VBox(p2,HBox(binslider,spacingslider))),p3)
-        elif photoavail and radioavail and xrayavail:
-            p = VBox(HBox(p1box,p3),p4)
-        elif spectraavail and radioavail and xrayavail:
-            p = VBox(VBox(p2,HBox(binslider,spacingslider)),HBox(p3,p4))
-        elif photoavail and spectraavail:
-            p = HBox(p1box,VBox(p2,HBox(binslider,spacingslider)))
-            #script, div = components(dict(p1=p1, p2=p2))#, binslider=binslider, spacingslider=spacingslider))
-        elif photoavail and radioavail:
-            p = HBox(p1box,p3)
-        elif spectraavail and radioavail:
-            p = HBox(p3,VBox(p2,HBox(binslider,spacingslider)))
-        elif photoavail:
-            p = p1box
-            #script, div = components(dict(p1=p1))
-        elif spectraavail:
-            p = VBox(HBox(p2,VBox(binslider,spacingslider)), width=900)
-            #script, div = components(dict(p2=p2, binslider=binslider, spacingslider=spacingslider))
-        elif radioavail:
-            p = p3
-        elif xrayavail:
-            p = p4
+            plots += [p1box]
+        if spectraavail:
+            plots += [column(p2,row(binslider,spacingslider))]
+        if radioavail:
+            plots += [p3]
+        if xrayavail:
+            plots += [p4]
+
+        p = layout([plots[i:i+2] for i in range(0, len(plots), 2)], ncols=2, toolbar_location = None)
 
         html = '<html><head><title>'+eventname+'</title>'
         if photoavail or spectraavail or radioavail or xrayavail:
