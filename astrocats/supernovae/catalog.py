@@ -22,6 +22,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
                 self.PATH_INPUT, 'type-synonyms.json')
             self.SOURCE_SYNONYMS = os.path.join(
                 self.PATH_INPUT, 'source-synonyms.json')
+            self.URL_REDIRECTS = os.path.join(
+                self.PATH_INPUT, 'url-redirects.json')
             self.NON_SNE_TYPES = os.path.join(
                 self.PATH_INPUT, 'non-sne-types.json')
             self.NON_SNE_PREFIXES = os.path.join(
@@ -97,6 +99,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         self.cbets_dict = read_json_dict(self.PATHS.CBETS)
         self.atels_dict = read_json_dict(self.PATHS.ATELS)
         self.source_syns = read_json_dict(self.PATHS.SOURCE_SYNONYMS)
+        self.url_redirs = read_json_dict(self.PATHS.URL_REDIRECTS)
+        self.type_syns = read_json_dict(self.PATHS.TYPE_SYNONYMS)
         # Create/Load auxiliary arrays
         self.nonsneprefixes_dict = read_json_arr(
             self.PATHS.NON_SNE_PREFIXES)

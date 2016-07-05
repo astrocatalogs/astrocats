@@ -1,8 +1,6 @@
 """
 """
-import json
 import warnings
-from collections import OrderedDict
 
 from astropy.time import Time as astrotime
 
@@ -123,8 +121,8 @@ class Supernova(Entry):
             if '?' in value:
                 isq = True
                 value = value.strip(' ?')
-            for rep in self.catalog.source_syns:
-                if value in self.catalog.source_syns[rep]:
+            for rep in self.catalog.type_syns:
+                if value in self.catalog.type_syns[rep]:
                     value = rep
                     break
             if isq:
@@ -210,6 +208,23 @@ class Supernova(Entry):
     #     else:
     #         self.setdefault(quantity, []).append(quanta_entry)
     #     return
+
+    def add_source(self, **kwargs):
+        # Sanitize some fields before adding source
+        # Replace reference names and URLs using dictionaries.
+        if SOURCE.NAME in kwargs:
+            for rep in self.catalog.source_syns:
+                if kwargs[SOURCE.NAME] in self.catalog.source_syns[rep]:
+                    kwargs[SOURCE.NAME] = rep
+                    break
+
+        if SOURCE.URL in kwargs:
+            for rep in self.catalog.url_redirs:
+                if kwargs[SOURCE.URL] in self.catalog.url_redirs[rep]:
+                    kwargs[SOURCE.URL] = rep
+                    break
+
+        super().add_source(kwargs)
 
     def is_erroneous(self, field, sources):
         if hasattr(self, self._KEYS.ERRORS):
