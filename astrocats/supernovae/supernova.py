@@ -249,11 +249,10 @@ class Supernova(Entry):
             if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
                 kwargs[SOURCE.BIBCODE] = self.catalog.iaucs_dict[iaucnum]
 
-        if SOURCE.NAME in kwargs:
-            for rep in self.catalog.source_syns:
-                if kwargs[SOURCE.NAME] in self.catalog.source_syns[rep]:
-                    kwargs[SOURCE.NAME] = rep
-                    break
+        for rep in self.catalog.source_syns:
+            if kwargs[SOURCE.NAME] in self.catalog.source_syns[rep]:
+                kwargs[SOURCE.NAME] = rep
+                break
 
         if SOURCE.URL in kwargs:
             for rep in self.catalog.url_redirs:
