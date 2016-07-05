@@ -4,17 +4,17 @@ import warnings
 
 from astropy.time import Time as astrotime
 
-from astrocats.catalog.entry import KEYS
-from astrocats.catalog.entry import Entry
+from astrocats.catalog.entry import KEYS, Entry
+from astrocats.catalog.error import ERROR
 from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.spectrum import SPECTRUM
-from astrocats.catalog.error import ERROR
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
                                      get_sig_digits, is_number, jd_to_mjd,
                                      make_date_string, pretty_num, uniq_cdl)
-from astrocats.supernovae.constants import MAX_BANDS, PREF_KINDS
+from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
+                                            REPR_BETTER_QUANTITY)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
                                         radec_clean)
 from cdecimal import Decimal
@@ -161,53 +161,61 @@ class Supernova(Entry):
         if kind:
             quantity[QUANTITY.KIND] = kind
 
-    # This needs to be moved to sanitize; currently is not being used but
-    # should be.
-    # def _replace_inferior_quantities(self, quantity, forcereplacebetter):
-    #     my_quantity_list = self.get(quantity, [])
-    #     if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
-    #             len(my_quantity_list):
-    #         newquantities = []
-    #         isworse = True
-    #         if quantity in [QUANTITY.DISCOVER_DATE, QUANTITY.MAX_DATE]:
-    #             for ct in my_quantity_list:
-    #                 ctsplit = ct[QUANTITY.VALUE].split('/')
-    #                 svsplit = quantity[QUANTITY.VALUE].split('/')
-    #                 if len(ctsplit) < len(svsplit):
-    #                     isworse = False
-    #                     continue
-    #                 elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
-    #                     val_one = max(2, get_sig_digits(
-    #                         ctsplit[-1].lstrip('0')))
-    #                     val_two = max(2, get_sig_digits(
-    #                         svsplit[-1].lstrip('0')))
-    #                     if val_one < val_two:
-    #                         isworse = False
-    #                         continue
-    #                 newquantities.append(ct)
-    #         else:
-    #             newsig = get_sig_digits(quantity[QUANTITY.VALUE])
-    #             for ct in my_quantity_list:
-    #                 if 'error' in ct:
-    #                     if quantity[QUANTITY.ERROR]:
-    #                         if (float(quantity[QUANTITY.ERROR]) <
-    #                             float(ct[QUANTITY.ERROR])):
-    #                             isworse = False
-    #                             continue
-    #                     newquantities.append(ct)
-    #                 else:
-    #                     if quantity[QUANTITY.ERROR]:
-    #                         isworse = False
-    #                         continue
-    #                     oldsig = get_sig_digits(ct[QUANTITY.VALUE])
-    #                     if oldsig >= newsig:
-    #                         newquantities.append(ct)
-    #                     if newsig >= oldsig:
-    #                         isworse = False
-    #         self[quantity] = newquantities
-    #     else:
-    #         self.setdefault(quantity, []).append(quanta_entry)
-    #     return
+    def add_quantity(self, quantity, value, sources, forcereplacebetter=False,
+                     **kwargs):
+        quantity_added = super().add_quantity(quantity, value, sources,
+                                              **kwargs)
+
+        if not quantity_added:
+            return
+
+        my_quantity_list = self.get(quantity, [])
+        # The quantity that was added should be last in the list
+        added_quantity = my_quantity_list.pop()
+
+        if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
+                len(my_quantity_list):
+            newquantities = []
+            isworse = True
+            if quantity in [self._KEYS.DISCOVER_DATE, self._KEYS.MAX_DATE]:
+                for ct in my_quantity_list:
+                    ctsplit = ct[QUANTITY.VALUE].split('/')
+                    svsplit = added_quantity[QUANTITY.VALUE].split('/')
+                    if len(ctsplit) < len(svsplit):
+                        isworse = False
+                        continue
+                    elif len(ctsplit) < len(svsplit) and len(svsplit) == 3:
+                        val_one = max(2, get_sig_digits(
+                            ctsplit[-1].lstrip('0')))
+                        val_two = max(2, get_sig_digits(
+                            svsplit[-1].lstrip('0')))
+                        if val_one < val_two:
+                            isworse = False
+                            continue
+                    newquantities.append(ct)
+            else:
+                newsig = get_sig_digits(added_quantity[QUANTITY.VALUE])
+                for ct in my_quantity_list:
+                    if QUANTITY.ERROR in ct:
+                        if QUANTITY.ERROR in added_quantity:
+                            if (float(added_quantity[QUANTITY.ERROR]) <
+                                    float(ct[QUANTITY.ERROR])):
+                                isworse = False
+                                continue
+                        newquantities.append(ct)
+                    else:
+                        if QUANTITY.ERROR in added_quantity:
+                            isworse = False
+                            continue
+                        oldsig = get_sig_digits(ct[QUANTITY.VALUE])
+                        if oldsig >= newsig:
+                            newquantities.append(ct)
+                        if newsig >= oldsig:
+                            isworse = False
+            if not isworse:
+                newquantities.append(added_quantity)
+            self[quantity] = newquantities
+        return
 
     def add_source(self, **kwargs):
         # Sanitize some fields before adding source
