@@ -129,6 +129,8 @@ with open('type-synonyms.json', 'r') as f:
     typereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 with open('source-synonyms.json', 'r') as f:
     sourcereps = json.loads(f.read(), object_pairs_hook=OrderedDict)
+with open('url-redirects.json', 'r') as f:
+    urlreps = json.loads(f.read(), object_pairs_hook=OrderedDict)
 with open('non-sne-types.json', 'r') as f:
     nonsnetypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
     nonsnetypes = [x.upper() for x in nonsnetypes]
@@ -626,6 +628,11 @@ def add_source(name, refname = '', reference = '', url = '', bibcode = '', secon
     for rep in sourcereps:
         if refname in sourcereps[rep]:
             refname = rep
+            break
+
+    for rep in urlreps:
+        if url in urlreps[rep]:
+            url = rep
             break
 
     if 'sources' not in events[name] or (refname not in [x['name'] for x in events[name]['sources']] and
@@ -5171,10 +5178,13 @@ for task in tasks:
                     with open(fname2, 'r') as f:
                         html2 = f.read()
                 else:
-                    with open(fname2, 'w') as f:
-                        response2 = urllib.request.urlopen(lclink)
-                        html2 = response2.read().decode('utf-8')
-                        f.write(html2)
+                    try:
+                        with open(fname2, 'w') as f:
+                            response2 = urllib.request.urlopen(lclink)
+                            html2 = response2.read().decode('utf-8')
+                            f.write(html2)
+                    except:
+                        continue
     
                 lines = html2.splitlines()
                 for line in lines:
