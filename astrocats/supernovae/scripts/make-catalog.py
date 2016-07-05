@@ -37,13 +37,13 @@ from palettable import cubehelix
 
 import inflect
 from cdecimal import Decimal
-from digits import round_sig, get_sig_digits, is_number, pretty_num
+from digits import get_sig_digits, is_number, pretty_num, round_sig
 from events import *
-from utils.photometry import (xraycolorf, radiocolorf, bandcolorf, bandaliasf,
-                              bandshortaliasf, bandwavef, bandcodes,
-                              bandwavelengths)
-from utils.repos import get_repo_output_file_list, get_repo_folder_for_year
-from utils.tq_funcs import tq, tprint
+from utils.photometry import (bandaliasf, bandcodes, bandcolorf,
+                              bandshortaliasf, bandwavef, bandwavelengths,
+                              radiocolorf, xraycolorf)
+from utils.repos import get_repo_folder_for_year, get_repo_output_file_list
+from utils.tq_funcs import tprint, tq
 
 parser = argparse.ArgumentParser(
     description='Generate a catalog JSON file and plot HTML files from SNE data.')
@@ -336,7 +336,8 @@ if os.path.isfile(outdir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = get_repo_output_file_list(normal=(not args.boneyard), bones=args.boneyard)
+files = get_repo_output_file_list(
+    normal=(not args.boneyard), bones=args.boneyard)
 
 md5s = []
 if os.path.isfile(outdir + 'md5s.json'):
@@ -1807,6 +1808,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         for col in columnkey:
             if col in catalog[entry]:
                 catalogcopy[entry][col] = catalog[entry][col]
+                for row in catalogcopy[entry][col]:
+                    if 'source' in row:
+                        del row['source']
             else:
                 catalogcopy[entry][col] = None
 
