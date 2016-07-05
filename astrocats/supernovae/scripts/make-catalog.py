@@ -1910,11 +1910,13 @@ if args.writecatalog and not args.eventlist:
         catalogcopy[entry] = OrderedDict()
         for col in catalog[entry]:
             catalogcopy[entry][col] = deepcopy(catalog[entry][col])
-            for row in catalogcopy[entry][col]:
-                if 'source' in row:
-                    del row['source']
-                if 'unit' in row:
-                    del row['unit']
+            if catalogcopy[entry][col]:
+                for row in catalogcopy[entry][col]:
+                    if 'source' in row:
+                        del row['source']
+                    if 'unit' in row:
+                        del row['unit']
+    catalog = deepcopy(catalogcopy)
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())

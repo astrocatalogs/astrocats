@@ -212,6 +212,43 @@ class Supernova(Entry):
     def add_source(self, **kwargs):
         # Sanitize some fields before adding source
         # Replace reference names and URLs using dictionaries.
+        if SOURCE.BIBCODE in kwargs and len(kwargs[SOURCE.BIBCODE]) != 19:
+            raise ValueError(
+                "Bibcode '{}' must be exactly 19 characters "
+                "long".format(kwargs[SOURCE.BIBCODE]))
+
+        if SOURCE.NAME not in kwargs:
+            kwargs[SOURCE.NAME] = kwargs[SOURCE.BIBCODE]
+
+        if (kwargs[SOURCE.NAME].upper().startswith('ATEL') and
+                not kwargs[SOURCE.BIBCODE]):
+            kwargs[SOURCE.NAME] = (kwargs[SOURCE.NAME]
+                                   .replace('ATEL', 'ATel')
+                                   .replace('Atel', 'ATel')
+                                   .replace('ATel #', 'ATel ')
+                                   .replace('ATel#', 'ATel')
+                                   .replace('ATel', 'ATel '))
+            kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
+            atelnum = kwargs[SOURCE.NAME].split()[-1]
+            if is_number(atelnum) and atelnum in self.catalog.atels_dict:
+                kwargs[SOURCE.BIBCODE] = self.catalog.atels_dict[atelnum]
+
+        if (kwargs[SOURCE.NAME].upper().startswith('CBET') and
+                not kwargs[SOURCE.BIBCODE]):
+            kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('CBET', 'CBET ')
+            kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
+            cbetnum = kwargs[SOURCE.NAME].split()[-1]
+            if is_number(cbetnum) and cbetnum in self.catalog.cbets_dict:
+                kwargs[SOURCE.BIBCODE] = self.catalog.cbets_dict[cbetnum]
+
+        if (kwargs[SOURCE.NAME].upper().startswith('IAUC') and
+                not kwargs[SOURCE.BIBCODE]):
+            kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('IAUC', 'IAUC ')
+            kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
+            iaucnum = kwargs[SOURCE.NAME].split()[-1]
+            if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
+                kwargs[SOURCE.BIBCODE] = self.catalog.iaucs_dict[iaucnum]
+
         if SOURCE.NAME in kwargs:
             for rep in self.catalog.source_syns:
                 if kwargs[SOURCE.NAME] in self.catalog.source_syns[rep]:
@@ -393,52 +430,6 @@ class Supernova(Entry):
                        frame_priority(key)))
         if self._KEYS.CLAIMED_TYPE in self:
             self[self._KEYS.CLAIMED_TYPE] = self.ct_list_prioritized()
-
-    def _parse_srcname_bibcode(self, srcname, bibcode):
-        # If no `srcname` is given, use `bibcode` after checking its validity
-        if not srcname:
-            if not bibcode:
-                raise ValueError(
-                    "`bibcode` must be specified if `srcname` is not.")
-            if len(bibcode) != 19:
-                raise ValueError(
-                    "Bibcode '{}' must be exactly 19 characters "
-                    "long".format(bibcode))
-            srcname = bibcode
-
-        # If a `srcname` is given, try to set a `bibcode`
-        elif not bibcode:
-            if srcname.upper().startswith('ATEL'):
-                srcname = srcname.replace(
-                    'ATEL', 'ATel').replace('Atel', 'ATel')
-                srcname = srcname.replace(
-                    'ATel #', 'ATel ').replace('ATel#', 'ATel')
-                srcname = srcname.replace('ATel', 'ATel ')
-                srcname = ' '.join(srcname.split())
-                atelnum = srcname.split()[-1]
-                if is_number(atelnum) and atelnum in self.catalog.atels_dict:
-                    bibcode = self.catalog.atels_dict[atelnum]
-
-            if srcname.upper().startswith('CBET'):
-                srcname = srcname.replace('CBET', 'CBET ')
-                srcname = ' '.join(srcname.split())
-                cbetnum = srcname.split()[-1]
-                if is_number(cbetnum) and cbetnum in self.catalog.cbets_dict:
-                    bibcode = self.catalog.cbets_dict[cbetnum]
-
-            if srcname.upper().startswith('IAUC'):
-                srcname = srcname.replace('IAUC', 'IAUC ')
-                srcname = ' '.join(srcname.split())
-                iaucnum = srcname.split()[-1]
-                if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
-                    bibcode = self.catalog.iaucs_dict[iaucnum]
-
-        for rep in self.catalog.source_syns:
-            if srcname in self.catalog.source_syns[rep]:
-                srcname = rep
-                break
-
-        return srcname, bibcode
 
     def clean_internal(self, data):
         """Clean input data from the 'Supernovae/input/internal' repository.
