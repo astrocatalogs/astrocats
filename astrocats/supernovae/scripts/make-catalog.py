@@ -1808,9 +1808,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         for col in columnkey:
             if col in catalog[entry]:
                 catalogcopy[entry][col] = catalog[entry][col]
-                for row in catalogcopy[entry][col]:
-                    if 'source' in row:
-                        del row['source']
             else:
                 catalogcopy[entry][col] = None
 
@@ -1906,6 +1903,18 @@ if args.writecatalog and not args.eventlist:
 
         # Ping Google to let them know sitemap has been updated
         response = urllib.request.urlopen(googlepingurl)
+
+    # Prune extraneous fields not required for main catalog file
+    catalogcopy = OrderedDict()
+    for entry in catalog:
+        catalogcopy[entry] = OrderedDict()
+        for col in catalog[entry]:
+            catalogcopy[entry][col] = deepcopy(catalog[entry][col])
+            for row in catalogcopy[entry][col]:
+                if 'source' in row:
+                    del row['source']
+                if 'unit' in row:
+                    del row['unit']
 
     # Convert to array since that's what datatables expects
     catalog = list(catalog.values())
