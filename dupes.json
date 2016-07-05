@@ -1067,7 +1067,8 @@
 		"aliases1":[
 			"SN2016coi",
 			"ASASSN-16fp",
-			"AT2016coi"
+			"AT2016coi",
+			"Gaia16arp"
 		],
 		"name2":"CSS160617:215904+181111",
 		"aliases2":[
@@ -1078,7 +1079,7 @@
 		"ra2":"21:59:04.08",
 		"dec2":"+18:11:10.68",
 		"distdeg":"0.0002573607738688423",
-		"maxdiffyear":"0.05555555555542924",
+		"maxdiffyear":"0.03888888888877773",
 		"discdiffyear":"9.663888888889005",
 		"edit":false
 	},
@@ -2779,24 +2780,6 @@
 		"edit":false
 	},
 	{
-		"name1":"MLS151122:083521+181515",
-		"aliases1":[
-			"MLS151122:083521+181515"
-		],
-		"name2":"PS16dx",
-		"aliases2":[
-			"PS16dx"
-		],
-		"ra1":"08:35:20.88",
-		"dec1":"+18:15:15.48",
-		"ra2":"08:35:20.97",
-		"dec2":"+18:15:15.1",
-		"distdeg":"0.0003895728112701331",
-		"maxdiffyear":"0.1138888888888232",
-		"discdiffyear":"5.808333333333394",
-		"edit":false
-	},
-	{
 		"name1":"OGLE-2015-SN-078",
 		"aliases1":[
 			"OGLE-2015-SN-078"
@@ -3509,6 +3492,24 @@
 		"edit":false
 	},
 	{
+		"name1":"SSS130304:102431-192214",
+		"aliases1":[
+			"SSS130304:102431-192214"
+		],
+		"name2":"PS16bo",
+		"aliases2":[
+			"PS16bo"
+		],
+		"ra1":"10:24:31",
+		"dec1":"-19:22:14",
+		"ra2":"10:24:31.29",
+		"dec2":"-19:22:13.6",
+		"distdeg":"0.0012134311366671351",
+		"maxdiffyear":"",
+		"discdiffyear":"2.802777777777692",
+		"edit":false
+	},
+	{
 		"name1":"SN2016cnv",
 		"aliases1":[
 			"SN2016cnv",
@@ -3585,6 +3586,120 @@
 		"distdeg":"0.00016896562581958065",
 		"maxdiffyear":"",
 		"discdiffyear":"0.0009092083332689072",
+		"edit":false
+	},
+	{
+		"name1":"AT2016cdz",
+		"aliases1":[
+			"AT2016cdz",
+			"PS16ccm"
+		],
+		"name2":"Gaia16ara",
+		"aliases2":[
+			"Gaia16ara"
+		],
+		"ra1":"16:48:32.37",
+		"dec1":"+37:00:12.44",
+		"ra2":"16:48:32.4",
+		"dec2":"+37:00:12.24",
+		"distdeg":"0.00013678969168869857",
+		"maxdiffyear":"0.08888888888895963",
+		"discdiffyear":"0.08751398611116201",
+		"edit":false
+	},
+	{
+		"name1":"AT2016ckx",
+		"aliases1":[
+			"AT2016ckx",
+			"PTSS-16gjn"
+		],
+		"name2":"Gaia16ark",
+		"aliases2":[
+			"Gaia16ark"
+		],
+		"ra1":"16:00:38.47",
+		"dec1":"+22:32:35.13",
+		"ra2":"16:00:38.4",
+		"dec2":"+22:32:35.52",
+		"distdeg":"0.00031113591171233864",
+		"maxdiffyear":"0.04444444444425244",
+		"discdiffyear":"0.04242438333312748",
+		"edit":false
+	},
+	{
+		"name1":"AT2016csl",
+		"aliases1":[
+			"AT2016csl",
+			"ATLAS16bce"
+		],
+		"name2":"Gaia16arm",
+		"aliases2":[
+			"Gaia16arm"
+		],
+		"ra1":"16:51:01.67",
+		"dec1":"+24:48:48.51",
+		"ra2":"16:51:01.68",
+		"dec2":"+24:48:48.24",
+		"distdeg":"8.579691785855437e-05",
+		"maxdiffyear":"0.019444444444616238",
+		"discdiffyear":"0.0011555416665487428",
+		"edit":false
+	},
+	{
+		"name1":"AT2016csv",
+		"aliases1":[
+			"AT2016csv",
+			"ATLAS16bel"
+		],
+		"name2":"Gaia16asg",
+		"aliases2":[
+			"Gaia16asg"
+		],
+		"ra1":"16:48:09.17",
+		"dec1":"+46:05:24.18",
+		"ra2":"16:48:09.12",
+		"dec2":"+46:05:24",
+		"distdeg":"0.0002142493355780325",
+		"maxdiffyear":"0.002777777777737356",
+		"discdiffyear":"0.02665557499994975",
+		"edit":false
+	},
+	{
+		"name1":"AT2016cxe",
+		"aliases1":[
+			"AT2016cxe",
+			"PS16cvf"
+		],
+		"name2":"Gaia16arf",
+		"aliases2":[
+			"Gaia16arf"
+		],
+		"ra1":"22:06:52.64",
+		"dec1":"+30:14:53.92",
+		"ra2":"22:06:52.56",
+		"dec2":"+30:14:53.52",
+		"distdeg":"0.0003513641844733194",
+		"maxdiffyear":"0.04999999999972715",
+		"discdiffyear":"0.05153597499975149",
+		"edit":false
+	},
+	{
+		"name1":"AT2016cxr",
+		"aliases1":[
+			"AT2016cxr",
+			"PS16cvv"
+		],
+		"name2":"MLS160617:211830+095501",
+		"aliases2":[
+			"MLS160617:211830+095501"
+		],
+		"ra1":"21:18:29.98",
+		"dec1":"+09:55:00.61",
+		"ra2":"21:18:30",
+		"dec2":"+09:55:00.948",
+		"distdeg":"0.00012553711759607375",
+		"maxdiffyear":"",
+		"discdiffyear":"0.006972124999947482",
 		"edit":false
 	},
 	{
@@ -3704,6 +3819,161 @@
 		"edit":false
 	},
 	{
+		"name1":"SNhunt316",
+		"aliases1":[
+			"SNhunt316"
+		],
+		"name2":"Gaia16aqi",
+		"aliases2":[
+			"Gaia16aqi"
+		],
+		"ra1":"16:14:57.36",
+		"dec1":"+55:52:10.2",
+		"ra2":"16:14:57.6",
+		"dec2":"+55:52:11.64",
+		"distdeg":"0.001077032961404599",
+		"maxdiffyear":"",
+		"discdiffyear":"0.02222222222212622",
+		"edit":false
+	},
+	{
+		"name1":"SN2016cce",
+		"aliases1":[
+			"SN2016cce",
+			"PTSS-16dzd",
+			"AT2016cce"
+		],
+		"name2":"Gaia16aqj",
+		"aliases2":[
+			"Gaia16aqj"
+		],
+		"ra1":"13:33:27.20",
+		"dec1":"+05:28:57.82",
+		"ra2":"13:33:27.12",
+		"dec2":"+05:28:55.704",
+		"distdeg":"0.0006757172686617525",
+		"maxdiffyear":"0.06944444444457076",
+		"discdiffyear":"0.06758532777780601",
+		"edit":false
+	},
+	{
+		"name1":"SN2016ccm",
+		"aliases1":[
+			"SN2016ccm",
+			"CSS160427:140959+174549",
+			"MASTER OT J140958.91+174549.4",
+			"AT2016ccm"
+		],
+		"name2":"Gaia16aql",
+		"aliases2":[
+			"Gaia16aql"
+		],
+		"ra1":"14:09:58.88",
+		"dec1":"+17:45:48.50",
+		"ra2":"14:09:58.8",
+		"dec2":"+17:45:48.24",
+		"distdeg":"0.0003410676773035058",
+		"maxdiffyear":"0.08333333333348492",
+		"discdiffyear":"0.05026199166650258",
+		"edit":true
+	},
+	{
+		"name1":"SN2016ccz",
+		"aliases1":[
+			"SN2016ccz",
+			"iPTF16auf",
+			"AT2016ccz"
+		],
+		"name2":"Gaia16aqm",
+		"aliases2":[
+			"Gaia16aqm"
+		],
+		"ra1":"14:31:09.26",
+		"dec1":"+27:14:09.80",
+		"ra2":"14:31:09.12",
+		"dec2":"+27:14:09.6",
+		"distdeg":"0.0005859728641642194",
+		"maxdiffyear":"0.03333333333330302",
+		"discdiffyear":"0.032361144444394085",
+		"edit":false
+	},
+	{
+		"name1":"MASTER OT J062358.29-361855.3",
+		"aliases1":[
+			"MASTER OT J062358.29-361855.3"
+		],
+		"name2":"Gaia16are",
+		"aliases2":[
+			"Gaia16are"
+		],
+		"ra1":"06:23:58.290",
+		"dec1":"-36:18:55.30",
+		"ra2":"06:23:58.272",
+		"dec2":"-36:18:55.08",
+		"distdeg":"9.674485981286657e-05",
+		"maxdiffyear":"0.04722222222244454",
+		"discdiffyear":"0.044444444444479814",
+		"edit":false
+	},
+	{
+		"name1":"SN2016ccj",
+		"aliases1":[
+			"SN2016ccj",
+			"ASASSN-16ex",
+			"AT2016ccj"
+		],
+		"name2":"Gaia16arz",
+		"aliases2":[
+			"Gaia16arz"
+		],
+		"ra1":"17:10:23.919",
+		"dec1":"+26:23:47.89",
+		"ra2":"17:10:24",
+		"dec2":"+26:23:48.48",
+		"distdeg":"0.00037518771022175735",
+		"maxdiffyear":"0.08333333333325754",
+		"discdiffyear":"0.08333333333325754",
+		"edit":false
+	},
+	{
+		"name1":"SN2016coj",
+		"aliases1":[
+			"SN2016coj",
+			"KAIT-16X",
+			"AT2016coj"
+		],
+		"name2":"Gaia16asr",
+		"aliases2":[
+			"Gaia16asr"
+		],
+		"ra1":"12:08:06.80",
+		"dec1":"+65:10:38.24",
+		"ra2":"12:08:06.72",
+		"dec2":"+65:10:37.92",
+		"distdeg":"0.0003449816599295621",
+		"maxdiffyear":"0.027777777777828305",
+		"discdiffyear":"0.06335053333327778",
+		"edit":false
+	},
+	{
+		"name1":"Gaia16ass",
+		"aliases1":[
+			"Gaia16ass"
+		],
+		"name2":"MASTER OT J104916.33+582039.9",
+		"aliases2":[
+			"MASTER OT J104916.33+582039.9"
+		],
+		"ra1":"10:49:16.08",
+		"dec1":"+58:20:40.2",
+		"ra2":"10:49:16.330",
+		"dec2":"+58:20:39.90",
+		"distdeg":"0.0010449946836788128",
+		"maxdiffyear":"0.01666666666665151",
+		"discdiffyear":"0.019444444444388864",
+		"edit":false
+	},
+	{
 		"name1":"MASTER OT J072940.10+141425.5",
 		"aliases1":[
 			"MASTER OT J072940.10+141425.5"
@@ -3719,6 +3989,24 @@
 		"distdeg":"0.0004166666666662877",
 		"maxdiffyear":"",
 		"discdiffyear":"",
+		"edit":false
+	},
+	{
+		"name1":"MLS150417:140932-102951",
+		"aliases1":[
+			"MLS150417:140932-102951"
+		],
+		"name2":"PS15afd",
+		"aliases2":[
+			"PS15afd"
+		],
+		"ra1":"14:09:32.24",
+		"dec1":"-10:29:51.3",
+		"ra2":"14:09:32.23",
+		"dec2":"-10:29:50.8",
+		"distdeg":"0.00014500425707108744",
+		"maxdiffyear":"0.019444444444388864",
+		"discdiffyear":"0.01666666666665151",
 		"edit":false
 	},
 	{
