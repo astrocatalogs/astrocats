@@ -224,7 +224,7 @@ class Supernova(Entry):
                     kwargs[SOURCE.URL] = rep
                     break
 
-        super().add_source(kwargs)
+        return super().add_source(**kwargs)
 
     def is_erroneous(self, field, sources):
         if hasattr(self, self._KEYS.ERRORS):
