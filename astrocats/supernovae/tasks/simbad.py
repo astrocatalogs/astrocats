@@ -5,6 +5,7 @@ import re
 from astroquery.simbad import Simbad
 
 from astrocats.catalog.utils import is_number, pbar, single_spaces, uniq_cdl
+from astrocats.supernovae.supernova import SUPERNOVA
 from astrocats.supernovae.utils import name_clean
 
 
@@ -67,15 +68,15 @@ def do_simbad(catalog):
             if is_number(ali):
                 continue
             ali = name_clean(ali)
-            catalog.entries[name].add_quantity(catalog._KEYS.ALIAS,
+            catalog.entries[name].add_quantity(SUPERNOVA.ALIAS,
                                                ali, source)
         if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
             csources = ','.join(
                 [source, catalog.entries[name].add_source(
                     bibcode=row['COO_BIBCODE'])])
-            catalog.entries[name].add_quantity(catalog._KEYS.RA,
+            catalog.entries[name].add_quantity(SUPERNOVA.RA,
                                                row['RA'], csources)
-            catalog.entries[name].add_quantity(catalog._KEYS.DEC,
+            catalog.entries[name].add_quantity(SUPERNOVA.DEC,
                                                row['DEC'], csources)
         if row['SP_BIBCODE']:
             ssources = uniq_cdl([source,
@@ -85,7 +86,7 @@ def do_simbad(catalog):
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
             catalog.entries[name].add_quantity(
-                catalog._KEYS.CLAIMED_TYPE,
+                SUPERNOVA.CLAIMED_TYPE,
                 (row['SP_TYPE']
                  .replace('SN.', '')
                  .replace('SN', '')

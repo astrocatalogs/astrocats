@@ -93,6 +93,14 @@ class CatDict(OrderedDict):
         for key in self._KEYS.vals():
             # If this key is given, process and store it.
             if key in kwargs:
+                # Handle Special Cases
+                # --------------------
+                # Only keep booleans and strings if they evaluate true.
+                if ((key.type == KEY_TYPES.BOOL or
+                     key.type == KEY_TYPES.STRING) and not kwargs[key]):
+                    del kwargs[key]
+                    continue
+
                 # Make sure value is compatible with the 'Key' specification.
                 if not key.check(kwargs[key]):
                     # Have the parent log a warning if this is a required key
@@ -100,13 +108,6 @@ class CatDict(OrderedDict):
                     raise CatDictError(
                         "Value for '{}' is invalid '{}'".format(
                             key.pretty(), kwargs[key]), warn=warn)
-
-                # Handle Special Cases
-                # --------------------
-                # Only keep booleans if they are true.
-                if key.type == KEY_TYPES.BOOL and not kwargs[key]:
-                    del kwargs[key]
-                    continue
 
                 # Check and store values
                 # ----------------------
