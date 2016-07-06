@@ -167,13 +167,6 @@ class Catalog:
             prev_priority = priority
             prev_task_name = task_name
 
-        def json_dump(adict, fname):
-            print('hi')
-            json_str = json.dumps(ndict, indent='\t', separators=(
-                ',', ':'), ensure_ascii=False)
-            with codecs.open(fname, 'w', encoding='utf8') as jsf:
-                jsf.write(json_str)
-
         process = psutil.Process(os.getpid())
         memory = process.memory_info().rss
         print('Memory used (MBs): '

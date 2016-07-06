@@ -90,6 +90,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         return
 
     def should_bury(self, name):
+        (bury_entry, save_entry) = super().should_bury(name)
+
         ct_val = None
         if name.startswith(tuple(self.nonsneprefixes_dict)):
             self.log.debug(

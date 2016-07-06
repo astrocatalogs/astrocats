@@ -31,6 +31,15 @@ class Source(CatDict):
         super().__init__(parent, **kwargs)
         return
 
+    def sort_func(self, key):
+        if key == self._KEYS.NAME:
+            return 'aaa'
+        if key == self._KEYS.BIBCODE:
+            return 'aab'
+        if key == self._KEYS.ALIAS:
+            return 'zzz'
+        return key
+
     def append_sources_from(self, other):
         """`CatDict.append_sources_from` should never be called in `Source`.
         """

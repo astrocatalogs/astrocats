@@ -134,6 +134,13 @@ class Photometry(CatDict):
 
         return value
 
+    def sort_func(self, key):
+        if key == self._KEYS.TIME:
+            return 'aaa'
+        if key == self._KEYS.SOURCE:
+            return 'zzz'
+        return key
+
 
 BAND_REPS = {
     'Ks': ['K_s'],

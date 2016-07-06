@@ -129,6 +129,9 @@ class CatDict(OrderedDict):
 
         return
 
+    def sort_func(self, key):
+        return key
+
     def pretty(self):
         retval = "{}({}, Parent:{})".format(
             type(self), self._key, self._parent)

@@ -33,3 +33,10 @@ class Quantity(CatDict):
         super().__init__(parent, **kwargs)
 
         parent._clean_quantity(self)
+
+    def sort_func(self, key):
+        if key == self._KEYS.VALUE:
+            return 'aaa'
+        if key == self._KEYS.SOURCE:
+            return 'zzz'
+        return key

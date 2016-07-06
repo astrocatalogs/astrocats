@@ -120,3 +120,12 @@ class Spectrum(CatDict):
             raise ValueError(err_str)
 
         return
+
+    def sort_func(self, key):
+        if key == self._KEYS.TIME:
+            return 'aaa'
+        if key == self._KEYS.DATA:
+            return 'zzy'
+        if key == self._KEYS.SOURCE:
+            return 'zzz'
+        return key
