@@ -469,6 +469,15 @@
         "module": "supernovae.tasks.derive",
         "function": "do_derivations",
         "groups": ["meta"],
+        "priority": -2
+    },
+    "sanitize": {
+        "nice_name": "Writing final time",
+        "active": true,
+        "update": false,
+        "module": "catalog.tasks.sanitize",
+        "function": "sanitize",
+        "groups": ["meta"],
         "priority": -1
     }
 }

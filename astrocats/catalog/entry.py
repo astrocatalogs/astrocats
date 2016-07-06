@@ -382,10 +382,24 @@ class Entry(OrderedDict):
         Template method that can be overridden in each catalog's subclassed
         `Entry` object.
         """
+        self = self._sort_dict_keys()
+
         return
 
     def _get_save_path(self, bury=False):
         raise RuntimeError("This method must be overridden!")
+
+    def _sort_dict_keys(self):
+        ndict = OrderedDict()
+        nkeys = list(sorted(self.keys()))
+        for key in nkeys:
+            if isinstance(self[key], list):
+                for item in self[key]:
+                    if isinstance(OrderedDict, item):
+                        self[key].append(self._sort_dict_keys(item))
+            ndict[key] = self[key]
+
+        return ndict
 
     def save(self, bury=False, final=False):
         """Write entry to JSON file in the proper location.

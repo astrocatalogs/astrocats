@@ -168,7 +168,8 @@ class Catalog:
             prev_task_name = task_name
 
         def json_dump(adict, fname):
-            json_str = json.dumps(adict, indent='\t', separators=(
+            print('hi')
+            json_str = json.dumps(ndict, indent='\t', separators=(
                 ',', ':'), ensure_ascii=False)
             with codecs.open(fname, 'w', encoding='utf8') as jsf:
                 jsf.write(json_str)
@@ -589,6 +590,12 @@ class Catalog:
 
         return entries
 
+    def sanitize(self):
+        currenttask = 'Sanitizing entries'
+        for name in pbar(list(sorted(self.entries.keys())), currenttask):
+            self.add_entry(name)
+            self.journal_entries(bury=True, final=True)
+
     def set_preferred_names(self):
         """Choose between each entries given name and its possible aliases for
         the best one.
@@ -749,8 +756,11 @@ class Catalog:
 
         return
 
+    def should_bury(self, name):
+        return (False, True)
+
     def journal_entries(self, clear=True, gz=False, bury=False,
-                        write_stubs=False):
+                        write_stubs=False, final=False):
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
@@ -770,32 +780,14 @@ class Catalog:
 
                 # Bury non-SN entries here if only claimed type is non-SN type,
                 # or if primary name starts with a non-SN prefix.
-                buryentry = False
+                bury_entry = False
                 save_entry = True
-                ct_val = None
                 if bury:
-                    if name.startswith(self.nonsneprefixes_dict):
-                        self.log.debug(
-                            "Killing '{}', non-SNe prefix.".format(name))
-                        save_entry = False
-                    else:
-                        if KEYS.CLAIMED_TYPE in self.entries[name]:
-                            for ct in self.entries[name][KEYS.CLAIMED_TYPE]:
-                                up_val = ct['value'].upper()
-                                if up_val not in self.non_sne_types and \
-                                        up_val != 'CANDIDATE':
-                                    buryentry = False
-                                    break
-                                if up_val in self.non_sne_types:
-                                    buryentry = True
-                                    ct_val = ct['value']
-
-                        if buryentry:
-                            self.log.debug(
-                                "Burying '{}', {}.".format(name, ct_val))
+                    (bury_entry, save_entry) = self.should_bury(name)
 
                 if save_entry:
-                    save_name = self.entries[name].save(bury=buryentry)
+                    save_name = self.entries[name].save(bury=bury_entry,
+                                                        final=final)
                     self.log.info(
                         "Saved {} to '{}'.".format(name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >

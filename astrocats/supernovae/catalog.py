@@ -6,7 +6,7 @@ from subprocess import check_output
 
 import astrocats.catalog
 from astrocats.catalog.utils.imports import read_json_arr, read_json_dict
-from astrocats.supernovae.supernova import Supernova
+from astrocats.supernovae.supernova import Supernova, SUPERNOVA
 
 
 class Catalog(astrocats.catalog.catalog.Catalog):
@@ -88,6 +88,30 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         super().__init__(args)
         self._load_aux_data()
         return
+
+    def should_bury(self, name):
+        ct_val = None
+        if name.startswith(tuple(self.nonsneprefixes_dict)):
+            self.log.debug(
+                "Killing '{}', non-SNe prefix.".format(name))
+            save_entry = False
+        else:
+            if SUPERNOVA.CLAIMED_TYPE in self.entries[name]:
+                for ct in self.entries[name][SUPERNOVA.CLAIMED_TYPE]:
+                    up_val = ct['value'].upper()
+                    if up_val not in self.non_sne_types and \
+                            up_val != 'CANDIDATE':
+                        bury_entry = False
+                        break
+                    if up_val in self.non_sne_types:
+                        bury_entry = True
+                        ct_val = ct['value']
+
+            if bury_entry:
+                self.log.debug(
+                    "Burying '{}', {}.".format(name, ct_val))
+
+        return (bury_entry, save_entry)
 
     def _load_aux_data(self):
         # Create/Load auxiliary dictionaries

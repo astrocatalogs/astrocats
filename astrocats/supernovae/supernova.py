@@ -440,6 +440,8 @@ class Supernova(Entry):
         if self._KEYS.CLAIMED_TYPE in self:
             self[self._KEYS.CLAIMED_TYPE] = self.ct_list_prioritized()
 
+        super().sanitize()
+
     def clean_internal(self, data):
         """Clean input data from the 'Supernovae/input/internal' repository.
 
