@@ -416,85 +416,80 @@ class Catalog:
         """
         self.log.info("Copy '{}' to '{}'".format(fromname, destname))
         newsourcealiases = {}
-        keys = list(sorted(self.entries[fromname].keys(),
-                           key=lambda xx: entry_attr_priority(xx)))
 
-        if 'sources' in self.entries[fromname]:
-            for source in self.entries[fromname]['sources']:
+        print(self.entries[fromname])
+        print(self.entries[destname])
+        if self.proto._KEYS.SOURCES in self.entries[fromname]:
+            for source in self.entries[fromname][self.proto._KEYS.SOURCES]:
                 newsourcealiases[source['alias']] = (self.entries[destname]
-                                                     .add_source(
-                    bibcode=source['bibcode'] if 'bibcode' in source else '',
-                    name=source['name'] if 'name' in source else '',
-                    reference=source['reference'] if
-                    'reference' in source else '',
-                    url=source['url'] if 'url' in source else ''))
+                                                     .add_source(**source))
 
-        if 'errors' in self.entries[fromname]:
-            for err in self.entries[fromname]['errors']:
-                self.entries[destname].setdefault('errors', []).append(err)
-
-        for key in keys:
-            if key not in ['schema', 'name', 'sources', 'errors']:
-                for item in self.entries[fromname][key]:
-                    # isd = False
-                    sources = []
-                    if 'source' not in item:
-                        ValueError("Item has no source!")
-                    for sid in item['source'].split(','):
-                        if sid == 'D':
-                            sources.append('D')
-                        elif sid in newsourcealiases:
-                            sources.append(newsourcealiases[sid])
-                        else:
-                            ValueError("Couldn't find source alias!")
-                    sources = uniq_cdl(sources)
-
-                    if key == 'photometry':
-                        self.entries[destname].add_photometry(
-                            u_time=item.get("u_time", ""),
-                            time=item.get("time", ""),
-                            e_time=item.get("e_time", ""),
-                            telescope=item.get("telescope", ""),
-                            instrument=item.get("instrument", ""),
-                            band=item.get("band", ""),
-                            magnitude=item.get("magnitude", ""),
-                            e_magnitude=item.get("e_magnitude", ""),
-                            source=sources,
-                            upperlimit=item.get("upperlimit", ""),
-                            system=item.get("system", ""),
-                            observatory=item.get("observatory", ""),
-                            observer=item.get("observer", ""),
-                            host=item.get("host", ""),
-                            survey=item.get("survey", ""))
-                    elif key == 'spectra':
-                        self.entries[destname].add_spectrum(
-                            item.get("waveunit", ""),
-                            item.get("fluxunit", ""),
-                            data=item.get("data", ""),
-                            u_time=item.get("u_time", ""),
-                            time=item.get("time", ""),
-                            instrument=item.get("instrument", ""),
-                            deredshifted=item.get("deredshifted", ""),
-                            dereddened=item.get("dereddened", ""),
-                            errorunit=item.get("errorunit", ""),
-                            source=sources, snr=item.get("snr", ""),
-                            telescope=item.get("telescope", ""),
-                            observer=item.get("observer", ""),
-                            reducer=item.get("reducer", ""),
-                            filename=item.get("filename", ""),
-                            observatory=item.get("observatory", ""))
-                    elif key == 'errors':
-                        self.entries[destname].add_quantity(
-                            key, item['value'], sources,
-                            kind=item.get("kind", ""),
-                            extra=item.get("extra", ""))
-                    else:
-                        self.entries[destname].add_quantity(
-                            key, item['value'], sources,
-                            error=item.get("error", ""),
-                            unit=item.get("unit", ""),
-                            probability=item.get("probability", ""),
-                            kind=item.get("kind", ""))
+        # if 'errors' in self.entries[fromname]:
+        #     for err in self.entries[fromname]['errors']:
+        #         self.entries[destname].setdefault('errors', []).append(err)
+        #
+        # for key in self.entries[fromname].keys():
+        #     if key not in ['schema', 'name', 'sources', 'errors']:
+        #         for item in self.entries[fromname][key]:
+        #             # isd = False
+        #             sources = []
+        #             if 'source' not in item:
+        #                 ValueError("Item has no source!")
+        #             for sid in item['source'].split(','):
+        #                 if sid == 'D':
+        #                     sources.append('D')
+        #                 elif sid in newsourcealiases:
+        #                     sources.append(newsourcealiases[sid])
+        #                 else:
+        #                     ValueError("Couldn't find source alias!")
+        #             sources = uniq_cdl(sources)
+        #
+        #             if key == 'photometry':
+        #                 self.entries[destname].add_photometry(
+        #                     u_time=item.get("u_time", ""),
+        #                     time=item.get("time", ""),
+        #                     e_time=item.get("e_time", ""),
+        #                     telescope=item.get("telescope", ""),
+        #                     instrument=item.get("instrument", ""),
+        #                     band=item.get("band", ""),
+        #                     magnitude=item.get("magnitude", ""),
+        #                     e_magnitude=item.get("e_magnitude", ""),
+        #                     source=sources,
+        #                     upperlimit=item.get("upperlimit", ""),
+        #                     system=item.get("system", ""),
+        #                     observatory=item.get("observatory", ""),
+        #                     observer=item.get("observer", ""),
+        #                     host=item.get("host", ""),
+        #                     survey=item.get("survey", ""))
+        #             elif key == 'spectra':
+        #                 self.entries[destname].add_spectrum(
+        #                     item.get("waveunit", ""),
+        #                     item.get("fluxunit", ""),
+        #                     data=item.get("data", ""),
+        #                     u_time=item.get("u_time", ""),
+        #                     time=item.get("time", ""),
+        #                     instrument=item.get("instrument", ""),
+        #                     deredshifted=item.get("deredshifted", ""),
+        #                     dereddened=item.get("dereddened", ""),
+        #                     errorunit=item.get("errorunit", ""),
+        #                     source=sources, snr=item.get("snr", ""),
+        #                     telescope=item.get("telescope", ""),
+        #                     observer=item.get("observer", ""),
+        #                     reducer=item.get("reducer", ""),
+        #                     filename=item.get("filename", ""),
+        #                     observatory=item.get("observatory", ""))
+        #             elif key == 'errors':
+        #                 self.entries[destname].add_quantity(
+        #                     key, item['value'], sources,
+        #                     kind=item.get("kind", ""),
+        #                     extra=item.get("extra", ""))
+        #             else:
+        #                 self.entries[destname].add_quantity(
+        #                     key, item['value'], sources,
+        #                     error=item.get("error", ""),
+        #                     unit=item.get("unit", ""),
+        #                     probability=item.get("probability", ""),
+        #                     kind=item.get("kind", ""))
 
         return
 

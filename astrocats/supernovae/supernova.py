@@ -227,42 +227,45 @@ class Supernova(Entry):
                 "Bibcode '{}' must be exactly 19 characters "
                 "long".format(kwargs[SOURCE.BIBCODE]))
 
-        if SOURCE.NAME not in kwargs:
-            kwargs[SOURCE.NAME] = kwargs[SOURCE.BIBCODE]
+        # if SOURCE.NAME not in kwargs:
+        #     kwargs[SOURCE.NAME] = kwargs[SOURCE.BIBCODE]
 
-        if (kwargs[SOURCE.NAME].upper().startswith('ATEL') and
-                not kwargs[SOURCE.BIBCODE]):
-            kwargs[SOURCE.NAME] = (kwargs[SOURCE.NAME]
-                                   .replace('ATEL', 'ATel')
-                                   .replace('Atel', 'ATel')
-                                   .replace('ATel #', 'ATel ')
-                                   .replace('ATel#', 'ATel')
-                                   .replace('ATel', 'ATel '))
-            kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
-            atelnum = kwargs[SOURCE.NAME].split()[-1]
-            if is_number(atelnum) and atelnum in self.catalog.atels_dict:
-                kwargs[SOURCE.BIBCODE] = self.catalog.atels_dict[atelnum]
+        if SOURCE.NAME in kwargs:
+            if (kwargs[SOURCE.NAME].upper().startswith('ATEL') and
+                    not kwargs[SOURCE.BIBCODE]):
+                kwargs[SOURCE.NAME] = (kwargs[SOURCE.NAME]
+                                       .replace('ATEL', 'ATel')
+                                       .replace('Atel', 'ATel')
+                                       .replace('ATel #', 'ATel ')
+                                       .replace('ATel#', 'ATel')
+                                       .replace('ATel', 'ATel '))
+                kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
+                atelnum = kwargs[SOURCE.NAME].split()[-1]
+                if is_number(atelnum) and atelnum in self.catalog.atels_dict:
+                    kwargs[SOURCE.BIBCODE] = self.catalog.atels_dict[atelnum]
 
-        if (kwargs[SOURCE.NAME].upper().startswith('CBET') and
-                not kwargs[SOURCE.BIBCODE]):
-            kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('CBET', 'CBET ')
-            kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
-            cbetnum = kwargs[SOURCE.NAME].split()[-1]
-            if is_number(cbetnum) and cbetnum in self.catalog.cbets_dict:
-                kwargs[SOURCE.BIBCODE] = self.catalog.cbets_dict[cbetnum]
+            if (kwargs[SOURCE.NAME].upper().startswith('CBET') and
+                    not kwargs[SOURCE.BIBCODE]):
+                kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('CBET',
+                                                                  'CBET ')
+                kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
+                cbetnum = kwargs[SOURCE.NAME].split()[-1]
+                if is_number(cbetnum) and cbetnum in self.catalog.cbets_dict:
+                    kwargs[SOURCE.BIBCODE] = self.catalog.cbets_dict[cbetnum]
 
-        if (kwargs[SOURCE.NAME].upper().startswith('IAUC') and
-                not kwargs[SOURCE.BIBCODE]):
-            kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('IAUC', 'IAUC ')
-            kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
-            iaucnum = kwargs[SOURCE.NAME].split()[-1]
-            if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
-                kwargs[SOURCE.BIBCODE] = self.catalog.iaucs_dict[iaucnum]
+            if (kwargs[SOURCE.NAME].upper().startswith('IAUC') and
+                    not kwargs[SOURCE.BIBCODE]):
+                kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('IAUC',
+                                                                  'IAUC ')
+                kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
+                iaucnum = kwargs[SOURCE.NAME].split()[-1]
+                if is_number(iaucnum) and iaucnum in self.catalog.iaucs_dict:
+                    kwargs[SOURCE.BIBCODE] = self.catalog.iaucs_dict[iaucnum]
 
-        for rep in self.catalog.source_syns:
-            if kwargs[SOURCE.NAME] in self.catalog.source_syns[rep]:
-                kwargs[SOURCE.NAME] = rep
-                break
+            for rep in self.catalog.source_syns:
+                if kwargs[SOURCE.NAME] in self.catalog.source_syns[rep]:
+                    kwargs[SOURCE.NAME] = rep
+                    break
 
         if SOURCE.URL in kwargs:
             for rep in self.catalog.url_redirs:
@@ -271,6 +274,12 @@ class Supernova(Entry):
                     break
 
         return super().add_source(**kwargs)
+
+    def add_self_source(self):
+        return self.add_source(
+            bibcode=self.catalog.OSC_BIBCODE,
+            name=self.catalog.OSC_NAME,
+            url=self.catalog.OSC_URL, secondary=True)
 
     def is_erroneous(self, field, sources):
         if hasattr(self, self._KEYS.ERRORS):
@@ -329,10 +338,7 @@ class Supernova(Entry):
             if self._KEYS.SOURCES in self:
                 self.add_quantity(self._KEYS.ALIAS, name, '1')
             else:
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
-                    secondary=True)
+                source = self.add_self_source()
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
         if ((name.startswith('SN') and is_number(name[2:6]) and
@@ -340,10 +346,7 @@ class Supernova(Entry):
              int(self[self._KEYS.DISCOVER_DATE][0][QUANTITY.VALUE].
                  split('/')[0]) >= 2016 and
              not any(['AT' in x for x in aliases]))):
-            source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                name=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
+            source = self.add_self_source()
             self.add_quantity(self._KEYS.ALIAS, 'AT' + name[2:], source)
 
         self[self._KEYS.ALIAS] = list(
@@ -362,10 +365,7 @@ class Supernova(Entry):
             if not len(self[self._KEYS.CLAIMED_TYPE]):
                 del(self[self._KEYS.CLAIMED_TYPE])
         if self._KEYS.CLAIMED_TYPE not in self and name.startswith('AT'):
-            source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                name=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
+            source = self.add_self_source()
             self.add_quantity(self._KEYS.CLAIMED_TYPE, 'Candidate', source)
 
         if self._KEYS.PHOTOMETRY in self:
@@ -463,9 +463,7 @@ class Supernova(Entry):
 
         # If there are no existing sources, add OSC as one
         if len(bibcodes) == 0:
-            self.add_source(bibcode=self.catalog.OSC_BIBCODE,
-                            name=self.catalog.OSC_NAME,
-                            url=self.catalog.OSC_URL, secondary=True)
+            self.add_self_source()
             bibcodes = [self.catalog.OSC_BIBCODE]
 
         # Clean some legacy fields
@@ -478,10 +476,7 @@ class Supernova(Entry):
                 raise ValueError("{}: aliases not a list '{}'".format(
                     self.name(), aliases))
             # Add OSC source entry
-            source = self.add_source(
-                bibcode=self.catalog.OSC_BIBCODE,
-                name=self.catalog.OSC_NAME,
-                url=self.catalog.OSC_URL, secondary=True)
+            source = self.add_self_source()
 
             for alias in aliases:
                 self.add_quantity(self._KEYS.ALIAS, alias, source)
@@ -491,33 +486,33 @@ class Supernova(Entry):
             distincts = data.pop(dist_key)
             if ((isinstance(distincts, list) and
                  isinstance(distincts[0], str))):
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME,
-                    url=self.catalog.OSC_URL, secondary=True)
+                source = self.add_self_source()
                 for df in distincts:
                     self.add_quantity(dist_key, df, source)
 
         # Go through all remaining keys in 'dirty' event, and make sure
-        #    everything is a quantity with a source (OSC if no other)
+        # everything is a quantity with a source (OSC if no other)
         for key in data.keys():
             if (key in [self._KEYS.NAME, self._KEYS.SCHEMA,
                         self._KEYS.SOURCES, self._KEYS.ERRORS]):
                 pass
             elif key == self._KEYS.PHOTOMETRY:
                 for p, photo in enumerate(data[self._KEYS.PHOTOMETRY]):
-                    if photo['u_time'] == 'JD':
-                        data[self._KEYS.PHOTOMETRY][p]['u_time'] = 'MJD'
-                        data[self._KEYS.PHOTOMETRY][p]['time'] = str(
+                    if photo[PHOTOMETRY.U_TIME] == 'JD':
+                        data[self._KEYS.PHOTOMETRY][p][
+                            PHOTOMETRY.U_TIME] = 'MJD'
+                        data[self._KEYS.PHOTOMETRY][p][
+                            PHOTOMETRY.TIME] = str(
                             jd_to_mjd(Decimal(photo['time'])))
-                    if 'source' not in photo:
+                    if QUANTITY.SOURCE not in photo:
                         source = self.add_source(bibcode=bibcodes[0])
-                        data[self._KEYS.PHOTOMETRY][p]['source'] = source
+                        data[self._KEYS.PHOTOMETRY][p][
+                            QUANTITY.SOURCE] = source
             else:
                 for qi, quantity in enumerate(data[key]):
-                    if 'source' not in quantity:
+                    if QUANTITY.SOURCE not in quantity:
                         source = self.add_source(bibcode=bibcodes[0])
-                        data[key][qi]['source'] = source
+                        data[key][qi][QUANTITY.SOURCE] = source
 
         return data
 
@@ -579,29 +574,20 @@ class Supernova(Entry):
         if 'maxappmag' not in self:
             mldt, mlmag, mlband, mlsource = self._get_max_light()
             if mldt:
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
-                    secondary=True)
+                source = self.add_self_source()
                 max_date = make_date_string(mldt.year, mldt.month, mldt.day)
                 self.add_quantity(
                     'maxdate', max_date,
                     uniq_cdl([source] + mlsource.split(',')),
                     derived=True)
             if mlmag:
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
-                    secondary=True)
+                source = self.add_self_source()
                 self.add_quantity(
                     'maxappmag', pretty_num(mlmag),
                     uniq_cdl([source] + mlsource.split(',')),
                     derived=True)
             if mlband:
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
-                    secondary=True)
+                source = self.add_self_source()
                 (self
                  .add_quantity('maxband',
                                mlband,
@@ -613,10 +599,7 @@ class Supernova(Entry):
                      self[self._KEYS.DISCOVER_DATE]]) < 3):
             fldt, flsource = self._get_first_light()
             if fldt:
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
-                    secondary=True)
+                source = self.add_self_source()
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
                     self._KEYS.DISCOVER_DATE, disc_date,
@@ -640,10 +623,7 @@ class Supernova(Entry):
 
             if minspecmjd < float("+inf"):
                 fldt = astrotime(minspecmjd, format='mjd').datetime
-                source = self.add_source(
-                    bibcode=self.catalog.OSC_BIBCODE,
-                    name=self.catalog.OSC_NAME, url=self.catalog.OSC_URL,
-                    secondary=True)
+                source = self.add_self_source()
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
                     self._KEYS.DISCOVER_DATE, disc_date,

@@ -62,10 +62,10 @@ class Source(CatDict):
                 continue
 
             # If only one object has this parameter, not the same
-            if (key in self) != (key in other):
-                continue
+            # if (key in self) != (key in other):
+            #     continue
             # If self doesnt have this parameter (and thus neither does), skip
-            if key not in self:
+            if key not in self or key not in other:
                 continue
 
             # Now, both objects have the same parameter, compare them

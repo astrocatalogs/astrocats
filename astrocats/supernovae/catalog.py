@@ -200,20 +200,24 @@ class Catalog(astrocats.catalog.catalog.Catalog):
                                 priority2 += 1
 
                         if priority1 > priority2:
+                            # print(self.entries[name1])
                             self.copy_to_entry(name2, name1)
-                            keys.append(name1)
+                            # keys.append(name1)
                             del self.entries[name2]
+                            # print(self.entries[name1])
                         else:
+                            # print(self.entries[name2])
                             self.copy_to_entry(name1, name2)
-                            keys.append(name2)
+                            # keys.append(name2)
                             del self.entries[name1]
+                            # print(self.entries[name2])
                     else:
                         self.log.warning('Duplicate already deleted')
 
-                    if len(self.entries) != 1:
-                        self.log.error(
-                            "WARNING: len(entries) = {}, expected 1.  "
-                            "Still journaling...".format(len(self.entries)))
+                    # if len(self.entries) != 1:
+                    #     self.log.error(
+                    #         "WARNING: len(entries) = {}, expected 1.  "
+                    #         "Still journaling...".format(len(self.entries)))
                     self.journal_entries()
 
             if self.args.travis and n1 > self.TRAVIS_QUERY_LIMIT:

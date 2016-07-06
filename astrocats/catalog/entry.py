@@ -228,6 +228,12 @@ class Entry(OrderedDict):
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
 
+    def add_self_source(self):
+        return self.add_source(
+            bibcode=self.catalog.OSC_BIBCODE,
+            name=self.catalog.OSC_NAME,
+            url=self.catalog.OSC_URL, secondary=True)
+
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
         """Add an `Spectrum` instance to this entry.
         """
@@ -539,6 +545,7 @@ class Entry(OrderedDict):
             sources = data.pop(src_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(sources), src_key))
+            self._log.debug("{}: {}".format(src_key, sources))
 
             newsources = []
             for src in sources:
