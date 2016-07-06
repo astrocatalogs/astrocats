@@ -202,10 +202,10 @@ class Entry(OrderedDict):
     def _append_additional_tags(self, quantity, source, cat_dict):
         pass
 
-    def add_source(self, **kwargs):
+    def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry.
         """
-        if SOURCE.ALIAS in kwargs:
+        if not allow_alias and SOURCE.ALIAS in kwargs:
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
                 SOURCE.ALIAS)
             self._log.error(err_str)
@@ -547,21 +547,10 @@ class Entry(OrderedDict):
                 len(sources), src_key))
             self._log.debug("{}: {}".format(src_key, sources))
 
-            newsources = []
             for src in sources:
-                try:
-                    new_alias = str(self.num_sources() + 1)
-                    # Set or overwrite existing ALIAS with new one
-                    src[SOURCE.ALIAS] = new_alias
-                    newsources.append(Source(self, **src))
-                except Exception as err:
-                    err_str = "Failed to create Source with '{}'\n{}".format(
-                        src, str(err))
-                    print(err_str)
-                    self._log.error(err_str)
-                    raise
+                self.add_source(allow_alias=True, **src)
             # data['sources'] = newsources
-            self.setdefault(src_key, []).extend(newsources)
+            # self.setdefault(src_key, []).extend(newsources)
 
         # Handle `photometry`
         # -------------------

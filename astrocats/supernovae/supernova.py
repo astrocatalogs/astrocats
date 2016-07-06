@@ -232,7 +232,7 @@ class Supernova(Entry):
 
         if SOURCE.NAME in kwargs:
             if (kwargs[SOURCE.NAME].upper().startswith('ATEL') and
-                    not kwargs[SOURCE.BIBCODE]):
+                    SOURCE.BIBCODE not in kwargs):
                 kwargs[SOURCE.NAME] = (kwargs[SOURCE.NAME]
                                        .replace('ATEL', 'ATel')
                                        .replace('Atel', 'ATel')
@@ -245,7 +245,7 @@ class Supernova(Entry):
                     kwargs[SOURCE.BIBCODE] = self.catalog.atels_dict[atelnum]
 
             if (kwargs[SOURCE.NAME].upper().startswith('CBET') and
-                    not kwargs[SOURCE.BIBCODE]):
+                    SOURCE.BIBCODE not in kwargs):
                 kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('CBET',
                                                                   'CBET ')
                 kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
@@ -254,7 +254,7 @@ class Supernova(Entry):
                     kwargs[SOURCE.BIBCODE] = self.catalog.cbets_dict[cbetnum]
 
             if (kwargs[SOURCE.NAME].upper().startswith('IAUC') and
-                    not kwargs[SOURCE.BIBCODE]):
+                    SOURCE.BIBCODE not in kwargs):
                 kwargs[SOURCE.NAME] = kwargs[SOURCE.NAME].replace('IAUC',
                                                                   'IAUC ')
                 kwargs[SOURCE.NAME] = ' '.join(kwargs[SOURCE.NAME].split())
@@ -481,7 +481,7 @@ class Supernova(Entry):
             for alias in aliases:
                 self.add_quantity(self._KEYS.ALIAS, alias, source)
 
-        dist_key = self._KEYS.DISTINCT_FROM
+        dist_key = 'distinctfrom'
         if dist_key in data:
             distincts = data.pop(dist_key)
             if ((isinstance(distincts, list) and
