@@ -10,10 +10,9 @@ from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.spectrum import SPECTRUM
-from astrocats.catalog.utils import (alias_priority, get_event_filename,
-                                     get_sig_digits, get_source_year,
-                                     is_number, jd_to_mjd, make_date_string,
-                                     pretty_num, uniq_cdl)
+from astrocats.catalog.utils import (get_event_filename, get_sig_digits,
+                                     get_source_year, is_number, jd_to_mjd,
+                                     make_date_string, pretty_num, uniq_cdl)
 from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
                                             REPR_BETTER_QUANTITY)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
@@ -334,14 +333,6 @@ class Supernova(Entry):
         # Calculate some columns based on imported data, sanitize some fields
         name = self[self._KEYS.NAME]
 
-        aliases = self.get_aliases(includename=False)
-        if name not in aliases:
-            if self._KEYS.SOURCES in self:
-                self.add_quantity(self._KEYS.ALIAS, name, '1')
-            else:
-                source = self.add_self_source()
-                self.add_quantity(self._KEYS.ALIAS, name, source)
-
         if ((name.startswith('SN') and is_number(name[2:6]) and
              self._KEYS.DISCOVER_DATE in self and
              int(self[self._KEYS.DISCOVER_DATE][0][QUANTITY.VALUE].
@@ -349,11 +340,6 @@ class Supernova(Entry):
              not any(['AT' in x for x in aliases]))):
             source = self.add_self_source()
             self.add_quantity(self._KEYS.ALIAS, 'AT' + name[2:], source)
-
-        self[self._KEYS.ALIAS] = list(
-            sorted(self[self._KEYS.ALIAS],
-                   key=lambda key: alias_priority(name, key)))
-        aliases = self.get_aliases()
 
         if self._KEYS.CLAIMED_TYPE in self:
             # FIX: this is something that should be done completely internally

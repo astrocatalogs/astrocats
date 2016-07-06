@@ -5,14 +5,15 @@ import json
 import os
 from collections import OrderedDict
 
+from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
+from astrocats.catalog.key import KeyCollection
 from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
-from astrocats.catalog.catdict import CatDictError, CatDict
-from astrocats.catalog.key import KeyCollection
+from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
+                                     get_event_filename)
 
 
 class KEYS(KeyCollection):
@@ -389,7 +390,20 @@ class Entry(OrderedDict):
         Template method that can be overridden in each catalog's subclassed
         `Entry` object.
         """
-        pass
+        name = self[self._KEYS.NAME]
+
+        aliases = self.get_aliases(includename=False)
+        if name not in aliases:
+            # Assign the first source to alias, if not available assign us.
+            if self._KEYS.SOURCES in self:
+                self.add_quantity(self._KEYS.ALIAS, name, '1')
+            else:
+                source = self.add_self_source()
+                self.add_quantity(self._KEYS.ALIAS, name, source)
+
+        self[self._KEYS.ALIAS] = list(
+            sorted(self[self._KEYS.ALIAS],
+                   key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
 
     def sort_func(self, key):
         if key == self._KEYS.SCHEMA:
