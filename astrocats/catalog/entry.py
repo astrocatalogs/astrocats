@@ -11,7 +11,7 @@ from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import dict_to_pretty_string, get_event_filename
-from astrocats.catalog.catdict import CatDictError
+from astrocats.catalog.catdict import CatDictError, CatDict
 from astrocats.catalog.key import KeyCollection
 
 
@@ -191,8 +191,10 @@ class Entry(OrderedDict):
 
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
         cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
-        if cat_dict:
+        if isinstance(cat_dict, CatDict):
             self._append_additional_tags(quantity, sources, cat_dict)
+            return False
+        elif cat_dict:
             return True
 
         return False
@@ -601,12 +603,12 @@ class Entry(OrderedDict):
         source = self._check_cat_dict_source(
             cat_dict_class, key_in_self, **kwargs)
         if source is None:
-            return None
+            return False
 
         # Try to create a new instance of this subclass of `CatDict`
         new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
         if new_entry is None:
-            return None
+            return False
 
         # Compare this new entry with all previous entries to make sure is new
         for item in self.get(key_in_self, []):
@@ -617,4 +619,4 @@ class Entry(OrderedDict):
                 return new_entry
 
         self.setdefault(key_in_self, []).append(new_entry)
-        return None
+        return True

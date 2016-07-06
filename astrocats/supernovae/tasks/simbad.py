@@ -67,13 +67,16 @@ def do_simbad(catalog):
             if is_number(ali):
                 continue
             ali = name_clean(ali)
-            catalog.entries[name].add_quantity('alias', ali, source)
+            catalog.entries[name].add_quantity(catalog._KEYS.ALIAS,
+                                               ali, source)
         if row['COO_BIBCODE'] and row['COO_BIBCODE'] not in simbadbadcoordbib:
             csources = ','.join(
                 [source, catalog.entries[name].add_source(
                     bibcode=row['COO_BIBCODE'])])
-            catalog.entries[name].add_quantity('ra', row['RA'], csources)
-            catalog.entries[name].add_quantity('dec', row['DEC'], csources)
+            catalog.entries[name].add_quantity(catalog._KEYS.RA,
+                                               row['RA'], csources)
+            catalog.entries[name].add_quantity(catalog._KEYS.DEC,
+                                               row['DEC'], csources)
         if row['SP_BIBCODE']:
             ssources = uniq_cdl([source,
                                  catalog.entries[name]
@@ -82,10 +85,11 @@ def do_simbad(catalog):
                                   .add_source(bibcode=row['SP_BIBCODE_2'])] if
                                  row['SP_BIBCODE_2'] else []))
             catalog.entries[name].add_quantity(
-                'claimedtype', (row['SP_TYPE']
-                                .replace('SN.', '')
-                                .replace('SN', '')
-                                .replace('(~)', '')
-                                .strip(': ')), ssources)
+                catalog._KEYS.CLAIMED_TYPE,
+                (row['SP_TYPE']
+                 .replace('SN.', '')
+                 .replace('SN', '')
+                 .replace('(~)', '')
+                 .strip(': ')), ssources)
     catalog.journal_entries()
     return
