@@ -179,7 +179,7 @@ class Entry(OrderedDict):
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
-    def add_quantity(self, quantity, value, sources, **kwargs):
+    def add_quantity(self, quantity, value, source, **kwargs):
         """Add an `Quantity` instance to this entry.
         """
         # Aliases not added if in DISTINCT_FROM
@@ -189,15 +189,18 @@ class Entry(OrderedDict):
                 if value == df[QUANTITY.VALUE]:
                     return False
 
-        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: sources})
+        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
         cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
         if isinstance(cat_dict, CatDict):
-            self._append_additional_tags(quantity, sources, cat_dict)
+            self._append_additional_tags(quantity, source, cat_dict)
             return False
         elif cat_dict:
             return True
 
         return False
+
+    def _append_additional_tags(self, quantity, source, cat_dict):
+        pass
 
     def add_source(self, **kwargs):
         """Add a `Source` instance to this entry.

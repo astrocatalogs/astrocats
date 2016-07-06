@@ -170,11 +170,13 @@ class Supernova(Entry):
             return
 
         my_quantity_list = self.get(quantity, [])
-        # The quantity that was added should be last in the list
-        added_quantity = my_quantity_list.pop()
 
         if (forcereplacebetter or quantity in REPR_BETTER_QUANTITY) and \
-                len(my_quantity_list):
+                len(my_quantity_list) > 1:
+
+            # The quantity that was added should be last in the list
+            added_quantity = my_quantity_list.pop()
+
             newquantities = []
             isworse = True
             if quantity in [self._KEYS.DISCOVER_DATE, self._KEYS.MAX_DATE]:
