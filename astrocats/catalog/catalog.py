@@ -18,7 +18,7 @@ from astrocats.catalog.source import SOURCE
 from astrocats.catalog.utils import (compress_gz, is_integer, is_number,
                                      logger, pbar, read_json_dict,
                                      uncompress_gz, uniq_cdl)
-from astrocats.supernovae.utils import entry_attr_priority, name_clean
+from astrocats.supernovae.utils import name_clean
 
 
 class Catalog:
