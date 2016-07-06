@@ -522,21 +522,17 @@ class Catalog:
                     "No sources changed, entry files unchanged in update."
                     "  Skipping merge.")
                 return
-            entries = self.load_stubs()
+            self.entries = self.load_stubs()
 
         task_str = self.get_current_task_str()
 
-        keys = list(sorted(entries.keys()))
+        keys = list(sorted(self.entries.keys()))
         for n1, name1 in enumerate(pbar(keys, task_str)):
-            allnames1 = set(entries[name1].get_aliases())
-            if name1.startswith('SN') and is_number(name1[2:6]):
-                allnames1 = allnames1.union(['AT' + name1[2:]])
+            allnames1 = set(self.entries[name1].get_aliases())
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
-                allnames2 = set(entries[name2].get_aliases())
-                if name2.startswith('SN') and is_number(name2[2:6]):
-                    allnames2.union(['AT' + name2[2:]])
+                allnames2 = set(self.entries[name2].get_aliases())
 
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
@@ -554,34 +550,26 @@ class Catalog:
                         self._delete_entry_file(entry=load2)
                         priority1 = 0
                         priority2 = 0
-                        for an in allnames1:
-                            if an.startswith(('SN', 'AT')):
-                                priority1 += 1
-                        for an in allnames2:
-                            if an.startswith(('SN', 'AT')):
-                                priority2 += 1
 
                         if priority1 > priority2:
                             self.copy_to_entry(name2, name1)
                             keys.append(name1)
-                            del entries[name2]
+                            del self.entries[name2]
                         else:
                             self.copy_to_entry(name1, name2)
                             keys.append(name2)
-                            del entries[name1]
+                            del self.entries[name1]
                     else:
                         self.log.warning('Duplicate already deleted')
 
-                    if len(entries) != 1:
+                    if len(self.entries) != 1:
                         self.log.error(
                             "WARNING: len(entries) = {}, expected 1.  "
-                            "Still journaling...".format(len(entries)))
-                    entries = self.journal_entries()
+                            "Still journaling...".format(len(self.entries)))
+                    self.journal_entries()
 
             if self.args.travis and n1 > self.TRAVIS_QUERY_LIMIT:
                 break
-
-        return entries
 
     def sanitize(self):
         currenttask = 'Sanitizing entries'
@@ -831,7 +819,6 @@ class Catalog:
 
     def load_cached_url(self, url, filepath, timeout=120, write=True,
                         failhard=False):
-        import codecs
         from hashlib import md5
         filemd5 = ''
         filetxt = ''
