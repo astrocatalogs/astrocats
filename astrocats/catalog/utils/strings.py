@@ -23,10 +23,14 @@ def single_spaces(string):
 
 
 def trim_str_arr(arr, length=10):
-    return [str(round_sig(float(x), length)) if
-            (len(x) > length and
-             len(str(round_sig(float(x), length))) < len(x))
-            else x for x in arr]
+    for i, x in enumerate(arr):
+        lenx = len(x)
+        if lenx <= length:
+            continue
+        round_str = str(round_sig(float(x), length))
+        if len(round_str) < lenx:
+            arr[i] = round_str
+    return arr
 
 
 def uniq_cdl(values):

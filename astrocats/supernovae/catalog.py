@@ -90,6 +90,9 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         return
 
     def should_bury(self, name):
+        """Determines whether an event should be "buried" because it does not
+        belong to the class of object associated with the given catalog.
+        """
         (bury_entry, save_entry) = super().should_bury(name)
 
         ct_val = None
@@ -116,6 +119,8 @@ class Catalog(astrocats.catalog.catalog.Catalog):
         return (bury_entry, save_entry)
 
     def _load_aux_data(self):
+        """Load auxiliary dictionaries for use in this catalog.
+        """
         # Create/Load auxiliary dictionaries
         self.nedd_dict = OrderedDict()
         self.bibauthor_dict = read_json_dict(self.PATHS.BIBAUTHORS)
