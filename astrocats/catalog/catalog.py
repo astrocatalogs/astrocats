@@ -565,8 +565,8 @@ class Catalog:
                 break
 
     def sanitize(self):
-        currenttask = 'Sanitizing entries'
-        for name in pbar(list(sorted(self.entries.keys())), currenttask):
+        task_str = self.get_current_task_str()
+        for name in pbar(list(sorted(self.entries.keys())), task_str):
             self.add_entry(name)
             self.journal_entries(bury=True, final=True)
 

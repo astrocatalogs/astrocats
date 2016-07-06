@@ -9,15 +9,16 @@ from astropy.coordinates import SkyCoord as coord
 from astropy.cosmology import Planck15 as cosmo
 from astropy.cosmology import z_at_value
 
-from astrocats.catalog.utils import (get_sig_digits, is_number, pretty_num,
-                                     tprint, uniq_cdl)
-from astrocats.supernovae.constants import (CLIGHT, KM, PREF_KINDS)
+from astrocats.catalog.utils import (get_sig_digits, is_number, pbar,
+                                     pretty_num, tprint, uniq_cdl)
+from astrocats.supernovae.constants import CLIGHT, KM, PREF_KINDS
 from cdecimal import Decimal
 
 
 def do_derivations(catalog):
+    task_str = catalog.get_current_task_str()
     # Calculate some columns based on imported data, sanitize some fields
-    for oname in catalog.entries:
+    for oname in pbar(catalog.entries, task_str):
         name = catalog.add_entry(oname)
 
         aliases = catalog.entries[name].get_aliases()
@@ -46,12 +47,14 @@ def do_derivations(catalog):
                     break
         if 'discoverdate' not in catalog.entries[name]:
             prefixes = ['ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-',
-                        'SNLS-', 'SPIRITS', 'LSQ', 'DES', 'SNHiTS',
-                        'GND', 'GNW', 'GSD', 'GSW', 'EGS', 'COS']
+                        'SNLS-', 'SPIRITS', 'LSQ', 'DES', 'SNHiTS', 'Gaia',
+                        'GND', 'GNW', 'GSD', 'GSW', 'EGS', 'COS', 'OGLE',
+                        'HST']
             for alias in aliases:
                 for prefix in prefixes:
                     if (alias.startswith(prefix) and
-                            is_number(alias.replace(prefix, '')[:2])):
+                            is_number(alias.replace(prefix, '')[:2]) and
+                            is_number(alias.replace(prefix, '')[:1])):
                         discoverdate = '20' + alias.replace(prefix, '')[:2]
                         if catalog.args.verbose:
                             tprint(
@@ -376,15 +379,15 @@ def do_derivations(catalog):
                                    pretty_num(
                                        float(catalog.entries[name][
                                            'hostoffsetang']
-                                             [0]['value']) /
+                                           [0]['value']) /
                                        3600. * (pi / 180.) *
                                        float(catalog.entries[name][
                                            'comovingdist']
-                                             [0]['value']) *
+                                           [0]['value']) *
                                        1000. / (1.0 +
                                                 float(catalog.entries[name][
                                                     'redshift']
-                                                      [0]['value'])),
+                                                    [0]['value'])),
                                        sig=offsetsig), sources))
 
         catalog.journal_entries()
