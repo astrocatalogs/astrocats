@@ -34,7 +34,7 @@ from bokeh.models import (HoverTool, CustomJS, Slider, ColumnDataSource,
                           Range1d, LinearAxis, DatetimeAxis,
                           Paragraph)
 from bokeh.models.widgets import Select
-from bokeh.layouts import row, column, layout, widgetbox
+from bokeh.layouts import row as bokehrow, column, layout, widgetbox
 from bokeh.resources import CDN, INLINE
 from bokeh.embed import file_html, components
 from palettable import cubehelix
@@ -1416,7 +1416,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 p1box = p1
             plots += [p1box]
         if spectraavail:
-            plots += [column(p2,row(binslider,spacingslider))]
+            plots += [column(p2,bokehrow(binslider,spacingslider))]
         if radioavail:
             plots += [p3]
         if xrayavail:
