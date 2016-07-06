@@ -541,9 +541,9 @@ class Catalog:
                         "('{}' and '{}'), merging.".format(name1, name2))
 
                     load1 = self.proto.init_from_file(
-                        self, name=name1, delete=True)
+                        self, name=name1)
                     load2 = self.proto.init_from_file(
-                        self, name=name2, delete=True)
+                        self, name=name2)
                     if load1 is not None and load2 is not None:
                         # Delete old files
                         self._delete_entry_file(entry=load1)
