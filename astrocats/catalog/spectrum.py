@@ -91,6 +91,8 @@ class Spectrum(CatDict):
                 del self[SPECTRUM.WAVELENGTHS]
             if SPECTRUM.FLUXES in self:
                 del self[SPECTRUM.FLUXES]
+            if SPECTRUM.ERRORS in self:
+                del self[SPECTRUM.ERRORS]
 
         return
 
