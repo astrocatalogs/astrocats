@@ -222,7 +222,8 @@ class Supernova(Entry):
     def add_source(self, **kwargs):
         # Sanitize some fields before adding source
         # Replace reference names and URLs using dictionaries.
-        if SOURCE.BIBCODE in kwargs and len(kwargs[SOURCE.BIBCODE]) != 19:
+        if (kwargs.get(SOURCE.BIBCODE, []) and
+                len(kwargs[SOURCE.BIBCODE]) != 19):
             raise ValueError(
                 "Bibcode '{}' must be exactly 19 characters "
                 "long".format(kwargs[SOURCE.BIBCODE]))
