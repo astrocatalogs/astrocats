@@ -49,9 +49,17 @@ def do_tns(catalog):
                            '&display[discoverydate]=1&display[discoverer]=1'
                            '&display[sources]=1'
                            '&display[bibcode]=1&format=csv&page=' + str(page))
-                response = session.get(ses_url)
-                csvtxt = response.text
-                tns_file.write(csvtxt)
+                try:
+                    response = session.get(ses_url)
+                    csvtxt = response.text
+                except:
+                    if os.path.isfile(fname):
+                        with open(fname, 'r') as tns_file:
+                            csvtxt = tns_file.read()
+                    else:
+                        continue
+                else:
+                    tns_file.write(csvtxt)
 
         tsvin = list(csv.reader(csvtxt.splitlines(), delimiter=','))
         for ri, row in enumerate(pbar(tsvin, task_str, leave=False)):

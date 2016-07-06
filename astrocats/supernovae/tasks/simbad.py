@@ -25,6 +25,7 @@ def do_simbad(catalog):
     customSimbad.ROW_LIMIT = -1
     customSimbad.TIMEOUT = 120
     customSimbad.add_votable_fields('otype', 'sptype', 'sp_bibcode', 'id')
+    table = []
     for mirror in simbadmirrors:
         customSimbad.SIMBAD_URL = mirror
         try:
@@ -33,6 +34,9 @@ def do_simbad(catalog):
             continue
         else:
             break
+
+    if not table:
+        catalog.log.warning('SIMBAD unable to load, probably offline.')
 
     # 2000A&AS..143....9W
     for brow in pbar(table, task_str):
