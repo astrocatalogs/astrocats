@@ -16,34 +16,34 @@ import urllib.request
 import warnings
 from collections import OrderedDict
 from copy import deepcopy
+from datetime import datetime
 from glob import glob
-from math import ceil, isnan, pi
+from math import ceil, floor, hypot, isnan, pi
 from statistics import mean
 
 import numpy
 import requests
 from astropy import units as un
+from astropy import constants
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
-from bokeh.embed import file_html
-from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HBox,
-                          HoverTool, LinearAxis, Paragraph, Range1d, Slider,
-                          VBox)
+from bokeh.embed import components, file_html
+from bokeh.layouts import column, layout, row, widgetbox
+from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HoverTool,
+                          LinearAxis, Paragraph, Range1d, Slider)
 from bokeh.models.widgets import Select
-from bokeh.plotting import Figure, reset_output
-from bokeh.resources import CDN
-from bs4 import BeautifulSoup
+from bokeh.plotting import Figure, reset_output, save, show
+from bokeh.resources import CDN, INLINE
+from bs4 import BeautifulSoup, NavigableString, Tag
 from palettable import cubehelix
 
 import inflect
 from cdecimal import Decimal
-from digits import get_sig_digits, is_number, pretty_num, round_sig
+from digits import *
 from events import *
-from utils.photometry import (bandaliasf, bandcodes, bandcolorf,
-                              bandshortaliasf, bandwavef, bandwavelengths,
-                              radiocolorf, xraycolorf)
-from utils.repos import get_repo_folder_for_year, get_repo_output_file_list
-from utils.tq_funcs import tprint, tq
+from photometry import *
+from repos import *
+from tq import *
 
 parser = argparse.ArgumentParser(
     description='Generate a catalog JSON file and plot HTML files from SNE data.')
@@ -240,11 +240,11 @@ with open('sitemap-template.xml', 'r') as f:
     sitemaptemplate = f.read()
 
 if len(columnkey) != len(header):
-    raise ValueError('Header not same length as key list.')
+    raise(ValueError('Header not same length as key list.'))
     sys.exit(0)
 
 if len(columnkey) != len(eventpageheader):
-    raise ValueError('Event page header not same length as key list.')
+    raise(ValueError('Event page header not same length as key list.'))
     sys.exit(0)
 
 dataavaillink = "<a href='https://bitbucket.org/Guillochon/sne'>Y</a>"
@@ -336,8 +336,7 @@ if os.path.isfile(outdir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = get_repo_output_file_list(
-    normal=(not args.boneyard), bones=args.boneyard)
+files = repo_file_list(normal=(not args.boneyard), bones=args.boneyard)
 
 md5s = []
 if os.path.isfile(outdir + 'md5s.json'):
@@ -361,7 +360,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     checksum = md5file(eventfile)
     md5s.append([eventfile, checksum])
 
-    filetext = get_entry_text(eventfile)
+    filetext = get_event_text(eventfile)
 
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
@@ -373,7 +372,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     tprint(eventfile + ' [' + checksum + ']')
 
-    repfolder = get_repo_folder_for_year(catalog[entry])
+    repfolder = get_rep_folder(catalog[entry])
     if os.path.isfile("../sne-internal/" + fileeventname + ".json"):
         catalog[entry]['download'] = 'e'
     else:
@@ -411,12 +410,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     # Must be two sigma above host magnitude, if host magnitude known, to add
     # to phot count.
     numphoto = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'magnitude' in x and
-                    (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
+                    (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
     numradio = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'fluxdensity' in x and
                     (not x['e_fluxdensity'] or float(x['fluxdensity']) > radiosigma * float(x['e_fluxdensity'])) and
-                    (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
+                    (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
     numxray = len([x for x in catalog[entry]['photometry'] if 'upperlimit' not in x and 'counts' in x and
-                   (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
+                   (not hostmag or not 'includeshost' in x or float(x['magnitude']) <= (hostmag - 2.0 * hosterr))]) if photoavail else 0
     numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
 
     redshiftfactor = (1.0 / (1.0 + float(catalog[entry]['redshift'][0]['value']))) if (
@@ -587,12 +586,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         max_y_range = -0.5 + min([(x - y) if not z else x for x,
                                   y, z in list(zip(photoAB, photoABlowererrs, phototype))])
 
-        p1 = Figure(title='Photometry for ' + eventname,
-                    # responsive = True,
+        p1 = Figure(title='Photometry for ' + eventname, active_drag='box_zoom',
+                    # sizing_mode = "scale_width",
                     y_axis_label='Apparent Magnitude', tools=tools, plot_width=485, plot_height=485,
-                    x_range=(min_x_range, max_x_range), y_range=(
-                        min_y_range, max_y_range),
-                    title_text_font_size='16pt', title_text_font='futura')
+                    x_range=(min_x_range, max_x_range), y_range=(min_y_range, max_y_range), toolbar_location='above', toolbar_sticky=False)
         p1.xaxis.axis_label_text_font = 'futura'
         p1.yaxis.axis_label_text_font = 'futura'
         p1.xaxis.major_label_text_font = 'futura'
@@ -601,6 +598,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p1.yaxis.axis_label_text_font_size = '11pt'
         p1.xaxis.major_label_text_font_size = '8pt'
         p1.yaxis.major_label_text_font_size = '8pt'
+        p1.title.align = 'center'
+        p1.title.text_font_size = '16pt'
+        p1.title.text_font = 'futura'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -779,7 +779,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     eval('s'+s).trigger('change');
                 }
             """)
-            photochecks = HBox(Paragraph(text="Photometry to show:"), Select(
+            photochecks = row(Paragraph(text="Photometry to show:"), Select(
                 value="Raw", options=["Raw", "K-Corrected", "All"], callback=photocallback))
         else:
             photochecks = ''
@@ -895,11 +895,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         hover = HoverTool(tooltips=tt2)
 
-        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'),
+        p2 = Figure(title='Spectra for ' + eventname, x_axis_label=label_format('Observed Wavelength (Å)'), active_drag='box_zoom',
                     y_axis_label=label_format('Flux (scaled)' + (' + offset'
-                                                                 if (nspec > 1) else '')), x_range=x_range, tools=tools,  # responsive = True,
-                    plot_width=485, plot_height=485, y_range=y_range, title_text_font_size='16pt',
-                    title_text_font='futura')
+                                                                 if (nspec > 1) else '')), x_range=x_range, tools=tools,  # sizing_mode = "scale_width",
+                    plot_width=485, plot_height=485, y_range=y_range, toolbar_location='above', toolbar_sticky=False)
         p2.xaxis.axis_label_text_font = 'futura'
         p2.yaxis.axis_label_text_font = 'futura'
         p2.xaxis.major_label_text_font = 'futura'
@@ -908,6 +907,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p2.yaxis.axis_label_text_font_size = '11pt'
         p2.xaxis.major_label_text_font_size = '8pt'
         p2.yaxis.major_label_text_font_size = '8pt'
+        p2.title.align = 'center'
+        p2.title.text_font_size = '16pt'
+        p2.title.text_font = 'futura'
         p2.add_tools(hover)
 
         sources = []
@@ -996,10 +998,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             }
         """)
 
-        binslider = Slider(start=0, end=20, value=1, step=0.5, title=label_format(
+        binslider = Slider(start=0, end=20, value=1, step=0.5, width=230, title=label_format(
             "Bin size (Angstrom)"), callback=callback)
-        spacingslider = Slider(start=0, end=2, value=1, step=0.02, title=label_format(
-            "Spacing"), callback=callback)
+        spacingslider = Slider(start=0, end=2, value=1, step=0.02,
+                               width=230, title=label_format("Spacing"), callback=callback)
 
     if radioavail and dohtml and args.writehtml:
         phototime = [float(x['time']) for x in catalog[entry][
@@ -1060,11 +1062,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         [min_y_range, max_y_range] = [min_y_range - 0.1 *
                                       (max_y_range - min_y_range), max_y_range + 0.1 * (max_y_range - min_y_range)]
 
-        p3 = Figure(title='Radio Observations of ' + eventname,
-                    # responsive = True,
+        p3 = Figure(title='Radio Observations of ' + eventname, active_drag='box_zoom',
+                    # sizing_mode = "scale_width",
                     y_axis_label='Flux Density (µJy)', tools=tools, plot_width=485, plot_height=485,
-                    x_range=x_range, y_range=(min_y_range, max_y_range),
-                    title_text_font_size='16pt', title_text_font='futura')
+                    x_range=x_range, y_range=(min_y_range, max_y_range), toolbar_location='above', toolbar_sticky=False)
         p3.xaxis.axis_label_text_font = 'futura'
         p3.yaxis.axis_label_text_font = 'futura'
         p3.xaxis.major_label_text_font = 'futura'
@@ -1073,6 +1074,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p3.yaxis.axis_label_text_font_size = '11pt'
         p3.xaxis.major_label_text_font_size = '8pt'
         p3.yaxis.major_label_text_font_size = '8pt'
+        p3.title.align = 'center'
+        p3.title.text_font_size = '16pt'
+        p3.title.text_font = 'futura'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -1281,11 +1285,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         [min_y_range, max_y_range] = [min_y_range - 0.1 *
                                       (max_y_range - min_y_range), max_y_range + 0.1 * (max_y_range - min_y_range)]
 
-        p4 = Figure(title='X-ray Observations of ' + eventname,
-                    # responsive = True,
+        p4 = Figure(title='X-ray Observations of ' + eventname, active_drag='box_zoom',
+                    # sizing_mode = "scale_width",
                     y_axis_label='Flux (ergs s⁻¹ cm⁻²)', tools=tools, plot_width=485, plot_height=485,
-                    x_range=x_range, y_range=(min_y_range, max_y_range),
-                    title_text_font_size='16pt', title_text_font='futura')
+                    x_range=x_range, y_range=(min_y_range, max_y_range), toolbar_location='above', toolbar_sticky=False)
         p4.xaxis.axis_label_text_font = 'futura'
         p4.yaxis.axis_label_text_font = 'futura'
         p4.xaxis.major_label_text_font = 'futura'
@@ -1295,6 +1298,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p4.xaxis.major_label_text_font_size = '8pt'
         p4.yaxis.major_label_text_font_size = '8pt'
         p4.yaxis[0].formatter.precision = 1
+        p4.title.align = 'center'
+        p4.title.text_font_size = '16pt'
+        p4.title.text_font = 'futura'
 
         min_x_date = astrotime(min_x_range, format='mjd').datetime
         max_x_date = astrotime(max_x_range, format='mjd').datetime
@@ -1548,40 +1554,22 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     if dohtml and args.writehtml:
         # if (photoavail and spectraavail) and dohtml and args.writehtml:
+        plots = []
         if photoavail:
             if photochecks:
-                p1box = VBox(p1, photochecks)
+                p1box = column(p1, photochecks)
             else:
                 p1box = p1
-        if photoavail and spectraavail and radioavail and xrayavail:
-            p = VBox(
-                HBox(p1box, VBox(p2, HBox(binslider, spacingslider))), HBox(p3, p4))
-        elif photoavail and spectraavail and xrayavail:
-            p = VBox(HBox(p1box, VBox(p2, HBox(binslider, spacingslider))), p4)
-        elif photoavail and spectraavail and radioavail:
-            p = VBox(HBox(p1box, VBox(p2, HBox(binslider, spacingslider))), p3)
-        elif photoavail and radioavail and xrayavail:
-            p = VBox(HBox(p1box, p3), p4)
-        elif spectraavail and radioavail and xrayavail:
-            p = VBox(VBox(p2, HBox(binslider, spacingslider)), HBox(p3, p4))
-        elif photoavail and spectraavail:
-            p = HBox(p1box, VBox(p2, HBox(binslider, spacingslider)))
-            # script, div = components(dict(p1=p1, p2=p2))#,
-            # binslider=binslider, spacingslider=spacingslider))
-        elif photoavail and radioavail:
-            p = HBox(p1box, p3)
-        elif spectraavail and radioavail:
-            p = HBox(p3, VBox(p2, HBox(binslider, spacingslider)))
-        elif photoavail:
-            p = p1box
-            #script, div = components(dict(p1=p1))
-        elif spectraavail:
-            p = VBox(HBox(p2, VBox(binslider, spacingslider)), width=900)
-            #script, div = components(dict(p2=p2, binslider=binslider, spacingslider=spacingslider))
-        elif radioavail:
-            p = p3
-        elif xrayavail:
-            p = p4
+            plots += [p1box]
+        if spectraavail:
+            plots += [column(p2, row(binslider, spacingslider))]
+        if radioavail:
+            plots += [p3]
+        if xrayavail:
+            plots += [p4]
+
+        p = layout([plots[i:i + 2] for i in range(0, len(plots), 2)],
+                   ncols=2, toolbar_location=None)
 
         html = '<html><head><title>' + eventname + '</title>'
         if photoavail or spectraavail or radioavail or xrayavail:
@@ -1612,7 +1600,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             </script>'''
                       , html)
 
-        repfolder = get_repo_folder_for_year(catalog[entry])
+        repfolder = get_rep_folder(catalog[entry])
         html = re.sub(r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
                       linkdir + fileeventname + r'.json" download>' + r'Download all data for ' + eventname +
                       r'</a></div>\n\1', html)
@@ -1679,8 +1667,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                             sourceids.append(source['name'])
                                             idtypes.append('name')
                             if not sourceids or not idtypes:
-                                raise ValueError(
-                                    'Unable to find associated source by alias!')
+                                raise(ValueError(
+                                    'Unable to find associated source by alias!'))
                             edit = "true" if os.path.isfile(
                                 '../sne-internal/' + get_event_filename(entry) + '.json') else "false"
                             keyhtml = (keyhtml + "<span class='singletooltiptext'><button class='singlemarkerror' type='button' onclick='markError(\"" +
@@ -1807,7 +1795,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         catalogcopy[entry] = OrderedDict()
         for col in columnkey:
             if col in catalog[entry]:
-                catalogcopy[entry][col] = catalog[entry][col]
+                catalogcopy[entry][col] = deepcopy(catalog[entry][col])
             else:
                 catalogcopy[entry][col] = None
 
@@ -1818,7 +1806,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
 # Write it all out at the end
 if args.writecatalog and not args.eventlist:
-    catalog = catalogcopy
+    catalog = deepcopy(catalogcopy)
 
     if not args.boneyard:
         # Write the MD5 checksums
