@@ -11,15 +11,14 @@ from astropy.cosmology import z_at_value
 
 from astrocats.catalog.utils import (get_sig_digits, is_number, pretty_num,
                                      tprint, uniq_cdl)
-from astrocats.supernovae.constants import (CLIGHT, KM, OSC_BIBCODE, OSC_NAME,
-                                            OSC_URL, PREF_KINDS)
+from astrocats.supernovae.constants import (CLIGHT, KM, PREF_KINDS)
 from cdecimal import Decimal
 
 
 def do_derivations(catalog):
     # Calculate some columns based on imported data, sanitize some fields
     for oname in catalog.entries:
-        name = catalog.add_event(oname)
+        name = catalog.add_entry(oname)
 
         aliases = catalog.entries[name].get_aliases()
         catalog.entries[name].set_first_max_light()
@@ -39,9 +38,7 @@ def do_derivations(catalog):
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                            secondary=True)
+                        source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
@@ -60,9 +57,7 @@ def do_derivations(catalog):
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                            secondary=True)
+                        source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
@@ -83,9 +78,7 @@ def do_derivations(catalog):
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                            secondary=True)
+                        source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
@@ -106,9 +99,7 @@ def do_derivations(catalog):
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                            secondary=True)
+                        source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
@@ -126,9 +117,7 @@ def do_derivations(catalog):
                             tprint(
                                 'Added discoverdate from name [' +
                                 alias + ']: ' + discoverdate)
-                        source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                            secondary=True)
+                        source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
                             'discoverdate', discoverdate, source, derived=True)
                         break
@@ -160,9 +149,7 @@ def do_derivations(catalog):
                                ('.' + decstr[6:] if len(decstr) > 6 else ''))
                         if catalog.args.verbose:
                             tprint('Added ra/dec from name: ' + ra + ' ' + dec)
-                        source = catalog.entries[name].add_source(
-                            bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                            secondary=True)
+                        source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
                             'ra', ra, source, derived=True)
                         catalog.entries[name].add_quantity(
@@ -193,9 +180,7 @@ def do_derivations(catalog):
                     catalog.extinctions_dict[name] = [ebv, ebverr]
             if name in catalog.extinctions_dict:
                 sources = uniq_cdl(
-                    [catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                        secondary=True),
+                    [catalog.entries[name].add_self_source(),
                      catalog.entries[name]
                      .add_source(bibcode='2011ApJ...737..103S')])
                 (catalog.entries[name]
@@ -229,9 +214,7 @@ def do_derivations(catalog):
                     if catalog.args.verbose:
                         tprint('Added hostra/hostdec from name: ' +
                                hostra + ' ' + hostdec)
-                    source = catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                        secondary=True)
+                    source = catalog.entries[name].add_self_source()
                     catalog.entries[name].add_quantity(
                         'hostra', hostra, source, derived=True)
                     catalog.entries[name].add_quantity(
@@ -252,9 +235,7 @@ def do_derivations(catalog):
                     bestsig = sig
             if bestsig > 0 and is_number(besthv):
                 voc = float(besthv) * 1.e5 / CLIGHT
-                source = catalog.entries[name].add_source(
-                    bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                    secondary=True)
+                source = catalog.entries[name].add_self_source()
                 sources = uniq_cdl([source] + bestsrc.split(','))
                 (catalog.entries[name]
                  .add_quantity('redshift',
@@ -295,9 +276,7 @@ def do_derivations(catalog):
                     bestsrc = ld['source']
                     bestsig = sig
             if bestsig > 0 and is_number(bestld) and float(bestld) > 0.:
-                source = catalog.entries[name].add_source(
-                    bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                    secondary=True)
+                source = catalog.entries[name].add_self_source()
                 sources = uniq_cdl([source] + bestsrc.split(','))
                 # FIX: what's happening here?!
                 pnum = (float(catalog.entries[name]['maxappmag'][0]['value']) -
@@ -312,9 +291,7 @@ def do_derivations(catalog):
             if bestsig > 0:
                 bestz = float(bestz)
                 if 'velocity' not in catalog.entries[name]:
-                    source = catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                        secondary=True)
+                    source = catalog.entries[name].add_self_source()
                     # FIX: what's happening here?!
                     pnum = CLIGHT / KM * \
                         ((bestz + 1.)**2. - 1.) / ((bestz + 1.)**2. + 1.)
@@ -326,9 +303,7 @@ def do_derivations(catalog):
                     if 'lumdist' not in catalog.entries[name]:
                         dl = cosmo.luminosity_distance(bestz)
                         sources = [
-                            catalog.entries[name].add_source(
-                                bibcode=OSC_BIBCODE, name=OSC_NAME,
-                                url=OSC_URL, secondary=True),
+                            catalog.entries[name].add_self_source(),
                             catalog.entries[name]
                             .add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
@@ -338,9 +313,7 @@ def do_derivations(catalog):
                             derived=True)
                         if ('maxabsmag' not in catalog.entries[name] and
                                 'maxappmag' in catalog.entries[name]):
-                            source = catalog.entries[name].add_source(
-                                bibcode=OSC_BIBCODE, name=OSC_NAME,
-                                url=OSC_URL, secondary=True)
+                            source = catalog.entries[name].add_self_source()
                             pnum = pretty_num(
                                 float(catalog.entries[name]['maxappmag'][0][
                                     'value']) -
@@ -351,10 +324,7 @@ def do_derivations(catalog):
                     if 'comovingdist' not in catalog.entries[name]:
                         cd = cosmo.comoving_distance(bestz)
                         sources = [
-                            catalog.entries[name].add_source(
-                                bibcode=OSC_BIBCODE, name=OSC_NAME,
-                                url=OSC_URL,
-                                secondary=True),
+                            catalog.entries[name].add_self_source(),
                             catalog.entries[name]
                             .add_source(bibcode='2015arXiv150201589P')]
                         sources = uniq_cdl(sources + bestsrc.split(','))
@@ -379,9 +349,7 @@ def do_derivations(catalog):
                 pass
             else:
                 sources = uniq_cdl(
-                    [catalog.entries[name].add_source(
-                        bibcode=OSC_BIBCODE, name=OSC_NAME, url=OSC_URL,
-                        secondary=True)] +
+                    [catalog.entries[name].add_self_source()] +
                     catalog.entries[name]['ra'][0]['source'].split(',') +
                     catalog.entries[name]['dec'][0]['source'].split(',') +
                     catalog.entries[name]['hostra'][0]['source'].split(',') +

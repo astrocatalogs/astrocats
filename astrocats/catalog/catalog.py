@@ -417,8 +417,6 @@ class Catalog:
         self.log.info("Copy '{}' to '{}'".format(fromname, destname))
         newsourcealiases = {}
 
-        print(self.entries[fromname])
-        print(self.entries[destname])
         if self.proto._KEYS.SOURCES in self.entries[fromname]:
             for source in self.entries[fromname][self.proto._KEYS.SOURCES]:
                 newsourcealiases[source['alias']] = (self.entries[destname]

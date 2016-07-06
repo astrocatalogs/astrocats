@@ -212,7 +212,8 @@ class Entry(OrderedDict):
             raise RuntimeError(err_str)
 
         # Set alias number to be +1 of current number of sources
-        kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
+        if SOURCE.ALIAS not in kwargs:
+            kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
         source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
         if source_obj is None:
             return None

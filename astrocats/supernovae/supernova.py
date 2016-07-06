@@ -11,8 +11,9 @@ from astrocats.catalog.quantity import QUANTITY
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.spectrum import SPECTRUM
 from astrocats.catalog.utils import (alias_priority, get_event_filename,
-                                     get_sig_digits, is_number, jd_to_mjd,
-                                     make_date_string, pretty_num, uniq_cdl)
+                                     get_sig_digits, get_source_year,
+                                     is_number, jd_to_mjd, make_date_string,
+                                     pretty_num, uniq_cdl)
 from astrocats.supernovae.constants import (MAX_BANDS, PREF_KINDS,
                                             REPR_BETTER_QUANTITY)
 from astrocats.supernovae.utils import (frame_priority, host_clean, name_clean,
@@ -316,16 +317,16 @@ class Supernova(Entry):
         # Get normal repository save directory
         else:
             repo_folders = self.catalog.PATHS.get_repo_output_folders()
+            outdir = repo_folders[0]
+
             if self._KEYS.DISCOVERY_DATE in self.keys():
                 repo_years = self.catalog.PATHS.get_repo_years()
+                dyr = self[self._KEYS.DISCOVERY_DATE][0][
+                    QUANTITY.VALUE].split('/')[0]
                 for r, year in enumerate(repo_years):
-                    dyr = self[self._KEYS.DISCOVERY_DATE][0][
-                        QUANTITY.VALUE].split('/')[0]
                     if int(dyr) <= year:
                         outdir = repo_folders[r]
                         break
-            else:
-                outdir = repo_folders[0]
 
         return outdir, filename
 
@@ -662,7 +663,7 @@ class Supernova(Entry):
                 continue
             source = self.get_source_by_alias(alias)
             if SOURCE.BIBCODE in source:
-                source_year = self.get_source_year(source)
+                source_year = get_source_year(source)
                 if source_year > max_source_year:
                     max_source_year = source_year
         return -max_source_year

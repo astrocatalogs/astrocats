@@ -172,6 +172,9 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
+                if name1 == name2:
+                    continue
+
                 allnames2 = set(self.entries[name2].get_aliases())
                 if name2.startswith('SN') and is_number(name2[2:6]):
                     allnames2.union(['AT' + name2[2:]])
@@ -201,14 +204,16 @@ class Catalog(astrocats.catalog.catalog.Catalog):
 
                         if priority1 > priority2:
                             # print(self.entries[name1])
+                            self.entries[name1] = load1
                             self.copy_to_entry(name2, name1)
-                            # keys.append(name1)
+                            keys.append(name1)
                             del self.entries[name2]
                             # print(self.entries[name1])
                         else:
                             # print(self.entries[name2])
+                            self.entries[name2] = load2
                             self.copy_to_entry(name1, name2)
-                            # keys.append(name2)
+                            keys.append(name2)
                             del self.entries[name1]
                             # print(self.entries[name2])
                     else:
