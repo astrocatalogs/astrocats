@@ -2,13 +2,15 @@
 """
 import csv
 import os
+from astrocats.catalog.utils import pbar
 
 
 def do_pessto(catalog):
+    task_str = catalog.get_current_task_str()
     pessto_path = os.path.join(
         catalog.get_current_task_repo(), 'PESSTO_MPHOT.csv')
     tsvin = list(csv.reader(open(pessto_path, 'r'), delimiter=','))
-    for ri, row in enumerate(tsvin):
+    for ri, row in enumerate(pbar(tsvin, task_str)):
         if ri == 0:
             bands = [xx.split('_')[0] for xx in row[3::2]]
             systems = [xx.split('_')[1].capitalize().replace(
