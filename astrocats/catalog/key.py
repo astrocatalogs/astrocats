@@ -9,6 +9,9 @@ class KeyCollection:
     Used mostly by different `CatDict` subclasses to contain the 'keys' to
     their internal dictionaries.
     """
+    _keys = []
+    _vals = []
+
     @classmethod
     def keys(cls):
         """Return this class's attribute names (those not stating with '_').
@@ -18,8 +21,11 @@ class KeyCollection:
         _keys : list of str
             List of names of internal attributes.  Order is effectiely random.
         """
-        _keys = [kk for kk in vars(cls).keys() if not kk.startswith('_')]
-        return _keys
+        if cls._keys:
+            return cls._keys
+
+        cls._keys = [kk for kk in vars(cls).keys() if not kk.startswith('_')]
+        return cls._keys
 
     @classmethod
     def vals(cls):
@@ -31,8 +37,12 @@ class KeyCollection:
             List of values of internal attributes.  Order is effectiely random,
             but should match that returned by `keys()`.
         """
-        _vals = [vv for kk, vv in vars(cls).items() if not kk.startswith('_')]
-        return _vals
+        if cls._vals:
+            return cls._vals
+
+        cls._vals = [vv for kk, vv in
+                     vars(cls).items() if not kk.startswith('_')]
+        return cls._vals
 
 
 class KEY_TYPES(KeyCollection):
