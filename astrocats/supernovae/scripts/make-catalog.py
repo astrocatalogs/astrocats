@@ -28,7 +28,7 @@ from astropy import constants
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
 from bokeh.embed import components, file_html
-from bokeh.layouts import column, layout, row, widgetbox
+from bokeh.layouts import column, layout, row as bokehrow, widgetbox
 from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HoverTool,
                           LinearAxis, Paragraph, Range1d, Slider)
 from bokeh.models.widgets import Select
@@ -1562,7 +1562,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 p1box = p1
             plots += [p1box]
         if spectraavail:
-            plots += [column(p2, row(binslider, spacingslider))]
+            plots += [column(p2, bokehrow(binslider, spacingslider))]
         if radioavail:
             plots += [p3]
         if xrayavail:
