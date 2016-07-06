@@ -26,8 +26,8 @@ def do_suspect_photo(catalog):
         for row in tsvin:
             suspectrefdict[row[0]] = row[1]
 
-    file_names = glob(os.path.join(
-        catalog.get_current_task_repo(), 'SUSPECT/*.html'))
+    file_names = list(sorted(glob(os.path.join(
+        catalog.get_current_task_repo(), 'SUSPECT/*.html'))))
     for datafile in pbar_strings(file_names, task_str):
         basename = os.path.basename(datafile)
         basesplit = basename.split('-')
