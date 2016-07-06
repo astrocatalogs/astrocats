@@ -73,7 +73,7 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
     """
     if tofile is None and not tostr:
         raise ValueError(
-            "Must log to something: `tofile` or `tostr` must be 'True'.")
+            "Must log to something: `tofile` or `tostr` must be `True`.")
 
     logger = logging.getLogger(name)
     # Add a custom attribute to this `logger` so that we know when an existing

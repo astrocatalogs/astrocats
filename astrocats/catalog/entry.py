@@ -593,7 +593,7 @@ class Entry(OrderedDict):
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
         except CatDictError as err:
             if err.warn:
-                self._log.warning("'{}' Not adding '{}': '{}'".format(
+                self._log.info("'{}' Not adding '{}': '{}'".format(
                     self[self._KEYS.NAME], key_in_self, str(err)))
             return None
         return new_entry
