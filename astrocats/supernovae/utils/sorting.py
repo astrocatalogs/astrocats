@@ -2,23 +2,7 @@
 """
 from ..constants import PREF_KINDS
 
-__all__ = ['entry_attr_priority', 'frame_priority']
-
-
-def entry_attr_priority(attr):
-    if attr == 'photometry':
-        return 'zzy'
-    if attr == 'spectra':
-        return 'zzz'
-    if attr == 'schema':
-        return 'aaa'
-    if attr == 'name':
-        return 'aab'
-    if attr == 'sources':
-        return 'aac'
-    if attr == 'alias':
-        return 'aad'
-    return attr
+__all__ = ['frame_priority']
 
 
 def frame_priority(attr):
