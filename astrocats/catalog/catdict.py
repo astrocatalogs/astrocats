@@ -178,7 +178,7 @@ class CatDict(OrderedDict):
                 err_str = ("'{}' Requires one or more of: "
                            .format(self._key) +
                            ",".join("'{}'".format(rk) for rk in req_any))
-                self._log.error(err_str)
+                self._log.info(err_str)
                 raise CatDictError(err_str)
 
         return
