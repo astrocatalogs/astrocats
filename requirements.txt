@@ -1,4 +1,4 @@
-astropy==1.1.1
+astropy==1.2.1
 -e git://github.com/astropy/astroquery.git#egg=astroquery
 bokeh==0.12.0
 m3_cdecimal==2.3
@@ -11,3 +11,4 @@ inflect==0.2.5
 tweepy==3.5.0
 seaborn==0.7.1
 GitPython==2.0.6
+psutil==4.3.0

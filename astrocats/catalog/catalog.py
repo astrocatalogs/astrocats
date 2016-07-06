@@ -4,7 +4,7 @@ import codecs
 import importlib
 import json
 import os
-import resource
+import psutil
 import sys
 import warnings
 from collections import OrderedDict
@@ -173,9 +173,10 @@ class Catalog:
             with codecs.open(fname, 'w', encoding='utf8') as jsf:
                 jsf.write(json_str)
 
-        print('Memory used (MBs on Mac, GBs on Linux): '
-              '{:,}'.format(resource.getrusage(resource.RUSAGE_SELF)
-                            .ru_maxrss / 1024. / 1024.))
+        process = psutil.Process(os.getpid())
+        memory = process.memory_info().rss
+        print('Memory used (MBs): '
+              '{:,}'.format(memory / 1024. / 1024.))
         return
 
     def load_task_list(self):
