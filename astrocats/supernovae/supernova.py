@@ -162,9 +162,9 @@ class Supernova(Entry):
         if kind:
             quantity[QUANTITY.KIND] = kind
 
-    def add_quantity(self, quantity, value, sources, forcereplacebetter=False,
+    def add_quantity(self, quantity, value, source, forcereplacebetter=False,
                      **kwargs):
-        quantity_added = super().add_quantity(quantity, value, sources,
+        quantity_added = super().add_quantity(quantity, value, source,
                                               **kwargs)
 
         if not quantity_added:

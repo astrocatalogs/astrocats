@@ -14,6 +14,7 @@ from git import Repo
 
 from astrocats.catalog.entry import KEYS
 from astrocats.catalog.task import Task
+from astrocats.catalog.source import SOURCE
 from astrocats.catalog.utils import (compress_gz, is_integer, is_number,
                                      logger, pbar, read_json_dict,
                                      uncompress_gz, uniq_cdl)
@@ -419,75 +420,41 @@ class Catalog:
 
         if self.proto._KEYS.SOURCES in self.entries[fromname]:
             for source in self.entries[fromname][self.proto._KEYS.SOURCES]:
-                newsourcealiases[source['alias']] = (self.entries[destname]
-                                                     .add_source(**source))
+                alias = source.pop(SOURCE.ALIAS)
+                newsourcealiases[alias] = source
 
-        # if 'errors' in self.entries[fromname]:
-        #     for err in self.entries[fromname]['errors']:
-        #         self.entries[destname].setdefault('errors', []).append(err)
-        #
-        # for key in self.entries[fromname].keys():
-        #     if key not in ['schema', 'name', 'sources', 'errors']:
-        #         for item in self.entries[fromname][key]:
-        #             # isd = False
-        #             sources = []
-        #             if 'source' not in item:
-        #                 ValueError("Item has no source!")
-        #             for sid in item['source'].split(','):
-        #                 if sid == 'D':
-        #                     sources.append('D')
-        #                 elif sid in newsourcealiases:
-        #                     sources.append(newsourcealiases[sid])
-        #                 else:
-        #                     ValueError("Couldn't find source alias!")
-        #             sources = uniq_cdl(sources)
-        #
-        #             if key == 'photometry':
-        #                 self.entries[destname].add_photometry(
-        #                     u_time=item.get("u_time", ""),
-        #                     time=item.get("time", ""),
-        #                     e_time=item.get("e_time", ""),
-        #                     telescope=item.get("telescope", ""),
-        #                     instrument=item.get("instrument", ""),
-        #                     band=item.get("band", ""),
-        #                     magnitude=item.get("magnitude", ""),
-        #                     e_magnitude=item.get("e_magnitude", ""),
-        #                     source=sources,
-        #                     upperlimit=item.get("upperlimit", ""),
-        #                     system=item.get("system", ""),
-        #                     observatory=item.get("observatory", ""),
-        #                     observer=item.get("observer", ""),
-        #                     host=item.get("host", ""),
-        #                     survey=item.get("survey", ""))
-        #             elif key == 'spectra':
-        #                 self.entries[destname].add_spectrum(
-        #                     item.get("waveunit", ""),
-        #                     item.get("fluxunit", ""),
-        #                     data=item.get("data", ""),
-        #                     u_time=item.get("u_time", ""),
-        #                     time=item.get("time", ""),
-        #                     instrument=item.get("instrument", ""),
-        #                     deredshifted=item.get("deredshifted", ""),
-        #                     dereddened=item.get("dereddened", ""),
-        #                     errorunit=item.get("errorunit", ""),
-        #                     source=sources, snr=item.get("snr", ""),
-        #                     telescope=item.get("telescope", ""),
-        #                     observer=item.get("observer", ""),
-        #                     reducer=item.get("reducer", ""),
-        #                     filename=item.get("filename", ""),
-        #                     observatory=item.get("observatory", ""))
-        #             elif key == 'errors':
-        #                 self.entries[destname].add_quantity(
-        #                     key, item['value'], sources,
-        #                     kind=item.get("kind", ""),
-        #                     extra=item.get("extra", ""))
-        #             else:
-        #                 self.entries[destname].add_quantity(
-        #                     key, item['value'], sources,
-        #                     error=item.get("error", ""),
-        #                     unit=item.get("unit", ""),
-        #                     probability=item.get("probability", ""),
-        #                     kind=item.get("kind", ""))
+        if self.proto._KEYS.ERRORS in self.entries[fromname]:
+            for err in self.entries[fromname][self.proto._KEYS.ERRORS]:
+                self.entries[destname].setdefault(
+                    self.proto._KEYS.ERRORS, []).append(err)
+
+        for key in self.entries[fromname].keys():
+            if key in ['schema', 'name', 'sources', 'errors']:
+                continue
+            for item in self.entries[fromname][key]:
+                # isd = False
+                if 'source' not in item:
+                    ValueError("Item has no source!")
+
+                nsid = []
+                for sid in item['source'].split(','):
+                    if sid in newsourcealiases:
+                        source = newsourcealiases[sid]
+                        nsid.append(self.entries[destname]
+                                    .add_source(**source))
+                    else:
+                        ValueError("Couldn't find source alias!")
+
+                item['source'] = uniq_cdl(nsid)
+
+                if key == 'photometry':
+                    self.entries[destname].add_photometry(**item)
+                elif key == 'spectra':
+                    self.entries[destname].add_spectrum(**item)
+                elif key == 'errors':
+                    self.entries[destname].add_error(**item)
+                else:
+                    self.entries[destname].add_quantity(quantity=key, **item)
 
         return
 
@@ -545,10 +512,12 @@ class Catalog:
                         priority2 = 0
 
                         if priority1 > priority2:
+                            self.entries[name1] = load1
                             self.copy_to_entry(name2, name1)
                             keys.append(name1)
                             del self.entries[name2]
                         else:
+                            self.entries[name1] = load2
                             self.copy_to_entry(name1, name2)
                             keys.append(name2)
                             del self.entries[name1]
@@ -579,98 +548,7 @@ class Catalog:
 
         FIX: create function to match SN####AA type names.
         """
-        if len(self.entries) == 0:
-            self.log.error("WARNING: `entries` is empty, loading stubs")
-            self.load_stubs()
-
-        currenttask = 'Setting preferred names'
-        for ni, name in pbar(list(sorted(self.entries.keys())), currenttask):
-            newname = ''
-            aliases = self.entries[name].get_aliases()
-            # if there are no other options to choose from, skip
-            if len(aliases) <= 1:
-                continue
-            # If the name is already in the form 'SN####AA' then keep using
-            # that
-            if (name.startswith('SN') and
-                ((is_number(name[2:6]) and not is_number(name[6:])) or
-                 (is_number(name[2:5]) and not is_number(name[5:])))):
-                continue
-            # If one of the aliases is in the form 'SN####AA' then use that
-            for alias in aliases:
-                if (alias[:2] == 'SN' and
-                    ((is_number(alias[2:6]) and not is_number(alias[6:])) or
-                     (is_number(alias[2:5]) and not is_number(alias[5:])))):
-                    newname = alias
-                    break
-            # Otherwise, name based on the 'discoverer' survey
-            if not newname and 'discoverer' in self.entries[name]:
-                discoverer = ','.join(
-                    [x['value'].upper() for x in
-                     self.entries[name]['discoverer']])
-                if 'ASAS' in discoverer:
-                    for alias in aliases:
-                        if 'ASASSN' in alias.upper():
-                            newname = alias
-                            break
-                if not newname and 'OGLE' in discoverer:
-                    for alias in aliases:
-                        if 'OGLE' in alias.upper():
-                            newname = alias
-                            break
-                if not newname and 'CRTS' in discoverer:
-                    for alias in aliases:
-                        if True in [x in alias.upper()
-                                    for x in ['CSS', 'MLS', 'SSS', 'SNHUNT']]:
-                            newname = alias
-                            break
-                if not newname and 'PS1' in discoverer:
-                    for alias in aliases:
-                        if 'PS1' in alias.upper():
-                            newname = alias
-                            break
-                if not newname and 'PTF' in discoverer:
-                    for alias in aliases:
-                        if 'PTF' in alias.upper():
-                            newname = alias
-                            break
-                if not newname and 'GAIA' in discoverer:
-                    for alias in aliases:
-                        if 'GAIA' in alias.upper():
-                            newname = alias
-                            break
-            # Always prefer another alias over PSN
-            if not newname and name.startswith('PSN'):
-                newname = aliases[0]
-            if newname and name != newname:
-                # Make sure new name doesn't already exist
-                if self.proto.init_from_file(self, name=newname):
-                    self.log.error("WARNING: `newname` already exists... "
-                                   "should do something about that...")
-                    continue
-
-                new_entry = self.proto.init_from_file(self, name=name)
-                if new_entry is None:
-                    self.log.error(
-                        "Could not load `new_entry` with name '{}'"
-                        .format(name))
-                else:
-                    self.log.info("Changing entry from name '{}' to preferred"
-                                  " name '{}'".format(name, newname))
-                    self._delete_entry_file(entry=new_entry)
-                    self.entries[newname] = new_entry
-                    self.entries[newname][KEYS.NAME] = newname
-                    if name in self.entries:
-                        self.log.error(
-                            "WARNING: `name` = '{}' is in `entries` "
-                            "shouldnt happen?".format(name))
-                        del self.entries[name]
-                    self.journal_entries()
-
-            if self.args.travis and ni > self.TRAVIS_QUERY_LIMIT:
-                break
-
-        return
+        pass
 
     def load_stubs(self):
         """
