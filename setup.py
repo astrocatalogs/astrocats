@@ -28,6 +28,8 @@ setup(
     keywords="astronomy",
     url="https://github.com/astrocatalogs/astrocats",
     packages=find_packages(),
+    # scripts=['astrocats/main.py'],
+    entry_points={'console_scripts': 'astrocats = astrocats.main'},
     long_description=read('README.md'),
     install_requires=reqs,
     classifiers=[

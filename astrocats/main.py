@@ -141,3 +141,6 @@ def get_git():
     import subprocess
     git_vers = subprocess.getoutput(["git describe --always"]).strip()
     return git_vers
+
+if __name__ == "__main__":
+    main()
