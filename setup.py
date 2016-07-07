@@ -1,6 +1,8 @@
 import os
+import utils
 
 from setuptools import setup, find_packages
+from pip.req import parse_requirements
 
 
 # Utility function to read the README file.
