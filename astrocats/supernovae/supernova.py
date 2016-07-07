@@ -333,6 +333,7 @@ class Supernova(Entry):
     def sanitize(self):
         # Calculate some columns based on imported data, sanitize some fields
         name = self[self._KEYS.NAME]
+        aliases = self.get_aliases()
 
         if ((name.startswith('SN') and is_number(name[2:6]) and
              self._KEYS.DISCOVER_DATE in self and
