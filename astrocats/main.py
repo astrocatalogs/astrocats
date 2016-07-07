@@ -52,8 +52,6 @@ def setup_config():
     head_str = "AstroCats Setup"
     print("\n{}\n{}".format(head_str, '='*len(head_str)))
     print("Configure filepath: '{}'".format(_CONFIG_PATH))
-    if os.path.exists(_CONFIG_PATH):
-        raise RuntimeError("Configuration file already exists!")
 
     # Create path as needed
     config_path_directory = os.path.split(_CONFIG_PATH)[0]
