@@ -30,6 +30,7 @@ Other multiple SN datasets:
 * http://adsabs.harvard.edu/abs/2016arXiv160105955F (Late-time Iax spectra)
 * http://adsabs.harvard.edu/abs/2016ApJ...819...35A (rapid risers)
 * http://adsabs.harvard.edu/abs/2015arXiv151201303C (radio upper limits for Ibc SNe)
+* http://arxiv.org/pdf/1607.01617.pdf (lensed SNe)
 
 Other single SN datasets:
 * SN1885A - 2011ApJ...730...89P (from Perets e-mail)
