@@ -39,7 +39,7 @@ setup(
     url="https://github.com/astrocatalogs/astrocats",
     packages=find_packages(),
     # scripts=['astrocats/main.py'],
-    entry_points={'console_scripts': 'astrocats = astrocats.main'},
+    entry_points={'console_scripts': 'astrocats = astrocats.main:main'},
     long_description=read('README.md'),
     install_requires=reqs,
     classifiers=[
