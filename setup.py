@@ -1,9 +1,19 @@
 import os
+import re
 import uuid
 
-from setuptools import setup, find_packages
 from pip.req import parse_requirements
+from setuptools import find_packages, setup
 
+VERSIONFILE = "astrocats/__init__.py"
+ver_file = open(VERSIONFILE, "rt").read()
+VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
+mo = re.search(VSRE, ver_file, re.M)
+
+if mo:
+    version = mo.group(1)
+else:
+    raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE))
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
