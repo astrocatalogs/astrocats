@@ -19,7 +19,7 @@ reqs = [str(req.req) for req in install_reqs]
 
 setup(
     name="astrocats",
-    version="0.1.4",
+    version="0.1.5",
     author="James Guillochon",
     author_email="guillochon@gmail.com",
     description=("Package for downloading, analyzing, and constructing open "
