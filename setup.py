@@ -14,7 +14,7 @@ def read(fname):
 
 setup(
     name="astrocats",
-    version="0.1.0",
+    version="0.1.1",
     author="James Guillochon",
     author_email="guillochon@gmail.com",
     description=("Package for downloading, analyzing, and constructing open "
