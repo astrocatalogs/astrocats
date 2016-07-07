@@ -5,6 +5,8 @@ import uuid
 from pip.req import parse_requirements
 from setuptools import find_packages, setup
 
+raise(SystemExit('Setup not setup yet.'))
+
 VERSIONFILE = "astrocats/__init__.py"
 ver_file = open(VERSIONFILE, "rt").read()
 VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"

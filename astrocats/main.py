@@ -16,8 +16,8 @@ def main():
     # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
     #    ON ARGS WHAT TO IMPORT AND INITIALIZE
 
-    from astrocats.supernovae.catalog import Catalog
-    catalog = Catalog(args)
+    from astrocats.supernovae.supernovacatalog import SupernovaCatalog
+    catalog = SupernovaCatalog(args)
     git_vers = get_git()
     title_str = "Astrocats, version: {}".format(git_vers)
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(
