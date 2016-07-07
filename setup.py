@@ -19,7 +19,7 @@ reqs = [str(req.req) for req in install_reqs]
 
 setup(
     name="astrocats",
-    version="0.1.3",
+    version="0.1.4",
     author="James Guillochon",
     author_email="guillochon@gmail.com",
     description=("Package for downloading, analyzing, and constructing open "
@@ -35,4 +35,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.5"
     ],
+    zip_safe=True
 )
