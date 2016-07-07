@@ -135,6 +135,9 @@ class Catalog:
             self.log.warning("Deleting all old entry files.")
             self.delete_old_entry_files()
 
+        if self.args.travis:
+            self.log.warning("Running in `travis` mode.")
+
         prev_priority = 0
         prev_task_name = ''
         # for task, task_obj in tasks_list.items():
@@ -311,7 +314,7 @@ class Catalog:
                 except:
                     self.log.error("CLONING '{}' INTERRUPTED".format(repo))
                     raise
-                    sys.exit()
+
         return
 
     def add_entry(self, name, load=True, delete=True):
