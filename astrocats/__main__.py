@@ -1,4 +1,4 @@
-"""Entry point for OSC scripts.
+"""Entry point for astrocats scripts.
 """
 
 if __name__ == "__main__":

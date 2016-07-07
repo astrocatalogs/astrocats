@@ -19,7 +19,7 @@ def main():
     from astrocats.supernovae.catalog import Catalog
     catalog = Catalog(args)
     git_vers = get_git()
-    title_str = "Open Supernova Catalog, version: {}".format(git_vers)
+    title_str = "Astrocats, version: {}".format(git_vers)
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(
         title_str, '=' * len(title_str), beg_time.ctime()))
 
@@ -39,8 +39,7 @@ def load_args(args=None):
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Generate a catalog JSON file and plot HTML files from '
-        'SNE data.')
+        description='Generate catalogs for astronomical data.')
     # parser.add_argument('--foo', action='store_true', help='foo help')
     subparsers = parser.add_subparsers(
         description='valid subcommands', dest='_name',
