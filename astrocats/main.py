@@ -1,5 +1,11 @@
 """
 """
+import json
+import os
+
+from astrocats import _CONFIG_PATH
+
+_BASE_PATH_KEY = 'base_path'
 
 
 def main():
@@ -12,6 +18,13 @@ def main():
     if args is None:
         return
 
+    args = load_config(args)
+
+    # Run configuration/setup interactive script
+    if args._name == 'setup':
+        setup_config()
+        return
+
     # FIX
     # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
     #    ON ARGS WHAT TO IMPORT AND INITIALIZE
@@ -22,11 +35,6 @@ def main():
     title_str = "Astrocats, version: {}".format(git_vers)
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(
         title_str, '=' * len(title_str), beg_time.ctime()))
-
-    # Run configuration/setup interactive script
-    if args._name == 'setup':
-        setup_config()
-        return
 
     # Choose which submodule to run (note: can also use `set_default` with
     # function)
@@ -41,8 +49,46 @@ def main():
 
 
 def setup_config():
-    print("!CONFIG!")
+    head_str = "AstroCats Setup"
+    print("\n{}\n{}".format(head_str, '='*len(head_str)))
+    print("Configure filepath: '{}'".format(_CONFIG_PATH))
+    if os.path.exists(_CONFIG_PATH):
+        raise RuntimeError("Configuration file already exists!")
+
+    # Create path as needed
+    config_path_directory = os.path.split(_CONFIG_PATH)[0]
+    if not os.path.exists(config_path_directory):
+        os.makedirs(config_path_directory)
+    if not os.path.isdir(config_path_directory):
+        raise RuntimeError("Configure path error '{}'".format(
+            config_path_directory))
+
+    # Determine default settings
+
+    # Get this containing directory
+    def_base_path = os.path.abspath(os.path.dirname(__file__))
+    print("Setting '{}' to default path: '{}'".format(
+        _BASE_PATH_KEY, def_base_path))
+    config = {_BASE_PATH_KEY: def_base_path}
+
+    # Write settings to configuration file
+    json.dump(config, open(_CONFIG_PATH, 'w'))
+    if not os.path.exists(def_base_path):
+        raise RuntimeError("Problem creating configuration file.")
+
     return
+
+
+def load_config(args):
+    if not os.path.exists(_CONFIG_PATH):
+        err_str = (
+            "Configuration file does not exists ({}).".format(_CONFIG_PATH) +
+            "Run `astrocats setup` to configure.")
+        raise RuntimeError(err_str)
+
+    config = json.load(open(_CONFIG_PATH, 'r'))
+    setattr(args, _BASE_PATH_KEY, config[_BASE_PATH_KEY])
+    return args
 
 
 def load_args(args=None):
@@ -91,7 +137,7 @@ def load_args(args=None):
         default=True, help='Do not delete all old event files to start.')
 
     # `importer` submodule --- importing supernova data
-    pars_setup = subparsers.add_parser(
+    subparsers.add_parser(
         "setup", parents=[pars_parent],
         help="Configure general parameters (interactive).")
 
