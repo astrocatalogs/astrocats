@@ -27,7 +27,7 @@ setup(
     license="MIT",
     keywords="astronomy",
     url="https://github.com/astrocatalogs/astrocats",
-    packages=['astrocats'],
+    packages=find_packages(),
     long_description=read('README.md'),
     install_requires=reqs,
     classifiers=[
