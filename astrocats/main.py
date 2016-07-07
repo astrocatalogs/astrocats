@@ -18,12 +18,12 @@ def main():
     if args is None:
         return
 
-    args = load_config(args)
-
     # Run configuration/setup interactive script
     if args._name == 'setup':
         setup_config()
         return
+
+    args = load_config(args)
 
     # FIX
     # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
@@ -80,7 +80,7 @@ def setup_config():
 def load_config(args):
     if not os.path.exists(_CONFIG_PATH):
         err_str = (
-            "Configuration file does not exists ({}).".format(_CONFIG_PATH) +
+            "Configuration file does not exists ({}).\n".format(_CONFIG_PATH) +
             "Run `astrocats setup` to configure.")
         raise RuntimeError(err_str)
 
