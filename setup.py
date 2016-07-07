@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 # Utility function to read the README file.
@@ -12,6 +12,9 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+install_reqs = parse_requirements('requirements.txt', session=uuid.uuid1())
+reqs = [str(req.req) for req in install_reqs]
+
 setup(
     name="astrocats",
     version="0.1.1",
@@ -21,10 +24,13 @@ setup(
                  "astronomy catalogs."),
     license="MIT",
     keywords="astronomy",
-    url="http://packages.python.org/astrocats",
-    packages=['astrocats'],
+    url="https://github.com/astrocatalogs/astrocats",
+    packages=find_packages('astrocats'),
     long_description=read('README.md'),
+    install_requires=reqs,
     classifiers=[
-        "Development Status :: 3 - Alpha"
+        "Development Status :: 3 - Alpha",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3.5"
     ],
 )
