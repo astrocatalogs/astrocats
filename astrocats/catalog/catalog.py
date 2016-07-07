@@ -15,7 +15,7 @@ from git import Repo
 from astrocats.catalog.entry import KEYS
 from astrocats.catalog.task import Task
 from astrocats.catalog.source import SOURCE
-from astrocats.catalog.utils import (compress_gz, is_integer, is_number,
+from astrocats.catalog.utils import (compress_gz, is_integer,
                                      logger, pbar, read_json_dict,
                                      uncompress_gz, uniq_cdl)
 from astrocats.supernovae.utils import name_clean
@@ -43,16 +43,20 @@ class Catalog:
         -   `tasks.json`
 
         """
-        PATH_BASE = os.path.abspath(os.path.dirname(__file__))
 
         def __init__(self, catalog):
             self.catalog = catalog
+            this_file = sys.modules[self.__module__].__file__
+            self.catalog_dir = os.path.dirname(this_file)
+            self.PATH_BASE = os.path.join(
+                catalog.args.base_path, self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
             self.REPOS = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
             self.repos_dict = read_json_dict(self.REPOS)
+            return
 
         def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
             """Get filenames for files in each repository, `boneyard` optional.
