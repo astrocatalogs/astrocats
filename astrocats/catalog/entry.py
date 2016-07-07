@@ -13,7 +13,7 @@ from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-                                     get_event_filename)
+                                     entry_to_filename)
 
 
 class KEYS(KeyCollection):
@@ -146,7 +146,7 @@ class Entry(OrderedDict):
         else:
             repo_paths = catalog.PATHS.get_repo_output_folders()
             for rep in repo_paths:
-                filename = get_event_filename(name)
+                filename = entry_to_filename(name)
                 newpath = os.path.join(rep, filename + '.json')
                 if os.path.isfile(newpath):
                     load_path = newpath

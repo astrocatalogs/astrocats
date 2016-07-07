@@ -109,6 +109,7 @@ class Catalog:
 
         # Load repos dictionary (required)
         self.repos_dict = read_json_dict(self.PATHS.REPOS)
+        self.clone_repos()
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
