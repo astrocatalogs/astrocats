@@ -23,6 +23,11 @@ def main():
     catalog.log.warning("\n\n{}\n{}\n{}\n".format(
         title_str, '=' * len(title_str), beg_time.ctime()))
 
+    # Run configuration/setup interactive script
+    if args._name == 'setup':
+        setup_config()
+        return
+
     # Choose which submodule to run (note: can also use `set_default` with
     # function)
     if args._name == 'sn-import':
@@ -32,6 +37,11 @@ def main():
     end_time = datetime.now()
     catalog.log.warning("All complete at {}, After {}".format(
         end_time, end_time - beg_time))
+    return
+
+
+def setup_config():
+    print("!CONFIG!")
     return
 
 
@@ -79,6 +89,11 @@ def load_args(args=None):
     delete_group.add_argument(
         '--no-predelete', action='store_false', dest='delete_old',
         default=True, help='Do not delete all old event files to start.')
+
+    # `importer` submodule --- importing supernova data
+    pars_setup = subparsers.add_parser(
+        "setup", parents=[pars_parent],
+        help="Configure general parameters (interactive).")
 
     # `importer` submodule --- importing supernova data
     pars_imp = subparsers.add_parser("sn-import", parents=[pars_parent],
