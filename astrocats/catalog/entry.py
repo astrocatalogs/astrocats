@@ -16,7 +16,7 @@ from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      entry_to_filename)
 
 
-class KEYS(KeyCollection):
+class ENTRY(KeyCollection):
     """General `CatDict` keys which should be relevant for all catalogs.
     """
     ALIAS = 'alias'
@@ -82,7 +82,7 @@ class Entry(OrderedDict):
 
     """
 
-    _KEYS = KEYS
+    _KEYS = ENTRY
 
     def __init__(self, catalog, name, stub=False):
         """Create a new `Entry` object with the given `name`.
@@ -164,7 +164,7 @@ class Entry(OrderedDict):
         return new_entry
 
     def __repr__(self):
-        jsonstring = dict_to_pretty_string({self[KEYS.NAME]: self})
+        jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
         return jsonstring
 
     def add_error(self, quantity, value, **kwargs):
@@ -516,9 +516,9 @@ class Entry(OrderedDict):
                 raise RuntimeError(err_str)
 
         # If object doesnt have a name yet, but json does, store it
-        self_name = self[KEYS.NAME]
+        self_name = self[ENTRY.NAME]
         if len(self_name) == 0:
-            self[KEYS.NAME] = name
+            self[ENTRY.NAME] = name
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
             self._log.warning("Object name '{}' does not match name in json:"
