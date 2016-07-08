@@ -37,7 +37,7 @@ class CatDict(OrderedDict):
         'True': additional keyword arguments passed to the constructor are
             add without validation or sanitization.
         'False': keyword arguments passed to the constructor which are not in
-            `KEYS` will produce errors.
+            `ENTRY` will produce errors.
     _REQ_KEY_SETS : list of lists
         Which elements of the associated `_KEYS` are required for each instance
         of this class.

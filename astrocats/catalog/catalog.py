@@ -12,7 +12,7 @@ from glob import glob
 
 from git import Repo
 
-from astrocats.catalog.entry import KEYS
+from astrocats.catalog.entry import ENTRY
 from astrocats.catalog.task import Task
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.utils import (compress_gz, is_integer,
@@ -413,8 +413,8 @@ class Catalog:
         for name, entry in entries.items():
             aliases = entry.get_aliases()
             if alias in aliases:
-                if ((KEYS.DISTINCT_FROM not in entry.keys()) or
-                        (alias not in entry[KEYS.DISTINCT_FROM])):
+                if ((ENTRY.DISTINCT_FROM not in entry.keys()) or
+                        (alias not in entry[ENTRY.DISTINCT_FROM])):
                     return name
 
         return None
@@ -597,7 +597,7 @@ class Catalog:
         if entry_name is not None:
             entry = self.entries[entry_name]
         else:
-            entry_name = entry[KEYS.NAME]
+            entry_name = entry[ENTRY.NAME]
 
         outdir, filename = entry._get_save_path()
         # FIX: do we also need to check for gzipped files??
