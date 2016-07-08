@@ -75,6 +75,31 @@ class Catalog:
 
             return files
 
+        def get_repo_output_file_list(self, normal=True, bones=True):
+            repo_folders = self.get_repo_output_folders()
+            return self._get_repo_file_list(
+                repo_folders, normal=normal, bones=bones)
+
+        def get_repo_input_folders(self):
+            """
+            """
+            repo_folders = []
+            repo_folders += self.repos_dict['external']
+            repo_folders += self.repos_dict['internal']
+            repo_folders = [os.path.join(self.PATH_INPUT, rf)
+                            for rf in repo_folders]
+            return repo_folders
+
+        def get_repo_output_folders(self):
+            """
+            """
+            repo_folders = []
+            repo_folders += self.repos_dict['output']
+            repo_folders += self.repos_dict['boneyard']
+            repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
+                            for rf in repo_folders]
+            return repo_folders
+
         def get_repo_boneyard(self):
             bone_path = self.repos_dict['boneyard']
             try:
@@ -319,6 +344,9 @@ class Catalog:
                     raise
 
         return
+
+    def clone_repos(self):
+        self._clone_repos([])
 
     def add_entry(self, name, load=True, delete=True):
         """Find an existing entry in, or add a new one to, the `entries` dict.
