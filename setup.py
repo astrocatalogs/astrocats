@@ -1,3 +1,6 @@
+"""WARNING : THIS SCRIPT IS NOT CURRENTLY OPERATIONAL.
+"""
+
 import os
 import re
 import uuid
