@@ -49,12 +49,13 @@ class Task():
 
         for key, val in kwargs.items():
             if hasattr(self, key):
+                print(val)
                 setattr(self, key, val)
             else:
                 raise ValueError("No attribute '{}'".format(key))
 
         if self.groups is not None:
-            self.groups = [group.strip() for group in self.groups]
+            self.groups = [group.lower().strip() for group in self.groups]
 
         return
 
