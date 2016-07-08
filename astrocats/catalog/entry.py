@@ -368,6 +368,9 @@ class Entry(OrderedDict):
             stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
         return stub
 
+    def is_erroneous(self, field, sources):
+        return False
+
     def name(self):
         try:
             return self[self._KEYS.NAME]
@@ -421,7 +424,19 @@ class Entry(OrderedDict):
         return key
 
     def _get_save_path(self, bury=False):
-        raise RuntimeError("This method must be overridden!")
+        self._log.debug("_get_save_path(): {}".format(self.name()))
+        filename = entry_to_filename(self[self._KEYS.NAME])
+
+        # Put non-SNe in the boneyard
+        if bury:
+            outdir = self.catalog.get_repo_boneyard()
+
+        # Get normal repository save directory
+        else:
+            repo_folders = self.catalog.PATHS.get_repo_output_folders()
+            outdir = repo_folders[0]
+
+        return outdir, filename
 
     def _ordered(self, odict):
         ndict = OrderedDict()

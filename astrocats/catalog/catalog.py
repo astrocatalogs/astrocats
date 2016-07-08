@@ -4,21 +4,19 @@ import codecs
 import importlib
 import json
 import os
-import psutil
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
 
-from git import Repo
-
-from astrocats.catalog.entry import ENTRY
-from astrocats.catalog.task import Task
+import psutil
+from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
-from astrocats.catalog.utils import (compress_gz, is_integer,
-                                     logger, pbar, read_json_dict,
-                                     uncompress_gz, uniq_cdl)
+from astrocats.catalog.task import Task
+from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
+                                     read_json_dict, uncompress_gz, uniq_cdl)
 from astrocats.supernovae.utils import name_clean
+from git import Repo
 
 
 class Catalog:
@@ -117,6 +115,7 @@ class Catalog:
         # Store runtime arguments
         self.args = args
         self.log = log
+        self.proto = Entry
 
         # # Load a logger object
         # # Determine verbosity ('None' means use default)
@@ -523,6 +522,11 @@ class Catalog:
                 return
             self.entries = self.load_stubs()
 
+        if not self.entries or len(self.entries) == 0:
+            self.log.error("WARNING: `entries` is empty even after loading"
+                           " stubs, skipping merge.")
+            return
+
         task_str = self.get_current_task_str()
 
         keys = list(sorted(self.entries.keys()))
@@ -614,7 +618,7 @@ class Catalog:
             self.entries[name] = new_entry.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
 
-        return
+        return self.entries
 
     def _delete_entry_file(self, entry_name=None, entry=None):
         """Delete the file associated with the given entry.

@@ -3,13 +3,16 @@
 import os
 
 from astrocats.catalog.catalog import ENTRY
+from astrocats.catalog.source import SOURCE
 
 TEST_NAME = 'EN-TEST-AA'
 
+FAKE_NAME_1 = 'Private et al. 2025'
 FAKE_BIBCODE_1 = '2025Tst...123..456Z'
 FAKE_ALIAS_1 = 'PS-TEST-AB'
 FAKE_REDZ_1 = '1.123'
 
+FAKE_NAME_2 = 'Jerk at al. 1925'
 FAKE_BIBCODE_2 = '1925Tst...987..654A'
 FAKE_ALIAS_2 = 'PTF-TEST-BA'
 FAKE_REDZ_2 = '0.987'
@@ -53,6 +56,10 @@ def do_test(catalog):
     if len(catalog.entries) != 0:
         raise RuntimeError("Error deleting test entry!")
 
+    # Add entry back catalog to test later tasks
+    _first_source(catalog)
+    _second_source(catalog)
+
     return
 
 
@@ -78,7 +85,7 @@ def _first_source(catalog):
     # Add source to entry
     log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_1))
     source = catalog.entries[name].add_source(
-        bibcode=FAKE_BIBCODE_1)
+        name=FAKE_NAME_1, bibcode=FAKE_BIBCODE_1)
     log.error("\t `source`: '{}'".format(source))
     log.error("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure source alias is correct
@@ -130,7 +137,7 @@ def _second_source(catalog):
 
     log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_2))
     source = catalog.entries[name].add_source(
-        bibcode=FAKE_BIBCODE_2)
+        name=FAKE_NAME_2, bibcode=FAKE_BIBCODE_2)
     log.error("\t `source`: '{}'".format(source))
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
@@ -155,9 +162,10 @@ def _second_source(catalog):
 
 def check_source_1(catalog, name):
     stored_sources = catalog.entries[name][ENTRY.SOURCES]
+    print(stored_sources)
     if ((len(stored_sources) != 1 or
-         stored_sources[0][ENTRY.NAME] != FAKE_BIBCODE_1 or
-         stored_sources[0][ENTRY.BIBCODE] != FAKE_BIBCODE_1)):
+         stored_sources[0][SOURCE.NAME] != FAKE_NAME_1 or
+         stored_sources[0][SOURCE.BIBCODE] != FAKE_BIBCODE_1)):
         raise RuntimeError("Stored source: '{}' looks wrong.".format(
             stored_sources[0]))
     return
@@ -165,10 +173,10 @@ def check_source_1(catalog, name):
 
 def check_source_2(catalog, name):
     stored_sources = catalog.entries[name][ENTRY.SOURCES]
-    names = [src[ENTRY.NAME] for src in stored_sources]
-    codes = [src[ENTRY.NAME] for src in stored_sources]
+    names = [src[SOURCE.NAME] for src in stored_sources]
+    codes = [src[SOURCE.BIBCODE] for src in stored_sources]
     if ((len(stored_sources) != 2 or
-         FAKE_BIBCODE_1 not in names or FAKE_BIBCODE_2 not in names or
+         FAKE_NAME_1 not in names or FAKE_NAME_2 not in names or
          FAKE_BIBCODE_1 not in codes or FAKE_BIBCODE_2 not in codes)):
         raise RuntimeError("Stored sources: '{}' look wrong.".format(
             stored_sources))
