@@ -20,26 +20,19 @@ before_install:
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
     - pip install -r requirements.txt
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-internal.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-external.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-spectra.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-WISEREP.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-radio.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-external-xray.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-pre-1990.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-1990-1999.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-2000-2004.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-2005-2009.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-2010-2014.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-2015-2019.git
-    - git clone --depth=1 git://github.com/astrocatalogs/sne-boneyard.git
+    - pip install coveralls
 
 # Run test
 script:
-    - cd scripts
+    - python -m astrocats setup
     - echo "travis_fold:start:IMPORT Importing data"
-    - python import.py -tr
+    - coverage run --source=astrocats "python -m astrocats sn-import"
     - echo "travis_fold:end:IMPORT Importing data done"
     - echo "travis_fold:start:MAKE Making catalog"
+    - cd astrocats/supernovae/scripts
     - python make-catalog.py -tr
     - echo "travis_fold:end:MAKE Making catalog done"
+
+# Run coveralls
+after_success:
+    coveralls

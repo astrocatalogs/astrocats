@@ -311,7 +311,9 @@ class Catalog:
                         'Cloning "' + repo + '" (only needs to be done ' +
                         'once, may take few minutes per repo).')
                     Repo.clone_from("git@github.com:astrocatalogs/" +
-                                    repo_name + ".git", repo)
+                                    repo_name + ".git", repo,
+                                    ({'depth': self.args.git_depth} if
+                                     self.args.git_depth > 0 else {}))
                 except:
                     self.log.error("CLONING '{}' INTERRUPTED".format(repo))
                     raise
