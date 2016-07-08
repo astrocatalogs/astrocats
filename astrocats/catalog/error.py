@@ -1,4 +1,4 @@
-"""Class for representing spectra.
+"""Handle known errors in catalog data.
 """
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
@@ -19,7 +19,7 @@ class ERROR(KeyCollection):
 
 
 class Error(CatDict):
-    """
+    """Class to represent (known) errors in catalog source data.
     """
 
     _KEYS = ERROR

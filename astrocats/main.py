@@ -1,9 +1,11 @@
 """
 """
+import importlib
 import json
 import os
 
-from astrocats import _CONFIG_PATH
+from astrocats import _CONFIG_PATH, __version__
+from astrocats.catalog.utils import log_raise
 
 _BASE_PATH_KEY = 'base_path'
 
@@ -17,81 +19,95 @@ def main():
     """
     from datetime import datetime
 
+    # Initialize Command-Line and User-Config Settings, Log
+    # -----------------------------------------------------
+
     beg_time = datetime.now()
     # Process command-line arguments to determine action
-    #    If no subcommand (e.g. 'impoter') is given, returns 'None' --> exit
-    args = load_args()
+    # If no subcommand (e.g. 'import') is given, returns 'None' --> exit
+    args, sub_clargs = load_command_line_args()
     if args is None:
         return
 
+    # Create a logging object
+    log = load_log(args)
+
     # Run configuration/setup interactive script
-    if args._name == 'setup':
-        setup_config()
+    if args.command == 'setup':
+        setup_user_config(log)
         return
 
-    # Load the user settings from the home directory
-    args = load_config(args)
-
-    # FIX
-    # LOAD SUPERNOVAE SPECIFIC STUFF EXPLICITLY FOR NOW.  LATER, CHOOSE BASED
-    #    ON ARGS WHAT TO IMPORT AND INITIALIZE
-
-    from astrocats.supernovae.supernovacatalog import SupernovaCatalog
-    catalog = SupernovaCatalog(args)
     git_vers = get_git()
-    title_str = "Astrocats, version: {}".format(git_vers)
-    catalog.log.warning("\n\n{}\n{}\n{}\n".format(
+    title_str = "Astrocats, version: {}, SHA: {}".format(__version__, git_vers)
+    log.warning("\n\n{}\n{}\n{}\n".format(
         title_str, '=' * len(title_str), beg_time.ctime()))
 
-    # Choose which submodule to run (note: can also use `set_default` with
-    # function)
-    if args._name == 'sn-import':
-        catalog.log.info("Running `importer`.")
-        catalog.import_data()
+    # Load the user settings from the home directory
+    args = load_user_config(args, log)
+
+    #
+    # Choose Catalog and Operation(s) to perform
+    # ------------------------------------------
+    mod_name = args.command
+    log.debug("Specified module: '{}'".format(mod_name))
+    # Try to import the specified module
+    try:
+        mod = importlib.import_module('.' + mod_name, package='astrocats')
+    except Exception as err:
+        log.error("Import of specified module '{}' failed.".format(mod_name))
+        log_raise(log, str(err), type(err))
+
+    # Run the `main.main` method of the specified module
+    mod.main.main(args, sub_clargs, log)
 
     end_time = datetime.now()
-    catalog.log.warning("All complete at {}, After {}".format(
+    log.warning("\nAll complete at {}, After {}".format(
         end_time, end_time - beg_time))
     return
 
 
-def setup_config():
+def setup_user_config(log):
     """Setup a configuration file in the user's home directory.
 
     Currently this method stores default values to a fixed configuration
     filename.  It should be modified to run an interactive prompt session
     asking for parameters (or at least confirming the default ones).
 
+    Arguments
+    ---------
+    log : `logging.Logger` object
+
     """
-    head_str = "AstroCats Setup"
-    print("\n{}\n{}".format(head_str, '='*len(head_str)))
-    print("Configure filepath: '{}'".format(_CONFIG_PATH))
+    log.warning("AstroCats Setup")
+    log.warning("Configure filepath: '{}'".format(_CONFIG_PATH))
 
     # Create path to configuration file as needed
-    config_path_directory = os.path.split(_CONFIG_PATH)[0]
-    if not os.path.exists(config_path_directory):
-        os.makedirs(config_path_directory)
-    if not os.path.isdir(config_path_directory):
-        raise RuntimeError("Configure path error '{}'".format(
-            config_path_directory))
+    config_path_dir = os.path.split(_CONFIG_PATH)[0]
+    if not os.path.exists(config_path_dir):
+        log.debug("Creating config directory '{}'".format(
+            config_path_dir))
+        os.makedirs(config_path_dir)
+
+    if not os.path.isdir(config_path_dir):
+        log_raise(log, "Configure path error '{}'".format(config_path_dir))
 
     # Determine default settings
 
     # Get this containing directory and use that as default data path
     def_base_path = os.path.abspath(os.path.dirname(__file__))
-    print("Setting '{}' to default path: '{}'".format(
+    log.warning("Setting '{}' to default path: '{}'".format(
         _BASE_PATH_KEY, def_base_path))
     config = {_BASE_PATH_KEY: def_base_path}
 
     # Write settings to configuration file
     json.dump(config, open(_CONFIG_PATH, 'w'))
     if not os.path.exists(def_base_path):
-        raise RuntimeError("Problem creating configuration file.")
+        log_raise(log, "Problem creating configuration file.")
 
     return
 
 
-def load_config(args):
+def load_user_config(args, log):
     """Load settings from the user's confiuration file, and add them to `args`.
 
     Settings are loaded from the configuration file in the user's home
@@ -113,14 +129,16 @@ def load_config(args):
         err_str = (
             "Configuration file does not exists ({}).\n".format(_CONFIG_PATH) +
             "Run `astrocats setup` to configure.")
-        raise RuntimeError(err_str)
+        log_raise(log, err_str)
 
     config = json.load(open(_CONFIG_PATH, 'r'))
     setattr(args, _BASE_PATH_KEY, config[_BASE_PATH_KEY])
+    log.debug("Loaded configuration: {}: {}".format(
+        _BASE_PATH_KEY, config[_BASE_PATH_KEY]))
     return args
 
 
-def load_args(args=None):
+def load_command_line_args(clargs=None):
     """Load and parse command-line arguments.
 
     Arguments
@@ -136,32 +154,37 @@ def load_args(args=None):
 
     """
     import argparse
+    git_vers = get_git()
 
     parser = argparse.ArgumentParser(
+        prog='astrocats',
         description='Generate catalogs for astronomical data.')
-    # parser.add_argument('--foo', action='store_true', help='foo help')
-    subparsers = parser.add_subparsers(
-        description='valid subcommands', dest='_name',
-        help='sub-command help')
 
-    # Build a 'parent' parser whose settings are inhereted by children parsers
-    pars_parent = argparse.ArgumentParser(add_help=False)
-    pars_parent.add_argument(
+    parser.add_argument('command', nargs='?', default=None)
+
+    parser.add_argument(
+        '--version', action='version', version='AstroCats v{}, SHA: {}'.format(
+            __version__, git_vers))
+    parser.add_argument(
         '--verbose', '-v', dest='verbose', default=False, action='store_true',
         help='Print more messages to the screen.')
-    pars_parent.add_argument(
+    parser.add_argument(
         '--debug', '-d', dest='debug', default=False, action='store_true',
         help='Print excessive messages to the screen.')
-    pars_parent.add_argument(
+    parser.add_argument(
         '--travis', '-t',  dest='travis',  default=False, action='store_true',
         help='Run import script in test mode for Travis.')
-    pars_parent.add_argument(
+    parser.add_argument(
+        '--git-depth', dest='git_depth',  default=0,
+        help=('When checking out repos, only check out to this depth '
+              '(default 0 = all levels).'))
+    parser.add_argument(
         '--log',  dest='log_filename',  default=None,
         help='Filename to which to store logging information.')
 
     # If output files should be written or not
     # ----------------------------------------
-    write_group = pars_parent.add_mutually_exclusive_group()
+    write_group = parser.add_mutually_exclusive_group()
     write_group.add_argument(
         '--write', action='store_true', dest='write_entries', default=True,
         help='Write entries to files [default].')
@@ -169,9 +192,9 @@ def load_args(args=None):
         '--no-write', action='store_false', dest='write_entries', default=True,
         help='do not write entries to file.')
 
-    # If previously ceared output files should be deleted or not
-    # ----------------------------------------------------------
-    delete_group = pars_parent.add_mutually_exclusive_group()
+    # If previously cleared output files should be deleted or not
+    # -----------------------------------------------------------
+    delete_group = parser.add_mutually_exclusive_group()
     delete_group.add_argument(
         '--predelete', action='store_true', dest='delete_old', default=True,
         help='Delete all old event files to begin [default].')
@@ -179,62 +202,43 @@ def load_args(args=None):
         '--no-predelete', action='store_false', dest='delete_old',
         default=True, help='Do not delete all old event files to start.')
 
-    # `importer` submodule --- importing supernova data
-    subparsers.add_parser(
-        "setup", parents=[pars_parent],
-        help="Configure general parameters (interactive).")
-
-    # `importer` submodule --- importing supernova data
-    pars_imp = subparsers.add_parser("sn-import", parents=[pars_parent],
-                                     help="Generate a catalog JSON file")
-    pars_imp.add_argument('--update', '-u', dest='update',
-                          default=False, action='store_true',
-                          help='Only update catalog using live sources.')
-    pars_imp.add_argument('--refresh', '-r', dest='refresh',
-                          default=False, action='store_true',
-                          help='Ignore most task caches.')
-    pars_imp.add_argument('--full-refresh', '-f', dest='full_refresh',
-                          default=False, action='store_true',
-                          help='Ignore all task caches.')
-    pars_imp.add_argument('--archived', '-a', dest='archived',
-                          default=False, action='store_true',
-                          help='Always use task caches.')
-    pars_imp.add_argument(
-        '--refresh-list', '-rl', dest='refresh_list', default='', nargs='+',
-        help='Space-delimited list of caches to clear.')
-
-    # Control which 'tasks' are executed
-    # ----------------------------------
-    pars_imp.add_argument(
-        '--tasks', dest='args_task_list', nargs='*', default=None,
-        help='space delimited list of tasks to perform (others disabled).')
-    pars_imp.add_argument(
-        '--yes', dest='yes_task_list', nargs='+', default=None,
-        help='space delimited list of tasks to turn on.')
-    pars_imp.add_argument(
-        '--no', dest='no_task_list', nargs='+', default=None,
-        help='space delimited list of tasks to turn off.')
-    pars_imp.add_argument(
-        '--min-task-priority', dest='min_task_priority',
-        default=None,
-        help='minimum priority for a task to run')
-    pars_imp.add_argument(
-        '--max-task-priority', dest='max_task_priority',
-        default=None,
-        help='maximum priority for a task to run')
-    pars_imp.add_argument(
-        '--task-groups', dest='task_groups',
-        default=None,
-        help='predefined group(s) of tasks to run.')
-
-    args = parser.parse_args(args=args)
-    # Print the help information if no subcommand is given
-    # subcommand is required for operation
-    if args._name is None:
+    args, sub_clargs = parser.parse_known_args(args=clargs)
+    # Print the help information if no command is given
+    if args.command is None:
         parser.print_help()
-        return None
+        return None, None
 
-    return args
+    return args, sub_clargs
+
+
+def load_log(args):
+    """Load a `logging.Logger` object.
+
+    Arguments
+    ---------
+    args : `argparse.Namespace` object
+        Namespace containing required settings:
+        {`args.debug`, `args.verbose`, and `args.log_filename`}.
+
+    Returns
+    -------
+    log : `logging.Logger` object
+
+    """
+    from astrocats.catalog.utils import logger
+
+    # Determine verbosity ('None' means use default)
+    log_stream_level = None
+    if args.debug:
+        log_stream_level = logger.DEBUG
+    elif args.verbose:
+        log_stream_level = logger.INFO
+
+    # Create log
+    log = logger.get_logger(
+        stream_level=log_stream_level, tofile=args.log_filename)
+
+    return log
 
 
 def get_git():

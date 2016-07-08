@@ -4,21 +4,19 @@ import codecs
 import importlib
 import json
 import os
-import psutil
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
 
-from git import Repo
-
-from astrocats.catalog.entry import KEYS
-from astrocats.catalog.task import Task
+import psutil
+from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
-from astrocats.catalog.utils import (compress_gz, is_integer,
-                                     logger, pbar, read_json_dict,
-                                     uncompress_gz, uniq_cdl)
+from astrocats.catalog.task import Task
+from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
+                                     read_json_dict, uncompress_gz, uniq_cdl)
 from astrocats.supernovae.utils import name_clean
+from git import Repo
 
 
 class Catalog:
@@ -75,6 +73,31 @@ class Catalog:
 
             return files
 
+        def get_repo_output_file_list(self, normal=True, bones=True):
+            repo_folders = self.get_repo_output_folders()
+            return self._get_repo_file_list(
+                repo_folders, normal=normal, bones=bones)
+
+        def get_repo_input_folders(self):
+            """
+            """
+            repo_folders = []
+            repo_folders += self.repos_dict['external']
+            repo_folders += self.repos_dict['internal']
+            repo_folders = [os.path.join(self.PATH_INPUT, rf)
+                            for rf in repo_folders]
+            return repo_folders
+
+        def get_repo_output_folders(self):
+            """
+            """
+            repo_folders = []
+            repo_folders += self.repos_dict['output']
+            repo_folders += self.repos_dict['boneyard']
+            repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
+                            for rf in repo_folders]
+            return repo_folders
+
         def get_repo_boneyard(self):
             bone_path = self.repos_dict['boneyard']
             try:
@@ -88,21 +111,23 @@ class Catalog:
         HASH = ''
         URL = ''
 
-    def __init__(self, args):
+    def __init__(self, args, log):
         # Store runtime arguments
         self.args = args
+        self.log = log
+        self.proto = Entry
 
-        # Load a logger object
-        # Determine verbosity ('None' means use default)
-        log_stream_level = None
-        if args.debug:
-            log_stream_level = logger.DEBUG
-        elif args.verbose:
-            log_stream_level = logger.INFO
-
-        # Destination of log-file ('None' means no file)
-        self.log = logger.get_logger(
-            stream_level=log_stream_level, tofile=args.log_filename)
+        # # Load a logger object
+        # # Determine verbosity ('None' means use default)
+        # log_stream_level = None
+        # if args.debug:
+        #     log_stream_level = logger.DEBUG
+        # elif args.verbose:
+        #     log_stream_level = logger.INFO
+        #
+        # # Destination of log-file ('None' means no file)
+        # self.log = logger.get_logger(
+        #     stream_level=log_stream_level, tofile=args.log_filename)
 
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
@@ -310,12 +335,17 @@ class Catalog:
                         'Cloning "' + repo + '" (only needs to be done ' +
                         'once, may take few minutes per repo).')
                     Repo.clone_from("git@github.com:astrocatalogs/" +
-                                    repo_name + ".git", repo)
+                                    repo_name + ".git", repo,
+                                    ({'depth': self.args.git_depth} if
+                                     self.args.git_depth > 0 else {}))
                 except:
                     self.log.error("CLONING '{}' INTERRUPTED".format(repo))
                     raise
 
         return
+
+    def clone_repos(self):
+        self._clone_repos([])
 
     def add_entry(self, name, load=True, delete=True):
         """Find an existing entry in, or add a new one to, the `entries` dict.
@@ -412,8 +442,8 @@ class Catalog:
         for name, entry in entries.items():
             aliases = entry.get_aliases()
             if alias in aliases:
-                if ((KEYS.DISTINCT_FROM not in entry.keys()) or
-                        (alias not in entry[KEYS.DISTINCT_FROM])):
+                if ((ENTRY.DISTINCT_FROM not in entry.keys()) or
+                        (alias not in entry[ENTRY.DISTINCT_FROM])):
                     return name
 
         return None
@@ -491,6 +521,11 @@ class Catalog:
                     "  Skipping merge.")
                 return
             self.entries = self.load_stubs()
+
+        if not self.entries or len(self.entries) == 0:
+            self.log.error("WARNING: `entries` is empty even after loading"
+                           " stubs, skipping merge.")
+            return
 
         task_str = self.get_current_task_str()
 
@@ -593,7 +628,7 @@ class Catalog:
             self.entries[name] = new_entry.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
 
-        return
+        return self.entries
 
     def _delete_entry_file(self, entry_name=None, entry=None):
         """Delete the file associated with the given entry.
@@ -606,7 +641,7 @@ class Catalog:
         if entry_name is not None:
             entry = self.entries[entry_name]
         else:
-            entry_name = entry[KEYS.NAME]
+            entry_name = entry[ENTRY.NAME]
 
         outdir, filename = entry._get_save_path()
         # FIX: do we also need to check for gzipped files??

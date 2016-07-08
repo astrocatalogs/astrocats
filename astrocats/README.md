@@ -1,16 +1,20 @@
 # `AstroCatalogs/astrocats` Source Code README #
 
-## File and Directory Structure ##
--   **astrocats**:
+## Contents ##
+-   **astrocats/**:
     -   `__init__.py`
     -   `__main__.py`
-    -   `main.py`:  *the primary entry point for all catalog operations*
-    -   **catalog**: *templates and basic machinery for all individual catalogs*
-        -   `catalog.py`: *the primary class which handles catalogs*
-        -   `entry.py`: *the base class for individual 'entries' in each catalog*
+    -   `main.py`:  *The primary entry point for all catalog operations.*
+    -   **catalog/**: *Templates and basic machinery for all individual catalogs.*
+        -   `catalog.py`: *Overarching container class for all open catalogs.*
+        -   `catdict.py`: *Bottom level data-storage container for properties of each entry in a catalog*
+        -   `entry.py`: *The base class for individual 'entries' in each catalog.*
+        -   `error.py`: *represent and handle (known) errors in catalog source data.*
+        -   `key.py`: *
         -   `task.py`: *object to represent the underlying list of operations to construct a catalog (see also `tasks.json`)*
+        -   **tasks/**: *tasks to be performed by general import scripts*
         -   `utils/`: *general purpose utility functions*
-    -   **supernovae**
+    -   **supernovae/**
         -   `supernova.py`: *subclass of `entry` specific for the supernova catalog*
         -   `tasks/`: *files associated with operations to build this catalog.*
         -   `input/`: *data files and repositories contributing data/parameters*
