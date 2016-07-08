@@ -32,18 +32,18 @@ def main():
     # Create a logging object
     log = load_log(args)
 
+    # Run configuration/setup interactive script
+    if args.command == 'setup':
+        setup_user_config(log)
+        return
+
     git_vers = get_git()
     title_str = "Astrocats, version: {}, SHA: {}".format(__version__, git_vers)
     log.warning("\n\n{}\n{}\n{}\n".format(
         title_str, '=' * len(title_str), beg_time.ctime()))
 
-    # Run configuration/setup interactive script
-    if args.command == 'setup':
-        setup_config(log)
-        return
-
     # Load the user settings from the home directory
-    args = load_config(args, log)
+    args = load_user_config(args, log)
 
     #
     # Choose Catalog and Operation(s) to perform
@@ -61,12 +61,12 @@ def main():
     mod.main.main(args, sub_clargs, log)
 
     end_time = datetime.now()
-    log.warning("All complete at {}, After {}".format(
+    log.warning("\nAll complete at {}, After {}".format(
         end_time, end_time - beg_time))
     return
 
 
-def setup_config(log):
+def setup_user_config(log):
     """Setup a configuration file in the user's home directory.
 
     Currently this method stores default values to a fixed configuration
@@ -107,7 +107,7 @@ def setup_config(log):
     return
 
 
-def load_config(args, log):
+def load_user_config(args, log):
     """Load settings from the user's confiuration file, and add them to `args`.
 
     Settings are loaded from the configuration file in the user's home
@@ -154,15 +154,17 @@ def load_command_line_args(clargs=None):
 
     """
     import argparse
+    git_vers = get_git()
 
     parser = argparse.ArgumentParser(
+        prog='astrocats',
         description='Generate catalogs for astronomical data.')
 
     parser.add_argument('command', nargs='?', default=None)
 
     parser.add_argument(
-        '--version', action='version', version='%(prog)s {}'.format(
-            __version__))
+        '--version', action='version', version='AstroCats v{}, SHA: {}'.format(
+            __version__, git_vers))
     parser.add_argument(
         '--verbose', '-v', dest='verbose', default=False, action='store_true',
         help='Print more messages to the screen.')
