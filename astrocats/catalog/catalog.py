@@ -531,10 +531,16 @@ class Catalog:
 
         keys = list(sorted(self.entries.keys()))
         for n1, name1 in enumerate(pbar(keys, task_str)):
+            if name1 not in self.entries:
+                self.log.info("Entry for {} not found, likely already "
+                              "deleted in merging process.".format(name1))
             allnames1 = set(self.entries[name1].get_aliases())
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
+                if name2 not in self.entries:
+                    self.log.info("Entry for {} not found, likely already "
+                                  "deleted in merging process.".format(name1))
                 allnames2 = set(self.entries[name2].get_aliases())
 
                 # If there are any common names or aliases, merge
