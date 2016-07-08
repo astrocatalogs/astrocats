@@ -1,7 +1,4 @@
-"""General Catalog Classes and Functions, used and subclassed by each specific
-catalog.
+"""General Catalog Classes and Functions, used and subclassed by each catalog.
 """
 
 from . import catalog
-# from . import entry
-# from . import task
