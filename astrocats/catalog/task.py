@@ -49,7 +49,6 @@ class Task():
 
         for key, val in kwargs.items():
             if hasattr(self, key):
-                print(val)
                 setattr(self, key, val)
             else:
                 raise ValueError("No attribute '{}'".format(key))
