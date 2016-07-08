@@ -534,13 +534,17 @@ class Catalog:
             if name1 not in self.entries:
                 self.log.info("Entry for {} not found, likely already "
                               "deleted in merging process.".format(name1))
+                continue
             allnames1 = set(self.entries[name1].get_aliases())
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
+                if name1 == name2:
+                    continue
                 if name2 not in self.entries:
                     self.log.info("Entry for {} not found, likely already "
-                                  "deleted in merging process.".format(name1))
+                                  "deleted in merging process.".format(name2))
+                    continue
                 allnames2 = set(self.entries[name2].get_aliases())
 
                 # If there are any common names or aliases, merge
