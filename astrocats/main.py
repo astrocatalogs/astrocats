@@ -9,6 +9,12 @@ _BASE_PATH_KEY = 'base_path'
 
 
 def main():
+    """Primary entry point for all AstroCats catalogs.
+
+    From this entry point, all internal catalogs can be accessed and their
+    public methods executed (for example: import scripts).
+
+    """
     from datetime import datetime
 
     beg_time = datetime.now()
@@ -23,6 +29,7 @@ def main():
         setup_config()
         return
 
+    # Load the user settings from the home directory
     args = load_config(args)
 
     # FIX
@@ -49,11 +56,18 @@ def main():
 
 
 def setup_config():
+    """Setup a configuration file in the user's home directory.
+
+    Currently this method stores default values to a fixed configuration
+    filename.  It should be modified to run an interactive prompt session
+    asking for parameters (or at least confirming the default ones).
+
+    """
     head_str = "AstroCats Setup"
     print("\n{}\n{}".format(head_str, '='*len(head_str)))
     print("Configure filepath: '{}'".format(_CONFIG_PATH))
 
-    # Create path as needed
+    # Create path to configuration file as needed
     config_path_directory = os.path.split(_CONFIG_PATH)[0]
     if not os.path.exists(config_path_directory):
         os.makedirs(config_path_directory)
@@ -63,7 +77,7 @@ def setup_config():
 
     # Determine default settings
 
-    # Get this containing directory
+    # Get this containing directory and use that as default data path
     def_base_path = os.path.abspath(os.path.dirname(__file__))
     print("Setting '{}' to default path: '{}'".format(
         _BASE_PATH_KEY, def_base_path))
@@ -78,6 +92,23 @@ def setup_config():
 
 
 def load_config(args):
+    """Load settings from the user's confiuration file, and add them to `args`.
+
+    Settings are loaded from the configuration file in the user's home
+    directory.  Those parameters are added (as attributes) to the `args`
+    object.
+
+    Arguments
+    ---------
+    args : `argparse.Namespace`
+        Namespace object to which configuration attributes will be added.
+
+    Returns
+    -------
+    args : `argparse.Namespace`
+        Namespace object with added attributes.
+
+    """
     if not os.path.exists(_CONFIG_PATH):
         err_str = (
             "Configuration file does not exists ({}).\n".format(_CONFIG_PATH) +
@@ -90,6 +121,20 @@ def load_config(args):
 
 
 def load_args(args=None):
+    """Load and parse command-line arguments.
+
+    Arguments
+    ---------
+    args : str or None
+        'Faked' commandline arguments passed to `argparse`.
+
+    Returns
+    -------
+    args : `argparse.Namespace` object
+        Namespace in which settings are stored - default values modified by the
+        given command-line arguments.
+
+    """
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -193,8 +238,11 @@ def load_args(args=None):
 
 
 def get_git():
-    """Get a string representing the current git status --- i.e. tag and commit
-    hash.
+    """Get a string representing the current git status (tag and commit hash).
+
+    Returns
+    -------
+    git_vers : str
     """
     import subprocess
     git_vers = subprocess.getoutput(["git describe --always"]).strip()
