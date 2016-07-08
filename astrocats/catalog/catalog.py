@@ -88,21 +88,22 @@ class Catalog:
         HASH = ''
         URL = ''
 
-    def __init__(self, args):
+    def __init__(self, args, log):
         # Store runtime arguments
         self.args = args
+        self.log = log
 
-        # Load a logger object
-        # Determine verbosity ('None' means use default)
-        log_stream_level = None
-        if args.debug:
-            log_stream_level = logger.DEBUG
-        elif args.verbose:
-            log_stream_level = logger.INFO
-
-        # Destination of log-file ('None' means no file)
-        self.log = logger.get_logger(
-            stream_level=log_stream_level, tofile=args.log_filename)
+        # # Load a logger object
+        # # Determine verbosity ('None' means use default)
+        # log_stream_level = None
+        # if args.debug:
+        #     log_stream_level = logger.DEBUG
+        # elif args.verbose:
+        #     log_stream_level = logger.INFO
+        #
+        # # Destination of log-file ('None' means no file)
+        # self.log = logger.get_logger(
+        #     stream_level=log_stream_level, tofile=args.log_filename)
 
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
