@@ -318,6 +318,9 @@ class Catalog:
                        ", ".join(nn for nn in names_inact))
         return tasks
 
+    def save_caches(self):
+        return
+
     def _clone_repos(self, all_repos):
         """Given a list of repositories, make sure they're all cloned.
 
@@ -625,7 +628,7 @@ class Catalog:
 
         FIX: create function to match SN####AA type names.
         """
-        pass
+        return
 
     def load_stubs(self):
         """
