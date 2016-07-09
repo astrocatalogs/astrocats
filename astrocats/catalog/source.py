@@ -56,12 +56,10 @@ class Source(CatDict):
             return False
 
         # Go over all expected parameters and check equality of each
-        for key in self._KEYS.vals():
-            # Skip parameters which shouldnt be compared
-            if not key.compare:
-                continue
-
+        for key in self._KEYS.compare_vals():
             # If only one object has this parameter, not the same
+            # This is commented out for sources because two sources are
+            # considered the same if they share a name *or* a bibcode
             # if (key in self) != (key in other):
             #     continue
             # If self doesnt have this parameter (and thus neither does), skip
