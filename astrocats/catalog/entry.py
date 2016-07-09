@@ -303,6 +303,11 @@ class Entry(OrderedDict):
         """
         return data
 
+    def priority_prefixes(self):
+        """Prefixes to given priority to when merging duplicate entries.
+        """
+        return ()
+
     def get_aliases(self, includename=True):
         """Retrieve the aliases of this object as a list of strings.
 
