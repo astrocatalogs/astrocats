@@ -769,7 +769,7 @@ class Catalog:
                                        self.tasks[task]['update'])
 
     def load_cached_url(self, url, filepath, timeout=120, write=True,
-                        failhard=False):
+                        failhard=False, jsonsort=''):
         from hashlib import md5
         filemd5 = ''
         filetxt = ''
@@ -805,8 +805,14 @@ class Catalog:
             return filetxt
         else:
             if write:
+                wtxt = txt if txt else filetxt
+                if jsonsort and '.json' in filepath:
+                    jdict = json.loads(wtxt)
+                    wtxt = json.dumps(
+                        list(sorted(jdict, key=lambda kk: kk[jsonsort])),
+                        indent=4, separators=(',', ': '))
                 with codecs.open(filepath, 'w', encoding='utf8') as f:
-                    f.write(txt if txt else filetxt)
+                    f.write(wtxt)
         return txt
 
 
