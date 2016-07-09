@@ -439,17 +439,6 @@ class Entry(OrderedDict):
     def add_quantity(self, quantity, value, source, **kwargs):
         """Add an `Quantity` instance to this entry.
         """
-        # Aliases not added if in DISTINCT_FROM
-        if quantity == self._KEYS.ALIAS:
-            value = self.clean_entry_name(value)
-            for df in self.get(self._KEYS.DISTINCT_FROM, []):
-                if value == df[QUANTITY.VALUE]:
-                    return False
-
-        # Check that value exists
-        if not value or value == '--' or value == '-':
-            return False
-
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
         cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
         if isinstance(cat_dict, CatDict):

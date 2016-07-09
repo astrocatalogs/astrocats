@@ -30,7 +30,20 @@ class Quantity(CatDict):
             [QUANTITY.VALUE],
             [QUANTITY.SOURCE]
         ]
+
         super().__init__(parent, **kwargs)
+
+        # Aliases not added if in DISTINCT_FROM
+        if self._key == parent._KEYS.ALIAS:
+            value = parent.clean_entry_name(self[QUANTITY.VALUE])
+            for df in parent.get(parent._KEYS.DISTINCT_FROM, []):
+                if value == df[QUANTITY.VALUE]:
+                    return False
+
+        # Check that value exists
+        if (not self[QUANTITY.VALUE] or self[QUANTITY.VALUE] == '--' or
+                self[QUANTITY.VALUE] == '-'):
+            return False
 
         parent._clean_quantity(self)
 
