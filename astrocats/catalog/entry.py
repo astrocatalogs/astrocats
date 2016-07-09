@@ -104,346 +104,17 @@ class Entry(OrderedDict):
         self[self._KEYS.NAME] = name
         return
 
-    @classmethod
-    def init_from_file(cls, catalog, name=None, path=None, clean=False):
-        """Construct a new `Entry` instance from an input file.
-
-        The input file can be given explicitly by `path`, or a path will
-        be constructed appropriately if possible.
-
-        Arguments
-        ---------
-        catalog : `astrocats.catalog.catalog.Catalog` instance
-            The parent catalog object of which this entry belongs.
-        name : str or 'None'
-            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
-            If no `path` is given, a path is constructed by trying to find
-            a file in one of the 'output' repositories with this `name`.
-            note: either `name` or `path` must be provided.
-        path : str or 'None'
-            The absolutely path of the input file.
-            note: either `name` or `path` must be provided.
-        clean : bool
-            Whether special sanitization processing should be done on the input
-            data.  This is mostly for input files from the 'internal'
-            repositories.
-
-        """
-        catalog.log.debug("init_from_file()")
-        if name is None and path is None:
-            raise ValueError("Either entry `name` or `path` must be specified "
-                             "to load entry.")
-        if name is not None and path is not None:
-            raise ValueError("Either entry `name` or `path` should be "
-                             "specified, not both.")
-
-        # If the path is given, use that to load from
-        load_path = ''
-        if path is not None:
-            load_path = path
-            name = ''
-        # If the name is given, try to find a path for it
-        else:
-            repo_paths = catalog.PATHS.get_repo_output_folders()
-            for rep in repo_paths:
-                filename = entry_to_filename(name)
-                newpath = os.path.join(rep, filename + '.json')
-                if os.path.isfile(newpath):
-                    load_path = newpath
-                    break
-
-        if load_path is None or not os.path.isfile(load_path):
-            # FIX: is this warning worthy?
-            return None
-
-        # Create a new `Entry` instance
-        new_entry = cls(catalog, name)
-        # Fill it with data from json file
-        new_entry._load_data_from_json(load_path, clean=clean)
-
-        return new_entry
-
     def __repr__(self):
         """Return JSON representation of self
         """
         jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
         return jsonstring
 
-    def add_error(self, quantity, value, **kwargs):
-        """Add an `Error` instance to this entry.
-        """
-        kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
-        return
-
-    def add_photometry(self, **kwargs):
-        """Add a `Photometry` instance to this entry.
-        """
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
-        return
-
-    def add_quantity(self, quantity, value, source, **kwargs):
-        """Add an `Quantity` instance to this entry.
-        """
-        # Aliases not added if in DISTINCT_FROM
-        if quantity == self._KEYS.ALIAS:
-            value = self.clean_entry_name(value)
-            for df in self.get(self._KEYS.DISTINCT_FROM, []):
-                if value == df[QUANTITY.VALUE]:
-                    return False
-
-        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
-        if isinstance(cat_dict, CatDict):
-            self._append_additional_tags(quantity, source, cat_dict)
-            return False
-        elif cat_dict:
-            return True
-
-        return False
-
     def _append_additional_tags(self, quantity, source, cat_dict):
         """Append additional bits of data to an existing quantity when a newly
         added quantity is found to be a duplicate
         """
         pass
-
-    def add_source(self, allow_alias=False, **kwargs):
-        """Add a `Source` instance to this entry.
-        """
-        if not allow_alias and SOURCE.ALIAS in kwargs:
-            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
-                SOURCE.ALIAS)
-            self._log.error(err_str)
-            raise RuntimeError(err_str)
-
-        # Set alias number to be +1 of current number of sources
-        if SOURCE.ALIAS not in kwargs:
-            kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
-        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
-        if source_obj is None:
-            return None
-
-        for item in self.get(self._KEYS.SOURCES, ''):
-            if source_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
-
-        # Set 'alias' number to be one higher than existing length of sources
-        source_obj[SOURCE.ALIAS] = str(
-            len(self.get(self._KEYS.SOURCES, [])) + 1)
-
-        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[source_obj._KEYS.ALIAS]
-
-    def add_self_source(self):
-        """Add a source that refers to the catalog itself. For now this points
-        to the Open Supernova Catalog by default.
-        """
-        return self.add_source(
-            bibcode=self.catalog.OSC_BIBCODE,
-            name=self.catalog.OSC_NAME,
-            url=self.catalog.OSC_URL, secondary=True)
-
-    def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
-        """Add an `Spectrum` instance to this entry.
-        """
-        kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
-                       SPECTRUM.FLUX_UNIT: fluxunit})
-        spec_key = self._KEYS.SPECTRA
-        # Make sure that a source is given, and is valid (nor erroneous)
-        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
-        if source is None:
-            return None
-
-        # Try to create a new instance of `Spectrum`
-        new_spectrum = self._init_cat_dict(
-            Spectrum, spec_key, **kwargs)
-        if new_spectrum is None:
-            return None
-
-        num_spec = len(self.get(spec_key, []))
-        for si in range(num_spec):
-            item = self[spec_key][si]
-            # Only the `filename` should be compared for duplicates If a
-            # duplicate is found, that means the previous `exclude` array
-            # should be saved to the new object, and the old deleted
-            if new_spectrum.is_duplicate_of(item):
-                if SPECTRUM.EXCLUDE in item:
-                    new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[spec_key][si]
-                break
-
-        self.setdefault(spec_key, []).append(new_spectrum)
-        return
-
-    def check(self):
-        """Check that the entry has the required fields.
-        """
-        # Make sure there is a schema key in dict
-        if self._KEYS.SCHEMA not in self.keys():
-            self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
-        # Make sure there is a name key in dict
-        if (self._KEYS.NAME not in self.keys() or
-                len(self[self._KEYS.NAME]) == 0):
-            raise ValueError("Entry name is empty:\n\t{}".format(
-                json.dumps(self, indent=2)))
-        return
-
-    def clean_entry_name(self, name):
-        """Template method to clean/sanitize an entry name before setting it.
-
-        Should be overridden appropriately in subclasses `Entry` objects.
-        """
-        return name
-
-    def clean_internal(self, data=None):
-        """Clean input from 'internal', human added data.
-
-        This is used in the 'Entry.init_from_file' method.
-        """
-        return data
-
-    def get_aliases(self, includename=True):
-        """Retrieve the aliases of this object as a list of strings.
-
-        Arguments
-        ---------
-        includename : bool
-            Include the 'name' parameter in the list of aliases.
-        """
-        # empty list if doesnt exist
-        alias_quanta = self.get(self._KEYS.ALIAS, [])
-        aliases = [aq['value'] for aq in alias_quanta]
-        if includename and self[self._KEYS.NAME] not in aliases:
-            aliases = [self[self._KEYS.NAME]] + aliases
-        return aliases
-
-    def extra_aliases(self):
-        """These aliases are considered when merging duplicates only, but are
-        not added to the list of aliases that would be included with the event
-        """
-        return []
-
-    def get_entry_text(fname):
-        """Retrieve the raw text from a file.
-        """
-        import gzip
-        if fname.split('.')[-1] == 'gz':
-            with gzip.open(fname, 'rt') as f:
-                filetext = f.read()
-        else:
-            with open(fname, 'r') as f:
-                filetext = f.read()
-        return filetext
-
-    def get_source_by_alias(self, alias):
-        """Given an alias, find the corresponding source in this entry.
-
-        If the given alias doesn't exist (e.g. there are no sources), then a
-        `ValueError` is raised.
-
-        Arguments
-        ---------
-        alias : str
-            The str-integer (e.g. '8') of the target source.
-
-        Returns
-        -------
-        source : `astrocats.catalog.source.Source` object
-            The source object corresponding to the passed alias.
-
-        """
-        for source in self.get(self._KEYS.SOURCES, []):
-            if source[self._KEYS.ALIAS] == alias:
-                return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(
-                self[self._KEYS.NAME], alias))
-
-    def get_stub(self):
-        """Get a new `Entry` which contains the 'stub' of this one.
-
-        The 'stub' is only the name and aliases.
-
-        Usage:
-        -----
-        To convert a normal entry into a stub (for example), overwrite the
-        entry in place, i.e.
-        >>> entries[name] = entries[name].get_stub()
-
-        Returns
-        -------
-        stub : `astrocats.catalog.entry.Entry` subclass object
-            The type of the returned object is this instance's type.
-
-        """
-        stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
-        if self._KEYS.ALIAS in self.keys():
-            stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
-        return stub
-
-    def is_erroneous(self, field, sources):
-        """Returns True if a quantity is marked as being erroneous. No test is
-        performed by default.
-        """
-        return False
-
-    def name(self):
-        """Returns own name.
-        """
-        try:
-            return self[self._KEYS.NAME]
-        except KeyError:
-            return None
-
-    def num_sources(self):
-        """Return the current number of sources stored in this instance.
-
-        Returns
-        -------
-        len : int
-            The *integer* number of existing sources.
-        """
-        return len(self.get(self._KEYS.SOURCES, []))
-
-    def sanitize(self):
-        """Sanitize the data (sort it, etc.) before writing it to disk.
-
-        Template method that can be overridden in each catalog's subclassed
-        `Entry` object.
-        """
-        name = self[self._KEYS.NAME]
-
-        aliases = self.get_aliases(includename=False)
-        if name not in aliases:
-            # Assign the first source to alias, if not available assign us.
-            if self._KEYS.SOURCES in self:
-                self.add_quantity(self._KEYS.ALIAS, name, '1')
-            else:
-                source = self.add_self_source()
-                self.add_quantity(self._KEYS.ALIAS, name, source)
-
-        self[self._KEYS.ALIAS] = list(
-            sorted(self[self._KEYS.ALIAS],
-                   key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
-
-    def sort_func(self, key):
-        """Used to sort keys when writing Entry to JSON format. Should be
-        supplemented/overridden by inheriting classes.
-        """
-        if key == self._KEYS.SCHEMA:
-            return 'aaa'
-        if key == self._KEYS.NAME:
-            return 'aab'
-        if key == self._KEYS.SOURCES:
-            return 'aac'
-        if key == self._KEYS.ALIAS:
-            return 'aad'
-        if key == self._KEYS.PHOTOMETRY:
-            return 'zzy'
-        if key == self._KEYS.SPECTRA:
-            return 'zzz'
-        return key
 
     def _get_save_path(self, bury=False):
         """Return the path that this Entry should be saved to.
@@ -489,37 +160,6 @@ class Entry(OrderedDict):
             ndict[key] = odict[key]
 
         return ndict
-
-    def save(self, bury=False, final=False):
-        """Write entry to JSON file in the proper location.
-
-        Arguments
-        ---------
-        bury : bool
-
-        final : bool
-            If this is the 'final' save, perform additional sanitization and
-            cleaning operations.
-
-        """
-        outdir, filename = self._get_save_path(bury=bury)
-
-        if final:
-            self.sanitize()
-
-        # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[self._KEYS.NAME]: self._ordered(self)},
-                                indent='\t', separators=(',', ':'),
-                                ensure_ascii=False)
-        if not os.path.isdir(outdir):
-            raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir,
-                                                   self[self._KEYS.NAME]))
-        save_name = os.path.join(outdir, filename + '.json')
-        with codecs.open(save_name, 'w', encoding='utf8') as sf:
-            sf.write(jsonstring)
-
-        return save_name
 
     def _clean_quantity(self, quantity):
         """Clean quantity value before it is added to entry.
@@ -723,3 +363,368 @@ class Entry(OrderedDict):
 
         self.setdefault(key_in_self, []).append(new_entry)
         return True
+
+    @classmethod
+    def init_from_file(cls, catalog, name=None, path=None, clean=False):
+        """Construct a new `Entry` instance from an input file.
+
+        The input file can be given explicitly by `path`, or a path will
+        be constructed appropriately if possible.
+
+        Arguments
+        ---------
+        catalog : `astrocats.catalog.catalog.Catalog` instance
+            The parent catalog object of which this entry belongs.
+        name : str or 'None'
+            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
+            If no `path` is given, a path is constructed by trying to find
+            a file in one of the 'output' repositories with this `name`.
+            note: either `name` or `path` must be provided.
+        path : str or 'None'
+            The absolutely path of the input file.
+            note: either `name` or `path` must be provided.
+        clean : bool
+            Whether special sanitization processing should be done on the input
+            data.  This is mostly for input files from the 'internal'
+            repositories.
+
+        """
+        catalog.log.debug("init_from_file()")
+        if name is None and path is None:
+            raise ValueError("Either entry `name` or `path` must be specified "
+                             "to load entry.")
+        if name is not None and path is not None:
+            raise ValueError("Either entry `name` or `path` should be "
+                             "specified, not both.")
+
+        # If the path is given, use that to load from
+        load_path = ''
+        if path is not None:
+            load_path = path
+            name = ''
+        # If the name is given, try to find a path for it
+        else:
+            repo_paths = catalog.PATHS.get_repo_output_folders()
+            for rep in repo_paths:
+                filename = entry_to_filename(name)
+                newpath = os.path.join(rep, filename + '.json')
+                if os.path.isfile(newpath):
+                    load_path = newpath
+                    break
+
+        if load_path is None or not os.path.isfile(load_path):
+            # FIX: is this warning worthy?
+            return None
+
+        # Create a new `Entry` instance
+        new_entry = cls(catalog, name)
+        # Fill it with data from json file
+        new_entry._load_data_from_json(load_path, clean=clean)
+
+        return new_entry
+
+    def add_error(self, quantity, value, **kwargs):
+        """Add an `Error` instance to this entry.
+        """
+        kwargs.update({ERROR.VALUE: value})
+        self._add_cat_dict(Quantity, quantity, **kwargs)
+        return
+
+    def add_photometry(self, **kwargs):
+        """Add a `Photometry` instance to this entry.
+        """
+        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        return
+
+    def add_quantity(self, quantity, value, source, **kwargs):
+        """Add an `Quantity` instance to this entry.
+        """
+        # Aliases not added if in DISTINCT_FROM
+        if quantity == self._KEYS.ALIAS:
+            value = self.clean_entry_name(value)
+            for df in self.get(self._KEYS.DISTINCT_FROM, []):
+                if value == df[QUANTITY.VALUE]:
+                    return False
+
+        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
+        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
+        if isinstance(cat_dict, CatDict):
+            self._append_additional_tags(quantity, source, cat_dict)
+            return False
+        elif cat_dict:
+            return True
+
+        return False
+
+    def add_self_source(self):
+        """Add a source that refers to the catalog itself. For now this points
+        to the Open Supernova Catalog by default.
+        """
+        return self.add_source(
+            bibcode=self.catalog.OSC_BIBCODE,
+            name=self.catalog.OSC_NAME,
+            url=self.catalog.OSC_URL, secondary=True)
+
+    def add_source(self, allow_alias=False, **kwargs):
+        """Add a `Source` instance to this entry.
+        """
+        if not allow_alias and SOURCE.ALIAS in kwargs:
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
+                SOURCE.ALIAS)
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        # Set alias number to be +1 of current number of sources
+        if SOURCE.ALIAS not in kwargs:
+            kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
+        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
+        if source_obj is None:
+            return None
+
+        for item in self.get(self._KEYS.SOURCES, ''):
+            if source_obj.is_duplicate_of(item):
+                return item[item._KEYS.ALIAS]
+
+        # Set 'alias' number to be one higher than existing length of sources
+        source_obj[SOURCE.ALIAS] = str(
+            len(self.get(self._KEYS.SOURCES, [])) + 1)
+
+        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
+        return source_obj[source_obj._KEYS.ALIAS]
+
+    def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
+        """Add an `Spectrum` instance to this entry.
+        """
+        kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
+                       SPECTRUM.FLUX_UNIT: fluxunit})
+        spec_key = self._KEYS.SPECTRA
+        # Make sure that a source is given, and is valid (nor erroneous)
+        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
+        if source is None:
+            return None
+
+        # Try to create a new instance of `Spectrum`
+        new_spectrum = self._init_cat_dict(
+            Spectrum, spec_key, **kwargs)
+        if new_spectrum is None:
+            return None
+
+        num_spec = len(self.get(spec_key, []))
+        for si in range(num_spec):
+            item = self[spec_key][si]
+            # Only the `filename` should be compared for duplicates If a
+            # duplicate is found, that means the previous `exclude` array
+            # should be saved to the new object, and the old deleted
+            if new_spectrum.is_duplicate_of(item):
+                if SPECTRUM.EXCLUDE in item:
+                    new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
+                del self[spec_key][si]
+                break
+
+        self.setdefault(spec_key, []).append(new_spectrum)
+        return
+
+    def check(self):
+        """Check that the entry has the required fields.
+        """
+        # Make sure there is a schema key in dict
+        if self._KEYS.SCHEMA not in self.keys():
+            self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
+        # Make sure there is a name key in dict
+        if (self._KEYS.NAME not in self.keys() or
+                len(self[self._KEYS.NAME]) == 0):
+            raise ValueError("Entry name is empty:\n\t{}".format(
+                json.dumps(self, indent=2)))
+        return
+
+    def clean_entry_name(self, name):
+        """Template method to clean/sanitize an entry name before setting it.
+
+        Should be overridden appropriately in subclasses `Entry` objects.
+        """
+        return name
+
+    def clean_internal(self, data=None):
+        """Clean input from 'internal', human added data.
+
+        This is used in the 'Entry.init_from_file' method.
+        """
+        return data
+
+    def extra_aliases(self):
+        """These aliases are considered when merging duplicates only, but are
+        not added to the list of aliases that would be included with the event
+        """
+        return []
+
+    def get_aliases(self, includename=True):
+        """Retrieve the aliases of this object as a list of strings.
+
+        Arguments
+        ---------
+        includename : bool
+            Include the 'name' parameter in the list of aliases.
+        """
+        # empty list if doesnt exist
+        alias_quanta = self.get(self._KEYS.ALIAS, [])
+        aliases = [aq['value'] for aq in alias_quanta]
+        if includename and self[self._KEYS.NAME] not in aliases:
+            aliases = [self[self._KEYS.NAME]] + aliases
+        return aliases
+
+    def get_entry_text(fname):
+        """Retrieve the raw text from a file.
+        """
+        import gzip
+        if fname.split('.')[-1] == 'gz':
+            with gzip.open(fname, 'rt') as f:
+                filetext = f.read()
+        else:
+            with open(fname, 'r') as f:
+                filetext = f.read()
+        return filetext
+
+    def get_source_by_alias(self, alias):
+        """Given an alias, find the corresponding source in this entry.
+
+        If the given alias doesn't exist (e.g. there are no sources), then a
+        `ValueError` is raised.
+
+        Arguments
+        ---------
+        alias : str
+            The str-integer (e.g. '8') of the target source.
+
+        Returns
+        -------
+        source : `astrocats.catalog.source.Source` object
+            The source object corresponding to the passed alias.
+
+        """
+        for source in self.get(self._KEYS.SOURCES, []):
+            if source[self._KEYS.ALIAS] == alias:
+                return source
+        raise ValueError(
+            "Source '{}': alias '{}' not found!".format(
+                self[self._KEYS.NAME], alias))
+
+    def get_stub(self):
+        """Get a new `Entry` which contains the 'stub' of this one.
+
+        The 'stub' is only the name and aliases.
+
+        Usage:
+        -----
+        To convert a normal entry into a stub (for example), overwrite the
+        entry in place, i.e.
+        >>> entries[name] = entries[name].get_stub()
+
+        Returns
+        -------
+        stub : `astrocats.catalog.entry.Entry` subclass object
+            The type of the returned object is this instance's type.
+
+        """
+        stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
+        if self._KEYS.ALIAS in self.keys():
+            stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
+        return stub
+
+    def is_erroneous(self, field, sources):
+        """Returns True if a quantity is marked as being erroneous. No test is
+        performed by default.
+        """
+        return False
+
+    def name(self):
+        """Returns own name.
+        """
+        try:
+            return self[self._KEYS.NAME]
+        except KeyError:
+            return None
+
+    def num_sources(self):
+        """Return the current number of sources stored in this instance.
+
+        Returns
+        -------
+        len : int
+            The *integer* number of existing sources.
+        """
+        return len(self.get(self._KEYS.SOURCES, []))
+
+    def priority_prefixes(self):
+        """Prefixes to given priority to when merging duplicate entries.
+        """
+        return ()
+
+    def sanitize(self):
+        """Sanitize the data (sort it, etc.) before writing it to disk.
+
+        Template method that can be overridden in each catalog's subclassed
+        `Entry` object.
+        """
+        name = self[self._KEYS.NAME]
+
+        aliases = self.get_aliases(includename=False)
+        if name not in aliases:
+            # Assign the first source to alias, if not available assign us.
+            if self._KEYS.SOURCES in self:
+                self.add_quantity(self._KEYS.ALIAS, name, '1')
+            else:
+                source = self.add_self_source()
+                self.add_quantity(self._KEYS.ALIAS, name, source)
+
+        self[self._KEYS.ALIAS] = list(
+            sorted(self[self._KEYS.ALIAS],
+                   key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
+
+    def save(self, bury=False, final=False):
+        """Write entry to JSON file in the proper location.
+
+        Arguments
+        ---------
+        bury : bool
+
+        final : bool
+            If this is the 'final' save, perform additional sanitization and
+            cleaning operations.
+
+        """
+        outdir, filename = self._get_save_path(bury=bury)
+
+        if final:
+            self.sanitize()
+
+        # FIX: use 'dump' not 'dumps'
+        jsonstring = json.dumps({self[self._KEYS.NAME]: self._ordered(self)},
+                                indent='\t', separators=(',', ':'),
+                                ensure_ascii=False)
+        if not os.path.isdir(outdir):
+            raise RuntimeError("Output directory '{}' for event '{}' does "
+                               "not exist.".format(outdir,
+                                                   self[self._KEYS.NAME]))
+        save_name = os.path.join(outdir, filename + '.json')
+        with codecs.open(save_name, 'w', encoding='utf8') as sf:
+            sf.write(jsonstring)
+
+        return save_name
+
+    def sort_func(self, key):
+        """Used to sort keys when writing Entry to JSON format. Should be
+        supplemented/overridden by inheriting classes.
+        """
+        if key == self._KEYS.SCHEMA:
+            return 'aaa'
+        if key == self._KEYS.NAME:
+            return 'aab'
+        if key == self._KEYS.SOURCES:
+            return 'aac'
+        if key == self._KEYS.ALIAS:
+            return 'aad'
+        if key == self._KEYS.PHOTOMETRY:
+            return 'zzy'
+        if key == self._KEYS.SPECTRA:
+            return 'zzz'
+        return key
