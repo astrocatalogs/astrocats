@@ -15,7 +15,6 @@ from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, uncompress_gz, uniq_cdl)
-from astrocats.supernovae.utils import name_clean
 from git import Repo
 from tqdm import tqdm
 
@@ -362,7 +361,7 @@ class Catalog:
             Name of matching entry found in `entries`, or new entry added to
             `entries`
         """
-        newname = name_clean(name)
+        newname = self.name_clean(name)
         # If entry already exists, return
         if newname in self.entries:
             self.log.debug(
@@ -498,6 +497,9 @@ class Catalog:
                     self.entries[destname].add_quantity(quantity=key, **item)
 
         return
+
+    def name_clean(self, name):
+        return name
 
     def new_entry(self, name, load=True, delete=True,
                   loadifempty=True, srcname='', reference='', url='',
