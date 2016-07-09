@@ -1,6 +1,6 @@
 """Class for representing spectra.
 """
-from astrocats.catalog.catdict import CatDict
+from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
 
@@ -38,12 +38,17 @@ class Quantity(CatDict):
             value = parent.clean_entry_name(self[QUANTITY.VALUE])
             for df in parent.get(parent._KEYS.DISTINCT_FROM, []):
                 if value == df[QUANTITY.VALUE]:
-                    return False
+                    raise CatDictError(
+                        "Alias '{}' in '{}'\' '{}' list".format(
+                            value, parent[parent._KEYS.NAME],
+                            parent._KEYS.DISTINCT_FROM))
 
         # Check that value exists
         if (not self[QUANTITY.VALUE] or self[QUANTITY.VALUE] == '--' or
                 self[QUANTITY.VALUE] == '-'):
-            return False
+            raise CatDictError(
+                "Value '{}' is empty, not adding to '{}'".format(
+                    self[QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
         parent._clean_quantity(self)
 
