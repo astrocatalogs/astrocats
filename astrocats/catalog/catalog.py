@@ -361,7 +361,7 @@ class Catalog:
             Name of matching entry found in `entries`, or new entry added to
             `entries`
         """
-        newname = self.name_clean(name)
+        newname = self.clean_entry_name(name)
         # If entry already exists, return
         if newname in self.entries:
             self.log.debug(
@@ -498,7 +498,7 @@ class Catalog:
 
         return
 
-    def name_clean(self, name):
+    def clean_entry_name(self, name):
         return name
 
     def new_entry(self, name, load=True, delete=True,
