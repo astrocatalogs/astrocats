@@ -104,6 +104,266 @@ class Entry(OrderedDict):
         self[self._KEYS.NAME] = name
         return
 
+    def __repr__(self):
+        """Return JSON representation of self
+        """
+        jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
+        return jsonstring
+
+    def _append_additional_tags(self, quantity, source, cat_dict):
+        """Append additional bits of data to an existing quantity when a newly
+        added quantity is found to be a duplicate
+        """
+        pass
+
+    def _get_save_path(self, bury=False):
+        """Return the path that this Entry should be saved to.
+        """
+        self._log.debug("_get_save_path(): {}".format(self.name()))
+        filename = entry_to_filename(self[self._KEYS.NAME])
+
+        # Put non-SNe in the boneyard
+        if bury:
+            outdir = self.catalog.get_repo_boneyard()
+
+        # Get normal repository save directory
+        else:
+            repo_folders = self.catalog.PATHS.get_repo_output_folders()
+            outdir = repo_folders[0]
+
+        return outdir, filename
+
+    def _ordered(self, odict):
+        """Convert the object into a plain OrderedDict.
+        """
+        ndict = OrderedDict()
+
+        if isinstance(odict, CatDict) or isinstance(odict, Entry):
+            key = odict.sort_func
+        else:
+            key = None
+
+        nkeys = list(sorted(odict.keys(), key=key))
+        for key in nkeys:
+            if isinstance(odict[key], OrderedDict):
+                odict[key] = self._ordered(odict[key])
+            if isinstance(odict[key], list):
+                if (not (odict[key] and
+                         not isinstance(odict[key][0], OrderedDict))):
+                    nlist = []
+                    for item in odict[key]:
+                        if isinstance(item, OrderedDict):
+                            nlist.append(self._ordered(item))
+                        else:
+                            nlist.append(item)
+                    odict[key] = nlist
+            ndict[key] = odict[key]
+
+        return ndict
+
+    def _clean_quantity(self, quantity):
+        """Clean quantity value before it is added to entry.
+        """
+        pass
+
+    def _load_data_from_json(self, fhand, clean=False):
+        """FIX: check for overwrite??
+        """
+        self._log.debug("_load_data_from_json(): {}\n\t{}".format(
+            self.name(), fhand))
+        # Store the filename this was loaded from
+        self.filename = fhand
+        with open(fhand, 'r') as jfil:
+            data = json.load(jfil, object_pairs_hook=OrderedDict)
+            name = list(data.keys())
+            if len(name) != 1:
+                raise ValueError("json file '{}' has multiple keys: {}".format(
+                    fhand, list(name)))
+            name = name[0]
+            # Remove the outmost dict level
+            data = data[name]
+            self._log.debug("Name: {}".format(name))
+
+            # Convert the OrderedDict data from json into class structure i.e.
+            # `Sources` will be extracted and created from the dict Everything
+            # that remains afterwards should be okay to just store to this
+            # `Entry`
+            self._convert_odict_to_classes(data, clean=clean)
+            if len(data):
+                err_str = ("Remaining entries in `data` after "
+                           "`_convert_odict_to_classes`.")
+                err_str += "\n{}".format(dict_to_pretty_string(data))
+                self._log.error(err_str)
+                raise RuntimeError(err_str)
+
+        # If object doesnt have a name yet, but json does, store it
+        self_name = self[ENTRY.NAME]
+        if len(self_name) == 0:
+            self[ENTRY.NAME] = name
+        # Warn if there is a name mismatch
+        elif self_name.lower().strip() != name.lower().strip():
+            self._log.warning("Object name '{}' does not match name in json:"
+                              "'{}'".format(self_name, name))
+
+        self.check()
+        return
+
+    def _convert_odict_to_classes(self, data, clean=False):
+        """Convert an OrderedDict into an Entry class or its derivative
+        classes.
+        """
+        self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
+        self._log.debug("This should be a temporary fix.  Dont be lazy.")
+
+        # Handle 'name'
+        name_key = self._KEYS.NAME
+        if name_key in data:
+            self[name_key] = data.pop(name_key)
+
+        # Handle 'schema'
+        schema_key = self._KEYS.SCHEMA
+        if schema_key in data:
+            # Schema should be re-added every execution (done elsewhere) so
+            # just delete the old entry
+            data.pop(schema_key)
+
+        # Cleanup 'internal' repository stuff
+        if clean:
+            # Add data to `self` in ways accomodating 'internal' formats and
+            # leeway.  Removes each added entry from `data` so the remaining
+            # stuff can be handled normally
+            data = self.clean_internal(data)
+
+        # Handle 'sources'
+        # ----------------
+        src_key = self._KEYS.SOURCES
+        if src_key in data:
+            # Remove from `data`
+            sources = data.pop(src_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(sources), src_key))
+            self._log.debug("{}: {}".format(src_key, sources))
+
+            for src in sources:
+                self.add_source(allow_alias=True, **src)
+            # data['sources'] = newsources
+            # self.setdefault(src_key, []).extend(newsources)
+
+        # Handle `photometry`
+        # -------------------
+        photo_key = self._KEYS.PHOTOMETRY
+        if photo_key in data:
+            photoms = data.pop(photo_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(photoms), photo_key))
+            new_photoms = []
+            for photo in photoms:
+                new_photoms.append(Photometry(self, **photo))
+            # data[photo_key] = new_photoms
+            self.setdefault(photo_key, []).extend(new_photoms)
+
+        # Handle `spectra`
+        # ---------------
+        spec_key = self._KEYS.SPECTRA
+        if spec_key in data:
+            # When we are cleaning internal data, we don't always want to
+            # require all of the normal spectrum data elements.
+            spectra = data.pop(spec_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(spectra), spec_key))
+            new_specs = []
+            for spec in spectra:
+                new_specs.append(Spectrum(self, **spec))
+            # data[spec_key] = new_specs
+            self.setdefault(spec_key, []).extend(new_specs)
+
+        # Handle `error`
+        # --------------
+        err_key = self._KEYS.ERRORS
+        if err_key in data:
+            errors = data.pop(err_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(errors), err_key))
+            new_errors = []
+            for err in errors:
+                new_errors.append(Error(self, **err))
+            # data[err_key] = new_errors
+            self.setdefault(err_key, []).extend(new_errors)
+
+        # Handle everything else --- should be `Quantity`s
+        # ------------------------------------------------
+        if len(data):
+            self._log.debug("{} remaining entries, assuming `Quantity`".format(
+                len(data)))
+            # Iterate over remaining keys
+            for key in list(data.keys()):
+                vals = data.pop(key)
+                # All quantities should be in lists of that quantity
+                #    E.g. `aliases` is a list of alias quantities
+                if not isinstance(vals, list):
+                    vals = [vals]
+                self._log.debug("{}: {}".format(key, vals))
+                new_quantities = []
+                for vv in vals:
+                    new_quantities.append(Quantity(self, name=key, **vv))
+
+                self.setdefault(key, []).extend(new_quantities)
+
+        return
+
+    def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
+        """Check that a source exists and that a quantity isn't erroneous.
+        """
+        # Make sure that a source is given
+        source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
+        if source is None:
+            raise ValueError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]))
+        # If this source/data is erroneous, skip it
+        if self.is_erroneous(key_in_self, source):
+            self._log.info("This source is erroneous, skipping")
+            return None
+        return source
+
+    def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        """Initialize a CatDict object, checking for errors.
+        """
+        # Catch errors associated with crappy, but not unexpected data
+        try:
+            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
+        except CatDictError as err:
+            if err.warn:
+                self._log.info("'{}' Not adding '{}': '{}'".format(
+                    self[self._KEYS.NAME], key_in_self, str(err)))
+            return None
+        return new_entry
+
+    def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        """Add a CatDict to this Entry if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
+        # Make sure that a source is given, and is valid (nor erroneous)
+        source = self._check_cat_dict_source(
+            cat_dict_class, key_in_self, **kwargs)
+        if source is None:
+            return False
+
+        # Try to create a new instance of this subclass of `CatDict`
+        new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
+        if new_entry is None:
+            return False
+
+        # Compare this new entry with all previous entries to make sure is new
+        for item in self.get(key_in_self, []):
+            if new_entry.is_duplicate_of(item):
+                item.append_sources_from(new_entry)
+                # Return the entry in case we want to use any additional tags
+                # to augment the old entry
+                return new_entry
+
+        self.setdefault(key_in_self, []).append(new_entry)
+        return True
+
     @classmethod
     def init_from_file(cls, catalog, name=None, path=None, clean=False):
         """Construct a new `Entry` instance from an input file.
@@ -163,12 +423,6 @@ class Entry(OrderedDict):
 
         return new_entry
 
-    def __repr__(self):
-        """Return JSON representation of self
-        """
-        jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
-        return jsonstring
-
     def add_error(self, quantity, value, **kwargs):
         """Add an `Error` instance to this entry.
         """
@@ -201,12 +455,6 @@ class Entry(OrderedDict):
             return True
 
         return False
-
-    def _append_additional_tags(self, quantity, source, cat_dict):
-        """Append additional bits of data to an existing quantity when a newly
-        added quantity is found to be a duplicate
-        """
-        pass
 
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry.
@@ -450,51 +698,6 @@ class Entry(OrderedDict):
             return 'zzz'
         return key
 
-    def _get_save_path(self, bury=False):
-        """Return the path that this Entry should be saved to.
-        """
-        self._log.debug("_get_save_path(): {}".format(self.name()))
-        filename = entry_to_filename(self[self._KEYS.NAME])
-
-        # Put non-SNe in the boneyard
-        if bury:
-            outdir = self.catalog.get_repo_boneyard()
-
-        # Get normal repository save directory
-        else:
-            repo_folders = self.catalog.PATHS.get_repo_output_folders()
-            outdir = repo_folders[0]
-
-        return outdir, filename
-
-    def _ordered(self, odict):
-        """Convert the object into a plain OrderedDict.
-        """
-        ndict = OrderedDict()
-
-        if isinstance(odict, CatDict) or isinstance(odict, Entry):
-            key = odict.sort_func
-        else:
-            key = None
-
-        nkeys = list(sorted(odict.keys(), key=key))
-        for key in nkeys:
-            if isinstance(odict[key], OrderedDict):
-                odict[key] = self._ordered(odict[key])
-            if isinstance(odict[key], list):
-                if (not (odict[key] and
-                         not isinstance(odict[key][0], OrderedDict))):
-                    nlist = []
-                    for item in odict[key]:
-                        if isinstance(item, OrderedDict):
-                            nlist.append(self._ordered(item))
-                        else:
-                            nlist.append(item)
-                    odict[key] = nlist
-            ndict[key] = odict[key]
-
-        return ndict
-
     def save(self, bury=False, final=False):
         """Write entry to JSON file in the proper location.
 
@@ -525,206 +728,3 @@ class Entry(OrderedDict):
             sf.write(jsonstring)
 
         return save_name
-
-    def _clean_quantity(self, quantity):
-        """Clean quantity value before it is added to entry.
-        """
-        pass
-
-    def _load_data_from_json(self, fhand, clean=False):
-        """FIX: check for overwrite??
-        """
-        self._log.debug("_load_data_from_json(): {}\n\t{}".format(
-            self.name(), fhand))
-        # Store the filename this was loaded from
-        self.filename = fhand
-        with open(fhand, 'r') as jfil:
-            data = json.load(jfil, object_pairs_hook=OrderedDict)
-            name = list(data.keys())
-            if len(name) != 1:
-                raise ValueError("json file '{}' has multiple keys: {}".format(
-                    fhand, list(name)))
-            name = name[0]
-            # Remove the outmost dict level
-            data = data[name]
-            self._log.debug("Name: {}".format(name))
-
-            # Convert the OrderedDict data from json into class structure i.e.
-            # `Sources` will be extracted and created from the dict Everything
-            # that remains afterwards should be okay to just store to this
-            # `Entry`
-            self._convert_odict_to_classes(data, clean=clean)
-            if len(data):
-                err_str = ("Remaining entries in `data` after "
-                           "`_convert_odict_to_classes`.")
-                err_str += "\n{}".format(dict_to_pretty_string(data))
-                self._log.error(err_str)
-                raise RuntimeError(err_str)
-
-        # If object doesnt have a name yet, but json does, store it
-        self_name = self[ENTRY.NAME]
-        if len(self_name) == 0:
-            self[ENTRY.NAME] = name
-        # Warn if there is a name mismatch
-        elif self_name.lower().strip() != name.lower().strip():
-            self._log.warning("Object name '{}' does not match name in json:"
-                              "'{}'".format(self_name, name))
-
-        self.check()
-        return
-
-    def _convert_odict_to_classes(self, data, clean=False):
-        """Convert an OrderedDict into an Entry class or its derivative
-        classes.
-        """
-        self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
-        self._log.debug("This should be a temporary fix.  Dont be lazy.")
-
-        # Handle 'name'
-        name_key = self._KEYS.NAME
-        if name_key in data:
-            self[name_key] = data.pop(name_key)
-
-        # Handle 'schema'
-        schema_key = self._KEYS.SCHEMA
-        if schema_key in data:
-            # Schema should be re-added every execution (done elsewhere) so
-            # just delete the old entry
-            data.pop(schema_key)
-
-        # Cleanup 'internal' repository stuff
-        if clean:
-            # Add data to `self` in ways accomodating 'internal' formats and
-            # leeway.  Removes each added entry from `data` so the remaining
-            # stuff can be handled normally
-            data = self.clean_internal(data)
-
-        # Handle 'sources'
-        # ----------------
-        src_key = self._KEYS.SOURCES
-        if src_key in data:
-            # Remove from `data`
-            sources = data.pop(src_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(sources), src_key))
-            self._log.debug("{}: {}".format(src_key, sources))
-
-            for src in sources:
-                self.add_source(allow_alias=True, **src)
-            # data['sources'] = newsources
-            # self.setdefault(src_key, []).extend(newsources)
-
-        # Handle `photometry`
-        # -------------------
-        photo_key = self._KEYS.PHOTOMETRY
-        if photo_key in data:
-            photoms = data.pop(photo_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(photoms), photo_key))
-            new_photoms = []
-            for photo in photoms:
-                new_photoms.append(Photometry(self, **photo))
-            # data[photo_key] = new_photoms
-            self.setdefault(photo_key, []).extend(new_photoms)
-
-        # Handle `spectra`
-        # ---------------
-        spec_key = self._KEYS.SPECTRA
-        if spec_key in data:
-            # When we are cleaning internal data, we don't always want to
-            # require all of the normal spectrum data elements.
-            spectra = data.pop(spec_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(spectra), spec_key))
-            new_specs = []
-            for spec in spectra:
-                new_specs.append(Spectrum(self, **spec))
-            # data[spec_key] = new_specs
-            self.setdefault(spec_key, []).extend(new_specs)
-
-        # Handle `error`
-        # --------------
-        err_key = self._KEYS.ERRORS
-        if err_key in data:
-            errors = data.pop(err_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(errors), err_key))
-            new_errors = []
-            for err in errors:
-                new_errors.append(Error(self, **err))
-            # data[err_key] = new_errors
-            self.setdefault(err_key, []).extend(new_errors)
-
-        # Handle everything else --- should be `Quantity`s
-        # ------------------------------------------------
-        if len(data):
-            self._log.debug("{} remaining entries, assuming `Quantity`".format(
-                len(data)))
-            # Iterate over remaining keys
-            for key in list(data.keys()):
-                vals = data.pop(key)
-                # All quantities should be in lists of that quantity
-                #    E.g. `aliases` is a list of alias quantities
-                if not isinstance(vals, list):
-                    vals = [vals]
-                self._log.debug("{}: {}".format(key, vals))
-                new_quantities = []
-                for vv in vals:
-                    new_quantities.append(Quantity(self, name=key, **vv))
-
-                self.setdefault(key, []).extend(new_quantities)
-
-        return
-
-    def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
-        """Check that a source exists and that a quantity isn't erroneous.
-        """
-        # Make sure that a source is given
-        source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
-        if source is None:
-            raise ValueError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]))
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(key_in_self, source):
-            self._log.info("This source is erroneous, skipping")
-            return None
-        return source
-
-    def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        """Initialize a CatDict object, checking for errors.
-        """
-        # Catch errors associated with crappy, but not unexpected data
-        try:
-            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
-        except CatDictError as err:
-            if err.warn:
-                self._log.info("'{}' Not adding '{}': '{}'".format(
-                    self[self._KEYS.NAME], key_in_self, str(err)))
-            return None
-        return new_entry
-
-    def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        """Add a CatDict to this Entry if initialization succeeds and it
-        doesn't already exist within the Entry.
-        """
-        # Make sure that a source is given, and is valid (nor erroneous)
-        source = self._check_cat_dict_source(
-            cat_dict_class, key_in_self, **kwargs)
-        if source is None:
-            return False
-
-        # Try to create a new instance of this subclass of `CatDict`
-        new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
-        if new_entry is None:
-            return False
-
-        # Compare this new entry with all previous entries to make sure is new
-        for item in self.get(key_in_self, []):
-            if new_entry.is_duplicate_of(item):
-                item.append_sources_from(new_entry)
-                # Return the entry in case we want to use any additional tags
-                # to augment the old entry
-                return new_entry
-
-        self.setdefault(key_in_self, []).append(new_entry)
-        return True
