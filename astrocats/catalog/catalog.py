@@ -89,12 +89,13 @@ class Catalog:
                             for rf in repo_folders]
             return repo_folders
 
-        def get_repo_output_folders(self):
+        def get_repo_output_folders(self, bones=True):
             """
             """
             repo_folders = []
             repo_folders += self.repos_dict['output']
-            repo_folders += self.repos_dict['boneyard']
+            if bones:
+                repo_folders += self.repos_dict['boneyard']
             repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
                             for rf in repo_folders]
