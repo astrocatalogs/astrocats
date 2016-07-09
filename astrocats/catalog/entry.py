@@ -446,6 +446,10 @@ class Entry(OrderedDict):
                 if value == df[QUANTITY.VALUE]:
                     return False
 
+        # Check that value exists
+        if not value or value == '--' or value == '-':
+            return False
+
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
         cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
         if isinstance(cat_dict, CatDict):
