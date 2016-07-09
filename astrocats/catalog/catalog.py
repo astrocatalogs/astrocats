@@ -13,7 +13,7 @@ import psutil
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
-from astrocats.catalog.utils import (compress_gz, is_integer, is_number, pbar,
+from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, uncompress_gz, uniq_cdl)
 from astrocats.supernovae.utils import name_clean
 from git import Repo
@@ -533,6 +533,8 @@ class Catalog:
             if name1 not in self.entries:
                 self.log.info("Entry for {} not found, likely already "
                               "deleted in merging process.".format(name1))
+                n1 = n1 + 1
+                mainpbar.update(1)
                 continue
             allnames1 = set(self.entries[name1].get_aliases() +
                             self.entries[name1].extra_aliases())
@@ -540,6 +542,10 @@ class Catalog:
             # Search all later names
             for name2 in keys[n1 + 1:]:
                 if name1 == name2:
+                    continue
+                if name1 not in self.entries:
+                    self.log.info("Entry for {} not found, likely already "
+                                  "deleted in merging process.".format(name1))
                     continue
                 if name2 not in self.entries:
                     self.log.info("Entry for {} not found, likely already "
@@ -568,10 +574,12 @@ class Catalog:
                         priority1 = 0
                         priority2 = 0
                         for an in allnames1:
-                            if an.startswith(('SN', 'AT')):
+                            if an.startswith(self.entries[name1]
+                                             .priority_prefixes):
                                 priority1 += 1
                         for an in allnames2:
-                            if an.startswith(('SN', 'AT')):
+                            if an.startswith(self.entries[name2]
+                                             .priority_prefixes):
                                 priority2 += 1
 
                         if priority1 > priority2:
