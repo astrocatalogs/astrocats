@@ -26,12 +26,12 @@ install:
 script:
     - python -m astrocats setup
     - echo "travis_fold:start:IMPORT Importing data"
-    - coverage run --source=astrocats "python -m astrocats sn-import"
+    - coverage run --source=astrocats "python -m astrocats catalog import"
     - echo "travis_fold:end:IMPORT Importing data done"
-    - echo "travis_fold:start:MAKE Making catalog"
-    - cd astrocats/supernovae/scripts
-    - python make-catalog.py -tr
-    - echo "travis_fold:end:MAKE Making catalog done"
+#    - echo "travis_fold:start:MAKE Making catalog"
+#    - cd astrocats/supernovae/scripts
+#    - python make-catalog.py -tr
+#    - echo "travis_fold:end:MAKE Making catalog done"
 
 # Run coveralls
 after_success:
