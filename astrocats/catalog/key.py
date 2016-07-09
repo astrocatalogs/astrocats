@@ -11,6 +11,7 @@ class KeyCollection:
     """
     _keys = []
     _vals = []
+    _compare_vals = []
 
     @classmethod
     def keys(cls):
@@ -43,6 +44,24 @@ class KeyCollection:
         cls._vals = [vv for kk, vv in
                      vars(cls).items() if not kk.startswith('_')]
         return cls._vals
+
+    @classmethod
+    def compare_vals(cls):
+        """Return this class's attribute values (those not stating with '_').
+
+        Returns
+        -------
+        _vals : list of objects
+            List of values of internal attributes.  Order is effectiely random,
+            but should match that returned by `keys()`.
+        """
+        if cls._compare_vals:
+            return cls._compare_vals
+
+        cls._compare_vals = [vv for kk, vv in
+                             vars(cls).items() if not kk.startswith('_') and
+                             vv.compare]
+        return cls._compare_vals
 
 
 class KEY_TYPES(KeyCollection):

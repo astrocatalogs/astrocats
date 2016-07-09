@@ -310,6 +310,9 @@ class Entry(OrderedDict):
             aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
 
+    def extra_aliases(self):
+        return []
+
     def get_entry_text(fname):
         """Retrieve the raw text from a file.
         """

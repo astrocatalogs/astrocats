@@ -13,10 +13,11 @@ import psutil
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
-from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
+from astrocats.catalog.utils import (compress_gz, is_integer, is_number, pbar,
                                      read_json_dict, uncompress_gz, uniq_cdl)
 from astrocats.supernovae.utils import name_clean
 from git import Repo
+from tqdm import tqdm
 
 
 class Catalog:
@@ -522,20 +523,19 @@ class Catalog:
                 return
             self.entries = self.load_stubs()
 
-        if not self.entries or len(self.entries) == 0:
-            self.log.error("WARNING: `entries` is empty even after loading"
-                           " stubs, skipping merge.")
-            return
-
         task_str = self.get_current_task_str()
 
         keys = list(sorted(self.entries.keys()))
-        for n1, name1 in enumerate(pbar(keys, task_str)):
+        n1 = 0
+        mainpbar = tqdm(total=len(keys), desc=task_str)
+        while n1 < len(keys):
+            name1 = keys[n1]
             if name1 not in self.entries:
                 self.log.info("Entry for {} not found, likely already "
                               "deleted in merging process.".format(name1))
                 continue
-            allnames1 = set(self.entries[name1].get_aliases())
+            allnames1 = set(self.entries[name1].get_aliases() +
+                            self.entries[name1].extra_aliases())
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
@@ -545,7 +545,9 @@ class Catalog:
                     self.log.info("Entry for {} not found, likely already "
                                   "deleted in merging process.".format(name2))
                     continue
-                allnames2 = set(self.entries[name2].get_aliases())
+
+                allnames2 = set(self.entries[name2].get_aliases() +
+                                self.entries[name2].extra_aliases())
 
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
@@ -561,30 +563,39 @@ class Catalog:
                         # Delete old files
                         self._delete_entry_file(entry=load1)
                         self._delete_entry_file(entry=load2)
+                        self.entries[name1] = load1
+                        self.entries[name2] = load2
                         priority1 = 0
                         priority2 = 0
+                        for an in allnames1:
+                            if an.startswith(('SN', 'AT')):
+                                priority1 += 1
+                        for an in allnames2:
+                            if an.startswith(('SN', 'AT')):
+                                priority2 += 1
 
                         if priority1 > priority2:
-                            self.entries[name1] = load1
                             self.copy_to_entry(name2, name1)
                             keys.append(name1)
                             del self.entries[name2]
                         else:
-                            self.entries[name1] = load2
                             self.copy_to_entry(name1, name2)
                             keys.append(name2)
                             del self.entries[name1]
                     else:
                         self.log.warning('Duplicate already deleted')
 
-                    if len(self.entries) != 1:
-                        self.log.error(
-                            "WARNING: len(entries) = {}, expected 1.  "
-                            "Still journaling...".format(len(self.entries)))
+                    # if len(self.entries) != 1:
+                    #     self.log.error(
+                    #         "WARNING: len(entries) = {}, expected 1.  "
+                    #         "Still journaling...".format(len(self.entries)))
                     self.journal_entries()
 
             if self.args.travis and n1 > self.TRAVIS_QUERY_LIMIT:
                 break
+            n1 = n1 + 1
+            mainpbar.update(1)
+        mainpbar.close()
 
     def sanitize(self):
         task_str = self.get_current_task_str()
