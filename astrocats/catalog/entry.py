@@ -456,6 +456,15 @@ class Entry(OrderedDict):
 
         return False
 
+    def add_self_source(self):
+        """Add a source that refers to the catalog itself. For now this points
+        to the Open Supernova Catalog by default.
+        """
+        return self.add_source(
+            bibcode=self.catalog.OSC_BIBCODE,
+            name=self.catalog.OSC_NAME,
+            url=self.catalog.OSC_URL, secondary=True)
+
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry.
         """
@@ -482,15 +491,6 @@ class Entry(OrderedDict):
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
-
-    def add_self_source(self):
-        """Add a source that refers to the catalog itself. For now this points
-        to the Open Supernova Catalog by default.
-        """
-        return self.add_source(
-            bibcode=self.catalog.OSC_BIBCODE,
-            name=self.catalog.OSC_NAME,
-            url=self.catalog.OSC_URL, secondary=True)
 
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
         """Add an `Spectrum` instance to this entry.
@@ -551,10 +551,11 @@ class Entry(OrderedDict):
         """
         return data
 
-    def priority_prefixes(self):
-        """Prefixes to given priority to when merging duplicate entries.
+    def extra_aliases(self):
+        """These aliases are considered when merging duplicates only, but are
+        not added to the list of aliases that would be included with the event
         """
-        return ()
+        return []
 
     def get_aliases(self, includename=True):
         """Retrieve the aliases of this object as a list of strings.
@@ -570,12 +571,6 @@ class Entry(OrderedDict):
         if includename and self[self._KEYS.NAME] not in aliases:
             aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
-
-    def extra_aliases(self):
-        """These aliases are considered when merging duplicates only, but are
-        not added to the list of aliases that would be included with the event
-        """
-        return []
 
     def get_entry_text(fname):
         """Retrieve the raw text from a file.
@@ -659,6 +654,11 @@ class Entry(OrderedDict):
         """
         return len(self.get(self._KEYS.SOURCES, []))
 
+    def priority_prefixes(self):
+        """Prefixes to given priority to when merging duplicate entries.
+        """
+        return ()
+
     def sanitize(self):
         """Sanitize the data (sort it, etc.) before writing it to disk.
 
@@ -679,24 +679,6 @@ class Entry(OrderedDict):
         self[self._KEYS.ALIAS] = list(
             sorted(self[self._KEYS.ALIAS],
                    key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
-
-    def sort_func(self, key):
-        """Used to sort keys when writing Entry to JSON format. Should be
-        supplemented/overridden by inheriting classes.
-        """
-        if key == self._KEYS.SCHEMA:
-            return 'aaa'
-        if key == self._KEYS.NAME:
-            return 'aab'
-        if key == self._KEYS.SOURCES:
-            return 'aac'
-        if key == self._KEYS.ALIAS:
-            return 'aad'
-        if key == self._KEYS.PHOTOMETRY:
-            return 'zzy'
-        if key == self._KEYS.SPECTRA:
-            return 'zzz'
-        return key
 
     def save(self, bury=False, final=False):
         """Write entry to JSON file in the proper location.
@@ -728,3 +710,21 @@ class Entry(OrderedDict):
             sf.write(jsonstring)
 
         return save_name
+
+    def sort_func(self, key):
+        """Used to sort keys when writing Entry to JSON format. Should be
+        supplemented/overridden by inheriting classes.
+        """
+        if key == self._KEYS.SCHEMA:
+            return 'aaa'
+        if key == self._KEYS.NAME:
+            return 'aab'
+        if key == self._KEYS.SOURCES:
+            return 'aac'
+        if key == self._KEYS.ALIAS:
+            return 'aad'
+        if key == self._KEYS.PHOTOMETRY:
+            return 'zzy'
+        if key == self._KEYS.SPECTRA:
+            return 'zzz'
+        return key
