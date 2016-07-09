@@ -1,0 +1,38 @@
+{
+    "test": {
+        "nice_name": "%pre TEST",
+        "active": true,
+        "update": false,
+        "module": "catalog.tasks.test",
+        "function": "do_test",
+        "groups": ["meta"],
+        "priority": 1
+    },
+    "merge_duplicates": {
+        "nice_name": "Merging duplicates",
+        "active": true,
+        "update": false,
+        "module": "catalog.tasks.merge_duplicates",
+        "function": "merge_duplicates",
+        "groups": ["meta"],
+        "priority": -100
+    },
+    "set_pref_names": {
+        "nice_name": "Setting preferred names",
+        "active": true,
+        "update": false,
+        "module": "catalog.tasks.set_preferred_names",
+        "function": "set_preferred_names",
+        "groups": ["meta"],
+        "priority": -10
+    },
+    "sanitize": {
+        "nice_name": "Writing final time",
+        "active": true,
+        "update": false,
+        "module": "catalog.tasks.sanitize",
+        "function": "sanitize",
+        "groups": ["meta"],
+        "priority": -1
+    }
+}
