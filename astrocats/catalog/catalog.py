@@ -85,6 +85,7 @@ class Catalog:
             repo_folders = []
             repo_folders += self.repos_dict['external']
             repo_folders += self.repos_dict['internal']
+            repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [os.path.join(self.PATH_INPUT, rf)
                             for rf in repo_folders]
             return repo_folders
@@ -95,6 +96,7 @@ class Catalog:
             repo_folders = []
             repo_folders += self.repos_dict['output']
             repo_folders += self.repos_dict['boneyard']
+            repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
                             for rf in repo_folders]
             return repo_folders
