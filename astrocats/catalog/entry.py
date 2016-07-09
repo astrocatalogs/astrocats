@@ -164,6 +164,8 @@ class Entry(OrderedDict):
         return new_entry
 
     def __repr__(self):
+        """Return JSON representation of self
+        """
         jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
         return jsonstring
 
@@ -201,6 +203,9 @@ class Entry(OrderedDict):
         return False
 
     def _append_additional_tags(self, quantity, source, cat_dict):
+        """Append additional bits of data to an existing quantity when a newly
+        added quantity is found to be a duplicate
+        """
         pass
 
     def add_source(self, allow_alias=False, **kwargs):
@@ -231,6 +236,9 @@ class Entry(OrderedDict):
         return source_obj[source_obj._KEYS.ALIAS]
 
     def add_self_source(self):
+        """Add a source that refers to the catalog itself. For now this points
+        to the Open Supernova Catalog by default.
+        """
         return self.add_source(
             bibcode=self.catalog.OSC_BIBCODE,
             name=self.catalog.OSC_NAME,
@@ -311,6 +319,9 @@ class Entry(OrderedDict):
         return aliases
 
     def extra_aliases(self):
+        """These aliases are considered when merging duplicates only, but are
+        not added to the list of aliases that would be included with the event
+        """
         return []
 
     def get_entry_text(fname):
@@ -372,9 +383,14 @@ class Entry(OrderedDict):
         return stub
 
     def is_erroneous(self, field, sources):
+        """Returns True if a quantity is marked as being erroneous. No test is
+        performed by default.
+        """
         return False
 
     def name(self):
+        """Returns own name.
+        """
         try:
             return self[self._KEYS.NAME]
         except KeyError:
@@ -412,6 +428,9 @@ class Entry(OrderedDict):
                    key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
 
     def sort_func(self, key):
+        """Used to sort keys when writing Entry to JSON format. Should be
+        supplemented/overridden by inheriting classes.
+        """
         if key == self._KEYS.SCHEMA:
             return 'aaa'
         if key == self._KEYS.NAME:
@@ -427,6 +446,8 @@ class Entry(OrderedDict):
         return key
 
     def _get_save_path(self, bury=False):
+        """Return the path that this Entry should be saved to.
+        """
         self._log.debug("_get_save_path(): {}".format(self.name()))
         filename = entry_to_filename(self[self._KEYS.NAME])
 
@@ -442,6 +463,8 @@ class Entry(OrderedDict):
         return outdir, filename
 
     def _ordered(self, odict):
+        """Convert the object into a plain OrderedDict.
+        """
         ndict = OrderedDict()
 
         if isinstance(odict, CatDict) or isinstance(odict, Entry):
@@ -546,7 +569,8 @@ class Entry(OrderedDict):
         return
 
     def _convert_odict_to_classes(self, data, clean=False):
-        """
+        """Convert an OrderedDict into an Entry class or its derivative
+        classes.
         """
         self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
         self._log.debug("This should be a temporary fix.  Dont be lazy.")
@@ -648,6 +672,8 @@ class Entry(OrderedDict):
         return
 
     def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
+        """Check that a source exists and that a quantity isn't erroneous.
+        """
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
@@ -660,8 +686,9 @@ class Entry(OrderedDict):
         return source
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        """Initialize a CatDict object, checking for errors.
+        """
         # Catch errors associated with crappy, but not unexpected data
-        # log warning if instructed
         try:
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
         except CatDictError as err:
@@ -672,6 +699,9 @@ class Entry(OrderedDict):
         return new_entry
 
     def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        """Add a CatDict to this Entry if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
         # Make sure that a source is given, and is valid (nor erroneous)
         source = self._check_cat_dict_source(
             cat_dict_class, key_in_self, **kwargs)
