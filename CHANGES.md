@@ -9,8 +9,9 @@
 ### Future / To-Do ###
 
 * Create a settings/arguments/parameters class which handles storing parameters (instead of just an `argparse.Namespace`) and has methods for running `argparse`. 
-
 * Create specific 'tasks' for cloning/pulling input/output repositories.
+* Add to the `test` task to include coverage of the basic types (e.g. `spectrum`, etc).
+* Add fuzzy-string logic to command-line arguments
 
 ---
 
