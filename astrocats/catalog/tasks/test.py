@@ -113,6 +113,15 @@ def _first_source(catalog):
         'redshift', FAKE_REDZ_1, source, kind='spectroscopic')
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
+    # Add a fake photometric observation
+    log.error("Calling: ``add_photometry(...)``")
+    catalog.entries[name].add_photometry(
+        time='12345', magnitude='20.0', band='g', e_magnitude='0.01',
+        telescope='OWELTMT', instrument='UltraCam', observer='I. M. Fake',
+        observatory='Mt. Olympus', survey='Zeus Analog Sky Survey',
+        source=source)
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
     log.error("Calling: ``journal_entries()``")
     catalog.journal_entries()
     log.error("\n{}\n".format(repr(catalog.entries[name])))
@@ -151,6 +160,19 @@ def _second_source(catalog):
         FAKE_REDZ_2, source))
     catalog.entries[name].add_quantity(
         'redshift', FAKE_REDZ_2, source, kind='spectroscopic')
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
+    # Add a fake spectral observation
+    log.error("Calling: ``add_spectrum(...)``")
+    wavelengths = [str(1.0*x) for x in range(1000, 9000, 100)]
+    fluxes = wavelengths
+    errors = wavelengths
+    catalog.entries[name].add_spectrum(
+        'Angstrom', 'erg/s/cm^2/Angstrom', time='12345',
+        wavelengths=wavelengths, fluxes=fluxes, errors=errors,
+        telescope='OWELTMT', instrument='MOSICE', observer='I. M. Fake',
+        observatory='Mt. Everest', survey='Hillary Transient Factory',
+        source=source)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
     log.error("Calling: ``journal_entries()``")
