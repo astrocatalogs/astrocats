@@ -25,19 +25,19 @@ class ENTRY(KeyCollection):
     DEC = Key('dec', KEY_TYPES.STRING)
     DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING)
     DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
-    DISTINCT_FROM = 'distinctfrom'
-    EBV = 'ebv'
+    DISTINCT_FROM = Key('distinctfrom', KEY_TYPES.STRING)
+    EBV = Key('ebv', KEY_TYPES.NUMERIC)
     ERRORS = 'errors'
-    HOST = 'host'
-    HOST_DEC = 'hostdec'
-    HOST_OFFSET_ANG = 'hostoffsetang'
-    HOST_OFFSET_DIST = 'hostoffsetdist'
-    HOST_RA = 'hostra'
-    LUM_DIST = 'lumdist'
-    MAX_ABS_MAG = 'maxabsmag'
-    MAX_APP_MAG = 'maxappmag'
-    MAX_BAND = 'maxband'
-    MAX_DATE = 'maxdate'
+    HOST = Key('host', KEY_TYPES.STRING)
+    HOST_DEC = Key('hostdec', KEY_TYPES.STRING)
+    HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
+    HOST_OFFSET_DIST = Key('hostoffsetdist', KEY_TYPES.NUMERIC)
+    HOST_RA = Key('hostra', KEY_TYPES.STRING)
+    LUM_DIST = Key('lumdist', KEY_TYPES.NUMERIC)
+    MAX_ABS_MAG = Key('maxabsmag', KEY_TYPES.NUMERIC)
+    MAX_APP_MAG = Key('maxappmag', KEY_TYPES.NUMERIC)
+    MAX_BAND = Key('maxband', KEY_TYPES.STRING)
+    MAX_DATE = Key('maxdate', KEY_TYPES.STRING)
     NAME = Key('name', KEY_TYPES.STRING)
     PHOTOMETRY = 'photometry'
     RA = Key('ra', KEY_TYPES.STRING)
@@ -45,8 +45,8 @@ class ENTRY(KeyCollection):
     SCHEMA = 'schema'
     SOURCES = 'sources'
     SPECTRA = 'spectra'
-    URL = 'url'
-    VELOCITY = 'velocity'
+    URL = Key('url', KEY_TYPES.STRING)
+    VELOCITY = Key('velocity', KEY_TYPES.NUMERIC)
 
 
 class Entry(OrderedDict):
