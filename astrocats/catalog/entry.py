@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
-from astrocats.catalog.key import KeyCollection
+from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
@@ -19,12 +19,12 @@ from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
 class ENTRY(KeyCollection):
     """General `CatDict` keys which should be relevant for all catalogs.
     """
-    ALIAS = 'alias'
-    BIBCODE = 'bibcode'
-    COMOVING_DIST = 'comovingdist'
-    DEC = 'dec'
-    DISCOVER_DATE = 'discoverdate'
-    DISCOVERER = 'discoverer'
+    ALIAS = Key('alias', KEY_TYPES.STRING)
+    BIBCODE = Key('bibcode', KEY_TYPES.STRING)
+    COMOVING_DIST = Key('comovingdist', KEY_TYPES.NUMERIC)
+    DEC = Key('dec', KEY_TYPES.STRING)
+    DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING)
+    DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
     DISTINCT_FROM = 'distinctfrom'
     EBV = 'ebv'
     ERRORS = 'errors'
@@ -38,10 +38,10 @@ class ENTRY(KeyCollection):
     MAX_APP_MAG = 'maxappmag'
     MAX_BAND = 'maxband'
     MAX_DATE = 'maxdate'
-    NAME = 'name'
+    NAME = Key('name', KEY_TYPES.STRING)
     PHOTOMETRY = 'photometry'
-    RA = 'ra'
-    REDSHIFT = 'redshift'
+    RA = Key('ra', KEY_TYPES.STRING)
+    REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC)
     SCHEMA = 'schema'
     SOURCES = 'sources'
     SPECTRA = 'spectra'
