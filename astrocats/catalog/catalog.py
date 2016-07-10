@@ -759,14 +759,14 @@ class Catalog:
         return full, stub
 
     def get_current_task_str(self):
+        """Get a string describing the current task the catalog is working on.
+        """
         return self.current_task.current_task(self.args)
 
     def get_current_task_repo(self):
+        """Get the data repository corresponding to the currently active task.
+        """
         return self.current_task._get_repo_path(self.PATHS.PATH_BASE)
-
-    def has_task(self, task):
-        return task in self.tasks and (not self.args.update or
-                                       self.tasks[task]['update'])
 
     def load_cached_url(self, url, filepath, timeout=120, write=True,
                         failhard=False, jsonsort=''):
