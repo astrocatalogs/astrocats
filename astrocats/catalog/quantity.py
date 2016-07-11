@@ -54,7 +54,8 @@ class Quantity(CatDict):
         parent._clean_quantity(self)
 
         # Check that quantity value matches type after cleaning
-        if (parent[self._key].type == KEY_TYPES.NUMERIC and not
+        if (isinstance(self._key, Key) and
+                self._key.type == KEY_TYPES.NUMERIC and not
                 is_number(self[QUANTITY.VALUE])):
             raise CatDictError(
                 "Value '{}' is not numeric, not adding to '{}'".format(

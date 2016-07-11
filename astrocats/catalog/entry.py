@@ -305,7 +305,7 @@ class Entry(OrderedDict):
                 self._log.debug("{}: {}".format(key, vals))
                 new_quantities = []
                 for vv in vals:
-                    new_quantities.append(Quantity(self, name=key, **vv))
+                    new_quantities.append(Quantity(self, key=key, **vv))
 
                 self.setdefault(key, []).extend(new_quantities)
 
