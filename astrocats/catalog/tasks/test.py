@@ -97,7 +97,7 @@ def _first_source(catalog):
     # Add alias
     log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
         FAKE_ALIAS_1, source))
-    catalog.entries[name].add_quantity('alias', FAKE_ALIAS_1, source)
+    catalog.entries[name].add_quantity(ENTRY.ALIAS, FAKE_ALIAS_1, source)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure source alias is correct
     stored_aliases = catalog.entries[name][ENTRY.ALIAS]

@@ -27,7 +27,7 @@ class ENTRY(KeyCollection):
     DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
     DISTINCT_FROM = Key('distinctfrom', KEY_TYPES.STRING)
     EBV = Key('ebv', KEY_TYPES.NUMERIC)
-    ERRORS = 'errors'
+    ERRORS = Key('errors')
     HOST = Key('host', KEY_TYPES.STRING)
     HOST_DEC = Key('hostdec', KEY_TYPES.STRING)
     HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
@@ -42,9 +42,9 @@ class ENTRY(KeyCollection):
     PHOTOMETRY = 'photometry'
     RA = Key('ra', KEY_TYPES.STRING)
     REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC)
-    SCHEMA = 'schema'
-    SOURCES = 'sources'
-    SPECTRA = 'spectra'
+    SCHEMA = Key('schema')
+    SOURCES = Key('sources')
+    SPECTRA = Key('spectra')
     URL = Key('url', KEY_TYPES.STRING)
     VELOCITY = Key('velocity', KEY_TYPES.NUMERIC)
 
