@@ -74,6 +74,10 @@ class Catalog:
             return files
 
         def get_repo_output_file_list(self, normal=True, bones=True):
+            """Get a list of all existing output files.
+
+            These are the files deleted in the `delete_old_entry_files` task.
+            """
             repo_folders = self.get_repo_output_folders()
             return self._get_repo_file_list(
                 repo_folders, normal=normal, bones=bones)
