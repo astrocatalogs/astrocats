@@ -39,7 +39,7 @@ class ENTRY(KeyCollection):
     MAX_BAND = Key('maxband', KEY_TYPES.STRING)
     MAX_DATE = Key('maxdate', KEY_TYPES.STRING)
     NAME = Key('name', KEY_TYPES.STRING)
-    PHOTOMETRY = 'photometry'
+    PHOTOMETRY = Key('photometry')
     RA = Key('ra', KEY_TYPES.STRING)
     REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC)
     SCHEMA = Key('schema')
