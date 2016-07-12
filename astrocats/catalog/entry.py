@@ -20,7 +20,6 @@ class ENTRY(KeyCollection):
     """General `CatDict` keys which should be relevant for all catalogs.
     """
     ALIAS = Key('alias', KEY_TYPES.STRING)
-    BIBCODE = Key('bibcode', KEY_TYPES.STRING)
     COMOVING_DIST = Key('comovingdist', KEY_TYPES.NUMERIC)
     DEC = Key('dec', KEY_TYPES.STRING)
     DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING)
@@ -45,7 +44,6 @@ class ENTRY(KeyCollection):
     SCHEMA = Key('schema')
     SOURCES = Key('sources')
     SPECTRA = Key('spectra')
-    URL = Key('url', KEY_TYPES.STRING)
     VELOCITY = Key('velocity', KEY_TYPES.NUMERIC)
 
 
