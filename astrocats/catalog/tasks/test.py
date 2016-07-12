@@ -110,7 +110,7 @@ def _first_source(catalog):
     log.error("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
         FAKE_REDZ_1, source))
     catalog.entries[name].add_quantity(
-        'redshift', FAKE_REDZ_1, source, kind='spectroscopic')
+        ENTRY.REDSHIFT, FAKE_REDZ_1, source, kind='spectroscopic')
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a fake photometric observation
@@ -152,14 +152,14 @@ def _second_source(catalog):
 
     log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
         FAKE_ALIAS_2, source))
-    catalog.entries[name].add_quantity('alias', FAKE_ALIAS_2, source)
+    catalog.entries[name].add_quantity(ENTRY.ALIAS, FAKE_ALIAS_2, source)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
     check_source_2(catalog, name)
 
     log.error("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
         FAKE_REDZ_2, source))
     catalog.entries[name].add_quantity(
-        'redshift', FAKE_REDZ_2, source, kind='spectroscopic')
+        ENTRY.REDSHIFT, FAKE_REDZ_2, source, kind='spectroscopic')
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a fake spectral observation
