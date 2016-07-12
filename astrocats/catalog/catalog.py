@@ -776,26 +776,35 @@ class Catalog:
                         failhard=False, jsonsort=''):
         from hashlib import md5
         filemd5 = ''
-        filetxt = ''
+        file_txt = ''
+        # Load existing, cached copy of online data file
         if not self.args.refresh and os.path.isfile(filepath):
             with codecs.open(filepath, 'r', encoding='utf8') as f:
-                filetxt = f.read()
+                file_txt = f.read()
+                self.log.debug("{}: Loaded `file_txt` from '{}'.".format(
+                    self.current_task, filepath))
                 if self.args.update:
-                    filemd5 = md5(filetxt.encode('utf-8')).hexdigest()
+                    filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
 
+        # Try to download new copy of online data
         try:
             import requests
             session = requests.Session()
             response = session.get(url, timeout=timeout)
             response.raise_for_status()
+            # Look for errors
             for x in response.history:
                 x.raise_for_status()
                 if (x.status_code == 500 or x.status_code == 307 or
                         x.status_code == 404):
                     raise
-            txt = response.text
-            newmd5 = md5(txt.encode('utf-8')).hexdigest()
+            url_txt = response.text
+            self.log.debug("{}: Loaded `url_txt` from '{}'.".format(
+                self.current_task, url))
+            newmd5 = md5(url_txt.encode('utf-8')).hexdigest()
             # tprint(filemd5 + ": " + newmd5)
+            # Check if cached file and newly downloaded file are the same
+            # If so: no need to resave it, return
             if self.args.update and newmd5 == filemd5:
                 self.log.debug(
                     'Skipping file in "' + self.current_task +
@@ -806,10 +815,11 @@ class Catalog:
         except:
             if failhard:
                 return ''
-            return filetxt
+            return file_txt
         else:
+            # Write the newly downloaded data to the cache save file.
             if write:
-                wtxt = txt if txt else filetxt
+                wtxt = url_txt if url_txt else file_txt
                 if jsonsort and '.json' in filepath:
                     jdict = json.loads(wtxt)
                     wtxt = json.dumps(
@@ -817,7 +827,10 @@ class Catalog:
                         indent=4, separators=(',', ': '))
                 with codecs.open(filepath, 'w', encoding='utf8') as f:
                     f.write(wtxt)
-        return txt
+                    self.log.debug("{}: wrote txt to '{}'.".format(
+                        self.current_task, filepath))
+
+        return url_txt
 
 
 def _get_task_priority(tasks, task_priority):

@@ -12,15 +12,27 @@ class Task():
     Attributes
     ----------
     name : str
+        Proper name for this task - used when calling it from command-line
     nice_name : str or None
+        Name for pretty printing
     update : bool
+        Whether this task should be performed during update.
     archived : bool
+        Use existing, archived (meta-)data for this task.
     active : bool
+        Whether this task should be performed or not by default.
     module : str or None
+        Module in which to find `function` for carrying out this task
     groups : list of strings
+        Which task groupings this task belongs to.  Allows numerous tasks to
+        be run together.
     repo : str or None
+        Repository in which the input-/meta- data is stored.  This is *not*
+        the final output directory of the entry json file.
     function : str
+        Function to execute when carrying out this task.
     priority : int
+        Order in which tasks should be executed
 
     """
 
@@ -30,22 +42,16 @@ class Task():
         Only existing class attributes are able to be passed and set via the
         constructor `kwargs` dictionary.  Otherwise a `ValueError` is raised.
         """
-        # Proper name for this task - used when calling it from command-line
         self.name = None
-        # Name for pretty printing
         self.nice_name = None
-        # Perform task during update
         self.update = False
-        # Use archived data ???
         self.archived = False
-        self.active = True    # Whether this task should be performed or not
-        # Module in which to find `function` for carrying out this task
+        self.active = True
         self.module = None
         self.groups = None
-        # Repository in which the data comes from
         self.repo = None
-        self.function = ''    # Function to execute when carrying out this task
-        self.priority = None  # Order in which tasks should be executed
+        self.function = ''
+        self.priority = None
 
         for key, val in kwargs.items():
             if hasattr(self, key):
