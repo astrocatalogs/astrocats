@@ -5,6 +5,26 @@ from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
 
 class QUANTITY(KeyCollection):
+    """`KeyCollection` subclass for the the `Quantity` class.
+
+    Attributes
+    ----------
+    VALUE : ANY
+        The actual value being stored.
+    ERROR : NUMERIC
+        The 'error' (uncertainty) associate with the measured value.
+    PROB : NUMERIC
+    UPPER_LIMIT : BOOL
+        If this value corresponds to a measured upper-limit.
+    DESC : STRING
+        Verbal description or notes on a quantity.
+    UNIT : STRING
+        Unit of measurement associated with this value.
+    KIND : STRING
+    SOURCE : STRING
+        The name of the 'source' (reference/citation) for this value.
+
+    """
     # Any
     VALUE = Key('value')
     # Numeric
@@ -13,14 +33,14 @@ class QUANTITY(KeyCollection):
     # Booleans
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL)
     # Strings
+    DESC = Key('description', KEY_TYPES.STRING, compare=False)
     UNIT = Key('unit', KEY_TYPES.STRING)
     KIND = Key('kind', KEY_TYPES.STRING)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
 
 
 class Quantity(CatDict):
-    """Class for storing a single item of data associated with an astrophysical
-    entity.
+    """Class to store a single item of data associated with an `Entry`.
     """
 
     _KEYS = QUANTITY
