@@ -476,10 +476,6 @@ class Entry(OrderedDict):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
 
-        # Set 'alias' number to be one higher than existing length of sources
-        source_obj[SOURCE.ALIAS] = str(
-            len(self.get(self._KEYS.SOURCES, [])) + 1)
-
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
 
@@ -678,7 +674,7 @@ class Entry(OrderedDict):
             source_list = []
             for key in self.keys():
                 if key in [ENTRY.NAME, ENTRY.SOURCES,
-                           ENTRY.SCHEMA]:
+                           ENTRY.ERRORS, ENTRY.SCHEMA]:
                     continue
                 for item in self[key]:
                     source_list += item[item._KEYS.SOURCE].split(',')
@@ -688,6 +684,8 @@ class Entry(OrderedDict):
             for source in self[self._KEYS.SOURCES]:
                 if source[SOURCE.ALIAS] in new_src_list:
                     new_sources.append(source)
+                else:
+                    print(self['name'], source)
 
             if not new_sources:
                 del self[self._KEYS.SOURCES]
