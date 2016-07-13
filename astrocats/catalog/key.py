@@ -106,7 +106,7 @@ class Key(str):
         """
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None,
+    def __init__(self, name, type=None, no_source=False,
                  listable=False, compare=True, **kwargs):
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
@@ -117,6 +117,7 @@ class Key(str):
         self.type = type
         self.listable = listable
         self.compare = compare
+        self.no_source = no_source
         for key, val in kwargs.items():
             setattr(self, key, val)
 
