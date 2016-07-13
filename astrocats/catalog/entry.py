@@ -678,7 +678,9 @@ class Entry(OrderedDict):
                               x in self[self._KEYS.SOURCES]]
             source_list = []
             for key in self.keys():
-                if key.no_source:
+                # if self._KEYS.get_key_by_name(key).no_source:
+                if (key in [self._KEYS.NAME, self._KEYS.SCHEMA,
+                            self._KEYS.SOURCES, self._KEYS.ERRORS]):
                     continue
                 for item in self[key]:
                     source_list += item[item._KEYS.SOURCE].split(',')
