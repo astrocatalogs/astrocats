@@ -13,7 +13,7 @@ from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-                                     entry_to_filename)
+                                     entry_to_filename, is_integer)
 
 
 class ENTRY(KeyCollection):
@@ -317,6 +317,11 @@ class Entry(OrderedDict):
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
                 self[self._KEYS.NAME]))
+        # Check that source is a list of integers
+        for x in source.split(','):
+            if not is_integer(x):
+                raise ValueError("{}: `source` is comma-delimited list of "
+                                 " integers!".format(self[self._KEYS.NAME]))
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
