@@ -128,7 +128,7 @@ def load_user_config(args, log):
     if not os.path.exists(_CONFIG_PATH):
         err_str = (
             "Configuration file does not exists ({}).\n".format(_CONFIG_PATH) +
-            "Run `astrocats setup` to configure.")
+            "Run `python -m astrocats setup` to configure.")
         log_raise(log, err_str)
 
     config = json.load(open(_CONFIG_PATH, 'r'))
