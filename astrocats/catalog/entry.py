@@ -671,6 +671,29 @@ class Entry(OrderedDict):
             sorted(self[self._KEYS.ALIAS],
                    key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
 
+        if self._KEYS.SOURCES in self:
+            # Remove orphan sources
+            source_aliases = [x[SOURCE.ALIAS] for
+                              x in self[self._KEYS.SOURCES]]
+            source_list = []
+            for key in self.keys():
+                if key in [ENTRY.NAME, ENTRY.SOURCES,
+                           ENTRY.SCHEMA]:
+                    continue
+                for item in self[key]:
+                    source_list += item[item._KEYS.SOURCE].split(',')
+            new_src_list = sorted(list(set(source_aliases)
+                                       .intersection(source_list)))
+            new_sources = []
+            for source in self[self._KEYS.SOURCES]:
+                if source[SOURCE.ALIAS] in new_src_list:
+                    new_sources.append(source)
+
+            if not new_sources:
+                del self[self._KEYS.SOURCES]
+
+            self[self._KEYS.SOURCES] = new_sources
+
     def save(self, bury=False, final=False):
         """Write entry to JSON file in the proper location.
 
