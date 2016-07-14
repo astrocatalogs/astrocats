@@ -3,12 +3,8 @@
 import json
 from .digits import round_sig
 
-__all__ = ['dict_to_pretty_string', 'entry_to_filename', 'rep_chars',
+__all__ = ['dict_to_pretty_string', 'rep_chars',
            'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8']
-
-
-def entry_to_filename(name):
-    return name.replace('/', '_')
 
 
 def rep_chars(string, chars, rep=''):

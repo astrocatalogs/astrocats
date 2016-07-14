@@ -12,8 +12,7 @@ from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-                                     entry_to_filename)
+from astrocats.catalog.utils import alias_priority, dict_to_pretty_string
 
 
 class ENTRY(KeyCollection):
@@ -120,7 +119,7 @@ class Entry(OrderedDict):
         """Return the path that this Entry should be saved to.
         """
         self._log.debug("_get_save_path(): {}".format(self.name()))
-        filename = entry_to_filename(self[self._KEYS.NAME])
+        filename = self.get_filename(self[self._KEYS.NAME])
 
         # Put non-SNe in the boneyard
         if bury:
@@ -365,6 +364,13 @@ class Entry(OrderedDict):
         return True
 
     @classmethod
+    def get_filename(cls, name):
+        """Convert from an `Entry` name into an appropriate filename.
+        """
+        fname = name.replace('/', '_')
+        return fname
+
+    @classmethod
     def init_from_file(cls, catalog, name=None, path=None, clean=False):
         """Construct a new `Entry` instance from an input file.
 
@@ -406,7 +412,7 @@ class Entry(OrderedDict):
         else:
             repo_paths = catalog.PATHS.get_repo_output_folders()
             for rep in repo_paths:
-                filename = entry_to_filename(name)
+                filename = cls.get_filename(name)
                 newpath = os.path.join(rep, filename + '.json')
                 if os.path.isfile(newpath):
                     load_path = newpath
