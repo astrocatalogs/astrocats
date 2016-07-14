@@ -26,7 +26,11 @@ class QUANTITY(KeyCollection):
         Unit of measurement associated with this value.
     KIND : STRING
     SOURCE : STRING
-        The name of the 'source' (reference/citation) for this value.
+        The alias number(s) of the 'source(s)' (reference) for this value.
+        NOTE: while source-aliases are integers referring to the actual
+        source-entries, this entry is stored as a *single* string, where
+        numerous souces are stored as a single, comma-separated string.
+        e.g. `Entry[QUANTITY.SOURCE] = '1, 4, 5'`.
 
     """
     # Any
