@@ -148,8 +148,9 @@ class Key(str):
             return False
         elif self.type == KEY_TYPES.STRING:
             # If its a list, check first element
-            if is_list and not isinstance(val[0], str):
-                return False
+            if is_list:
+                if not isinstance(val[0], str):
+                    return False
             # Otherwise, check it
             elif not isinstance(val, str):
                 return False
