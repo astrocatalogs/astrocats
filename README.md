@@ -2,7 +2,7 @@
 
 [![Build Status](https://img.shields.io/travis/astrocatalogs/astrocats.svg)](https://travis-ci.org/astrocatalogs/astrocats)
 [![Coverage Status](https://coveralls.io/repos/github/astrocatalogs/astrocats/badge.svg?branch=master)](https://coveralls.io/github/astrocatalogs/astrocats?branch=master)
-[![Python Version](https://img.shields.io/badge/python-3.3%2C%203.4%2C%203.5-blue.svg)](https://www.python.org)
+[![Python Version](https://img.shields.io/badge/python-3.4%2C%203.5-blue.svg)](https://www.python.org)
 [![Python Version](https://img.shields.io/badge/arXiv-1605.01054-green.svg?style=flat)](http://arxiv.org/abs/1605.01054)
 
 The Astrocats package enables astronomers to construct their own curated catalogs of astronomical data with the intention of producing shareable catalogs of that data in human-readable formats. Astrocats is used by several existing open astronomy catalogs, including:
