@@ -118,7 +118,6 @@ class Entry(OrderedDict):
     def _get_save_path(self, bury=False):
         """Return the path that this Entry should be saved to.
         """
-        self._log.debug("_get_save_path(): {}".format(self.name()))
         filename = self.get_filename(self[self._KEYS.NAME])
 
         # Put non-SNe in the boneyard
