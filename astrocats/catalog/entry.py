@@ -95,6 +95,7 @@ class Entry(OrderedDict):
             Whether or not this instance represents a 'stub' (see above).
 
         """
+        super().__init__()
         self.catalog = catalog
         self.filename = None
         self._log = catalog.log
