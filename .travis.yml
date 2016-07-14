@@ -23,8 +23,8 @@ before_install:
     - export PATH="$HOME/miniconda/bin:$PATH"
     - hash -r
     - conda config --set always_yes yes --set changeps1 no
-    - if [[ "$TRAVIS_PYTHON_VERSION" != "3.3" ]]; then
-          conda update -q conda
+    - if [[ "$TRAVIS_PYTHON_VERSION" != "3.3" ]];
+      then conda update -q conda;
       fi
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
