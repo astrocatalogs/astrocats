@@ -13,7 +13,7 @@ from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-                                     entry_to_filename, is_integer)
+                                     is_integer)
 
 
 class ENTRY(KeyCollection):
