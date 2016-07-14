@@ -31,7 +31,7 @@ class QUANTITY(KeyCollection):
         NOTE: while source-aliases are integers referring to the actual
         source-entries, this entry is stored as a *single* string, where
         numerous souces are stored as a single, comma-separated string.
-        e.g. `Entry[QUANTITY.SOURCE] = '1, 4, 5'`.
+        e.g. ``Entry[QUANTITY.SOURCE] = '1, 4, 5'``.
 
     """
     # Any
