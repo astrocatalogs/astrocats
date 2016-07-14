@@ -17,6 +17,12 @@ class KeyCollection:
     def keys(cls):
         """Return this class's attribute names (those not stating with '_').
 
+        Also retrieves the attributes from base classes, e.g.
+        For: ``ENTRY(KeyCollection)``, ``ENTRY.keys()`` gives just the
+             attributes of `ENTRY` (`KeyCollection` has no keys).
+        For: ``SUPERNOVA(ENTRY)``, ``SUPERNOVA.keys()`` gives both the
+             attributes of `SUPERNOVAE` itself, and of `ENTRY`.
+
         Returns
         -------
         _keys : list of str
@@ -25,10 +31,23 @@ class KeyCollection:
         if cls._keys:
             return cls._keys
 
-        cls._keys = [kk for kk in vars(cls).keys() if not kk.startswith('_')]
-        # WARNING: this only returns the current class keys, doesn't return
-        # inherited class keys
+        # If `_keys` is not yet defined, create it
+        # ----------------------------------------
+        _keys = []
+        # get the keys from all base-classes aswell (when this is subclasses)
+        for mro in cls.__bases__:
+            # base classes below `KeyCollection` (e.g. `object`) wont work
+            if issubclass(mro, KeyCollection):
+                _keys.extend(mro.keys())
 
+        # Get the keys from this particular subclass
+        # Only non-hidden (no '_') and variables (non-callable)
+        _keys.extend([
+            kk for kk in vars(cls).keys()
+            if not kk.startswith('_') and not callable(getattr(cls, kk))
+        ])
+        # Store for future retrieval
+        cls._keys = _keys
         return cls._keys
 
     @classmethod
@@ -38,25 +57,33 @@ class KeyCollection:
         Returns
         -------
         _vals : list of objects
-            List of values of internal attributes.  Order is effectiely random,
-            but should match that returned by `keys()`.
+            List of values of internal attributes.  Order is effectiely random.
         """
         if cls._vals:
             return cls._vals
 
-        cls._vals = [vv for kk, vv in
-                     vars(cls).items() if not kk.startswith('_')]
+        # If `_vals` is not yet defined, create it
+        # ----------------------------------------
+        _vals = []
+        # get the keys from all base-classes aswell (when this is subclasses)
+        for mro in cls.__bases__:
+            # base classes below `KeyCollection` (e.g. `object`) wont work
+            if issubclass(mro, KeyCollection):
+                _vals.extend(mro.vals())
+
+        # Get the keys from this particular subclass
+        # Only non-hidden (no '_') and variables (non-callable)
+        _vals.extend([
+            vv for kk, vv in vars(cls).items()
+            if not kk.startswith('_') and not callable(getattr(cls, kk))
+        ])
+        # Store for future retrieval
+        cls._vals = _vals
         return cls._vals
 
     @classmethod
     def compare_vals(cls):
-        """Return this class's attribute values (those not stating with '_').
-
-        Returns
-        -------
-        _vals : list of objects
-            List of values of internal attributes.  Order is effectiely random,
-            but should match that returned by `keys()`.
+        """
         """
         if cls._compare_vals:
             return cls._compare_vals
