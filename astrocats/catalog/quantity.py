@@ -13,6 +13,10 @@ class QUANTITY(KeyCollection):
         The actual value being stored.
     ERROR : NUMERIC
         The 'error' (uncertainty) associate with the measured value.
+    ERROR_LOWER : NUMERIC
+        The 'error' (uncertainty) in the lower (more negative) direction.
+    ERROR_UPPER : NUMERIC
+        The 'error' (uncertainty) in the upper (more positive) direction.
     PROB : NUMERIC
     UPPER_LIMIT : BOOL
         If this value corresponds to a measured upper-limit.
@@ -29,6 +33,8 @@ class QUANTITY(KeyCollection):
     VALUE = Key('value')
     # Numeric
     ERROR = Key('error', KEY_TYPES.NUMERIC)
+    ERROR_LOWER = Key('error_lower', KEY_TYPES.NUMERIC)
+    ERROR_UPPER = Key('error_upper', KEY_TYPES.NUMERIC)
     PROB = Key('probability', KEY_TYPES.NUMERIC)
     # Booleans
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL)
