@@ -11,22 +11,25 @@ from astrocats.catalog.catdict import CatDict
 
 class PHOTOMETRY(KeyCollection):
     TIME = Key('time', KEY_TYPES.NUMERIC, listable=True)
-    E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
     MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC)
     FLUX = Key('flux', KEY_TYPES.NUMERIC)
     FLUX_DENSITY = Key('fluxdensity', KEY_TYPES.NUMERIC)
     COUNTS = Key('counts', KEY_TYPES.NUMERIC)
+    LUMINOSITY = Key('luminosity', KEY_TYPES.NUMERIC)
 
+    ENERGY = Key('energy', KEY_TYPES.NUMERIC, listable=True)
     FREQUENCY = Key('frequency', KEY_TYPES.NUMERIC, listable=True)
+    WAVELENGTH = Key('wavelength', KEY_TYPES.NUMERIC, listable=True)
     NHMW = Key('nhmw', KEY_TYPES.NUMERIC)
     PHOTON_INDEX = Key('photonindex', KEY_TYPES.NUMERIC)
     UNABSORBED_FLUX = Key('unabsorbedflux', KEY_TYPES.NUMERIC)
-    ENERGY = Key('energy', KEY_TYPES.NUMERIC, listable=True)
 
-    E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC)
+    E_COUNTS = Key('e_counts', KEY_TYPES.NUMERIC)
     E_FLUX = Key('e_flux', KEY_TYPES.NUMERIC)
     E_FLUX_DENSITY = Key('e_fluxdensity', KEY_TYPES.NUMERIC)
-    E_COUNTS = Key('e_counts', KEY_TYPES.NUMERIC)
+    E_LUMINOSITY = Key('e_luminosity', KEY_TYPES.NUMERIC)
+    E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC)
+    E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
     E_UNABSORBED_FLUX = Key('e_unabsorbedflux', KEY_TYPES.NUMERIC)
     E_LOWER_MAGNITUDE = Key('e_lower_magnitude', KEY_TYPES.NUMERIC)
     E_UPPER_MAGNITUDE = Key('e_upper_magnitude', KEY_TYPES.NUMERIC)
@@ -42,12 +45,15 @@ class PHOTOMETRY(KeyCollection):
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
 
     SYSTEM = Key('system', KEY_TYPES.STRING)
+    DESC = Key('description', KEY_TYPES.STRING, compare=False)
 
     U_TIME = Key('u_time', KEY_TYPES.STRING)
     U_FLUX = Key('u_flux', KEY_TYPES.STRING)
     U_FLUX_DENSITY = Key('u_fluxdensity', KEY_TYPES.STRING)
     U_FREQUENCY = Key('u_frequency', KEY_TYPES.STRING)
+    U_WAVELENGTH = Key('u_wavelength', KEY_TYPES.STRING)
     U_ENERGY = Key('u_energy', KEY_TYPES.STRING)
+    U_LUMINOSITY = Key('u_luminosity', KEY_TYPES.STRING)
 
     SCORRECTED = Key('scorrected', KEY_TYPES.BOOL)
     KCORRECTED = Key('kcorrected', KEY_TYPES.BOOL)
@@ -69,7 +75,7 @@ class Photometry(CatDict):
             [PHOTOMETRY.SOURCE],
             [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
             [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
-             PHOTOMETRY.COUNTS]]
+             PHOTOMETRY.COUNTS, PHOTOMETRY.LUMINOSITY]]
         # Note: `_check()` is called at end of `super().__init__`
         super().__init__(parent, **kwargs)
 
