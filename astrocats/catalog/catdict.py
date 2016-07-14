@@ -74,6 +74,7 @@ class CatDict(OrderedDict):
     _REQ_KEY_SETS = []
 
     def __init__(self, parent, key=None, **kwargs):
+        super().__init__
         # Store the parent object (an `Entry` subclass) to which this instance
         # will belong.  e.g. a `Supernova` entry.
         self._parent = parent
