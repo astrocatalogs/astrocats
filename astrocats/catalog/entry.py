@@ -12,40 +12,39 @@ from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-from astrocats.catalog.utils import alias_priority, dict_to_pretty_string
+from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
+                                     entry_to_filename, is_integer)
 
 
 class ENTRY(KeyCollection):
     """General `CatDict` keys which should be relevant for all catalogs.
     """
     ALIAS = Key('alias', KEY_TYPES.STRING)
-    BIBCODE = Key('bibcode', KEY_TYPES.STRING)
     COMOVING_DIST = Key('comovingdist', KEY_TYPES.NUMERIC)
     DEC = Key('dec', KEY_TYPES.STRING)
     DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING)
     DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
-    DISTINCT_FROM = 'distinctfrom'
-    EBV = 'ebv'
-    ERRORS = 'errors'
-    HOST = 'host'
-    HOST_DEC = 'hostdec'
-    HOST_OFFSET_ANG = 'hostoffsetang'
-    HOST_OFFSET_DIST = 'hostoffsetdist'
-    HOST_RA = 'hostra'
-    LUM_DIST = 'lumdist'
-    MAX_ABS_MAG = 'maxabsmag'
-    MAX_APP_MAG = 'maxappmag'
-    MAX_BAND = 'maxband'
-    MAX_DATE = 'maxdate'
-    NAME = Key('name', KEY_TYPES.STRING)
-    PHOTOMETRY = 'photometry'
+    DISTINCT_FROM = Key('distinctfrom', KEY_TYPES.STRING)
+    EBV = Key('ebv', KEY_TYPES.NUMERIC)
+    ERRORS = Key('errors', no_source=True)
+    HOST = Key('host', KEY_TYPES.STRING)
+    HOST_DEC = Key('hostdec', KEY_TYPES.STRING)
+    HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
+    HOST_OFFSET_DIST = Key('hostoffsetdist', KEY_TYPES.NUMERIC)
+    HOST_RA = Key('hostra', KEY_TYPES.STRING)
+    LUM_DIST = Key('lumdist', KEY_TYPES.NUMERIC)
+    MAX_ABS_MAG = Key('maxabsmag', KEY_TYPES.NUMERIC)
+    MAX_APP_MAG = Key('maxappmag', KEY_TYPES.NUMERIC)
+    MAX_BAND = Key('maxband', KEY_TYPES.STRING)
+    MAX_DATE = Key('maxdate', KEY_TYPES.STRING)
+    NAME = Key('name', KEY_TYPES.STRING, no_source=True)
+    PHOTOMETRY = Key('photometry')
     RA = Key('ra', KEY_TYPES.STRING)
     REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC)
-    SCHEMA = 'schema'
-    SOURCES = 'sources'
-    SPECTRA = 'spectra'
-    URL = 'url'
-    VELOCITY = 'velocity'
+    SCHEMA = Key('schema', no_source=True)
+    SOURCES = Key('sources', no_source=True)
+    SPECTRA = Key('spectra')
+    VELOCITY = Key('velocity', KEY_TYPES.NUMERIC)
 
 
 class Entry(OrderedDict):
@@ -303,7 +302,7 @@ class Entry(OrderedDict):
                 self._log.debug("{}: {}".format(key, vals))
                 new_quantities = []
                 for vv in vals:
-                    new_quantities.append(Quantity(self, name=key, **vv))
+                    new_quantities.append(Quantity(self, key=key, **vv))
 
                 self.setdefault(key, []).extend(new_quantities)
 
@@ -317,6 +316,11 @@ class Entry(OrderedDict):
         if source is None:
             raise ValueError("{}: `source` must be provided!".format(
                 self[self._KEYS.NAME]))
+        # Check that source is a list of integers
+        for x in source.split(','):
+            if not is_integer(x):
+                raise ValueError("{}: `source` is comma-delimited list of "
+                                 " integers!".format(self[self._KEYS.NAME]))
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
@@ -482,10 +486,6 @@ class Entry(OrderedDict):
         for item in self.get(self._KEYS.SOURCES, ''):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
-
-        # Set 'alias' number to be one higher than existing length of sources
-        source_obj[SOURCE.ALIAS] = str(
-            len(self.get(self._KEYS.SOURCES, [])) + 1)
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
@@ -677,6 +677,32 @@ class Entry(OrderedDict):
         self[self._KEYS.ALIAS] = list(
             sorted(self[self._KEYS.ALIAS],
                    key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
+
+        if self._KEYS.SOURCES in self:
+            # Remove orphan sources
+            source_aliases = [x[SOURCE.ALIAS] for
+                              x in self[self._KEYS.SOURCES]]
+            source_list = []
+            for key in self.keys():
+                # if self._KEYS.get_key_by_name(key).no_source:
+                if (key in [self._KEYS.NAME, self._KEYS.SCHEMA,
+                            self._KEYS.SOURCES, self._KEYS.ERRORS]):
+                    continue
+                for item in self[key]:
+                    source_list += item[item._KEYS.SOURCE].split(',')
+            new_src_list = sorted(list(set(source_aliases)
+                                       .intersection(source_list)))
+            new_sources = []
+            for source in self[self._KEYS.SOURCES]:
+                if source[SOURCE.ALIAS] in new_src_list:
+                    new_sources.append(source)
+                else:
+                    print(self['name'], source)
+
+            if not new_sources:
+                del self[self._KEYS.SOURCES]
+
+            self[self._KEYS.SOURCES] = new_sources
 
     def save(self, bury=False, final=False):
         """Write entry to JSON file in the proper location.

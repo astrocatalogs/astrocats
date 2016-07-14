@@ -144,12 +144,12 @@ class CatDict(OrderedDict):
 
         # Go over all expected parameters and check equality of each
         for key in self._KEYS.compare_vals():
-
+            kis = key in self
             # If only one object has this parameter, not the same
-            if (key in self) != (key in other):
+            if kis != (key in other):
                 return False
             # If self doesnt have this parameter (and thus neither does), skip
-            if key not in self:
+            if not kis:
                 continue
 
             # Now, both objects have the same parameter, compare them

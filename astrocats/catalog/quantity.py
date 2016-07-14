@@ -2,6 +2,7 @@
 """
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
+from astrocats.catalog.utils import is_number
 
 
 class QUANTITY(KeyCollection):
@@ -81,6 +82,14 @@ class Quantity(CatDict):
                     self[QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
         parent._clean_quantity(self)
+
+        # Check that quantity value matches type after cleaning
+        if (isinstance(self._key, Key) and
+                self._key.type == KEY_TYPES.NUMERIC and not
+                is_number(self[QUANTITY.VALUE])):
+            raise CatDictError(
+                "Value '{}' is not numeric, not adding to '{}'".format(
+                    self[QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
     def sort_func(self, key):
         if key == self._KEYS.VALUE:

@@ -26,6 +26,9 @@ class KeyCollection:
             return cls._keys
 
         cls._keys = [kk for kk in vars(cls).keys() if not kk.startswith('_')]
+        # WARNING: this only returns the current class keys, doesn't return
+        # inherited class keys
+
         return cls._keys
 
     @classmethod
@@ -62,6 +65,17 @@ class KeyCollection:
                              vars(cls).items() if not kk.startswith('_') and
                              vv.compare]
         return cls._compare_vals
+
+    # WARNING: this currently doesn't work because of keys() not returning
+    # superclass keys
+    @classmethod
+    def get_key_by_name(cls, name):
+        for i, key in enumerate(cls.keys()):
+            if name == key:
+                vals = cls.vals()
+                return vals[i]
+        print(name, cls.keys())
+        raise ValueError('Could not find key by name!')
 
 
 class KEY_TYPES(KeyCollection):
@@ -106,7 +120,7 @@ class Key(str):
         """
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None,
+    def __init__(self, name, type=None, no_source=False,
                  listable=False, compare=True, **kwargs):
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
@@ -117,6 +131,7 @@ class Key(str):
         self.type = type
         self.listable = listable
         self.compare = compare
+        self.no_source = no_source
         for key, val in kwargs.items():
             setattr(self, key, val)
 
