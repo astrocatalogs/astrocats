@@ -149,7 +149,7 @@ class Key(str):
 
     def __init__(self, name, type=None, no_source=False,
                  listable=False, compare=True, **kwargs):
-        super().__init__
+        super().__init__()
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
             raise ValueError(
