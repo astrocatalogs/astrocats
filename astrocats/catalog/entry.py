@@ -162,7 +162,7 @@ class Entry(OrderedDict):
     def _clean_quantity(self, quantity):
         """Clean quantity value before it is added to entry.
         """
-        pass
+        return True
 
     def _load_data_from_json(self, fhand, clean=False):
         """FIX: check for overwrite??
@@ -735,6 +735,10 @@ class Entry(OrderedDict):
             sf.write(jsonstring)
 
         return save_name
+
+    def set_preferred_name(self):
+        # Do nothing by default
+        return self.[self._KEYS.name]
 
     def sort_func(self, key):
         """Used to sort keys when writing Entry to JSON format. Should be
