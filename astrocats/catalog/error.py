@@ -15,6 +15,7 @@ class ERROR(KeyCollection):
     # Strings
     UNIT = Key('unit', KEY_TYPES.STRING)
     KIND = Key('kind', KEY_TYPES.STRING)
+    SOURCE = Key('source', KEY_TYPES.STRING)
     SOURCE_KIND = Key('sourcekind', KEY_TYPES.STRING)
 
 

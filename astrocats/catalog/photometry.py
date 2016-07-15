@@ -59,6 +59,7 @@ class PHOTOMETRY(KeyCollection):
     KCORRECTED = Key('kcorrected', KEY_TYPES.BOOL)
     MCORRECTED = Key('mcorrected', KEY_TYPES.BOOL)
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL)
+    LOWER_LIMIT = Key('lowerlimit', KEY_TYPES.BOOL)
     HOST = Key('host', KEY_TYPES.BOOL)
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL)
 

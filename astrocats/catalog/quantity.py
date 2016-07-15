@@ -12,7 +12,7 @@ class QUANTITY(KeyCollection):
     ----------
     VALUE : ANY
         The actual value being stored.
-    ERROR : NUMERIC
+    E_VALUE : NUMERIC
         The 'error' (uncertainty) associate with the measured value.
     E_LOWER_VALUE : NUMERIC
         The 'error' (uncertainty) in the lower (more negative) direction.
@@ -37,7 +37,7 @@ class QUANTITY(KeyCollection):
     # Any
     VALUE = Key('value')
     # Numeric
-    ERROR = Key('error', KEY_TYPES.NUMERIC)
+    E_VALUE = Key('e_value', KEY_TYPES.NUMERIC)
     E_LOWER_VALUE = Key('e_lower_value', KEY_TYPES.NUMERIC)
     E_UPPER_VALUE = Key('e_upper_value', KEY_TYPES.NUMERIC)
     PROB = Key('probability', KEY_TYPES.NUMERIC)

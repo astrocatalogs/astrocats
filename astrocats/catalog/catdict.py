@@ -103,11 +103,13 @@ class CatDict(OrderedDict):
                     key_obj = list(filter(
                         lambda x: x == key, self._KEYS.vals()))[0]
                 else:
-                    self._log.warn('`{}` not in list of keys for `{}`, '
+                    self._log.warn('[{}] `{}` not in list of keys for `{}`, '
                                    'adding anyway as allow unknown keys is '
                                    '`{}`.'.format(
+                                       parent[parent._KEYS.NAME],
                                        key, type(self).__name__,
                                        self._ALLOW_UNKNOWN_KEYS))
+                    print(kwargs)
                     key_obj = Key(key)
 
                 # Handle Special Cases
