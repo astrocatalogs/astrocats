@@ -81,7 +81,7 @@ Data quantities have five standard fields:
 | `e_value` | The error associated with the value | yes
 | `lowerlimit` | Value is a lower limit | yes
 | `upperlimit` | Value is an upper limit | yes
-| `unit` | The unit of the value | yes
+| `u_value` | The unit of the value | yes
 | `kind` | Variant of the quantity | yes
 | `source` | A list of integer aliases to sources for the data | no
 

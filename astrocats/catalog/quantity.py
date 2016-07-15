@@ -23,7 +23,7 @@ class QUANTITY(KeyCollection):
         If this value corresponds to a measured upper-limit.
     DESC : STRING
         Verbal description or notes on a quantity.
-    UNIT : STRING
+    U_VALUE : STRING
         Unit of measurement associated with this value.
     KIND : STRING
     SOURCE : STRING
@@ -46,7 +46,7 @@ class QUANTITY(KeyCollection):
     DERIVED = Key('derived', KEY_TYPES.BOOL)
     # Strings
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
-    UNIT = Key('unit', KEY_TYPES.STRING)
+    U_VALUE = Key('u_value', KEY_TYPES.STRING)
     KIND = Key('kind', KEY_TYPES.STRING)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
 
