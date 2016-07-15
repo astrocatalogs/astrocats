@@ -707,7 +707,7 @@ class Catalog:
             and a `stubs` entry is added
         """
 
-        if (self.current_task.priority > 0 and
+        if (self.current_task.priority >= 0 and
                 self.current_task.priority < self.min_journal_priority):
             return
 
