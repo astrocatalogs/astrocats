@@ -168,7 +168,8 @@ def _second_source(catalog):
     fluxes = wavelengths
     errors = wavelengths
     catalog.entries[name].add_spectrum(
-        'Angstrom', 'erg/s/cm^2/Angstrom', time='12345',
+        'Angstrom', 'erg/s/cm^2/Angstrom', u_errors='erg/s/cm^2/Angstrom',
+        time='12345',
         wavelengths=wavelengths, fluxes=fluxes, errors=errors,
         telescope='OWELTMT', instrument='MOSICE', observer='I. M. Fake',
         observatory='Mt. Everest', survey='Hillary Transient Factory',
