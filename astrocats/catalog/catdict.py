@@ -109,7 +109,6 @@ class CatDict(OrderedDict):
                                        parent[parent._KEYS.NAME],
                                        key, type(self).__name__,
                                        self._ALLOW_UNKNOWN_KEYS))
-                    print(kwargs)
                     key_obj = Key(key)
 
                 # Handle Special Cases
