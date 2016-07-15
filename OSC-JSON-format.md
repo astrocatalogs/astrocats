@@ -176,8 +176,9 @@ And finally for spectra, these fields are used:
 | Field | Value | Optional?
 | :--- | :--- | :---
 | `data` | Nx2 or Nx3 array of wavelengths, fluxes, and (optionally) errors | no
-| `waveunit` | Unit for wavelength | no
-| `fluxunit` | Unit for fluxes | no
+| `u_wavelengths` | Unit for wavelength | no
+| `u_fluxes` | Unit for fluxes | no
+| `u_errors` | Unit for flux errors | no
 | `snr` | Signal to noise ratio | yes
 | `filename` | Name of file spectra was extracted from | yes
 | `deredshifted` | Data is known to have been deredshifted from observer frame | yes

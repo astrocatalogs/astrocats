@@ -21,8 +21,8 @@ class SPECTRUM(KeyCollection):
     TIME = Key('time', KEY_TYPES.NUMERIC, compare=False, listable=True)
 
     FILENAME = Key('filename', KEY_TYPES.STRING)
-    FLUX_UNIT = Key('fluxunit', KEY_TYPES.STRING, compare=False)
-    ERROR_UNIT = Key('fluxunit', KEY_TYPES.STRING, compare=False)
+    U_FLUXES = Key('u_fluxes', KEY_TYPES.STRING, compare=False)
+    U_ERRORS = Key('u_errors', KEY_TYPES.STRING, compare=False)
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
@@ -30,7 +30,7 @@ class SPECTRUM(KeyCollection):
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     U_TIME = Key('u_time', KEY_TYPES.STRING, compare=False)
-    WAVE_UNIT = Key('waveunit', KEY_TYPES.STRING, compare=False)
+    U_WAVELENGTHS = Key('u_wavelengths', KEY_TYPES.STRING, compare=False)
     # Booleans
     DEREDDENED = Key('dereddened', KEY_TYPES.BOOL, compare=False)
     DEREDSHIFTED = Key('deredshifted', KEY_TYPES.BOOL, compare=False)
@@ -48,8 +48,8 @@ class Spectrum(CatDict):
     def __init__(self, parent, **kwargs):
         self._REQ_KEY_SETS = [
             [SPECTRUM.SOURCE, SPECTRUM.FILENAME],
-            [SPECTRUM.FLUX_UNIT, SPECTRUM.FILENAME],
-            [SPECTRUM.WAVE_UNIT, SPECTRUM.FILENAME],
+            [SPECTRUM.U_FLUXES, SPECTRUM.FILENAME],
+            [SPECTRUM.U_WAVELENGTHS, SPECTRUM.FILENAME],
         ]
 
         # FIX: add this back in
@@ -76,11 +76,11 @@ class Spectrum(CatDict):
             errors = self.get(SPECTRUM.ERRORS, None)
             if (errors is not None and
                     max([float(err) for err in errors]) > 0.0):
-                if SPECTRUM.ERROR_UNIT not in self:
+                if SPECTRUM.U_ERRORS not in self:
                     raise ValueError(
                         "Without `{}`,".format(SPECTRUM.DATA) +
                         " but with `{}`,".format(SPECTRUM.ERRORS) +
-                        " `{}` also required".format(SPECTRUM.ERROR_UNIT))
+                        " `{}` also required".format(SPECTRUM.U_ERRORS))
                 data = [trim_str_arr(wavelengths), trim_str_arr(fluxes),
                         trim_str_arr(errors)]
             else:

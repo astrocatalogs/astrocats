@@ -494,8 +494,8 @@ class Entry(OrderedDict):
     def add_spectrum(self, waveunit='', fluxunit='', **kwargs):
         """Add an `Spectrum` instance to this entry.
         """
-        kwargs.update({SPECTRUM.WAVE_UNIT: waveunit,
-                       SPECTRUM.FLUX_UNIT: fluxunit})
+        kwargs.update({SPECTRUM.U_WAVELENGTHS: waveunit,
+                       SPECTRUM.U_FLUXES: fluxunit})
         spec_key = self._KEYS.SPECTRA
         # Make sure that a source is given, and is valid (nor erroneous)
         source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
