@@ -43,6 +43,7 @@ class QUANTITY(KeyCollection):
     PROB = Key('probability', KEY_TYPES.NUMERIC)
     # Booleans
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL)
+    DERIVED = Key('derived', KEY_TYPES.BOOL)
     # Strings
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
     UNIT = Key('unit', KEY_TYPES.STRING)

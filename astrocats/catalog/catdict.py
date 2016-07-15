@@ -2,13 +2,14 @@
 """
 from collections import OrderedDict
 
-from astrocats.catalog.key import KEY_TYPES, KeyCollection
+from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import uniq_cdl
 
 
 class CatDictError(Exception):
     """Special Error class for non-fatal errors raised in CatDict.
     """
+
     def __init__(self, *args, **kwargs):
         # If `warn` is True, then a warning should be issues.  Otherwise ignore
         # completely
@@ -91,30 +92,45 @@ class CatDict(OrderedDict):
         # Iterate over all `_KEYS` parameters, load each if given note that the
         # stored 'values' are the `Key` objects, referred to here with the name
         # 'key'.
-        for key in self._KEYS.vals():
-            # If this key is given, process and store it.
-            if key in kwargs:
+        for key in kwargs.copy():
+            # If we allow unknown keys, or key is in list of known keys,
+            # process and store it.
+            kiv = key in self._KEYS.vals()
+            if self._ALLOW_UNKNOWN_KEYS or kiv:
+                # Load associated Key object if it exists, otherwise construct
+                # a default Key object.
+                if kiv:
+                    key_obj = list(filter(
+                        lambda x: x == key, self._KEYS.vals()))[0]
+                else:
+                    self._log.warn('`{}` not in list of keys for `{}`, '
+                                   'adding anyway as allow unknown keys is '
+                                   '`{}`.'.format(
+                                       key, type(self).__name__,
+                                       self._ALLOW_UNKNOWN_KEYS))
+                    key_obj = Key(key)
+
                 # Handle Special Cases
                 # --------------------
                 # Only keep booleans and strings if they evaluate true.
-                if ((key.type == KEY_TYPES.BOOL or
-                     key.type == KEY_TYPES.STRING) and not kwargs[key]):
+                if ((key_obj.type == KEY_TYPES.BOOL or
+                     key_obj.type == KEY_TYPES.STRING) and not kwargs[key]):
                     del kwargs[key]
                     continue
 
                 # Make sure value is compatible with the 'Key' specification.
-                if not key.check(kwargs[key]):
+                if not key_obj.check(kwargs[key]):
                     # Have the parent log a warning if this is a required key
                     warn = (key in self._req_keys)
                     raise CatDictError(
                         "Value for '{}' is invalid '{}'".format(
-                            key.pretty(), kwargs[key]), warn=warn)
+                            key_obj.pretty(), kwargs[key]), warn=warn)
 
                 # Check and store values
                 # ----------------------
                 # Remove key-value pair from `kwargs` dictionary.
                 value = kwargs.pop(key)
-                value = self._clean_value_for_key(key, value)
+                value = self._clean_value_for_key(key_obj, value)
                 # only store values that are not empty
                 if value:
                     self[key] = value
