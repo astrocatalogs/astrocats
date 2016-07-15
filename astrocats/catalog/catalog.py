@@ -147,6 +147,10 @@ class Catalog:
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
+
+        # Only journal tasks with priorities greater than this number,
+        # unless updating.
+        self.min_journal_priority = 0
         return
 
     def import_data(self):
@@ -310,6 +314,12 @@ class Catalog:
         # second (here normal order)
         tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (
             t[1].priority < 0, t[1].priority, t[1].name)))
+
+        # Find the first task that has "always_journal" set to True
+        for key in tasks:
+            if tasks[key].always_journal:
+                self.min_journal_priority = tasks[key].priority
+                break
 
         names_act = []
         names_inact = []
@@ -696,6 +706,11 @@ class Catalog:
         -   If ``clear == True``, then each element of `entries` is deleted,
             and a `stubs` entry is added
         """
+
+        if (self.current_task.priority > 0 and
+                self.current_task.priority < self.min_journal_priority):
+            return
+
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
         # dict
@@ -774,7 +789,7 @@ class Catalog:
         task_str = self.get_current_task_str()
         for ni, oname in enumerate(pbar(self.entries, task_str)):
             name = self.add_entry(oname)
-            self[name].set_preferred_name()
+            self.entries[name].set_preferred_name()
 
             if self.args.travis and ni > self.TRAVIS_QUERY_LIMIT:
                 break

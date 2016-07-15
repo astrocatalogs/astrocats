@@ -52,6 +52,7 @@ class Task():
         self.repo = None
         self.function = ''
         self.priority = None
+        self.always_journal = False
 
         for key, val in kwargs.items():
             if hasattr(self, key):
@@ -67,10 +68,11 @@ class Task():
     def __repr__(self):
         retval = ("Task(name='{}', nice_name='{}', active='{}', update='{}', "
                   "archived='{}', module='{}', function='{}', repo='{}', "
-                  "priority='{}'")
+                  "priority='{}', always_journal='{}'")
         retval = retval.format(self.name, self.nice_name, self.active,
                                self.update, self.archived, self.module,
-                               self.function, self.repo, self.priority)
+                               self.function, self.repo, self.priority,
+                               self.always_journal)
         return retval
 
     def current_task(self, args):
