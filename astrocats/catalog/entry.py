@@ -738,7 +738,7 @@ class Entry(OrderedDict):
 
     def set_preferred_name(self):
         # Do nothing by default
-        return self.[self._KEYS.name]
+        return self[self._KEYS.name]
 
     def sort_func(self, key):
         """Used to sort keys when writing Entry to JSON format. Should be
