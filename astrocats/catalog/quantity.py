@@ -82,7 +82,11 @@ class Quantity(CatDict):
                 "Value '{}' is empty, not adding to '{}'".format(
                     self[QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
-        parent._clean_quantity(self)
+        if not parent._clean_quantity(self):
+            raise CatDictError(
+                "Value '{}' did not survive cleaning process, not adding to "
+                " '{}'.".format(self[QUANTITY.VALUE],
+                                parent[parent._KEYS.NAME]))
 
         # Check that quantity value matches type after cleaning
         if (isinstance(self._key, Key) and
