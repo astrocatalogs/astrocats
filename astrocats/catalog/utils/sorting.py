@@ -13,11 +13,18 @@ def alias_priority(name, attr):
 
 
 def bib_priority(attr):
+    if attr.get('secondary', False):
+        if 'bibcode' in attr:
+            if is_integer(attr['bibcode'][:4]):
+                return '0%d' % (-3000+int(attr['bibcode'][:4]))
+        if 'name' in attr:
+            return attr['name']
+        return ''
     if 'bibcode' in attr:
         if is_integer(attr['bibcode'][:4]):
-            return -int(attr['bibcode'][:4])
-        return 0
-    return 0
+            return '0%d' % -int(attr['bibcode'][:4])
+        return '0%d' % 0
+    return '0%d' % 0
 
 
 def repo_priority(attr):

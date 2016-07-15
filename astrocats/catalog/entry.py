@@ -698,7 +698,8 @@ class Entry(OrderedDict):
                 if source[SOURCE.ALIAS] in new_src_list:
                     new_sources.append(source)
                 else:
-                    print(self['name'], source)
+                    self._log.info('Removing orphaned source from `{}`.'
+                                   .format(name))
 
             if not new_sources:
                 del self[self._KEYS.SOURCES]
