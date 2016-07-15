@@ -92,6 +92,11 @@ class Photometry(CatDict):
                     if temp is not None:
                         self[bmf] = temp
 
+        if self._KEYS.U_TIME not in self:
+            self._log.info('`{}` not found in photometry, assuming '
+                           ' MJD.'.format(self._KEYS.U_TIME))
+            self[self._KEYS.U_TIME] = 'MJD'
+
         return
 
     def _check(self):

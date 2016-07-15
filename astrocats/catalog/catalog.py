@@ -14,7 +14,8 @@ from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
-                                     read_json_dict, uncompress_gz, uniq_cdl)
+                                     read_json_dict, repo_priority,
+                                     uncompress_gz, uniq_cdl)
 from git import Repo
 from tqdm import tqdm
 
@@ -100,7 +101,8 @@ class Catalog:
             repo_folders += self.repos_dict['output']
             if bones:
                 repo_folders += self.repos_dict['boneyard']
-            repo_folders = list(sorted(set(repo_folders)))
+            repo_folders = list(sorted(list(set(repo_folders)),
+                                       key=lambda key: repo_priority(key)))
             repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
                             for rf in repo_folders]
             return repo_folders

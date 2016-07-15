@@ -3,7 +3,7 @@
 
 from .digits import is_integer
 
-__all__ = ['alias_priority', 'bib_priority']
+__all__ = ['alias_priority', 'bib_priority', 'repo_priority']
 
 
 def alias_priority(name, attr):
@@ -18,3 +18,9 @@ def bib_priority(attr):
             return -int(attr['bibcode'][:4])
         return 0
     return 0
+
+
+def repo_priority(attr):
+    if is_integer(attr[-4:]):
+        return int(attr[-4:])
+    return 1000000000

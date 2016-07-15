@@ -94,6 +94,11 @@ class Spectrum(CatDict):
             if SPECTRUM.ERRORS in self:
                 del self[SPECTRUM.ERRORS]
 
+        if self._KEYS.U_TIME not in self:
+            self._log.info('`{}` not found in spectrum, assuming '
+                           ' MJD.'.format(self._KEYS.U_TIME))
+            self[self._KEYS.U_TIME] = 'MJD'
+
         return
 
     def _check(self):
