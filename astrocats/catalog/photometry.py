@@ -10,8 +10,8 @@ from astrocats.catalog.catdict import CatDict
 
 
 class PHOTOMETRY(KeyCollection):
-    TIME = Key('time', KEY_TYPES.NUMERIC, listable=True)
-    MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC)
+    TIME = Key('time', KEY_TYPES.NUMERIC, listable=True, priority=10)
+    MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC, priority=9)
     FLUX = Key('flux', KEY_TYPES.NUMERIC)
     FLUX_DENSITY = Key('fluxdensity', KEY_TYPES.NUMERIC)
     COUNTS = Key('counts', KEY_TYPES.NUMERIC)
@@ -39,7 +39,7 @@ class PHOTOMETRY(KeyCollection):
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
-    BAND = Key('band', KEY_TYPES.STRING, compare=False)
+    BAND = Key('band', KEY_TYPES.STRING, priority=8)
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)

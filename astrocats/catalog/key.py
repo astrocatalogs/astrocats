@@ -82,14 +82,16 @@ class KeyCollection:
         return cls._vals
 
     @classmethod
-    def compare_vals(cls):
+    def compare_vals(cls, sort=True):
         """Return this class's attribute values (those not stating with '_'),
         but only for attributes with `compare` set to `True`.
 
         Returns
         -------
         _compare_vals : list of objects
-            List of values of internal attributes.  Order is effectiely random.
+            List of values of internal attributes to use when comparing
+            `CatDict` objects. Order sorted by `Key` priority, followed by
+            alphabetical.
         """
         if cls._compare_vals:
             return cls._compare_vals
@@ -101,7 +103,7 @@ class KeyCollection:
         for mro in cls.__bases__:
             # base classes below `KeyCollection` (e.g. `object`) wont work
             if issubclass(mro, KeyCollection):
-                _compare_vals.extend(mro.vals())
+                _compare_vals.extend(mro.compare_vals(sort=False))
 
         # Get the keys from this particular subclass
         # Only non-hidden (no '_') and variables (non-callable)
@@ -110,6 +112,12 @@ class KeyCollection:
             if (not kk.startswith('_') and not callable(getattr(cls, kk)) and
                 vv.compare)
         ])
+
+        # Sort keys based on priority, high priority values first
+        if sort:
+            _compare_vals = sorted(_compare_vals, reverse=True,
+                                   key=lambda key: (key.priority, key.name))
+
         # Store for future retrieval
         cls._compare_vals = _compare_vals
         return cls._compare_vals
@@ -163,13 +171,14 @@ class Key(str):
         a different dictionary to be considered a duplicate.
 
     """
-    def __new__(cls, name, type=None, listable=False, compare=True, **kwargs):
+    def __new__(cls, name, type=None, no_source=False, listable=False,
+                compare=True, priority=0, **kwargs):
         """Construct the underlying str object with `name`.
         """
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None, no_source=False,
-                 listable=False, compare=True, **kwargs):
+    def __init__(self, name, type=None, no_source=False, listable=False,
+                 compare=True, priority=0, **kwargs):
         super().__init__()
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
@@ -181,6 +190,7 @@ class Key(str):
         self.listable = listable
         self.compare = compare
         self.no_source = no_source
+        self.priority = priority
         for key, val in kwargs.items():
             setattr(self, key, val)
 
