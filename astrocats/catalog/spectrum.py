@@ -27,6 +27,7 @@ class SPECTRUM(KeyCollection):
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
+    REDUCER = Key('reducer', KEY_TYPES.STRING, compare=False)
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     U_TIME = Key('u_time', KEY_TYPES.STRING, compare=False)
