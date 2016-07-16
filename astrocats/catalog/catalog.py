@@ -216,8 +216,8 @@ class Catalog:
 
         process = psutil.Process(os.getpid())
         memory = process.memory_info().rss
-        self.log.info('Memory used (MBs): '
-                      '{:,}'.format(memory / 1024. / 1024.))
+        self.log.warning('Memory used (MBs): '
+                         '{:,}'.format(memory / 1024. / 1024.))
         return
 
     def load_task_list(self):
