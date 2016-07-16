@@ -126,12 +126,10 @@ class KeyCollection:
     # superclass keys
     @classmethod
     def get_key_by_name(cls, name):
-        for i, key in enumerate(cls.keys()):
-            if name == key:
-                vals = cls.vals()
-                return vals[i]
-        print(name, cls.keys())
-        raise ValueError('Could not find key by name!')
+        for val in cls.vals():
+            if name == val.name:
+                return val
+        return Key(name)
 
 
 class KEY_TYPES(KeyCollection):

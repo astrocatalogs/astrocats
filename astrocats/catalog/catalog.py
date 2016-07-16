@@ -489,7 +489,7 @@ class Catalog:
                     self.proto._KEYS.ERRORS, []).append(err)
 
         for key in self.entries[fromname].keys():
-            if key in ['schema', 'name', 'sources', 'errors']:
+            if self.entries[fromname]._KEYS.get_key_by_name(key).no_source:
                 continue
             for item in self.entries[fromname][key]:
                 # isd = False
@@ -507,11 +507,11 @@ class Catalog:
 
                 item['source'] = uniq_cdl(nsid)
 
-                if key == 'photometry':
+                if key == ENTRY.PHOTOMETRY:
                     self.entries[destname].add_photometry(**item)
-                elif key == 'spectra':
+                elif key == ENTRY.SPECTRA:
                     self.entries[destname].add_spectrum(**item)
-                elif key == 'errors':
+                elif key == ENTRY.ERRORS:
                     self.entries[destname].add_error(**item)
                 else:
                     self.entries[destname].add_quantity(quantity=key, **item)
@@ -528,7 +528,7 @@ class Catalog:
         source = self.entries[newname].add_source(
             bibcode=bibcode, name=srcname, reference=reference, url=url,
             secondary=secondary, acknowledgment=acknowledgment)
-        self.entries[newname].add_quantity('alias', name, source)
+        self.entries[newname].add_quantity(ENTRY.ALIAS, name, source)
         return newname, source
 
     def merge_duplicates(self):
