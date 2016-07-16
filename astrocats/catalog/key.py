@@ -83,7 +83,13 @@ class KeyCollection:
 
     @classmethod
     def compare_vals(cls):
-        """
+        """Return this class's attribute values (those not stating with '_'),
+        but only for attributes with `compare` set to `True`.
+
+        Returns
+        -------
+        _compare_vals : list of objects
+            List of values of internal attributes.  Order is effectiely random.
         """
         if cls._compare_vals:
             return cls._compare_vals
