@@ -317,7 +317,7 @@ class Catalog:
 
         # Find the first task that has "always_journal" set to True
         for key in tasks:
-            if tasks[key].always_journal:
+            if tasks[key].active and tasks[key].always_journal:
                 self.min_journal_priority = tasks[key].priority
                 break
 
