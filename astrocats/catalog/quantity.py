@@ -35,7 +35,7 @@ class QUANTITY(KeyCollection):
 
     """
     # Any
-    VALUE = Key('value')
+    VALUE = Key('value', priority=10)
     # Numeric
     E_VALUE = Key('e_value', KEY_TYPES.NUMERIC)
     E_LOWER_VALUE = Key('e_lower_value', KEY_TYPES.NUMERIC)
