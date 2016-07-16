@@ -88,9 +88,24 @@ class KeyCollection:
         if cls._compare_vals:
             return cls._compare_vals
 
-        cls._compare_vals = [vv for kk, vv in
-                             vars(cls).items() if not kk.startswith('_') and
-                             vv.compare]
+        # If `_compare_vals` is not yet defined, create it
+        # ----------------------------------------
+        _compare_vals = []
+        # get the keys from all base-classes aswell (when this is subclasses)
+        for mro in cls.__bases__:
+            # base classes below `KeyCollection` (e.g. `object`) wont work
+            if issubclass(mro, KeyCollection):
+                _compare_vals.extend(mro.vals())
+
+        # Get the keys from this particular subclass
+        # Only non-hidden (no '_') and variables (non-callable)
+        _compare_vals.extend([
+            vv for kk, vv in vars(cls).items()
+            if (not kk.startswith('_') and not callable(getattr(cls, kk)) and
+                vv.compare)
+        ])
+        # Store for future retrieval
+        cls._compare_vals = _compare_vals
         return cls._compare_vals
 
     # WARNING: this currently doesn't work because of keys() not returning
