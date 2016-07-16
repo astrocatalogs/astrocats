@@ -256,7 +256,10 @@ class Entry(OrderedDict):
                 len(photoms), photo_key))
             new_photoms = []
             for photo in photoms:
-                new_photoms.append(Photometry(self, **photo))
+                new_dict = self._init_cat_dict(Photometry,
+                                               self._KEYS.PHOTOMETRY, **photo)
+                if new_dict:
+                    new_photoms.append(new_dict)
             # data[photo_key] = new_photoms
             self.setdefault(photo_key, []).extend(new_photoms)
 
@@ -271,7 +274,10 @@ class Entry(OrderedDict):
                 len(spectra), spec_key))
             new_specs = []
             for spec in spectra:
-                new_specs.append(Spectrum(self, **spec))
+                new_dict = self._init_cat_dict(Spectrum, self._KEYS.SPECTRA,
+                                               **spec)
+                if new_dict:
+                    new_specs.append(new_dict)
             # data[spec_key] = new_specs
             self.setdefault(spec_key, []).extend(new_specs)
 
@@ -284,7 +290,9 @@ class Entry(OrderedDict):
                 len(errors), err_key))
             new_errors = []
             for err in errors:
-                new_errors.append(Error(self, **err))
+                new_dict = self._init_cat_dict(Error, self._KEYS.ERRORS, **err)
+                if new_dict:
+                    new_errors.append(new_dict)
             # data[err_key] = new_errors
             self.setdefault(err_key, []).extend(new_errors)
 
@@ -303,7 +311,9 @@ class Entry(OrderedDict):
                 self._log.debug("{}: {}".format(key, vals))
                 new_quantities = []
                 for vv in vals:
-                    new_quantities.append(Quantity(self, key=key, **vv))
+                    new_dict = self._init_cat_dict(Quantity, key, **vv)
+                    if new_dict:
+                        new_quantities.append(new_dict)
 
                 self.setdefault(key, []).extend(new_quantities)
 
