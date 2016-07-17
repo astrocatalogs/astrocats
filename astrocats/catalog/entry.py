@@ -374,6 +374,12 @@ class Entry(OrderedDict):
                 # to augment the old entry
                 return new_entry
 
+        # If this is an alias, add it to the parent catalog's reverse
+        # dictionary linking aliases to names for fast lookup.
+        if key_in_self == self._KEYS.ALIAS:
+            self.catalog.aliases[new_entry[
+                QUANTITY.VALUE]] = self[self._KEYS.NAME]
+
         self.setdefault(key_in_self, []).append(new_entry)
         return True
 
@@ -447,7 +453,7 @@ class Entry(OrderedDict):
         """Add an `Error` instance to this entry.
         """
         kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
+        self._add_cat_dict(Error, quantity, **kwargs)
         return
 
     def add_photometry(self, **kwargs):
@@ -577,9 +583,8 @@ class Entry(OrderedDict):
         # empty list if doesnt exist
         alias_quanta = self.get(self._KEYS.ALIAS, [])
         aliases = [aq[QUANTITY.VALUE] for aq in alias_quanta]
-        name = self[self._KEYS.NAME]
-        if includename and name not in aliases:
-            aliases = [name] + aliases
+        if includename and self[self._KEYS.NAME] not in aliases:
+            aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
 
     def get_entry_text(fname):
