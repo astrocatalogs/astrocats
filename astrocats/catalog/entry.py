@@ -374,6 +374,12 @@ class Entry(OrderedDict):
                 # to augment the old entry
                 return new_entry
 
+        # If this is an alias, add it to the parent catalog's reverse
+        # dictionary linking aliases to names for fast lookup.
+        if key_in_self == self._KEYS.ALIAS:
+            self.catalog.aliases[new_entry[
+                QUANTITY.VALUE]] = self[self._KEYS.NAME]
+
         self.setdefault(key_in_self, []).append(new_entry)
         return True
 

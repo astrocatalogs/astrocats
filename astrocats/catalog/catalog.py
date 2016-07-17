@@ -147,6 +147,7 @@ class Catalog:
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
+        self.aliases = {}
 
         # Only journal tasks with priorities greater than this number,
         # unless updating.
@@ -461,12 +462,19 @@ class Catalog:
         name of matching entry (str) or 'None' if no matches
 
         """
-        for name, entry in self.entries.items():
-            aliases = entry.get_aliases(includename=False)
-            if alias in aliases:
-                if ((ENTRY.DISTINCT_FROM not in entry) or
-                        (alias not in entry[ENTRY.DISTINCT_FROM])):
-                    return name
+        if alias in self.aliases:
+            name = self.aliases[alias]
+            if name in self.entries:
+                return name
+            else:
+                # Name wasn't found, possibly merged or deleted. Now look
+                # really hard.
+                for name, entry in self.entries.items():
+                    aliases = entry.get_aliases(includename=False)
+                    if alias in aliases:
+                        if ((ENTRY.DISTINCT_FROM not in entry) or
+                                (alias not in entry[ENTRY.DISTINCT_FROM])):
+                            return name
 
         return None
 
