@@ -120,12 +120,17 @@ class CatDict(OrderedDict):
                     continue
 
                 # Make sure value is compatible with the 'Key' specification.
+                check_fail = False
                 if not key_obj.check(kwargs[key]):
+                    check_fail = True
+                    self._log.info("Value for '{}' is invalid '{}'".format(
+                        key_obj.pretty(), kwargs[key]))
                     # Have the parent log a warning if this is a required key
-                    warn = (key in self._req_keys)
-                    raise CatDictError(
-                        "Value for '{}' is invalid '{}'".format(
-                            key_obj.pretty(), kwargs[key]), warn=warn)
+                    if key in self._req_keys:
+                        raise CatDictError(
+                            "Value for required key '{}' is invalid "
+                            "'{}'".format(key_obj.pretty(), kwargs[key]),
+                            warn=True)
 
                 # Check and store values
                 # ----------------------
@@ -133,7 +138,7 @@ class CatDict(OrderedDict):
                 value = kwargs.pop(key)
                 value = self._clean_value_for_key(key_obj, value)
                 # only store values that are not empty
-                if value:
+                if value and not check_fail:
                     self[key] = value
 
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
