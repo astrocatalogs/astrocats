@@ -552,13 +552,6 @@ class Entry(OrderedDict):
                 json.dumps(self, indent=2)))
         return
 
-    def clean_entry_name(self, name):
-        """Template method to clean/sanitize an entry name before setting it.
-
-        Should be overridden appropriately in subclasses `Entry` objects.
-        """
-        return name
-
     def clean_internal(self, data=None):
         """Clean input from 'internal', human added data.
 

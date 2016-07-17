@@ -67,7 +67,7 @@ class Quantity(CatDict):
 
         # Aliases not added if in DISTINCT_FROM
         if self._key == parent._KEYS.ALIAS:
-            value = parent.clean_entry_name(self[QUANTITY.VALUE])
+            value = parent.catalog.clean_entry_name(self[QUANTITY.VALUE])
             for df in parent.get(parent._KEYS.DISTINCT_FROM, []):
                 if value == df[QUANTITY.VALUE]:
                     raise CatDictError(

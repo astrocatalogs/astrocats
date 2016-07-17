@@ -527,6 +527,10 @@ class Catalog:
         return
 
     def clean_entry_name(self, name):
+        """Template method to clean/sanitize an entry name before setting it.
+
+        Should be overridden appropriately in subclasses `Catalog` objects.
+        """
         return name
 
     def new_entry(self, name, load=True, delete=True,
@@ -715,7 +719,7 @@ class Catalog:
             and a `stubs` entry is added
         """
 
-        #if (self.current_task.priority >= 0 and
+        # if (self.current_task.priority >= 0 and
         #        self.current_task.priority < self.min_journal_priority):
         #    return
 
