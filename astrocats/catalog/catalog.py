@@ -396,7 +396,7 @@ class Catalog:
                 return newname
 
         # If entry is alias of another entry in `entries`, find and return that
-        match_name = self.find_entry_name_of_alias(self.entries, newname)
+        match_name = self.find_entry_name_of_alias(newname)
         if match_name is not None:
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exists as alias for "
@@ -452,7 +452,7 @@ class Catalog:
         else:
             return name
 
-    def find_entry_name_of_alias(self, entries, alias):
+    def find_entry_name_of_alias(self, alias):
         """Return the first entry name with the given 'alias' included in its
         list of aliases.
 
@@ -461,10 +461,10 @@ class Catalog:
         name of matching entry (str) or 'None' if no matches
 
         """
-        for name, entry in entries.items():
+        for name, entry in self.entries.items():
             aliases = entry.get_aliases()
             if alias in aliases:
-                if ((ENTRY.DISTINCT_FROM not in entry.keys()) or
+                if ((ENTRY.DISTINCT_FROM not in entry) or
                         (alias not in entry[ENTRY.DISTINCT_FROM])):
                     return name
 
@@ -488,7 +488,7 @@ class Catalog:
                 self.entries[destname].setdefault(
                     self.proto._KEYS.ERRORS, []).append(err)
 
-        for key in self.entries[fromname].keys():
+        for key in self.entries[fromname]:
             if self.entries[fromname]._KEYS.get_key_by_name(key).no_source:
                 continue
             for item in self.entries[fromname][key]:
@@ -714,7 +714,7 @@ class Catalog:
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
         # dict
-        for name in list(self.entries.keys()):
+        for name in self.entries:
             if self.args.write_entries:
                 # If this is a stub and we aren't writing stubs, skip
                 if self.entries[name]._stub and not write_stubs:

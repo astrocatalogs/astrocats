@@ -92,16 +92,16 @@ class CatDict(OrderedDict):
         # Iterate over all `_KEYS` parameters, load each if given note that the
         # stored 'values' are the `Key` objects, referred to here with the name
         # 'key'.
+        vals = self._KEYS.vals()
         for key in kwargs.copy():
             # If we allow unknown keys, or key is in list of known keys,
             # process and store it.
-            kiv = key in self._KEYS.vals()
+            kiv = key in vals
             if self._ALLOW_UNKNOWN_KEYS or kiv:
                 # Load associated Key object if it exists, otherwise construct
                 # a default Key object.
                 if kiv:
-                    key_obj = list(filter(
-                        lambda x: x == key, self._KEYS.vals()))[0]
+                    key_obj = vals[vals.index(key)]
                 else:
                     self._log.warn('[{}] `{}` not in list of keys for `{}`, '
                                    'adding anyway as allow unknown keys is '
@@ -163,8 +163,9 @@ class CatDict(OrderedDict):
         # Go over all expected parameters and check equality of each
         for key in self._KEYS.compare_vals():
             kis = key in self
+            kio = key in other
             # If only one object has this parameter, not the same
-            if kis != (key in other):
+            if kis != kio:
                 return False
             # If self doesnt have this parameter (and thus neither does), skip
             if not kis:
