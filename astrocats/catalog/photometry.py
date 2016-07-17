@@ -62,6 +62,8 @@ class PHOTOMETRY(KeyCollection):
     LOWER_LIMIT = Key('lowerlimit', KEY_TYPES.BOOL)
     HOST = Key('host', KEY_TYPES.BOOL)
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL)
+    REST_FRAME = Key('restframe', KEY_TYPES.BOOL)
+    HOST_NH_CORR = Key('hostnhcorr', KEY_TYPES.BOOL)
 
 
 class Photometry(CatDict):
