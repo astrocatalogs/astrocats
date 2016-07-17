@@ -714,7 +714,7 @@ class Catalog:
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
         # dict
-        for name in self.entries:
+        for name in list(self.entries.keys()):
             if self.args.write_entries:
                 # If this is a stub and we aren't writing stubs, skip
                 if self.entries[name]._stub and not write_stubs:
