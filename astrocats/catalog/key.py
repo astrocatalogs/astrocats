@@ -122,8 +122,6 @@ class KeyCollection:
         cls._compare_vals = _compare_vals
         return cls._compare_vals
 
-    # WARNING: this currently doesn't work because of keys() not returning
-    # superclass keys
     @classmethod
     def get_key_by_name(cls, name):
         for val in cls.vals():

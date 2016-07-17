@@ -120,7 +120,7 @@ class Entry(OrderedDict):
         """
         filename = self.get_filename(self[self._KEYS.NAME])
 
-        # Put non-SNe in the boneyard
+        # Put objects that shouldn't belong in this catalog in the boneyard
         if bury:
             outdir = self.catalog.get_repo_boneyard()
 
