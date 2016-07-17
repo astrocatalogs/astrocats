@@ -16,15 +16,15 @@ def bib_priority(attr):
     if attr.get('secondary', False):
         if 'bibcode' in attr:
             if is_integer(attr['bibcode'][:4]):
-                return '0%d' % (-3000+int(attr['bibcode'][:4]))
+                return (-3000+int(attr['bibcode'][:4]), '')
         if 'name' in attr:
-            return attr['name']
-        return ''
+            return (0, attr['name'])
+        return (0, '')
     if 'bibcode' in attr:
         if is_integer(attr['bibcode'][:4]):
-            return '0%d' % -int(attr['bibcode'][:4])
-        return '0%d' % 0
-    return '0%d' % 0
+            return (-int(attr['bibcode'][:4]), '')
+        return (0, '')
+    return (0, '')
 
 
 def repo_priority(attr):

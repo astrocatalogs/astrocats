@@ -374,6 +374,12 @@ class Entry(OrderedDict):
                 # to augment the old entry
                 return new_entry
 
+        # If this is an alias, add it to the parent catalog's reverse
+        # dictionary linking aliases to names for fast lookup.
+        if key_in_self == self._KEYS.ALIAS:
+            self.catalog.aliases[new_entry[
+                QUANTITY.VALUE]] = self[self._KEYS.NAME]
+
         self.setdefault(key_in_self, []).append(new_entry)
         return True
 
@@ -447,7 +453,7 @@ class Entry(OrderedDict):
         """Add an `Error` instance to this entry.
         """
         kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Quantity, quantity, **kwargs)
+        self._add_cat_dict(Error, quantity, **kwargs)
         return
 
     def add_photometry(self, **kwargs):
@@ -537,10 +543,10 @@ class Entry(OrderedDict):
         """Check that the entry has the required fields.
         """
         # Make sure there is a schema key in dict
-        if self._KEYS.SCHEMA not in self.keys():
+        if self._KEYS.SCHEMA not in self:
             self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
         # Make sure there is a name key in dict
-        if (self._KEYS.NAME not in self.keys() or
+        if (self._KEYS.NAME not in self or
                 len(self[self._KEYS.NAME]) == 0):
             raise ValueError("Entry name is empty:\n\t{}".format(
                 json.dumps(self, indent=2)))
@@ -576,7 +582,7 @@ class Entry(OrderedDict):
         """
         # empty list if doesnt exist
         alias_quanta = self.get(self._KEYS.ALIAS, [])
-        aliases = [aq['value'] for aq in alias_quanta]
+        aliases = [aq[QUANTITY.VALUE] for aq in alias_quanta]
         if includename and self[self._KEYS.NAME] not in aliases:
             aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
@@ -635,7 +641,7 @@ class Entry(OrderedDict):
 
         """
         stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
-        if self._KEYS.ALIAS in self.keys():
+        if self._KEYS.ALIAS in self:
             stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
         return stub
 
@@ -694,7 +700,7 @@ class Entry(OrderedDict):
             source_aliases = [x[SOURCE.ALIAS] for
                               x in self[self._KEYS.SOURCES]]
             source_list = []
-            for key in self.keys():
+            for key in self:
                 # if self._KEYS.get_key_by_name(key).no_source:
                 if (key in [self._KEYS.NAME, self._KEYS.SCHEMA,
                             self._KEYS.SOURCES, self._KEYS.ERRORS]):

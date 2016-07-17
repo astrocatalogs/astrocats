@@ -147,6 +147,7 @@ class Catalog:
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
+        self.aliases = {}
 
         # Only journal tasks with priorities greater than this number,
         # unless updating.
@@ -396,7 +397,7 @@ class Catalog:
                 return newname
 
         # If entry is alias of another entry in `entries`, find and return that
-        match_name = self.find_entry_name_of_alias(self.entries, newname)
+        match_name = self.find_entry_name_of_alias(newname)
         if match_name is not None:
             self.log.debug(
                 "`newname`: '{}' (name: '{}') already exists as alias for "
@@ -445,14 +446,14 @@ class Catalog:
         if name not in self.entries:
             # matches = []
             for entry in self.entries:
-                aliases = self.entries[entry].get_aliases()
+                aliases = self.entries[entry].get_aliases(includename=False)
                 if len(aliases) > 1 and name in aliases:
                     return entry
             return name
         else:
             return name
 
-    def find_entry_name_of_alias(self, entries, alias):
+    def find_entry_name_of_alias(self, alias):
         """Return the first entry name with the given 'alias' included in its
         list of aliases.
 
@@ -461,12 +462,19 @@ class Catalog:
         name of matching entry (str) or 'None' if no matches
 
         """
-        for name, entry in entries.items():
-            aliases = entry.get_aliases()
-            if alias in aliases:
-                if ((ENTRY.DISTINCT_FROM not in entry.keys()) or
-                        (alias not in entry[ENTRY.DISTINCT_FROM])):
-                    return name
+        if alias in self.aliases:
+            name = self.aliases[alias]
+            if name in self.entries:
+                return name
+            else:
+                # Name wasn't found, possibly merged or deleted. Now look
+                # really hard.
+                for name, entry in self.entries.items():
+                    aliases = entry.get_aliases(includename=False)
+                    if alias in aliases:
+                        if ((ENTRY.DISTINCT_FROM not in entry) or
+                                (alias not in entry[ENTRY.DISTINCT_FROM])):
+                            return name
 
         return None
 
@@ -488,7 +496,7 @@ class Catalog:
                 self.entries[destname].setdefault(
                     self.proto._KEYS.ERRORS, []).append(err)
 
-        for key in self.entries[fromname].keys():
+        for key in self.entries[fromname]:
             if self.entries[fromname]._KEYS.get_key_by_name(key).no_source:
                 continue
             for item in self.entries[fromname][key]:
@@ -754,7 +762,7 @@ class Catalog:
         if name in self.entries:
             return True
         for ev in self.entries:
-            if name in self.entries[ev].get_aliases():
+            if name in self.entries[ev].get_aliases(includename=False):
                 return True
         return False
 
