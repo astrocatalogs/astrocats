@@ -147,7 +147,6 @@ class Catalog:
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
-        self.aliases = {}
 
         # Only journal tasks with priorities greater than this number,
         # unless updating.
