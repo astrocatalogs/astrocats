@@ -462,14 +462,6 @@ class Catalog:
         name of matching entry (str) or 'None' if no matches
 
         """
-        if alias in self.entries:
-            return alias
-
-        if alias in self.aliases:
-            name = self.aliases[alias]
-            if name in self.entries:
-                return name
-
         for name, entry in self.entries.items():
             aliases = entry.get_aliases(includename=False)
             if alias in aliases:
