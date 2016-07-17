@@ -590,7 +590,7 @@ class Catalog:
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
                     self.log.warning(
-                        "Found single entry with multiple entries "
+                        "Found two entries with common aliases "
                         "('{}' and '{}'), merging.".format(name1, name2))
 
                     load1 = self.proto.init_from_file(
