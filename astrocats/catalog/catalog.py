@@ -24,6 +24,16 @@ from tqdm import tqdm
 
 class Catalog:
     """Object to hold the main catalog dictionary and other catalog globals.
+
+    Attributes
+    ----------
+    OSC_BIBCODE
+    OSC_NAME
+    OSC_URL
+    ADS_BIB_URL
+    TRAVIS_QUERY_LIMIT
+    COMPRESS_ABOVE_FILESIZE
+
     """
 
     OSC_BIBCODE = '2016arXiv160501054G'
@@ -34,7 +44,7 @@ class Catalog:
                    "db_key=ALL&version=1&bibcode=")
 
     TRAVIS_QUERY_LIMIT = 10
-    COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
+    COMPRESS_ABOVE_FILESIZE = 90e6   # bytes
 
     class PATHS:
         """Store and control catalog file-structure information.
@@ -43,20 +53,43 @@ class Catalog:
         -   `repos.json`
         -   `tasks.json`
 
+        Attributes
+        ----------
+        catalog : `astrocats.catalog.catalog.Catalog` (sub)class object
+        catalog_dir : str
+        tasks_dir : str
+        PATH_BASE : str
+        PATH_INPUT : str
+        PATH_OUTPUT : str
+        REPOS_LIST : str
+        TASK_LIST : str
+        repos_dict : dict
+            Dictionary of 'repo-types: repo-lists' key-value pairs.
+            Loaded from `REPOS_LIST` file.
+
+        Methods
+        -------
+        get_all_repo_folders : get a list of paths for all data repositories
+        get_repo_boneyard : get the path of the boneyard repository
+        get_repo_input_folders : get the paths of all input data repositories
+        get_repo_output_file_list : get the paths of all files in output repos
+        get_repo_output_folders : get the paths of all input data repositories
+
         """
 
         def __init__(self, catalog):
             self.catalog = catalog
             this_file = sys.modules[self.__module__].__file__
             self.catalog_dir = os.path.dirname(this_file)
+            self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
             self.PATH_BASE = os.path.join(
                 catalog.args.base_path, self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
-            self.REPOS = os.path.join(self.PATH_INPUT, 'repos.json')
+            self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
-            self.repos_dict = read_json_dict(self.REPOS)
+            self.repos_dict = read_json_dict(self.REPOS_LIST)
             return
 
         def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
@@ -76,14 +109,21 @@ class Catalog:
 
             return files
 
-        def get_repo_output_file_list(self, normal=True, bones=True):
-            """Get a list of all existing output files.
-
-            These are the files deleted in the `delete_old_entry_files` task.
+        def get_all_repo_folders(self, boneyard=True):
+            """Get the full paths of all data repositories.
             """
-            repo_folders = self.get_repo_output_folders()
-            return self._get_repo_file_list(
-                repo_folders, normal=normal, bones=bones)
+            all_repos = self.get_repo_input_folders()
+            all_repos.extend(self.get_repo_output_folders(bones=boneyard))
+            return all_repos
+
+        def get_repo_boneyard(self):
+            bone_path = self.repos_dict['boneyard']
+            try:
+                bone_path = bone_path[0]
+            except TypeError:
+                pass
+            bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
+            return bone_path
 
         def get_repo_input_folders(self):
             """Get the full paths of the input data repositories.
@@ -95,6 +135,15 @@ class Catalog:
             repo_folders = [os.path.join(self.PATH_INPUT, rf)
                             for rf in repo_folders]
             return repo_folders
+
+        def get_repo_output_file_list(self, normal=True, bones=True):
+            """Get a list of all existing output files.
+
+            These are the files deleted in the `delete_old_entry_files` task.
+            """
+            repo_folders = self.get_repo_output_folders()
+            return self._get_repo_file_list(
+                repo_folders, normal=normal, bones=bones)
 
         def get_repo_output_folders(self, bones=True):
             """Get the full paths of the output data repositories.
@@ -108,22 +157,6 @@ class Catalog:
             repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
                             for rf in repo_folders]
             return repo_folders
-
-        def get_repo_boneyard(self):
-            bone_path = self.repos_dict['boneyard']
-            try:
-                bone_path = bone_path[0]
-            except TypeError:
-                pass
-            bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
-            return bone_path
-
-        def get_all_repo_folders(self, boneyard=True):
-            """Get the full paths of all data repositories.
-            """
-            all_repos = self.get_repo_input_folders()
-            all_repos.extend(self.get_repo_output_folders(bones=boneyard))
-            return all_repos
 
     class SCHEMA:
         HASH = ''
@@ -139,7 +172,7 @@ class Catalog:
         self.PATHS = self.PATHS(self)
 
         # Load repos dictionary (required)
-        self.repos_dict = read_json_dict(self.PATHS.REPOS)
+        self.repos_dict = read_json_dict(self.PATHS.REPOS_LIST)
         self.clone_repos()
 
         # Create empty `entries` collection
@@ -245,18 +278,13 @@ class Catalog:
             e.g. [0, 2, 10, -10, -1].
         """
 
-        # Make sure appropriate command-line arguments are used
-
         # Dont allow both a 'min' and 'max' task priority
         if ((self.args.min_task_priority is not None and
              self.args.max_task_priority is not None)):
             raise ValueError("Can only use *either* 'min' *or* 'max' priority")
 
         # Load tasks data from input json file
-        def_task_list_filename = self.PATHS.TASK_LIST
-        self.log.debug(
-            "Loading task-list from '{}'".format(def_task_list_filename))
-        data = json.load(open(def_task_list_filename, 'r'))
+        tasks, task_names = self._load_task_list_from_file()
 
         # Make sure 'active' modification lists are all valid
         args_lists = [self.args.args_task_list,
@@ -265,15 +293,11 @@ class Catalog:
         for arglist, lname in zip(args_lists, args_names):
             if arglist is not None:
                 for tname in arglist:
-                    if tname not in data.keys():
+                    if tname not in task_names:
                         raise ValueError(
                             "Value '{}' in '{}' list does not match"
                             " any tasks".format(tname, lname))
 
-        # Create `Task` objects for each element in the tasks data file
-        tasks = {}
-        for key, val in data.items():
-            tasks[key] = Task(name=key, **val)
 
         # Process min/max priority specification ('None' if none given)
         min_priority = _get_task_priority(tasks, self.args.min_task_priority)
@@ -350,6 +374,21 @@ class Catalog:
                        ", ".join(nn for nn in names_inact))
         return tasks
 
+    def _load_task_list_from_file(self):
+        """
+        """
+        def_task_list_filename = self.PATHS.TASK_LIST
+        self.log.debug(
+            "Loading task-list from '{}'".format(def_task_list_filename))
+        data = json.load(open(def_task_list_filename, 'r'))
+        # Create `Task` objects for each element in the tasks data file
+        tasks = {}
+        task_names = []
+        for key, val in data.items():
+            tasks[key] = Task(name=key, **val)
+            task_names.append(key)
+        return tasks, task_names
+
     def save_caches(self):
         return
 
@@ -365,7 +404,7 @@ class Catalog:
             *Absolute* path specification of each target repository.
 
         """
-        for repo in pbar(all_repos):
+        for repo in all_repos:
             if not os.path.isdir(repo):
                 try:
                     repo_name = os.path.split(repo)[-1]
@@ -404,10 +443,19 @@ class Catalog:
             sha_beg = subprocess.getoutput(git_comm)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
+            # Get files that should be added, compress and check sizes
+            add_files = self._prep_git_add_file_list(
+                repo, self.COMPRESS_ABOVE_FILESIZE)
+            self.log.info("Found {} Files to add.".format(len(add_files)))
+            if len(add_files) == 0:
+                continue
+
             try:
                 # Add all files in the repository directory tree
-                git_comm = ["git", "add", "-A"]
-                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                git_comm = ["git", "add"]
+                git_comm.extend(add_files)
+                _call_command_in_repo(git_comm, repo, self.log,
+                                      fail=True, log_flag=False)
 
                 # Commit these files
                 commit_msg = "'push' - adding all files."
@@ -929,6 +977,80 @@ class Catalog:
 
         return url_txt
 
+    def _prep_git_add_file_list(self, repo, size_limit,
+                                fail=True, file_types=None):
+        """Get a list of files which should be added to the given repository.
+
+        Notes
+        -----
+        * Finds files in the *root* of the given repository path.
+        * If `file_types` is given, only use those file types.
+        * If an uncompressed file is above the `size_limit`, it is compressed.
+        * If a compressed file is above the file limit, an error is raised
+          (if `fail = True`) or it is skipped (if `fail == False`).
+
+        Arguments
+        ---------
+        repo : str
+            Path to repository
+        size_limit : scalar
+        fail : bool
+            Raise an error if a compressed file is still above the size limit.
+        file_types : list of str or None
+            Exclusive list of file types to add. 'None' to add all filetypes.
+
+        """
+        add_files = []
+        if file_types is None:
+            file_patterns = ['*']
+        else:
+            self.log.error(
+                "WARNING: uncertain behavior with specified file types!")
+            file_patterns = ['*.' + ft for ft in file_types]
+
+        # Construct glob patterns for each file-type
+        file_patterns = [os.path.join(repo, fp) for fp in file_patterns]
+        for pattern in file_patterns:
+            file_list = glob(pattern)
+            for ff in file_list:
+                fsize = os.path.getsize(ff)
+                fname = str(ff)
+                comp_failed = False
+                # If the found file is too large
+                if fsize > size_limit:
+                    self.log.debug("File '{}' size '{}' MB.".format(
+                        fname, fsize/1028/1028))
+                    # If the file is already compressed... fail or skip
+                    if ff.endswith('.gz'):
+                        self.log.error(
+                            "File '{}' is already compressed.".format(fname))
+                        comp_failed = True
+                    # Not yet compressed - compress it
+                    else:
+                        fname = compress_gz(fname)
+                        fsize = os.path.getsize(fname)
+                        self.log.info(
+                            "Compressed to '{}', size '{}' MB".format(
+                                fname, fsize/1028/1028))
+                        # If still too big, fail or skip
+                        if fsize > size_limit:
+                            comp_failed = True
+
+                # If compressed file is too large, skip file or raise error
+                if comp_failed:
+                    # Raise an error
+                    if fail:
+                        raise RuntimeError(
+                            "File '{}' cannot be added!".format(fname))
+                    # Skip file without adding it
+                    self.log.info("Skipping file.")
+                    continue
+
+                # If everything is good, add file to list
+                add_files.append(fname)
+
+        return add_files
+
 
 def _get_task_priority(tasks, task_priority):
     """Get the task `priority` corresponding to the given `task_priority`.
@@ -948,7 +1070,7 @@ def _get_task_priority(tasks, task_priority):
     raise ValueError("Unrecognized task priority '{}'".format(task_priority))
 
 
-def _call_command_in_repo(comm, repo, log, fail=False):
+def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """Use `subprocess` to call a command in a certain (repo) directory.
 
     Logs the output (both `stderr` and `stdout`) to the log, and checks the
@@ -959,12 +1081,17 @@ def _call_command_in_repo(comm, repo, log, fail=False):
     exception `subprocess.CalledProcessError`: if the command fails
 
     """
-    log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.run(comm, cwd=repo)
+    if log_flag:
+        log.debug("Running '{}'.".format(" ".join(comm)))
+    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if retval.stderr is not None:
-        log.error(retval.stderr)
+        err_msg = retval.stderr.decode('ascii').strip().splitlines()
+        for em in err_msg:
+            log.error(em)
     if retval.stdout is not None:
-        log.info(retval.stdout)
+        out_msg = retval.stdout.decode('ascii').strip().splitlines()
+        for om in out_msg:
+            log.info(om)
     # Raises an error if the command failed.
     if fail:
         retval.check_returncode()

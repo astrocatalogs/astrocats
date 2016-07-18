@@ -742,6 +742,9 @@ class Entry(OrderedDict):
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
 
+        if not os.path.exists(save_name):
+            raise RuntimeError("File '{}' was not saved!".format(save_name))
+
         return save_name
 
     def set_preferred_name(self):

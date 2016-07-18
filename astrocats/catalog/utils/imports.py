@@ -35,6 +35,20 @@ def read_json_arr(filename):
 
 
 def compress_gz(fname):
+    """Compress the file with the given name and delete the uncompressed file.
+
+    The compressed filename is simply the input filename with '.gz' appended.
+
+    Arguments
+    ---------
+    fname : str
+        Name of the file to compress and delete.
+
+    Returns
+    -------
+    comp_fname : str
+        Name of the compressed file produced.  Equal to `fname + '.gz'`.
+    """
     import shutil
     import gzip
     comp_fname = fname + '.gz'
