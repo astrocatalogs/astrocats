@@ -38,4 +38,3 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 - The code has been completely restructured from a single `import.py` script to load and create the supernovae catalog, into two separate packages (and corresponding repositories): [astrocatalogs/AstroCats](https://github.com/astrocatalogs/astrocats), and the supernova-specific [astrocatalogs/Supernovae](https://github.com/astrocatalogs/supernovae).
 - This package, `astrocats`, contains the core machinery for creating any general, astronomical catalog.  In particular, the `astrocats/catalog` directory contains the base set of classes which provide all of the desired functionality.
-- A basic [AstroCats - wiki](https://github.com/astrocatalogs/astrocats/wiki) has been created with descriptions of the code structure, and how to develop individual catalogs using the **AstroCats** framework.
