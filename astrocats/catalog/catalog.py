@@ -997,6 +997,7 @@ class Catalog:
         if file_types is None:
             file_patterns = ['*']
         else:
+            self.log.error("WARNING: uncertain behavior with")
             file_patterns = ['*.' + ft for ft in file_types]
 
         # Construct glob patterns for each file-type
