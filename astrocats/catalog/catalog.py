@@ -751,8 +751,9 @@ class Catalog:
                             name, save_name))
                         # FIX: use subprocess
                         outdir, filename = os.path.split(save_name)
-                        filename = filename.split('.')[:-1]
-                        os.system('cd ' + outdir + '; git rm ' + filename +
+                        filename = filename.split('.')[0]
+                        os.system('cd ' + outdir + '; git rm --cached ' +
+                                  filename +
                                   '.json; git add -f ' + filename +
                                   '.json.gz; cd ' + self.PATHS.PATH_BASE)
 
