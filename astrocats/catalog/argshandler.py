@@ -18,6 +18,13 @@ class ArgsHandler:
         elif args.subcommand == 'push':
             self.log.info("Running 'push'.")
             catalog.git_add_commit_push_all_repos()
+        elif args.subcommand == 'analyze':
+            self.log.info("Running 'analyze'.")
+            from .analyzer import Analysis
+            # Create an `Analysis` instance
+            lysis = Analysis(catalog, self.log)
+            # Pass the command-line arguments to run.
+            lysis.analyze(args)
 
         return
 
