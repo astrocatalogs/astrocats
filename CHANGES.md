@@ -27,6 +27,12 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 ### Current ###
 
+- Added a new `Analysis` class in [astrocats/catalog/analysis.py](https://github.com/astrocatalogs/astrocats/blob/master/astrocats/catalog/analysis.py).
+    - Basic 'count' functionality to report the number of files and tasks in each catalog.
+- Added subcommands for git repositories in [astrocats/catalog/catalog.py](https://github.com/astrocatalogs/astrocats/blob/master/astrocats/catalog/catalog.py).
+    - The 'push' subcommand can now be used to add, commit and push all data files in each data repository.  This works in all installed catalogs.
+
+
 <a name='v0.2.0'>
 ### v0.2.0 - 2016/07/18 ###
 
