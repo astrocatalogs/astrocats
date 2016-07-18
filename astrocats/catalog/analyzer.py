@@ -143,7 +143,7 @@ class Analysis:
             f_str += ", ".join("{} {}".format(name, num) for name, num in
                                zip(self._COUNT_FILE_TYPES, n_type))
             f_str += ", "
-        f_str += "{} other; {} ignored)".format(n_oth, n_ign)
+        f_str += "other {}; {} ignored)".format(n_oth, n_ign)
         return f_str
 
     def _count_files_by_type(self, path, pattern, ignore=True):
