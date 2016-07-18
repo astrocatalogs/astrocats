@@ -7,7 +7,7 @@ class ArgsHandler:
 
     def __init__(self, log):
         self.log = log
-        parser = self.setup_argparse()
+        parser = self._setup_argparse()
         self.parser = parser
         return
 
@@ -42,7 +42,7 @@ class ArgsHandler:
 
         return args
 
-    def setup_argparse(self):
+    def _setup_argparse(self):
         """Create `argparse` instance, and setup with appropriate parameters.
         """
         parser = argparse.ArgumentParser(
@@ -52,13 +52,15 @@ class ArgsHandler:
             description='valid subcommands', dest='subcommand')
 
         # Add the 'import' command, and related arguments
-        self.add_parser_arguments_import(subparsers)
-
+        self._add_parser_arguments_import(subparsers)
         # Add the 'push' command, and related arguments
-        self.add_parser_arguments_push(subparsers)
+        self._add_parser_arguments_push(subparsers)
+        # Add the 'analyze' command, and related arguments
+        self._add_parser_arguments_analyze(subparsers)
+
         return parser
 
-    def add_parser_arguments_import(self, subparsers):
+    def _add_parser_arguments_import(self, subparsers):
         """Create parser for 'import' subcommand, and associated arguments.
         """
         import_pars = subparsers.add_parser(
@@ -111,11 +113,20 @@ class ArgsHandler:
 
         return import_pars
 
-    def add_parser_arguments_push(self, subparsers):
+    def _add_parser_arguments_push(self, subparsers):
         """Create a parser for the 'import' subcommand.
         """
         push_pars = subparsers.add_parser(
             "push",
             help="Add all files to data repositories, commit, and push.")
+
+        return push_pars
+
+    def _add_parser_arguments_analyze(self, subparsers):
+        """Create a parser for the 'analyze' subcommand.
+        """
+        push_pars = subparsers.add_parser(
+            "analyze",
+            help="Perform basic analysis on this catalog.")
 
         return push_pars
