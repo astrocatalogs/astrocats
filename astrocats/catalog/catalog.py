@@ -4,12 +4,14 @@ import codecs
 import importlib
 import json
 import os
+import subprocess
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
 
 import psutil
+from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
@@ -84,7 +86,7 @@ class Catalog:
                 repo_folders, normal=normal, bones=bones)
 
         def get_repo_input_folders(self):
-            """
+            """Get the full paths of the input data repositories.
             """
             repo_folders = []
             repo_folders += self.repos_dict['external']
@@ -95,7 +97,7 @@ class Catalog:
             return repo_folders
 
         def get_repo_output_folders(self, bones=True):
-            """
+            """Get the full paths of the output data repositories.
             """
             repo_folders = []
             repo_folders += self.repos_dict['output']
@@ -116,6 +118,13 @@ class Catalog:
             bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
             return bone_path
 
+        def get_all_repo_folders(self, boneyard=True):
+            """Get the full paths of all data repositories.
+            """
+            all_repos = self.get_repo_input_folders()
+            all_repos.extend(self.get_repo_output_folders(bones=boneyard))
+            return all_repos
+
     class SCHEMA:
         HASH = ''
         URL = ''
@@ -125,18 +134,6 @@ class Catalog:
         self.args = args
         self.log = log
         self.proto = Entry
-
-        # # Load a logger object
-        # # Determine verbosity ('None' means use default)
-        # log_stream_level = None
-        # if args.debug:
-        #     log_stream_level = logger.DEBUG
-        # elif args.verbose:
-        #     log_stream_level = logger.INFO
-        #
-        # # Destination of log-file ('None' means no file)
-        # self.log = logger.get_logger(
-        #     stream_level=log_stream_level, tofile=args.log_filename)
 
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
@@ -152,6 +149,24 @@ class Catalog:
         # Only journal tasks with priorities greater than this number,
         # unless updating.
         self.min_journal_priority = 0
+
+        # Store version information
+        # -------------------------
+        # git `SHA` of this directory (i.e. a sub-catalog)
+        my_path = self.PATHS.catalog_dir
+        catalog_sha = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], cwd=my_path)
+        catalog_sha = catalog_sha.decode('ascii').strip()
+        # Git SHA of `astrocats`
+        parent_path = os.path.join(my_path, os.pardir)
+        astrocats_sha = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], cwd=parent_path)
+        astrocats_sha = astrocats_sha.decode('ascii').strip()
+        # Name of this class (if subclassed)
+        my_name = type(self).__name__
+        self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}".format(
+            __version__, astrocats_sha, my_name, catalog_sha)
+
         return
 
     def import_data(self):
@@ -369,6 +384,51 @@ class Catalog:
 
     def clone_repos(self):
         self._clone_repos([])
+
+    def git_add_commit_push_all_repos(self):
+        """Add all files in each data repository tree, commit, push.
+
+        Creates a commit message based on the current catalog version info.
+
+        If either the `git add` or `git push` commands fail, an error will be
+        raised.  Currently, if `commit` fails an error *WILL NOT* be raised
+        because the `commit` command will return a nonzero exit status if
+        there are no files to add... which we dont want to raise an error.
+        FIX: improve the error checking on this.
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_comm = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_comm)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            try:
+                # Add all files in the repository directory tree
+                git_comm = ["git", "add", "-A"]
+                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+
+                # Commit these files
+                commit_msg = "'push' - adding all files."
+                commit_msg = "{} : {}".format(self._version_long, commit_msg)
+                self.log.info(commit_msg)
+                git_comm = ["git", "commit", "-am", commit_msg]
+                _call_command_in_repo(git_comm, repo, self.log)
+
+                # Add all files in the repository directory tree
+                git_comm = ["git", "push"]
+                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+            except Exception as err:
+                try:
+                    git_comm = ["git", "reset", "HEAD"]
+                    _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                except:
+                    pass
+
+                raise err
+
+        return
 
     def add_entry(self, name, load=True, delete=True):
         """Find an existing entry in, or add a new one to, the `entries` dict.
@@ -886,3 +946,26 @@ def _get_task_priority(tasks, task_priority):
             return tasks[task_priority].priority
 
     raise ValueError("Unrecognized task priority '{}'".format(task_priority))
+
+
+def _call_command_in_repo(comm, repo, log, fail=False):
+    """Use `subprocess` to call a command in a certain (repo) directory.
+
+    Logs the output (both `stderr` and `stdout`) to the log, and checks the
+    return codes to make sure they're valid.  Raises error if not.
+
+    Raises
+    ------
+    exception `subprocess.CalledProcessError`: if the command fails
+
+    """
+    log.debug("Running '{}'.".format(" ".join(comm)))
+    retval = subprocess.run(comm, cwd=repo)
+    if retval.stderr is not None:
+        log.error(retval.stderr)
+    if retval.stdout is not None:
+        log.info(retval.stdout)
+    # Raises an error if the command failed.
+    if fail:
+        retval.check_returncode()
+    return
