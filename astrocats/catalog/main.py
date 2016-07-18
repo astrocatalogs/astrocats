@@ -6,8 +6,6 @@ import argparse
 def main(args, clargs, log):
     from .catalog import Catalog
 
-    # Load tidal disruption-specific command-line argumenets
-    # (adding them to existing settings)
     args = load_command_line_args(args=args, clargs=clargs)
     if args is None:
         return
@@ -17,6 +15,9 @@ def main(args, clargs, log):
     if args.subcommand == 'import':
         log.info("Running `importer`.")
         catalog.import_data()
+    elif args.subcommand == 'push':
+        log.info("Running 'push'.")
+        catalog.git_add_commit_push_all_repos()
 
     return
 
@@ -25,19 +26,37 @@ def load_command_line_args(args=None, clargs=None):
     """Load and parse command-line arguments.
     """
 
-    parser = argparse.ArgumentParser(prog='catalog',
-                                     description='Parent Catalog class '
-                                     'for astrocats.')
+    parser = argparse.ArgumentParser(
+        prog='catalog',  description='Parent Catalog class for astrocats.')
 
     subparsers = parser.add_subparsers(
         description='valid subcommands', dest='subcommand')
-    # `import` --- importing tidal disruption data
-    import_pars = subparsers.add_parser("import",
-                                        help="Import data.")
-    return add_parser_arguments(parser, import_pars, args, clargs)
+
+    # Add the 'import' command, and related arguments
+    add_parser_arguments_import(subparsers)
+
+    # Add the 'push' command, and related arguments
+    add_parser_arguments_push(subparsers)
+
+    # Parse All Arguments
+    args = parser.parse_args(args=clargs, namespace=args)
+
+    # Print the help information if no subcommand is given
+    # subcommand is required for operation
+    if args.subcommand is None:
+        parser.print_help()
+        args = None
+
+    return args
 
 
-def add_parser_arguments(parser, import_pars, args, clargs):
+def add_parser_arguments_import(subparsers):
+    """Create a parser for the 'import' subcommand, and associated arguments.
+    """
+    # `import` --- importing data
+    import_pars = subparsers.add_parser(
+        "import", help="Import data.")
+
     import_pars.add_argument('--update', '-u', dest='update',
                              default=False, action='store_true',
                              help='Only update catalog using live sources.')
@@ -78,11 +97,13 @@ def add_parser_arguments(parser, import_pars, args, clargs):
         default=None,
         help='predefined group(s) of tasks to run.')
 
-    args = parser.parse_args(args=clargs, namespace=args)
-    # Print the help information if no subcommand is given
-    # subcommand is required for operation
-    if args.subcommand is None:
-        parser.print_help()
-        args = None
+    return
 
-    return args
+
+def add_parser_arguments_push(subparsers):
+    """Create a parser for the 'import' subcommand, and associated arguments.
+    """
+    push_pars = subparsers.add_parser(
+        "push", help="Add all files to data repositories, commit, and push.")
+
+    return
