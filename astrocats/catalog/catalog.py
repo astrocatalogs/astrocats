@@ -24,6 +24,16 @@ from tqdm import tqdm
 
 class Catalog:
     """Object to hold the main catalog dictionary and other catalog globals.
+
+    Attributes
+    ----------
+    OSC_BIBCODE
+    OSC_NAME
+    OSC_URL
+    ADS_BIB_URL
+    TRAVIS_QUERY_LIMIT
+    COMPRESS_ABOVE_FILESIZE
+
     """
 
     OSC_BIBCODE = '2016arXiv160501054G'
@@ -34,7 +44,7 @@ class Catalog:
                    "db_key=ALL&version=1&bibcode=")
 
     TRAVIS_QUERY_LIMIT = 10
-    COMPRESS_ABOVE_FILESIZE = 90000000   # bytes
+    COMPRESS_ABOVE_FILESIZE = 90e6   # bytes
 
     class PATHS:
         """Store and control catalog file-structure information.
@@ -432,6 +442,10 @@ class Catalog:
             git_comm = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_comm)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            # Get files that should be added, compress and check sizes
+            add_files = _prep_git_add_file_list(
+                repo, self.COMPRESS_ABOVE_FILESIZE)
 
             try:
                 # Add all files in the repository directory tree
@@ -956,6 +970,41 @@ class Catalog:
                         self.current_task, filepath))
 
         return url_txt
+
+    def _prep_git_add_file_list(self, repo, size_limit, fail=True, file_types=None):
+        """Get a list of files which should be added to the given repository.
+
+        Notes
+        -----
+        * Finds files in the *root* of the given repository path.
+        * If `file_types` is given, only use those file types.
+        * If an uncompressed file is above the `size_limit`, it is compressed.
+        * If a compressed file is above the file limit, an error is raised
+          (if `fail = True`) or it is skipped (if `fail == False`).
+
+        Arguments
+        ---------
+        repo : str
+            Path to repository
+        size_limit : scalar
+        fail : bool
+            Raise an error if a compressed file is still above the size limit.
+        file_types : list of str or None
+            Exclusive list of file types to add, of 'None' to add all filetypes.
+
+        """
+        add_files = []
+        if file_types is None:
+            file_patterns = ['*']
+        else:
+            file_patterns = ['*.' + ft for ft in file_types]
+
+        # Construct glob patterns for each file-type
+        file_patterns = [os.path.join(repo, fp) for fp in file_patterns]
+        for pattern in file_patterns:
+            file_list = glob(pattern)
+            for ff in file_list:
+                fsize = os.path.getsize(ff)
 
 
 def _get_task_priority(tasks, task_priority):
