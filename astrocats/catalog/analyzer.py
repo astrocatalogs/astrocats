@@ -1,4 +1,11 @@
 """Analyze AstroCats Catalogs.
+
+To-Do
+-----
+* Number of entries with ___ (e.g. spectra)
+* Number of ___ (e.g. spectra) etc.
+
+
 """
 import os
 from glob import glob
