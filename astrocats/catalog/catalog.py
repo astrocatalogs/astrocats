@@ -444,13 +444,18 @@ class Catalog:
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             # Get files that should be added, compress and check sizes
-            add_files = _prep_git_add_file_list(
+            add_files = self._prep_git_add_file_list(
                 repo, self.COMPRESS_ABOVE_FILESIZE)
+            self.log.info("Found {} Files to add.".format(len(add_files)))
+            if len(add_files) == 0:
+                continue
 
             try:
                 # Add all files in the repository directory tree
-                git_comm = ["git", "add", "-A"]
-                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                git_comm = ["git", "add"]
+                git_comm.extend(add_files)
+                _call_command_in_repo(git_comm, repo, self.log,
+                                      fail=True, log_flag=False)
 
                 # Commit these files
                 commit_msg = "'push' - adding all files."
@@ -971,7 +976,8 @@ class Catalog:
 
         return url_txt
 
-    def _prep_git_add_file_list(self, repo, size_limit, fail=True, file_types=None):
+    def _prep_git_add_file_list(self, repo, size_limit,
+                                fail=True, file_types=None):
         """Get a list of files which should be added to the given repository.
 
         Notes
@@ -990,14 +996,15 @@ class Catalog:
         fail : bool
             Raise an error if a compressed file is still above the size limit.
         file_types : list of str or None
-            Exclusive list of file types to add, of 'None' to add all filetypes.
+            Exclusive list of file types to add. 'None' to add all filetypes.
 
         """
         add_files = []
         if file_types is None:
             file_patterns = ['*']
         else:
-            self.log.error("WARNING: uncertain behavior with specified file types!")
+            self.log.error(
+                "WARNING: uncertain behavior with specified file types!")
             file_patterns = ['*.' + ft for ft in file_types]
 
         # Construct glob patterns for each file-type
@@ -1005,24 +1012,41 @@ class Catalog:
         for pattern in file_patterns:
             file_list = glob(pattern)
             for ff in file_list:
-                too_big = False
                 fsize = os.path.getsize(ff)
+                fname = str(ff)
+                comp_failed = False
+                # If the found file is too large
                 if fsize > size_limit:
-                    self.log.debug("File '{}' size '{}' MB.".format(ff, fsize/1028/1028))
-                    # If the file is already compressed...
+                    self.log.debug("File '{}' size '{}' MB.".format(
+                        fname, fsize/1028/1028))
+                    # If the file is already compressed... fail or skip
                     if ff.endswith('.gz'):
-                        self.log.error("File '{}' is already compressed.".format(ff))
-                        too_big = True
-                        # Raise an error
-                        if fail:
-                            raise RuntimeError("File '{}' cannot be added!".format(ff))
-                        # Skip file without adding it
-                        self.log.info("Skipping file.")
-                        continue
-
+                        self.log.error(
+                            "File '{}' is already compressed.".format(fname))
+                        comp_failed = True
+                    # Not yet compressed - compress it
                     else:
-                        comp_name = compress_gz(ff)
+                        fname = compress_gz(fname)
+                        fsize = os.path.getsize(fname)
+                        self.log.info(
+                            "Compressed to '{}', size '{}' MB".format(
+                                fname, fsize/1028/1028))
+                        # If still too big, fail or skip
+                        if fsize > size_limit:
+                            comp_failed = True
 
+                # If compressed file is too large, skip file or raise error
+                if comp_failed:
+                    # Raise an error
+                    if fail:
+                        raise RuntimeError(
+                            "File '{}' cannot be added!".format(fname))
+                    # Skip file without adding it
+                    self.log.info("Skipping file.")
+                    continue
+
+                # If everything is good, add file to list
+                add_files.append(fname)
 
         return add_files
 
@@ -1045,7 +1069,7 @@ def _get_task_priority(tasks, task_priority):
     raise ValueError("Unrecognized task priority '{}'".format(task_priority))
 
 
-def _call_command_in_repo(comm, repo, log, fail=False):
+def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """Use `subprocess` to call a command in a certain (repo) directory.
 
     Logs the output (both `stderr` and `stdout`) to the log, and checks the
@@ -1056,12 +1080,17 @@ def _call_command_in_repo(comm, repo, log, fail=False):
     exception `subprocess.CalledProcessError`: if the command fails
 
     """
-    log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.run(comm, cwd=repo)
+    if log_flag:
+        log.debug("Running '{}'.".format(" ".join(comm)))
+    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if retval.stderr is not None:
-        log.error(retval.stderr)
+        err_msg = retval.stderr.decode('ascii').strip().splitlines()
+        for em in err_msg:
+            log.error(em)
     if retval.stdout is not None:
-        log.info(retval.stdout)
+        out_msg = retval.stdout.decode('ascii').strip().splitlines()
+        for om in out_msg:
+            log.info(om)
     # Raises an error if the command failed.
     if fail:
         retval.check_returncode()
