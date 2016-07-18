@@ -4,10 +4,12 @@ import os
 from glob import glob
 import numpy as np
 
-_IGNORE_FILES = ['LICENSE', 'README.md']
-
 
 class Analysis:
+
+    _IGNORE_FILES = ['LICENSE', 'README.md']
+    # If no specific types should be counted, make this an empty list
+    _COUNT_FILE_TYPES = ['json', 'txt']
 
     def __init__(self, catalog, log):
         """Initialize `Analysis` instance.
@@ -69,43 +71,62 @@ class Analysis:
         self.log.warning("Files:")
         num_files = 0
         repos = self.catalog.PATHS.get_all_repo_folders()
+        num_type = np.zeros(len(self._COUNT_FILE_TYPES))
+        num_ign = 0
         for rep in repos:
             # Get the last portion of the filepath for this repo
             last_path = _get_last_dirs(rep, 2)
             # Get counts for different file types
-            num_json = _count_files_by_type(rep, '*.json')
-            num_txt = _count_files_by_type(rep, '*.txt')
-            num_all = _count_files_by_type(rep, '*')
-            num_oth = num_all - num_json - num_txt
+            n_all = self._count_files_by_type(rep, '*')
+            n_type = np.zeros(len(self._COUNT_FILE_TYPES))
+            for ii, ftype in enumerate(self._COUNT_FILE_TYPES):
+                n_type[ii] = self._count_files_by_type(rep, '*.' + ftype)
             # Get the number of ignored files
             # (total including ignore, minus 'all')
-            num_ign = _count_files_by_type(rep, '*', ignored=True)
-            num_ign -= num_all
-            f_str = "{}: {} ({} json, {} txt, {} other; {} ignored)".format(
-                last_path, num_all, num_json, num_txt, num_oth, num_ign)
+            n_ign = self._count_files_by_type(rep, '*', ignore=False)
+            n_ign -= n_all
+            f_str = self._file_nums_str(n_all, n_type, n_ign)
+            f_str = "{}: {}".format(last_path, f_str)
             self.log.info(f_str)
-            num_files += num_all
+            # Update cumulative counts
+            num_files += n_all
+            num_type += n_type
+            num_ign += n_ign
 
+        f_str = self._file_nums_str(num_files, num_type, num_ign)
+        self.log.warning(f_str)
         return num_files
 
+    def _file_nums_str(self, n_all, n_type, n_ign):
+        # 'other' is the difference between all and named
+        n_oth = n_all - np.sum(n_type)
 
-def _count_files_by_type(path, suffix, ignored=False):
-    """Count files in the given path, with the given pattern.
+        f_str = "{} Files".format(n_all) + " ("
+        if len(n_type):
+            f_str += ", ".join("{} {}".format(name, num) for name, num in
+                               zip(self._COUNT_FILE_TYPES, n_type))
+            f_str += ", "
+        f_str += "{} other; {} ignored)".format(n_oth, n_ign)
+        return f_str
 
-    If `ignored = True` then files in the `_IGNORE_FILES` list are included.
+    def _count_files_by_type(self, path, suffix, ignore=True):
+        """Count files in the given path, with the given pattern.
 
-    Returns
-    -------
-    num_files : int
+        If `ignore = True`, skip files in the `_IGNORE_FILES` list.
 
-    """
-    # Get all files matching the given path and pattern
-    files = glob(os.path.join(path, suffix))
-    # Count the files
-    files = [ff for ff in files
-             if os.path.split(ff)[-1] not in _IGNORE_FILES or ignored]
-    num_files = len(files)
-    return num_files
+        Returns
+        -------
+        num_files : int
+
+        """
+        # Get all files matching the given path and pattern
+        files = glob(os.path.join(path, suffix))
+        # Count the files
+        files = [ff for ff in files
+                 if os.path.split(ff)[-1] not in self._IGNORE_FILES
+                 or not ignore]
+        num_files = len(files)
+        return num_files
 
 
 def _get_last_dirs(path, num=1):
