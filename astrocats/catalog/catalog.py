@@ -268,18 +268,13 @@ class Catalog:
             e.g. [0, 2, 10, -10, -1].
         """
 
-        # Make sure appropriate command-line arguments are used
-
         # Dont allow both a 'min' and 'max' task priority
         if ((self.args.min_task_priority is not None and
              self.args.max_task_priority is not None)):
             raise ValueError("Can only use *either* 'min' *or* 'max' priority")
 
         # Load tasks data from input json file
-        def_task_list_filename = self.PATHS.TASK_LIST
-        self.log.debug(
-            "Loading task-list from '{}'".format(def_task_list_filename))
-        data = json.load(open(def_task_list_filename, 'r'))
+        tasks, task_names = self._load_task_list_from_file()
 
         # Make sure 'active' modification lists are all valid
         args_lists = [self.args.args_task_list,
@@ -288,15 +283,11 @@ class Catalog:
         for arglist, lname in zip(args_lists, args_names):
             if arglist is not None:
                 for tname in arglist:
-                    if tname not in data.keys():
+                    if tname not in task_names:
                         raise ValueError(
                             "Value '{}' in '{}' list does not match"
                             " any tasks".format(tname, lname))
 
-        # Create `Task` objects for each element in the tasks data file
-        tasks = {}
-        for key, val in data.items():
-            tasks[key] = Task(name=key, **val)
 
         # Process min/max priority specification ('None' if none given)
         min_priority = _get_task_priority(tasks, self.args.min_task_priority)
@@ -372,6 +363,21 @@ class Catalog:
         self.log.debug("Inactive Tasks:\n\t" +
                        ", ".join(nn for nn in names_inact))
         return tasks
+
+    def _load_task_list_from_file(self):
+        """
+        """
+        def_task_list_filename = self.PATHS.TASK_LIST
+        self.log.debug(
+            "Loading task-list from '{}'".format(def_task_list_filename))
+        data = json.load(open(def_task_list_filename, 'r'))
+        # Create `Task` objects for each element in the tasks data file
+        tasks = {}
+        task_names = []
+        for key, val in data.items():
+            tasks[key] = Task(name=key, **val)
+            task_names.append(key)
+        return tasks, task_names
 
     def save_caches(self):
         return
