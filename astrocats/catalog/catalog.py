@@ -997,7 +997,7 @@ class Catalog:
         if file_types is None:
             file_patterns = ['*']
         else:
-            self.log.error("WARNING: uncertain behavior with")
+            self.log.error("WARNING: uncertain behavior with specified file types!")
             file_patterns = ['*.' + ft for ft in file_types]
 
         # Construct glob patterns for each file-type
@@ -1005,7 +1005,26 @@ class Catalog:
         for pattern in file_patterns:
             file_list = glob(pattern)
             for ff in file_list:
+                too_big = False
                 fsize = os.path.getsize(ff)
+                if fsize > size_limit:
+                    self.log.debug("File '{}' size '{}' MB.".format(ff, fsize/1028/1028))
+                    # If the file is already compressed...
+                    if ff.endswith('.gz'):
+                        self.log.error("File '{}' is already compressed.".format(ff))
+                        too_big = True
+                        # Raise an error
+                        if fail:
+                            raise RuntimeError("File '{}' cannot be added!".format(ff))
+                        # Skip file without adding it
+                        self.log.info("Skipping file.")
+                        continue
+
+                    else:
+                        comp_name = compress_gz(ff)
+
+
+        return add_files
 
 
 def _get_task_priority(tasks, task_priority):
