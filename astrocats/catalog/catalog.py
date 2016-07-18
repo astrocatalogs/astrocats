@@ -4,6 +4,7 @@ import codecs
 import importlib
 import json
 import os
+import subprocess
 import sys
 import warnings
 from collections import OrderedDict
@@ -84,7 +85,7 @@ class Catalog:
                 repo_folders, normal=normal, bones=bones)
 
         def get_repo_input_folders(self):
-            """
+            """Get the full paths of the input data repositories.
             """
             repo_folders = []
             repo_folders += self.repos_dict['external']
@@ -95,7 +96,7 @@ class Catalog:
             return repo_folders
 
         def get_repo_output_folders(self, bones=True):
-            """
+            """Get the full paths of the output data repositories.
             """
             repo_folders = []
             repo_folders += self.repos_dict['output']
@@ -115,6 +116,13 @@ class Catalog:
                 pass
             bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
             return bone_path
+
+        def get_all_repo_folders(self, boneyard=True):
+            """Get the full paths of all data repositories.
+            """
+            all_repos = self.get_repo_input_folders()
+            all_repos.extend(self.get_repo_output_folders(bones=boneyard))
+            return all_repos
 
     class SCHEMA:
         HASH = ''
@@ -369,6 +377,20 @@ class Catalog:
 
     def clone_repos(self):
         self._clone_repos([])
+
+    def git_commit_push_all_repos(self):
+        """Add all files in each data repository tree, commit, push.
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            log.warning("Repo in: '{}'".fomat(repo))
+            git_comm = ["git", "describe", "--always"]
+            retval = subprocess.run(git_comm, cwd=repo)
+            if retval.returncode != 0:
+                raise RuntimeError("Command '{}' in '{}' failed.".format(
+                    git_comm, repo))
+
+        return
 
     def add_entry(self, name, load=True, delete=True):
         """Find an existing entry in, or add a new one to, the `entries` dict.
