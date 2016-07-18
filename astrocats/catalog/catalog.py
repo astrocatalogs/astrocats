@@ -365,7 +365,7 @@ class Catalog:
             *Absolute* path specification of each target repository.
 
         """
-        for repo in pbar(all_repos, desc='Cloning repositories.'):
+        for repo in all_repos:
             if not os.path.isdir(repo):
                 try:
                     repo_name = os.path.split(repo)[-1]
