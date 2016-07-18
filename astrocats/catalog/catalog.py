@@ -4,13 +4,14 @@ import codecs
 import importlib
 import json
 import os
+import psutil
 import subprocess
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
 
-import psutil
+from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
@@ -134,18 +135,6 @@ class Catalog:
         self.log = log
         self.proto = Entry
 
-        # # Load a logger object
-        # # Determine verbosity ('None' means use default)
-        # log_stream_level = None
-        # if args.debug:
-        #     log_stream_level = logger.DEBUG
-        # elif args.verbose:
-        #     log_stream_level = logger.INFO
-        #
-        # # Destination of log-file ('None' means no file)
-        # self.log = logger.get_logger(
-        #     stream_level=log_stream_level, tofile=args.log_filename)
-
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
 
@@ -160,6 +149,24 @@ class Catalog:
         # Only journal tasks with priorities greater than this number,
         # unless updating.
         self.min_journal_priority = 0
+
+        # Store version information
+        # -------------------------
+        # git `SHA` of this directory (i.e. a sub-catalog)
+        my_path = self.PATHS.catalog_dir
+        catalog_sha = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], cwd=my_path)
+        catalog_sha = catalog_sha.decode('ascii').strip()
+        # Git SHA of `astrocats`
+        parent_path = os.path.join(my_path, os.pardir)
+        astrocats_sha = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], cwd=parent_path)
+        astrocats_sha = astrocats_sha.decode('ascii').strip()
+        # Name of this class (if subclassed)
+        my_name = type(self).__name__
+        self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}".format(
+            __version__, astrocats_sha, my_name, catalog_sha)
+
         return
 
     def import_data(self):
