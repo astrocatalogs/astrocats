@@ -378,12 +378,12 @@ class Catalog:
     def clone_repos(self):
         self._clone_repos([])
 
-    def git_commit_push_all_repos(self):
+    def git_add_commit_push_all_repos(self):
         """Add all files in each data repository tree, commit, push.
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            log.warning("Repo in: '{}'".fomat(repo))
+            self.log.warning("Repo in: '{}'".format(repo))
             git_comm = ["git", "describe", "--always"]
             retval = subprocess.run(git_comm, cwd=repo)
             if retval.returncode != 0:
