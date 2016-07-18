@@ -19,6 +19,7 @@ class SPECTRUM(KeyCollection):
     E_UPPER_TIME = Key('e_upper_time', KEY_TYPES.NUMERIC, compare=False)
     SNR = Key('snr', KEY_TYPES.NUMERIC, compare=False)
     TIME = Key('time', KEY_TYPES.NUMERIC, compare=False, listable=True)
+    REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC, compare=False)
 
     FILENAME = Key('filename', KEY_TYPES.STRING)
     U_FLUXES = Key('u_fluxes', KEY_TYPES.STRING, compare=False)
@@ -28,6 +29,7 @@ class SPECTRUM(KeyCollection):
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     REDUCER = Key('reducer', KEY_TYPES.STRING, compare=False)
+    REDUCTION = Key('reduction', KEY_TYPES.STRING, compare=False)
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     U_TIME = Key('u_time', KEY_TYPES.STRING, compare=False)
