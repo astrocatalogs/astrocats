@@ -36,13 +36,21 @@ class Analysis:
 
     def count(self):
         """Analyze the counts of ...things.
+
+        Returns
+        -------
+        retvals : dict
+            Dictionary of 'property-name: counts' pairs for further processing
+
         """
         self.log.info("Running 'count'")
         retvals = {}
 
+        # Numbers of 'tasks'
         num_tasks = self._count_tasks()
         retvals['num_tasks'] = num_tasks
 
+        # Numbers of 'files'
         num_files = self._count_repo_files()
         retvals['num_files'] = num_files
 
@@ -50,6 +58,12 @@ class Analysis:
 
     def _count_tasks(self):
         """Count the number of tasks, both in the json and directory.
+
+        Returns
+        -------
+        num_tasks : int
+            The total number of all tasks included in the `tasks.json` file.
+
         """
         self.log.warning("Tasks:")
         tasks, task_names = self.catalog._load_task_list_from_file()
@@ -66,7 +80,17 @@ class Analysis:
         return num_tasks
 
     def _count_repo_files(self):
-        """
+        """Count the number of files in the data repositories.
+
+        `_COUNT_FILE_TYPES` are used to determine which file types are checked
+        explicitly.
+        `_IGNORE_FILES` determine which files are ignored in (most) counts.
+
+        Returns
+        -------
+        repo_files : int
+            Total number of (non-ignored) files in all data repositories.
+
         """
         self.log.warning("Files:")
         num_files = 0
@@ -98,6 +122,12 @@ class Analysis:
         return num_files
 
     def _file_nums_str(self, n_all, n_type, n_ign):
+        """Construct a string showing the number of different file types.
+
+        Returns
+        -------
+        f_str : str
+        """
         # 'other' is the difference between all and named
         n_oth = n_all - np.sum(n_type)
 
@@ -109,7 +139,7 @@ class Analysis:
         f_str += "{} other; {} ignored)".format(n_oth, n_ign)
         return f_str
 
-    def _count_files_by_type(self, path, suffix, ignore=True):
+    def _count_files_by_type(self, path, pattern, ignore=True):
         """Count files in the given path, with the given pattern.
 
         If `ignore = True`, skip files in the `_IGNORE_FILES` list.
@@ -120,7 +150,7 @@ class Analysis:
 
         """
         # Get all files matching the given path and pattern
-        files = glob(os.path.join(path, suffix))
+        files = glob(os.path.join(path, pattern))
         # Count the files
         files = [ff for ff in files
                  if os.path.split(ff)[-1] not in self._IGNORE_FILES
@@ -130,6 +160,13 @@ class Analysis:
 
 
 def _get_last_dirs(path, num=1):
+    """Get a path including only the trailing `num` directories.
+
+    Returns
+    -------
+    last_path : str
+
+    """
     head, tail = os.path.split(path)
     last_path = str(tail)
     for ii in range(num):
