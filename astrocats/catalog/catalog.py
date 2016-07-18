@@ -4,13 +4,13 @@ import codecs
 import importlib
 import json
 import os
-import psutil
 import subprocess
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
 
+import psutil
 from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
@@ -387,15 +387,46 @@ class Catalog:
 
     def git_add_commit_push_all_repos(self):
         """Add all files in each data repository tree, commit, push.
+
+        Creates a commit message based on the current catalog version info.
+
+        If either the `git add` or `git push` commands fail, an error will be
+        raised.  Currently, if `commit` fails an error *WILL NOT* be raised
+        because the `commit` command will return a nonzero exit status if
+        there are no files to add... which we dont want to raise an error.
+        FIX: improve the error checking on this.
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
             self.log.warning("Repo in: '{}'".format(repo))
-            git_comm = ["git", "describe", "--always"]
-            retval = subprocess.run(git_comm, cwd=repo)
-            if retval.returncode != 0:
-                raise RuntimeError("Command '{}' in '{}' failed.".format(
-                    git_comm, repo))
+            # Get the initial git SHA
+            git_comm = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_comm)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            try:
+                # Add all files in the repository directory tree
+                git_comm = ["git", "add", "-A"]
+                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+
+                # Commit these files
+                commit_msg = "'push' - adding all files."
+                commit_msg = "{} : {}".format(self._version_long, commit_msg)
+                self.log.info(commit_msg)
+                git_comm = ["git", "commit", "-am", commit_msg]
+                _call_command_in_repo(git_comm, repo, self.log)
+
+                # Add all files in the repository directory tree
+                git_comm = ["git", "push"]
+                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+            except Exception as err:
+                try:
+                    git_comm = ["git", "reset", "HEAD"]
+                    _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                except:
+                    pass
+
+                raise err
 
         return
 
@@ -914,3 +945,26 @@ def _get_task_priority(tasks, task_priority):
             return tasks[task_priority].priority
 
     raise ValueError("Unrecognized task priority '{}'".format(task_priority))
+
+
+def _call_command_in_repo(comm, repo, log, fail=False):
+    """Use `subprocess` to call a command in a certain (repo) directory.
+
+    Logs the output (both `stderr` and `stdout`) to the log, and checks the
+    return codes to make sure they're valid.  Raises error if not.
+
+    Raises
+    ------
+    exception `subprocess.CalledProcessError`: if the command fails
+
+    """
+    log.debug("Running '{}'.".format(" ".join(comm)))
+    retval = subprocess.run(comm, cwd=repo)
+    if retval.stderr is not None:
+        log.error(retval.stderr)
+    if retval.stdout is not None:
+        log.info(retval.stdout)
+    # Raises an error if the command failed.
+    if fail:
+        retval.check_returncode()
+    return
