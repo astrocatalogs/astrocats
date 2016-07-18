@@ -71,14 +71,14 @@ class Analysis:
         self.log.warning("Files:")
         num_files = 0
         repos = self.catalog.PATHS.get_all_repo_folders()
-        num_type = np.zeros(len(self._COUNT_FILE_TYPES))
+        num_type = np.zeros(len(self._COUNT_FILE_TYPES), dtype=int)
         num_ign = 0
         for rep in repos:
             # Get the last portion of the filepath for this repo
             last_path = _get_last_dirs(rep, 2)
             # Get counts for different file types
             n_all = self._count_files_by_type(rep, '*')
-            n_type = np.zeros(len(self._COUNT_FILE_TYPES))
+            n_type = np.zeros(len(self._COUNT_FILE_TYPES), dtype=int)
             for ii, ftype in enumerate(self._COUNT_FILE_TYPES):
                 n_type[ii] = self._count_files_by_type(rep, '*.' + ftype)
             # Get the number of ignored files
