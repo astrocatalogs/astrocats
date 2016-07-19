@@ -36,7 +36,7 @@ script:
     - echo "travis_fold:start:IMPORT Importing data"
     # Run twice to test deleting old entries
     - coverage run -a -m astrocats catalog import -v --min-task-priority test
-    - coverage run -a -m astrocats catalog import -v --min-task-priority test
+    - coverage run -a -m astrocats catalog import -a -v --min-task-priority test
     - echo "travis_fold:end:IMPORT Importing data done"
 #    - echo "travis_fold:start:MAKE Making catalog"
 #    - cd astrocats/supernovae/scripts
