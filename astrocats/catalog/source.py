@@ -5,6 +5,23 @@ from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
 
 class SOURCE(KeyCollection):
+    """`KeyCollection` for the `Source` class.
+
+    Attributes
+    ----------
+    NAME : STRING
+    BIBCODE : STRING
+    URL : STRING
+    ACKNOWLEDGMENT : STRING
+    REFERENCE : STRING
+    ALIAS : NUMERIC
+        Numerical alias (shorthand) for this entry.  Saved as a string (or
+        list of strings), despite being stored as an integer.
+    SECONDARY : BOOL
+        Whether the given source is one which collected data from another,
+        'Primary'-source, from which it actually originated
+
+    """
     # Strings
     NAME = Key('name', KEY_TYPES.STRING)
     BIBCODE = Key('bibcode', KEY_TYPES.STRING)
@@ -18,7 +35,7 @@ class SOURCE(KeyCollection):
 
 
 class Source(CatDict):
-    """
+    """Representation for the source/attribution of a data element.
     """
 
     _KEYS = SOURCE
