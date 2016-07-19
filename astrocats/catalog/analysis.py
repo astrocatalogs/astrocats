@@ -118,7 +118,7 @@ class Analysis:
             n_ign -= n_all
             f_str = self._file_nums_str(n_all, n_type, n_ign)
             f_str = "{}: {}".format(last_path, f_str)
-            self.log.info(f_str)
+            self.log.warning(f_str)
             # Update cumulative counts
             num_files += n_all
             num_type += n_type
