@@ -29,6 +29,23 @@ def do_test(catalog):
     if len(catalog.entries) != 0:
         raise RuntimeError("Run test only with empty catalog.")
 
+    # Test URL retrieve functions
+    # ---------------------------
+    catalog.load_cached_url('http://google.com',
+                            catalog.PATHS.get_repo_output_folders()[0] +
+                            'test.html')
+
+    # Test repo path functions
+    # ------------------------
+    paths = catalog.PATHS.get_all_repo_folders()
+    for path in paths:
+        log.error(path)
+    paths = catalog.PATHS.get_repo_input_folders()
+    for path in paths:
+        log.error(path)
+    boneyard = catalog.PATHS.get_repo_boneyard()
+    log.error(boneyard)
+
     # Create a Fake Entry, with some Fake Data
     # ----------------------------------------
     _first_source(catalog)
@@ -61,6 +78,12 @@ def do_test(catalog):
     # Add entry back catalog to test later tasks
     _first_source(catalog)
     _second_source(catalog)
+
+    # Test some utility functions
+    log.error("Preferred name for 2nd source: " +
+              catalog.get_preferred_name(FAKE_ALIAS_1))
+    log.error("Entry exists? " +
+              str(catalog.entry_exists(FAKE_ALIAS_1)))
 
     # Third source is a duplicate that will be merged
     _third_source(catalog)
@@ -203,16 +226,10 @@ def _second_source(catalog):
 def _third_source(catalog):
     log = catalog.log
 
-    log.error("Calling: ``add_entry('{}')``".format(FAKE_ALIAS_3))
-    name = catalog.add_entry(FAKE_ALIAS_3)
-    log.error("\t `name`: '{}'".format(name))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
-    # Make sure the proper name is returned (instead of the alias)
-
-    log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_2))
-    source = catalog.entries[name].add_source(
-        name=FAKE_NAME_2, bibcode=FAKE_BIBCODE_2)
-    log.error("\t `source`: '{}'".format(source))
+    log.error("Calling: ``new_entry('{}')``".format(FAKE_ALIAS_3))
+    (name, source) = catalog.new_entry(FAKE_ALIAS_3, srcname=FAKE_NAME_2,
+                                       bibcode=FAKE_BIBCODE_2)
+    log.error("\t `name`: '{}', `source`: '{}'".format(name, source))
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
     log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
