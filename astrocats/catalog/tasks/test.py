@@ -17,6 +17,8 @@ FAKE_BIBCODE_2 = '1925Tst...987..654A'
 FAKE_ALIAS_2 = 'PTF-TEST-BA'
 FAKE_REDZ_2 = '0.987'
 
+FAKE_ALIAS_3 = 'SN2020abc'
+
 
 def do_test(catalog):
     log = catalog.log
@@ -59,6 +61,9 @@ def do_test(catalog):
     # Add entry back catalog to test later tasks
     _first_source(catalog)
     _second_source(catalog)
+
+    # Third source is a duplicate that will be merged
+    _third_source(catalog)
 
     return
 
@@ -122,6 +127,17 @@ def _first_source(catalog):
         source=source)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
+    # Add a fake photometric observation with mangled data
+    log.error("Calling: ``add_photometry(...)``")
+    catalog.entries[name].add_photometry(
+        time='oiasjdqw', magnitude='oihqwr', source=source)
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
+    # Add a fake photometric observation without required fields
+    log.error("Calling: ``add_photometry(...)``")
+    catalog.entries[name].add_photometry(e_magnitude='0.01')
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
     log.error("Calling: ``journal_entries()``")
     catalog.journal_entries()
     log.error("\n{}\n".format(repr(catalog.entries[name])))
@@ -181,6 +197,42 @@ def _second_source(catalog):
     catalog.journal_entries()
     log.error("\n{}\n".format(repr(catalog.entries[name])))
     check_stub(catalog, name)
+    return
+
+
+def _third_source(catalog):
+    log = catalog.log
+
+    log.error("Calling: ``add_entry('{}')``".format(FAKE_ALIAS_3))
+    name = catalog.add_entry(FAKE_ALIAS_3)
+    log.error("\t `name`: '{}'".format(name))
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    # Make sure the proper name is returned (instead of the alias)
+
+    log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_2))
+    source = catalog.entries[name].add_source(
+        name=FAKE_NAME_2, bibcode=FAKE_BIBCODE_2)
+    log.error("\t `source`: '{}'".format(source))
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
+    log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
+        TEST_NAME, source))
+    catalog.entries[name].add_quantity(ENTRY.ALIAS, TEST_NAME, source)
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
+    # Add erroroneous redshift, which should cause add_quantity below to fail.
+    log.error("Calling: ``add_error('{}', '{}', '{}')``".format(
+        FAKE_BIBCODE_2, SOURCE.BIBCODE, ENTRY.REDSHIFT))
+    catalog.entries[name].add_error(
+        FAKE_BIBCODE_2, kind=SOURCE.BIBCODE, extra=ENTRY.REDSHIFT)
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
+    log.error("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
+        FAKE_REDZ_2, source))
+    catalog.entries[name].add_quantity(
+        ENTRY.REDSHIFT, FAKE_REDZ_2, source, kind='spectroscopic')
+    log.error("\n{}\n".format(repr(catalog.entries[name])))
+
     return
 
 

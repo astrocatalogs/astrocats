@@ -325,13 +325,14 @@ class Entry(OrderedDict):
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
-            raise ValueError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]))
+            raise CatDictError("{}: `source` must be provided!".format(
+                self[self._KEYS.NAME]), warn=True)
         # Check that source is a list of integers
         for x in source.split(','):
             if not is_integer(x):
-                raise ValueError("{}: `source` is comma-delimited list of "
-                                 " integers!".format(self[self._KEYS.NAME]))
+                raise CatDictError("{}: `source` is comma-delimited list of "
+                                   " integers!".format(self[self._KEYS.NAME]),
+                                   warn=True)
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
@@ -356,10 +357,18 @@ class Entry(OrderedDict):
         doesn't already exist within the Entry.
         """
         # Make sure that a source is given, and is valid (nor erroneous)
-        source = self._check_cat_dict_source(
-            cat_dict_class, key_in_self, **kwargs)
-        if source is None:
-            return False
+        if cat_dict_class != Error:
+            try:
+                source = self._check_cat_dict_source(
+                    cat_dict_class, key_in_self, **kwargs)
+            except CatDictError as err:
+                if err.warn:
+                    self._log.info("'{}' Not adding '{}': '{}'".format(
+                        self[self._KEYS.NAME], key_in_self, str(err)))
+                return False
+
+            if source is None:
+                return False
 
         # Try to create a new instance of this subclass of `CatDict`
         new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
@@ -449,11 +458,11 @@ class Entry(OrderedDict):
 
         return new_entry
 
-    def add_error(self, quantity, value, **kwargs):
+    def add_error(self, value, **kwargs):
         """Add an `Error` instance to this entry.
         """
         kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Error, quantity, **kwargs)
+        self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
         return
 
     def add_photometry(self, **kwargs):
@@ -637,9 +646,24 @@ class Entry(OrderedDict):
         return stub
 
     def is_erroneous(self, field, sources):
-        """Returns True if a quantity is marked as being erroneous. No test is
-        performed by default.
-        """
+        if self._KEYS.ERRORS in self:
+            my_errors = self[self._KEYS.ERRORS]
+            for alias in sources.split(','):
+                source = self.get_source_by_alias(alias)
+                bib_err_values = [err[ERROR.VALUE] for err in my_errors
+                                  if err[ERROR.KIND] == SOURCE.BIBCODE and
+                                  err[ERROR.EXTRA] == field]
+                if (SOURCE.BIBCODE in source and source[SOURCE.BIBCODE] in
+                        bib_err_values):
+                    return True
+
+                name_err_values = [err[ERROR.VALUE] for err in my_errors
+                                   if err[ERROR.KIND] == SOURCE.NAME and
+                                   err[ERROR.EXTRA] == field]
+                if (SOURCE.NAME in source and
+                        source[SOURCE.NAME] in name_err_values):
+                    return True
+
         return False
 
     def name(self):
