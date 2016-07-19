@@ -637,7 +637,7 @@ class Catalog:
     def clean_entry_name(self, name):
         """Template method to clean/sanitize an entry name before setting it.
 
-        Should be overridden appropriately in subclasses `Catalog` objects.
+        Should be overridden appropriately in subclassed `Catalog` objects.
         """
         return name
 
