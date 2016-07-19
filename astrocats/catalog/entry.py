@@ -587,10 +587,11 @@ class Entry(OrderedDict):
             aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
 
-    def get_entry_text(fname):
+    def get_entry_text(self, fname):
         """Retrieve the raw text from a file.
         """
         import gzip
+        print(fname)
         if fname.split('.')[-1] == 'gz':
             with gzip.open(fname, 'rt') as f:
                 filetext = f.read()
