@@ -175,9 +175,9 @@ def load_command_line_args(clargs=None):
         '--travis', '-t',  dest='travis',  default=False, action='store_true',
         help='Run import script in test mode for Travis.')
     parser.add_argument(
-        '--git-depth', dest='git_depth',  default=0,
-        help=('When checking out repos, only check out to this depth '
-              '(default 0 = all levels).'))
+        '--clone-depth', dest='clone_depth',  default=0,
+        help=('When cloning git repos, only clone out to this depth '
+              '(default: 0 = all levels).'))
     parser.add_argument(
         '--log',  dest='log_filename',  default=None,
         help='Filename to which to store logging information.')
