@@ -98,6 +98,7 @@ class Entry(OrderedDict):
         super().__init__()
         self.catalog = catalog
         self.filename = None
+        self.dupe_of = ''
         self._log = catalog.log
         self._stub = stub
         self[self._KEYS.NAME] = name
@@ -386,6 +387,12 @@ class Entry(OrderedDict):
         # If this is an alias, add it to the parent catalog's reverse
         # dictionary linking aliases to names for fast lookup.
         if key_in_self == self._KEYS.ALIAS:
+            # Check if this adding this alias makes us a dupe, if so mark
+            # ourselves as a dupe.
+            if (new_entry[QUANTITY.VALUE] in self.catalog.aliases and
+                self.catalog.aliases[
+                    new_entry[QUANTITY.VALUE]] != self[self._KEYS.NAME]):
+                self.dupe_of = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
             self.catalog.aliases[new_entry[
                 QUANTITY.VALUE]] = self[self._KEYS.NAME]
 
@@ -480,6 +487,10 @@ class Entry(OrderedDict):
             self._append_additional_tags(quantity, source, cat_dict)
             return False
         elif cat_dict:
+            if self.dupe_of:
+                self.catalog.copy_to_entry(self.dupe_of, self[self._KEYS.NAME])
+                del self.catalog[self.dupe_of]
+                self.dupe_of = ''
             return True
 
         return False
