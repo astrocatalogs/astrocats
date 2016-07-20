@@ -411,7 +411,7 @@ class Catalog:
                     self.log.warning(
                         'Cloning "' + repo + '" (only needs to be done ' +
                         'once, may take few minutes per repo).')
-                    Repo.clone_from("git@github.com:astrocatalogs/" +
+                    Repo.clone_from("https://github.com/astrocatalogs/" +
                                     repo_name + ".git", repo,
                                     ({'depth': self.args.git_depth} if
                                      self.args.git_depth > 0 else {}))
@@ -610,7 +610,7 @@ class Catalog:
             for item in self.entries[fromname][key]:
                 # isd = False
                 if 'source' not in item:
-                    ValueError("Item has no source!")
+                    raise ValueError("Item has no source!")
 
                 nsid = []
                 for sid in item['source'].split(','):
@@ -619,7 +619,7 @@ class Catalog:
                         nsid.append(self.entries[destname]
                                     .add_source(**source))
                     else:
-                        ValueError("Couldn't find source alias!")
+                        raise ValueError("Couldn't find source alias!")
 
                 item['source'] = uniq_cdl(nsid)
 

@@ -5,6 +5,7 @@ import os
 from astrocats.catalog.catalog import ENTRY
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.quantity import QUANTITY
+from astrocats.catalog.utils import tprint, tq, pbar_strings
 
 FAKE_ALIAS_1 = 'EN-TEST-AA'
 FAKE_ALIAS_2 = 'PS-TEST-AB'
@@ -24,6 +25,7 @@ FAKE_BIBCODE_3 = '2001PASJ..547..364C'
 FAKE_REDZ_1 = '1.123'
 FAKE_REDZ_2 = '0.987'
 
+
 def do_test(catalog):
     log = catalog.log
     log.error("do_test()")
@@ -39,13 +41,17 @@ def do_test(catalog):
                             catalog.PATHS.get_repo_output_folders()[0] +
                             'test.html')
 
+    log.error("In archive mode? " +
+              str(catalog.current_task.load_archive(catalog.args)))
+
     # Test repo path functions
     # ------------------------
     paths = catalog.PATHS.get_all_repo_folders()
-    for path in paths:
+    for path in tq(paths, currenttask='Test tq progress bar.'):
+        tprint('Test tprint.')
         log.error(path)
     paths = catalog.PATHS.get_repo_input_folders()
-    for path in paths:
+    for path in pbar_strings(paths, desc='Test pbar_strings progress bar.'):
         log.error(path)
     boneyard = catalog.PATHS.get_repo_boneyard()
     log.error(boneyard)
@@ -229,7 +235,7 @@ def _first_event_second_source(catalog):
         wavelengths=wavelengths, fluxes=fluxes, errors=errors,
         telescope='OWELTMT', instrument='MOSICE', observer='I. M. Fake',
         observatory='Mt. Everest', survey='Hillary Transient Factory',
-        source=source)
+        source=source, deredshifted=True)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a duplicate of the above spectrum, shouldn't be added.
@@ -293,7 +299,9 @@ def _second_event(catalog):
     # Add an orphan source
     log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_3))
     source = catalog.entries[name].add_source(
-        name=FAKE_NAME_3, bibcode=FAKE_BIBCODE_3)
+        bibcode=FAKE_BIBCODE_3)
+    source = catalog.entries[name].add_source(
+        name=FAKE_NAME_3)
     log.error("\t `source`: '{}'".format(source))
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 

@@ -32,11 +32,11 @@ install:
 
 # Run test
 script:
-    - python -m astrocats setup
+    - coverage run -a -m astrocats setup
     - echo "travis_fold:start:IMPORT Importing data"
     # Run twice to test deleting old entries
     - coverage run -a -m astrocats catalog import -v --min-task-priority test
-    - coverage run -a -m astrocats catalog import -a
+    - coverage run -a -m astrocats catalog import -a --task-groups meta
     - coverage run -a -m astrocats catalog analyze -v --count
     - echo "travis_fold:end:IMPORT Importing data done"
 #    - echo "travis_fold:start:MAKE Making catalog"
