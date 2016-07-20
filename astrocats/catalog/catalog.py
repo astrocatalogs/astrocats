@@ -610,7 +610,7 @@ class Catalog:
             for item in self.entries[fromname][key]:
                 # isd = False
                 if 'source' not in item:
-                    ValueError("Item has no source!")
+                    raise ValueError("Item has no source!")
 
                 nsid = []
                 for sid in item['source'].split(','):
@@ -619,7 +619,7 @@ class Catalog:
                         nsid.append(self.entries[destname]
                                     .add_source(**source))
                     else:
-                        ValueError("Couldn't find source alias!")
+                        raise ValueError("Couldn't find source alias!")
 
                 item['source'] = uniq_cdl(nsid)
 

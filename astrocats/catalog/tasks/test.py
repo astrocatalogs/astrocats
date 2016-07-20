@@ -230,7 +230,7 @@ def _first_event_second_source(catalog):
         wavelengths=wavelengths, fluxes=fluxes, errors=errors,
         telescope='OWELTMT', instrument='MOSICE', observer='I. M. Fake',
         observatory='Mt. Everest', survey='Hillary Transient Factory',
-        source=source)
+        source=source, deredshifted=True)
     log.error("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a duplicate of the above spectrum, shouldn't be added.

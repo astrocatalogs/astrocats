@@ -6,6 +6,8 @@
         "module": "catalog.tasks.test",
         "function": "do_test",
         "groups": ["meta"],
+        "repo": "input/catalog-test",
+        "always_journal": true,
         "priority": 1
     },
     "merge_duplicates": {
