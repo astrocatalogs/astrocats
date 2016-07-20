@@ -24,6 +24,7 @@ FAKE_BIBCODE_3 = '2001PASJ..547..364C'
 FAKE_REDZ_1 = '1.123'
 FAKE_REDZ_2 = '0.987'
 
+
 def do_test(catalog):
     log = catalog.log
     log.error("do_test()")
