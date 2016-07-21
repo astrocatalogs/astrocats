@@ -3,7 +3,7 @@
 import json
 from .digits import round_sig
 
-__all__ = ['dict_to_pretty_string', 'rep_chars',
+__all__ = ['dict_to_pretty_string', 'rep_chars', 'get_entry_filename',
            'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8']
 
 
