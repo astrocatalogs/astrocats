@@ -95,7 +95,7 @@ class Photometry(CatDict):
                         self[bmf] = temp
 
         # Time unit is necessary for maximum time determination
-        if self._KEYS.U_TIME not in self:
+        if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:
             self._log.info('`{}` not found in photometry, assuming '
                            ' MJD.'.format(self._KEYS.U_TIME))
             self[self._KEYS.U_TIME] = 'MJD'
