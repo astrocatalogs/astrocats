@@ -34,6 +34,9 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 - `astrocats/catalog/entry.py`
     - `Entry.add_alias` [new-function]
         - New method to add aliases to an existing entry after first 'cleaning' the alias name - in the same way as the entry names are cleaned by the containing catalog.  In this way, the stored aliases should be guaranteed (in general) to match the corresponding entry names (and naming styles).
+- `astrocats/catalog/source.py`
+    - `Source.bibcode_from_url` [new-function]
+        - Function extracts the Bibcode from an *ADS-URL* if possible.
 
 <a name='v0.2.0'>
 ### v0.2.0 - 2016/07/18 ###
