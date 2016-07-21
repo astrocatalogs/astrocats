@@ -298,7 +298,6 @@ class Catalog:
                             "Value '{}' in '{}' list does not match"
                             " any tasks".format(tname, lname))
 
-
         # Process min/max priority specification ('None' if none given)
         min_priority = _get_task_priority(tasks, self.args.min_task_priority)
         max_priority = _get_task_priority(tasks, self.args.max_task_priority)
@@ -1083,7 +1082,8 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """
     if log_flag:
         log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
     if retval.stderr is not None:
         err_msg = retval.stderr.decode('ascii').strip().splitlines()
         for em in err_msg:
