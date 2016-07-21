@@ -98,7 +98,7 @@ class Entry(OrderedDict):
         super().__init__()
         self.catalog = catalog
         self.filename = None
-        self.dupe_of = ''
+        self.dupe_of = []
         self._log = catalog.log
         self._stub = stub
         self[self._KEYS.NAME] = name
@@ -165,7 +165,7 @@ class Entry(OrderedDict):
         """
         return True
 
-    def _load_data_from_json(self, fhand, clean=False):
+    def _load_data_from_json(self, fhand, clean=False, merge=True):
         """FIX: check for overwrite??
         """
         self._log.debug("_load_data_from_json(): {}\n\t{}".format(
@@ -187,7 +187,7 @@ class Entry(OrderedDict):
             # `Sources` will be extracted and created from the dict Everything
             # that remains afterwards should be okay to just store to this
             # `Entry`
-            self._convert_odict_to_classes(data, clean=clean)
+            self._convert_odict_to_classes(data, clean=clean, merge=merge)
             if len(data):
                 err_str = ("Remaining entries in `data` after "
                            "`_convert_odict_to_classes`.")
@@ -207,7 +207,7 @@ class Entry(OrderedDict):
         self.check()
         return
 
-    def _convert_odict_to_classes(self, data, clean=False):
+    def _convert_odict_to_classes(self, data, clean=False, merge=True):
         """Convert an OrderedDict into an Entry class or its derivative
         classes.
         """
@@ -255,14 +255,9 @@ class Entry(OrderedDict):
             photoms = data.pop(photo_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(photoms), photo_key))
-            new_photoms = []
             for photo in photoms:
-                new_dict = self._init_cat_dict(Photometry,
-                                               self._KEYS.PHOTOMETRY, **photo)
-                if new_dict:
-                    new_photoms.append(new_dict)
-            # data[photo_key] = new_photoms
-            self.setdefault(photo_key, []).extend(new_photoms)
+                self._add_cat_dict(Photometry,
+                                   self._KEYS.PHOTOMETRY, **photo)
 
         # Handle `spectra`
         # ---------------
@@ -273,14 +268,9 @@ class Entry(OrderedDict):
             spectra = data.pop(spec_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(spectra), spec_key))
-            new_specs = []
             for spec in spectra:
-                new_dict = self._init_cat_dict(Spectrum, self._KEYS.SPECTRA,
-                                               **spec)
-                if new_dict:
-                    new_specs.append(new_dict)
-            # data[spec_key] = new_specs
-            self.setdefault(spec_key, []).extend(new_specs)
+                self._add_cat_dict(Spectrum, self._KEYS.SPECTRA,
+                                   **spec)
 
         # Handle `error`
         # --------------
@@ -289,13 +279,8 @@ class Entry(OrderedDict):
             errors = data.pop(err_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(errors), err_key))
-            new_errors = []
             for err in errors:
-                new_dict = self._init_cat_dict(Error, self._KEYS.ERRORS, **err)
-                if new_dict:
-                    new_errors.append(new_dict)
-            # data[err_key] = new_errors
-            self.setdefault(err_key, []).extend(new_errors)
+                self._add_cat_dict(Error, self._KEYS.ERRORS, **err)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
@@ -310,13 +295,12 @@ class Entry(OrderedDict):
                 if not isinstance(vals, list):
                     vals = [vals]
                 self._log.debug("{}: {}".format(key, vals))
-                new_quantities = []
                 for vv in vals:
-                    new_dict = self._init_cat_dict(Quantity, key, **vv)
-                    if new_dict:
-                        new_quantities.append(new_dict)
+                    self._add_cat_dict(Quantity, key, check_for_dupes=merge,
+                                       **vv)
 
-                self.setdefault(key, []).extend(new_quantities)
+                if merge and self.dupe_of:
+                    self.merge_dupes()
 
         return
 
@@ -353,7 +337,8 @@ class Entry(OrderedDict):
             return None
         return new_entry
 
-    def _add_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+    def _add_cat_dict(self, cat_dict_class, key_in_self, check_for_dupes=True,
+                      **kwargs):
         """Add a CatDict to this Entry if initialization succeeds and it
         doesn't already exist within the Entry.
         """
@@ -377,26 +362,35 @@ class Entry(OrderedDict):
             return False
 
         # Compare this new entry with all previous entries to make sure is new
-        for item in self.get(key_in_self, []):
-            if new_entry.is_duplicate_of(item):
-                item.append_sources_from(new_entry)
-                # Return the entry in case we want to use any additional tags
-                # to augment the old entry
-                return new_entry
+        if cat_dict_class != Error:
+            for item in self.get(key_in_self, []):
+                if new_entry.is_duplicate_of(item):
+                    item.append_sources_from(new_entry)
+                    # Return the entry in case we want to use any additional
+                    # tags to augment the old entry
+                    return new_entry
 
         # If this is an alias, add it to the parent catalog's reverse
         # dictionary linking aliases to names for fast lookup.
         if key_in_self == self._KEYS.ALIAS:
             # Check if this adding this alias makes us a dupe, if so mark
             # ourselves as a dupe.
-            if (new_entry[QUANTITY.VALUE] in self.catalog.aliases and
-                self.catalog.aliases[
-                    new_entry[QUANTITY.VALUE]] != self[self._KEYS.NAME]):
-                self.dupe_of = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
+            if (check_for_dupes and
+                    new_entry[QUANTITY.VALUE] in self.catalog.aliases):
+                possible_dupe = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
+                # print(possible_dupe)
+                if (possible_dupe != self[self._KEYS.NAME] and
+                        possible_dupe in self.catalog.entries):
+                    self.dupe_of.append(possible_dupe)
             self.catalog.aliases[new_entry[
                 QUANTITY.VALUE]] = self[self._KEYS.NAME]
 
         self.setdefault(key_in_self, []).append(new_entry)
+
+        if (key_in_self == self._KEYS.ALIAS and
+                check_for_dupes and self.dupe_of):
+            self.merge_dupes()
+
         return True
 
     @classmethod
@@ -407,7 +401,8 @@ class Entry(OrderedDict):
         return fname
 
     @classmethod
-    def init_from_file(cls, catalog, name=None, path=None, clean=False):
+    def init_from_file(cls, catalog, name=None, path=None, clean=False,
+                       merge=True):
         """Construct a new `Entry` instance from an input file.
 
         The input file can be given explicitly by `path`, or a path will
@@ -461,7 +456,7 @@ class Entry(OrderedDict):
         # Create a new `Entry` instance
         new_entry = cls(catalog, name)
         # Fill it with data from json file
-        new_entry._load_data_from_json(load_path, clean=clean)
+        new_entry._load_data_from_json(load_path, clean=clean, merge=merge)
 
         return new_entry
 
@@ -478,19 +473,30 @@ class Entry(OrderedDict):
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
-    def add_quantity(self, quantity, value, source, **kwargs):
+    def merge_dupes(self):
+        for dupe in self.dupe_of:
+            if dupe in self.catalog.entries:
+                if self.catalog.entries[dupe]._stub:
+                    # merge = False to avoid infinite recursion
+                    self.catalog.load_entry_from_name(dupe, delete=True,
+                                                      merge=False)
+                self.catalog.copy_entry_to_entry(
+                    self.catalog.entries[dupe], self)
+                del self.catalog.entries[dupe]
+        self.dupe_of = []
+
+    def add_quantity(self, quantity, value, source, check_for_dupes=True,
+                     **kwargs):
         """Add an `Quantity` instance to this entry.
         """
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-        cat_dict = self._add_cat_dict(Quantity, quantity, **kwargs)
+        cat_dict = self._add_cat_dict(Quantity, quantity,
+                                      check_for_dupes=check_for_dupes,
+                                      **kwargs)
         if isinstance(cat_dict, CatDict):
             self._append_additional_tags(quantity, source, cat_dict)
             return False
         elif cat_dict:
-            if self.dupe_of:
-                self.catalog.copy_to_entry(self.dupe_of, self[self._KEYS.NAME])
-                del self.catalog[self.dupe_of]
-                self.dupe_of = ''
             return True
 
         return False

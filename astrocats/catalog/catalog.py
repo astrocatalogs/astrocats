@@ -298,7 +298,6 @@ class Catalog:
                             "Value '{}' in '{}' list does not match"
                             " any tasks".format(tname, lname))
 
-
         # Process min/max priority specification ('None' if none given)
         min_priority = _get_task_priority(tasks, self.args.min_task_priority)
         max_priority = _get_task_priority(tasks, self.args.max_task_priority)
@@ -478,6 +477,19 @@ class Catalog:
 
         return
 
+    def load_entry_from_name(self, name, delete=True, merge=True):
+        loaded_entry = self.proto.init_from_file(self, name=name, merge=merge)
+        if loaded_entry is not None:
+            self.entries[name] = loaded_entry
+            self.log.debug(
+                "Added '{}', from '{}', to `self.entries`".format(
+                    name, loaded_entry.filename))
+            # Delete source file, if desired
+            if delete:
+                self._delete_entry_file(entry=loaded_entry)
+            return name
+        return None
+
     def add_entry(self, name, load=True, delete=True):
         """Find an existing entry in, or add a new one to, the `entries` dict.
 
@@ -512,18 +524,11 @@ class Catalog:
                 "'{}'.".format(newname, name, match_name))
             newname = match_name
 
-        # Load Event from file
+        # Load entry from file
         if load:
-            loaded_entry = self.proto.init_from_file(self, name=newname)
-            if loaded_entry is not None:
-                self.entries[newname] = loaded_entry
-                self.log.debug(
-                    "Added '{}', from '{}', to `self.entries`".format(
-                        newname, loaded_entry.filename))
-                # Delete source file, if desired
-                if delete:
-                    self._delete_entry_file(entry=loaded_entry)
-                return newname
+            loaded_name = self.load_entry_from_name(newname, delete=delete)
+            if loaded_name:
+                return loaded_name
 
         # If we match an existing event, return that
         if match_name is not None:
@@ -586,28 +591,34 @@ class Catalog:
 
         return None
 
-    def copy_to_entry(self, fromname, destname):
+    def copy_to_entry_in_catalog(self, fromname, destname):
+        self.copy_entry_to_entry(self.entries[fromname],
+                                 self.entries[destname])
+
+    def copy_entry_to_entry(self, fromentry, destentry):
         """
 
         Used by `merge_duplicates`
         """
-        self.log.info("Copy '{}' to '{}'".format(fromname, destname))
+        self.log.info("Copy entry object '{}' to '{}'"
+                      .format(fromentry[fromentry._KEYS.NAME],
+                              destentry[destentry._KEYS.NAME]))
         newsourcealiases = {}
 
-        if self.proto._KEYS.SOURCES in self.entries[fromname]:
-            for source in self.entries[fromname][self.proto._KEYS.SOURCES]:
+        if self.proto._KEYS.SOURCES in fromentry:
+            for source in fromentry[self.proto._KEYS.SOURCES]:
                 alias = source.pop(SOURCE.ALIAS)
                 newsourcealiases[alias] = source
 
-        if self.proto._KEYS.ERRORS in self.entries[fromname]:
-            for err in self.entries[fromname][self.proto._KEYS.ERRORS]:
-                self.entries[destname].setdefault(
+        if self.proto._KEYS.ERRORS in fromentry:
+            for err in fromentry[self.proto._KEYS.ERRORS]:
+                destentry.setdefault(
                     self.proto._KEYS.ERRORS, []).append(err)
 
-        for key in self.entries[fromname]:
-            if self.entries[fromname]._KEYS.get_key_by_name(key).no_source:
+        for key in fromentry:
+            if fromentry._KEYS.get_key_by_name(key).no_source:
                 continue
-            for item in self.entries[fromname][key]:
+            for item in fromentry[key]:
                 # isd = False
                 if 'source' not in item:
                     raise ValueError("Item has no source!")
@@ -616,7 +627,7 @@ class Catalog:
                 for sid in item['source'].split(','):
                     if sid in newsourcealiases:
                         source = newsourcealiases[sid]
-                        nsid.append(self.entries[destname]
+                        nsid.append(destentry
                                     .add_source(**source))
                     else:
                         raise ValueError("Couldn't find source alias!")
@@ -624,13 +635,14 @@ class Catalog:
                 item['source'] = uniq_cdl(nsid)
 
                 if key == ENTRY.PHOTOMETRY:
-                    self.entries[destname].add_photometry(**item)
+                    destentry.add_photometry(**item)
                 elif key == ENTRY.SPECTRA:
-                    self.entries[destname].add_spectrum(**item)
+                    destentry.add_spectrum(**item)
                 elif key == ENTRY.ERRORS:
-                    self.entries[destname].add_error(**item)
+                    destentry.add_error(**item)
                 else:
-                    self.entries[destname].add_quantity(quantity=key, **item)
+                    destentry.add_quantity(check_for_dupes=False, quantity=key,
+                                           **item)
 
         return
 
@@ -727,11 +739,11 @@ class Catalog:
                                 priority2 += 1
 
                         if priority1 > priority2:
-                            self.copy_to_entry(name2, name1)
+                            self.copy_to_entry_in_catalog(name2, name1)
                             keys.append(name1)
                             del self.entries[name2]
                         else:
-                            self.copy_to_entry(name1, name2)
+                            self.copy_to_entry_in_catalog(name1, name2)
                             keys.append(name2)
                             del self.entries[name1]
                     else:
@@ -1083,7 +1095,8 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """
     if log_flag:
         log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
     if retval.stderr is not None:
         err_msg = retval.stderr.decode('ascii').strip().splitlines()
         for em in err_msg:
