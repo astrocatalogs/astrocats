@@ -48,3 +48,7 @@ def dict_to_pretty_string(odict):
                             indent='\t', separators=(',', ':'),
                             ensure_ascii=False)
     return jsonstring
+
+
+def get_entry_filename(name):
+    return(name.replace('/', '_'))
