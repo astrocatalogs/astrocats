@@ -175,7 +175,7 @@ def load_command_line_args(clargs=None):
         '--travis', '-t',  dest='travis',  default=False, action='store_true',
         help='Run import script in test mode for Travis.')
     parser.add_argument(
-        '--clone-depth', dest='clone_depth',  default=0,
+        '--clone-depth', dest='clone_depth',  default=0, type=int,
         help=('When cloning git repos, only clone out to this depth '
               '(default: 0 = all levels).'))
     parser.add_argument(
