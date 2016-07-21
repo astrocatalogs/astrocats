@@ -6,7 +6,10 @@ from random import randint, seed, shuffle, uniform
 
 from palettable import colorbrewer, cubehelix, wesanderson
 
-__all__ = []
+__all__ = [
+    'bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf',
+    'bandshortaliasf', 'bandwavef', 'bandmetaf'
+]
 
 bandreps = {
     'Ks': ['K_s'],
