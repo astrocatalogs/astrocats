@@ -20,6 +20,9 @@ class ArgsHandler:
 
         # Git Subcommands
         # ---------------
+        elif args.subcommand == 'git-clone':
+            self.log.info("Running 'git clone'.")
+            catalog.git_clone_all_repos()
         elif args.subcommand == 'git-push':
             self.log.info("Running 'git push'.")
             catalog.git_add_commit_push_all_repos()
@@ -144,6 +147,10 @@ class ArgsHandler:
     def _add_parser_arguments_git(self, subparsers):
         """Create a sub-parsers for git subcommands.
         """
+        subparsers.add_parser(
+            "git-clone",
+            help="Clone all defined data repositories if they dont exist.")
+
         subparsers.add_parser(
             "git-push",
             help="Add all files to data repositories, commit, and push.")
