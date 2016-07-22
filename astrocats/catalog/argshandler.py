@@ -25,13 +25,17 @@ class ArgsHandler:
             catalog.git_add_commit_push_all_repos()
         elif args.subcommand == 'git-pull':
             self.log.info("Running 'git pull'.")
-            catalog.git_add_commit_push_all_repos()
-        elif args.subcommand == 'git-reset':
-            self.log.info("Running 'git reset'.")
-            catalog.git_add_commit_push_all_repos()
+            # catalog.git_pull_all_repos()
+            raise RuntimeError("NOT YET IMPLEMENTED!")
+        elif args.subcommand == 'git-reset-local':
+            self.log.info("Running 'git reset' using the local HEAD.")
+            catalog.git_reset_all_repos(hard=True, origin=False, clean=True)
+        elif args.subcommand == 'git-reset-origin':
+            self.log.info("Running 'git reset' using 'origin/master'.")
+            catalog.git_reset_all_repos(hard=True, origin=True, clean=True)
         elif args.subcommand == 'git-status':
             self.log.info("Running 'git status'.")
-            catalog.git_add_commit_push_all_repos()
+            # catalog.git_add_commit_push_all_repos()
 
         # Analyze Catalogs
         # ----------------
@@ -75,14 +79,7 @@ class ArgsHandler:
 
         # Git Subcommands
         # ---------------
-        # git-push
-        self._add_parser_arguments_git_push(subparsers)
-        # git-push
-        self._add_parser_arguments_git_pull(subparsers)
-        # git-push
-        self._add_parser_arguments_git_reset(subparsers)
-        # git-push
-        self._add_parser_arguments_git_status(subparsers)
+        self._add_parser_arguments_git(subparsers)
 
         # Analyze Catalogs
         # ----------------
@@ -144,41 +141,30 @@ class ArgsHandler:
 
         return import_pars
 
-    def _add_parser_arguments_git_push(self, subparsers):
-        """Create a parser for the 'git-push' subcommand.
+    def _add_parser_arguments_git(self, subparsers):
+        """Create a sub-parsers for git subcommands.
         """
-        push_pars = subparsers.add_parser(
+        subparsers.add_parser(
             "git-push",
             help="Add all files to data repositories, commit, and push.")
 
-        return push_pars
-
-    def _add_parser_arguments_git_pull(self, subparsers):
-        """Create a parser for the 'git-pull' subcommand.
-        """
-        pull_pars = subparsers.add_parser(
+        subparsers.add_parser(
             "git-pull",
             help="'Pull' all data repositories.")
 
-        return pull_pars
+        subparsers.add_parser(
+            "git-reset-local",
+            help="Hard reset all data repositories using local 'HEAD'.")
 
-    def _add_parser_arguments_git_reset(self, subparsers):
-        """Create a parser for the 'git-reset' subcommand.
-        """
-        reset_pars = subparsers.add_parser(
-            "git-reset",
-            help="Hard reset all data repositories.")
+        subparsers.add_parser(
+            "git-reset-origin",
+            help="Hard reset all data repositories using 'origin/master'.")
 
-        return reset_pars
-
-    def _add_parser_arguments_git_status(self, subparsers):
-        """Create a parser for the 'git-status' subcommand.
-        """
-        status_pars = subparsers.add_parser(
+        subparsers.add_parser(
             "git-status",
             help="Get the 'git status' of all data repositories.")
 
-        return status_pars
+        return
 
     def _add_parser_arguments_analyze(self, subparsers):
         """Create a parser for the 'analyze' subcommand.
