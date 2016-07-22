@@ -1,6 +1,7 @@
 """Overarching catalog object for all open catalogs.
 """
 import codecs
+import git
 import importlib
 import json
 import os
@@ -438,8 +439,8 @@ class Catalog:
         for repo in all_repos:
             self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_comm = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_comm)
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             # Get files that should be added, compress and check sizes
@@ -474,6 +475,64 @@ class Catalog:
                     pass
 
                 raise err
+
+        return
+
+    def git_pull_all_repos(self):
+        """Perform a 'git pull' in each data repository.
+
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            grepo = git.cmd.Git(repo)
+            retval = grepo.pull()
+            self.log.warning("Git says: '{}'".format(retval))
+
+            sha_end = subprocess.getoutput(git_command)
+            if sha_end != sha_beg:
+                self.log.info("Updated SHA: '{}'".format(sha_end))
+
+        return
+
+    def git_reset_all_repos(self, hard=True, origin=False, clean=True):
+        """Perform a 'git pull' in each data repository.
+
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            grepo = git.cmd.Git(repo)
+            args = []
+            if hard:
+                args.append('--hard')
+            if origin:
+                args.append('origin/master')
+            self.log.debug("resetting")
+            retval = grepo.reset(*args)
+            if len(retval):
+                self.log.warning("Git says: '{}'".format(retval))
+
+            # Clean
+            if clean:
+                self.log.debug("cleaning")
+                retval = grepo.clean('-df')
+                if len(retval):
+                    self.log.warning("Git says: '{}'".format(retval))
+
+            sha_end = subprocess.getoutput(git_command)
+            if sha_end != sha_beg:
+                self.log.info("Updated SHA: '{}'".format(sha_end))
 
         return
 
