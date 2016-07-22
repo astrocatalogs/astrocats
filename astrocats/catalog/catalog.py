@@ -482,6 +482,8 @@ class Catalog:
         """Perform a 'git pull' in each data repository.
 
         """
+        raise RuntimeError("THIS DOESNT WORK YET!")
+
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
             self.log.warning("Repo in: '{}'".format(repo))
@@ -513,6 +515,10 @@ class Catalog:
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             grepo = git.cmd.Git(repo)
+            # Fetch first
+            self.log.debug("fetching")
+            grepo.fetch()
+
             args = []
             if hard:
                 args.append('--hard')
@@ -526,7 +532,8 @@ class Catalog:
             # Clean
             if clean:
                 self.log.debug("cleaning")
-                retval = grepo.clean('-df')
+                # [q]uiet, [f]orce, [d]irectories
+                retval = grepo.clean('-qdf')
                 if len(retval):
                     self.log.warning("Git says: '{}'".format(retval))
 
