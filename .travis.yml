@@ -39,13 +39,13 @@ script:
     - coverage run -a -m astrocats catalog import -a --task-groups meta
     - coverage run -a -m astrocats catalog analyze -v --count
     - echo "travis_fold:end:IMPORT Importing data done"
-    - echo "travis_fold:start:GIT checking git repos"
-    - coverage run -a -m astrocats catalog git-status
-    - coverage run -a -m astrocats catalog git-reset-local
-    - coverage run -a -m astrocats catalog git-status
-    - coverage run -a -m astrocats catalog git-reset-origin
-    - coverage run -a -m astrocats catalog git-push
-    - echo "travis_fold:end:GIT completed git checks"
+    # - echo "travis_fold:start:GIT checking git repos"
+    # - coverage run -a -m astrocats catalog git-status
+    # - coverage run -a -m astrocats catalog git-reset-local
+    # - coverage run -a -m astrocats catalog git-status
+    # - coverage run -a -m astrocats catalog git-reset-origin
+    # - coverage run -a -m astrocats catalog git-push
+    # - echo "travis_fold:end:GIT completed git checks"
 #    - echo "travis_fold:start:MAKE Making catalog"
 #    - cd astrocats/supernovae/scripts
 #    - python make-catalog.py -tr
