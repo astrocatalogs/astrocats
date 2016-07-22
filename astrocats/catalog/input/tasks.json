@@ -6,7 +6,7 @@
         "module": "catalog.tasks.test",
         "function": "do_test",
         "groups": ["meta"],
-        "repo": "input/catalog-test",
+        "repo": "input/test-input",
         "always_journal": true,
         "priority": 1
     },
