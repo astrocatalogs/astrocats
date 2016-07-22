@@ -2,7 +2,7 @@
 '''
 
 from collections import OrderedDict
-from random import randint, seed, shuffle, uniform
+from random import seed, shuffle
 
 from palettable import colorbrewer, cubehelix, wesanderson
 
@@ -132,8 +132,9 @@ xraycodes = [
 seed(101)
 # bandcolors = ["#%06x" % round(float(x)/float(len(bandcodes))*0xFFFEFF)
 # for x in range(len(bandcodes))]
-bandcolors = cubehelix.cubehelix1_16.hex_colors[
-    2:13] + cubehelix.cubehelix2_16.hex_colors[2:13] + cubehelix.cubehelix3_16.hex_colors[2:13]
+bandcolors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
+              cubehelix.cubehelix2_16.hex_colors[2:13] +
+              cubehelix.cubehelix3_16.hex_colors[2:13])
 shuffle(bandcolors)
 bandcolors2 = cubehelix.perceptual_rainbow_16.hex_colors
 shuffle(bandcolors2)
