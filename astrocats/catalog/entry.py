@@ -13,7 +13,8 @@ from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-                                     is_integer)
+                                     is_integer, is_number)
+from cdecimal import Decimal
 
 
 class ENTRY(KeyCollection):
@@ -163,6 +164,28 @@ class Entry(OrderedDict):
     def _clean_quantity(self, quantity):
         """Clean quantity value before it is added to entry.
         """
+        value = quantity.get(QUANTITY.VALUE, '').strip()
+        error = quantity.get(QUANTITY.E_VALUE, '').strip()
+        unit = quantity.get(QUANTITY.U_VALUE, '').strip()
+        kind = quantity.get(QUANTITY.KIND, '').strip()
+
+        if not value:
+            return False
+
+        if is_number(value):
+            value = '%g' % Decimal(value)
+        if error:
+            error = '%g' % Decimal(error)
+
+        if value:
+            quantity[QUANTITY.VALUE] = value
+        if error:
+            quantity[QUANTITY.E_VALUE] = error
+        if unit:
+            quantity[QUANTITY.U_VALUE] = unit
+        if kind:
+            quantity[QUANTITY.KIND] = kind
+
         return True
 
     def _load_data_from_json(self, fhand, clean=False, merge=True):
