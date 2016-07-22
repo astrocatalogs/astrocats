@@ -1197,7 +1197,7 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     if retval.stdout is not None:
         out_msg = retval.stdout.decode('ascii').strip().splitlines()
         for om in out_msg:
-            log.info(om)
+            log.warning(om)
     # Raises an error if the command failed.
     if fail:
         retval.check_returncode()
