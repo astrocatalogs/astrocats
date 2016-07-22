@@ -35,7 +35,7 @@ class ArgsHandler:
             catalog.git_reset_all_repos(hard=True, origin=True, clean=True)
         elif args.subcommand == 'git-status':
             self.log.info("Running 'git status'.")
-            # catalog.git_add_commit_push_all_repos()
+            catalog.git_status_all_repos()
 
         # Analyze Catalogs
         # ----------------

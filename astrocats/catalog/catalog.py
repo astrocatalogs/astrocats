@@ -543,6 +543,33 @@ class Catalog:
 
         return
 
+    def git_status_all_repos(self, hard=True, origin=False, clean=True):
+        """Perform a 'git pull' in each data repository.
+
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            grepo = git.cmd.Git(repo)
+            # Fetch first
+            self.log.debug("fetching")
+            grepo.fetch()
+
+            git_comm = ["git", "status"]
+            _call_command_in_repo(git_comm, repo, self.log,
+                                  fail=True, log_flag=True)
+
+            sha_end = subprocess.getoutput(git_command)
+            if sha_end != sha_beg:
+                self.log.info("Updated SHA: '{}'".format(sha_end))
+
+        return
+
     def load_entry_from_name(self, name, delete=True, merge=True):
         loaded_entry = self.proto.init_from_file(self, name=name, merge=merge)
         if loaded_entry is not None:
