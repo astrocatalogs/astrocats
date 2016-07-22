@@ -134,7 +134,7 @@ class Catalog:
             repo_folders += self.repos_dict['internal']
             repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [os.path.join(self.PATH_INPUT, rf)
-                            for rf in repo_folders]
+                            for rf in repo_folders if len(rf)]
             return repo_folders
 
         def get_repo_output_file_list(self, normal=True, bones=True):
@@ -156,7 +156,7 @@ class Catalog:
             repo_folders = list(sorted(list(set(repo_folders)),
                                        key=lambda key: repo_priority(key)))
             repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
-                            for rf in repo_folders]
+                            for rf in repo_folders if len(rf)]
             return repo_folders
 
     class SCHEMA:
