@@ -1018,66 +1018,6 @@ class Catalog:
 
         return
 
-    def load_cached_url(self, url, filepath, timeout=120, write=True,
-                        failhard=False, jsonsort=''):
-        from hashlib import md5
-        filemd5 = ''
-        file_txt = ''
-        # Load existing, cached copy of online data file
-        if not self.args.refresh and os.path.isfile(filepath):
-            with codecs.open(filepath, 'r', encoding='utf8') as f:
-                file_txt = f.read()
-                self.log.debug("{}: Loaded `file_txt` from '{}'.".format(
-                    self.current_task, filepath))
-                if self.args.update:
-                    filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
-
-        # Try to download new copy of online data
-        try:
-            import requests
-            session = requests.Session()
-            response = session.get(url, timeout=timeout)
-            response.raise_for_status()
-            # Look for errors
-            for x in response.history:
-                x.raise_for_status()
-                if (x.status_code == 500 or x.status_code == 307 or
-                        x.status_code == 404):
-                    raise
-            url_txt = response.text
-            self.log.debug("{}: Loaded `url_txt` from '{}'.".format(
-                self.current_task, url))
-            newmd5 = md5(url_txt.encode('utf-8')).hexdigest()
-            # tprint(filemd5 + ": " + newmd5)
-            # Check if cached file and newly downloaded file are the same
-            # If so: no need to resave it, return
-            if self.args.update and newmd5 == filemd5:
-                self.log.debug(
-                    'Skipping file in "' + self.current_task +
-                    '," local and remote copies identical [' + newmd5 + '].')
-                return False
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except:
-            if failhard:
-                return ''
-            return file_txt
-        else:
-            # Write the newly downloaded data to the cache save file.
-            if write:
-                wtxt = url_txt if url_txt else file_txt
-                if jsonsort and '.json' in filepath:
-                    jdict = json.loads(wtxt)
-                    wtxt = json.dumps(
-                        list(sorted(jdict, key=lambda kk: kk[jsonsort])),
-                        indent=4, separators=(',', ': '))
-                with codecs.open(filepath, 'w', encoding='utf8') as f:
-                    f.write(wtxt)
-                    self.log.debug("{}: wrote txt to '{}'.".format(
-                        self.current_task, filepath))
-
-        return url_txt
-
     def _prep_git_add_file_list(self, repo, size_limit,
                                 fail=True, file_types=None):
         """Get a list of files which should be added to the given repository.
@@ -1152,6 +1092,183 @@ class Catalog:
 
         return add_files
 
+    def load_cached_url(self, url, filepath, timeout=120, write=True,
+                        failhard=False, jsonsort=''):
+        from hashlib import md5
+        filemd5 = ''
+        file_txt = ''
+        # Load existing, cached copy of online data file
+        if os.path.isfile(filepath):
+            with codecs.open(filepath, 'r', encoding='utf8') as f:
+                file_txt = f.read()
+                self.log.debug("{}: Loaded `file_txt` from '{}'.".format(
+                    self.current_task, filepath))
+                if self.args.update:
+                    filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
+
+        # Try to download new copy of online data
+        try:
+            import requests
+            session = requests.Session()
+            response = session.get(url, timeout=timeout)
+            response.raise_for_status()
+            # Look for errors
+            for x in response.history:
+                x.raise_for_status()
+                if (x.status_code == 500 or x.status_code == 307 or
+                        x.status_code == 404):
+                    raise
+            url_txt = response.text
+            self.log.debug("{}: Loaded `url_txt` from '{}'.".format(
+                self.current_task, url))
+            newmd5 = md5(url_txt.encode('utf-8')).hexdigest()
+            # tprint(filemd5 + ": " + newmd5)
+            # Check if cached file and newly downloaded file are the same
+            # If so: no need to resave it, return
+            if self.args.update and newmd5 == filemd5:
+                self.log.debug(
+                    'Skipping file in "' + self.current_task +
+                    '," local and remote copies identical [' + newmd5 + '].')
+                return False
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            if failhard:
+                return ''
+            return file_txt
+        else:
+            # Write the newly downloaded data to the cache save file.
+            if write:
+                wtxt = url_txt if url_txt else file_txt
+                if jsonsort and '.json' in filepath:
+                    jdict = json.loads(wtxt)
+                    wtxt = json.dumps(
+                        list(sorted(jdict, key=lambda kk: kk[jsonsort])),
+                        indent=4, separators=(',', ': '))
+                with codecs.open(filepath, 'w', encoding='utf8') as f:
+                    f.write(wtxt)
+                    self.log.debug("{}: wrote txt to '{}'.".format(
+                        self.current_task, filepath))
+
+        return url_txt
+
+    def load_url(self, url, fname, repo=None, archived=False, fail=False):
+        """Load the given URL, or a cached-version.
+
+        Load page from url or cached file, depending on the current settings.
+        'archived' mode applies when `args.archived` is true (from
+        `--archived` CL argument), and when this task has `Task.archived`
+        also set to True.
+
+        'archived'-mode:
+            * Try to load from cached file.
+            * If cache does not exist, try to load from web.
+            * If neither works, raise an error if ``fail == True``,
+              otherwise return None
+        non-'archived'-mode:
+            * Try to load from url, save to cache file.
+            * If url fails, try to load existing cache file.
+            * If neither works, raise an error if ``fail == True``,
+              otherwise return None
+
+        Arguments
+        ---------
+        self
+        url : str
+            URL to download.
+        fname : str
+            Filename to which to save/load cached file.
+            NOTE: in general, this should be the source's BIBCODE.
+            NOTE: The file suffix will automatically be added.
+        repo : str or None
+            The full path of the data-repository the cached file should be
+            saved/loaded from.  If 'None', then the current task is used to
+            determine the repo.
+        archived : bool
+            Load a previously archived version of the file.
+        fail : bool
+            If the file/url cannot be loaded, raise an error.
+
+        """
+
+        # Flag to determine in copy of url should be downloaded, default to False
+        download = False
+        page_txt = None
+
+        # Construct the cached filename
+        if repo is None:
+            repo = self.get_current_task_repo()
+        cached_path = os.path.join(repo, fname + '.txt')
+
+        # In `archived` mode - load cached versions of pages when possible
+        if self.args.archived and archived:
+            # If file exists, load it
+            if os.path.isfile(cached_path):
+                with codecs.open(cached_path, 'r', encoding='utf8') as infile:
+                    page_txt = infile.read()
+                    self.log.debug("{}: Loaded from '{}'.".format(
+                        self.current_task, cached_path))
+                return page_txt
+            # If file does not exist, log warning
+            else:
+                self.log.error("{}: Cached file '{}' does not exist.".format(
+                    self.current_task, cached_path))
+
+        # If we are not in 'archived' mode, or loading cached failed, load url
+
+
+
+
+        if self.args.update:
+            filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
+
+
+    def _download_url(self, url, timeout, fail=False):
+        """Download text from the given url.
+
+        Arguments
+        ---------
+        self
+        url : str
+            URL web address to download.
+        timeout : int
+        fail : bool
+
+
+        """
+        _CODE_ERRORS = [500, 307, 404]
+        import requests
+        session = requests.Session()
+
+        try:
+            response = session.get(url, timeout=timeout)
+            response.raise_for_status()
+            # Look for errors
+            for xx in response.history:
+                xx.raise_for_status()
+                if xx.status_code in _CODE_ERRORS:
+                    self.log.error(
+                        "URL response returned status code '{}'".format(
+                            xx.status_code))
+                    raise
+
+            url_txt = response.text
+            self.log.debug("{}: Loaded `url_txt` from '{}'.".format(
+                self.current_task, url))
+
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except:
+            err_str = "URL Download of '{}' failed.".format(url)
+            if fail:
+                err_str += " and `fail` is set."
+                self.log.error(err_str)
+                raise RuntimeError(err_str)
+            else:
+                self.log.warning(err_str)
+                return None
+
+        return url_txt
 
 def _get_task_priority(tasks, task_priority):
     """Get the task `priority` corresponding to the given `task_priority`.
