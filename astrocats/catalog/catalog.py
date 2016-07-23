@@ -184,6 +184,9 @@ class Catalog:
         # unless updating.
         self.min_journal_priority = 0
 
+        # Array for storing names of events to tweet.
+        self.tweet_names = []
+
         # Store version information
         # -------------------------
         # git `SHA` of this directory (i.e. a sub-catalog)
@@ -203,6 +206,9 @@ class Catalog:
 
         return
 
+    def add_tweet_name(self, name):
+        self.tweet_names.append(name)
+
     def import_data(self):
         """Run all of the import tasks.
 
@@ -218,8 +224,11 @@ class Catalog:
         warnings.filterwarnings(
             'ignore', category=DeprecationWarning)
 
-        # Delete all old (previously constructored) output files
-        if self.args.delete_old:
+        # If updating, load the existing events into stubs.
+        if self.args.update:
+            self.load_stubs()
+        # Otherwise, delete all old (previously constructored) output files.
+        elif self.args.delete_old:
             self.log.warning("Deleting all old entry files.")
             self.delete_old_entry_files()
 
@@ -633,6 +642,11 @@ class Catalog:
                      "Created new entry for '{}'".format(newname))
         # Add entry to dictionary
         self.entries[newname] = new_entry
+
+        # Add name to tweets array
+        if self.args.tweet:
+            self.add_tweet_name(newname)
+
         return newname
 
     def delete_old_entry_files(self):
@@ -871,8 +885,7 @@ class Catalog:
                 fname = uncompress_gz(fi)
             name = os.path.basename(
                 os.path.splitext(fname)[0]).replace('.json', '')
-            new_entry = self.proto.init_from_file(
-                self, path=fname, delete=False)
+            new_entry = self.proto.init_from_file(self, path=fname)
             # Make sure a non-stub entry doesnt already exist with this name
             if name in self.entries and not self.entries[name]._stub:
                 err_str = (

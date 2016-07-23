@@ -47,6 +47,7 @@ class Task():
         self.update = False
         self.archived = False
         self.active = True
+        self.rebuild = True
         self.module = None
         self.groups = None
         self.repo = None
@@ -66,10 +67,12 @@ class Task():
         return
 
     def __repr__(self):
-        retval = ("Task(name='{}', nice_name='{}', active='{}', update='{}', "
+        retval = ("Task(name='{}', nice_name='{}', active='{}', rebuild='{}', "
+                  "update='{}', "
                   "archived='{}', module='{}', function='{}', repo='{}', "
                   "priority='{}', always_journal='{}'")
         retval = retval.format(self.name, self.nice_name, self.active,
+                               self.rebuild,
                                self.update, self.archived, self.module,
                                self.function, self.repo, self.priority,
                                self.always_journal)

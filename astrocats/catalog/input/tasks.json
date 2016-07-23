@@ -35,6 +35,16 @@
         "module": "catalog.tasks.sanitize",
         "function": "sanitize",
         "groups": ["meta"],
+        "priority": -2
+    },
+    "tweet_updates": {
+        "nice_name": "Tweeting about catalog updates",
+        "active": true,
+        "update": true,
+        "rebuild": false,
+        "module": "catalog.tasks.tweet_updates",
+        "function": "tweet_updates",
+        "groups": ["comm"],
         "priority": -1
     }
 }
