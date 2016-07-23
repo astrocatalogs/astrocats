@@ -1237,7 +1237,7 @@ class Catalog:
         # Check if we need to update this data
         # ------------------------------------
         # If both `url_txt` and `file_txt` exist and update mode check MD5
-        if file_txt is not None and args.update:
+        if file_txt is not None and self.args.update:
             from hashlib import md5
             url_md5 = md5(url_txt.encode('utf-8')).hexdigest()
             file_md5 = md5(file_txt.encode('utf-8')).hexdigest()
@@ -1258,9 +1258,9 @@ class Catalog:
 
     def _write_cache_file(self, data, filename, json_sort=None):
         # Sort json data first
-        if jsonsort is not None and filename.endswith('.json'):
+        if json_sort is not None and filename.endswith('.json'):
             json_data = json.loads(data)
-            json_data = list(sorted(json_data, key=lambda kk: kk[jsonsort]))
+            json_data = list(sorted(json_data, key=lambda kk: kk[json_sort]))
             data = json.dumps(json_data, indent=4, separators=(',', ': '))
         # Write txt to file
         with codecs.open(filename, 'w', encoding='utf8') as save_file:
