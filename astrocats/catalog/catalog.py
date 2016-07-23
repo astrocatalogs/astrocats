@@ -448,7 +448,6 @@ class Catalog:
 
     def git_pull_all_repos(self):
         """Perform a 'git pull' in each data repository.
-
         """
         raise RuntimeError("THIS DOESNT WORK YET!")
 
@@ -498,8 +497,7 @@ class Catalog:
         return
 
     def git_reset_all_repos(self, hard=True, origin=False, clean=True):
-        """Perform a 'git pull' in each data repository.
-
+        """Perform a 'git reset' in each data repository.
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
@@ -539,8 +537,7 @@ class Catalog:
         return
 
     def git_status_all_repos(self, hard=True, origin=False, clean=True):
-        """Perform a 'git pull' in each data repository.
-
+        """Perform a 'git status' in each data repository.
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
