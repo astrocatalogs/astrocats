@@ -87,6 +87,13 @@ class ArgsHandler:
             default='', nargs='+',
             help='Space-delimited list of caches to clear.')
 
+        # Social media-related flags.
+        # ---------------------------
+        import_pars.add_argument(
+            '--tweet', dest='tweet',
+            default=False, action='store_true',
+            help='Tweet about catalog changes after importing.')
+
         # Control which 'tasks' are executed
         # ----------------------------------
         import_pars.add_argument(
