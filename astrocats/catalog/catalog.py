@@ -1183,14 +1183,15 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """
     if log_flag:
         log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.call(comm, cwd=repo, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
-    if retval.stderr is not None:
-        err_msg = retval.stderr.decode('ascii').strip().splitlines()
+    process = subprocess.Popen(comm, cwd=repo, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    (stdout, stderr) = process.communicate()
+    if stderr is not None:
+        err_msg = stderr.decode('ascii').strip().splitlines()
         for em in err_msg:
             log.error(em)
-    if retval.stdout is not None:
-        out_msg = retval.stdout.decode('ascii').strip().splitlines()
+    if stdout is not None:
+        out_msg = stdout.decode('ascii').strip().splitlines()
         for om in out_msg:
             log.warning(om)
     # Raises an error if the command failed.
