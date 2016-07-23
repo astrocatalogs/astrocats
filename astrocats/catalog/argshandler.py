@@ -102,10 +102,6 @@ class ArgsHandler:
             default=False, action='store_true',
             help='Only update catalog using live sources.')
         import_pars.add_argument(
-            '--refresh', '-r', dest='refresh',
-            default=False, action='store_true',
-            help='Ignore most task caches.')
-        import_pars.add_argument(
             '--archived', '-a', dest='archived',
             default=False, action='store_true',
             help='Always use task caches.')
