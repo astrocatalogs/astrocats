@@ -1108,7 +1108,8 @@ class Catalog:
         return url_data
 
     def load_url(self, url, fname, repo=None, timeout=120,
-                 archived=False, fail=False, write=True, json_sort=None):
+                 fail=False, write=True, json_sort=None,
+                 archived_mode=None, archived_task=None, update_mode=None):
         """Load the given URL, or a cached-version.
 
         Load page from url or cached file, depending on the current settings.
@@ -1163,6 +1164,18 @@ class Catalog:
         file_txt = None
         url_txt = None
 
+        # Load default settings if needed
+        # -------------------------------
+        # Determine if we are running in archived mode
+        if archived_mode is None:
+            archived_mode = self.args.archived
+        # Determine if this task is one which uses archived files
+        if archived_task is None:
+            archived_task = self.current_task.archived
+        # Detemrine if running in update mode
+        if update_mode is None:
+            update_mode = self.args.update
+
         # Construct the cached filename
         if repo is None:
             repo = self.get_current_task_repo()
@@ -1173,17 +1186,18 @@ class Catalog:
         if os.path.isfile(cached_path):
             with codecs.open(cached_path, 'r', encoding='utf8') as infile:
                 file_txt = infile.read()
-                self.log.debug("{}: Loaded from '{}'.".format(
-                    self.current_task, cached_path))
+                self.log.debug("Task {}: Loaded from '{}'.".format(
+                    self.current_task.name, cached_path))
 
-        # In `archived` mode - try to return the cached page
-        if self.args.archived and archived:
+        # In `archived` mode and task - try to return the cached page
+        if archived_mode and archived_task:
             if file_txt is not None:
                 return file_txt
             # If file does not exist, log error, continue
             else:
-                self.log.error("{}: Cached file '{}' does not exist.".format(
-                    self.current_task, cached_path))
+                self.log.error(
+                    "Task {}: Cached file '{}' does not exist.".format(
+                        self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
         url_txt = self.download_url(url, timeout, fail=False)
@@ -1209,7 +1223,7 @@ class Catalog:
             # Otherwise, if only url failed, return file data
             else:
                 # If we are trying to update, but the url failed, then return None
-                if self.args.update:
+                if update_mode:
                     self.log.error(
                         "Cannot check for updates, url download failed.")
                     return None
@@ -1237,7 +1251,7 @@ class Catalog:
         # Check if we need to update this data
         # ------------------------------------
         # If both `url_txt` and `file_txt` exist and update mode check MD5
-        if file_txt is not None and self.args.update:
+        if file_txt is not None and update_mode:
             from hashlib import md5
             url_md5 = md5(url_txt.encode('utf-8')).hexdigest()
             file_md5 = md5(file_txt.encode('utf-8')).hexdigest()
@@ -1309,8 +1323,8 @@ class Catalog:
                     raise
 
             url_txt = response.text
-            self.log.debug("{}: Loaded `url_txt` from '{}'.".format(
-                self.current_task, url))
+            self.log.debug("Task {}: Loaded `url_txt` from '{}'.".format(
+                self.current_task.name, url))
 
         except (KeyboardInterrupt, SystemExit):
             raise
