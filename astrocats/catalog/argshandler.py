@@ -12,12 +12,36 @@ class ArgsHandler:
         return
 
     def run_subcommand(self, args, catalog):
+        # Data Import
+        # -----------
         if args.subcommand == 'import':
             self.log.info("Running 'import'.")
             catalog.import_data()
-        elif args.subcommand == 'push':
-            self.log.info("Running 'push'.")
+
+        # Git Subcommands
+        # ---------------
+        elif args.subcommand == 'git-clone':
+            self.log.info("Running 'git clone'.")
+            catalog.git_clone_all_repos()
+        elif args.subcommand == 'git-push':
+            self.log.info("Running 'git push'.")
             catalog.git_add_commit_push_all_repos()
+        elif args.subcommand == 'git-pull':
+            self.log.info("Running 'git pull'.")
+            # catalog.git_pull_all_repos()
+            raise RuntimeError("NOT YET IMPLEMENTED!")
+        elif args.subcommand == 'git-reset-local':
+            self.log.info("Running 'git reset' using the local HEAD.")
+            catalog.git_reset_all_repos(hard=True, origin=False, clean=True)
+        elif args.subcommand == 'git-reset-origin':
+            self.log.info("Running 'git reset' using 'origin/master'.")
+            catalog.git_reset_all_repos(hard=True, origin=True, clean=True)
+        elif args.subcommand == 'git-status':
+            self.log.info("Running 'git status'.")
+            catalog.git_status_all_repos()
+
+        # Analyze Catalogs
+        # ----------------
         elif args.subcommand == 'analyze':
             self.log.info("Running 'analyze'.")
             from .analysis import Analysis
@@ -51,10 +75,17 @@ class ArgsHandler:
         subparsers = parser.add_subparsers(
             description='valid subcommands', dest='subcommand')
 
+        # Data Import
+        # -----------
         # Add the 'import' command, and related arguments
         self._add_parser_arguments_import(subparsers)
-        # Add the 'push' command, and related arguments
-        self._add_parser_arguments_push(subparsers)
+
+        # Git Subcommands
+        # ---------------
+        self._add_parser_arguments_git(subparsers)
+
+        # Analyze Catalogs
+        # ----------------
         # Add the 'analyze' command, and related arguments
         self._add_parser_arguments_analyze(subparsers)
 
@@ -113,14 +144,34 @@ class ArgsHandler:
 
         return import_pars
 
-    def _add_parser_arguments_push(self, subparsers):
-        """Create a parser for the 'import' subcommand.
+    def _add_parser_arguments_git(self, subparsers):
+        """Create a sub-parsers for git subcommands.
         """
-        push_pars = subparsers.add_parser(
-            "push",
+        subparsers.add_parser(
+            "git-clone",
+            help="Clone all defined data repositories if they dont exist.")
+
+        subparsers.add_parser(
+            "git-push",
             help="Add all files to data repositories, commit, and push.")
 
-        return push_pars
+        subparsers.add_parser(
+            "git-pull",
+            help="'Pull' all data repositories.")
+
+        subparsers.add_parser(
+            "git-reset-local",
+            help="Hard reset all data repositories using local 'HEAD'.")
+
+        subparsers.add_parser(
+            "git-reset-origin",
+            help="Hard reset all data repositories using 'origin/master'.")
+
+        subparsers.add_parser(
+            "git-status",
+            help="Get the 'git status' of all data repositories.")
+
+        return
 
     def _add_parser_arguments_analyze(self, subparsers):
         """Create a parser for the 'analyze' subcommand.

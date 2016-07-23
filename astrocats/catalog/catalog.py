@@ -1,6 +1,7 @@
 """Overarching catalog object for all open catalogs.
 """
 import codecs
+import git
 import importlib
 import json
 import os
@@ -133,7 +134,7 @@ class Catalog:
             repo_folders += self.repos_dict['internal']
             repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [os.path.join(self.PATH_INPUT, rf)
-                            for rf in repo_folders]
+                            for rf in repo_folders if len(rf)]
             return repo_folders
 
         def get_repo_output_file_list(self, normal=True, bones=True):
@@ -155,7 +156,7 @@ class Catalog:
             repo_folders = list(sorted(list(set(repo_folders)),
                                        key=lambda key: repo_priority(key)))
             repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
-                            for rf in repo_folders]
+                            for rf in repo_folders if len(rf)]
             return repo_folders
 
     class SCHEMA:
@@ -173,7 +174,8 @@ class Catalog:
 
         # Load repos dictionary (required)
         self.repos_dict = read_json_dict(self.PATHS.REPOS_LIST)
-        self.clone_repos()
+        # self.clone_repos()
+        self.git_clone_all_repos()
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
@@ -391,38 +393,6 @@ class Catalog:
     def save_caches(self):
         return
 
-    def _clone_repos(self, all_repos):
-        """Given a list of repositories, make sure they're all cloned.
-
-        Should be called from the subclassed `Catalog` objects, passed a list
-        of specific repository names.
-
-        Arguments
-        ---------
-        all_repos : list of str
-            *Absolute* path specification of each target repository.
-
-        """
-        for repo in all_repos:
-            if not os.path.isdir(repo):
-                try:
-                    repo_name = os.path.split(repo)[-1]
-                    self.log.warning(
-                        'Cloning "' + repo + '" (only needs to be done ' +
-                        'once, may take few minutes per repo).')
-                    Repo.clone_from("https://github.com/astrocatalogs/" +
-                                    repo_name + ".git", repo,
-                                    **({'depth': self.args.clone_depth} if
-                                       self.args.clone_depth > 0 else {}))
-                except:
-                    self.log.error("CLONING '{}' INTERRUPTED".format(repo))
-                    raise
-
-        return
-
-    def clone_repos(self):
-        self._clone_repos([])
-
     def git_add_commit_push_all_repos(self):
         """Add all files in each data repository tree, commit, push.
 
@@ -438,8 +408,8 @@ class Catalog:
         for repo in all_repos:
             self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_comm = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_comm)
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             # Get files that should be added, compress and check sizes
@@ -474,6 +444,124 @@ class Catalog:
                     pass
 
                 raise err
+
+        return
+
+    def git_pull_all_repos(self):
+        """Perform a 'git pull' in each data repository.
+
+        """
+        raise RuntimeError("THIS DOESNT WORK YET!")
+
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            grepo = git.cmd.Git(repo)
+            retval = grepo.pull()
+            self.log.warning("Git says: '{}'".format(retval))
+
+            sha_end = subprocess.getoutput(git_command)
+            if sha_end != sha_beg:
+                self.log.info("Updated SHA: '{}'".format(sha_end))
+
+        return
+
+    def git_clone_all_repos(self):
+        """Perform a 'git clone' for each data repository that doesnt exist.
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+
+            if os.path.isdir(repo):
+                self.log.info("Directory exists.")
+            else:
+                _clone_astrocats_repo(repo, self.log, depth=self.args.clone_depth)
+
+            grepo = git.cmd.Git(repo)
+            try:
+                grepo.status()
+            except git.GitCommandError:
+                self.log.error("Repository does not exist!")
+                raise
+
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+        return
+
+    def git_reset_all_repos(self, hard=True, origin=False, clean=True):
+        """Perform a 'git pull' in each data repository.
+
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            grepo = git.cmd.Git(repo)
+            # Fetch first
+            self.log.debug("fetching")
+            grepo.fetch()
+
+            args = []
+            if hard:
+                args.append('--hard')
+            if origin:
+                args.append('origin/master')
+            self.log.debug("resetting")
+            retval = grepo.reset(*args)
+            if len(retval):
+                self.log.warning("Git says: '{}'".format(retval))
+
+            # Clean
+            if clean:
+                self.log.debug("cleaning")
+                # [q]uiet, [f]orce, [d]irectories
+                retval = grepo.clean('-qdf')
+                if len(retval):
+                    self.log.warning("Git says: '{}'".format(retval))
+
+            sha_end = subprocess.getoutput(git_command)
+            if sha_end != sha_beg:
+                self.log.info("Updated SHA: '{}'".format(sha_end))
+
+        return
+
+    def git_status_all_repos(self, hard=True, origin=False, clean=True):
+        """Perform a 'git pull' in each data repository.
+
+        """
+        all_repos = self.PATHS.get_all_repo_folders()
+        for repo in all_repos:
+            self.log.warning("Repo in: '{}'".format(repo))
+            # Get the initial git SHA
+            git_command = "git rev-parse HEAD {}".format(repo)
+            sha_beg = subprocess.getoutput(git_command)
+            self.log.debug("Current SHA: '{}'".format(sha_beg))
+
+            grepo = git.cmd.Git(repo)
+            # Fetch first
+            self.log.debug("fetching")
+            grepo.fetch()
+
+            git_comm = ["git", "status"]
+            _call_command_in_repo(git_comm, repo, self.log,
+                                  fail=True, log_flag=True)
+
+            sha_end = subprocess.getoutput(git_command)
+            if sha_end != sha_beg:
+                self.log.info("Updated SHA: '{}'".format(sha_end))
 
         return
 
@@ -1099,17 +1187,49 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """
     if log_flag:
         log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
-    if retval.stderr is not None:
-        err_msg = retval.stderr.decode('ascii').strip().splitlines()
+    process = subprocess.Popen(comm, cwd=repo, stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    (stdout, stderr) = process.communicate()
+    if stderr is not None:
+        err_msg = stderr.decode('ascii').strip().splitlines()
         for em in err_msg:
             log.error(em)
-    if retval.stdout is not None:
-        out_msg = retval.stdout.decode('ascii').strip().splitlines()
+    if stdout is not None:
+        out_msg = stdout.decode('ascii').strip().splitlines()
         for om in out_msg:
-            log.info(om)
+            log.warning(om)
     # Raises an error if the command failed.
     if fail:
-        retval.check_returncode()
+        if process.returncode:
+            raise CalledProcessError
     return
+
+
+def _clone_astrocats_repo(repo, log, depth=1):
+    """Given a list of repositories, make sure they're all cloned.
+
+    Should be called from the subclassed `Catalog` objects, passed a list
+    of specific repository names.
+
+    Arguments
+    ---------
+    all_repos : list of str
+        *Absolute* path specification of each target repository.
+
+    """
+    kwargs = {}
+    if depth > 0:
+        kwargs['depth'] = depth
+
+    try:
+        repo_name = os.path.split(repo)[-1]
+        repo_name = "https://github.com/astrocatalogs/" + repo_name + ".git"
+        log.warning(
+            "Cloning '{}' (only needs to be done ".format(repo) +
+            "once, may take few minutes per repo).")
+        grepo = git.Repo.clone_from(repo_name, repo, **kwargs)
+    except:
+        log.error("CLONING '{}' INTERRUPTED".format(repo))
+        raise
+
+    return grepo
