@@ -1196,7 +1196,8 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
             log.warning(om)
     # Raises an error if the command failed.
     if fail:
-        retval.check_returncode()
+        if process.returncode:
+            raise CalledProcessError
     return
 
 
