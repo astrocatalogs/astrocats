@@ -503,6 +503,10 @@ class Catalog:
             `entries`
         """
         newname = self.clean_entry_name(name)
+
+        if not newname:
+            raise(ValueError('Fatal: Attempted to add entry with no name.'))
+
         # If entry already exists, return
         if newname in self.entries:
             self.log.debug(
