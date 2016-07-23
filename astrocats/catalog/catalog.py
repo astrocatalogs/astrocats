@@ -1094,65 +1094,20 @@ class Catalog:
 
     def load_cached_url(self, url, filepath, timeout=120, write=True,
                         failhard=False, jsonsort=''):
-        from hashlib import md5
-        filemd5 = ''
-        file_txt = ''
-        # Load existing, cached copy of online data file
-        if os.path.isfile(filepath):
-            with codecs.open(filepath, 'r', encoding='utf8') as f:
-                file_txt = f.read()
-                self.log.debug("{}: Loaded `file_txt` from '{}'.".format(
-                    self.current_task, filepath))
-                if self.args.update:
-                    filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
+        json_sort = jsonsort if len(jsonsort) else None
+        url_data = self.load_url(
+            url, filepath, timeout=timeout, write=write,
+            fail=failhard, json_sort=json_sort)
 
-        # Try to download new copy of online data
-        try:
-            import requests
-            session = requests.Session()
-            response = session.get(url, timeout=timeout)
-            response.raise_for_status()
-            # Look for errors
-            for x in response.history:
-                x.raise_for_status()
-                if (x.status_code == 500 or x.status_code == 307 or
-                        x.status_code == 404):
-                    raise
-            url_txt = response.text
-            self.log.debug("{}: Loaded `url_txt` from '{}'.".format(
-                self.current_task, url))
-            newmd5 = md5(url_txt.encode('utf-8')).hexdigest()
-            # tprint(filemd5 + ": " + newmd5)
-            # Check if cached file and newly downloaded file are the same
-            # If so: no need to resave it, return
-            if self.args.update and newmd5 == filemd5:
-                self.log.debug(
-                    'Skipping file in "' + self.current_task +
-                    '," local and remote copies identical [' + newmd5 + '].')
+        if url_data is None:
+            if self.args.update:
                 return False
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except:
-            if failhard:
+            elif failhard:
                 return ''
-            return file_txt
-        else:
-            # Write the newly downloaded data to the cache save file.
-            if write:
-                wtxt = url_txt if url_txt else file_txt
-                if jsonsort and '.json' in filepath:
-                    jdict = json.loads(wtxt)
-                    wtxt = json.dumps(
-                        list(sorted(jdict, key=lambda kk: kk[jsonsort])),
-                        indent=4, separators=(',', ': '))
-                with codecs.open(filepath, 'w', encoding='utf8') as f:
-                    f.write(wtxt)
-                    self.log.debug("{}: wrote txt to '{}'.".format(
-                        self.current_task, filepath))
 
-        return url_txt
+        return url_data
 
-    def load_url(self, url, fname, repo=None,
+    def load_url(self, url, fname, repo=None, timeout=120,
                  archived=False, fail=False, write=True, json_sort=None):
         """Load the given URL, or a cached-version.
 
@@ -1193,6 +1148,8 @@ class Catalog:
             The full path of the data-repository the cached file should be
             saved/loaded from.  If 'None', then the current task is used to
             determine the repo.
+        timeout : int
+            Time (in seconds) after which a URL query should exit.
         archived : bool
             Load a previously archived version of the file.
         fail : bool
@@ -1228,7 +1185,7 @@ class Catalog:
                 self.log.error("{}: Cached file '{}' does not exist.".format(
                     self.current_task, cached_path))
 
-        # If we are not in 'archived' mode, or loading cached failed, load url
+        # Load url.  'None' is returned on failure - handle that below
         url_txt = self.download_url(url, timeout, fail=False)
 
         # At this point, we might have both `url_txt` and `file_txt`
@@ -1281,6 +1238,7 @@ class Catalog:
         # ------------------------------------
         # If both `url_txt` and `file_txt` exist and update mode check MD5
         if file_txt is not None and args.update:
+            from hashlib import md5
             url_md5 = md5(url_txt.encode('utf-8')).hexdigest()
             file_md5 = md5(file_txt.encode('utf-8')).hexdigest()
             # If the data is the same, no need to parse (update), return None
