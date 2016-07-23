@@ -96,6 +96,7 @@ class Task():
     def load_archive(self, args):
         """Whether previously archived data should be loaded.
         """
+        # TEMPORARY METHOD
         return args.archived
 
     def _get_repo_path(self, base_path):
