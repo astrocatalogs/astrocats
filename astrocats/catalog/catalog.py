@@ -1152,7 +1152,8 @@ class Catalog:
 
         return url_txt
 
-    def load_url(self, url, fname, repo=None, archived=False, fail=False, write=True):
+    def load_url(self, url, fname, repo=None,
+                 archived=False, fail=False, write=True, json_sort=None):
         """Load the given URL, or a cached-version.
 
         Load page from url or cached file, depending on the current settings.
@@ -1186,9 +1187,8 @@ class Catalog:
         url : str
             URL to download.
         fname : str
-            Filename to which to save/load cached file.
+            Filename to which to save/load cached file.  Inludes suffix.
             NOTE: in general, this should be the source's BIBCODE.
-            NOTE: The file suffix will automatically be added.
         repo : str or None
             The full path of the data-repository the cached file should be
             saved/loaded from.  If 'None', then the current task is used to
@@ -1199,20 +1199,20 @@ class Catalog:
             If the file/url cannot be loaded, raise an error.
         write : bool
             Save a new copy of the cached file.
+        json_sort : str or None
+            If data is being saved to a json file, sort first by this str.
 
         """
-
-        # Flag to determine in copy of url should be downloaded, default to False
-        download = False
         file_txt = None
         url_txt = None
 
         # Construct the cached filename
         if repo is None:
             repo = self.get_current_task_repo()
-        cached_path = os.path.join(repo, fname + '.txt')
+        cached_path = os.path.join(repo, fname)
 
-        # If file exists, load it
+        # Load cached file if it exists
+        # ----------------------------
         if os.path.isfile(cached_path):
             with codecs.open(cached_path, 'r', encoding='utf8') as infile:
                 file_txt = infile.read()
@@ -1231,45 +1231,85 @@ class Catalog:
         # If we are not in 'archived' mode, or loading cached failed, load url
         url_txt = self.download_url(url, timeout, fail=False)
 
-        # At this point, we should have both `url_txt` and `file_txt`
+        # At this point, we might have both `url_txt` and `file_txt`
         # If either of them failed, then they are set to None
 
-        # Both sources failed
-        if url_txt is None and file_txt is None:
-            err_str = "Both url and file retrieval failed!"
-            # If we should raise errors on failure
-            if fail:
-                err_str += " `fail` set."
-                self.log.error(err_str)
-                raise RuntimeError(err_str)
-            # Otherwise warn and return None
-            self.log.warning(err_str)
-            return None
-
-        # Otherwise, if url failed, return file data
-        elif url_txt is None:
-            # If we are trying to update, but the url failed, then return None
-            if self.args.update:
-                self.log.error("Cannot check for updates, url download failed.")
+        # If URL download failed, error or return cached data
+        # ---------------------------------------------------
+        if url_txt is None:
+            # Both sources failed
+            if file_txt is None:
+                err_str = "Both url and file retrieval failed!"
+                # If we should raise errors on failure
+                if fail:
+                    err_str += " `fail` set."
+                    self.log.error(err_str)
+                    raise RuntimeError(err_str)
+                # Otherwise warn and return None
+                self.log.warning(err_str)
                 return None
-            # Otherwise, return file data
-            self.log.warning("URL download failed, using cached data.")
-            return file_txt
 
-        # Otherwise, if file failed, return url data (possible create cache)
+            # Otherwise, if only url failed, return file data
+            else:
+                # If we are trying to update, but the url failed, then return None
+                if self.args.update:
+                    self.log.error(
+                        "Cannot check for updates, url download failed.")
+                    return None
+                # Otherwise, return file data
+                self.log.warning("URL download failed, using cached data.")
+                return file_txt
+
+        # Here: `url_txt` exists, `file_txt` may exist or may be None
+        # Determine if update should happen, and if file should be resaved
+
+        # Write new url_txt to cache file
+        # -------------------------------
+        if write:
+            self.log.info("Writing `url_txt` to file '{}'.".format(
+                cached_path))
+            self._write_cache_file(
+                url_txt, cached_path, json_sort=json_sort)
+        # If `file_txt` doesnt exist but were not writing.. warn
         elif file_txt is None:
-            # Write url_txt to new cache file
-            if write:
-                self.log.info("Writing `url_txt` to file '{}'.".format(
+            err_str = "Warning: cached file '{}' does not exist.".format(
+                cached_path)
+            err_str += " And is not being saved."
+            self.log.warning(err_str)
+
+        # Check if we need to update this data
+        # ------------------------------------
+        # If both `url_txt` and `file_txt` exist and update mode check MD5
+        if file_txt is not None and args.update:
+            url_md5 = md5(url_txt.encode('utf-8')).hexdigest()
+            file_md5 = md5(file_txt.encode('utf-8')).hexdigest()
+            # If the data is the same, no need to parse (update), return None
+            if url_md5 == file_md5:
+                self.log.info("Skipping file '{}', no changes.".format(
                     cached_path))
+                return None
+            else:
+                self.log.info("File '{}' has been updated".format(
+                    cached_path))
+                # Warn if we didnt save a new copy
+                if not write:
+                    err_str = "Warning: updated data not saved to file."
+                    self.log.warning(err_str)
 
-            return url_txt
+        return url_txt
 
-        # Here, both url_txt and file_txt exist
+    def _write_cache_file(self, data, filename, json_sort=None):
+        # Sort json data first
+        if jsonsort is not None and filename.endswith('.json'):
+            json_data = json.loads(data)
+            json_data = list(sorted(json_data, key=lambda kk: kk[jsonsort]))
+            data = json.dumps(json_data, indent=4, separators=(',', ': '))
+        # Write txt to file
+        with codecs.open(filename, 'w', encoding='utf8') as save_file:
+            save_file.write(data)
+            self.log.info("Wrote to '{}'.".format(filename))
 
-        if self.args.update:
-            filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
-
+        return
 
     def download_url(self, url, timeout, fail=False):
         """Download text from the given url.
