@@ -96,8 +96,10 @@ class Task():
     def load_archive(self, args):
         """Whether previously archived data should be loaded.
         """
-        # TEMPORARY METHOD
-        return args.archived
+        import warnings
+        warnings.warn("`Task.load_archive()` is deprecated!  "
+                      "`Catalog.load_url` handles the same functionality.")
+        return True
 
     def _get_repo_path(self, base_path):
         """
