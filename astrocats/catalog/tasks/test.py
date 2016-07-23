@@ -28,9 +28,9 @@ FAKE_REDZ_2 = '0.987'
 
 def do_test(catalog):
     log = catalog.log
-    log.error("do_test()")
+    log.info("do_test()")
     task_str = catalog.get_current_task_str()
-    log.error("`task_str`: '{}'".format(task_str))
+    log.info("`task_str`: '{}'".format(task_str))
 
     if len(catalog.entries) != 0:
         raise RuntimeError("Run test only with empty catalog.")
@@ -41,28 +41,27 @@ def do_test(catalog):
                             catalog.PATHS.get_repo_output_folders()[0] +
                             'test.html')
 
-    log.error("In archive mode? " +
-              str(catalog.current_task.load_archive(catalog.args)))
+    log.info("`args.archived` = '{}', `current_task.archived` = '{}'".format(
+        catalog.args.archived, catalog.current_task.archived))
 
     # Test repo path functions
     # ------------------------
     paths = catalog.PATHS.get_all_repo_folders()
     for path in tq(paths, currenttask='Test tq progress bar.'):
         tprint('Test tprint.')
-        log.error(path)
+        log.debug(path)
     paths = catalog.PATHS.get_repo_input_folders()
     for path in pbar_strings(paths, desc='Test pbar_strings progress bar.'):
-        log.error(path)
+        log.debug(path)
     boneyard = catalog.PATHS.get_repo_boneyard()
-    log.error(boneyard)
+    log.debug(boneyard)
 
     # Create a Fake Entry, with some Fake Data
     # ----------------------------------------
     _first_event_first_source(catalog)
 
-    #
     log_str = "ADDING SECOND SOURCE"
-    log.error("\n\n{}\n{}\n{}\n\n".format("=" * 100, log_str, "=" * 100))
+    log.info("\n\n{}\n{}\n{}\n\n".format("=" * 100, log_str, "=" * 100))
 
     # Add new Data, from different source, to same fake entry
     # -------------------------------------------------------
@@ -90,11 +89,11 @@ def do_test(catalog):
     _first_event_second_source(catalog)
 
     # Test some utility functions
-    log.error("Preferred name for 2nd source: " +
+    log.debug("Preferred name for 2nd source: " +
               catalog.get_preferred_name(FAKE_ALIAS_2))
-    log.error("Entry exists? " +
+    log.debug("Entry exists? " +
               str(catalog.entry_exists(FAKE_ALIAS_2)))
-    log.error("Entry text: " + catalog.entries[FAKE_ALIAS_1].get_entry_text(
+    log.debug("Entry text: " + catalog.entries[FAKE_ALIAS_1].get_entry_text(
         os.path.join(outdir, filename + '.json')))
 
     # Third source is a duplicate that will be merged
@@ -104,10 +103,10 @@ def do_test(catalog):
     _second_event(catalog)
 
     # Delete name to test name re-addition in sanitize
-    for i, alias in enumerate(
+    for ii, alias in enumerate(
             catalog.entries[FAKE_ALIAS_5][ENTRY.ALIAS].copy()):
         if alias[QUANTITY.VALUE] == FAKE_ALIAS_5:
-            del catalog.entries[FAKE_ALIAS_1][ENTRY.ALIAS][i]
+            del catalog.entries[FAKE_ALIAS_1][ENTRY.ALIAS][ii]
             break
 
     return
@@ -118,10 +117,10 @@ def _first_event_first_source(catalog):
     """
     log = catalog.log
     # Add Entry to Catalog
-    log.error("Calling: ``add_entry('{}')``".format(FAKE_ALIAS_1))
+    log.info("Calling: ``add_entry('{}')``".format(FAKE_ALIAS_1))
     name = catalog.add_entry(FAKE_ALIAS_1)
-    log.error("\t `name`: '{}'".format(name))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `name`: '{}'".format(name))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure entry exists
     if FAKE_ALIAS_1 not in catalog.entries:
         raise RuntimeError("`FAKE_ALIAS_1`: '{}' is not in entries".format(
@@ -133,11 +132,11 @@ def _first_event_first_source(catalog):
             ENTRY.NAME, stored_name, FAKE_ALIAS_1))
 
     # Add source to entry
-    log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_1))
+    log.info("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_1))
     source = catalog.entries[name].add_source(
         name=FAKE_NAME_1, bibcode=FAKE_BIBCODE_1)
-    log.error("\t `source`: '{}'".format(source))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `source`: '{}'".format(source))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure source alias is correct
     if source != '1':
         raise RuntimeError("Returned `source`: '{}' is wrong.".format(source))
@@ -145,10 +144,10 @@ def _first_event_first_source(catalog):
     check_source_1(catalog, name)
 
     # Add alias
-    log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
+    log.info("Calling: ``add_quantity('alias', '{}', '{}')``".format(
         FAKE_ALIAS_2, source))
     catalog.entries[name].add_quantity(ENTRY.ALIAS, FAKE_ALIAS_2, source)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure source alias is correct
     stored_aliases = catalog.entries[name][ENTRY.ALIAS]
     if ((len(stored_aliases) != 1 or
@@ -157,35 +156,35 @@ def _first_event_first_source(catalog):
         raise RuntimeError("Stored alias: '{}' looks wrong.".format(
             stored_aliases[0]))
 
-    log.error("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
+    log.info("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
         FAKE_REDZ_1, source))
     catalog.entries[name].add_quantity(
         ENTRY.REDSHIFT, FAKE_REDZ_1, source, kind='spectroscopic')
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a fake photometric observation
-    log.error("Calling: ``add_photometry(...)``")
+    log.info("Calling: ``add_photometry(...)``")
     catalog.entries[name].add_photometry(
         time='12345', magnitude='20.0', band='g', e_magnitude='0.01',
         telescope='OWELTMT', instrument='UltraCam', observer='I. M. Fake',
         observatory='Mt. Olympus', survey='Zeus Analog Sky Survey',
         source=source)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a fake photometric observation with mangled data
-    log.error("Calling: ``add_photometry(...)``")
+    log.info("Calling: ``add_photometry(...)``")
     catalog.entries[name].add_photometry(
         time='oiasjdqw', magnitude='oihqwr', source=source)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a fake photometric observation without required fields
-    log.error("Calling: ``add_photometry(...)``")
+    log.info("Calling: ``add_photometry(...)``")
     catalog.entries[name].add_photometry(e_magnitude='0.01')
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
-    log.error("Calling: ``journal_entries()``")
+    log.info("Calling: ``journal_entries()``")
     catalog.journal_entries()
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure the remaining stub looks right
     check_stub(catalog, name)
     return
@@ -194,10 +193,10 @@ def _first_event_first_source(catalog):
 def _first_event_second_source(catalog):
     log = catalog.log
 
-    log.error("Calling: ``add_entry('{}')``".format(FAKE_ALIAS_2))
+    log.info("Calling: ``add_entry('{}')``".format(FAKE_ALIAS_2))
     name = catalog.add_entry(FAKE_ALIAS_2)
-    log.error("\t `name`: '{}'".format(name))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `name`: '{}'".format(name))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     # Make sure the proper name is returned (instead of the alias)
     if name != FAKE_ALIAS_1:
         raise RuntimeError("Returned `name`: '{}' does not match '{}'".format(
@@ -205,26 +204,26 @@ def _first_event_second_source(catalog):
     # Make sure previous data was loaded
     check_source_1(catalog, name)
 
-    log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_2))
+    log.info("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_2))
     source = catalog.entries[name].add_source(
         name=FAKE_NAME_2, bibcode=FAKE_BIBCODE_2)
-    log.error("\t `source`: '{}'".format(source))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `source`: '{}'".format(source))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
-    log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
+    log.info("Calling: ``add_quantity('alias', '{}', '{}')``".format(
         FAKE_ALIAS_3, source))
     catalog.entries[name].add_quantity(ENTRY.ALIAS, FAKE_ALIAS_3, source)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     check_source_2(catalog, name)
 
-    log.error("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
+    log.info("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
         FAKE_REDZ_2, source))
     catalog.entries[name].add_quantity(
         ENTRY.REDSHIFT, FAKE_REDZ_2, source, kind='spectroscopic')
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a fake spectral observation
-    log.error("Calling: ``add_spectrum(...)``")
+    log.info("Calling: ``add_spectrum(...)``")
     wavelengths = [str(1.0*x) for x in range(1000, 9000, 100)]
     fluxes = wavelengths
     errors = wavelengths
@@ -236,10 +235,10 @@ def _first_event_second_source(catalog):
         telescope='OWELTMT', instrument='MOSICE', observer='I. M. Fake',
         observatory='Mt. Everest', survey='Hillary Transient Factory',
         source=source, deredshifted=True)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add a duplicate of the above spectrum, shouldn't be added.
-    log.error("Calling: ``add_spectrum(...)``")
+    log.info("Calling: ``add_spectrum(...)``")
     wavelengths = [str(1.0*x) for x in range(1000, 9000, 100)]
     fluxes = wavelengths
     errors = wavelengths
@@ -248,11 +247,11 @@ def _first_event_second_source(catalog):
         u_errors='erg/s/cm^2/Angstrom', filename='my_spectrum.txt',
         time='12345',
         wavelengths=wavelengths, fluxes=fluxes, source=source)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
-    log.error("Calling: ``journal_entries()``")
+    log.info("Calling: ``journal_entries()``")
     catalog.journal_entries()
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
     check_stub(catalog, name)
     return
 
@@ -260,29 +259,29 @@ def _first_event_second_source(catalog):
 def _first_event_third_source(catalog):
     log = catalog.log
 
-    log.error("Calling: ``new_entry('{}')``".format(FAKE_ALIAS_4))
+    log.info("Calling: ``new_entry('{}')``".format(FAKE_ALIAS_4))
     (name, source) = catalog.new_entry(FAKE_ALIAS_4, srcname=FAKE_NAME_2,
                                        bibcode=FAKE_BIBCODE_2)
-    log.error("\t `name`: '{}', `source`: '{}'".format(name, source))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `name`: '{}', `source`: '{}'".format(name, source))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
-    log.error("Calling: ``add_quantity('alias', '{}', '{}')``".format(
+    log.info("Calling: ``add_quantity('alias', '{}', '{}')``".format(
         FAKE_ALIAS_1, source))
     catalog.entries[name].add_quantity(ENTRY.ALIAS, FAKE_ALIAS_1, source)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add erroroneous redshift, which should cause add_quantity below to fail.
-    log.error("Calling: ``add_error('{}', '{}', '{}')``".format(
+    log.info("Calling: ``add_error('{}', '{}', '{}')``".format(
         FAKE_BIBCODE_2, SOURCE.BIBCODE, ENTRY.REDSHIFT))
     catalog.entries[name].add_error(
         FAKE_BIBCODE_2, kind=SOURCE.BIBCODE, extra=ENTRY.REDSHIFT)
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
-    log.error("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
+    log.info("Calling: ``add_quantity('redshift', '{}', '{}')``".format(
         FAKE_REDZ_2, source))
     catalog.entries[name].add_quantity(
         ENTRY.REDSHIFT, FAKE_REDZ_2, source, kind='spectroscopic')
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     return
 
@@ -290,27 +289,27 @@ def _first_event_third_source(catalog):
 def _second_event(catalog):
     log = catalog.log
 
-    log.error("Calling: ``new_entry('{}')``".format(FAKE_ALIAS_5))
+    log.info("Calling: ``new_entry('{}')``".format(FAKE_ALIAS_5))
     (name, source) = catalog.new_entry(FAKE_ALIAS_5, srcname=FAKE_NAME_2,
                                        bibcode=FAKE_BIBCODE_2)
-    log.error("\t `name`: '{}', `source`: '{}'".format(name, source))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `name`: '{}', `source`: '{}'".format(name, source))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     # Add an orphan source
-    log.error("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_3))
+    log.info("Calling: ``add_source('{}')``".format(FAKE_BIBCODE_3))
     source = catalog.entries[name].add_source(
         bibcode=FAKE_BIBCODE_3)
     source = catalog.entries[name].add_source(
         name=FAKE_NAME_3)
-    log.error("\t `source`: '{}'".format(source))
-    log.error("\n{}\n".format(repr(catalog.entries[name])))
+    log.debug("\t `source`: '{}'".format(source))
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     return
 
 
 def check_source_1(catalog, name):
     stored_sources = catalog.entries[name][ENTRY.SOURCES]
-    print(stored_sources)
+    catalog.log.debug(str(stored_sources))
     if ((len(stored_sources) != 1 or
          stored_sources[0][SOURCE.NAME] != FAKE_NAME_1 or
          stored_sources[0][SOURCE.BIBCODE] != FAKE_BIBCODE_1)):
