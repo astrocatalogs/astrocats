@@ -1183,8 +1183,8 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """
     if log_flag:
         log.debug("Running '{}'.".format(" ".join(comm)))
-    retval = subprocess.run(comm, cwd=repo, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    retval = subprocess.call(comm, cwd=repo, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
     if retval.stderr is not None:
         err_msg = retval.stderr.decode('ascii').strip().splitlines()
         for em in err_msg:
