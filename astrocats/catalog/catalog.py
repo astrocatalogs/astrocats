@@ -1172,6 +1172,13 @@ class Catalog:
               otherwise return None
 
         'update' mode:
+            * In update mode, try to compare URL to cached file.
+            * If URL fails, return None
+              (cannot update)
+            * If URL data matches cached data, return None
+              (dont need to update)
+            * If URL is different from data, return url data
+              (proceed with update)
 
         Arguments
         ---------
@@ -1238,12 +1245,27 @@ class Catalog:
             # Otherwise warn and return None
             self.log.warning(err_str)
             return None
-        # Otherwise, if url failed, return file
+
+        # Otherwise, if url failed, return file data
         elif url_txt is None:
             # If we are trying to update, but the url failed, then return None
             if self.args.update:
                 self.log.error("Cannot check for updates, url download failed.")
                 return None
+            # Otherwise, return file data
+            self.log.warning("URL download failed, using cached data.")
+            return file_txt
+
+        # Otherwise, if file failed, return url data (possible create cache)
+        elif file_txt is None:
+            # Write url_txt to new cache file
+            if write:
+                self.log.info("Writing `url_txt` to file '{}'.".format(
+                    cached_path))
+
+            return url_txt
+
+        # Here, both url_txt and file_txt exist
 
         if self.args.update:
             filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
