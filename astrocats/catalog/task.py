@@ -96,16 +96,7 @@ class Task():
     def load_archive(self, args):
         """Whether previously archived data should be loaded.
         """
-        # If we're running in 'archived' mode, and only loading 'archived'
-        # things, then True
-        if (args.archived and self.name not in args.refresh_list):
-            return True
-        # For normal running, if we are not specifically refreshing this task,
-        # then True
-        if self.name not in args.refresh_list:
-            return True
-
-        return False
+        return args.archived
 
     def _get_repo_path(self, base_path):
         """
