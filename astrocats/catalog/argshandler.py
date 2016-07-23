@@ -109,10 +109,6 @@ class ArgsHandler:
             '--archived', '-a', dest='archived',
             default=False, action='store_true',
             help='Always use task caches.')
-        import_pars.add_argument(
-            '--refresh-list', '-rl', dest='refresh_list',
-            default='', nargs='+',
-            help='Space-delimited list of caches to clear.')
 
         # Control which 'tasks' are executed
         # ----------------------------------
