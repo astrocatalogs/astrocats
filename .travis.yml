@@ -44,7 +44,7 @@ script:
     - coverage run -a -m astrocats catalog git-reset-local
     - coverage run -a -m astrocats catalog git-status
     - coverage run -a -m astrocats catalog git-reset-origin
-    - coverage run -a -m astrocats catalog git-push
+#    - coverage run -a -m astrocats catalog git-push
     - echo "travis_fold:end:GIT completed git checks"
 #    - echo "travis_fold:start:MAKE Making catalog"
 #    - cd astrocats/supernovae/scripts
