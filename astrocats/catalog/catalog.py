@@ -1152,7 +1152,7 @@ class Catalog:
 
         return url_txt
 
-    def load_url(self, url, fname, repo=None, archived=False, fail=False):
+    def load_url(self, url, fname, repo=None, archived=False, fail=False, write=True):
         """Load the given URL, or a cached-version.
 
         Load page from url or cached file, depending on the current settings.
@@ -1160,16 +1160,18 @@ class Catalog:
         `--archived` CL argument), and when this task has `Task.archived`
         also set to True.
 
-        'archived'-mode:
+        'archived' mode:
             * Try to load from cached file.
             * If cache does not exist, try to load from web.
             * If neither works, raise an error if ``fail == True``,
               otherwise return None
-        non-'archived'-mode:
+        non-'archived' mode:
             * Try to load from url, save to cache file.
             * If url fails, try to load existing cache file.
             * If neither works, raise an error if ``fail == True``,
               otherwise return None
+
+        'update' mode:
 
         Arguments
         ---------
@@ -1188,43 +1190,69 @@ class Catalog:
             Load a previously archived version of the file.
         fail : bool
             If the file/url cannot be loaded, raise an error.
+        write : bool
+            Save a new copy of the cached file.
 
         """
 
         # Flag to determine in copy of url should be downloaded, default to False
         download = False
-        page_txt = None
+        file_txt = None
+        url_txt = None
 
         # Construct the cached filename
         if repo is None:
             repo = self.get_current_task_repo()
         cached_path = os.path.join(repo, fname + '.txt')
 
-        # In `archived` mode - load cached versions of pages when possible
+        # If file exists, load it
+        if os.path.isfile(cached_path):
+            with codecs.open(cached_path, 'r', encoding='utf8') as infile:
+                file_txt = infile.read()
+                self.log.debug("{}: Loaded from '{}'.".format(
+                    self.current_task, cached_path))
+
+        # In `archived` mode - try to return the cached page
         if self.args.archived and archived:
-            # If file exists, load it
-            if os.path.isfile(cached_path):
-                with codecs.open(cached_path, 'r', encoding='utf8') as infile:
-                    page_txt = infile.read()
-                    self.log.debug("{}: Loaded from '{}'.".format(
-                        self.current_task, cached_path))
-                return page_txt
-            # If file does not exist, log warning
+            if file_txt is not None:
+                return file_txt
+            # If file does not exist, log error, continue
             else:
                 self.log.error("{}: Cached file '{}' does not exist.".format(
                     self.current_task, cached_path))
 
         # If we are not in 'archived' mode, or loading cached failed, load url
+        url_txt = self.download_url(url, timeout, fail=False)
 
+        # At this point, we should have both `url_txt` and `file_txt`
+        # If either of them failed, then they are set to None
 
-
+        # Both sources failed
+        if url_txt is None and file_txt is None:
+            err_str = "Both url and file retrieval failed!"
+            # If we should raise errors on failure
+            if fail:
+                err_str += " `fail` set."
+                self.log.error(err_str)
+                raise RuntimeError(err_str)
+            # Otherwise warn and return None
+            self.log.warning(err_str)
+            return None
+        # Otherwise, if url failed, return file
+        elif url_txt is None:
+            # If we are trying to update, but the url failed, then return None
+            if self.args.update:
+                self.log.error("Cannot check for updates, url download failed.")
+                return None
 
         if self.args.update:
             filemd5 = md5(file_txt.encode('utf-8')).hexdigest()
 
 
-    def _download_url(self, url, timeout, fail=False):
+    def download_url(self, url, timeout, fail=False):
         """Download text from the given url.
+
+        Returns `None` on failure.
 
         Arguments
         ---------
@@ -1232,8 +1260,16 @@ class Catalog:
         url : str
             URL web address to download.
         timeout : int
+            Duration after which URL request should terminate.
         fail : bool
+            If `True`, then an error will be raised on failure.
+            If `False`, then 'None' is returned on failure.
 
+        Returns
+        -------
+        url_txt : str or None
+            On success the text of the url is returned.  On failure `None` is
+            returned.
 
         """
         _CODE_ERRORS = [500, 307, 404]
@@ -1258,12 +1294,15 @@ class Catalog:
 
         except (KeyboardInterrupt, SystemExit):
             raise
+
         except:
             err_str = "URL Download of '{}' failed.".format(url)
+            # Raise an error on failure
             if fail:
                 err_str += " and `fail` is set."
                 self.log.error(err_str)
                 raise RuntimeError(err_str)
+            # Log a warning on error, and return None
             else:
                 self.log.warning(err_str)
                 return None
