@@ -37,12 +37,13 @@ def do_test(catalog):
 
     # Test URL retrieve functions
     # ---------------------------
-    catalog.load_cached_url('http://google.com',
-                            catalog.PATHS.get_repo_output_folders()[0] +
-                            'test.html')
-
     log.info("`args.archived` = '{}', `current_task.archived` = '{}'".format(
         catalog.args.archived, catalog.current_task.archived))
+
+    test_load_url(catalog)
+
+    return
+
 
     # Test repo path functions
     # ------------------------
@@ -340,3 +341,110 @@ def check_stub(catalog, name):
         raise RuntimeError("Remaining still has '{}'.".format(
             ENTRY.SOURCES))
     return
+
+
+def test_load_url(catalog):
+    """Test the `Catalog.load_url` methods.
+    """
+    log = catalog.log
+    log.info("Testing `Catalog.load_url`.")
+
+    TEST_URL = "http://www.google.com"       # This should work
+    # This shouldnt change much
+    TEST_URL_STATIC = "https://www.cfa.harvard.edu/about/contact"
+    TEST_BAD_URL = "http://www.BADgooBADgleBAD.com"   # this should fail
+    TEST_URL_FNAME_1 = 'google-test-1.txt'   # This should never exist
+    TEST_URL_FNAME_2 = 'google-test-2.txt'   # This should be created
+    TEST_STATIC_FNAME = 'static-test.txt'
+
+    INPUT_PATH = catalog.get_current_task_repo()
+
+    # Do not Write
+    log.info("calling `load_url(...write=False)`")
+    test_data = catalog.load_url(TEST_URL, TEST_URL_FNAME_1, write=False)
+    if os.path.exists(TEST_URL_FNAME_1):
+        err_str = "File '{}' should not have been produced!".format(
+            TEST_URL_FNAME_1)
+        log_raise(err_str, log)
+    if test_data is None:
+        err_str = "URL '{}' returned no data!".format(
+            TEST_URL)
+        log_raise(err_str, log)
+
+    # Do Write
+    log.info("calling `load_url(...write=True)`")
+    test_path = os.path.join(INPUT_PATH, TEST_URL_FNAME_2)
+    # If file exists, delete it to make sure it is recreated
+    if os.path.exists(test_path):
+        os.remove(test_path)
+    test_data = catalog.load_url(TEST_URL, TEST_URL_FNAME_2, write=True)
+    if not os.path.exists(test_path):
+        err_str = "File '{}' should have been produced!".format(
+            test_path)
+        log_raise(err_str, log)
+    if test_data is None:
+        err_str = "URL '{}' returned no data!".format(
+            TEST_URL)
+        log_raise(err_str, log)
+
+    # Make sure that update mode is working
+    log.info("calling `load_url(...update_mode=True)`")
+    test_path = os.path.join(INPUT_PATH, TEST_STATIC_FNAME)
+    # If file exists, delete it to make sure it is recreated
+    if os.path.exists(test_path):
+        os.remove(test_path)
+    # Create file in update mode
+    test_data = catalog.load_url(TEST_URL_STATIC, TEST_STATIC_FNAME,
+                                 write=True, update_mode=True)
+    if test_data is None:
+        err_str = "Update mode should Still have created file!"
+        log_raise(err_str, log)
+    # update mode should return None for unchanged URL
+    test_data = catalog.load_url(TEST_URL_STATIC, TEST_STATIC_FNAME,
+                                 write=False, update_mode=True)
+    if test_data is not None:
+        err_str = "Update mode should have returned None."
+        err_str += "\nInstead got '{}'".format(test_data)
+        log_raise(err_str, log)
+
+    # Use an invalid URL, but valid file
+    log.info("calling `load_url(..., write=False)` with invalid URL")
+    test_data = catalog.load_url(TEST_BAD_URL, TEST_URL_FNAME_2, write=False)
+    if test_data is None:
+        err_str = "Data should still have been retrieved!"
+        log_raise(err_str, log)
+
+    # Use invalid URL and invalid file, should return None
+    log.info("calling `load_url(..., fail=False)` with invalid URL and File")
+    test_data = catalog.load_url(TEST_BAD_URL, TEST_URL_FNAME_1,
+                                 write=False, fail=False)
+    if test_data is not None:
+        err_str = "Return value should have been None!"
+        err_str += "\n'{}'".format(test_data)
+        log_raise(err_str, log)
+
+    # Use invalid URL and invalid file, with `fail` flag --- should raise
+    log.info("calling `load_url(..., fail=True)` with invalid URL and File")
+    try:
+        test_data = catalog.load_url(TEST_BAD_URL, TEST_URL_FNAME_1,
+                                     write=False, fail=True)
+    except RuntimeError as err:
+        log.debug("Caught error '{}'".format(str(err)))
+    # Error should have been raised... so if not, raise error
+    else:
+        err_str = "An error should have been raised!"
+        err_str += "\nInstead, got '{}'".format(test_data)
+        log_raise(err_str)
+
+    return
+
+    # Test deprecated function
+    test_path = os.path.join(
+        catalog.PATHS.get_repo_output_folders()[0], 'test.html')
+    catalog.load_cached_url('http://google.com', test_path)
+
+    return
+
+def log_raise(err_str, log):
+    log.error(err_str)
+    raise RuntimeError(err_str)
