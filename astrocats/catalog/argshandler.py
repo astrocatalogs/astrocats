@@ -106,10 +106,6 @@ class ArgsHandler:
             default=False, action='store_true',
             help='Ignore most task caches.')
         import_pars.add_argument(
-            '--full-refresh', '-f', dest='full_refresh',
-            default=False, action='store_true',
-            help='Ignore all task caches.')
-        import_pars.add_argument(
             '--archived', '-a', dest='archived',
             default=False, action='store_true',
             help='Always use task caches.')
