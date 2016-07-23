@@ -38,6 +38,9 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
         - `git-reset-origin`: reset the repository to 'origin/master', i.e. it runs `git reset --hard origin/master` in each data repository.
     - 'pull' : There is (currently) no pull command.  Instead, repositories must be pulled manually, or alternatively the `git-reset-[]` commands can be used to hard-reset.
     - `git-status` : print the status of the repo in each directory.
+- Loading cached/archived URLs, and the 'refresh' parameters.
+    - A new method `Catalog.load_url` has been added to take the place of `Catalog.load_cached_url` and `Task.load_archive` (both of which should now be considered deprecated), as well as some general functionality that has been written into individual tasks.
+    - The following command-line arguments and corresponding parameters have been deprecated: {`refresh`, `refresh-list`, `refresh-all`}
 - `astrocats/catalog/entry.py`
     - `Entry.add_alias` [new-function]
         - New method to add aliases to an existing entry after first 'cleaning' the alias name - in the same way as the entry names are cleaned by the containing catalog.  In this way, the stored aliases should be guaranteed (in general) to match the corresponding entry names (and naming styles).
@@ -46,6 +49,15 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 - `astrocats/catalog/source.py`
     - `Source.bibcode_from_url` [new-function]
         - Function extracts the Bibcode from an *ADS-URL* if possible.
+- `astrocats/catalog/catalog.py`
+    - `Catalog.load_cached_url` [DEPRECATED]
+        - Replaced by new method `load_url`
+    - `Catalog.load_url` [new-function]
+        - This method will load text data from either a URL or a pre-cached file of the data.
+        - The detailed behavior of the method depends on whether the code is being run in `archived` or `update` mode, and the settings for the particular task calling the method.
+- `astrocats/catalog/task.py`
+    - `Task.load_archive` [DEPRECATED]
+        - Replaced by functionality in `Catalog.load_url`.
 
 
 <a name='v0.2.0'>
