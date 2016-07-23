@@ -32,7 +32,7 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
     - Basic 'count' functionality to report the number of files and tasks in each catalog.
 - Added subcommands for git repositories in [astrocats/catalog/catalog.py](https://github.com/astrocatalogs/astrocats/blob/master/astrocats/catalog/catalog.py).
     - The `git-push` subcommand can now be used to add, commit and push all data files in each data repository.  This works in all installed catalogs.
-    - `git-clone`: clone all data repositories included in the `repos.json` input file.  **NOTE: the name given in the input file must match the github repository name for this to work.  If the directory name should be different from the github url, then it must be added manually.**
+    - `git-clone`: clone all data repositories included in the `repos.json` input file.  *NOTE: the name given in the input file must match the github repository name for this to work.  If the directory name should be different from the github url, then it must be added manually.*
     - 'git-reset' :
         - `git-reset-local`: reset the repository to the local HEAD, i.e. it runs `git reset --hard` in each data repository.
         - `git-reset-origin`: reset the repository to 'origin/master', i.e. it runs `git reset --hard origin/master` in each data repository.
