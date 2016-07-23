@@ -19,7 +19,6 @@ from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
-from git import Repo
 from tqdm import tqdm
 
 
@@ -481,7 +480,8 @@ class Catalog:
             if os.path.isdir(repo):
                 self.log.info("Directory exists.")
             else:
-                _clone_astrocats_repo(repo, self.log, depth=self.args.clone_depth)
+                _clone_astrocats_repo(repo, self.log,
+                                      depth=self.args.clone_depth)
 
             grepo = git.cmd.Git(repo)
             try:
@@ -1201,7 +1201,7 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     # Raises an error if the command failed.
     if fail:
         if process.returncode:
-            raise CalledProcessError
+            raise subprocess.CalledProcessError
     return
 
 
