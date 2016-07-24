@@ -1255,6 +1255,7 @@ class Catalog:
             from hashlib import md5
             url_md5 = md5(url_txt.encode('utf-8')).hexdigest()
             file_md5 = md5(file_txt.encode('utf-8')).hexdigest()
+            self.log.debug("URL: '{}', File: '{}'.".format(url_md5, file_md5))
             # If the data is the same, no need to parse (update), return None
             if url_md5 == file_md5:
                 self.log.info("Skipping file '{}', no changes.".format(
