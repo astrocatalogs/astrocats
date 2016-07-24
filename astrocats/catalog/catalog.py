@@ -1271,6 +1271,11 @@ class Catalog:
         return url_txt
 
     def _write_cache_file(self, data, filename, json_sort=None):
+        # Make sure necessary directories exist
+        filename = os.path.abspath(filename)
+        base_path = os.path.split(filename)[0]
+        if not os.path.isdir(base_path):
+            os.makedirs(base_path)
         # Sort json data first
         if json_sort is not None and filename.endswith('.json'):
             json_data = json.loads(data)
