@@ -401,7 +401,6 @@ def test_load_url(catalog):
                                  write=False, update_mode=True)
     if test_data is not None:
         err_str = "Update mode should have returned None."
-        err_str += "\nInstead got '{}'".format(test_data)
         log_raise(err_str, log)
 
     # Use an invalid URL, but valid file
@@ -441,6 +440,7 @@ def test_load_url(catalog):
     catalog.load_cached_url('http://google.com', test_path)
 
     return
+
 
 def log_raise(err_str, log):
     log.error(err_str)
