@@ -1343,6 +1343,7 @@ class Catalog:
 
         return url_txt
 
+
 def _get_task_priority(tasks, task_priority):
     """Get the task `priority` corresponding to the given `task_priority`.
 
