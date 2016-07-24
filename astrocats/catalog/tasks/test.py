@@ -42,9 +42,6 @@ def do_test(catalog):
 
     test_load_url(catalog)
 
-    return
-
-
     # Test repo path functions
     # ------------------------
     paths = catalog.PATHS.get_all_repo_folders()
