@@ -405,7 +405,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.warning("Repo in: '{}'".format(repo))
+            self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
@@ -453,7 +453,7 @@ class Catalog:
 
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.warning("Repo in: '{}'".format(repo))
+            self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
@@ -474,7 +474,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.warning("Repo in: '{}'".format(repo))
+            self.log.info("Repo in: '{}'".format(repo))
 
             if os.path.isdir(repo):
                 self.log.info("Directory exists.")
@@ -501,7 +501,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.warning("Repo in: '{}'".format(repo))
+            self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
@@ -541,7 +541,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.warning("Repo in: '{}'".format(repo))
+            self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
