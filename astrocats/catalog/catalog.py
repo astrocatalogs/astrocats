@@ -1191,7 +1191,7 @@ class Catalog:
                     self.current_task.name, cached_path))
 
         # In `archived` mode and task - try to return the cached page
-        if archived_mode or archived_task:
+        if archived_mode or (archived_task and not update_mode):
             if file_txt is not None:
                 return file_txt
 
@@ -1228,7 +1228,8 @@ class Catalog:
 
             # Otherwise, if only url failed, return file data
             else:
-                # If we are trying to update, but the url failed, then return None
+                # If we are trying to update, but the url failed, then return
+                # None
                 if update_mode:
                     self.log.error(
                         "Cannot check for updates, url download failed.")
