@@ -99,7 +99,7 @@ class Task():
         import warnings
         warnings.warn("`Task.load_archive()` is deprecated!  "
                       "`Catalog.load_url` handles the same functionality.")
-        return True
+        return args.archived
 
     def _get_repo_path(self, base_path):
         """
