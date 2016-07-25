@@ -1108,7 +1108,7 @@ class Catalog:
         return url_data
 
     def load_url(self, url, fname, repo=None, timeout=120,
-                 fail=False, write=True, json_sort=None,
+                 fail=False, write=True, json_sort=None, cache_only=False,
                  archived_mode=None, archived_task=None, update_mode=None):
         """Load the given URL, or a cached-version.
 
@@ -1159,6 +1159,7 @@ class Catalog:
             Save a new copy of the cached file.
         json_sort : str or None
             If data is being saved to a json file, sort first by this str.
+        quiet : whether to emit error messages upon being unable to find files.
 
         """
         file_txt = None
@@ -1190,9 +1191,14 @@ class Catalog:
                     self.current_task.name, cached_path))
 
         # In `archived` mode and task - try to return the cached page
-        if archived_mode and archived_task:
+        if archived_mode or archived_task:
             if file_txt is not None:
                 return file_txt
+
+            # If this flag is set, don't even attempt to download from web
+            if cache_only:
+                return None
+
             # If file does not exist, log error, continue
             else:
                 self.log.error(
