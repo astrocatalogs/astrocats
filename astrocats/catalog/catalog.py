@@ -188,13 +188,14 @@ class Catalog:
         # -------------------------
         # git `SHA` of this directory (i.e. a sub-catalog)
         my_path = self.PATHS.catalog_dir
-        catalog_sha = subprocess.check_output(
-            ["git", "rev-parse", "--short", "HEAD"], cwd=my_path)
+        git_command = ["git", "rev-parse", "--short", "HEAD"]
+        self.log.debug("Running '{}' in '{}'.".format(git_command, my_path))
+        catalog_sha = subprocess.check_output(git_command, cwd=my_path)
         catalog_sha = catalog_sha.decode('ascii').strip()
         # Git SHA of `astrocats`
         parent_path = os.path.join(my_path, os.pardir)
-        astrocats_sha = subprocess.check_output(
-            ["git", "rev-parse", "--short", "HEAD"], cwd=parent_path)
+        self.log.debug("Running '{}' in '{}'.".format(git_command, my_path))
+        astrocats_sha = subprocess.check_output(git_command, cwd=parent_path)
         astrocats_sha = astrocats_sha.decode('ascii').strip()
         # Name of this class (if subclassed)
         my_name = type(self).__name__
