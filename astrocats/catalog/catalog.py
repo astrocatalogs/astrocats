@@ -193,7 +193,7 @@ class Catalog:
         catalog_sha = subprocess.check_output(git_command, cwd=my_path)
         catalog_sha = catalog_sha.decode('ascii').strip()
         # Git SHA of `astrocats`
-        parent_path = os.path.join(my_path, os.pardir)
+        parent_path = os.path.abspath(os.path.join(my_path, os.pardir))
         self.log.debug("Running '{}' in '{}'.".format(git_command, parent_path))
         astrocats_sha = subprocess.check_output(git_command, cwd=parent_path)
         astrocats_sha = astrocats_sha.decode('ascii').strip()
