@@ -3,6 +3,8 @@
 
 from collections import OrderedDict
 from random import seed, shuffle
+from matplotlib.colors import rgb2hex
+import seaborn as sns
 
 from palettable import colorbrewer, cubehelix, wesanderson
 
@@ -164,10 +166,10 @@ def bandcolorf(code):
     return 'black'
 
 
-def radiocolorf(code):
-    if code in radiocolordict:
-        return radiocolordict[code]
-    return 'black'
+def radiocolorf(freq):
+    ffreq = (float(freq) - 1.0)/(40.0 - 1.0)
+    pal = sns.diverging_palette(200, 60, l=80, as_cmap=True, center="dark")
+    return rgb2hex(pal(ffreq))
 
 
 def xraycolorf(code):
