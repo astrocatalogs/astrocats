@@ -10,14 +10,15 @@ from palettable import colorbrewer, cubehelix, wesanderson
 
 __all__ = [
     'bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf',
-    'bandshortaliasf', 'bandwavef', 'bandmetaf', 'bandcodes', 'bandwavelengths'
+    'bandshortaliasf', 'bandwavef', 'bandmetaf', 'bandcodes', 'bandwavelengths',
+    'bandgroupf'
 ]
 
 bandreps = {
     'Ks': ['K_s'],
     'M2': ['uvm2', 'UVM2', 'UVm2', 'Um2', 'm2', 'um2'],
     'W1': ['uvw1', 'UVW1', 'UVw1', 'Uw1', 'w1', 'uw1'],
-    'W2': ['uvw2', 'UVW2', 'UVw2', 'Uw2', 'w2', 'uw2']
+    'W2': ['uvw2', 'UVW2', 'UVw2', 'Uw2', 'w2', 'uw2'],
 }
 
 # Some bands are uniquely tied to an instrument/telescope/system, add this
@@ -77,19 +78,19 @@ bandcodes = [
 ]
 
 bandaliases = OrderedDict([
-    ("u_SDSS", "u (SDSS)"),
-    ("g_SDSS", "g (SDSS)"),
-    ("r_SDSS", "r (SDSS)"),
-    ("i_SDSS", "i (SDSS)"),
-    ("z_SDSS", "z (SDSS)")
+    ("u_SDSS", "u'"),
+    ("g_SDSS", "g'"),
+    ("r_SDSS", "r'"),
+    ("i_SDSS", "i'"),
+    ("z_SDSS", "z'")
 ])
 
 bandshortaliases = OrderedDict([
-    ("u_SDSS", "u"),
-    ("g_SDSS", "g"),
-    ("r_SDSS", "r"),
-    ("i_SDSS", "i"),
-    ("z_SDSS", "z"),
+    ("u_SDSS", "u'"),
+    ("g_SDSS", "g'"),
+    ("r_SDSS", "r'"),
+    ("i_SDSS", "i'"),
+    ("z_SDSS", "z'"),
     ("G", "")
 ])
 
@@ -104,11 +105,6 @@ bandwavelengths = {
     "r'": 622.,
     "i'": 763.,
     "z'": 905.,
-    "u_SDSS": 354.3,
-    "g_SDSS": 477.0,
-    "r_SDSS": 623.1,
-    "i_SDSS": 762.5,
-    "z_SDSS": 913.4,
     "U": 365.,
     "B": 445.,
     "V": 551.,
@@ -121,6 +117,13 @@ bandwavelengths = {
     "M2": 260.,
     "W1": 224.6,
     "W2": 192.8
+}
+
+bandgroups = {
+    "SDSS": ["u'", "g'", "r'", "i'", "z'"],
+    "UVOT": ["W2", "M2", "W1"],
+    "HST": ['F110W', 'F775W', 'F850LP'],
+    "Johnson": ['U', 'B', 'V', 'R', 'I', 'Y', 'J', 'H', 'K']
 }
 
 radiocodes = [
@@ -167,7 +170,7 @@ def bandcolorf(code):
 
 
 def radiocolorf(freq):
-    ffreq = (float(freq) - 1.0)/(40.0 - 1.0)
+    ffreq = (float(freq) - 1.0)/(45.0 - 1.0)
     pal = sns.diverging_palette(200, 60, l=80, as_cmap=True, center="dark")
     return rgb2hex(pal(ffreq))
 
@@ -183,6 +186,14 @@ def bandaliasf(code):
     if newcode in bandaliases:
         return bandaliases[newcode]
     return newcode
+
+
+def bandgroupf(code):
+    newcode = bandrepf(code)
+    for group in bandgroups:
+        if newcode in bandgroups[group]:
+            return group
+    return ''
 
 
 def bandshortaliasf(code):
