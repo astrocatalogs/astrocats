@@ -219,7 +219,7 @@ class Catalog:
         warnings.filterwarnings(
             'ignore', category=DeprecationWarning)
 
-        # Delete all old (previously constructored) output files
+        # Delete all old (previously constructed) output files
         if self.args.delete_old:
             self.log.warning("Deleting all old entry files.")
             self.delete_old_entry_files()
@@ -279,8 +279,13 @@ class Catalog:
         parameter, with positive values and then negative values,
             e.g. [0, 2, 10, -10, -1].
         """
+        # In update mode, do not delete old files
+        if self.args.update:
+            self.log.info("Disabling `pre-delete` for 'update' mode.")
+            self.args.delete_old = False
 
         # Dont allow both a 'min' and 'max' task priority
+        # FIX: this is probably unnecessary... having both could be useful
         if ((self.args.min_task_priority is not None and
              self.args.max_task_priority is not None)):
             raise ValueError("Can only use *either* 'min' *or* 'max' priority")
@@ -290,7 +295,8 @@ class Catalog:
 
         # Make sure 'active' modification lists are all valid
         args_lists = [self.args.args_task_list,
-                      self.args.yes_task_list, self.args.no_task_list]
+                      self.args.yes_task_list,
+                      self.args.no_task_list]
         args_names = ['--tasks', '--yes', '--no']
         for arglist, lname in zip(args_lists, args_names):
             if arglist is not None:
@@ -311,6 +317,11 @@ class Catalog:
         # Iterate over all tasks to determine which should be (in)active
         # --------------------------------------------------------------
         for key in tasks:
+            # If in update mode, only run update tasks
+            if self.args.update:
+                if not tasks[key].update:
+                    tasks[key].active = False
+
             # If specific list of tasks is given, make only those active
             if self.args.args_task_list is not None:
                 if key in self.args.args_task_list:
@@ -502,7 +513,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.info("Repo in: '{}'".format(repo))
+            self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
@@ -510,7 +521,7 @@ class Catalog:
 
             grepo = git.cmd.Git(repo)
             # Fetch first
-            self.log.debug("fetching")
+            self.log.info("fetching")
             grepo.fetch()
 
             args = []
@@ -518,14 +529,14 @@ class Catalog:
                 args.append('--hard')
             if origin:
                 args.append('origin/master')
-            self.log.debug("resetting")
+            self.log.info("resetting")
             retval = grepo.reset(*args)
             if len(retval):
                 self.log.warning("Git says: '{}'".format(retval))
 
             # Clean
             if clean:
-                self.log.debug("cleaning")
+                self.log.info("cleaning")
                 # [q]uiet, [f]orce, [d]irectories
                 retval = grepo.clean('-qdf')
                 if len(retval):
@@ -533,7 +544,7 @@ class Catalog:
 
             sha_end = subprocess.getoutput(git_command)
             if sha_end != sha_beg:
-                self.log.info("Updated SHA: '{}'".format(sha_end))
+                self.log.debug("Updated SHA: '{}'".format(sha_end))
 
         return
 
