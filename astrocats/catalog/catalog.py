@@ -513,7 +513,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.info("Repo in: '{}'".format(repo))
+            self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
@@ -521,7 +521,7 @@ class Catalog:
 
             grepo = git.cmd.Git(repo)
             # Fetch first
-            self.log.debug("fetching")
+            self.log.info("fetching")
             grepo.fetch()
 
             args = []
@@ -529,14 +529,14 @@ class Catalog:
                 args.append('--hard')
             if origin:
                 args.append('origin/master')
-            self.log.debug("resetting")
+            self.log.info("resetting")
             retval = grepo.reset(*args)
             if len(retval):
                 self.log.warning("Git says: '{}'".format(retval))
 
             # Clean
             if clean:
-                self.log.debug("cleaning")
+                self.log.info("cleaning")
                 # [q]uiet, [f]orce, [d]irectories
                 retval = grepo.clean('-qdf')
                 if len(retval):
@@ -544,7 +544,7 @@ class Catalog:
 
             sha_end = subprocess.getoutput(git_command)
             if sha_end != sha_beg:
-                self.log.info("Updated SHA: '{}'".format(sha_end))
+                self.log.debug("Updated SHA: '{}'".format(sha_end))
 
         return
 
