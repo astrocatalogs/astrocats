@@ -141,7 +141,7 @@ class Catalog:
 
             These are the files deleted in the `delete_old_entry_files` task.
             """
-            repo_folders = self.get_repo_output_folders()
+            repo_folders = self.get_repo_output_folders(bones=bones)
             return self._get_repo_file_list(
                 repo_folders, normal=normal, bones=bones)
 
