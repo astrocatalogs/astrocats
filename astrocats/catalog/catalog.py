@@ -1357,8 +1357,8 @@ class Catalog:
         except (KeyboardInterrupt, SystemExit):
             raise
 
-        except:
-            err_str = "URL Download of '{}' failed.".format(url)
+        except Exception as err:
+            err_str = "URL Download of '{}' failed ('{}').".format(url, str(err))
             # Raise an error on failure
             if fail:
                 err_str += " and `fail` is set."
