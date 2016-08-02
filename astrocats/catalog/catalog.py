@@ -1336,7 +1336,10 @@ class Catalog:
         session = requests.Session()
 
         try:
-            response = session.get(url, timeout=timeout)
+            headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X '
+                       '10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
+                       'Chrome/39.0.2171.95 Safari/537.36'}
+            response = session.get(url, timeout=timeout, headers=headers)
             response.raise_for_status()
             # Look for errors
             for xx in response.history:
