@@ -10,7 +10,8 @@ from palettable import colorbrewer, cubehelix, wesanderson
 
 __all__ = [
     'bandrepf', 'bandcolorf', 'radiocolorf', 'xraycolorf', 'bandaliasf',
-    'bandshortaliasf', 'bandwavef', 'bandmetaf', 'bandcodes', 'bandwavelengths',
+    'bandshortaliasf', 'bandwavef', 'bandmetaf', 'bandcodes',
+    'bandwavelengths',
     'bandgroupf'
 ]
 
