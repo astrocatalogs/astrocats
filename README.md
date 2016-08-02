@@ -12,7 +12,7 @@ The Astrocats package enables astronomers to construct their own curated catalog
 * [The Open Nova Catalog](https://opennova.space) [[GitHub repo](https://github.com/astrocatalogs/novae)]
 * [The Open Black Hole Catalog](https://holes.space) [[GitHub repo](https://github.com/astrocatalogs/blackholes)]
 
-The process for creating one's own open astronomy catalog involves checking out this package and designing a "module" for it that is specific to that catalog's needs. At the moment the most developed module is the Open Supernova Catalog module; to set up astrocats with the supernovae module, one needs to check out two repositories:
+The process for creating one's own open astronomy catalog involves checking out this package and designing a "module" for it that is specific to that catalog's needs, a [Wiki is available](https://github.com/astrocatalogs/astrocats/wiki) with instructions for doing so. At the moment the most developed module is the Open Supernova Catalog module; to set up astrocats with the supernovae module, one needs to check out two repositories:
 
 ```shell
 git clone git@github.com:astrocatalogs/astrocats.git
