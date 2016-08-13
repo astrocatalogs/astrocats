@@ -1122,7 +1122,8 @@ class Catalog:
 
     def load_url(self, url, fname, repo=None, timeout=120, post=None,
                  fail=False, write=True, json_sort=None, cache_only=False,
-                 archived_mode=None, archived_task=None, update_mode=None):
+                 archived_mode=None, archived_task=None, update_mode=None,
+                 verify=False):
         """Load the given URL, or a cached-version.
 
         Load page from url or cached file, depending on the current settings.
@@ -1164,6 +1165,8 @@ class Catalog:
             determine the repo.
         timeout : int
             Time (in seconds) after which a URL query should exit.
+        post : dict
+            List of arguments to post to URL when requesting it.
         archived : bool
             Load a previously archived version of the file.
         fail : bool
@@ -1172,7 +1175,10 @@ class Catalog:
             Save a new copy of the cached file.
         json_sort : str or None
             If data is being saved to a json file, sort first by this str.
-        quiet : whether to emit error messages upon being unable to find files.
+        quiet : bool
+            Whether to emit error messages upon being unable to find files.
+        verify : bool
+            Whether to check for valid SSL cert when downloading
 
         """
         file_txt = None
@@ -1219,7 +1225,8 @@ class Catalog:
                         self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
-        url_txt = self.download_url(url, timeout, fail=False, post=post)
+        url_txt = self.download_url(url, timeout, fail=False, post=post,
+                                    verify=verify)
 
         # At this point, we might have both `url_txt` and `file_txt`
         # If either of them failed, then they are set to None
@@ -1309,7 +1316,7 @@ class Catalog:
 
         return
 
-    def download_url(self, url, timeout, fail=False, post=None):
+    def download_url(self, url, timeout, fail=False, post=None, verify=True):
         """Download text from the given url.
 
         Returns `None` on failure.
@@ -1324,6 +1331,10 @@ class Catalog:
         fail : bool
             If `True`, then an error will be raised on failure.
             If `False`, then 'None' is returned on failure.
+        post : dict
+            List of arguments to post to URL when requesting it.
+        verify : bool
+            Whether to check for valid SSL cert when downloading
 
         Returns
         -------
@@ -1342,9 +1353,11 @@ class Catalog:
                        'Chrome/39.0.2171.95 Safari/537.36'}
             if post:
                 response = session.post(
-                    url, timeout=timeout, headers=headers, data=post)
+                    url, timeout=timeout, headers=headers, data=post,
+                    verify=verify)
             else:
-                response = session.get(url, timeout=timeout, headers=headers)
+                response = session.get(
+                    url, timeout=timeout, headers=headers, verify=verify)
             response.raise_for_status()
             # Look for errors
             for xx in response.history:
