@@ -194,7 +194,8 @@ class Catalog:
         catalog_sha = catalog_sha.decode('ascii').strip()
         # Git SHA of `astrocats`
         parent_path = os.path.abspath(os.path.join(my_path, os.pardir))
-        self.log.debug("Running '{}' in '{}'.".format(git_command, parent_path))
+        self.log.debug("Running '{}' in '{}'."
+                       .format(git_command, parent_path))
         astrocats_sha = subprocess.check_output(git_command, cwd=parent_path)
         astrocats_sha = astrocats_sha.decode('ascii').strip()
         # Name of this class (if subclassed)
@@ -1119,7 +1120,7 @@ class Catalog:
 
         return url_data
 
-    def load_url(self, url, fname, repo=None, timeout=120,
+    def load_url(self, url, fname, repo=None, timeout=120, post=None,
                  fail=False, write=True, json_sort=None, cache_only=False,
                  archived_mode=None, archived_task=None, update_mode=None):
         """Load the given URL, or a cached-version.
@@ -1218,7 +1219,7 @@ class Catalog:
                         self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
-        url_txt = self.download_url(url, timeout, fail=False)
+        url_txt = self.download_url(url, timeout, fail=False, post=post)
 
         # At this point, we might have both `url_txt` and `file_txt`
         # If either of them failed, then they are set to None
@@ -1308,7 +1309,7 @@ class Catalog:
 
         return
 
-    def download_url(self, url, timeout, fail=False):
+    def download_url(self, url, timeout, fail=False, post=None):
         """Download text from the given url.
 
         Returns `None` on failure.
@@ -1339,7 +1340,11 @@ class Catalog:
             headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X '
                        '10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
                        'Chrome/39.0.2171.95 Safari/537.36'}
-            response = session.get(url, timeout=timeout, headers=headers)
+            if post:
+                response = session.post(
+                    url, timeout=timeout, headers=headers, data=post)
+            else:
+                response = session.get(url, timeout=timeout, headers=headers)
             response.raise_for_status()
             # Look for errors
             for xx in response.history:
@@ -1358,7 +1363,8 @@ class Catalog:
             raise
 
         except Exception as err:
-            err_str = "URL Download of '{}' failed ('{}').".format(url, str(err))
+            err_str = ("URL Download of '{}' failed ('{}')."
+                       .format(url, str(err)))
             # Raise an error on failure
             if fail:
                 err_str += " and `fail` is set."
