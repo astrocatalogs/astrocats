@@ -25,6 +25,7 @@ class SOURCE(KeyCollection):
     # Strings
     NAME = Key('name', KEY_TYPES.STRING)
     BIBCODE = Key('bibcode', KEY_TYPES.STRING)
+    ARXIVID = Key('arxivid', KEY_TYPES.STRING)
     URL = Key('url', KEY_TYPES.STRING, compare=False)
     ACKNOWLEDGMENT = Key('acknowledgment', KEY_TYPES.STRING, compare=False)
     REFERENCE = Key('reference', KEY_TYPES.STRING, compare=False)
