@@ -141,7 +141,7 @@ class Catalog:
 
             These are the files deleted in the `delete_old_entry_files` task.
             """
-            repo_folders = self.get_repo_output_folders()
+            repo_folders = self.get_repo_output_folders(bones=bones)
             return self._get_repo_file_list(
                 repo_folders, normal=normal, bones=bones)
 
@@ -194,7 +194,8 @@ class Catalog:
         catalog_sha = catalog_sha.decode('ascii').strip()
         # Git SHA of `astrocats`
         parent_path = os.path.abspath(os.path.join(my_path, os.pardir))
-        self.log.debug("Running '{}' in '{}'.".format(git_command, parent_path))
+        self.log.debug("Running '{}' in '{}'."
+                       .format(git_command, parent_path))
         astrocats_sha = subprocess.check_output(git_command, cwd=parent_path)
         astrocats_sha = astrocats_sha.decode('ascii').strip()
         # Name of this class (if subclassed)
@@ -219,7 +220,7 @@ class Catalog:
         warnings.filterwarnings(
             'ignore', category=DeprecationWarning)
 
-        # Delete all old (previously constructored) output files
+        # Delete all old (previously constructed) output files
         if self.args.delete_old:
             self.log.warning("Deleting all old entry files.")
             self.delete_old_entry_files()
@@ -279,8 +280,13 @@ class Catalog:
         parameter, with positive values and then negative values,
             e.g. [0, 2, 10, -10, -1].
         """
+        # In update mode, do not delete old files
+        if self.args.update:
+            self.log.info("Disabling `pre-delete` for 'update' mode.")
+            self.args.delete_old = False
 
         # Dont allow both a 'min' and 'max' task priority
+        # FIX: this is probably unnecessary... having both could be useful
         if ((self.args.min_task_priority is not None and
              self.args.max_task_priority is not None)):
             raise ValueError("Can only use *either* 'min' *or* 'max' priority")
@@ -290,7 +296,8 @@ class Catalog:
 
         # Make sure 'active' modification lists are all valid
         args_lists = [self.args.args_task_list,
-                      self.args.yes_task_list, self.args.no_task_list]
+                      self.args.yes_task_list,
+                      self.args.no_task_list]
         args_names = ['--tasks', '--yes', '--no']
         for arglist, lname in zip(args_lists, args_names):
             if arglist is not None:
@@ -311,6 +318,11 @@ class Catalog:
         # Iterate over all tasks to determine which should be (in)active
         # --------------------------------------------------------------
         for key in tasks:
+            # If in update mode, only run update tasks
+            if self.args.update:
+                if not tasks[key].update:
+                    tasks[key].active = False
+
             # If specific list of tasks is given, make only those active
             if self.args.args_task_list is not None:
                 if key in self.args.args_task_list:
@@ -502,7 +514,7 @@ class Catalog:
         """
         all_repos = self.PATHS.get_all_repo_folders()
         for repo in all_repos:
-            self.log.info("Repo in: '{}'".format(repo))
+            self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
             git_command = "git rev-parse HEAD {}".format(repo)
             sha_beg = subprocess.getoutput(git_command)
@@ -510,7 +522,7 @@ class Catalog:
 
             grepo = git.cmd.Git(repo)
             # Fetch first
-            self.log.debug("fetching")
+            self.log.info("fetching")
             grepo.fetch()
 
             args = []
@@ -518,14 +530,14 @@ class Catalog:
                 args.append('--hard')
             if origin:
                 args.append('origin/master')
-            self.log.debug("resetting")
+            self.log.info("resetting")
             retval = grepo.reset(*args)
             if len(retval):
                 self.log.warning("Git says: '{}'".format(retval))
 
             # Clean
             if clean:
-                self.log.debug("cleaning")
+                self.log.info("cleaning")
                 # [q]uiet, [f]orce, [d]irectories
                 retval = grepo.clean('-qdf')
                 if len(retval):
@@ -533,7 +545,7 @@ class Catalog:
 
             sha_end = subprocess.getoutput(git_command)
             if sha_end != sha_beg:
-                self.log.info("Updated SHA: '{}'".format(sha_end))
+                self.log.debug("Updated SHA: '{}'".format(sha_end))
 
         return
 
@@ -1108,9 +1120,10 @@ class Catalog:
 
         return url_data
 
-    def load_url(self, url, fname, repo=None, timeout=120,
+    def load_url(self, url, fname, repo=None, timeout=120, post=None,
                  fail=False, write=True, json_sort=None, cache_only=False,
-                 archived_mode=None, archived_task=None, update_mode=None):
+                 archived_mode=None, archived_task=None, update_mode=None,
+                 verify=False):
         """Load the given URL, or a cached-version.
 
         Load page from url or cached file, depending on the current settings.
@@ -1152,6 +1165,8 @@ class Catalog:
             determine the repo.
         timeout : int
             Time (in seconds) after which a URL query should exit.
+        post : dict
+            List of arguments to post to URL when requesting it.
         archived : bool
             Load a previously archived version of the file.
         fail : bool
@@ -1160,7 +1175,10 @@ class Catalog:
             Save a new copy of the cached file.
         json_sort : str or None
             If data is being saved to a json file, sort first by this str.
-        quiet : whether to emit error messages upon being unable to find files.
+        quiet : bool
+            Whether to emit error messages upon being unable to find files.
+        verify : bool
+            Whether to check for valid SSL cert when downloading
 
         """
         file_txt = None
@@ -1207,7 +1225,8 @@ class Catalog:
                         self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
-        url_txt = self.download_url(url, timeout, fail=False)
+        url_txt = self.download_url(url, timeout, fail=False, post=post,
+                                    verify=verify)
 
         # At this point, we might have both `url_txt` and `file_txt`
         # If either of them failed, then they are set to None
@@ -1297,7 +1316,7 @@ class Catalog:
 
         return
 
-    def download_url(self, url, timeout, fail=False):
+    def download_url(self, url, timeout, fail=False, post=None, verify=True):
         """Download text from the given url.
 
         Returns `None` on failure.
@@ -1312,6 +1331,10 @@ class Catalog:
         fail : bool
             If `True`, then an error will be raised on failure.
             If `False`, then 'None' is returned on failure.
+        post : dict
+            List of arguments to post to URL when requesting it.
+        verify : bool
+            Whether to check for valid SSL cert when downloading
 
         Returns
         -------
@@ -1325,7 +1348,16 @@ class Catalog:
         session = requests.Session()
 
         try:
-            response = session.get(url, timeout=timeout)
+            headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X '
+                       '10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
+                       'Chrome/39.0.2171.95 Safari/537.36'}
+            if post:
+                response = session.post(
+                    url, timeout=timeout, headers=headers, data=post,
+                    verify=verify)
+            else:
+                response = session.get(
+                    url, timeout=timeout, headers=headers, verify=verify)
             response.raise_for_status()
             # Look for errors
             for xx in response.history:
@@ -1343,8 +1375,9 @@ class Catalog:
         except (KeyboardInterrupt, SystemExit):
             raise
 
-        except:
-            err_str = "URL Download of '{}' failed.".format(url)
+        except Exception as err:
+            err_str = ("URL Download of '{}' failed ('{}')."
+                       .format(url, str(err)))
             # Raise an error on failure
             if fail:
                 err_str += " and `fail` is set."
