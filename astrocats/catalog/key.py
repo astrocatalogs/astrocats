@@ -115,8 +115,10 @@ class KeyCollection:
 
         # Sort keys based on priority, high priority values first
         if sort:
-            _compare_vals = sorted(_compare_vals, reverse=True,
-                                   key=lambda key: (key.priority, key.name))
+            _compare_vals = sorted(
+                _compare_vals,
+                reverse=True,
+                key=lambda key: (key.priority, key.name))
 
         # Store for future retrieval
         cls._compare_vals = _compare_vals
@@ -167,14 +169,29 @@ class Key(str):
         a different dictionary to be considered a duplicate.
 
     """
-    def __new__(cls, name, type=None, no_source=False, listable=False,
-                compare=True, priority=0, **kwargs):
+
+    def __new__(cls,
+                name,
+                type=None,
+                no_source=False,
+                listable=False,
+                compare=True,
+                priority=0,
+                kind_preference=[],
+                **kwargs):
         """Construct the underlying str object with `name`.
         """
         return str.__new__(cls, name)
 
-    def __init__(self, name, type=None, no_source=False, listable=False,
-                 compare=True, priority=0, **kwargs):
+    def __init__(self,
+                 name,
+                 type=None,
+                 no_source=False,
+                 listable=False,
+                 compare=True,
+                 priority=0,
+                 kind_preference=[],
+                 **kwargs):
         super().__init__()
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
@@ -187,6 +204,7 @@ class Key(str):
         self.compare = compare
         self.no_source = no_source
         self.priority = priority
+        self.kind_preference = kind_preference
         for key, val in kwargs.items():
             setattr(self, key, val)
 
@@ -195,8 +213,10 @@ class Key(str):
 
         note: do not override the builtin `__str__` or `__repr__` methods!
         """
-        retval = "Key(name={}, type={}, listable={}, compare={})".format(
-            self.name, self.type, self.listable, self.compare)
+        retval = ("Key(name={}, type={}, listable={}, compare={}, "
+                  "priority={}, kind_preference={})").format(
+                      self.name, self.type, self.listable, self.compare,
+                      self.priority, self.kind_preference)
         return retval
 
     def type(self):
