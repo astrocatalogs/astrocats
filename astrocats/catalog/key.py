@@ -223,21 +223,6 @@ class Key(str):
                       self.priority, self.kind_preference, self.replace_better)
         return retval
 
-    def type(self):
-        """Return `Key`'s type.
-        """
-        return self.type
-
-    def replace_better(self):
-        """Return `Key`'s replace_better attribute.
-        """
-        return self.replace_better
-
-    def kind_preference(self):
-        """Return `Key`'s list of kind preferences.
-        """
-        return self.kind_preference
-
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
 
