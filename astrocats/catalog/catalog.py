@@ -717,8 +717,9 @@ class Catalog:
                 destentry.setdefault(
                     self.proto._KEYS.ERRORS, []).append(err)
 
-        for key in fromentry:
-            if fromentry._KEYS.get_key_by_name(key).no_source:
+        for rkey in fromentry:
+            key = fromentry._KEYS.get_key_by_name(rkey)
+            if key.no_source:
                 continue
             for item in fromentry[key]:
                 # isd = False
