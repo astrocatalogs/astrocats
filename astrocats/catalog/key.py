@@ -233,6 +233,11 @@ class Key(str):
         """
         return self.replace_better
 
+    def kind_preference(self):
+        """Return `Key`'s list of kind preferences.
+        """
+        return self.kind_preference
+
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
 
