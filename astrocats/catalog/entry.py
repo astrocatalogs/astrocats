@@ -20,8 +20,14 @@ from cdecimal import Decimal
 class ENTRY(KeyCollection):
     """General `CatDict` keys which should be relevant for all catalogs.
     """
+    # Constants for use in key definitions
+    DIST_PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic', 'photometric',
+                       'host', 'cluster']
+
+    # List of keys
     ALIAS = Key('alias', KEY_TYPES.STRING)
-    COMOVING_DIST = Key('comovingdist', KEY_TYPES.NUMERIC, replace_better=True)
+    COMOVING_DIST = Key('comovingdist', KEY_TYPES.NUMERIC,
+                        kind_preference=DIST_PREF_KINDS, replace_better=True)
     DEC = Key('dec', KEY_TYPES.STRING)
     DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING, replace_better=True)
     DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
@@ -33,7 +39,8 @@ class ENTRY(KeyCollection):
     HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
     HOST_OFFSET_DIST = Key('hostoffsetdist', KEY_TYPES.NUMERIC)
     HOST_RA = Key('hostra', KEY_TYPES.STRING)
-    LUM_DIST = Key('lumdist', KEY_TYPES.NUMERIC, replace_better=True)
+    LUM_DIST = Key('lumdist', KEY_TYPES.NUMERIC,
+                   kind_preference=DIST_PREF_KINDS, replace_better=True)
     MAX_ABS_MAG = Key('maxabsmag', KEY_TYPES.NUMERIC)
     MAX_APP_MAG = Key('maxappmag', KEY_TYPES.NUMERIC)
     MAX_BAND = Key('maxband', KEY_TYPES.STRING)
@@ -41,11 +48,13 @@ class ENTRY(KeyCollection):
     NAME = Key('name', KEY_TYPES.STRING, no_source=True)
     PHOTOMETRY = Key('photometry')
     RA = Key('ra', KEY_TYPES.STRING)
-    REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC, replace_better=True)
+    REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC,
+                   kind_preference=DIST_PREF_KINDS, replace_better=True)
     SCHEMA = Key('schema', no_source=True)
     SOURCES = Key('sources', no_source=True)
     SPECTRA = Key('spectra')
-    VELOCITY = Key('velocity', KEY_TYPES.NUMERIC, replace_better=True)
+    VELOCITY = Key('velocity', KEY_TYPES.NUMERIC,
+                   kind_preference=DIST_PREF_KINDS, replace_better=True)
 
 
 class Entry(OrderedDict):
