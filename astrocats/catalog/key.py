@@ -199,6 +199,11 @@ class Key(str):
             self.name, self.type, self.listable, self.compare)
         return retval
 
+    def type(self):
+        """Return `Key`'s type.
+        """
+        return self.type
+
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
 
