@@ -178,6 +178,7 @@ class Key(str):
                 compare=True,
                 priority=0,
                 kind_preference=[],
+                replace_better=False,
                 **kwargs):
         """Construct the underlying str object with `name`.
         """
@@ -191,6 +192,7 @@ class Key(str):
                  compare=True,
                  priority=0,
                  kind_preference=[],
+                 replace_better=False,
                  **kwargs):
         super().__init__()
         # Make sure type is allowed
@@ -205,6 +207,7 @@ class Key(str):
         self.no_source = no_source
         self.priority = priority
         self.kind_preference = kind_preference
+        self.replace_better = replace_better
         for key, val in kwargs.items():
             setattr(self, key, val)
 
@@ -214,15 +217,21 @@ class Key(str):
         note: do not override the builtin `__str__` or `__repr__` methods!
         """
         retval = ("Key(name={}, type={}, listable={}, compare={}, "
-                  "priority={}, kind_preference={})").format(
+                  "priority={}, kind_preference={}, "
+                  "replace_better={})").format(
                       self.name, self.type, self.listable, self.compare,
-                      self.priority, self.kind_preference)
+                      self.priority, self.kind_preference, self.replace_better)
         return retval
 
     def type(self):
         """Return `Key`'s type.
         """
         return self.type
+
+    def replace_better(self):
+        """Return `Key`'s replace_better attribute.
+        """
+        return self.replace_better
 
     def check(self, val):
         """Make sure given value is consistent with this `Key` specification.
