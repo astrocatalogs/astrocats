@@ -898,7 +898,7 @@ class Catalog:
         return self.entries
 
     def entry_filename(self, entry):
-        outdir, filename = entry._get_save_path()
+        outdir, filename = self.entries[entry]._get_save_path()
         return os.path.join(outdir, filename + '.json')
 
     def _delete_entry_file(self, entry_name=None, entry=None):
@@ -915,7 +915,7 @@ class Catalog:
             entry_name = entry[ENTRY.NAME]
 
         # FIX: do we also need to check for gzipped files??
-        entry_filename = self.entry_filename(entry)
+        entry_filename = self.entry_filename(entry_name)
 
         if self.args.write_entries:
             self.log.info("Deleting entry file '{}' of entry '{}'".format(
