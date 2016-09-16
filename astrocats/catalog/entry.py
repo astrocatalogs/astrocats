@@ -419,10 +419,10 @@ class Entry(OrderedDict):
         if cat_dict_class != Error:
             for item in self.get(key_in_self, []):
                 if new_entry.is_duplicate_of(item):
-                    self._log.info("'{}' value '{}' is duplicate value of "
+                    self._log.info("'{}' is duplicate value of "
                                    "existing "
                                    "value, appending sources.".format(
-                                       key_in_self, new_entry[QUANTITY.VALUE]))
+                                       key_in_self))
                     item.append_sources_from(new_entry)
                     # Return the entry in case we want to use any additional
                     # tags to augment the old entry
