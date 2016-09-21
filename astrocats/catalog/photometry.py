@@ -22,7 +22,6 @@ class PHOTOMETRY(KeyCollection):
     WAVELENGTH = Key('wavelength', KEY_TYPES.NUMERIC, listable=True)
     NHMW = Key('nhmw', KEY_TYPES.NUMERIC)
     PHOTON_INDEX = Key('photonindex', KEY_TYPES.NUMERIC)
-    ABSORBED_FLUX = Key('absorbedflux', KEY_TYPES.NUMERIC)
     UNABSORBED_FLUX = Key('unabsorbedflux', KEY_TYPES.NUMERIC)
 
     E_COUNTS = Key('e_counts', KEY_TYPES.NUMERIC)
@@ -31,7 +30,6 @@ class PHOTOMETRY(KeyCollection):
     E_LUMINOSITY = Key('e_luminosity', KEY_TYPES.NUMERIC)
     E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC, priority=7)
     E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
-    E_ABSORBED_FLUX = Key('e_absorbedflux', KEY_TYPES.NUMERIC)
     E_UNABSORBED_FLUX = Key('e_unabsorbedflux', KEY_TYPES.NUMERIC)
     E_LOWER_MAGNITUDE = Key('e_lower_magnitude', KEY_TYPES.NUMERIC)
     E_UPPER_MAGNITUDE = Key('e_upper_magnitude', KEY_TYPES.NUMERIC)
