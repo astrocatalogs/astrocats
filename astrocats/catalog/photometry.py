@@ -35,6 +35,8 @@ class PHOTOMETRY(KeyCollection):
     E_UPPER_MAGNITUDE = Key('e_upper_magnitude', KEY_TYPES.NUMERIC)
     E_LOWER_FLUX = Key('e_lower_flux', KEY_TYPES.NUMERIC)
     E_UPPER_FLUX = Key('e_upper_flux', KEY_TYPES.NUMERIC)
+    E_LOWER_LUMINOSITY = Key('e_lower_luminosity', KEY_TYPES.NUMERIC)
+    E_UPPER_LUMINOSITY = Key('e_upper_luminosity', KEY_TYPES.NUMERIC)
     E_LOWER_TIME = Key('e_lower_time', KEY_TYPES.NUMERIC)
     E_UPPER_TIME = Key('e_upper_time', KEY_TYPES.NUMERIC)
 
