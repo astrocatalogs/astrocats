@@ -47,8 +47,9 @@ class PHOTOMETRY(KeyCollection):
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
-
+    BAND_SET = Key('bandset', KEY_TYPES.STRING)
     SYSTEM = Key('system', KEY_TYPES.STRING)
+
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
 
     U_TIME = Key('u_time', KEY_TYPES.STRING)
