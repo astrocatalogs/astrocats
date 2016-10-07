@@ -44,7 +44,7 @@ class Source(CatDict):
     def __init__(self, parent, **kwargs):
         self._REQ_KEY_SETS = [
             [SOURCE.ALIAS],
-            [SOURCE.BIBCODE, SOURCE.URL, SOURCE.NAME]
+            [SOURCE.BIBCODE, SOURCE.ARXIVID, SOURCE.URL, SOURCE.NAME]
         ]
         super().__init__(parent, **kwargs)
         return
@@ -54,6 +54,8 @@ class Source(CatDict):
             return 'aaa'
         if key == self._KEYS.BIBCODE:
             return 'aab'
+        if key == self._KEYS.ARXIVID:
+            return 'aac'
         if key == self._KEYS.ALIAS:
             return 'zzz'
         return key
