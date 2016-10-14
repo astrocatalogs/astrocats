@@ -124,6 +124,8 @@ class Photometry(CatDict):
         has_freq = self._KEYS.FREQUENCY in self
         has_band = self._KEYS.BAND in self
         has_ener = self._KEYS.ENERGY in self
+        has_u_freq = self._KEYS.U_FREQUENCY in self
+        has_u_ener = self._KEYS.U_ENERGY in self
 
         if has_flux or has_flux_dens:
             if not any([has_freq, has_band, has_ener]):
@@ -140,6 +142,12 @@ class Photometry(CatDict):
             elif has_flux_dens and not has_u_flux_dens:
                 err_str = "`{}` provided without `{}`.".format(
                     self._KEYS.FLUX_DENSITY, self._KEYS.U_FLUX_DENSITY)
+            elif has_freq and not has_u_freq:
+                err_str = "`{}` provided without `{}`.".format(
+                    self._KEYS.FREQUENCY, self._KEYS.U_FREQUENCY)
+            elif has_ener and not has_u_ener:
+                err_str = "`{}` provided without `{}`.".format(
+                    self._KEYS.ENERGY, self._KEYS.U_ENERGY)
 
         if err_str is not None:
             raise ValueError(err_str)
