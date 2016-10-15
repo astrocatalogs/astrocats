@@ -42,7 +42,7 @@ from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
                                      is_number, pretty_num, radiocolorf,
                                      round_sig, tprint, tq, xraycolorf)
 from astrocats.scripts.events import (get_event_filename, get_event_text)
-from astrocats.scripts.repos import (get_rep_folder, repo_file_list)
+from astrocats.scripts.repos import (get_rep_folder, repo_file_list, get_rep_folders)
 from cdecimal import Decimal
 
 parser = argparse.ArgumentParser(
@@ -135,6 +135,8 @@ elif args.catalog == 'sne':
     moduletitle = 'Supernova'
 else:
     raise ValueError('Unknown catalog!')
+
+repofolders = get_rep_folders(moduledir)
 
 outdir = "astrocats/" + moduledir + "/output/"
 cachedir = "cache/"
@@ -311,7 +313,7 @@ if os.path.isfile(outdir + cachedir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = repo_file_list(normal=(not args.boneyard), bones=args.boneyard)
+files = repo_file_list(moduledir, repofolders, normal=(not args.boneyard), bones=args.boneyard)
 
 if os.path.isfile(outdir + cachedir + 'md5s.json'):
     with open(outdir + cachedir + 'md5s.json', 'r') as f:
@@ -347,7 +349,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     tprint(eventfile + ' [' + checksum + ']')
 
-    repfolder = get_rep_folder(catalog[entry])
+    repfolder = get_rep_folder(catalog[entry], repofolders)
     if os.path.isfile("astrocats/" + moduledir + "/input/" + modulename + "-internal/" +
                       fileeventname + ".json"):
         catalog[entry]['download'] = 'e'
@@ -562,21 +564,23 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
             if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux']]) and
-                'upperlimit' not in x)
+                'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux']])
+            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux']]) and
+                'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux']])
+            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux']]) and
+                'upperlimit' not in x and 'includeshost' not in x)
         ]
 
         if not len(mmphototime):
@@ -1473,8 +1477,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 legend=yeserrorlegend,
                 size=4))
 
-            upplimlegend = freqlabel if len(indye) == 0 and len(
-                indne) == 0 else ''
+            upplimlegend = freqlabel if len(indye) == 0 and len(indne) == 0 else ''
 
             indt = [i for i, j in enumerate(phototype) if j]
             ind = set(indb).intersection(indt)
@@ -2053,7 +2056,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 this.location="''' + eventname + '''"\n
             </script>''', html)
 
-        repfolder = get_rep_folder(catalog[entry])
+        repfolder = get_rep_folder(catalog[entry], repofolders)
         html = re.sub(
             r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
             linkdir + fileeventname + r'.json" download>' +
