@@ -5,8 +5,14 @@ from random import seed, shuffle
 
 from palettable import colorbrewer, cubehelix, wesanderson
 
-from astrocats.catalog.key import Key, KEY_TYPES, KeyCollection
 from astrocats.catalog.catdict import CatDict
+from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
+from astrocats.catalog.utils import get_sig_digits
+from cdecimal import Decimal, localcontext
+
+DEFAULT_UL_SIGMA = 3.0
+DEFAULT_ZP = 30.0
+D25 = Decimal('2.5')
 
 
 class PHOTOMETRY(KeyCollection):
@@ -83,19 +89,21 @@ class Photometry(CatDict):
     _KEYS = PHOTOMETRY
 
     def __init__(self, parent, **kwargs):
-        self._REQ_KEY_SETS = [
-            [PHOTOMETRY.SOURCE],
-            [PHOTOMETRY.TIME, PHOTOMETRY.HOST],
-            [PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX, PHOTOMETRY.FLUX_DENSITY,
-             PHOTOMETRY.COUNTS, PHOTOMETRY.LUMINOSITY]]
+        self._REQ_KEY_SETS = [[PHOTOMETRY.SOURCE],
+                              [PHOTOMETRY.TIME, PHOTOMETRY.HOST], [
+                                  PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX,
+                                  PHOTOMETRY.FLUX_DENSITY, PHOTOMETRY.COUNTS,
+                                  PHOTOMETRY.LUMINOSITY
+                              ]]
         # Note: `_check()` is called at end of `super().__init__`
         super().__init__(parent, **kwargs)
 
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
         if self._KEYS.BAND in self:
             sband = self[self._KEYS.BAND]
-            bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE,
-                              self._KEYS.SYSTEM]
+            bandmetaf_keys = [
+                self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE, self._KEYS.SYSTEM
+            ]
 
             for bmf in bandmetaf_keys:
                 if bmf not in self:
@@ -132,13 +140,11 @@ class Photometry(CatDict):
 
         if has_flux or has_flux_dens:
             if not any([has_freq, has_band, has_ener]):
-                err_str = (
-                    "Has `{}` or `{}`".format(
-                        self._KEYS.FLUX, self._KEYS.FLUX_DENSITY) +
-                    " but None of `{}`, `{}`, `{}`".format(
-                        self._KEYS.FREQUENCY, self._KEYS.BAND,
-                        self._KEYS.ENERGY
-                    ))
+                err_str = ("Has `{}` or `{}`".format(self._KEYS.FLUX,
+                                                     self._KEYS.FLUX_DENSITY) +
+                           " but None of `{}`, `{}`, `{}`".format(
+                               self._KEYS.FREQUENCY, self._KEYS.BAND,
+                               self._KEYS.ENERGY))
             elif has_flux and not has_u_flux:
                 err_str = "`{}` provided without `{}`.".format(
                     self._KEYS.FLUX, self._KEYS.U_FLUX)
@@ -184,75 +190,46 @@ BAND_REPS = {
 # Some bands are uniquely tied to an instrument/telescope/system, add this
 # info here.
 BAND_META = {
-    'M2':     {PHOTOMETRY.TELESCOPE: 'Swift', PHOTOMETRY.INSTRUMENT: 'UVOT'},
-    'W1':     {PHOTOMETRY.TELESCOPE: 'Swift', PHOTOMETRY.INSTRUMENT: 'UVOT'},
-    'W2':     {PHOTOMETRY.TELESCOPE: 'Swift', PHOTOMETRY.INSTRUMENT: 'UVOT'},
-    'F110W':  {PHOTOMETRY.TELESCOPE: 'Hubble', PHOTOMETRY.INSTRUMENT: 'WFC3'},
-    'F775W':  {PHOTOMETRY.TELESCOPE: 'Hubble', PHOTOMETRY.INSTRUMENT: 'WFC3'},
-    'F850LP': {PHOTOMETRY.TELESCOPE: 'Hubble', PHOTOMETRY.INSTRUMENT: 'WFC3'}
+    'M2': {
+        PHOTOMETRY.TELESCOPE: 'Swift',
+        PHOTOMETRY.INSTRUMENT: 'UVOT'
+    },
+    'W1': {
+        PHOTOMETRY.TELESCOPE: 'Swift',
+        PHOTOMETRY.INSTRUMENT: 'UVOT'
+    },
+    'W2': {
+        PHOTOMETRY.TELESCOPE: 'Swift',
+        PHOTOMETRY.INSTRUMENT: 'UVOT'
+    },
+    'F110W': {
+        PHOTOMETRY.TELESCOPE: 'Hubble',
+        PHOTOMETRY.INSTRUMENT: 'WFC3'
+    },
+    'F775W': {
+        PHOTOMETRY.TELESCOPE: 'Hubble',
+        PHOTOMETRY.INSTRUMENT: 'WFC3'
+    },
+    'F850LP': {
+        PHOTOMETRY.TELESCOPE: 'Hubble',
+        PHOTOMETRY.INSTRUMENT: 'WFC3'
+    }
 }
 
 BAND_CODES = [
-    "u",
-    "g",
-    "r",
-    "i",
-    "z",
-    "u'",
-    "g'",
-    "r'",
-    "i'",
-    "z'",
-    "u_SDSS",
-    "g_SDSS",
-    "r_SDSS",
-    "i_SDSS",
-    "z_SDSS",
-    "U",
-    "B",
-    "V",
-    "R",
-    "I",
-    "G",
-    "Y",
-    "J",
-    "H",
-    "K",
-    "C",
-    "CR",
-    "CV",
-    "M2",
-    "W1",
-    "W2",
-    "pg",
-    "Mp",
-    "w",
-    "y",
-    "Z",
-    "F110W",
-    "F775W",
-    "F850LP",
-    "VM",
-    "RM",
-    "Ks"
+    "u", "g", "r", "i", "z", "u'", "g'", "r'", "i'", "z'", "u_SDSS", "g_SDSS",
+    "r_SDSS", "i_SDSS", "z_SDSS", "U", "B", "V", "R", "I", "G", "Y", "J", "H",
+    "K", "C", "CR", "CV", "M2", "W1", "W2", "pg", "Mp", "w", "y", "Z", "F110W",
+    "F775W", "F850LP", "VM", "RM", "Ks"
 ]
 
-BAND_ALIASES = OrderedDict([
-    ("u_SDSS", "u (SDSS)"),
-    ("g_SDSS", "g (SDSS)"),
-    ("r_SDSS", "r (SDSS)"),
-    ("i_SDSS", "i (SDSS)"),
-    ("z_SDSS", "z (SDSS)")
-])
+BAND_ALIASES = OrderedDict([("u_SDSS", "u (SDSS)"), ("g_SDSS", "g (SDSS)"),
+                            ("r_SDSS", "r (SDSS)"), ("i_SDSS", "i (SDSS)"),
+                            ("z_SDSS", "z (SDSS)")])
 
-BAND_ALIASES_SHORT = OrderedDict([
-    ("u_SDSS", "u"),
-    ("g_SDSS", "g"),
-    ("r_SDSS", "r"),
-    ("i_SDSS", "i"),
-    ("z_SDSS", "z"),
-    ("G", "")
-])
+BAND_ALIASES_SHORT = OrderedDict([("u_SDSS", "u"), ("g_SDSS", "g"),
+                                  ("r_SDSS", "r"), ("i_SDSS", "i"),
+                                  ("z_SDSS", "z"), ("G", "")])
 
 BAND_WAVELENGTHS = {
     "u": 354.,
@@ -284,13 +261,8 @@ BAND_WAVELENGTHS = {
     "W2": 192.8
 }
 
-RADIO_CODES = [
-    "5.9"
-]
-XRAY_CODES = [
-    "0.3 - 10",
-    "0.5 - 8"
-]
+RADIO_CODES = ["5.9"]
+XRAY_CODES = ["0.3 - 10", "0.5 - 8"]
 
 seed(101)
 # bandcolors = ["#%06x" % round(float(x)/float(len(BAND_CODES))*0xFFFEFF)
@@ -365,3 +337,49 @@ def bandmetaf(band, field):
         if field in BAND_META[band]:
             return BAND_META[band][field]
     return None
+
+
+def get_ul_mag(ec, zp=DEFAULT_ZP, sig=DEFAULT_UL_SIGMA):
+    dec = Decimal(str(ec))
+    dzp = Decimal(str(zp))
+    dsig = Decimal(str(sig))
+    mag = str(dzp - (D25 * (dsig * dec).log10()))
+    emag = str(dec)
+    return mag, emag
+
+
+def set_pd_mag_from_counts(photodict,
+                           c,
+                           ec,
+                           lec='',
+                           uec='',
+                           zp=DEFAULT_ZP,
+                           sig=DEFAULT_UL_SIGMA):
+    sig = max(get_sig_digits(c), get_sig_digits(ec))
+    with localcontext() as ctx:
+        ctx.prec = sig
+        dc = Decimal(str(c))
+        if lec != '' and uec != '':
+            dlec = Decimal(str(lec))
+            duec = Decimal(str(uec))
+        else:
+            dlec = Decimal(str(ec))
+            duec = dlec
+        dzp = Decimal(str(zp))
+        dsig = Decimal(str(sig))
+        photodict[PHOTOMETRY.ZERO_POINT] = str(zp)
+        if float(c) < DEFAULT_UL_SIGMA * float(ec):
+            photodict[PHOTOMETRY.UPPER_LIMIT] = True
+            photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(dsig)
+            photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duec
+                                                                ).log10()))
+            dnec = Decimal('10.0')**(
+                (dzp - Decimal(photodict[PHOTOMETRY.MAGNITUDE])) / D25)
+            photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
+                (dnec + duec).log10() - dnec.log10()))
+        else:
+            photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - D25 * dc.log10())
+            photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
+                (dc + duec).log10() - dc.log10()))
+            photodict[PHOTOMETRY.E_LOWER_MAGNITUDE] = str(D25 * (
+                dc.log10() - (dc - dlec).log10()))
