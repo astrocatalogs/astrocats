@@ -447,7 +447,8 @@ class Catalog:
 
                 # Add all files in the repository directory tree
                 git_comm = ["git", "push"]
-                _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                if not self.args.travis:
+                    _call_command_in_repo(git_comm, repo, self.log, fail=True)
             except Exception as err:
                 try:
                     git_comm = ["git", "reset", "HEAD"]
