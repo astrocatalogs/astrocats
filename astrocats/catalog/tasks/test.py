@@ -5,6 +5,7 @@ import os
 from astrocats.catalog.catalog import ENTRY
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.quantity import QUANTITY
+from astrocats.catalog.photometry import PHOTOMETRY, set_pd_mag_from_counts
 from astrocats.catalog.utils import tprint, tq, pbar_strings
 
 FAKE_ALIAS_1 = 'EN-TEST-AA'
@@ -178,6 +179,18 @@ def _first_event_first_source(catalog):
     # Add a fake photometric observation without required fields
     log.info("Calling: ``add_photometry(...)``")
     catalog.entries[name].add_photometry(e_magnitude='0.01')
+    log.debug("\n{}\n".format(repr(catalog.entries[name])))
+
+    # Add a fake photometric observation by counts
+    log.info("Calling: ``add_photometry(...)``")
+    photodict = {
+        PHOTOMETRY.TIME: '12345',
+        PHOTOMETRY.U_TIME: 'MJD',
+        PHOTOMETRY.BAND: 'r',
+        PHOTOMETRY.SOURCE: source
+    }
+    set_pd_mag_from_counts(photodict, 100.0, ec=10.0, zp=30.0)
+    catalog.entries[name].add_photometry(**photodict)
     log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
     log.info("Calling: ``journal_entries()``")
