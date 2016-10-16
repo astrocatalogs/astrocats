@@ -189,7 +189,7 @@ def _first_event_first_source(catalog):
         PHOTOMETRY.BAND: 'r',
         PHOTOMETRY.SOURCE: source
     }
-    set_pd_mag_from_counts(photodict, 100.0, ec=10.0, zp=30.0)
+    set_pd_mag_from_counts(photodict, str(100.0), ec=10.0, zp=30.0)
     catalog.entries[name].add_photometry(**photodict)
     log.debug("\n{}\n".format(repr(catalog.entries[name])))
 
