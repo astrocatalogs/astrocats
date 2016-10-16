@@ -355,22 +355,21 @@ def set_pd_mag_from_counts(photodict,
                            uec='',
                            zp=DEFAULT_ZP,
                            sig=DEFAULT_UL_SIGMA):
-    sig = max(get_sig_digits(c), get_sig_digits(ec))
     with localcontext() as ctx:
-        ctx.prec = sig
+        if lec == '' or uec == '':
+            lec = ec
+            uec = ec
+        prec = max(get_sig_digits(c), get_sig_digits(lec), get_sig_digits(uec))
+        ctx.prec = prec
+        dlec = Decimal(str(lec))
+        duec = Decimal(str(uec))
         dc = Decimal(str(c))
-        if lec != '' and uec != '':
-            dlec = Decimal(str(lec))
-            duec = Decimal(str(uec))
-        else:
-            dlec = Decimal(str(ec))
-            duec = dlec
         dzp = Decimal(str(zp))
         dsig = Decimal(str(sig))
         photodict[PHOTOMETRY.ZERO_POINT] = str(zp)
         if float(c) < DEFAULT_UL_SIGMA * float(uec):
             photodict[PHOTOMETRY.UPPER_LIMIT] = True
-            photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(dsig)
+            photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
             photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duec
                                                                 ).log10()))
             dnec = Decimal('10.0')**(
