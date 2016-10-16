@@ -17,6 +17,7 @@ class PHOTOMETRY(KeyCollection):
     COUNTS = Key('counts', KEY_TYPES.NUMERIC)
     LUMINOSITY = Key('luminosity', KEY_TYPES.NUMERIC)
     ZERO_POINT = Key('zeropoint', KEY_TYPES.NUMERIC)
+    UPPER_LIMIT_SIGMA = Key('upperlimitsigma', KEY_TYPES.NUMERIC)
 
     ENERGY = Key('energy', KEY_TYPES.NUMERIC, listable=True)
     FREQUENCY = Key('frequency', KEY_TYPES.NUMERIC, listable=True)
