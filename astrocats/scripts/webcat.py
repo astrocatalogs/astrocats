@@ -33,6 +33,7 @@ from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HoverTool,
 from bokeh.models.widgets import Select
 from bokeh.plotting import Figure, reset_output
 from bokeh.resources import CDN
+from bokeh.core.properties import value
 from bs4 import BeautifulSoup
 from palettable import cubehelix
 
@@ -385,7 +386,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     photoavail = 'photometry' in catalog[entry] and any(
         ['magnitude' in x for x in catalog[entry]['photometry']])
     radioavail = 'photometry' in catalog[entry] and any(
-        ['fluxdensity' in x for x in catalog[entry]['photometry']])
+        ['fluxdensity' in x and 'magnitude' not in x for x in catalog[entry]['photometry']])
     xrayavail = 'photometry' in catalog[entry] and any(
         [('counts' in x or 'flux' in x) and 'magnitude' not in x
          for x in catalog[entry]['photometry']])
@@ -401,7 +402,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     ]) if photoavail else 0
     numradio = len([
         x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and 'fluxdensity' in x and
+        if 'upperlimit' not in x and 'fluxdensity' in x and 'magnitude' not in x and
         (not x['e_fluxdensity'] or float(x[
             'fluxdensity']) > radiosigma * float(x['e_fluxdensity'])
          ) and (not hostmag or 'includeshost' not in x or float(x['magnitude'])
@@ -409,7 +410,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     ]) if photoavail else 0
     numxray = len([
         x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and ('counts' in x or 'flux' in x) and
+        if 'upperlimit' not in x and ('counts' in x or 'flux' in x) and 'magnitude' not in x and
         (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
             hostmag - 2.0 * hosterr))
     ]) if photoavail else 0
@@ -848,7 +849,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             source=sources[-1],
                             color=bandcolorf(band),
                             fill_color="white",
-                            legend=noerrorlegend,
+                            legend=value(noerrorlegend),
                             size=4))
                     ttglyphs[ci].append(glyphs[ci][-1])
 
@@ -875,19 +876,19 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         p1.multi_line(
                             [err_xs[x] for x in indye], [[ys[x], ys[x]]
                                                          for x in indye],
-                            color=bandcolorf(band)))
+                            color=bandcolorf(band), legend=''))
                     glyphs[ci].append(
                         p1.multi_line(
                             [[xs[x], xs[x]]
                              for x in indye], [err_ys[x] for x in indye],
-                            color=bandcolorf(band)))
+                            color=bandcolorf(band), legend=''))
                     glyphs[ci].append(
                         p1.circle(
                             'x',
                             'y',
                             source=sources[-1],
                             color=bandcolorf(band),
-                            legend=bandname,
+                            legend=value(bandname),
                             size=4))
                     ttglyphs[ci].append(glyphs[ci][-1])
 
@@ -1259,18 +1260,18 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         phototime = [(mean([float(y) for y in x['time']])
                       if isinstance(x['time'], list) else float(x['time']))
                      for x in catalog[entry]['photometry']
-                     if 'fluxdensity' in x]
+                     if 'fluxdensity' in x and 'magnitude' not in x]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'fluxdensity' in x
+            for x in catalog[entry]['photometry'] if 'fluxdensity' in x and 'magnitude' not in x
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'fluxdensity' in x
+            for x in catalog[entry]['photometry'] if 'fluxdensity' in x and 'magnitude' not in x
         ]
         photofd = [
             float(x['fluxdensity']) if 'e_fluxdensity' not in x else
@@ -1279,24 +1280,24 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
              else round_sig(
                  radiosigma * float(x['e_fluxdensity']),
                  sig=get_sig_digits(x['e_fluxdensity'])))
-            for x in catalog[entry]['photometry'] if 'fluxdensity' in x
+            for x in catalog[entry]['photometry'] if 'fluxdensity' in x and 'magnitude' not in x
         ]
         photofderrs = [(float(x['e_fluxdensity'])
                         if 'e_fluxdensity' in x else 0.)
                        for x in catalog[entry]['photometry']
-                       if 'fluxdensity' in x]
+                       if 'fluxdensity' in x and 'magnitude' not in x]
         photoufd = [(x['u_fluxdensity'] if 'fluxdensity' in x else '')
                     for x in catalog[entry]['photometry']
-                    if 'fluxdensity' in x]
+                    if 'fluxdensity' in x and 'magnitude' not in x]
         photofreq = [(x['frequency'] if 'fluxdensity' in x else '')
                      for x in catalog[entry]['photometry']
-                     if 'fluxdensity' in x]
+                     if 'fluxdensity' in x and 'magnitude' not in x]
         photoufreq = [(x['u_frequency'] if 'fluxdensity' in x else '')
                       for x in catalog[entry]['photometry']
-                      if 'fluxdensity' in x]
+                      if 'fluxdensity' in x and 'magnitude' not in x]
         photoinstru = [(x['instrument'] if 'instrument' in x else '')
                        for x in catalog[entry]['photometry']
-                       if 'fluxdensity' in x]
+                       if 'fluxdensity' in x and 'magnitude' not in x]
         photosource = [
             ', '.join(
                 str(j)
@@ -1304,13 +1305,13 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     int(i) for i in catalog[entry]['photometry'][x]['source']
                     .split(',')))
             for x, y in enumerate(catalog[entry]['photometry'])
-            if 'fluxdensity' in y
+            if 'fluxdensity' in y and 'magnitude' not in y
         ]
         phototype = [(
             True if 'upperlimit' in x or
             radiosigma * float(x['e_fluxdensity']) >= float(x['fluxdensity'])
             else False) for x in catalog[entry]['photometry']
-                     if 'fluxdensity' in x]
+                     if 'fluxdensity' in x and 'magnitude' not in x]
 
         photoutime = catalog[entry]['photometry'][0][
             'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
@@ -1496,7 +1497,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 source=source,
                 color=radiocolorf(freq),
                 fill_color="white",
-                legend=noerrorlegend,
+                legend=value(noerrorlegend),
                 size=4)
 
             yeserrorlegend = freqlabel if len(indye) > 0 else ''
@@ -1540,7 +1541,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=radiocolorf(freq),
-                    legend=yeserrorlegend,
+                    legend=value(yeserrorlegend),
                     size=4))
 
             upplimlegend = freqlabel if len(indye) == 0 and len(
@@ -1586,7 +1587,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=radiocolorf(freq),
-                    legend=upplimlegend,
+                    legend=value(upplimlegend),
                     size=7))
 
         p3.legend.label_text_font = 'futura'
@@ -1680,12 +1681,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 else round_sig(
                     radiosigma * float(x['e_counts']),
                     sig=get_sig_digits(x['e_counts']))
-                for x in catalog[entry]['photometry'] if 'counts' in x
+                for x in catalog[entry]['photometry'] if 'counts' in x and 'magnitude' not in x
             ]
             photofluppererrs = [(float(x['e_counts'])
                                  if 'e_counts' in x else 0.)
                                 for x in catalog[entry]['photometry']
-                                if 'counts' in x]
+                                if 'counts' in x and 'magnitude' not in x]
             photoufl = ['' for x in photofl]
             hasfl = len(list(filter(None, photofl)))
             hasflerrs = len(list(filter(None, photofluppererrs)))
@@ -1870,7 +1871,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 source=source,
                 color=xraycolorf(ener),
                 fill_color="white",
-                legend=noerrorlegend,
+                legend=value(noerrorlegend),
                 size=4)
 
             yeserrorlegend = enerlabel if len(indye) > 0 else ''
@@ -1909,7 +1910,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=xraycolorf(ener),
-                    legend=yeserrorlegend,
+                    legend=value(yeserrorlegend),
                     size=4))
 
             upplimlegend = enerlabel if len(indye) == 0 and len(
@@ -1950,7 +1951,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=xraycolorf(ener),
-                    legend=upplimlegend,
+                    legend=value(upplimlegend),
                     size=7))
 
         p4.legend.label_text_font = 'futura'
