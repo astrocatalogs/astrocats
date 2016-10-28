@@ -2068,7 +2068,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 skyhtml = (
                     '<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
                     + str(c.ra.deg) + '&dec=' + str(c.dec.deg) +
-                    '&scale=0.15"><img src="' + fileeventname +
+                    '&scale=0.15"><img src="' + urllib.parse.quote_plus(fileeventname) +
                     '-host.jpg" width=250></a>')
             elif imgsrc == 'DSS':
                 hostimgdict[eventname] = 'DSS'
@@ -2082,7 +2082,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     +
                     "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null"
                 )
-                skyhtml = ('<a href="' + url + '"><img src="' + fileeventname +
+                skyhtml = ('<a href="' + url + '"><img src="' + urllib.parse.quote_plus(fileeventname) +
                            '-host.jpg" width=250></a>')
         else:
             hostimgdict[eventname] = 'None'
