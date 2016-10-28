@@ -926,7 +926,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         'size': 7
                     }
                     if upplimlegend:
-                        uppdict['legend'] = upplimlegend
+                        uppdict['legend'] = value(upplimlegend)
                     glyphs[ci].append(
                         p1.inverted_triangle('x', 'y', **uppdict))
                     ttglyphs[ci].append(glyphs[ci][-1])
@@ -2051,15 +2051,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                 response = urllib.request.urlopen(
                                     'http://skyview.gsfc.nasa.gov/tempspace/fits/'
                                     + imgname)
-                            except (KeyboardInterrupt, SystemExit):
-                                raise
-                            except:
-                                hasimage = False
-                            else:
                                 with open(outdir + htmldir + fileeventname +
                                           '-host.jpg', 'wb') as f:
                                     f.write(response.read())
                                 imgsrc = 'DSS'
+                            except (KeyboardInterrupt, SystemExit):
+                                raise
+                            except:
+                                hasimage = False
                         else:
                             hasimage = False
 
