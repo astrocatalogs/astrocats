@@ -822,7 +822,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     indc).intersection(set(indyey).union(indyex))
 
                 if indne:
-                    noerrorlegend = bandname
+                    noerrorlegend = value(bandname)
 
                     data = dict(
                         x=[phototime[i] for i in indne],
@@ -849,7 +849,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             source=sources[-1],
                             color=bandcolorf(band),
                             fill_color="white",
-                            legend=value(noerrorlegend),
+                            legend=noerrorlegend,
                             size=4))
                     ttglyphs[ci].append(glyphs[ci][-1])
 
@@ -888,11 +888,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             'y',
                             source=sources[-1],
                             color=bandcolorf(band),
-                            legend=value(bandname),
+                            legend=value(bandname) if bandname else '',
                             size=4))
                     ttglyphs[ci].append(glyphs[ci][-1])
 
-                upplimlegend = bandname if (not indye and not indne) else ''
+                upplimlegend = value(bandname) if (not indye and not indne) else ''
 
                 indt = [i for i, j in enumerate(phototype) if j]
                 ind = set(indb).intersection(indt).intersection(indc)
@@ -926,7 +926,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         'size': 7
                     }
                     if upplimlegend:
-                        uppdict['legend'] = value(upplimlegend)
+                        uppdict['legend'] = upplimlegend
                     glyphs[ci].append(
                         p1.inverted_triangle('x', 'y', **uppdict))
                     ttglyphs[ci].append(glyphs[ci][-1])
@@ -1461,7 +1461,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
             freqlabel = str(freq) + " " + frequnit
 
-            noerrorlegend = freqlabel if len(indye) == 0 and len(
+            noerrorlegend = value(freqlabel) if len(indye) == 0 and len(
                 indne) > 0 else ''
 
             data = dict(
@@ -1497,10 +1497,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 source=source,
                 color=radiocolorf(freq),
                 fill_color="white",
-                legend=value(noerrorlegend),
+                legend=noerrorlegend,
                 size=4)
 
-            yeserrorlegend = freqlabel if len(indye) > 0 else ''
+            yeserrorlegend = value(freqlabel) if len(indye) > 0 else ''
 
             data = dict(
                 x=[phototime[i] for i in indye],
@@ -1541,10 +1541,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=radiocolorf(freq),
-                    legend=value(yeserrorlegend),
+                    legend=yeserrorlegend,
                     size=4))
 
-            upplimlegend = freqlabel if len(indye) == 0 and len(
+            upplimlegend = value(freqlabel) if len(indye) == 0 and len(
                 indne) == 0 else ''
 
             indt = [i for i, j in enumerate(phototype) if j]
@@ -1587,7 +1587,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=radiocolorf(freq),
-                    legend=value(upplimlegend),
+                    legend=upplimlegend,
                     size=7))
 
         p3.legend.label_text_font = 'futura'
@@ -1839,7 +1839,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
             enerlabel = str(ener) + " " + enerunit
 
-            noerrorlegend = enerlabel if len(indye) == 0 and len(
+            noerrorlegend = value(enerlabel) if len(indye) == 0 and len(
                 indne) > 0 else ''
 
             data = dict(
@@ -1871,10 +1871,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 source=source,
                 color=xraycolorf(ener),
                 fill_color="white",
-                legend=value(noerrorlegend),
+                legend=noerrorlegend,
                 size=4)
 
-            yeserrorlegend = enerlabel if len(indye) > 0 else ''
+            yeserrorlegend = value(enerlabel) if len(indye) > 0 else ''
 
             data = dict(
                 x=[phototime[i] for i in indye],
@@ -1910,10 +1910,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=xraycolorf(ener),
-                    legend=value(yeserrorlegend),
+                    legend=yeserrorlegend,
                     size=4))
 
-            upplimlegend = enerlabel if len(indye) == 0 and len(
+            upplimlegend = value(enerlabel) if len(indye) == 0 and len(
                 indne) == 0 else ''
 
             indt = [i for i, j in enumerate(phototype) if j]
@@ -1951,7 +1951,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     'y',
                     source=source,
                     color=xraycolorf(ener),
-                    legend=value(upplimlegend),
+                    legend=upplimlegend,
                     size=7))
 
         p4.legend.label_text_font = 'futura'
