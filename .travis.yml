@@ -45,6 +45,8 @@ script:
     - coverage run -a -m astrocats catalog git-reset-local
     - coverage run -a -m astrocats catalog git-status
     - coverage run -a -m astrocats catalog git-reset-origin
+    - git config --global user.email "you@example.com"
+    - git config --global user.name "Your Name"
     - coverage run -a -m astrocats catalog git-push --travis
     - echo "travis_fold:end:GIT completed git checks"
 #    - echo "travis_fold:start:MAKE Making catalog"
