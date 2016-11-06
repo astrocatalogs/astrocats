@@ -442,6 +442,8 @@ class Catalog:
             try:
                 # Add all files in the repository directory tree
                 git_comm = ["git", "add"]
+                if self.args.travis:
+                    git_comm.append("-f")
                 git_comm.extend(add_files)
                 _call_command_in_repo(
                     git_comm, repo, self.log, fail=True, log_flag=False)
@@ -450,10 +452,7 @@ class Catalog:
                 commit_msg = "'push' - adding all files."
                 commit_msg = "{} : {}".format(self._version_long, commit_msg)
                 self.log.info(commit_msg)
-                git_comm = [
-                    "git", "commit", "-am" + ("f" if self.args.travis else ""),
-                    commit_msg
-                ]
+                git_comm = ["git", "commit", "-am", commit_msg]
                 _call_command_in_repo(git_comm, repo, self.log)
 
                 # Add all files in the repository directory tree
