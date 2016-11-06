@@ -1,7 +1,6 @@
 """Overarching catalog object for all open catalogs.
 """
 import codecs
-import git
 import importlib
 import json
 import os
@@ -11,7 +10,10 @@ import warnings
 from collections import OrderedDict
 from glob import glob
 
+import git
 import psutil
+from tqdm import tqdm
+
 from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
@@ -19,7 +21,6 @@ from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
-from tqdm import tqdm
 
 
 class Catalog:
@@ -44,7 +45,7 @@ class Catalog:
                    "db_key=ALL&version=1&bibcode=")
 
     TRAVIS_QUERY_LIMIT = 10
-    COMPRESS_ABOVE_FILESIZE = 90e6   # bytes
+    COMPRESS_ABOVE_FILESIZE = 90e6  # bytes
 
     class PATHS:
         """Store and control catalog file-structure information.
@@ -82,8 +83,8 @@ class Catalog:
             this_file = sys.modules[self.__module__].__file__
             self.catalog_dir = os.path.dirname(this_file)
             self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
-            self.PATH_BASE = os.path.join(
-                catalog.args.base_path, self.catalog_dir, '')
+            self.PATH_BASE = os.path.join(catalog.args.base_path,
+                                          self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
@@ -132,8 +133,10 @@ class Catalog:
             repo_folders += self.repos_dict['external']
             repo_folders += self.repos_dict['internal']
             repo_folders = list(sorted(set(repo_folders)))
-            repo_folders = [os.path.join(self.PATH_INPUT, rf)
-                            for rf in repo_folders if len(rf)]
+            repo_folders = [
+                os.path.join(self.PATH_INPUT, rf) for rf in repo_folders
+                if len(rf)
+            ]
             return repo_folders
 
         def get_repo_output_file_list(self, normal=True, bones=True):
@@ -152,10 +155,14 @@ class Catalog:
             repo_folders += self.repos_dict['output']
             if bones:
                 repo_folders += self.repos_dict['boneyard']
-            repo_folders = list(sorted(list(set(repo_folders)),
-                                       key=lambda key: repo_priority(key)))
-            repo_folders = [os.path.join(self.PATH_OUTPUT, rf)
-                            for rf in repo_folders if len(rf)]
+            repo_folders = list(
+                sorted(
+                    list(set(repo_folders)),
+                    key=lambda key: repo_priority(key)))
+            repo_folders = [
+                os.path.join(self.PATH_OUTPUT, rf) for rf in repo_folders
+                if len(rf)
+            ]
             return repo_folders
 
     class SCHEMA:
@@ -217,8 +224,7 @@ class Catalog:
         warnings.filterwarnings(
             'ignore', r'Warning: converting a masked element to nan.')
         # FIX
-        warnings.filterwarnings(
-            'ignore', category=DeprecationWarning)
+        warnings.filterwarnings('ignore', category=DeprecationWarning)
 
         # Delete all old (previously constructed) output files
         if self.args.delete_old:
@@ -243,14 +249,13 @@ class Catalog:
 
             # Make sure things are running in the correct order
             if priority < prev_priority and priority > 0:
-                raise RuntimeError(
-                    "Priority for '{}': '{}', less than prev,"
-                    "'{}': '{}'.\n{}"
-                    .format(task_name, priority, prev_task_name, prev_priority,
-                            task_obj))
+                raise RuntimeError("Priority for '{}': '{}', less than prev,"
+                                   "'{}': '{}'.\n{}"
+                                   .format(task_name, priority, prev_task_name,
+                                           prev_priority, task_obj))
 
-            self.log.debug("\t{}, {}, {}, {}".format(
-                nice_name, priority, mod_name, func_name))
+            self.log.debug("\t{}, {}, {}, {}".format(nice_name, priority,
+                                                     mod_name, func_name))
             mod = importlib.import_module('.' + mod_name, package='astrocats')
             self.current_task = task_obj
             getattr(mod, func_name)(self)
@@ -295,9 +300,10 @@ class Catalog:
         tasks, task_names = self._load_task_list_from_file()
 
         # Make sure 'active' modification lists are all valid
-        args_lists = [self.args.args_task_list,
-                      self.args.yes_task_list,
-                      self.args.no_task_list]
+        args_lists = [
+            self.args.args_task_list, self.args.yes_task_list,
+            self.args.no_task_list
+        ]
         args_names = ['--tasks', '--yes', '--no']
         for arglist, lname in zip(args_lists, args_names):
             if arglist is not None:
@@ -365,8 +371,10 @@ class Catalog:
         #    [0, 1, 2, 2, 10, -100, -10, -1]
         # Tuples are sorted by first element (here: '0' if positive), then
         # second (here normal order)
-        tasks = OrderedDict(sorted(tasks.items(), key=lambda t: (
-            t[1].priority < 0, t[1].priority, t[1].name)))
+        tasks = OrderedDict(
+            sorted(
+                tasks.items(),
+                key=lambda t: (t[1].priority < 0, t[1].priority, t[1].name)))
 
         # Find the first task that has "always_journal" set to True
         for key in tasks:
@@ -383,16 +391,16 @@ class Catalog:
                 names_inact.append(key)
 
         self.log.info("Active Tasks:\n\t" + ", ".join(nn for nn in names_act))
-        self.log.debug("Inactive Tasks:\n\t" +
-                       ", ".join(nn for nn in names_inact))
+        self.log.debug("Inactive Tasks:\n\t" + ", ".join(nn for nn in
+                                                         names_inact))
         return tasks
 
     def _load_task_list_from_file(self):
         """
         """
         def_task_list_filename = self.PATHS.TASK_LIST
-        self.log.debug(
-            "Loading task-list from '{}'".format(def_task_list_filename))
+        self.log.debug("Loading task-list from '{}'".format(
+            def_task_list_filename))
         data = json.load(open(def_task_list_filename, 'r'))
         # Create `Task` objects for each element in the tasks data file
         tasks = {}
@@ -435,14 +443,17 @@ class Catalog:
                 # Add all files in the repository directory tree
                 git_comm = ["git", "add"]
                 git_comm.extend(add_files)
-                _call_command_in_repo(git_comm, repo, self.log,
-                                      fail=True, log_flag=False)
+                _call_command_in_repo(
+                    git_comm, repo, self.log, fail=True, log_flag=False)
 
                 # Commit these files
                 commit_msg = "'push' - adding all files."
                 commit_msg = "{} : {}".format(self._version_long, commit_msg)
                 self.log.info(commit_msg)
-                git_comm = ["git", "commit", "-am", commit_msg]
+                git_comm = [
+                    "git", "commit", "-am" + ("f" if self.args.travis else ""),
+                    commit_msg
+                ]
                 _call_command_in_repo(git_comm, repo, self.log)
 
                 # Add all files in the repository directory tree
@@ -497,8 +508,8 @@ class Catalog:
                 if self.args.clone_depth == 0 and repo in out_repos:
                     os.mkdir(repo)
                 else:
-                    _clone_astrocats_repo(repo, self.log,
-                                          depth=max(self.args.clone_depth, 1))
+                    _clone_astrocats_repo(
+                        repo, self.log, depth=max(self.args.clone_depth, 1))
 
             grepo = git.cmd.Git(repo)
             try:
@@ -571,8 +582,8 @@ class Catalog:
             grepo.fetch()
 
             git_comm = ["git", "status"]
-            _call_command_in_repo(git_comm, repo, self.log,
-                                  fail=True, log_flag=True)
+            _call_command_in_repo(
+                git_comm, repo, self.log, fail=True, log_flag=True)
 
             sha_end = subprocess.getoutput(git_command)
             if sha_end != sha_beg:
@@ -584,9 +595,8 @@ class Catalog:
         loaded_entry = self.proto.init_from_file(self, name=name, merge=merge)
         if loaded_entry is not None:
             self.entries[name] = loaded_entry
-            self.log.debug(
-                "Added '{}', from '{}', to `self.entries`".format(
-                    name, loaded_entry.filename))
+            self.log.debug("Added '{}', from '{}', to `self.entries`".format(
+                name, loaded_entry.filename))
             # Delete source file, if desired
             if delete:
                 self._delete_entry_file(entry=loaded_entry)
@@ -608,13 +618,12 @@ class Catalog:
         newname = self.clean_entry_name(name)
 
         if not newname:
-            raise(ValueError('Fatal: Attempted to add entry with no name.'))
+            raise (ValueError('Fatal: Attempted to add entry with no name.'))
 
         # If entry already exists, return
         if newname in self.entries:
-            self.log.debug(
-                "`newname`: '{}' (name: '{}') already exists.".
-                format(newname, name))
+            self.log.debug("`newname`: '{}' (name: '{}') already exists.".
+                           format(newname, name))
             # If this is a stub, we need to continue, possibly load file
             if self.entries[newname]._stub:
                 self.log.debug("'{}' is a stub".format(newname))
@@ -693,7 +702,7 @@ class Catalog:
                     aliases = entry.get_aliases(includename=False)
                     if alias in aliases:
                         if ((ENTRY.DISTINCT_FROM not in entry) or
-                                (alias not in entry[ENTRY.DISTINCT_FROM])):
+                            (alias not in entry[ENTRY.DISTINCT_FROM])):
                             return name
 
         return None
@@ -707,9 +716,8 @@ class Catalog:
 
         Used by `merge_duplicates`
         """
-        self.log.info("Copy entry object '{}' to '{}'"
-                      .format(fromentry[fromentry._KEYS.NAME],
-                              destentry[destentry._KEYS.NAME]))
+        self.log.info("Copy entry object '{}' to '{}'".format(fromentry[
+            fromentry._KEYS.NAME], destentry[destentry._KEYS.NAME]))
         newsourcealiases = {}
 
         if self.proto._KEYS.SOURCES in fromentry:
@@ -719,8 +727,7 @@ class Catalog:
 
         if self.proto._KEYS.ERRORS in fromentry:
             for err in fromentry[self.proto._KEYS.ERRORS]:
-                destentry.setdefault(
-                    self.proto._KEYS.ERRORS, []).append(err)
+                destentry.setdefault(self.proto._KEYS.ERRORS, []).append(err)
 
         for rkey in fromentry:
             key = fromentry._KEYS.get_key_by_name(rkey)
@@ -735,8 +742,7 @@ class Catalog:
                 for sid in item['source'].split(','):
                     if sid in newsourcealiases:
                         source = newsourcealiases[sid]
-                        nsid.append(destentry
-                                    .add_source(**source))
+                        nsid.append(destentry.add_source(**source))
                     else:
                         raise ValueError("Couldn't find source alias!")
 
@@ -749,8 +755,8 @@ class Catalog:
                 elif key == ENTRY.ERRORS:
                     destentry.add_error(**item)
                 else:
-                    destentry.add_quantity(check_for_dupes=False, quantity=key,
-                                           **item)
+                    destentry.add_quantity(
+                        check_for_dupes=False, quantity=key, **item)
 
         return
 
@@ -761,13 +767,25 @@ class Catalog:
         """
         return name
 
-    def new_entry(self, name, load=True, delete=True,
-                  loadifempty=True, srcname='', reference='', url='',
-                  bibcode='', secondary=False, acknowledgment=''):
+    def new_entry(self,
+                  name,
+                  load=True,
+                  delete=True,
+                  loadifempty=True,
+                  srcname='',
+                  reference='',
+                  url='',
+                  bibcode='',
+                  secondary=False,
+                  acknowledgment=''):
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(
-            bibcode=bibcode, name=srcname, reference=reference, url=url,
-            secondary=secondary, acknowledgment=acknowledgment)
+            bibcode=bibcode,
+            name=srcname,
+            reference=reference,
+            url=url,
+            secondary=secondary,
+            acknowledgment=acknowledgment)
         self.entries[newname].add_quantity(ENTRY.ALIAS, name, source)
         return newname, source
 
@@ -800,8 +818,8 @@ class Catalog:
                 n1 = n1 + 1
                 mainpbar.update(1)
                 continue
-            allnames1 = set(self.entries[name1].get_aliases() +
-                            self.entries[name1].extra_aliases())
+            allnames1 = set(self.entries[name1].get_aliases() + self.entries[
+                name1].extra_aliases())
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
@@ -821,14 +839,12 @@ class Catalog:
 
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
-                    self.log.warning(
-                        "Found two entries with common aliases "
-                        "('{}' and '{}'), merging.".format(name1, name2))
+                    self.log.warning("Found two entries with common aliases "
+                                     "('{}' and '{}'), merging.".format(name1,
+                                                                        name2))
 
-                    load1 = self.proto.init_from_file(
-                        self, name=name1)
-                    load2 = self.proto.init_from_file(
-                        self, name=name2)
+                    load1 = self.proto.init_from_file(self, name=name1)
+                    load2 = self.proto.init_from_file(self, name=name2)
                     if load1 is not None and load2 is not None:
                         # Delete old files
                         self._delete_entry_file(entry=load1)
@@ -885,8 +901,8 @@ class Catalog:
             # FIX: should this be ``fi.endswith(``.gz')`` ?
             if '.gz' in fi:
                 fname = uncompress_gz(fi)
-            name = os.path.basename(
-                os.path.splitext(fname)[0]).replace('.json', '')
+            name = os.path.basename(os.path.splitext(fname)[0]).replace(
+                '.json', '')
             new_entry = self.proto.init_from_file(
                 self, path=fname, delete=False)
             # Make sure a non-stub entry doesnt already exist with this name
@@ -938,8 +954,12 @@ class Catalog:
     def should_bury(self, name):
         return (False, True)
 
-    def journal_entries(self, clear=True, gz=False, bury=False,
-                        write_stubs=False, final=False):
+    def journal_entries(self,
+                        clear=True,
+                        gz=False,
+                        bury=False,
+                        write_stubs=False,
+                        final=False):
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
@@ -970,10 +990,10 @@ class Catalog:
                     (bury_entry, save_entry) = self.should_bury(name)
 
                 if save_entry:
-                    save_name = self.entries[name].save(bury=bury_entry,
-                                                        final=final)
-                    self.log.info(
-                        "Saved {} to '{}'.".format(name.ljust(20), save_name))
+                    save_name = self.entries[name].save(
+                        bury=bury_entry, final=final)
+                    self.log.info("Saved {} to '{}'.".format(
+                        name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >
                             self.COMPRESS_ABOVE_FILESIZE):
                         save_name = compress_gz(save_name)
@@ -983,8 +1003,7 @@ class Catalog:
                         outdir, filename = os.path.split(save_name)
                         filename = filename.split('.')[0]
                         os.system('cd ' + outdir + '; git rm --cached ' +
-                                  filename +
-                                  '.json; git add -f ' + filename +
+                                  filename + '.json; git add -f ' + filename +
                                   '.json.gz; cd ' + self.PATHS.PATH_BASE)
 
             if clear:
@@ -1039,8 +1058,11 @@ class Catalog:
 
         return
 
-    def _prep_git_add_file_list(self, repo, size_limit,
-                                fail=True, file_types=None):
+    def _prep_git_add_file_list(self,
+                                repo,
+                                size_limit,
+                                fail=True,
+                                file_types=None):
         """Get a list of files which should be added to the given repository.
 
         Notes
@@ -1081,7 +1103,7 @@ class Catalog:
                 # If the found file is too large
                 if fsize > size_limit:
                     self.log.debug("File '{}' size '{}' MB.".format(
-                        fname, fsize/1028/1028))
+                        fname, fsize / 1028 / 1028))
                     # If the file is already compressed... fail or skip
                     if ff.endswith('.gz'):
                         self.log.error(
@@ -1091,9 +1113,8 @@ class Catalog:
                     else:
                         fname = compress_gz(fname)
                         fsize = os.path.getsize(fname)
-                        self.log.info(
-                            "Compressed to '{}', size '{}' MB".format(
-                                fname, fsize/1028/1028))
+                        self.log.info("Compressed to '{}', size '{}' MB".
+                                      format(fname, fsize / 1028 / 1028))
                         # If still too big, fail or skip
                         if fsize > size_limit:
                             comp_failed = True
@@ -1102,8 +1123,8 @@ class Catalog:
                 if comp_failed:
                     # Raise an error
                     if fail:
-                        raise RuntimeError(
-                            "File '{}' cannot be added!".format(fname))
+                        raise RuntimeError("File '{}' cannot be added!".format(
+                            fname))
                     # Skip file without adding it
                     self.log.info("Skipping file.")
                     continue
@@ -1113,12 +1134,21 @@ class Catalog:
 
         return add_files
 
-    def load_cached_url(self, url, filepath, timeout=120, write=True,
-                        failhard=False, jsonsort=''):
+    def load_cached_url(self,
+                        url,
+                        filepath,
+                        timeout=120,
+                        write=True,
+                        failhard=False,
+                        jsonsort=''):
         json_sort = jsonsort if len(jsonsort) else None
         url_data = self.load_url(
-            url, filepath, timeout=timeout, write=write,
-            fail=failhard, json_sort=json_sort)
+            url,
+            filepath,
+            timeout=timeout,
+            write=write,
+            fail=failhard,
+            json_sort=json_sort)
 
         if url_data is None:
             if self.args.update:
@@ -1128,9 +1158,19 @@ class Catalog:
 
         return url_data
 
-    def load_url(self, url, fname, repo=None, timeout=120, post=None,
-                 fail=False, write=True, json_sort=None, cache_only=False,
-                 archived_mode=None, archived_task=None, update_mode=None,
+    def load_url(self,
+                 url,
+                 fname,
+                 repo=None,
+                 timeout=120,
+                 post=None,
+                 fail=False,
+                 write=True,
+                 json_sort=None,
+                 cache_only=False,
+                 archived_mode=None,
+                 archived_task=None,
+                 update_mode=None,
                  verify=False):
         """Load the given URL, or a cached-version.
 
@@ -1228,13 +1268,12 @@ class Catalog:
 
             # If file does not exist, log error, continue
             else:
-                self.log.error(
-                    "Task {}: Cached file '{}' does not exist.".format(
-                        self.current_task.name, cached_path))
+                self.log.error("Task {}: Cached file '{}' does not exist.".
+                               format(self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
-        url_txt = self.download_url(url, timeout, fail=False, post=post,
-                                    verify=verify)
+        url_txt = self.download_url(
+            url, timeout, fail=False, post=post, verify=verify)
 
         # At this point, we might have both `url_txt` and `file_txt`
         # If either of them failed, then they are set to None
@@ -1274,8 +1313,7 @@ class Catalog:
         if write:
             self.log.info("Writing `url_txt` to file '{}'.".format(
                 cached_path))
-            self._write_cache_file(
-                url_txt, cached_path, json_sort=json_sort)
+            self._write_cache_file(url_txt, cached_path, json_sort=json_sort)
         # If `file_txt` doesnt exist but were not writing.. warn
         elif file_txt is None:
             err_str = "Warning: cached file '{}' does not exist.".format(
@@ -1297,8 +1335,7 @@ class Catalog:
                     cached_path))
                 return None
             else:
-                self.log.info("File '{}' has been updated".format(
-                    cached_path))
+                self.log.info("File '{}' has been updated".format(cached_path))
                 # Warn if we didnt save a new copy
                 if not write:
                     err_str = "Warning: updated data not saved to file."
@@ -1356,24 +1393,30 @@ class Catalog:
         session = requests.Session()
 
         try:
-            headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X '
-                       '10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
-                       'Chrome/39.0.2171.95 Safari/537.36'}
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X '
+                '10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
+                'Chrome/39.0.2171.95 Safari/537.36'
+            }
             if post:
                 response = session.post(
-                    url, timeout=timeout, headers=headers, data=post,
+                    url,
+                    timeout=timeout,
+                    headers=headers,
+                    data=post,
                     verify=verify)
             else:
-                response = session.get(
-                    url, timeout=timeout, headers=headers, verify=verify)
+                response = session.get(url,
+                                       timeout=timeout,
+                                       headers=headers,
+                                       verify=verify)
             response.raise_for_status()
             # Look for errors
             for xx in response.history:
                 xx.raise_for_status()
                 if xx.status_code in _CODE_ERRORS:
-                    self.log.error(
-                        "URL response returned status code '{}'".format(
-                            xx.status_code))
+                    self.log.error("URL response returned status code '{}'".
+                                   format(xx.status_code))
                     raise
 
             url_txt = response.text
@@ -1430,8 +1473,8 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     """
     if log_flag:
         log.debug("Running '{}'.".format(" ".join(comm)))
-    process = subprocess.Popen(comm, cwd=repo, stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+    process = subprocess.Popen(
+        comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (stdout, stderr) = process.communicate()
     if stderr is not None:
         err_msg = stderr.decode('ascii').strip().splitlines()
@@ -1467,9 +1510,8 @@ def _clone_astrocats_repo(repo, log, depth=1):
     try:
         repo_name = os.path.split(repo)[-1]
         repo_name = "https://github.com/astrocatalogs/" + repo_name + ".git"
-        log.warning(
-            "Cloning '{}' (only needs to be done ".format(repo) +
-            "once, may take few minutes per repo).")
+        log.warning("Cloning '{}' (only needs to be done ".format(repo) +
+                    "once, may take few minutes per repo).")
         grepo = git.Repo.clone_from(repo_name, repo, **kwargs)
     except:
         log.error("CLONING '{}' INTERRUPTED".format(repo))
