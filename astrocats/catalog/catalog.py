@@ -487,14 +487,18 @@ class Catalog:
         """Perform a 'git clone' for each data repository that doesnt exist.
         """
         all_repos = self.PATHS.get_all_repo_folders()
+        out_repos = self.PATHS.get_repo_output_folders()
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
 
             if os.path.isdir(repo):
                 self.log.info("Directory exists.")
             else:
-                _clone_astrocats_repo(repo, self.log,
-                                      depth=self.args.clone_depth)
+                if self.args.clone_depth == 0 and repo in out_repos:
+                    os.mkdir(repo)
+                else:
+                    _clone_astrocats_repo(repo, self.log,
+                                          depth=max(self.args.clone_depth, 1))
 
             grepo = git.cmd.Git(repo)
             try:
