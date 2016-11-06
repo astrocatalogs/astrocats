@@ -2,6 +2,7 @@ language: python
 python:
     - "3.4"
     - "3.5"
+    - "3.6-dev"
 notifications:
     email:
         on_failure: change
@@ -26,7 +27,11 @@ before_install:
       then conda update -q conda;
       fi
 install:
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
+    - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6-dev" ]];
+      then export TPV="3.5.2"; else
+      export TPV=$TRAVIS_PYTHON_VERSION;
+      fi
+    - conda install --yes python=$TPV scipy matplotlib
     - conda install -c anaconda pyqt=4.11.4
     - pip install -r requirements.txt
     - pip install coveralls
