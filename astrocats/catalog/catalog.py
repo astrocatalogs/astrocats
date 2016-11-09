@@ -701,7 +701,7 @@ class Catalog:
                     aliases = entry.get_aliases(includename=False)
                     if alias in aliases:
                         if ((ENTRY.DISTINCT_FROM not in entry) or
-                            (alias not in entry[ENTRY.DISTINCT_FROM])):
+                                (alias not in entry[ENTRY.DISTINCT_FROM])):
                             return name
 
         return None
@@ -775,11 +775,13 @@ class Catalog:
                   reference='',
                   url='',
                   bibcode='',
+                  arxivid='',
                   secondary=False,
                   acknowledgment=''):
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(
             bibcode=bibcode,
+            arxivid=arxivid,
             name=srcname,
             reference=reference,
             url=url,
@@ -1239,7 +1241,7 @@ class Catalog:
         # Determine if this task is one which uses archived files
         if archived_task is None:
             archived_task = self.current_task.archived
-        # Detemrine if running in update mode
+        # Determine if running in update mode
         if update_mode is None:
             update_mode = self.args.update
 
