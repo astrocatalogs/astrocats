@@ -20,7 +20,7 @@ from math import ceil, isnan, pi
 from statistics import mean
 
 import inflect
-import numpy
+import numpy as np
 import requests
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
@@ -1062,7 +1062,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         prunedscaled = deepcopy(prunedflux)
         for f, flux in enumerate(prunedscaled):
-            std = numpy.std(flux)
+            std = np.std(flux)
             prunedscaled[f] = [x / std for x in flux]
 
         y_height = 0.
@@ -1616,24 +1616,25 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             for x in catalog[entry]['photometry'] if 'flux' in x
         ]
         photofl = [
-            float(x['flux'])
+            np.log10(float(x['flux']))
             if ('e_flux' not in x or
                 float(x['flux']) > radiosigma * float(x['e_flux'])) else
-            round_sig(
-                radiosigma * float(x['e_flux']),
-                sig=get_sig_digits(x['e_flux']))
+                round_sig(np.log10(radiosigma * float(x['e_flux']),
+                sig=get_sig_digits(x['e_flux'])))
             for x in catalog[entry]['photometry'] if 'flux' in x
         ]
         photofllowererrs = [
-            float(x['e_lower_flux'])
-            if ('e_lower_flux' in x) else (float(x['e_flux'])
-                                           if 'e_flux' in x else 0.)
+            np.log10(float(x['flux'])) - np.log10(float(x['flux']) - float(x['e_lower_flux']))
+            if ('e_lower_flux' in x) else (
+                np.log10(float(x['flux'])) - np.log10(float(x['flux']) - float(x['e_flux']))
+                if 'e_flux' in x else 0.)
             for x in catalog[entry]['photometry'] if 'flux' in x
         ]
         photofluppererrs = [
-            float(x['e_upper_flux'])
-            if ('e_upper_flux' in x) else (float(x['e_flux'])
-                                           if 'e_flux' in x else 0.)
+            np.log10(float(x['flux']) + float(x['e_upper_flux'])) - np.log10(float(x['flux']))
+            if ('e_upper_flux' in x) else (
+                np.log10(float(x['flux']) + float(x['e_flux'])) - np.log10(float(x['flux']))
+                if 'e_flux' in x else 0.)
             for x in catalog[entry]['photometry'] if 'flux' in x
         ]
         photoufl = [(x['u_flux'] if 'flux' in x else '')
@@ -1728,7 +1729,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             title='X-ray Observations of ' + eventname,
             active_drag='box_zoom',
             # sizing_mode = "scale_width",
-            y_axis_label='Flux (ergs s⁻¹ cm⁻²)',
+            y_axis_label='Log Flux (ergs s⁻¹ cm⁻²)',
             tools=tools,
             plot_width=485,
             plot_height=485,
@@ -1784,10 +1785,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         if distancemod:
             min_y_absmag = min(
-                [(x - y) * areacorr
+                [(x - y) + np.log10(areacorr)
                  for x, y in list(zip(photofl, photofllowererrs))])
             max_y_absmag = max(
-                [(x + y) * areacorr
+                [(x + y) + np.log10(areacorr)
                  for x, y in list(zip(photofl, photofluppererrs))])
             [min_y_absmag, max_y_absmag] = [
                 min_y_absmag - 0.1 * (max_y_absmag - min_y_absmag),
@@ -1799,7 +1800,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             }
             p4.add_layout(
                 LinearAxis(
-                    axis_label="Luminosity in band (ergs s⁻¹)",
+                    axis_label="Log Luminosity in band (ergs s⁻¹)",
                     major_label_text_font_size='8pt',
                     major_label_text_font='futura',
                     axis_label_text_font='futura',
