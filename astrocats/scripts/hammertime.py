@@ -171,7 +171,7 @@ p1.multi_line(decxs, decys, color='#bbbbbb')
 claimedtypes = sorted(list(set(evtypes)))
 
 glyphs = []
-glsize = max(2.5, 7.0 - np.log10(len(claimedtypes)))
+glsize = max(2.5, 7.0 - np.log10(len(evtypes)))
 for ci, ct in enumerate(claimedtypes):
     ind = [i for i, t in enumerate(evtypes) if t == ct]
 

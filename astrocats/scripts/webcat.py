@@ -2132,8 +2132,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             <link rel="stylesheet" href="https://''' + moduleurl +
             '''/wp-content/themes/astrocats-child-theme/event-iframe.css" type="text/css">\n
             <script type="text/javascript" src="https://''' + moduleurl +
-            '''/astrocats/astrocats/''' + moduledir +
-            '''/scripts/marks.js" type="text/js"></script>\n
+            '''/wp-content/plugins/transient-table/transient-table.js" type="text/js"></script>\n
             <script type="text/javascript">\n
                 if(top==self)\n
                 this.location="''' + eventname + '''"\n
