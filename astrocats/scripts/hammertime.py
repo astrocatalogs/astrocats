@@ -21,7 +21,7 @@ from astrocats.scripts.events import get_event_text
 from astrocats.scripts.repos import repo_file_list, get_rep_folders
 
 parser = argparse.ArgumentParser(
-    description='Generate a catalog JSON file and plot HTML files from AstroCats data.'
+    description='Generate a sky location map AstroCats data.'
 )
 parser.add_argument(
     '--catalog',
