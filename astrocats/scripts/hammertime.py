@@ -77,8 +77,8 @@ with open('astrocats/' + moduledir + '/input/non-' + modulename + '-types.json',
 
 for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
                                     "Collecting positions")):
-    if fcnt > 5000:
-       break
+    # if fcnt > 5000:
+    #    break
 
     filetext = get_event_text(eventfile)
 
