@@ -1617,10 +1617,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         ]
         photofl = [
             np.log10(float(x['flux']))
-            if ('e_flux' not in x or
-                float(x['flux']) > radiosigma * float(x['e_flux'])) else
-                round_sig(np.log10(radiosigma * float(x['e_flux']),
-                sig=get_sig_digits(x['e_flux'])))
             for x in catalog[entry]['photometry'] if 'flux' in x
         ]
         photofllowererrs = [
@@ -2159,7 +2155,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
         edit = "true" if os.path.isfile(
-            'astrocats/supernovae/input/sne-internal/' + get_event_filename(
+            'astrocats/' + moduledir + '/input/' + modulename + '-internal/' + get_event_filename(
                 entry) + '.json') else "false"
         for key in columnkey:
             if key in catalog[entry] and key not in eventignorekey and len(
