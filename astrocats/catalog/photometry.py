@@ -220,7 +220,7 @@ BAND_CODES = [
     "u", "g", "r", "i", "z", "u'", "g'", "r'", "i'", "z'", "u_SDSS", "g_SDSS",
     "r_SDSS", "i_SDSS", "z_SDSS", "U", "B", "V", "R", "I", "G", "Y", "J", "H",
     "K", "C", "CR", "CV", "M2", "W1", "W2", "pg", "Mp", "w", "y", "Z", "F110W",
-    "F775W", "F850LP", "VM", "RM", "Ks"
+    "F775W", "F850LP", "VM", "RM", "Ks", "Ic", "Rc"
 ]
 
 BAND_ALIASES = OrderedDict([("u_SDSS", "u (SDSS)"), ("g_SDSS", "g (SDSS)"),
@@ -258,7 +258,9 @@ BAND_WAVELENGTHS = {
     "K": 2190.,
     "M2": 260.,
     "W1": 224.6,
-    "W2": 192.8
+    "W2": 192.8,
+    "Ic": 786.5,
+    "Rc": 647.
 }
 
 RADIO_CODES = ["5.9"]

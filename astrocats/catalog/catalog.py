@@ -41,7 +41,7 @@ class Catalog:
     OSC_NAME = 'The Open Supernova Catalog'
     OSC_URL = 'https://sne.space'
 
-    ADS_BIB_URL = ("http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?"
+    ADS_BIB_URL = ("http://cdsads.u-strasbg.fr/cgi-bin/nph-abs_connect?"
                    "db_key=ALL&version=1&bibcode=")
 
     TRAVIS_QUERY_LIMIT = 10
