@@ -33,6 +33,7 @@ class ENTRY(KeyCollection):
     DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
     DISTINCT_FROM = Key('distinctfrom', KEY_TYPES.STRING)
     EBV = Key('ebv', KEY_TYPES.NUMERIC, replace_better=True)
+    AV_CIRCUM = Key('avcircum', KEY_TYPES.NUMERIC, replace_better=True)
     ERRORS = Key('errors', no_source=True)
     HOST = Key('host', KEY_TYPES.STRING)
     HOST_DEC = Key('hostdec', KEY_TYPES.STRING)
