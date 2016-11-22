@@ -20,6 +20,7 @@ class SPECTRUM(KeyCollection):
     SNR = Key('snr', KEY_TYPES.NUMERIC, compare=False)
     TIME = Key('time', KEY_TYPES.NUMERIC, compare=False, listable=True)
     REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC, compare=False)
+    AIRMASS = Key('airmass', KEY_TYPES.NUMERIC, compare=False)
 
     FILENAME = Key('filename', KEY_TYPES.STRING)
     U_FLUXES = Key('u_fluxes', KEY_TYPES.STRING, compare=False)
