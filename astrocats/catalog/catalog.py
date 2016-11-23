@@ -777,6 +777,7 @@ class Catalog:
                   bibcode='',
                   arxivid='',
                   secondary=False,
+                  private=False,
                   acknowledgment=''):
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(

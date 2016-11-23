@@ -21,13 +21,17 @@ class ENTRY(KeyCollection):
     """General `CatDict` keys which should be relevant for all catalogs.
     """
     # Constants for use in key definitions
-    _DIST_PREF_KINDS = ['heliocentric', 'cmb', 'spectroscopic', 'photometric',
-                        'host', 'cluster']
+    _DIST_PREF_KINDS = [
+        'heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host',
+        'cluster'
+    ]
 
     # List of keys
     ALIAS = Key('alias', KEY_TYPES.STRING)
-    COMOVING_DIST = Key('comovingdist', KEY_TYPES.NUMERIC,
-                        kind_preference=_DIST_PREF_KINDS, replace_better=True)
+    COMOVING_DIST = Key('comovingdist',
+                        KEY_TYPES.NUMERIC,
+                        kind_preference=_DIST_PREF_KINDS,
+                        replace_better=True)
     DEC = Key('dec', KEY_TYPES.STRING)
     DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING, replace_better=True)
     DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
@@ -40,8 +44,10 @@ class ENTRY(KeyCollection):
     HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
     HOST_OFFSET_DIST = Key('hostoffsetdist', KEY_TYPES.NUMERIC)
     HOST_RA = Key('hostra', KEY_TYPES.STRING)
-    LUM_DIST = Key('lumdist', KEY_TYPES.NUMERIC,
-                   kind_preference=_DIST_PREF_KINDS, replace_better=True)
+    LUM_DIST = Key('lumdist',
+                   KEY_TYPES.NUMERIC,
+                   kind_preference=_DIST_PREF_KINDS,
+                   replace_better=True)
     MAX_ABS_MAG = Key('maxabsmag', KEY_TYPES.NUMERIC)
     MAX_APP_MAG = Key('maxappmag', KEY_TYPES.NUMERIC)
     MAX_BAND = Key('maxband', KEY_TYPES.STRING)
@@ -49,13 +55,17 @@ class ENTRY(KeyCollection):
     NAME = Key('name', KEY_TYPES.STRING, no_source=True)
     PHOTOMETRY = Key('photometry')
     RA = Key('ra', KEY_TYPES.STRING)
-    REDSHIFT = Key('redshift', KEY_TYPES.NUMERIC,
-                   kind_preference=_DIST_PREF_KINDS, replace_better=True)
+    REDSHIFT = Key('redshift',
+                   KEY_TYPES.NUMERIC,
+                   kind_preference=_DIST_PREF_KINDS,
+                   replace_better=True)
     SCHEMA = Key('schema', no_source=True)
     SOURCES = Key('sources', no_source=True)
     SPECTRA = Key('spectra')
-    VELOCITY = Key('velocity', KEY_TYPES.NUMERIC,
-                   kind_preference=_DIST_PREF_KINDS, replace_better=True)
+    VELOCITY = Key('velocity',
+                   KEY_TYPES.NUMERIC,
+                   kind_preference=_DIST_PREF_KINDS,
+                   replace_better=True)
 
 
 class Entry(OrderedDict):
@@ -146,8 +156,7 @@ class Entry(OrderedDict):
                     "Make sure that repo names are correctly configured "
                     "in the `input/repos.json` file, and either manually or "
                     "automatically (using `astrocats CATALOG git-clone`) "
-                    "clone the appropriate data repositories."
-                )
+                    "clone the appropriate data repositories.")
                 self.catalog.log.error(err_str)
                 raise RuntimeError(err_str)
 
@@ -213,8 +222,8 @@ class Entry(OrderedDict):
     def _load_data_from_json(self, fhand, clean=False, merge=True):
         """FIX: check for overwrite??
         """
-        self._log.debug("_load_data_from_json(): {}\n\t{}".format(
-            self.name(), fhand))
+        self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
+                                                                  fhand))
         # Store the filename this was loaded from
         self.filename = fhand
         with open(fhand, 'r') as jfil:
@@ -293,16 +302,15 @@ class Entry(OrderedDict):
             # data['sources'] = newsources
             # self.setdefault(src_key, []).extend(newsources)
 
-        # Handle `photometry`
-        # -------------------
+            # Handle `photometry`
+            # -------------------
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(photoms), photo_key))
             for photo in photoms:
-                self._add_cat_dict(Photometry,
-                                   self._KEYS.PHOTOMETRY, **photo)
+                self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **photo)
 
         # Handle `spectra`
         # ---------------
@@ -314,8 +322,7 @@ class Entry(OrderedDict):
             self._log.debug("Found {} '{}' entries".format(
                 len(spectra), spec_key))
             for spec in spectra:
-                self._add_cat_dict(Spectrum, self._KEYS.SPECTRA,
-                                   **spec)
+                self._add_cat_dict(Spectrum, self._KEYS.SPECTRA, **spec)
 
         # Handle `error`
         # --------------
@@ -341,8 +348,8 @@ class Entry(OrderedDict):
                     vals = [vals]
                 self._log.debug("{}: {}".format(key, vals))
                 for vv in vals:
-                    self._add_cat_dict(Quantity, key, check_for_dupes=merge,
-                                       **vv)
+                    self._add_cat_dict(
+                        Quantity, key, check_for_dupes=merge, **vv)
 
                 if merge and self.dupe_of:
                     self.merge_dupes()
@@ -355,14 +362,16 @@ class Entry(OrderedDict):
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
-            raise CatDictError("{}: `source` must be provided!".format(
-                self[self._KEYS.NAME]), warn=True)
+            raise CatDictError(
+                "{}: `source` must be provided!".format(self[self._KEYS.NAME]),
+                warn=True)
         # Check that source is a list of integers
         for x in source.split(','):
             if not is_integer(x):
-                raise CatDictError("{}: `source` is comma-delimited list of "
-                                   " integers!".format(self[self._KEYS.NAME]),
-                                   warn=True)
+                raise CatDictError(
+                    "{}: `source` is comma-delimited list of "
+                    " integers!".format(self[self._KEYS.NAME]),
+                    warn=True)
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
@@ -377,12 +386,15 @@ class Entry(OrderedDict):
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
         except CatDictError as err:
             if err.warn:
-                self._log.info("'{}' Not adding '{}': '{}'".format(
-                    self[self._KEYS.NAME], key_in_self, str(err)))
+                self._log.info("'{}' Not adding '{}': '{}'".format(self[
+                    self._KEYS.NAME], key_in_self, str(err)))
             return None
         return new_entry
 
-    def _add_cat_dict(self, cat_dict_class, key_in_self, check_for_dupes=True,
+    def _add_cat_dict(self,
+                      cat_dict_class,
+                      key_in_self,
+                      check_for_dupes=True,
                       **kwargs):
         """Add a CatDict to this Entry if initialization succeeds and it
         doesn't already exist within the Entry.
@@ -390,12 +402,12 @@ class Entry(OrderedDict):
         # Make sure that a source is given, and is valid (nor erroneous)
         if cat_dict_class != Error:
             try:
-                source = self._check_cat_dict_source(
-                    cat_dict_class, key_in_self, **kwargs)
+                source = self._check_cat_dict_source(cat_dict_class,
+                                                     key_in_self, **kwargs)
             except CatDictError as err:
                 if err.warn:
-                    self._log.info("'{}' Not adding '{}': '{}'".format(
-                        self[self._KEYS.NAME], key_in_self, str(err)))
+                    self._log.info("'{}' Not adding '{}': '{}'".format(self[
+                        self._KEYS.NAME], key_in_self, str(err)))
                 return False
 
             if source is None:
@@ -427,13 +439,13 @@ class Entry(OrderedDict):
                 if (possible_dupe != self[self._KEYS.NAME] and
                         possible_dupe in self.catalog.entries):
                     self.dupe_of.append(possible_dupe)
-            self.catalog.aliases[new_entry[
-                QUANTITY.VALUE]] = self[self._KEYS.NAME]
+            self.catalog.aliases[new_entry[QUANTITY.VALUE]] = self[
+                self._KEYS.NAME]
 
         self.setdefault(key_in_self, []).append(new_entry)
 
-        if (key_in_self == self._KEYS.ALIAS and
-                check_for_dupes and self.dupe_of):
+        if (key_in_self == self._KEYS.ALIAS and check_for_dupes and
+                self.dupe_of):
             self.merge_dupes()
 
         return True
@@ -446,7 +458,11 @@ class Entry(OrderedDict):
         return fname
 
     @classmethod
-    def init_from_file(cls, catalog, name=None, path=None, clean=False,
+    def init_from_file(cls,
+                       catalog,
+                       name=None,
+                       path=None,
+                       clean=False,
                        merge=True):
         """Construct a new `Entry` instance from an input file.
 
@@ -540,21 +556,24 @@ class Entry(OrderedDict):
             if dupe in self.catalog.entries:
                 if self.catalog.entries[dupe]._stub:
                     # merge = False to avoid infinite recursion
-                    self.catalog.load_entry_from_name(dupe, delete=True,
-                                                      merge=False)
-                self.catalog.copy_entry_to_entry(
-                    self.catalog.entries[dupe], self)
+                    self.catalog.load_entry_from_name(
+                        dupe, delete=True, merge=False)
+                self.catalog.copy_entry_to_entry(self.catalog.entries[dupe],
+                                                 self)
                 del self.catalog.entries[dupe]
         self.dupe_of = []
 
-    def add_quantity(self, quantity, value, source, check_for_dupes=True,
+    def add_quantity(self,
+                     quantity,
+                     value,
+                     source,
+                     check_for_dupes=True,
                      **kwargs):
         """Add an `Quantity` instance to this entry.
         """
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-        cat_dict = self._add_cat_dict(Quantity, quantity,
-                                      check_for_dupes=check_for_dupes,
-                                      **kwargs)
+        cat_dict = self._add_cat_dict(
+            Quantity, quantity, check_for_dupes=check_for_dupes, **kwargs)
         if isinstance(cat_dict, CatDict):
             self._append_additional_tags(quantity, source, cat_dict)
             return False
@@ -570,7 +589,8 @@ class Entry(OrderedDict):
         return self.add_source(
             bibcode=self.catalog.OSC_BIBCODE,
             name=self.catalog.OSC_NAME,
-            url=self.catalog.OSC_URL, secondary=True)
+            url=self.catalog.OSC_URL,
+            secondary=True)
 
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry.
@@ -605,8 +625,7 @@ class Entry(OrderedDict):
             return None
 
         # Try to create a new instance of `Spectrum`
-        new_spectrum = self._init_cat_dict(
-            Spectrum, spec_key, **kwargs)
+        new_spectrum = self._init_cat_dict(Spectrum, spec_key, **kwargs)
         if new_spectrum is None:
             return None
 
@@ -632,10 +651,10 @@ class Entry(OrderedDict):
         if self._KEYS.SCHEMA not in self:
             self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
         # Make sure there is a name key in dict
-        if (self._KEYS.NAME not in self or
-                len(self[self._KEYS.NAME]) == 0):
+        if (self._KEYS.NAME not in self or len(self[self._KEYS.NAME]) == 0):
             raise ValueError("Entry name is empty:\n\t{}".format(
-                json.dumps(self, indent=2)))
+                json.dumps(
+                    self, indent=2)))
         return
 
     def clean_internal(self, data=None):
@@ -699,9 +718,8 @@ class Entry(OrderedDict):
         for source in self.get(self._KEYS.SOURCES, []):
             if source[self._KEYS.ALIAS] == alias:
                 return source
-        raise ValueError(
-            "Source '{}': alias '{}' not found!".format(
-                self[self._KEYS.NAME], alias))
+        raise ValueError("Source '{}': alias '{}' not found!".format(self[
+            self._KEYS.NAME], alias))
 
     def get_stub(self):
         """Get a new `Entry` which contains the 'stub' of this one.
@@ -730,16 +748,20 @@ class Entry(OrderedDict):
             my_errors = self[self._KEYS.ERRORS]
             for alias in sources.split(','):
                 source = self.get_source_by_alias(alias)
-                bib_err_values = [err[ERROR.VALUE] for err in my_errors
-                                  if err[ERROR.KIND] == SOURCE.BIBCODE and
-                                  err[ERROR.EXTRA] == field]
-                if (SOURCE.BIBCODE in source and source[SOURCE.BIBCODE] in
-                        bib_err_values):
+                bib_err_values = [
+                    err[ERROR.VALUE] for err in my_errors
+                    if err[ERROR.KIND] == SOURCE.BIBCODE and err[ERROR.EXTRA]
+                    == field
+                ]
+                if (SOURCE.BIBCODE in source and
+                        source[SOURCE.BIBCODE] in bib_err_values):
                     return True
 
-                name_err_values = [err[ERROR.VALUE] for err in my_errors
-                                   if err[ERROR.KIND] == SOURCE.NAME and
-                                   err[ERROR.EXTRA] == field]
+                name_err_values = [
+                    err[ERROR.VALUE] for err in my_errors
+                    if err[ERROR.KIND] == SOURCE.NAME and err[ERROR.EXTRA] ==
+                    field
+                ]
                 if (SOURCE.NAME in source and
                         source[SOURCE.NAME] in name_err_values):
                     return True
@@ -787,23 +809,31 @@ class Entry(OrderedDict):
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
         self[self._KEYS.ALIAS] = list(
-            sorted(self[self._KEYS.ALIAS],
-                   key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
+            sorted(
+                self[self._KEYS.ALIAS],
+                key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
 
         if self._KEYS.SOURCES in self:
             # Remove orphan sources
-            source_aliases = [x[SOURCE.ALIAS] for
-                              x in self[self._KEYS.SOURCES]]
-            source_list = []
+            source_aliases = [
+                x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]
+            ]
+            # Sources with the `PRIVATE` attribute are always retained
+            source_list = [
+                x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]
+                if SOURCE.PRIVATE in x
+            ]
             for key in self:
                 # if self._KEYS.get_key_by_name(key).no_source:
-                if (key in [self._KEYS.NAME, self._KEYS.SCHEMA,
-                            self._KEYS.SOURCES, self._KEYS.ERRORS]):
+                if (key in [
+                        self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
+                        self._KEYS.ERRORS
+                ]):
                     continue
                 for item in self[key]:
                     source_list += item[item._KEYS.SOURCE].split(',')
-            new_src_list = sorted(list(set(source_aliases)
-                                       .intersection(source_list)))
+            new_src_list = sorted(
+                list(set(source_aliases).intersection(source_list)))
             new_sources = []
             for source in self[self._KEYS.SOURCES]:
                 if source[SOURCE.ALIAS] in new_src_list:
@@ -835,13 +865,17 @@ class Entry(OrderedDict):
             self.sanitize()
 
         # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[self._KEYS.NAME]: self._ordered(self)},
-                                indent='\t', separators=(',', ':'),
-                                ensure_ascii=False)
+        jsonstring = json.dumps(
+            {
+                self[self._KEYS.NAME]: self._ordered(self)
+            },
+            indent='\t',
+            separators=(',', ':'),
+            ensure_ascii=False)
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir,
-                                                   self[self._KEYS.NAME]))
+                               "not exist.".format(outdir, self[
+                                   self._KEYS.NAME]))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
