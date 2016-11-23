@@ -2282,23 +2282,36 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 if not first_secondary and source.get('secondary', False):
                     first_secondary = True
                     newhtml += r'<tr><th colspan="2" class="event-cell">Secondary Sources</th></tr>\n'
+
+                sourcelines = []
+                if ('bibcode' not in source or sourcename !=
+                        source['bibcode']):
+                    sourcelines.append(
+                        ((r'<a href="' + refurl + '">')
+                          if refurl else '') + sourcename.encode(
+                              'ascii', 'xmlcharrefreplace').decode("utf-8") + (
+                                  (r'</a>\n') if refurl else '')
+                        )
+                if 'reference' in source:
+                    sourcelines.append(source['reference'])
+                if 'bibcode' in source:
+                    sourcelines.append(
+                        r'\n[' + (
+                            ('<a href="' + biburl + '">')
+                            if 'reference' in source else '') + source['bibcode'] +
+                          (r'</a>' if 'reference' in source else '') + ']'
+                        )
+                if source.get('private', False):
+                    sourcelines.append(
+                        r'<span class="private-source">Data from source not yet public</span>\n'
+                        )
+
                 newhtml = (
                     newhtml + r'<tr><td class="event-cell" id="source' +
                     source['alias'] + '">' + source['alias'] +
-                    r'</td><td width=250px class="event-cell">' + (
-                        (((r'<a href="' + refurl + '">')
-                          if refurl else '') + sourcename.encode(
-                              'ascii', 'xmlcharrefreplace').decode("utf-8") + (
-                                  (r'</a>\n') if refurl else '') + r'<br>')
-                        if 'bibcode' not in source or sourcename !=
-                        source['bibcode'] else '') + (
-                            (source['reference'] + r'<br>')
-                            if 'reference' in source else '') +
-                    ((r'\n[' + (
-                        ('<a href="' + biburl + '">')
-                        if 'reference' in source else '') + source['bibcode'] +
-                      (r'</a>' if 'reference' in source else '') + ']')
-                     if 'bibcode' in source else '') + r'</td></tr>\n')
+                    r'</td><td width=250px class="event-cell">'
+                    + r'<br>\n'.join(sourcelines)
+                    + r'</td></tr>\n')
             newhtml = newhtml + r'</table><em>Sources are presented in order of importation, not in order of importance.</em></div>\n'
 
             if hasimage:
