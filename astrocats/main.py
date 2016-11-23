@@ -39,8 +39,8 @@ def main():
 
     git_vers = get_git()
     title_str = "Astrocats, version: {}, SHA: {}".format(__version__, git_vers)
-    log.warning("\n\n{}\n{}\n{}\n".format(
-        title_str, '=' * len(title_str), beg_time.ctime()))
+    log.warning("\n\n{}\n{}\n{}\n".format(title_str, '=' * len(title_str),
+                                          beg_time.ctime()))
 
     # Load the user settings from the home directory
     args = load_user_config(args, log)
@@ -61,8 +61,8 @@ def main():
     mod.main.main(args, sub_clargs, log)
 
     end_time = datetime.now()
-    log.warning("\nAll complete at {}, After {}".format(
-        end_time, end_time - beg_time))
+    log.warning("\nAll complete at {}, After {}".format(end_time, end_time -
+                                                        beg_time))
     return
 
 
@@ -84,8 +84,7 @@ def setup_user_config(log):
     # Create path to configuration file as needed
     config_path_dir = os.path.split(_CONFIG_PATH)[0]
     if not os.path.exists(config_path_dir):
-        log.debug("Creating config directory '{}'".format(
-            config_path_dir))
+        log.debug("Creating config directory '{}'".format(config_path_dir))
         os.makedirs(config_path_dir)
 
     if not os.path.isdir(config_path_dir):
@@ -95,8 +94,8 @@ def setup_user_config(log):
 
     # Get this containing directory and use that as default data path
     def_base_path = os.path.abspath(os.path.dirname(__file__))
-    log.warning("Setting '{}' to default path: '{}'".format(
-        _BASE_PATH_KEY, def_base_path))
+    log.warning("Setting '{}' to default path: '{}'".format(_BASE_PATH_KEY,
+                                                            def_base_path))
     config = {_BASE_PATH_KEY: def_base_path}
 
     # Write settings to configuration file
@@ -133,8 +132,8 @@ def load_user_config(args, log):
 
     config = json.load(open(_CONFIG_PATH, 'r'))
     setattr(args, _BASE_PATH_KEY, config[_BASE_PATH_KEY])
-    log.debug("Loaded configuration: {}: {}".format(
-        _BASE_PATH_KEY, config[_BASE_PATH_KEY]))
+    log.debug("Loaded configuration: {}: {}".format(_BASE_PATH_KEY, config[
+        _BASE_PATH_KEY]))
     return args
 
 
@@ -163,44 +162,80 @@ def load_command_line_args(clargs=None):
     parser.add_argument('command', nargs='?', default=None)
 
     parser.add_argument(
-        '--version', action='version', version='AstroCats v{}, SHA: {}'.format(
-            __version__, git_vers))
+        '--version',
+        action='version',
+        version='AstroCats v{}, SHA: {}'.format(__version__, git_vers))
     parser.add_argument(
-        '--verbose', '-v', dest='verbose', default=False, action='store_true',
+        '--verbose',
+        '-v',
+        dest='verbose',
+        default=False,
+        action='store_true',
         help='Print more messages to the screen.')
     parser.add_argument(
-        '--debug', '-d', dest='debug', default=False, action='store_true',
+        '--debug',
+        '-d',
+        dest='debug',
+        default=False,
+        action='store_true',
         help='Print excessive messages to the screen.')
     parser.add_argument(
-        '--travis', '-t',  dest='travis',  default=False, action='store_true',
+        '--include-private',
+        dest='private',
+        default=False,
+        action='store_true',
+        help='Include private data in import.')
+    parser.add_argument(
+        '--travis',
+        '-t',
+        dest='travis',
+        default=False,
+        action='store_true',
         help='Run import script in test mode for Travis.')
     parser.add_argument(
-        '--clone-depth', dest='clone_depth',  default=0, type=int,
+        '--clone-depth',
+        dest='clone_depth',
+        default=0,
+        type=int,
         help=('When cloning git repos, only clone out to this depth '
               '(default: 0 = all levels).'))
     parser.add_argument(
-        '--log',  dest='log_filename',  default=None,
+        '--log',
+        dest='log_filename',
+        default=None,
         help='Filename to which to store logging information.')
 
     # If output files should be written or not
     # ----------------------------------------
     write_group = parser.add_mutually_exclusive_group()
     write_group.add_argument(
-        '--write', action='store_true', dest='write_entries', default=True,
+        '--write',
+        action='store_true',
+        dest='write_entries',
+        default=True,
         help='Write entries to files [default].')
     write_group.add_argument(
-        '--no-write', action='store_false', dest='write_entries', default=True,
+        '--no-write',
+        action='store_false',
+        dest='write_entries',
+        default=True,
         help='do not write entries to file.')
 
     # If previously cleared output files should be deleted or not
     # -----------------------------------------------------------
     delete_group = parser.add_mutually_exclusive_group()
     delete_group.add_argument(
-        '--predelete', action='store_true', dest='delete_old', default=True,
+        '--predelete',
+        action='store_true',
+        dest='delete_old',
+        default=True,
         help='Delete all old event files to begin [default].')
     delete_group.add_argument(
-        '--no-predelete', action='store_false', dest='delete_old',
-        default=True, help='Do not delete all old event files to start.')
+        '--no-predelete',
+        action='store_false',
+        dest='delete_old',
+        default=True,
+        help='Do not delete all old event files to start.')
 
     args, sub_clargs = parser.parse_known_args(args=clargs)
     # Print the help information if no command is given
@@ -251,6 +286,7 @@ def get_git():
     import subprocess
     git_vers = subprocess.getoutput(["git describe --always"]).strip()
     return git_vers
+
 
 if __name__ == "__main__":
     main()

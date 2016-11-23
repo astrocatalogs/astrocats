@@ -376,6 +376,10 @@ class Entry(OrderedDict):
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
             return None
+        # If this source/data is private, skip it
+        if self.is_private(key_in_self, source):
+            self._log.info("This source is private, skipping")
+            return None
         return source
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
@@ -765,6 +769,14 @@ class Entry(OrderedDict):
                 if (SOURCE.NAME in source and
                         source[SOURCE.NAME] in name_err_values):
                     return True
+
+        return False
+
+    def is_private(self, field, sources):
+        for alias in sources.split(','):
+            source = self.get_source_by_alias(alias)
+            if SOURCE.PRIVATE in source:
+                return True
 
         return False
 
