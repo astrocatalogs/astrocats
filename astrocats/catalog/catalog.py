@@ -110,10 +110,10 @@ class Catalog:
 
             return files
 
-        def get_all_repo_folders(self, boneyard=True):
+        def get_all_repo_folders(self, boneyard=True, private=False):
             """Get the full paths of all data repositories.
             """
-            all_repos = self.get_repo_input_folders()
+            all_repos = self.get_repo_input_folders(private=private)
             all_repos.extend(self.get_repo_output_folders(bones=boneyard))
             return all_repos
 
@@ -126,13 +126,14 @@ class Catalog:
             bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
             return bone_path
 
-        def get_repo_input_folders(self):
+        def get_repo_input_folders(self, private=False):
             """Get the full paths of the input data repositories.
             """
             repo_folders = []
             repo_folders += self.repos_dict.get('external', [])
-            repo_folders += self.repos_dict.get('private', [])
             repo_folders += self.repos_dict.get('internal', [])
+            if private:
+                repo_folders += self.repos_dict.get('private', [])
             repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [
                 os.path.join(self.PATH_INPUT, rf) for rf in repo_folders
@@ -153,9 +154,9 @@ class Catalog:
             """Get the full paths of the output data repositories.
             """
             repo_folders = []
-            repo_folders += self.repos_dict['output']
+            repo_folders += self.repos_dict.get('output', [])
             if bones:
-                repo_folders += self.repos_dict['boneyard']
+                repo_folders += self.repos_dict.get('boneyard', [])
             repo_folders = list(
                 sorted(
                     list(set(repo_folders)),
@@ -425,7 +426,8 @@ class Catalog:
         there are no files to add... which we dont want to raise an error.
         FIX: improve the error checking on this.
         """
-        all_repos = self.PATHS.get_all_repo_folders()
+        # Do not commit/push private repos
+        all_repos = self.PATHS.get_all_repo_folders(private=False)
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
