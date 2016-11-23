@@ -118,7 +118,7 @@ class Catalog:
             return all_repos
 
         def get_repo_boneyard(self):
-            bone_path = self.repos_dict['boneyard']
+            bone_path = self.repos_dict.get('boneyard', [])
             try:
                 bone_path = bone_path[0]
             except TypeError:
@@ -130,8 +130,9 @@ class Catalog:
             """Get the full paths of the input data repositories.
             """
             repo_folders = []
-            repo_folders += self.repos_dict['external']
-            repo_folders += self.repos_dict['internal']
+            repo_folders += self.repos_dict.get('external', [])
+            repo_folders += self.repos_dict.get('private', [])
+            repo_folders += self.repos_dict.get('internal', [])
             repo_folders = list(sorted(set(repo_folders)))
             repo_folders = [
                 os.path.join(self.PATH_INPUT, rf) for rf in repo_folders
