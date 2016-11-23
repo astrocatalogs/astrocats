@@ -33,6 +33,7 @@ class SOURCE(KeyCollection):
     ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
     # Booleans
     SECONDARY = Key('secondary', KEY_TYPES.BOOL, compare=False)
+    PRIVATE = Key('private', KEY_TYPES.BOOL, compare=False)
 
 
 class Source(CatDict):
