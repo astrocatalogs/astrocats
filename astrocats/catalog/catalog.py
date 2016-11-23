@@ -787,6 +787,7 @@ class Catalog:
             reference=reference,
             url=url,
             secondary=secondary,
+            private=private,
             acknowledgment=acknowledgment)
         self.entries[newname].add_quantity(ENTRY.ALIAS, name, source)
         return newname, source
