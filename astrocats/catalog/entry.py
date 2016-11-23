@@ -377,7 +377,8 @@ class Entry(OrderedDict):
             self._log.info("This source is erroneous, skipping")
             return None
         # If this source/data is private, skip it
-        if self.is_private(key_in_self, source):
+        if not self.catalog.args.private and self.is_private(key_in_self,
+                                                             source):
             self._log.info("This source is private, skipping")
             return None
         return source
