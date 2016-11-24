@@ -377,7 +377,8 @@ class Entry(OrderedDict):
             self._log.info("This source is erroneous, skipping")
             return None
         # If this source/data is private, skip it
-        if not self.catalog.args.private and self.is_private(source):
+        if not self.catalog.args.private and self.is_private(key_in_self,
+                                                             source):
             self._log.info("This source is private, skipping")
             return None
         return source
@@ -772,13 +773,14 @@ class Entry(OrderedDict):
 
         return False
 
-    def is_private(self, sources):
-        for alias in sources.split(','):
-            source = self.get_source_by_alias(alias)
-            if SOURCE.PRIVATE in source:
-                return True
-
-        return False
+    def is_private(self, key, sources):
+        # Aliases are always public
+        if key == ENTRY.ALIAS:
+            return False
+        return all([
+            SOURCE.PRIVATE in self.get_source_by_alias(x)
+            for x in sources.split(',')
+        ])
 
     def name(self):
         """Returns own name.
