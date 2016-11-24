@@ -233,6 +233,10 @@ class Catalog:
             self.log.warning("Deleting all old entry files.")
             self.delete_old_entry_files()
 
+        # In update mode, load all entry stubs.
+        if self.args.update:
+            self.load_stubs()
+
         if self.args.travis:
             self.log.warning("Running in `travis` mode.")
 
@@ -703,8 +707,8 @@ class Catalog:
                 for name, entry in self.entries.items():
                     aliases = entry.get_aliases(includename=False)
                     if alias in aliases:
-                        if ((ENTRY.DISTINCT_FROM not in entry) or
-                                (alias not in entry[ENTRY.DISTINCT_FROM])):
+                        if (ENTRY.DISTINCT_FROM not in entry or
+                                alias not in entry[ENTRY.DISTINCT_FROM]):
                             return name
 
         return None
@@ -909,8 +913,7 @@ class Catalog:
                 fname = uncompress_gz(fi)
             name = os.path.basename(os.path.splitext(fname)[0]).replace(
                 '.json', '')
-            new_entry = self.proto.init_from_file(
-                self, path=fname, delete=False)
+            new_entry = self.proto.init_from_file(self, path=fname)
             # Make sure a non-stub entry doesnt already exist with this name
             if name in self.entries and not self.entries[name]._stub:
                 err_str = (
