@@ -818,6 +818,9 @@ class Entry(OrderedDict):
             # Assign the first source to alias, if not available assign us.
             if self._KEYS.SOURCES in self:
                 self.add_quantity(self._KEYS.ALIAS, name, '1')
+                if self._KEYS.ALIAS not in self:
+                    source = self.add_self_source()
+                    self.add_quantity(self._KEYS.ALIAS, name, source)
             else:
                 source = self.add_self_source()
                 self.add_quantity(self._KEYS.ALIAS, name, source)
