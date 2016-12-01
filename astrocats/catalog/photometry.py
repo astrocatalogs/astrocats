@@ -82,7 +82,10 @@ class PHOTOMETRY(KeyCollection):
 
 
 class Photometry(CatDict):
-    """
+    """Container for a single photometric point with associated metadata.
+
+    `Source` citation required.
+    Photometry can be given as [magnitude, flux, flux-density, counts, luminosity].
     """
 
     _ALLOW_UNKNOWN_KEYS = True
