@@ -11,8 +11,6 @@ from astrocats.main import setup_user_config
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
-setup_user_config(logger.get_logger())
-
 dir_path = os.path.dirname(os.path.realpath(__file__))
 exec(open(os.path.join(dir_path, 'astrocats', '__init__.py')).read())
 
@@ -46,3 +44,5 @@ setup(
         "Programming Language :: Python :: 3.5"
     ],
     zip_safe=True)
+
+setup_user_config(logger.get_logger())

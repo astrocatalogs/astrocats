@@ -37,6 +37,13 @@ def main():
         setup_user_config(log)
         return
 
+    # Make sure configuration file exists, or that's what we're doing
+    # (with the 'setup' subcommand)
+    if not os.path.isfile(_CONFIG_PATH):
+        raise RuntimeError("'{}' does not exist.  "
+                           "Run `astrocats setup` to configure."
+                           "".format(_CONFIG_PATH))
+
     git_vers = get_git()
     title_str = "Astrocats, version: {}, SHA: {}".format(__version__, git_vers)
     log.warning("\n\n{}\n{}\n{}\n".format(title_str, '=' * len(title_str),
