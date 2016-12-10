@@ -5,7 +5,7 @@ import os
 
 from setuptools import find_packages, setup
 
-from astrocats.catalog.utils import logger
+import logging
 from astrocats.main import setup_user_config
 
 with open('requirements.txt') as f:
@@ -45,4 +45,4 @@ setup(
     ],
     zip_safe=True)
 
-setup_user_config(logger.get_logger())
+setup_user_config(logging.getLogger())
