@@ -4,7 +4,7 @@
 import os
 import sys
 
-__version__ = '0.2.5'
+__version__ = '0.2.6'
 __author__ = 'James Guillochon'
 __license__ = 'MIT'
 
