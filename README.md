@@ -8,7 +8,7 @@
 The Astrocats package enables astronomers to construct their own curated catalogs of astronomical data with the intention of producing shareable catalogs of that data in human-readable formats. Astrocats is used by several existing open astronomy catalogs, including:
 
 * [The Open Supernova Catalog](https://sne.space) [[GitHub repo](https://github.com/astrocatalogs/supernovae)]
-* [The Open TDE Catalog](https://tde.space) [[GitHub repo](https://github.com/astrocatalogs/tde)]
+* [The Open TDE Catalog](https://tde.space) [[GitHub repo](https://github.com/astrocatalogs/tidaldisruptions)]
 * [The Open Nova Catalog](https://opennova.space) [[GitHub repo](https://github.com/astrocatalogs/novae)]
 * [The Open Black Hole Catalog](https://holes.space) [[GitHub repo](https://github.com/astrocatalogs/blackholes)]
 
