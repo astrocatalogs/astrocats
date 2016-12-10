@@ -2,55 +2,41 @@
 """
 
 import os
-import re
-import uuid
 
-from pip.req import parse_requirements
 from setuptools import find_packages, setup
 
-raise(SystemExit('Setup not setup yet.'))
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
-VERSIONFILE = "astrocats/__init__.py"
-ver_file = open(VERSIONFILE, "rt").read()
-VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
-mo = re.search(VSRE, ver_file, re.M)
-
-if mo:
-    version = mo.group(1)
-else:
-    raise RuntimeError("Unable to find version string in %s." % (VERSIONFILE))
-
-# Utility function to read the README file.
-# Used for the long_description.  It's nice, because now 1) we have a top level
-# README file and 2) it's easier to type in the README file than to put a raw
-# string in below ...
+dir_path = os.path.dirname(os.path.realpath(__file__))
+exec(open(os.path.join(dir_path, 'astrocats', '__init__.py')).read())
 
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-install_reqs = parse_requirements('requirements.txt', session=uuid.uuid1())
-reqs = [str(req.req) for req in install_reqs]
 
 setup(
     name="astrocats",
-    version=version,
-    author="James Guillochon",
-    author_email="guillochon@gmail.com",
+    packages=find_packages(),
+    include_package_data=True,
+    version=__version__,  # noqa
     description=("Package for downloading, analyzing, and constructing open "
                  "astronomy catalogs."),
-    license="MIT",
-    keywords="astronomy",
+    license=__license__,  # noqa
+    author=__author__,  # noqa
+    author_email="guillochon@gmail.com",
+    install_requires=required,
     url="https://github.com/astrocatalogs/astrocats",
-    packages=find_packages(),
-    # scripts=['astrocats/main.py'],
-    entry_points={'console_scripts': 'astrocats = astrocats.main:main'},
+    download_url=(
+        'https://github.com/astrocatalogs/astrocats/tarball/' +
+        __version__  # noqa
+    ),
+    keywords="astronomy",
     long_description=read('README.md'),
-    install_requires=reqs,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.5"
     ],
-    zip_safe=True
-)
+    zip_safe=True)
