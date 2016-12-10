@@ -18,7 +18,8 @@ def read(fname):
 
 setup(
     name="astrocats",
-    packages=find_packages(),
+    packages=find_packages(exclude=('supernovae', 'tidaldisruptions',
+                                    'novae')),
     include_package_data=True,
     version=__version__,  # noqa
     description=("Package for downloading, analyzing, and constructing open "
