@@ -1,12 +1,10 @@
 """WARNING : THIS SCRIPT IS NOT CURRENTLY OPERATIONAL.
 """
 
+import logging
 import os
 
 from setuptools import find_packages, setup
-
-import logging
-from astrocats.main import setup_user_config
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
@@ -17,6 +15,12 @@ exec(open(os.path.join(dir_path, 'astrocats', '__init__.py')).read())
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+
+def setup_uc():
+    from astrocats.main import setup_user_config
+
+    setup_user_config(logging.getLogger())
 
 
 setup(
@@ -45,4 +49,4 @@ setup(
     ],
     zip_safe=True)
 
-setup_user_config(logging.getLogger())
+setup_uc()
