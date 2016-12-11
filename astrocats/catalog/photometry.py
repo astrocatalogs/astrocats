@@ -51,6 +51,7 @@ class PHOTOMETRY(KeyCollection):
     E_UPPER_TIME = Key('e_upper_time', KEY_TYPES.NUMERIC)
 
     MODEL = Key('model', KEY_TYPES.STRING, compare=False)
+    REALIZATION = Key('realization', KEY_TYPES.STRING)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)

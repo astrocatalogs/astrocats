@@ -137,6 +137,7 @@ class KEY_TYPES(KeyCollection):
     STRING = 'string'
     BOOL = 'bool'
     DICT = 'dict'
+    LIST = 'list'
     ANY = None
 
 
