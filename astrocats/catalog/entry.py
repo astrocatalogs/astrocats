@@ -10,7 +10,7 @@ from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.model import MODEL, Model
-from astrocats.catalog.photometry import Photometry
+from astrocats.catalog.photometry import PHOTOMETRY, Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
@@ -893,6 +893,26 @@ class Entry(OrderedDict):
             sorted(
                 self[self._KEYS.ALIAS],
                 key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
+
+        if self._KEYS.PHOTOMETRY in self:
+            self[self._KEYS.PHOTOMETRY].sort(
+                key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
+                                isinstance(x[PHOTOMETRY.TIME], str)
+                                else min([float(y) for y in
+                                          x[PHOTOMETRY.TIME]])) if
+                               PHOTOMETRY.TIME in x else 0.0,
+                               x[PHOTOMETRY.BAND] if PHOTOMETRY.BAND in
+                               x else '',
+                               float(x[PHOTOMETRY.MAGNITUDE]) if
+                               PHOTOMETRY.MAGNITUDE in x else ''))
+
+        if (self._KEYS.SPECTRA in self and list(
+                filter(None, [
+                    SPECTRUM.TIME in x for x in self[self._KEYS.SPECTRA]
+                ]))):
+            self[self._KEYS.SPECTRA].sort(
+                key=lambda x: (float(x[SPECTRUM.TIME]) if SPECTRUM.TIME in x else 0.0, x[SPECTRUM.FILENAME] if SPECTRUM.FILENAME in x else '')
+            )
 
         if self._KEYS.SOURCES in self:
             # Remove orphan sources
