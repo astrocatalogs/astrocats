@@ -131,8 +131,7 @@ class Entry(OrderedDict):
             self._log = logging.getLogger()
             self.catalog = type('DummyCatalog', (object, ), {
                 "log": self._log,
-                "clean_entry_name": lambda x: x,
-                "aliases": []
+                "clean_entry_name": lambda x: x
             })
         self[self._KEYS.NAME] = name
         return
@@ -462,7 +461,7 @@ class Entry(OrderedDict):
         if key_in_self == self._KEYS.ALIAS:
             # Check if this adding this alias makes us a dupe, if so mark
             # ourselves as a dupe.
-            if (check_for_dupes and
+            if (check_for_dupes and 'aliases' in dir(self.catalog) and
                     new_entry[QUANTITY.VALUE] in self.catalog.aliases):
                 possible_dupe = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
                 # print(possible_dupe)
@@ -522,8 +521,7 @@ class Entry(OrderedDict):
         if not catalog:
             catalog = type('DummyCatalog', (object, ), {
                 "log": logging.getLogger(),
-                "clean_entry_name": lambda x: x,
-                "aliases": []
+                "clean_entry_name": lambda x: x
             })
 
         catalog.log.debug("init_from_file()")
