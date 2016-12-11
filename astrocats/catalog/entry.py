@@ -129,7 +129,10 @@ class Entry(OrderedDict):
             self._log = catalog.log
         else:
             self._log = logging.getLogger()
-            self.catalog = type('DummyCatalog', (object, ), {"log": self._log})
+            self.catalog = type(
+                'DummyCatalog', (object, ),
+                {"log": self._log,
+                 "clean_entry_name": lambda x: x})
         self[self._KEYS.NAME] = name
         return
 
@@ -322,8 +325,8 @@ class Entry(OrderedDict):
             # data['sources'] = newsources
             # self.setdefault(src_key, []).extend(newsources)
 
-        # Handle `photometry`
-        # -------------------
+            # Handle `photometry`
+            # -------------------
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
