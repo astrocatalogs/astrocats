@@ -129,10 +129,11 @@ class Entry(OrderedDict):
             self._log = catalog.log
         else:
             self._log = logging.getLogger()
-            self.catalog = type(
-                'DummyCatalog', (object, ),
-                {"log": self._log,
-                 "clean_entry_name": lambda x: x})
+            self.catalog = type('DummyCatalog', (object, ), {
+                "log": self._log,
+                "clean_entry_name": lambda x: x,
+                "aliases": []
+            })
         self[self._KEYS.NAME] = name
         return
 
@@ -521,7 +522,8 @@ class Entry(OrderedDict):
         if not catalog:
             catalog = type('DummyCatalog', (object, ), {
                 "log": logging.getLogger(),
-                "clean_entry_name": lambda x: x
+                "clean_entry_name": lambda x: x,
+                "aliases": []
             })
 
         catalog.log.debug("init_from_file()")
