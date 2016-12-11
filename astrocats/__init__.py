@@ -3,7 +3,7 @@
 
 import os
 
-__version__ = '0.2.9'
+__version__ = '0.2.10'
 __author__ = 'James Guillochon'
 __license__ = 'MIT'
 

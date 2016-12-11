@@ -5,6 +5,8 @@ import logging
 import os
 
 from setuptools import find_packages, setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
@@ -21,6 +23,22 @@ def setup_uc():
     from astrocats.main import setup_user_config
 
     setup_user_config(logging.getLogger())
+
+
+class PostDevelopCommand(develop):
+    """Post-develop command."""
+
+    def run(self):
+        setup_uc()
+        develop.run(self)
+
+
+class PostInstallCommand(install):
+    """Post-installation command."""
+
+    def run(self):
+        setup_uc()
+        install.run(self)
 
 
 setup(
@@ -40,6 +58,10 @@ setup(
         'https://github.com/astrocatalogs/astrocats/tarball/' +
         __version__  # noqa
     ),
+    cmdclass={
+        'develop': PostDevelopCommand,
+        'install': PostInstallCommand,
+    },
     keywords="astronomy",
     long_description=read('README.md'),
     classifiers=[
@@ -48,5 +70,3 @@ setup(
         "Programming Language :: Python :: 3.5"
     ],
     zip_safe=True)
-
-setup_uc()
