@@ -130,8 +130,6 @@ class Entry(OrderedDict):
         else:
             self._log = logging.getLogger()
             self.catalog = type('DummyCatalog', (object, ), {"log": self._log})
-        if not name:
-            raise ValueError('Entry needs name!')
         self[self._KEYS.NAME] = name
         return
 
@@ -532,6 +530,7 @@ class Entry(OrderedDict):
         load_path = ''
         if path is not None:
             load_path = path
+            name = ''
         # If the name is given, try to find a path for it
         else:
             repo_paths = catalog.PATHS.get_repo_output_folders()
