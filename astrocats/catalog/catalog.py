@@ -657,7 +657,7 @@ class Catalog:
             return match_name
 
         # Create new entry
-        new_entry = self.proto(self, newname)
+        new_entry = self.proto(catalog=self, name=newname)
         new_entry[self.proto._KEYS.SCHEMA] = self.SCHEMA.URL
         self.log.log(self.log._LOADED,
                      "Created new entry for '{}'".format(newname))

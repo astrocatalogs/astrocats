@@ -2,19 +2,21 @@
 """
 import codecs
 import json
+import logging
 import os
 from collections import OrderedDict
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
+from astrocats.catalog.model import MODEL, Model
 from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-from astrocats.catalog.model import MODEL, Model
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number)
+
 from cdecimal import Decimal
 
 
@@ -105,7 +107,7 @@ class Entry(OrderedDict):
 
     _KEYS = ENTRY
 
-    def __init__(self, catalog, name, stub=False):
+    def __init__(self, catalog=None, name=None, stub=False):
         """Create a new `Entry` object with the given `name`.
 
         Arguments
@@ -122,8 +124,14 @@ class Entry(OrderedDict):
         self.catalog = catalog
         self.filename = None
         self.dupe_of = []
-        self._log = catalog.log
         self._stub = stub
+        if catalog:
+            self._log = catalog.log
+        else:
+            self._log = logging.getLogger()
+            self.catalog = type('DummyCatalog', (object, ), {"log": self._log})
+        if not name:
+            raise ValueError('Entry needs name!')
         self[self._KEYS.NAME] = name
         return
 
@@ -379,8 +387,8 @@ class Entry(OrderedDict):
             self._log.info("This source is erroneous, skipping")
             return None
         # If this source/data is private, skip it
-        if not self.catalog.args.private and self.is_private(key_in_self,
-                                                             source):
+        if ('args' in dir(self.catalog) and not self.catalog.args.private and
+                self.is_private(key_in_self, source)):
             self._log.info("This source is private, skipping")
             return None
         return source
@@ -953,6 +961,8 @@ class Entry(OrderedDict):
             return 'aac'
         if key == self._KEYS.ALIAS:
             return 'aad'
+        if key == self._KEYS.MODELS:
+            return 'aae'
         if key == self._KEYS.PHOTOMETRY:
             return 'zzy'
         if key == self._KEYS.SPECTRA:

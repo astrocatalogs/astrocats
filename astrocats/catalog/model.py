@@ -6,15 +6,18 @@ from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
 
 class MODEL(KeyCollection):
+    # Strings
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     CODE = Key('code', KEY_TYPES.STRING)
     NAME = Key('name', KEY_TYPES.STRING)
-    MODEL = Key('model', KEY_TYPES.DICT, compare=False)
-    PARAMETERS = Key('parameters', KEY_TYPES.DICT, compare=False)
     VERSION = Key('version', KEY_TYPES.STRING)
     DATE = Key('date', KEY_TYPES.STRING)
-
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
+    # Numbers
+    ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
+    # Dictionaries
+    MODEL = Key('model', KEY_TYPES.DICT, compare=False)
+    PARAMETERS = Key('parameters', KEY_TYPES.DICT, compare=False)
 
 
 class Model(CatDict):
@@ -27,11 +30,8 @@ class Model(CatDict):
     _KEYS = MODEL
 
     def __init__(self, parent, **kwargs):
-        self._REQ_KEY_SETS = [
-            [MODEL.SOURCE],
-            [MODEL.ALIAS],
-            [MODEL.NAME, MODEL.CODE]
-        ]
+        self._REQ_KEY_SETS = [[MODEL.SOURCE], [MODEL.ALIAS],
+                              [MODEL.NAME, MODEL.CODE]]
         # Note: `_check()` is called at end of `super().__init__`
         super().__init__(parent, **kwargs)
 
@@ -59,8 +59,6 @@ class Model(CatDict):
         return value
 
     def sort_func(self, key):
-        if key == self._KEYS.TIME:
-            return 'aaa'
         if key == self._KEYS.SOURCE:
             return 'zzz'
         return key
