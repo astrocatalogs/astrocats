@@ -104,5 +104,7 @@ class Model(CatDict):
 
     def sort_func(self, key):
         if key == self._KEYS.SOURCE:
+            return 'zzy'
+        if key == self._KEYS.ALIAS:
             return 'zzz'
         return key

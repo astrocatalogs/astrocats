@@ -229,7 +229,11 @@ class Entry(OrderedDict):
 
         return True
 
-    def _load_data_from_json(self, fhand, clean=False, merge=True):
+    def _load_data_from_json(self,
+                             fhand,
+                             clean=False,
+                             merge=True,
+                             pop_schema=True):
         """FIX: check for overwrite??
         """
         self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
@@ -251,7 +255,8 @@ class Entry(OrderedDict):
             # `Sources` will be extracted and created from the dict Everything
             # that remains afterwards should be okay to just store to this
             # `Entry`
-            self._convert_odict_to_classes(data, clean=clean, merge=merge)
+            self._convert_odict_to_classes(
+                data, clean=clean, merge=merge, pop_schema=pop_schema)
             if len(data):
                 err_str = ("Remaining entries in `data` after "
                            "`_convert_odict_to_classes`.")
@@ -271,7 +276,11 @@ class Entry(OrderedDict):
         self.check()
         return
 
-    def _convert_odict_to_classes(self, data, clean=False, merge=True):
+    def _convert_odict_to_classes(self,
+                                  data,
+                                  clean=False,
+                                  merge=True,
+                                  pop_schema=True):
         """Convert an OrderedDict into an Entry class or its derivative
         classes.
         """
@@ -288,7 +297,10 @@ class Entry(OrderedDict):
         if schema_key in data:
             # Schema should be re-added every execution (done elsewhere) so
             # just delete the old entry
-            data.pop(schema_key)
+            if pop_schema:
+                data.pop(schema_key)
+            else:
+                self[schema_key] = data.pop(schema_key)
 
         # Cleanup 'internal' repository stuff
         if clean:
@@ -312,8 +324,8 @@ class Entry(OrderedDict):
             # data['sources'] = newsources
             # self.setdefault(src_key, []).extend(newsources)
 
-            # Handle `photometry`
-            # -------------------
+        # Handle `photometry`
+        # -------------------
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
@@ -410,6 +422,7 @@ class Entry(OrderedDict):
                       cat_dict_class,
                       key_in_self,
                       check_for_dupes=True,
+                      compare_against_existing=True,
                       **kwargs):
         """Add a CatDict to this Entry if initialization succeeds and it
         doesn't already exist within the Entry.
@@ -434,7 +447,7 @@ class Entry(OrderedDict):
             return False
 
         # Compare this new entry with all previous entries to make sure is new
-        if cat_dict_class != Error:
+        if compare_against_existing and cat_dict_class != Error:
             for item in self.get(key_in_self, []):
                 if new_entry.is_duplicate_of(item):
                     item.append_sources_from(new_entry)
@@ -454,8 +467,9 @@ class Entry(OrderedDict):
                 if (possible_dupe != self[self._KEYS.NAME] and
                         possible_dupe in self.catalog.entries):
                     self.dupe_of.append(possible_dupe)
-            self.catalog.aliases[new_entry[QUANTITY.VALUE]] = self[
-                self._KEYS.NAME]
+            if 'aliases' in dir(self.catalog):
+                self.catalog.aliases[new_entry[QUANTITY.VALUE]] = self[
+                    self._KEYS.NAME]
 
         self.setdefault(key_in_self, []).append(new_entry)
 
@@ -478,7 +492,8 @@ class Entry(OrderedDict):
                        name=None,
                        path=None,
                        clean=False,
-                       merge=True):
+                       merge=True,
+                       pop_schema=True):
         """Construct a new `Entry` instance from an input file.
 
         The input file can be given explicitly by `path`, or a path will
@@ -502,19 +517,21 @@ class Entry(OrderedDict):
             repositories.
 
         """
+        if not catalog:
+            catalog = type('DummyCatalog', (object, ), {
+                "log": logging.getLogger(),
+                "clean_entry_name": lambda x: x
+            })
+
         catalog.log.debug("init_from_file()")
         if name is None and path is None:
             raise ValueError("Either entry `name` or `path` must be specified "
                              "to load entry.")
-        if name is not None and path is not None:
-            raise ValueError("Either entry `name` or `path` should be "
-                             "specified, not both.")
 
         # If the path is given, use that to load from
         load_path = ''
         if path is not None:
             load_path = path
-            name = ''
         # If the name is given, try to find a path for it
         else:
             repo_paths = catalog.PATHS.get_repo_output_folders()
@@ -532,7 +549,8 @@ class Entry(OrderedDict):
         # Create a new `Entry` instance
         new_entry = cls(catalog, name)
         # Fill it with data from json file
-        new_entry._load_data_from_json(load_path, clean=clean, merge=merge)
+        new_entry._load_data_from_json(
+            load_path, clean=clean, merge=merge, pop_schema=pop_schema)
 
         return new_entry
 
@@ -560,10 +578,14 @@ class Entry(OrderedDict):
         self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
         return
 
-    def add_photometry(self, **kwargs):
+    def add_photometry(self, compare_against_existing=True, **kwargs):
         """Add a `Photometry` instance to this entry.
         """
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
+        self._add_cat_dict(
+            Photometry,
+            self._KEYS.PHOTOMETRY,
+            compare_against_existing=compare_against_existing,
+            **kwargs)
         return
 
     def merge_dupes(self):
