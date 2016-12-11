@@ -12,6 +12,7 @@ from astrocats.catalog.photometry import Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
+from astrocats.catalog.model import MODEL, Model
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number)
 from cdecimal import Decimal
@@ -52,6 +53,7 @@ class ENTRY(KeyCollection):
     MAX_APP_MAG = Key('maxappmag', KEY_TYPES.NUMERIC)
     MAX_BAND = Key('maxband', KEY_TYPES.STRING)
     MAX_DATE = Key('maxdate', KEY_TYPES.STRING, replace_better=True)
+    MODELS = Key('models')
     NAME = Key('name', KEY_TYPES.STRING, no_source=True)
     PHOTOMETRY = Key('photometry')
     RA = Key('ra', KEY_TYPES.STRING)
@@ -620,6 +622,29 @@ class Entry(OrderedDict):
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[source_obj._KEYS.ALIAS]
 
+    def add_model(self, allow_alias=False, **kwargs):
+        """Add a `Model` instance to this entry.
+        """
+        if not allow_alias and MODEL.ALIAS in kwargs:
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
+                SOURCE.ALIAS)
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        # Set alias number to be +1 of current number of models
+        if MODEL.ALIAS not in kwargs:
+            kwargs[MODEL.ALIAS] = str(self.num_models() + 1)
+        model_obj = self._init_cat_dict(Model, self._KEYS.MODELS, **kwargs)
+        if model_obj is None:
+            return None
+
+        for item in self.get(self._KEYS.MODELS, ''):
+            if model_obj.is_duplicate_of(item):
+                return item[item._KEYS.ALIAS]
+
+        self.setdefault(self._KEYS.MODELS, []).append(model_obj)
+        return model_obj[model_obj._KEYS.ALIAS]
+
     def add_spectrum(self, **kwargs):
         """Add an `Spectrum` instance to this entry.
         """
@@ -799,6 +824,16 @@ class Entry(OrderedDict):
             The *integer* number of existing sources.
         """
         return len(self.get(self._KEYS.SOURCES, []))
+
+    def num_models(self):
+        """Return the current number of models stored in this instance.
+
+        Returns
+        -------
+        len : int
+            The *integer* number of existing models.
+        """
+        return len(self.get(self._KEYS.MODELS, []))
 
     def priority_prefixes(self):
         """Prefixes to given priority to when merging duplicate entries.

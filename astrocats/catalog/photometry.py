@@ -50,6 +50,7 @@ class PHOTOMETRY(KeyCollection):
     E_LOWER_TIME = Key('e_lower_time', KEY_TYPES.NUMERIC)
     E_UPPER_TIME = Key('e_upper_time', KEY_TYPES.NUMERIC)
 
+    MODEL = Key('model', KEY_TYPES.STRING, compare=False)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
@@ -92,7 +93,7 @@ class Photometry(CatDict):
     _KEYS = PHOTOMETRY
 
     def __init__(self, parent, **kwargs):
-        self._REQ_KEY_SETS = [[PHOTOMETRY.SOURCE],
+        self._REQ_KEY_SETS = [[PHOTOMETRY.SOURCE, PHOTOMETRY.MODEL],
                               [PHOTOMETRY.TIME, PHOTOMETRY.HOST], [
                                   PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX,
                                   PHOTOMETRY.FLUX_DENSITY, PHOTOMETRY.COUNTS,
@@ -178,6 +179,8 @@ class Photometry(CatDict):
     def sort_func(self, key):
         if key == self._KEYS.TIME:
             return 'aaa'
+        if key == self._KEYS.MODEL:
+            return 'zzy'
         if key == self._KEYS.SOURCE:
             return 'zzz'
         return key
