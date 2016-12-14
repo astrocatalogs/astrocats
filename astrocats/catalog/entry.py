@@ -19,6 +19,7 @@ from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number)
 
 from cdecimal import Decimal
+from past.builtins import basestring
 
 
 class ENTRY(KeyCollection):
@@ -902,7 +903,7 @@ class Entry(OrderedDict):
         if self._KEYS.PHOTOMETRY in self:
             self[self._KEYS.PHOTOMETRY].sort(
                 key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
-                                isinstance(x[PHOTOMETRY.TIME], str)
+                                isinstance(x[PHOTOMETRY.TIME], basestring)
                                 else min([float(y) for y in
                                           x[PHOTOMETRY.TIME]])) if
                                PHOTOMETRY.TIME in x else 0.0,

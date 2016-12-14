@@ -1,5 +1,6 @@
 language: python
 python:
+    - "2.7"
     - "3.4"
     - "3.5"
     - "3.6-dev"
@@ -16,6 +17,8 @@ before_install:
 # Install packages
     - if [[ "$TRAVIS_PYTHON_VERSION" == "3.3" ]]; then
           wget https://repo.continuum.io/miniconda/Miniconda3-4.0.5-Linux-x86_64.sh -O miniconda.sh;
+      elif [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]
+          wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
       else
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
       fi

@@ -103,7 +103,7 @@ def do_test(catalog):
 
     # Delete name to test name re-addition in sanitize
     for ii, alias in enumerate(
-            catalog.entries[FAKE_ALIAS_5][ENTRY.ALIAS].copy()):
+            list(catalog.entries[FAKE_ALIAS_5][ENTRY.ALIAS])):
         if alias[QUANTITY.VALUE] == FAKE_ALIAS_5:
             del catalog.entries[FAKE_ALIAS_1][ENTRY.ALIAS][ii]
             break

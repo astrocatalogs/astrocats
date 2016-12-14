@@ -22,6 +22,14 @@ from statistics import mean
 import inflect
 import numpy as np
 import requests
+from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
+                                     bandgroupf, bandshortaliasf, bandwavef,
+                                     bandwavelengths, get_sig_digits,
+                                     is_number, pretty_num, radiocolorf,
+                                     round_sig, tprint, tq, xraycolorf)
+from astrocats.scripts.events import get_event_filename, get_event_text
+from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
+                                     repo_file_list)
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
@@ -37,15 +45,8 @@ from bokeh.resources import CDN
 from bs4 import BeautifulSoup
 from palettable import cubehelix
 
-from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
-                                     bandgroupf, bandshortaliasf, bandwavef,
-                                     bandwavelengths, get_sig_digits,
-                                     is_number, pretty_num, radiocolorf,
-                                     round_sig, tprint, tq, xraycolorf)
-from astrocats.scripts.events import get_event_filename, get_event_text
-from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
-                                     repo_file_list)
 from cdecimal import Decimal
+from past.builtins import basestring
 
 parser = argparse.ArgumentParser(
     description='Generate a catalog JSON file and plot HTML files from AstroCats data.'
@@ -2174,7 +2175,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if key in catalog[entry] and key not in eventignorekey and len(
                     catalog[entry][key]) > 0:
                 keyhtml = ''
-                if isinstance(catalog[entry][key], str):
+                if isinstance(catalog[entry][key], basestring):
                     if key in [
                             'photolink', 'spectralink', 'radiolink', 'xraylink'
                     ]:
@@ -2254,7 +2255,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                 ','.join(sourceids) + "\", \"" + edit +
                                 "\")'>Flag as erroneous</button></span>")
                             keyhtml = keyhtml + r'</div><sup>' + sourcehtml + r'</sup>'
-                        elif isinstance(row, str):
+                        elif isinstance(row, basestring):
                             keyhtml = keyhtml + \
                                 (r'<br>' if r > 0 else '') + row.strip()
 

@@ -12,8 +12,6 @@ from glob import glob
 
 import git
 import psutil
-from tqdm import tqdm
-
 from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
@@ -21,6 +19,9 @@ from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
+from tqdm import tqdm
+
+from past.builtins import basestring
 
 
 class Catalog:
@@ -1462,7 +1463,7 @@ def _get_task_priority(tasks, task_priority):
         return None
     if is_integer(task_priority):
         return task_priority
-    if isinstance(task_priority, str):
+    if isinstance(task_priority, basestring):
         if task_priority in tasks:
             return tasks[task_priority].priority
 
