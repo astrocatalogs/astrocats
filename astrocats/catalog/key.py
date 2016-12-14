@@ -196,7 +196,7 @@ class Key(str):
                  kind_preference=[],
                  replace_better=False,
                  **kwargs):
-        super().__init__()
+        super(Key, self).__init__()
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
             raise ValueError(
