@@ -35,7 +35,7 @@ class Model(CatDict):
         self._REQ_KEY_SETS = [[MODEL.SOURCE], [MODEL.ALIAS],
                               [MODEL.NAME, MODEL.CODE]]
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(parent, **kwargs)
+        super(Model, self).__init__(parent, **kwargs)
         self.catalog = parent.catalog
 
         return
@@ -45,7 +45,7 @@ class Model(CatDict):
 
         """
         # Run the super method
-        super()._check()
+        super(Model, self)._check()
 
         err_str = None
 
@@ -57,7 +57,7 @@ class Model(CatDict):
         return
 
     def _clean_value_for_key(self, key, value):
-        value = super()._clean_value_for_key(key, value)
+        value = super(Model, self)._clean_value_for_key(key, value)
 
         return value
 

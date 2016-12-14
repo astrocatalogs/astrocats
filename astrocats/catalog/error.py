@@ -29,4 +29,4 @@ class Error(CatDict):
         self._REQ_KEY_SETS = [
             [ERROR.VALUE]
         ]
-        super().__init__(parent, **kwargs)
+        super(Error, self).__init__(parent, **kwargs)

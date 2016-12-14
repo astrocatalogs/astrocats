@@ -63,7 +63,7 @@ class Quantity(CatDict):
             [QUANTITY.SOURCE]
         ]
 
-        super().__init__(parent, **kwargs)
+        super(Quantity, self).__init__(parent, **kwargs)
 
         # Aliases not added if in DISTINCT_FROM
         if self._key == parent._KEYS.ALIAS:

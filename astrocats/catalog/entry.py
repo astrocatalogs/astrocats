@@ -4,6 +4,7 @@ import codecs
 import json
 import logging
 import os
+import sys
 from collections import OrderedDict
 
 from astrocats.catalog.catdict import CatDict, CatDictError
@@ -120,7 +121,7 @@ class Entry(OrderedDict):
             Whether or not this instance represents a 'stub' (see above).
 
         """
-        super().__init__()
+        super(Entry, self).__init__()
         self.catalog = catalog
         self.filename = None
         self.dupe_of = []
@@ -139,7 +140,7 @@ class Entry(OrderedDict):
     def __repr__(self):
         """Return JSON representation of self
         """
-        jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
+        jsonstring = dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
 
     def _append_additional_tags(self, quantity, source, cat_dict):
@@ -778,6 +779,7 @@ class Entry(OrderedDict):
 
         """
         for source in self.get(self._KEYS.SOURCES, []):
+            print(source)
             if source[self._KEYS.ALIAS] == alias:
                 return source
         raise ValueError("Source '{}': alias '{}' not found!".format(self[
@@ -973,7 +975,7 @@ class Entry(OrderedDict):
             {
                 self[self._KEYS.NAME]: self._ordered(self)
             },
-            indent='\t',
+            indent='\t' if sys.version_info[0] >= 3 else 4,
             separators=(',', ':'),
             ensure_ascii=False)
         if not os.path.isdir(outdir):

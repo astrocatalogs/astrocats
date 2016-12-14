@@ -60,7 +60,7 @@ class Spectrum(CatDict):
         # [SPECTRUM.TIME, SPECTRUM.HOST]
 
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(parent, **kwargs)
+        super(Spectrum, self).__init__(parent, **kwargs)
 
         # If `data` is not given, construct it from wavelengths, fluxes
         # [errors] `errors` is optional, but if given, then `errorunit` is also
@@ -110,7 +110,7 @@ class Spectrum(CatDict):
 
         """
         # Run the super method
-        super()._check()
+        super(Spectrum, self)._check()
 
         err_str = None
         has_data = self._KEYS.DATA in self

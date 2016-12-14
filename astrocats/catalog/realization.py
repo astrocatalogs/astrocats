@@ -20,7 +20,7 @@ class Realization(CatDict):
     def __init__(self, parent, **kwargs):
         self._REQ_KEY_SETS = []
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(parent, **kwargs)
+        super(Realization, self).__init__(parent, **kwargs)
 
         return
 
@@ -29,7 +29,7 @@ class Realization(CatDict):
 
         """
         # Run the super method
-        super()._check()
+        super(Realization, self)._check()
 
         err_str = None
 
@@ -39,7 +39,7 @@ class Realization(CatDict):
         return
 
     def _clean_value_for_key(self, key, value):
-        value = super()._clean_value_for_key(key, value)
+        value = super(Realization, self)._clean_value_for_key(key, value)
 
         return value
 
