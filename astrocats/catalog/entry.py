@@ -780,7 +780,6 @@ class Entry(OrderedDict):
 
         """
         for source in self.get(self._KEYS.SOURCES, []):
-            print(source)
             if source[self._KEYS.ALIAS] == alias:
                 return source
         raise ValueError("Source '{}': alias '{}' not found!".format(self[
