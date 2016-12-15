@@ -28,6 +28,8 @@ class SPECTRUM(KeyCollection):
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
+    MODEL = Key('model', KEY_TYPES.STRING, compare=False)
+    REALIZATION = Key('realization', KEY_TYPES.STRING, priority=15)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     REDUCER = Key('reducer', KEY_TYPES.STRING, compare=False)
     REDUCTION = Key('reduction', KEY_TYPES.STRING, compare=False)
