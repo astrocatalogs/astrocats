@@ -17,9 +17,9 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number)
+from past.builtins import basestring
 
 from cdecimal import Decimal
-from past.builtins import basestring
 
 
 class ENTRY(KeyCollection):
@@ -130,11 +130,9 @@ class Entry(OrderedDict):
         if catalog:
             self._log = catalog.log
         else:
+            from astrocats.catalog.catalog import Catalog
             self._log = logging.getLogger()
-            self.catalog = type('DummyCatalog', (object, ), {
-                "log": self._log,
-                "clean_entry_name": lambda x: x
-            })
+            self.catalog = Catalog(None, self._log)
         self[self._KEYS.NAME] = name
         return
 
@@ -402,7 +400,7 @@ class Entry(OrderedDict):
             self._log.info("This source is erroneous, skipping")
             return None
         # If this source/data is private, skip it
-        if ('args' in dir(self.catalog) and not self.catalog.args.private and
+        if (self.catalog.args is not None and not self.catalog.args.private and
                 self.is_private(key_in_self, source)):
             self._log.info("This source is private, skipping")
             return None
@@ -521,10 +519,9 @@ class Entry(OrderedDict):
 
         """
         if not catalog:
-            catalog = type('DummyCatalog', (object, ), {
-                "log": logging.getLogger(),
-                "clean_entry_name": lambda x: x
-            })
+            from astrocats.catalog.catalog import Catalog
+            log = logging.getLogger()
+            catalog = Catalog(None, log)
 
         catalog.log.debug("init_from_file()")
         if name is None and path is None:

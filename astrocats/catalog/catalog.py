@@ -19,9 +19,8 @@ from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
-from tqdm import tqdm
-
 from past.builtins import basestring
+from tqdm import tqdm
 
 
 class Catalog:
@@ -84,8 +83,10 @@ class Catalog:
             this_file = os.path.abspath(sys.modules[self.__module__].__file__)
             self.catalog_dir = os.path.dirname(this_file)
             self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
-            self.PATH_BASE = os.path.join(catalog.args.base_path,
-                                          self.catalog_dir, '')
+            self.PATH_BASE = ''
+            if catalog.args:
+                self.PATH_BASE = os.path.join(catalog.args.base_path,
+                                              self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
@@ -196,18 +197,24 @@ class Catalog:
 
         # Store version information
         # -------------------------
+        git_command = ["git", "rev-parse", "--short", "HEAD"]
         # git `SHA` of this directory (i.e. a sub-catalog)
         my_path = self.PATHS.catalog_dir
-        git_command = ["git", "rev-parse", "--short", "HEAD"]
-        self.log.debug("Running '{}' in '{}'.".format(git_command, my_path))
-        catalog_sha = subprocess.check_output(git_command, cwd=my_path)
-        catalog_sha = catalog_sha.decode('ascii').strip()
+        catalog_sha = 'N/A'
+        if os.path.exists(os.path.join(my_path, '.git')):
+            self.log.debug("Running '{}' in '{}'.".format(git_command,
+                                                          my_path))
+            catalog_sha = subprocess.check_output(git_command, cwd=my_path)
+            catalog_sha = catalog_sha.decode('ascii').strip()
         # Git SHA of `astrocats`
         parent_path = os.path.abspath(os.path.join(my_path, os.pardir))
-        self.log.debug("Running '{}' in '{}'."
-                       .format(git_command, parent_path))
-        astrocats_sha = subprocess.check_output(git_command, cwd=parent_path)
-        astrocats_sha = astrocats_sha.decode('ascii').strip()
+        astrocats_sha = 'N/A'
+        if os.path.exists(os.path.join(parent_path, '.git')):
+            self.log.debug("Running '{}' in '{}'."
+                           .format(git_command, parent_path))
+            astrocats_sha = subprocess.check_output(
+                git_command, cwd=parent_path)
+            astrocats_sha = astrocats_sha.decode('ascii').strip()
         # Name of this class (if subclassed)
         my_name = type(self).__name__
         self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}".format(
