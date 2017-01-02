@@ -101,7 +101,7 @@ class Photometry(CatDict):
                                   PHOTOMETRY.LUMINOSITY
                               ]]
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(parent, **kwargs)
+        super(Photometry, self).__init__(parent, **kwargs)
 
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
         if self._KEYS.BAND in self:
@@ -129,7 +129,7 @@ class Photometry(CatDict):
 
         """
         # Run the super method
-        super()._check()
+        super(Photometry, self)._check()
 
         err_str = None
         has_flux = self._KEYS.FLUX in self
@@ -169,7 +169,7 @@ class Photometry(CatDict):
         return
 
     def _clean_value_for_key(self, key, value):
-        value = super()._clean_value_for_key(key, value)
+        value = super(Photometry, self)._clean_value_for_key(key, value)
 
         # Do some basic homogenization
         if key == self._KEYS.BAND:

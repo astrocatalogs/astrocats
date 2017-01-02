@@ -28,6 +28,8 @@ class SPECTRUM(KeyCollection):
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
+    MODEL = Key('model', KEY_TYPES.STRING, compare=False)
+    REALIZATION = Key('realization', KEY_TYPES.STRING, priority=15)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     REDUCER = Key('reducer', KEY_TYPES.STRING, compare=False)
     REDUCTION = Key('reduction', KEY_TYPES.STRING, compare=False)
@@ -60,7 +62,7 @@ class Spectrum(CatDict):
         # [SPECTRUM.TIME, SPECTRUM.HOST]
 
         # Note: `_check()` is called at end of `super().__init__`
-        super().__init__(parent, **kwargs)
+        super(Spectrum, self).__init__(parent, **kwargs)
 
         # If `data` is not given, construct it from wavelengths, fluxes
         # [errors] `errors` is optional, but if given, then `errorunit` is also
@@ -110,7 +112,7 @@ class Spectrum(CatDict):
 
         """
         # Run the super method
-        super()._check()
+        super(Spectrum, self)._check()
 
         err_str = None
         has_data = self._KEYS.DATA in self

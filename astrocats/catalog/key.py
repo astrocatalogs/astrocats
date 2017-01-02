@@ -2,6 +2,8 @@
 """
 from astrocats.catalog.utils import is_number
 
+from past.builtins import basestring
+
 
 class KeyCollection:
     """General container class with methods to list attribute names and values.
@@ -196,12 +198,11 @@ class Key(str):
                  kind_preference=[],
                  replace_better=False,
                  **kwargs):
-        super().__init__()
+        super(Key, self).__init__()
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
-            raise ValueError(
-                "Key `type` ('{}') must be 'None' or one of '{}'".format(
-                    type, KEY_TYPES.keys()))
+            raise ValueError("Key `type` ('{}') must be 'None' or one of '{}'".
+                             format(type, KEY_TYPES.keys()))
         self.name = str(name)
         self.type = type
         self.listable = listable
@@ -245,10 +246,10 @@ class Key(str):
         elif self.type == KEY_TYPES.STRING:
             # If its a list, check first element
             if is_list:
-                if not isinstance(val[0], str):
+                if not isinstance(val[0], basestring):
                     return False
             # Otherwise, check it
-            elif not isinstance(val, str):
+            elif not isinstance(val, basestring):
                 return False
         elif self.type == KEY_TYPES.BOOL:
             if is_list and not isinstance(val[0], bool):

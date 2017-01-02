@@ -4,6 +4,7 @@ import codecs
 import json
 import logging
 import os
+import sys
 from collections import OrderedDict
 
 from astrocats.catalog.catdict import CatDict, CatDictError
@@ -16,6 +17,7 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number)
+from past.builtins import basestring
 
 from cdecimal import Decimal
 
@@ -120,7 +122,7 @@ class Entry(OrderedDict):
             Whether or not this instance represents a 'stub' (see above).
 
         """
-        super().__init__()
+        super(Entry, self).__init__()
         self.catalog = catalog
         self.filename = None
         self.dupe_of = []
@@ -128,15 +130,16 @@ class Entry(OrderedDict):
         if catalog:
             self._log = catalog.log
         else:
+            from astrocats.catalog.catalog import Catalog
             self._log = logging.getLogger()
-            self.catalog = type('DummyCatalog', (object, ), {"log": self._log})
+            self.catalog = Catalog(None, self._log)
         self[self._KEYS.NAME] = name
         return
 
     def __repr__(self):
         """Return JSON representation of self
         """
-        jsonstring = dict_to_pretty_string({self[ENTRY.NAME]: self})
+        jsonstring = dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
 
     def _append_additional_tags(self, quantity, source, cat_dict):
@@ -322,8 +325,8 @@ class Entry(OrderedDict):
             # data['sources'] = newsources
             # self.setdefault(src_key, []).extend(newsources)
 
-        # Handle `photometry`
-        # -------------------
+            # Handle `photometry`
+            # -------------------
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
@@ -397,7 +400,7 @@ class Entry(OrderedDict):
             self._log.info("This source is erroneous, skipping")
             return None
         # If this source/data is private, skip it
-        if ('args' in dir(self.catalog) and not self.catalog.args.private and
+        if (self.catalog.args is not None and not self.catalog.args.private and
                 self.is_private(key_in_self, source)):
             self._log.info("This source is private, skipping")
             return None
@@ -458,7 +461,7 @@ class Entry(OrderedDict):
         if key_in_self == self._KEYS.ALIAS:
             # Check if this adding this alias makes us a dupe, if so mark
             # ourselves as a dupe.
-            if (check_for_dupes and
+            if (check_for_dupes and 'aliases' in dir(self.catalog) and
                     new_entry[QUANTITY.VALUE] in self.catalog.aliases):
                 possible_dupe = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
                 # print(possible_dupe)
@@ -516,10 +519,9 @@ class Entry(OrderedDict):
 
         """
         if not catalog:
-            catalog = type('DummyCatalog', (object, ), {
-                "log": logging.getLogger(),
-                "clean_entry_name": lambda x: x
-            })
+            from astrocats.catalog.catalog import Catalog
+            log = logging.getLogger()
+            catalog = Catalog(None, log)
 
         catalog.log.debug("init_from_file()")
         if name is None and path is None:
@@ -897,7 +899,7 @@ class Entry(OrderedDict):
         if self._KEYS.PHOTOMETRY in self:
             self[self._KEYS.PHOTOMETRY].sort(
                 key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
-                                isinstance(x[PHOTOMETRY.TIME], str)
+                                isinstance(x[PHOTOMETRY.TIME], basestring)
                                 else min([float(y) for y in
                                           x[PHOTOMETRY.TIME]])) if
                                PHOTOMETRY.TIME in x else 0.0,
@@ -970,7 +972,7 @@ class Entry(OrderedDict):
             {
                 self[self._KEYS.NAME]: self._ordered(self)
             },
-            indent='\t',
+            indent='\t' if sys.version_info[0] >= 3 else 4,
             separators=(',', ':'),
             ensure_ascii=False)
         if not os.path.isdir(outdir):

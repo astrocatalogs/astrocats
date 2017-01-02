@@ -12,8 +12,6 @@ from glob import glob
 
 import git
 import psutil
-from tqdm import tqdm
-
 from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
@@ -21,6 +19,8 @@ from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
+from past.builtins import basestring
+from tqdm import tqdm
 
 
 class Catalog:
@@ -80,11 +80,13 @@ class Catalog:
 
         def __init__(self, catalog):
             self.catalog = catalog
-            this_file = sys.modules[self.__module__].__file__
+            this_file = os.path.abspath(sys.modules[self.__module__].__file__)
             self.catalog_dir = os.path.dirname(this_file)
             self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
-            self.PATH_BASE = os.path.join(catalog.args.base_path,
-                                          self.catalog_dir, '')
+            self.PATH_BASE = ''
+            if catalog.args:
+                self.PATH_BASE = os.path.join(catalog.args.base_path,
+                                              self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
             # critical datafiles
@@ -195,18 +197,24 @@ class Catalog:
 
         # Store version information
         # -------------------------
+        git_command = ["git", "rev-parse", "--short", "HEAD"]
         # git `SHA` of this directory (i.e. a sub-catalog)
         my_path = self.PATHS.catalog_dir
-        git_command = ["git", "rev-parse", "--short", "HEAD"]
-        self.log.debug("Running '{}' in '{}'.".format(git_command, my_path))
-        catalog_sha = subprocess.check_output(git_command, cwd=my_path)
-        catalog_sha = catalog_sha.decode('ascii').strip()
+        catalog_sha = 'N/A'
+        if os.path.exists(os.path.join(my_path, '.git')):
+            self.log.debug("Running '{}' in '{}'.".format(git_command,
+                                                          my_path))
+            catalog_sha = subprocess.check_output(git_command, cwd=my_path)
+            catalog_sha = catalog_sha.decode('ascii').strip()
         # Git SHA of `astrocats`
         parent_path = os.path.abspath(os.path.join(my_path, os.pardir))
-        self.log.debug("Running '{}' in '{}'."
-                       .format(git_command, parent_path))
-        astrocats_sha = subprocess.check_output(git_command, cwd=parent_path)
-        astrocats_sha = astrocats_sha.decode('ascii').strip()
+        astrocats_sha = 'N/A'
+        if os.path.exists(os.path.join(parent_path, '.git')):
+            self.log.debug("Running '{}' in '{}'."
+                           .format(git_command, parent_path))
+            astrocats_sha = subprocess.check_output(
+                git_command, cwd=parent_path)
+            astrocats_sha = astrocats_sha.decode('ascii').strip()
         # Name of this class (if subclassed)
         my_name = type(self).__name__
         self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}".format(
@@ -435,8 +443,8 @@ class Catalog:
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_command)
+            git_command = "git rev-parse HEAD {}".format(repo).split()
+            sha_beg = subprocess.check_output(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             # Get files that should be added, compress and check sizes
@@ -486,15 +494,15 @@ class Catalog:
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_command)
+            git_command = "git rev-parse HEAD {}".format(repo).split()
+            sha_beg = subprocess.check_output(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             grepo = git.cmd.Git(repo)
             retval = grepo.pull()
-            self.log.warning("Git says: '{}'".format(retval))
+            self.log.warning("Git says: '{}'".format(retval)).split()
 
-            sha_end = subprocess.getoutput(git_command)
+            sha_end = subprocess.check_output(git_command)
             if sha_end != sha_beg:
                 self.log.info("Updated SHA: '{}'".format(sha_end))
 
@@ -525,8 +533,8 @@ class Catalog:
                 raise
 
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_command)
+            git_command = "git rev-parse HEAD {}".format(repo).split()
+            sha_beg = subprocess.check_output(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
         return
@@ -538,8 +546,8 @@ class Catalog:
         for repo in all_repos:
             self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_command)
+            git_command = "git rev-parse HEAD {}".format(repo).split()
+            sha_beg = subprocess.check_output(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             grepo = git.cmd.Git(repo)
@@ -565,7 +573,7 @@ class Catalog:
                 if len(retval):
                     self.log.warning("Git says: '{}'".format(retval))
 
-            sha_end = subprocess.getoutput(git_command)
+            sha_end = subprocess.check_output(git_command)
             if sha_end != sha_beg:
                 self.log.debug("Updated SHA: '{}'".format(sha_end))
 
@@ -578,8 +586,8 @@ class Catalog:
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo)
-            sha_beg = subprocess.getoutput(git_command)
+            git_command = "git rev-parse HEAD {}".format(repo).split()
+            sha_beg = subprocess.check_output(git_command)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             grepo = git.cmd.Git(repo)
@@ -591,7 +599,7 @@ class Catalog:
             _call_command_in_repo(
                 git_comm, repo, self.log, fail=True, log_flag=True)
 
-            sha_end = subprocess.getoutput(git_command)
+            sha_end = subprocess.check_output(git_command)
             if sha_end != sha_beg:
                 self.log.info("Updated SHA: '{}'".format(sha_end))
 
@@ -1462,7 +1470,7 @@ def _get_task_priority(tasks, task_priority):
         return None
     if is_integer(task_priority):
         return task_priority
-    if isinstance(task_priority, str):
+    if isinstance(task_priority, basestring):
         if task_priority in tasks:
             return tasks[task_priority].priority
 

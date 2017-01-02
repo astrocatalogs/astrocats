@@ -43,12 +43,15 @@ class QUANTITY(KeyCollection):
     PROB = Key('probability', KEY_TYPES.NUMERIC)
     # Booleans
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL)
+    LOWER_LIMIT = Key('lowerlimit', KEY_TYPES.BOOL)
     DERIVED = Key('derived', KEY_TYPES.BOOL)
     # Strings
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
     U_VALUE = Key('u_value', KEY_TYPES.STRING)
     KIND = Key('kind', KEY_TYPES.STRING)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
+    MODEL = Key('model', KEY_TYPES.STRING, compare=False)
+    REALIZATION = Key('realization', KEY_TYPES.STRING)
 
 
 class Quantity(CatDict):
@@ -63,7 +66,7 @@ class Quantity(CatDict):
             [QUANTITY.SOURCE]
         ]
 
-        super().__init__(parent, **kwargs)
+        super(Quantity, self).__init__(parent, **kwargs)
 
         # Aliases not added if in DISTINCT_FROM
         if self._key == parent._KEYS.ALIAS:

@@ -46,7 +46,7 @@ def utf8(x):
 
 def dict_to_pretty_string(odict):
     jsonstring = json.dumps(odict,
-                            indent='\t', separators=(',', ':'),
+                            indent=4, separators=(',', ':'),
                             ensure_ascii=False)
     return jsonstring
 

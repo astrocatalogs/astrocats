@@ -16,7 +16,8 @@ exec(open(os.path.join(dir_path, 'astrocats', '__init__.py')).read())
 
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), fname)).read()
 
 
 def setup_uc():
@@ -68,5 +69,4 @@ setup(
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.5"
-    ],
-    zip_safe=True)
+    ])

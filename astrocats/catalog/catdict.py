@@ -75,7 +75,7 @@ class CatDict(OrderedDict):
     _REQ_KEY_SETS = []
 
     def __init__(self, parent, key=None, **kwargs):
-        super().__init__()
+        super(CatDict, self).__init__()
         # Store the parent object (an `Entry` subclass) to which this instance
         # will belong.  e.g. a `Supernova` entry.
         self._parent = parent
@@ -105,10 +105,10 @@ class CatDict(OrderedDict):
                 else:
                     self._log.warn('[{}] `{}` not in list of keys for `{}`, '
                                    'adding anyway as allow unknown keys is '
-                                   '`{}`.'.format(
-                                       parent[parent._KEYS.NAME],
-                                       key, type(self).__name__,
-                                       self._ALLOW_UNKNOWN_KEYS))
+                                   '`{}`.'.format(parent[
+                                       parent._KEYS.NAME], key,
+                                                  type(self).__name__,
+                                                  self._ALLOW_UNKNOWN_KEYS))
                     key_obj = Key(key)
 
                 # Handle Special Cases
@@ -123,13 +123,14 @@ class CatDict(OrderedDict):
                 check_fail = False
                 if not key_obj.check(kwargs[key]):
                     check_fail = True
-                    self._log.info("Value for '{}' is invalid '{}'".format(
-                        key_obj.pretty(), kwargs[key]))
+                    self._log.info("Value for '{}' is invalid '{}:{}'".format(
+                        key_obj.pretty(), key, kwargs[key]))
                     # Have the parent log a warning if this is a required key
                     if key in self._req_keys:
                         raise CatDictError(
                             "Value for required key '{}' is invalid "
-                            "'{}'".format(key_obj.pretty(), kwargs[key]),
+                            "'{}:{}'".format(key_obj.pretty(), key,
+                                             kwargs[key]),
                             warn=True)
 
                 # Check and store values
@@ -199,8 +200,7 @@ class CatDict(OrderedDict):
         """
         for req_any in self._REQ_KEY_SETS:
             if not any([req_key in self for req_key in req_any]):
-                err_str = ("'{}' Requires one or more of: "
-                           .format(self._key) +
+                err_str = ("'{}' Requires one or more of: ".format(self._key) +
                            ",".join("'{}'".format(rk) for rk in req_any))
                 self._log.info(err_str)
                 raise CatDictError(err_str)
@@ -221,9 +221,8 @@ class CatDict(OrderedDict):
         if isinstance(value, list):
             # But if lists arent allowed, and this is, raise error
             if not key.listable:
-                raise CatDictError(
-                    "`value` '{}' for '{}' shouldnt be a list.".format(
-                        value, key.pretty()))
+                raise CatDictError("`value` '{}' for '{}' shouldnt be a list.".
+                                   format(value, key.pretty()))
 
             single = False
         else:
@@ -233,9 +232,8 @@ class CatDict(OrderedDict):
         # Store booleans as booleans, make sure each element of list is bool
         if key.type == KEY_TYPES.BOOL:
             if not all(isinstance(val, bool) for val in value):
-                raise CatDictError(
-                    "`value` '{}' for '{}' should be boolean".format(
-                        value, key.pretty()))
+                raise CatDictError("`value` '{}' for '{}' should be boolean".
+                                   format(value, key.pretty()))
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
             # Clean leading/trailing whitespace

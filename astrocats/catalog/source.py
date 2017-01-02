@@ -47,7 +47,7 @@ class Source(CatDict):
             [SOURCE.ALIAS],
             [SOURCE.BIBCODE, SOURCE.ARXIVID, SOURCE.URL, SOURCE.NAME]
         ]
-        super().__init__(parent, **kwargs)
+        super(Source, self).__init__(parent, **kwargs)
         return
 
     def sort_func(self, key):

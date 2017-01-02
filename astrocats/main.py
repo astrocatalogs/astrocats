@@ -100,7 +100,7 @@ def setup_user_config(log):
     # Determine default settings
 
     # Get this containing directory and use that as default data path
-    def_base_path = os.path.abspath(os.path.dirname(__file__))
+    def_base_path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
     log.warning("Setting '{}' to default path: '{}'".format(_BASE_PATH_KEY,
                                                             def_base_path))
     config = {_BASE_PATH_KEY: def_base_path}
@@ -291,7 +291,7 @@ def get_git():
     git_vers : str
     """
     import subprocess
-    git_vers = subprocess.getoutput(["git describe --always"]).strip()
+    git_vers = subprocess.check_output(["git", "describe", "--always"]).strip()
     return git_vers
 
 
