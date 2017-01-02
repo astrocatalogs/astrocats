@@ -161,7 +161,7 @@ mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 columnkey = [
     "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
     "maxabsmag", "host", "ra", "dec", "hostra", "hostdec", "hostoffsetang",
-    "hostoffsetdist", "instruments", "redshift", "velocity", "lumdist",
+    "hostoffsetdist", "altitude", "airmass", "instruments", "redshift", "velocity", "lumdist",
     "claimedtype", "ebv", "photolink", "spectralink", "radiolink", "xraylink",
     "references", "download", "responsive"
 ]
@@ -172,7 +172,7 @@ header = [
     "", "Name", "Aliases", "Disc. Date", "Max Date",
     r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Host Name",
     "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
-    "Host Offset (kpc)", "Instruments/Bands", r"<em>z</em>",
+    "Host Offset (kpc)", "Alt. (°)", "Airmass", "Instruments/Bands", r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
     "Type", "E(B-V)", "Phot.", "Spec.", "Radio", "X-ray", "References", "Data",
     ""
@@ -182,7 +182,7 @@ eventpageheader = [
     "", "Name", "Aliases", "Discovery Date", "Maximum Date [band]",
     r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]",
     "Host Name", "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
-    "Host Offset (kpc)", "Instruments/Bands", r"<em>z</em>",
+    "Host Offset (kpc)", "Alt. (°)", "Airmass", "Instruments/Bands", r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
     "Claimed Type", "E(B-V)", "Photometry", "Spectra", "Radio", "X-ray",
     "References", "Download", ""
@@ -196,6 +196,7 @@ titles = [
     moduletitle + " J2000 Declination (d:m:s)",
     "Host J2000 Right Ascension (h:m:s)", "Host J2000 Declination (d:m:s)",
     "Host Offset (Arcseconds)", "Host Offset (kpc)",
+    "Altitude (Degrees)", "Airmass",
     "List of Instruments and Bands", "Redshift",
     "Heliocentric velocity (km/s)", "Luminosity distance (Mpc)",
     "Claimed Type", "Milky Way Reddening", "Photometry", "pectra", "Radio",
@@ -478,7 +479,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if photoavail:
         catalog[entry]['photolink'] = (str(numphoto) + (
             (',' + minphotoep + ',' + maxphotoep) if
-            (minphotoep and maxphotoep and minphotoep != maxphotoep) else ''))
+            (minphotoep and maxphotoep and minphotoep != maxphotoep
+                ) else ((',' + minphotoep) if minphotoep and maxphotoep else '')))
     if radioavail:
         catalog[entry]['radiolink'] = str(numradio)
     if xrayavail:
@@ -487,7 +489,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         catalog[entry]['spectralink'] = (str(numspectra) + (
             (',' + minspectraep + ',' + maxspectraep)
             if (minspectraep and maxspectraep and minspectraep != maxspectraep
-                ) else ''))
+                ) else ((',' + minspectraep) if minspectraep and maxspectraep else '')))
 
     prange = list(range(len(catalog[entry][
         'photometry']))) if 'photometry' in catalog[entry] else []
@@ -2354,7 +2356,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         # dec., # obs., link
         csvpages.append([
             entry, ",".join(
-                [x['value'] for x in catalog[entry].get('alias', [entry])]),
+                [x['value'] for x in catalog[entry].get('alias', [{'value':entry}])]),
             get_first_value(entry, 'maxappmag'),
             get_first_value(entry, 'maxdate'),
             get_first_value(entry, 'claimedtype'), get_first_value(
@@ -2586,7 +2588,7 @@ if args.writecatalog and not args.eventlist:
     if not args.boneyard:
         names = OrderedDict()
         for ev in catalog:
-            names[ev['name']] = [x['value'] for x in ev['alias']]
+            names[ev['name']] = [x['value'] for x in ev.get('alias', [{'value':ev['name']}])]
         jsonstring = json.dumps(names, separators=(',', ':'))
         with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
             f.write(jsonstring)
