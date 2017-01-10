@@ -90,11 +90,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     if bc in bibauthordict:
                         authors = bibauthordict[bc]
 
-                    if bc in biballauthordict:
+                    if bc in biballauthordict and len(biballauthordict[bc]):
                         allauthors = biballauthordict[bc]
                     else:
                         try:
-                            allauthors = list(ads.SearchQuery(bibcode=bc))
+                            q = ads.SearchQuery(bibcode=bc)
+                            allauthors = list(q)
                         except:
                             allauthors = []
 
