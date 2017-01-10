@@ -123,8 +123,9 @@ class CatDict(OrderedDict):
                 check_fail = False
                 if not key_obj.check(kwargs[key]):
                     check_fail = True
-                    self._log.info("Value for '{}' is invalid '{}:{}'".format(
-                        key_obj.pretty(), key, kwargs[key]))
+                    self._log.info("Value for '{}' is invalid "
+                                   "'{}':'{}'".format(key_obj.pretty(), key,
+                                                      kwargs[key]))
                     # Have the parent log a warning if this is a required key
                     if key in self._req_keys:
                         raise CatDictError(
