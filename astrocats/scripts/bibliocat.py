@@ -92,8 +92,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         allauthors = biballauthordict[bc]
                     else:
                         try:
-                            q = ads.SearchQuery(bibcode=bc)
-                            allauthors = list(q)
+                            q = list(ads.SearchQuery(bibcode=bc))
+                            if not len(q):
+                                q = list(ads.SearchQuery(alternate_bibcode=bc))
+                            allauthors = q
                         except:
                             allauthors = []
 
