@@ -4,16 +4,14 @@ import gzip
 import json
 import os
 from collections import OrderedDict
-from tqdm import tqdm
 
 import ads
+from astrocats.catalog.utils import tq
+from astrocats.scripts.repos import get_rep_folders, repo_file_list
 from astropy.time import Time as astrotime
 
-from astrocats.scripts.repos import repo_file_list, get_rep_folders
-from astrocats.catalog.utils import tq
-
 parser = argparse.ArgumentParser(
-    description='Generate a catalog JSON file and plot HTML files from AstroCats data.'
+    description='Generate a bibliography JSON file from AstroCats data.'
 )
 parser.add_argument(
     '--catalog',
@@ -66,8 +64,8 @@ else:
 for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     # if fcnt > 4000:
     #    break
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[
-        0].replace('.json', '')
+    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace(
+        '.json', '')
 
     if eventfile.split('.')[-1] == 'gz':
         with gzip.open(eventfile, 'rt') as f:
@@ -105,26 +103,25 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             allauthors = []
                         biballauthordict[bc] = allauthors
 
-                    biblio[bc] = OrderedDict([('authors', authors),
-                                              ('allauthors', allauthors),
-                                              ('bibcode', bc), ('events', []),
-                                              ('eventdates', []),
-                                              ('types', []), ('photocount', 0),
-                                              ('spectracount', 0),
-                                              ('metacount', 0)])
+                    biblio[bc] = OrderedDict(
+                        [('authors', authors), ('allauthors', allauthors),
+                         ('bibcode', bc), ('events', []), ('eventdates', []),
+                         ('types', []), ('photocount', 0), ('spectracount', 0),
+                         ('metacount', 0)])
 
                 biblio[bc]['events'].append(item['name'])
 
                 if 'discoverdate' in item and item['discoverdate']:
-                    datestr = item['discoverdate'][
-                        0]['value'].replace('/', '-')
+                    datestr = item['discoverdate'][0]['value'].replace('/',
+                                                                       '-')
                     if datestr.count('-') == 1:
                         datestr += '-01'
                     elif datestr.count('-') == 0:
                         datestr += '-01-01'
                     try:
                         biblio[bc]['eventdates'].append(
-                            astrotime(datestr, format='isot').unix)
+                            astrotime(
+                                datestr, format='isot').unix)
                     except:
                         biblio[bc]['eventdates'].append(float("inf"))
                 else:
@@ -160,8 +157,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for key in list(item.keys()):
                     bcalias = source['alias']
                     lc = 0
-                    if key in ['name', 'sources', 'schema', 'photometry',
-                               'spectra', 'errors']:
+                    if key in [
+                            'name', 'sources', 'schema', 'photometry',
+                            'spectra', 'errors'
+                    ]:
                         continue
                     for quantum in item[key]:
                         if bcalias in quantum['source'].split(','):
@@ -169,18 +168,25 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     biblio[bc]['metacount'] += lc
 
 for bc in biblio:
-    biblio[bc]['events'] = [x for (y, x) in sorted(
-        zip(biblio[bc]['eventdates'], biblio[bc]['events']))]
+    biblio[bc]['events'] = [
+        x
+        for (y, x
+             ) in sorted(zip(biblio[bc]['eventdates'], biblio[bc]['events']))
+    ]
     del biblio[bc]['eventdates']
 
 # Convert to array since that's what datatables expects
 biblio = list(biblio.values())
-jsonstring = json.dumps(biblio, indent='\t',
-                        separators=(',', ':'), ensure_ascii=False)
+jsonstring = json.dumps(
+    biblio, indent='\t', separators=(',', ':'), ensure_ascii=False)
 
 with open(outdir + 'biblio.json', 'w') as f:
     f.write(jsonstring)
 
 with open(aapath, 'w') as f:
-    f.write(json.dumps(biballauthordict, indent='\t',
-        separators=(',', ':'), ensure_ascii=False))
+    f.write(
+        json.dumps(
+            biballauthordict,
+            indent='\t',
+            separators=(',', ':'),
+            ensure_ascii=False))
