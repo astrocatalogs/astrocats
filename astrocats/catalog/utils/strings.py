@@ -1,11 +1,14 @@
 """
 """
 import json
+import sys
 
 from .digits import round_sig
 
-__all__ = ['dict_to_pretty_string', 'rep_chars', 'get_entry_filename',
-           'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8']
+__all__ = [
+    'dict_to_pretty_string', 'rep_chars', 'get_entry_filename',
+    'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8'
+]
 
 
 def rep_chars(string, chars, rep=''):
@@ -45,11 +48,21 @@ def utf8(x):
 
 
 def dict_to_pretty_string(odict):
-    jsonstring = json.dumps(odict,
-                            indent=4, separators=(',', ':'),
-                            ensure_ascii=False)
+    jsonstring = json.dumps(
+        odict, indent=4, separators=(',', ':'), ensure_ascii=False)
     return jsonstring
 
 
 def get_entry_filename(name):
-    return(name.replace('/', '_'))
+    return (name.replace('/', '_'))
+
+
+if sys.version_info < (3, ):
+    import codecs
+
+    def uni(x):
+        return codecs.unicode_escape_decode(x)[0]
+else:
+
+    def uni(x):
+        return x
