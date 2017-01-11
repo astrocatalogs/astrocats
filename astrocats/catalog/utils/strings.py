@@ -65,4 +65,4 @@ if sys.version_info < (3, ):
 else:
 
     def uni(x):
-        return x
+        return str(x)

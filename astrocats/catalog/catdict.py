@@ -4,7 +4,7 @@
 from collections import OrderedDict
 
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
-from astrocats.catalog.utils import is_number, uni, uniq_cdl
+from astrocats.catalog.utils import uni, uniq_cdl
 
 
 class CatDictError(Exception):
@@ -239,8 +239,7 @@ class CatDict(OrderedDict):
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
             # Clean leading/trailing whitespace
-            value = [(uni(val) if is_number(val) else str(val)).strip()
-                     for val in value]
+            value = [uni(val).strip() for val in value]
             # Only keep values that are not empty
             value = [val for val in value if len(val)]
 
