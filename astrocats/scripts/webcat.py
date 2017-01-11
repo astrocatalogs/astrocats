@@ -690,11 +690,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
                              if hastimeerrs else ""))]
         tt += [("Apparent Magnitude",
-                "@y{1.111}" + ("<sub>-@lerr{1.11}</sub><sup>+@uerr{1.11}</sup>"
+                "@y{1.111}" + ("<sub>-@uerr{1.11}</sub><sup>+@lerr{1.11}</sup>"
                                if hasABerrs else ""))]
         if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
             tt += [("Absolute Magnitude", "@yabs{1.111}" +
-                    ("<sub>-@lerr{1.11}</sub><sup>+@uerr{1.11}</sup>"
+                    ("<sub>-@uerr{1.11}</sub><sup>+@lerr{1.11}</sup>"
                      if hasABerrs else ""))]
         if len(list(filter(None, photoband))):
             tt += [("Band", "@desc")]
@@ -795,7 +795,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             xs.append(x)
             ys.append(y)
             err_xs.append((x - xlowerr, x + xupperr))
-            err_ys.append((y - ylowerr, y + yupperr))
+            err_ys.append((y - yupperr, y + ylowerr))
 
         bandset = list(set(photoband))
         bandsortlists = sorted(
