@@ -4,7 +4,7 @@
 from collections import OrderedDict
 
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
-from astrocats.catalog.utils import uni, uniq_cdl
+from astrocats.catalog.utils import uniq_cdl
 
 
 class CatDictError(Exception):
