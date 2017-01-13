@@ -239,7 +239,10 @@ class CatDict(OrderedDict):
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
             # Clean leading/trailing whitespace
-            value = [uni(val).strip() for val in value]
+            value = [
+                val.strip() if not isinstance(val, (int, float)) else str(val)
+                for val in value
+            ]
             # Only keep values that are not empty
             value = [val for val in value if len(val)]
 
