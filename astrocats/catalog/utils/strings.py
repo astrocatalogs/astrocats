@@ -61,6 +61,8 @@ if sys.version_info < (3, ):
     import codecs
 
     def uni(x):
+        if isinstance(x, (int, float)):
+            return str(x)
         return codecs.unicode_escape_decode(x)[0]
 else:
 
