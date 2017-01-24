@@ -37,7 +37,7 @@ class Catalog:
 
     """
 
-    OSC_BIBCODE = '2016arXiv160501054G'
+    OSC_BIBCODE = '2017ApJ...835...64G'
     OSC_NAME = 'The Open Supernova Catalog'
     OSC_URL = 'https://sne.space'
 
