@@ -2586,20 +2586,19 @@ if args.writecatalog and not args.eventlist:
             outdir + catprefix + '.min.json.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
 
-    if not args.boneyard:
-        names = OrderedDict()
-        for ev in catalog:
-            names[ev['name']] = [x['value'] for x in ev.get('alias', [{'value':ev['name']}])]
-        jsonstring = json.dumps(names, separators=(',', ':'))
-        with open(outdir + 'names.min.json' + testsuffix, 'w') as f:
-            f.write(jsonstring)
+    names = OrderedDict()
+    for ev in catalog:
+        names[ev['name']] = [x['value'] for x in ev.get('alias', [{'value':ev['name']}])]
+    jsonstring = json.dumps(names, separators=(',', ':'))
+    with open(outdir + 'names' + ('-by' if args.boneyard else '') + '.min.json' + testsuffix, 'w') as f:
+        f.write(jsonstring)
 
     if args.deleteorphans and not args.boneyard:
 
         safefiles = [os.path.basename(x) for x in files]
         safefiles += [
             'catalog.json', 'catalog.min.json', 'bones.json', 'bones.min.json',
-            'names.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json',
+            'names.min.json', 'names-by.min.json', 'md5s.json', 'hostimgs.json', 'iaucs.json',
             'errata.json', 'bibauthors.json', 'extinctions.json', 'dupes.json',
             'biblio.json', 'atels.json', 'cbets.json', 'conflicts.json',
             'hosts.json', 'hosts.min.json'
