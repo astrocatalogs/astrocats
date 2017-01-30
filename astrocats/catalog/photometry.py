@@ -221,6 +221,10 @@ BAND_META = {
     'F850LP': {
         PHOTOMETRY.TELESCOPE: 'Hubble',
         PHOTOMETRY.INSTRUMENT: 'WFC3'
+    },
+    'Kepler': {
+        PHOTOMETRY.TELESCOPE: 'Kepler',
+        PHOTOMETRY.INSTRUMENT: 'Kepler'
     }
 }
 

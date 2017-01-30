@@ -75,7 +75,8 @@ bandcodes = [
     "F850LP",
     "VM",
     "RM",
-    "Ks"
+    "Ks",
+    "Kepler"
 ]
 
 bandaliases = OrderedDict([
@@ -118,7 +119,8 @@ bandwavelengths = {
     "K": 2190.,
     "M2": 260.,
     "W1": 224.6,
-    "W2": 192.8
+    "W2": 192.8,
+    "Kepler": 5781.30
 }
 
 bandgroups = {
