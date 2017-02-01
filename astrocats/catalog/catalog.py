@@ -16,6 +16,7 @@ from astrocats import __version__
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
+from astrocats.catalog import gitter
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
@@ -185,6 +186,7 @@ class Catalog:
         # Load repos dictionary (required)
         self.repos_dict = read_json_dict(self.PATHS.REPOS_LIST)
         # self.clone_repos()
+        log.debug("Cloning all repos")
         self.git_clone_all_repos()
 
         # Create empty `entries` collection
@@ -197,29 +199,21 @@ class Catalog:
 
         # Store version information
         # -------------------------
-        git_command = ["git", "rev-parse", "--short", "HEAD"]
         # git `SHA` of this directory (i.e. a sub-catalog)
         my_path = self.PATHS.catalog_dir
         catalog_sha = 'N/A'
         if os.path.exists(os.path.join(my_path, '.git')):
-            self.log.debug("Running '{}' in '{}'.".format(git_command,
-                                                          my_path))
-            catalog_sha = subprocess.check_output(git_command, cwd=my_path)
-            catalog_sha = catalog_sha.decode('ascii').strip()
+            catalog_sha = gitter.get_sha(path=my_path, log=self.log)
         # Git SHA of `astrocats`
-        parent_path = os.path.abspath(os.path.join(my_path, os.pardir))
+        parent_path = os.path.abspath(os.path.join(my_path, os.pardir, os.pardir))
         astrocats_sha = 'N/A'
         if os.path.exists(os.path.join(parent_path, '.git')):
-            self.log.debug("Running '{}' in '{}'."
-                           .format(git_command, parent_path))
-            astrocats_sha = subprocess.check_output(
-                git_command, cwd=parent_path)
-            astrocats_sha = astrocats_sha.decode('ascii').strip()
+            astrocats_sha = gitter.get_sha(path=parent_path, log=self.log)
         # Name of this class (if subclassed)
         my_name = type(self).__name__
-        self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}".format(
+        self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}'".format(
             __version__, astrocats_sha, my_name, catalog_sha)
-
+        self.log.debug(self._version_long)
         return
 
     def import_data(self):
@@ -443,8 +437,7 @@ class Catalog:
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo).split()
-            sha_beg = subprocess.check_output(git_command)
+            sha_beg = gitter.get_sha(repo)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             # Get files that should be added, compress and check sizes
@@ -460,24 +453,24 @@ class Catalog:
                 if self.args.travis:
                     git_comm.append("-f")
                 git_comm.extend(add_files)
-                _call_command_in_repo(
-                    git_comm, repo, self.log, fail=True, log_flag=False)
+                    gitter._call_command_in_repo(
+                        git_comm, repo, self.log, fail=True, log_flag=False)
 
                 # Commit these files
                 commit_msg = "'push' - adding all files."
                 commit_msg = "{} : {}".format(self._version_long, commit_msg)
                 self.log.info(commit_msg)
                 git_comm = ["git", "commit", "-am", commit_msg]
-                _call_command_in_repo(git_comm, repo, self.log)
+                gitter._call_command_in_repo(git_comm, repo, self.log)
 
                 # Add all files in the repository directory tree
                 git_comm = ["git", "push"]
                 if not self.args.travis:
-                    _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                    gitter._call_command_in_repo(git_comm, repo, self.log, fail=True)
             except Exception as err:
                 try:
                     git_comm = ["git", "reset", "HEAD"]
-                    _call_command_in_repo(git_comm, repo, self.log, fail=True)
+                    gitter._call_command_in_repo(git_comm, repo, self.log, fail=True)
                 except:
                     pass
 
@@ -494,15 +487,14 @@ class Catalog:
         for repo in all_repos:
             self.log.info("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo).split()
-            sha_beg = subprocess.check_output(git_command)
+            sha_beg = gitter.get_sha(repo)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             grepo = git.cmd.Git(repo)
             retval = grepo.pull()
             self.log.warning("Git says: '{}'".format(retval)).split()
 
-            sha_end = subprocess.check_output(git_command)
+            sha_end = gitter.get_sha(repo)
             if sha_end != sha_beg:
                 self.log.info("Updated SHA: '{}'".format(sha_end))
 
@@ -519,11 +511,10 @@ class Catalog:
             if os.path.isdir(repo):
                 self.log.info("Directory exists.")
             else:
-                if self.args.clone_depth == 0 and repo in out_repos:
+                if (self.args.clone_depth == 0) and (repo in out_repos):
                     os.mkdir(repo)
                 else:
-                    _clone_astrocats_repo(
-                        repo, self.log, depth=max(self.args.clone_depth, 1))
+                    gitter.clone(repo, self.log, depth=max(self.args.clone_depth, 1))
 
             grepo = git.cmd.Git(repo)
             try:
@@ -533,8 +524,7 @@ class Catalog:
                 raise
 
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo).split()
-            sha_beg = subprocess.check_output(git_command)
+            sha_beg = gitter.get_sha(repo)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
         return
@@ -546,8 +536,7 @@ class Catalog:
         for repo in all_repos:
             self.log.warning("Repo in: '{}'".format(repo))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo).split()
-            sha_beg = subprocess.check_output(git_command)
+            sha_beg = gitter.get_sha(repo)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
             grepo = git.cmd.Git(repo)
@@ -573,7 +562,7 @@ class Catalog:
                 if len(retval):
                     self.log.warning("Git says: '{}'".format(retval))
 
-            sha_end = subprocess.check_output(git_command)
+            sha_end = gitter.get_sha(repo)
             if sha_end != sha_beg:
                 self.log.debug("Updated SHA: '{}'".format(sha_end))
 
@@ -583,23 +572,20 @@ class Catalog:
         """Perform a 'git status' in each data repository.
         """
         all_repos = self.PATHS.get_all_repo_folders()
-        for repo in all_repos:
-            self.log.info("Repo in: '{}'".format(repo))
+        for repo_name in all_repos:
+            self.log.info("Repo in: '{}'".format(repo_name))
             # Get the initial git SHA
-            git_command = "git rev-parse HEAD {}".format(repo).split()
-            sha_beg = subprocess.check_output(git_command)
+            sha_beg = gitter.get_sha(repo_name)
             self.log.debug("Current SHA: '{}'".format(sha_beg))
 
-            grepo = git.cmd.Git(repo)
-            # Fetch first
-            self.log.debug("fetching")
-            grepo.fetch()
+            self.log.info("Fetching")
+            gitter.fetch(repo_name, log=self.log)
 
             git_comm = ["git", "status"]
-            _call_command_in_repo(
-                git_comm, repo, self.log, fail=True, log_flag=True)
+            gitter._call_command_in_repo(
+                git_comm, repo_name, self.log, fail=True, log_flag=True)
 
-            sha_end = subprocess.check_output(git_command)
+            sha_end = gitter.get_sha(repo_name)
             if sha_end != sha_beg:
                 self.log.info("Updated SHA: '{}'".format(sha_end))
 
@@ -1475,63 +1461,3 @@ def _get_task_priority(tasks, task_priority):
             return tasks[task_priority].priority
 
     raise ValueError("Unrecognized task priority '{}'".format(task_priority))
-
-
-def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
-    """Use `subprocess` to call a command in a certain (repo) directory.
-
-    Logs the output (both `stderr` and `stdout`) to the log, and checks the
-    return codes to make sure they're valid.  Raises error if not.
-
-    Raises
-    ------
-    exception `subprocess.CalledProcessError`: if the command fails
-
-    """
-    if log_flag:
-        log.debug("Running '{}'.".format(" ".join(comm)))
-    process = subprocess.Popen(
-        comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    (stdout, stderr) = process.communicate()
-    if stderr is not None:
-        err_msg = stderr.decode('ascii').strip().splitlines()
-        for em in err_msg:
-            log.error(em)
-    if stdout is not None:
-        out_msg = stdout.decode('ascii').strip().splitlines()
-        for om in out_msg:
-            log.warning(om)
-    # Raises an error if the command failed.
-    if fail:
-        if process.returncode:
-            raise subprocess.CalledProcessError
-    return
-
-
-def _clone_astrocats_repo(repo, log, depth=1):
-    """Given a list of repositories, make sure they're all cloned.
-
-    Should be called from the subclassed `Catalog` objects, passed a list
-    of specific repository names.
-
-    Arguments
-    ---------
-    all_repos : list of str
-        *Absolute* path specification of each target repository.
-
-    """
-    kwargs = {}
-    if depth > 0:
-        kwargs['depth'] = depth
-
-    try:
-        repo_name = os.path.split(repo)[-1]
-        repo_name = "https://github.com/astrocatalogs/" + repo_name + ".git"
-        log.warning("Cloning '{}' (only needs to be done ".format(repo) +
-                    "once, may take few minutes per repo).")
-        grepo = git.Repo.clone_from(repo_name, repo, **kwargs)
-    except:
-        log.error("CLONING '{}' INTERRUPTED".format(repo))
-        raise
-
-    return grepo
