@@ -1,6 +1,7 @@
 """Handle user arguments when running AstroCats
 """
 import argparse
+from . import gitter
 
 
 class ArgsHandler:
@@ -22,23 +23,23 @@ class ArgsHandler:
         # ---------------
         elif args.subcommand == 'git-clone':
             self.log.info("Running 'git clone'.")
-            catalog.git_clone_all_repos()
+            gitter.git_clone_all_repos(catalog)
         elif args.subcommand == 'git-push':
             self.log.info("Running 'git push'.")
-            catalog.git_add_commit_push_all_repos()
+            gitter.git_add_commit_push_all_repos(catalog)
         elif args.subcommand == 'git-pull':
             self.log.info("Running 'git pull'.")
-            # catalog.git_pull_all_repos()
+            # gitter.git_pull_all_repos(catalog)
             raise RuntimeError("NOT YET IMPLEMENTED!")
         elif args.subcommand == 'git-reset-local':
             self.log.info("Running 'git reset' using the local HEAD.")
-            catalog.git_reset_all_repos(hard=True, origin=False, clean=True)
+            gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
         elif args.subcommand == 'git-reset-origin':
             self.log.info("Running 'git reset' using 'origin/master'.")
-            catalog.git_reset_all_repos(hard=True, origin=True, clean=True)
+            gitter.git_reset_all_repos(catalog, hard=True, origin=True, clean=True)
         elif args.subcommand == 'git-status':
             self.log.info("Running 'git status'.")
-            catalog.git_status_all_repos()
+            gitter.git_status_all_repos(catalog)
 
         # Analyze Catalogs
         # ----------------
