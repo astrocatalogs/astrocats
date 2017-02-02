@@ -29,8 +29,8 @@ class ArgsHandler:
             gitter.git_add_commit_push_all_repos(catalog)
         elif args.subcommand == 'git-pull':
             self.log.info("Running 'git pull'.")
-            # gitter.git_pull_all_repos(catalog)
-            raise RuntimeError("NOT YET IMPLEMENTED!")
+            gitter.git_pull_all_repos(catalog)
+            # raise RuntimeError("NOT YET IMPLEMENTED!")
         elif args.subcommand == 'git-reset-local':
             self.log.info("Running 'git reset' using the local HEAD.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
