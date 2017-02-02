@@ -2,6 +2,8 @@
 """
 
 import git
+import subprocess
+
 
 class MyProgressPrinter(git.RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
@@ -11,7 +13,7 @@ class MyProgressPrinter(git.RemoteProgress):
             msg += "/{}".format(max_count)
         if len(msg):
             msg += " - {}".format(message)
-        print(msg)
+        print(msg + "\r")
 
 
 def fetch(repo_name, progress=True, log=None):
