@@ -453,8 +453,8 @@ class Catalog:
                 if self.args.travis:
                     git_comm.append("-f")
                 git_comm.extend(add_files)
-                    gitter._call_command_in_repo(
-                        git_comm, repo, self.log, fail=True, log_flag=False)
+                gitter._call_command_in_repo(
+                    git_comm, repo, self.log, fail=True, log_flag=False)
 
                 # Commit these files
                 commit_msg = "'push' - adding all files."
