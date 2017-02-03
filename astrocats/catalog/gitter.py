@@ -66,6 +66,8 @@ def git_add_commit_push_all_repos(cat):
     FIX: improve the error checking on this.
     """
     log = cat.log
+    log.debug("gitter.git_add_commit_push_all_repos()")
+
     # Do not commit/push private repos
     all_repos = cat.PATHS.get_all_repo_folders(private=False)
     for repo in all_repos:
@@ -120,6 +122,7 @@ def git_pull_all_repos(cat, strategy_recursive=True, strategy='theirs'):
     """
     # raise RuntimeError("THIS DOESNT WORK YET!")
     log = cat.log
+    log.debug("gitter.git_pull_all_repos()")
     log.warning("WARNING: using experimental `git_pull_all_repos()`!")
 
     all_repos = cat.PATHS.get_all_repo_folders()
@@ -165,6 +168,8 @@ def git_clone_all_repos(cat):
     """Perform a 'git clone' for each data repository that doesnt exist.
     """
     log = cat.log
+    log.debug("gitter.git_clone_all_repos()")
+
     all_repos = cat.PATHS.get_all_repo_folders()
     out_repos = cat.PATHS.get_repo_output_folders()
     for repo in all_repos:
@@ -196,6 +201,8 @@ def git_reset_all_repos(cat, hard=True, origin=False, clean=True):
     """Perform a 'git reset' in each data repository.
     """
     log = cat.log
+    log.debug("gitter.git_reset_all_repos()")
+
     all_repos = cat.PATHS.get_all_repo_folders()
     for repo in all_repos:
         log.warning("Repo in: '{}'".format(repo))
@@ -237,6 +244,8 @@ def git_status_all_repos(cat, hard=True, origin=False, clean=True):
     """Perform a 'git status' in each data repository.
     """
     log = cat.log
+    log.debug("gitter.git_status_all_repos()")
+
     all_repos = cat.PATHS.get_all_repo_folders()
     for repo_name in all_repos:
         log.info("Repo in: '{}'".format(repo_name))

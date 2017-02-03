@@ -1,6 +1,7 @@
 """Handle user arguments when running AstroCats
 """
 import argparse
+import logging
 from . import gitter
 
 
@@ -13,38 +14,38 @@ class ArgsHandler:
         return
 
     def run_subcommand(self, args, catalog):
+        log_lvl = logging.WARNING
         # Data Import
         # -----------
         if args.subcommand == 'import':
-            self.log.info("Running 'import'.")
+            self.log.log(log_lvl, "Running 'import'.")
             catalog.import_data()
 
         # Git Subcommands
         # ---------------
         elif args.subcommand == 'git-clone':
-            self.log.info("Running 'git clone'.")
+            self.log.log(log_lvl, "Running 'git clone'.")
             gitter.git_clone_all_repos(catalog)
         elif args.subcommand == 'git-push':
-            self.log.info("Running 'git push'.")
+            self.log.log(log_lvl, "Running 'git push'.")
             gitter.git_add_commit_push_all_repos(catalog)
         elif args.subcommand == 'git-pull':
-            self.log.info("Running 'git pull'.")
+            self.log.log(log_lvl, "Running 'git pull'.")
             gitter.git_pull_all_repos(catalog)
-            # raise RuntimeError("NOT YET IMPLEMENTED!")
         elif args.subcommand == 'git-reset-local':
-            self.log.info("Running 'git reset' using the local HEAD.")
+            self.log.log(log_lvl, "Running 'git reset' using the local HEAD.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
         elif args.subcommand == 'git-reset-origin':
-            self.log.info("Running 'git reset' using 'origin/master'.")
+            self.log.log(log_lvl, "Running 'git reset' using 'origin/master'.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=True, clean=True)
         elif args.subcommand == 'git-status':
-            self.log.info("Running 'git status'.")
+            self.log.log(log_lvl, "Running 'git status'.")
             gitter.git_status_all_repos(catalog)
 
         # Analyze Catalogs
         # ----------------
         elif args.subcommand == 'analyze':
-            self.log.info("Running 'analyze'.")
+            self.log.log(log_lvl, "Running 'analyze'.")
             from .analysis import Analysis
             # Create an `Analysis` instance
             lysis = Analysis(catalog, self.log)
