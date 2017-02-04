@@ -1359,8 +1359,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         min_y_range = min([x - y for x, y in list(zip(photofd, photofderrs))])
         max_y_range = max([x + y for x, y in list(zip(photofd, photofderrs))])
         [min_y_range, max_y_range] = [
-            min_y_range - 0.1 * (max_y_range - min_y_range),
-            max_y_range + 0.1 * (max_y_range - min_y_range)
+            min_y_range - 0.1 * max(max_y_range - min_y_range, 1.0),
+            max_y_range + 0.1 * max(max_y_range - min_y_range, 1.0)
         ]
 
         ttglyphs = []
@@ -1732,8 +1732,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             [(x + y) if not z else x
              for x, y, z in list(zip(photofl, photofllowererrs, phototype))])
         [min_y_range, max_y_range] = [
-            min_y_range - 0.1 * (max_y_range - min_y_range),
-            max_y_range + 0.1 * (max_y_range - min_y_range)
+            min_y_range - 0.1 * max(max_y_range - min_y_range, 1.0),
+            max_y_range + 0.1 * max(max_y_range - min_y_range, 1.0)
         ]
 
         ttglyphs = []
