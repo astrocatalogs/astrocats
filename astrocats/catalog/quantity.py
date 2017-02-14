@@ -61,10 +61,7 @@ class Quantity(CatDict):
     _KEYS = QUANTITY
 
     def __init__(self, parent, **kwargs):
-        self._REQ_KEY_SETS = [
-            [QUANTITY.VALUE],
-            [QUANTITY.SOURCE]
-        ]
+        self._REQ_KEY_SETS = [[QUANTITY.VALUE], [QUANTITY.SOURCE]]
 
         super(Quantity, self).__init__(parent, **kwargs)
 
@@ -72,32 +69,41 @@ class Quantity(CatDict):
         if self._key == parent._KEYS.ALIAS:
             value = parent.catalog.clean_entry_name(self[QUANTITY.VALUE])
             for df in parent.get(parent._KEYS.DISTINCT_FROM, []):
-                if value == df[QUANTITY.VALUE]:
-                    raise CatDictError(
-                        "Alias '{}' in '{}'\' '{}' list".format(
-                            value, parent[parent._KEYS.NAME],
-                            parent._KEYS.DISTINCT_FROM))
+                aliases = parent.catalog.entries[value].get_aliases(
+                ) if value in parent.catalog.entries else [value]
+                if df[QUANTITY.VALUE] in aliases:
+                    raise CatDictError("Alias '{}' in '{}'\' '{}' list".format(
+                        value, parent[
+                            parent._KEYS.NAME], parent._KEYS.DISTINCT_FROM))
+            if value in parent.catalog.entries:
+                for df in parent.catalog.entries[value].get(
+                        parent._KEYS.DISTINCT_FROM, []):
+                    if df[QUANTITY.VALUE] in parent.get_aliases():
+                        raise CatDictError(
+                            "Alias '{}' in '{}'\' '{}' list".format(
+                                value, parent[parent._KEYS.NAME],
+                                parent._KEYS.DISTINCT_FROM))
 
         # Check that value exists
         if (not self[QUANTITY.VALUE] or self[QUANTITY.VALUE] == '--' or
                 self[QUANTITY.VALUE] == '-'):
             raise CatDictError(
-                "Value '{}' is empty, not adding to '{}'".format(
-                    self[QUANTITY.VALUE], parent[parent._KEYS.NAME]))
+                "Value '{}' is empty, not adding to '{}'".format(self[
+                    QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
         if not parent._clean_quantity(self):
             raise CatDictError(
                 "Value '{}' did not survive cleaning process, not adding to "
-                " '{}'.".format(self[QUANTITY.VALUE],
-                                parent[parent._KEYS.NAME]))
+                " '{}'.".format(self[QUANTITY.VALUE], parent[
+                    parent._KEYS.NAME]))
 
         # Check that quantity value matches type after cleaning
         if (isinstance(self._key, Key) and
-                self._key.type == KEY_TYPES.NUMERIC and not
-                is_number(self[QUANTITY.VALUE])):
+                self._key.type == KEY_TYPES.NUMERIC and
+                not is_number(self[QUANTITY.VALUE])):
             raise CatDictError(
-                "Value '{}' is not numeric, not adding to '{}'".format(
-                    self[QUANTITY.VALUE], parent[parent._KEYS.NAME]))
+                "Value '{}' is not numeric, not adding to '{}'".format(self[
+                    QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
     def sort_func(self, key):
         if key == self._KEYS.VALUE:

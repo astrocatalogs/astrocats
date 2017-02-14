@@ -802,6 +802,8 @@ class Entry(OrderedDict):
         stub = type(self)(self.catalog, self[self._KEYS.NAME], stub=True)
         if self._KEYS.ALIAS in self:
             stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
+        if self._KEYS.DISTINCT_FROM in self:
+            stub[self._KEYS.DISTINCT_FROM] = self[self._KEYS.DISTINCT_FROM]
         return stub
 
     def is_erroneous(self, field, sources):
