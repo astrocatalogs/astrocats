@@ -52,11 +52,10 @@ def main():
     # Load the user settings from the home directory
     args = load_user_config(args, log)
 
-    #
     # Choose Catalog and Operation(s) to perform
     # ------------------------------------------
     mod_name = args.command
-    log.debug("Specified module: '{}'".format(mod_name))
+    log.debug("Importing specified module: '{}'".format(mod_name))
     # Try to import the specified module
     try:
         mod = importlib.import_module('.' + mod_name, package='astrocats')
@@ -65,6 +64,7 @@ def main():
         log_raise(log, str(err), type(err))
 
     # Run the `main.main` method of the specified module
+    log.debug("Running `main.main()`")
     mod.main.main(args, sub_clargs, log)
 
     end_time = datetime.now()
@@ -279,7 +279,8 @@ def load_log(args):
     # Create log
     log = logger.get_logger(
         stream_level=log_stream_level, tofile=args.log_filename)
-
+    log._verbose = args.verbose
+    log._debug = args.debug
     return log
 
 
