@@ -30,6 +30,10 @@ class ENTRY(KeyCollection):
         'heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host',
         'cluster'
     ]
+    _HOST_DIST_PREF_KINDS = [
+        'heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host',
+        'cluster'
+    ]
 
     # List of keys
     ALIAS = Key('alias', KEY_TYPES.STRING)
@@ -49,6 +53,22 @@ class ENTRY(KeyCollection):
     HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
     HOST_OFFSET_DIST = Key('hostoffsetdist', KEY_TYPES.NUMERIC)
     HOST_RA = Key('hostra', KEY_TYPES.STRING)
+    HOST_REDSHIFT = Key('hostredshift',
+                        KEY_TYPES.NUMERIC,
+                        kind_preference=_HOST_DIST_PREF_KINDS,
+                        replace_better=True)
+    HOST_VELOCITY = Key('hostvelocity',
+                        KEY_TYPES.NUMERIC,
+                        kind_preference=_HOST_DIST_PREF_KINDS,
+                        replace_better=True)
+    HOST_LUM_DIST = Key('hostlumdist',
+                        KEY_TYPES.NUMERIC,
+                        kind_preference=_HOST_DIST_PREF_KINDS,
+                        replace_better=True)
+    HOST_COMOVING_DIST = Key('hostcomovingdist',
+                             KEY_TYPES.NUMERIC,
+                             kind_preference=_HOST_DIST_PREF_KINDS,
+                             replace_better=True)
     LUM_DIST = Key('lumdist',
                    KEY_TYPES.NUMERIC,
                    kind_preference=_DIST_PREF_KINDS,
