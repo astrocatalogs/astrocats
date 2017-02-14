@@ -770,7 +770,7 @@ class Catalog:
                     destentry.add_error(**item)
                 else:
                     destentry.add_quantity(
-                        check_for_dupes=False, quantity=key, **item)
+                        check_for_dupes=False, quantities=key, **item)
 
         return
 

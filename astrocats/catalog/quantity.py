@@ -48,7 +48,7 @@ class QUANTITY(KeyCollection):
     # Strings
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
     U_VALUE = Key('u_value', KEY_TYPES.STRING)
-    KIND = Key('kind', KEY_TYPES.STRING)
+    KIND = Key('kind', KEY_TYPES.STRING, listable=True)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     MODEL = Key('model', KEY_TYPES.STRING, compare=False)
     REALIZATION = Key('realization', KEY_TYPES.STRING)
