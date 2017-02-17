@@ -735,9 +735,8 @@ class Catalog:
             # FIX: should this be ``fi.endswith(``.gz')`` ?
             if '.gz' in fi:
                 fname = uncompress_gz(fi)
-            name = os.path.basename(os.path.splitext(fname)[0]).replace(
-                '.json', '')
             new_entry = self.proto.init_from_file(self, path=fname)
+            name = new_entry[new_entry._KEYS.NAME]
             # Make sure a non-stub entry doesnt already exist with this name
             if name in self.entries and not self.entries[name]._stub:
                 err_str = (

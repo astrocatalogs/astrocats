@@ -17,9 +17,8 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number, listify)
-from past.builtins import basestring
-
 from cdecimal import Decimal
+from past.builtins import basestring
 
 
 class ENTRY(KeyCollection):
@@ -913,10 +912,12 @@ class Entry(OrderedDict):
                 source = self.add_self_source()
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
-        self[self._KEYS.ALIAS] = list(
-            sorted(
-                self[self._KEYS.ALIAS],
-                key=lambda key: alias_priority(name, key[QUANTITY.VALUE])))
+        if self._KEYS.ALIAS in self:
+            self[self._KEYS.ALIAS].sort(
+                key=lambda key: alias_priority(name, key[QUANTITY.VALUE]))
+        else:
+            raise ValueError(
+                'There should be at least one alias for `{}`.'.format(name))
 
         if self._KEYS.PHOTOMETRY in self:
             self[self._KEYS.PHOTOMETRY].sort(
