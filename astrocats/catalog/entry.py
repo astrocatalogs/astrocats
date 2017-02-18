@@ -345,8 +345,8 @@ class Entry(OrderedDict):
             # data['sources'] = newsources
             # self.setdefault(src_key, []).extend(newsources)
 
-            # Handle `photometry`
-            # -------------------
+        # Handle `photometry`
+        # -------------------
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
@@ -394,8 +394,8 @@ class Entry(OrderedDict):
                     self._add_cat_dict(
                         Quantity, key, check_for_dupes=merge, **vv)
 
-                if merge and self.dupe_of:
-                    self.merge_dupes()
+        if merge and self.dupe_of:
+            self.merge_dupes()
 
         return
 

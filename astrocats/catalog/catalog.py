@@ -1,23 +1,22 @@
 """Overarching catalog object for all open catalogs.
 """
 import codecs
+import gc
 import importlib
 import json
 import os
-import subprocess
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
 import logging
 
-import git
 import psutil
 from astrocats import __version__
+from astrocats.catalog import gitter
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
-from astrocats.catalog import gitter
 from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl, log_memory)
@@ -206,7 +205,8 @@ class Catalog:
         if os.path.exists(os.path.join(my_path, '.git')):
             catalog_sha = gitter.get_sha(path=my_path, log=self.log)
         # Git SHA of `astrocats`
-        parent_path = os.path.abspath(os.path.join(my_path, os.pardir, os.pardir))
+        parent_path = os.path.abspath(
+            os.path.join(my_path, os.pardir, os.pardir))
         astrocats_sha = 'N/A'
         if os.path.exists(os.path.join(parent_path, '.git')):
             astrocats_sha = gitter.get_sha(path=parent_path, log=self.log)
@@ -753,6 +753,7 @@ class Catalog:
             # Store the stub version
             self.entries[name] = new_entry.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
+            gc.collect()
 
         currenttask = 'Loading entry stubs'
         files = self.PATHS.get_repo_output_file_list()
