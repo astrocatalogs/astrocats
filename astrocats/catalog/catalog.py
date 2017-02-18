@@ -730,14 +730,13 @@ class Catalog:
         """
         """
         import psutil
+        import multiprocessing
         process = psutil.Process(os.getpid())
         rss = process.memory_info().rss
         LOG_MEMORY_INT = 1000
         MEMORY_LIMIT = 1000.0
 
-        currenttask = 'Loading entry stubs'
-        files = self.PATHS.get_repo_output_file_list()
-        for ii, _fname in enumerate(pbar(files, currenttask)):
+        def add_stub(_fname):
             # FIX: should this be ``fi.endswith(``.gz')`` ?
             fname = uncompress_gz(_fname) if '.gz' in _fname else _fname
             # Load the full file as a new entry
@@ -754,6 +753,17 @@ class Catalog:
             # Store the stub version
             self.entries[name] = new_entry.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
+
+        currenttask = 'Loading entry stubs'
+        files = self.PATHS.get_repo_output_file_list()
+        for ii, _fname in enumerate(pbar(files, currenttask)):
+            # Run normally
+            # add_stub(_fname)
+
+            # Run with multiprocessing; properly cleansup memory, runs slower
+            p = multiprocessing.Process(target=add_stub, args=(_fname,))
+            p.start()
+            p.join()
 
             rss = process.memory_info().rss/1024/1024
             if ii%LOG_MEMORY_INT == 0 or rss > 1000.0:
