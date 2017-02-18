@@ -1,9 +1,10 @@
 """Utilities for working with git.
 """
 
-import git
-import subprocess
 import os
+import subprocess
+
+import git
 
 
 class MyProgressPrinter(git.RemoteProgress):
@@ -22,7 +23,8 @@ def fetch(repo_name, progress=True, log=None):
     _progress = MyProgressPrinter() if progress else None
     for fetch_info in repo.remote().fetch(progress=_progress):
         if log is not None:
-            log.debug("Updated {}:{} to {}".format(repo_name, fetch_info.ref, fetch_info.commit))
+            log.debug("Updated {}:{} to {}".format(repo_name, fetch_info.ref,
+                                                   fetch_info.commit))
 
 
 def get_sha(path=None, log=None, short=False, timeout=None):
@@ -77,8 +79,8 @@ def git_add_commit_push_all_repos(cat):
         log.debug("Current SHA: '{}'".format(sha_beg))
 
         # Get files that should be added, compress and check sizes
-        add_files = cat._prep_git_add_file_list(
-            repo, cat.COMPRESS_ABOVE_FILESIZE)
+        add_files = cat._prep_git_add_file_list(repo,
+                                                cat.COMPRESS_ABOVE_FILESIZE)
         log.info("Found {} Files to add.".format(len(add_files)))
         if len(add_files) == 0:
             continue
@@ -144,7 +146,10 @@ def git_pull_all_repos(cat, strategy_recursive=True, strategy='theirs'):
         # Call git command (do this manually to use desired options)
         #    Set `with_exceptions=False` to handle errors ourselves (below)
         code, out, err = repo.git.execute(
-            git_comm.split(), with_stdout=True, with_extended_output=True, with_exceptions=False)
+            git_comm.split(),
+            with_stdout=True,
+            with_extended_output=True,
+            with_exceptions=False)
         # Handle output of git command
         if len(out):
             log.info(out)
@@ -152,7 +157,8 @@ def git_pull_all_repos(cat, strategy_recursive=True, strategy='theirs'):
             log.info(err)
         # Hangle error-codes
         if code != 0:
-            err_str = "Command '{}' returned exit code '{}'!".format(git_comm, code)
+            err_str = "Command '{}' returned exit code '{}'!".format(git_comm,
+                                                                     code)
             err_str += "\n\tout: '{}'\n\terr: '{}'".format(out, err)
             log.error(err_str)
             raise RuntimeError(err_str)
