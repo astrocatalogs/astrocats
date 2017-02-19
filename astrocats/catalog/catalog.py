@@ -740,24 +740,6 @@ class Catalog:
             LOG_MEMORY_INT = 1000
             MEMORY_LIMIT = 1000.0
 
-        def _add_stub(_fname):
-            # FIX: should this be ``fi.endswith(``.gz')`` ?
-            fname = uncompress_gz(_fname) if '.gz' in _fname else _fname
-            # Load the full file as a new entry
-            new_entry = self.proto.init_from_file(self, path=fname)
-            name = new_entry[new_entry._KEYS.NAME]
-            # Make sure a non-stub entry doesnt already exist with this name
-            if name in self.entries and not self.entries[name]._stub:
-                err_str = (
-                    "ERROR: non-stub entry already exists with name '{}'"
-                    .format(name))
-                self.log.error(err_str)
-                raise RuntimeError(err_str)
-
-            # Store the stub version
-            self.entries[name] = new_entry.get_stub()
-            self.log.debug("Added stub for '{}'".format(name))
-
         def _add_stub_manually(_fname):
             """Create and add a 'stub' by manually loading parameters from JSON files.
 
@@ -814,11 +796,6 @@ class Catalog:
 
             # Run 'manually' (extract stub parameters directly from JSON)
             _add_stub_manually(_fname)
-
-            # Run with multiprocessing; properly cleansup memory, runs slower
-            # p = multiprocessing.Process(target=_add_stub, args=(_fname,))
-            # p.start()
-            # p.join()
 
             if log_memory:
                 rss = process.memory_info().rss/1024/1024
