@@ -736,7 +736,7 @@ class Catalog:
         LOG_MEMORY_INT = 1000
         MEMORY_LIMIT = 1000.0
 
-        def add_stub(_fname):
+        def _add_stub(_fname):
             # FIX: should this be ``fi.endswith(``.gz')`` ?
             fname = uncompress_gz(_fname) if '.gz' in _fname else _fname
             # Load the full file as a new entry
@@ -753,18 +753,57 @@ class Catalog:
             # Store the stub version
             self.entries[name] = new_entry.get_stub()
             self.log.debug("Added stub for '{}'".format(name))
-            gc.collect()
+
+        def _add_stub_manually(_fname):
+            # FIX: should this be ``fi.endswith(``.gz')`` ?
+            fname = uncompress_gz(_fname) if '.gz' in _fname else _fname
+
+            stub = None
+            stub_name = None
+            with open(fname, 'r') as jfil:
+                data = json.load(jfil, object_pairs_hook=OrderedDict)
+                stub_name = list(data.keys())
+                if len(stub_name) != 1:
+                    err = "json file '{}' has multiple keys: {}".format(
+                        fhand, list(stub_name))
+                    self._log.error(err)
+                    raise ValueError(err)
+                stub_name = stub_name[0]
+
+                # Make sure a non-stub entry doesnt already exist with this name
+                if stub_name in self.entries and not self.entries[stub_name]._stub:
+                    err_str = (
+                        "ERROR: non-stub entry already exists with name '{}'"
+                        .format(stub_name))
+                    self.log.error(err_str)
+                    raise RuntimeError(err_str)
+
+                # Remove the outmost dict level
+                data = data[stub_name]
+                # Create a new `Entry` (subclass) instance
+                proto = self.proto
+                stub = proto(catalog=self, name=stub_name, stub=True)
+                if proto._KEYS.ALIAS in data:
+                    stub[proto._KEYS.ALIAS] = data[proto._KEYS.ALIAS]
+                if proto._KEYS.DISTINCT_FROM in data:
+                    stub[proto._KEYS.DISTINCT_FROM] = data[proto._KEYS.DISTINCT_FROM]
+
+            # Store the stub version
+            self.entries[stub_name] = stub
+            self.log.debug("Added stub for '{}'".format(stub_name))
 
         currenttask = 'Loading entry stubs'
         files = self.PATHS.get_repo_output_file_list()
         for ii, _fname in enumerate(pbar(files, currenttask)):
             # Run normally
-            # add_stub(_fname)
+            # _add_stub(_fname)
+            # Run 'manually' (extract stub parameters directly from JSON)
+            _add_stub_manually(_fname)
 
             # Run with multiprocessing; properly cleansup memory, runs slower
-            p = multiprocessing.Process(target=add_stub, args=(_fname,))
-            p.start()
-            p.join()
+            # p = multiprocessing.Process(target=_add_stub, args=(_fname,))
+            # p.start()
+            # p.join()
 
             rss = process.memory_info().rss/1024/1024
             if ii%LOG_MEMORY_INT == 0 or rss > 1000.0:
