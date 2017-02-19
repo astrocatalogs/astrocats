@@ -1,15 +1,14 @@
 """Overarching catalog object for all open catalogs.
 """
 import codecs
-import gc
 import importlib
 import json
+import logging
 import os
 import sys
 import warnings
 from collections import OrderedDict
 from glob import glob
-import logging
 
 import psutil
 from astrocats import __version__
@@ -17,9 +16,9 @@ from astrocats.catalog import gitter
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
-from astrocats.catalog.utils import (compress_gz, is_integer, pbar,
+from astrocats.catalog.utils import (compress_gz, is_integer, log_memory, pbar,
                                      read_json_dict, repo_priority,
-                                     uncompress_gz, uniq_cdl, log_memory)
+                                     uncompress_gz, uniq_cdl)
 from past.builtins import basestring
 from tqdm import tqdm
 
@@ -726,26 +725,26 @@ class Catalog:
             self.add_entry(name)
             self.journal_entries(bury=True, final=True)
 
-    def load_stubs(self, log_memory=False):
+    def load_stubs(self, log_mem=False):
         """Load all events in their `stub` (name, alias, etc only) form.
 
         Used in `update` mode.
         """
         # Initialize parameter related to diagnostic output of memory usage
-        if log_memory:
+        if log_mem:
             import psutil
-            import multiprocessing
             process = psutil.Process(os.getpid())
             rss = process.memory_info().rss
             LOG_MEMORY_INT = 1000
             MEMORY_LIMIT = 1000.0
 
         def _add_stub_manually(_fname):
-            """Create and add a 'stub' by manually loading parameters from JSON files.
+            """Create and add a 'stub' by manually loading parameters from
+            JSON files.
 
-            Previously this was done by creating a full `Entry` instance, then using the
-            `Entry.get_stub()` method to trim it down.  This was very slow and memory intensive,
-            hence this improved approach.
+            Previously this was done by creating a full `Entry` instance, then
+            using the `Entry.get_stub()` method to trim it down.  This was very
+            slow and memory intensive, hence this improved approach.
             """
             # FIX: should this be ``fi.endswith(``.gz')`` ?
             fname = uncompress_gz(_fname) if '.gz' in _fname else _fname
@@ -755,18 +754,21 @@ class Catalog:
             with open(fname, 'r') as jfil:
                 # Load the full JSON file
                 data = json.load(jfil, object_pairs_hook=OrderedDict)
-                # Extract the top-level keys (should just be the name of the entry)
+                # Extract the top-level keys (should just be the name of the
+                # entry)
                 stub_name = list(data.keys())
                 # Make sure there is only a single top-level entry
                 if len(stub_name) != 1:
                     err = "json file '{}' has multiple keys: {}".format(
-                        fhand, list(stub_name))
+                        fname, list(stub_name))
                     self._log.error(err)
                     raise ValueError(err)
                 stub_name = stub_name[0]
 
-                # Make sure a non-stub entry doesnt already exist with this name
-                if stub_name in self.entries and not self.entries[stub_name]._stub:
+                # Make sure a non-stub entry doesnt already exist with this
+                # name
+                if stub_name in self.entries and not self.entries[
+                        stub_name]._stub:
                     err_str = (
                         "ERROR: non-stub entry already exists with name '{}'"
                         .format(stub_name))
@@ -782,7 +784,8 @@ class Catalog:
                 if proto._KEYS.ALIAS in data:
                     stub[proto._KEYS.ALIAS] = data[proto._KEYS.ALIAS]
                 if proto._KEYS.DISTINCT_FROM in data:
-                    stub[proto._KEYS.DISTINCT_FROM] = data[proto._KEYS.DISTINCT_FROM]
+                    stub[proto._KEYS.DISTINCT_FROM] = data[
+                        proto._KEYS.DISTINCT_FROM]
 
             # Store the stub
             self.entries[stub_name] = stub
@@ -798,12 +801,14 @@ class Catalog:
             _add_stub_manually(_fname)
 
             if log_memory:
-                rss = process.memory_info().rss/1024/1024
-                if ii%LOG_MEMORY_INT == 0 or rss > MEMORY_LIMIT:
-                    log_memory(self.log, "\nLoaded stub {}".format(ii), logging.INFO)
+                rss = process.memory_info().rss / 1024 / 1024
+                if ii % LOG_MEMORY_INT == 0 or rss > MEMORY_LIMIT:
+                    log_memory(self.log, "\nLoaded stub {}".format(ii),
+                               logging.INFO)
                     if rss > MEMORY_LIMIT:
-                        err = "Memory usage {}, has exceeded {} on file {} '{}'".format(
-                            rss, MEMORY_LIMIT, ii, _fname)
+                        err = (
+                            "Memory usage {}, has exceeded {} on file {} '{}'".
+                            format(rss, MEMORY_LIMIT, ii, _fname))
                         self.log.error(err)
                         raise RuntimeError(err)
 
