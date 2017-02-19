@@ -356,7 +356,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
-    tprint(eventfile + ' [' + checksum + ']')
+    # tprint(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry], repofolders)
     if os.path.isfile("astrocats/" + moduledir + "/input/" + modulename +
