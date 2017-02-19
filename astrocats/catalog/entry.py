@@ -920,7 +920,7 @@ class Entry(OrderedDict):
             self[self._KEYS.ALIAS].sort(
                 key=lambda key: alias_priority(name, key[QUANTITY.VALUE]))
         else:
-            raise ValueError(
+            self._log.error(
                 'There should be at least one alias for `{}`.'.format(name))
 
         if self._KEYS.PHOTOMETRY in self:
