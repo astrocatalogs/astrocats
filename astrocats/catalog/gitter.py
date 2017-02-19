@@ -184,10 +184,8 @@ def git_clone_all_repos(cat):
         if os.path.isdir(repo):
             log.info("Directory exists.")
         else:
-            if (cat.args.clone_depth == 0) and (repo in out_repos):
-                os.mkdir(repo)
-            else:
-                clone(repo, cat.log, depth=max(cat.args.clone_depth, 1))
+            log.debug("Cloning directory...")
+            clone(repo, cat.log, depth=max(cat.args.clone_depth, 1))
 
         grepo = git.cmd.Git(repo)
         try:
