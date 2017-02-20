@@ -265,8 +265,8 @@ class Entry(OrderedDict):
             data = json.load(jfil, object_pairs_hook=OrderedDict)
             name = list(data.keys())
             if len(name) != 1:
-                err = "json file '{}' has multiple keys: {}".format(
-                    fhand, list(name))
+                err = "json file '{}' has multiple keys: {}".format(fhand,
+                                                                    list(name))
                 self._log.error(err)
                 raise ValueError(err)
             name = name[0]
@@ -547,7 +547,8 @@ class Entry(OrderedDict):
 
         catalog.log.debug("init_from_file()")
         if name is None and path is None:
-            err = "Either entry `name` or `path` must be specified to load entry."
+            err = ("Either entry `name` or `path` must be specified to load "
+                   "entry.")
             log.error(err)
             raise ValueError(err)
 

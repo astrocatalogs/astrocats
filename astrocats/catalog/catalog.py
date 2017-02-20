@@ -800,7 +800,7 @@ class Catalog:
             # Run 'manually' (extract stub parameters directly from JSON)
             _add_stub_manually(_fname)
 
-            if log_memory:
+            if log_mem:
                 rss = process.memory_info().rss / 1024 / 1024
                 if ii % LOG_MEMORY_INT == 0 or rss > MEMORY_LIMIT:
                     log_memory(self.log, "\nLoaded stub {}".format(ii),
