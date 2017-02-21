@@ -776,7 +776,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             }
             p1.add_layout(
                 LinearAxis(
-                    axis_label="Absolute Magnitude",
+                    axis_label="Absolute Magnitude*",
                     major_label_text_font_size='8pt',
                     major_label_text_font='futura',
                     axis_label_text_font='futura',
@@ -2278,7 +2278,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     newhtml = newhtml + r'</td><td width=250px class="event-cell">' + keyhtml
 
                 newhtml = newhtml + r'</td></tr>\n'
-        newhtml = newhtml + r'</table><em>Values that are colored <span class="derived">purple</span> were computed by the OSC using values provided by the specified sources.</em></div>\n\1'
+        newhtml = newhtml + r'</table><p><em>Values that are colored <span class="derived">purple</span> were computed by the OSC using values provided by the specified sources.</em></p>\n'
+        newhtml = newhtml + r'<p><em>*Absolute magnitudes take into account luminosity distance and redshift decrements but not SED shape, thus the K-corrections used to determine absolute magnitudes are approximate.</em></p></div>\n\1'
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
         if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
