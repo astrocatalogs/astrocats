@@ -1,6 +1,7 @@
 """
 """
 import codecs
+import hashlib
 import json
 import logging
 import os
@@ -208,8 +209,8 @@ class Entry(OrderedDict):
         nkeys = list(sorted(odict.keys(), key=key))
         for key in nkeys:
             if isinstance(odict[key], OrderedDict):
-                odict[key] = self._ordered(odict[key])
-            if isinstance(odict[key], list):
+                ndict[key] = self._ordered(odict[key])
+            elif isinstance(odict[key], list):
                 if (not (odict[key] and
                          not isinstance(odict[key][0], OrderedDict))):
                     nlist = []
@@ -218,10 +219,25 @@ class Entry(OrderedDict):
                             nlist.append(self._ordered(item))
                         else:
                             nlist.append(item)
-                    odict[key] = nlist
-            ndict[key] = odict[key]
+                    ndict[key] = nlist
+            else:
+                ndict[key] = odict[key]
 
         return ndict
+
+    def get_hash(self, keys=[]):
+        """Return a unique hash associated with the listed keys
+        """
+
+        if not len(keys):
+            keys = list(self.keys())
+
+        string_rep = ''
+        oself = self._ordered(self)
+        for key in keys:
+            string_rep += json.dumps(oself[key], sort_keys=True)
+
+        return hashlib.sha512(string_rep.encode()).hexdigest()[:16]
 
     def _clean_quantity(self, quantity):
         """Clean quantity value before it is added to entry.
