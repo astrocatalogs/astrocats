@@ -8,6 +8,7 @@ from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 class REALIZATION(KeyCollection):
     SCORE = Key('score', KEY_TYPES.NUMERIC)
     PARAMETERS = Key('parameters', KEY_TYPES.DICT)
+    ALIAS = Key('alias', KEY_TYPES.STRING)
 
 
 class Realization(CatDict):
