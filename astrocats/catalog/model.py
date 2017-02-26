@@ -18,6 +18,7 @@ class MODEL(KeyCollection):
     # Numbers
     ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
     SCORE = Key('score', KEY_TYPES.NUMERIC, compare=False)
+    CONVERGENCE = Key('convergence', KEY_TYPES.NUMERIC, compare=False)
     # Arrays
     REALIZATIONS = Key('realizations', compare=False)
     SETUP = Key('setup', compare=False)
