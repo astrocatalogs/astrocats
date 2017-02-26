@@ -21,7 +21,7 @@ class QUANTITY(KeyCollection):
     PROB : NUMERIC
     UPPER_LIMIT : BOOL
         If this value corresponds to a measured upper-limit.
-    DESC : STRING
+    DESCRIPTION : STRING
         Verbal description or notes on a quantity.
     U_VALUE : STRING
         Unit of measurement associated with this value.
@@ -46,7 +46,7 @@ class QUANTITY(KeyCollection):
     LOWER_LIMIT = Key('lowerlimit', KEY_TYPES.BOOL)
     DERIVED = Key('derived', KEY_TYPES.BOOL)
     # Strings
-    DESC = Key('description', KEY_TYPES.STRING, compare=False)
+    DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
     U_VALUE = Key('u_value', KEY_TYPES.STRING)
     KIND = Key('kind', KEY_TYPES.STRING, listable=True)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
