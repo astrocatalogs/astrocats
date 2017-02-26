@@ -3,7 +3,7 @@ python:
     - "2.7"
     - "3.4"
     - "3.5"
-    - "3.6-dev"
+    - "3.6"
 notifications:
     email:
         on_failure: change
@@ -30,11 +30,7 @@ before_install:
       then conda update -q conda;
       fi
 install:
-    - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6-dev" ]];
-      then export TPV="3.5.2"; else
-      export TPV=$TRAVIS_PYTHON_VERSION;
-      fi
-    - conda install --yes python=$TPV scipy matplotlib
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
     - conda install -c anaconda pyqt=4.11.4
     - pip install -r requirements.txt
     - pip install coveralls
@@ -64,4 +60,4 @@ script:
 
 # Run coveralls
 after_success:
-    - if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then coveralls; fi
+    - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then coveralls; fi
