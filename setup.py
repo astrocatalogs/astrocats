@@ -54,6 +54,7 @@ setup(
     author=__author__,  # noqa
     author_email="guillochon@gmail.com",
     install_requires=required,
+    setup_requires=required,
     url="https://github.com/astrocatalogs/astrocats",
     download_url=(
         'https://github.com/astrocatalogs/astrocats/tarball/' +
