@@ -376,8 +376,8 @@ class Entry(OrderedDict):
                 len(photoms), photo_key))
             for photo in photoms:
                 self._add_cat_dict(
-                    Photometry, self._KEYS.PHOTOMETRY, **photo,
-                    compare_to_existing=compare_to_existing)
+                    Photometry, self._KEYS.PHOTOMETRY,
+                    compare_to_existing=compare_to_existing, **photo)
 
         # Handle `spectra`
         # ---------------
@@ -390,8 +390,8 @@ class Entry(OrderedDict):
                 len(spectra), spec_key))
             for spec in spectra:
                 self._add_cat_dict(
-                    Spectrum, self._KEYS.SPECTRA, **spec,
-                    compare_to_existing=compare_to_existing)
+                    Spectrum, self._KEYS.SPECTRA,
+                    compare_to_existing=compare_to_existing, **spec)
 
         # Handle `error`
         # --------------
@@ -415,8 +415,8 @@ class Entry(OrderedDict):
                 len(model), model_key))
             for mod in model:
                 self._add_cat_dict(
-                    Model, self._KEYS.MODELS, **mod,
-                    compare_to_existing=compare_to_existing)
+                    Model, self._KEYS.MODELS,
+                    compare_to_existing=compare_to_existing, **mod)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
