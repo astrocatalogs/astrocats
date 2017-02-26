@@ -17,6 +17,7 @@ class MODEL(KeyCollection):
     DESC = Key('description', KEY_TYPES.STRING, compare=False)
     # Numbers
     ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
+    SCORE = Key('score', KEY_TYPES.NUMERIC, compare=False)
     # Arrays
     REALIZATIONS = Key('realizations', compare=False)
     SETUP = Key('setup', compare=False)
