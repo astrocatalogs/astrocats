@@ -17,11 +17,11 @@ class MODEL(KeyCollection):
     DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
     # Numbers
     ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
-    SCORE = Key('score', KEY_TYPES.NUMERIC, compare=False)
-    CONVERGENCE = Key('convergence', KEY_TYPES.NUMERIC, compare=False)
     STEPS = Key('steps', KEY_TYPES.NUMERIC, compare=False)
     # Arrays/dictionaries
+    CONVERGENCE = Key('convergence', compare=False)
     REALIZATIONS = Key('realizations', compare=False)
+    SCORE = Key('score', compare=False)
     SETUP = Key('setup', compare=False)
 
 
